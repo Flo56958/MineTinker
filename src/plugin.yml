@@ -1,0 +1,19 @@
+name: MineTinker
+author: Flo56958
+version: 0.0.1
+main: de.flo56958.MineTinker.Main
+prefix: MineTinker
+
+database: false
+
+commands:
+   minetinker:
+     aliases: [mt]
+     description: Main Command of MineTinker
+     usage: /minetinker
+
+
+permissions:
+  minetinker.main:
+    description: Allows to access MineTinker
+    default: true

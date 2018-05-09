@@ -1,0 +1,4 @@
+chat-prefix: [MineTinker]
+
+LevelStep: 250
+playSoundOnLevelUp: true
