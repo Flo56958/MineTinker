@@ -1,9 +1,11 @@
 package de.flo56958.MineTinker.Listeners;
 
+import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.LevelCalculator;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -13,24 +15,27 @@ import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CraftingGrid9Listener implements Listener {
 
-    private Material[] Tools = new Material[] {Material.WOOD_SWORD, Material.STONE_SWORD, Material.IRON_SWORD, Material.GOLD_SWORD, Material.DIAMOND_SWORD,
-                                               Material.WOOD_AXE, Material.STONE_AXE, Material.IRON_AXE, Material.GOLD_AXE, Material.DIAMOND_AXE,
-                                               Material.WOOD_PICKAXE, Material.STONE_PICKAXE, Material.IRON_PICKAXE, Material.GOLD_PICKAXE, Material.DIAMOND_PICKAXE,
-                                               Material.WOOD_SPADE, Material.STONE_SPADE, Material.IRON_SPADE, Material.GOLD_SPADE, Material.DIAMOND_SPADE};
-
     @EventHandler(priority = EventPriority.LOW)
     public void onCraft(CraftItemEvent e) {
-        for (int i = 0; i < Tools.length; i++) {
-            if (e.getCurrentItem().getType() == Tools[i]) {
+        System.out.println(e.getCurrentItem().getType().toString());
+        List<String> Tools = (List<String>) Main.getPlugin().getConfig().getList("AllowedTools");
+        for (String current : Tools) {
+            if (e.getCurrentItem().getType().toString().equals(current)) {
                 ArrayList<String> lore = new ArrayList<>();
                 lore.add(ChatColor.WHITE + "MineTinker-Tool");
                 lore.add(ChatColor.GOLD + "Level:" + ChatColor.WHITE + " 1");
                 lore.add(ChatColor.GOLD + "Exp:" + ChatColor.WHITE + " 0 / " + LevelCalculator.getNextLevelReq(1));
+                lore.add(ChatColor.WHITE + "Free Modifier Slots: " + "1");
+                lore.add(ChatColor.WHITE + "Modifiers:");
                 ItemStack temp = ItemGenerator.changeItem(e.getCurrentItem(), lore);
                 e.setCurrentItem(temp);
+                if (Main.getPlugin().getConfig().getBoolean("Sound.OnCrafting")) {
+                    ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
+                }
                 break;
             }
         }
@@ -42,7 +47,6 @@ public class CraftingGrid9Listener implements Listener {
             if (e.getSlot() != 5) {
                 ItemStack[] contents = e.getClickedInventory().getContents();
                 for (int i = 0; i < contents.length; i++) {
-                    System.out.println(i + ": " + contents[i].toString());
                 }
             }
         }

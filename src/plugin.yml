@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: 0.0.1
+version: alpha 0.0.1
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -17,3 +17,11 @@ permissions:
   minetinker.main:
     description: Allows to access MineTinker
     default: true
+
+  minetinker.modifiers:
+    description: Allows to access the list of MineTinker-modifiers
+    default: true
+
+  minetinker.reload:
+    description: Gives access to reload the MineTinker-config
+    default: op

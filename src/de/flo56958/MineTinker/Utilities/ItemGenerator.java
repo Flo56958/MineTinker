@@ -1,5 +1,7 @@
 package de.flo56958.MineTinker.Utilities;
 
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -12,5 +14,14 @@ public class ItemGenerator {
         meta.setLore(lore);
         tool.setItemMeta(meta);
         return tool;
+    }
+
+    public static ItemStack itemEnchanter(Material m, String name, int amount, Enchantment ench) {
+        ItemStack item = new ItemStack(m, amount);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(name);
+        item.setItemMeta(meta);
+        item.addUnsafeEnchantment(ench, 1);
+        return item;
     }
 }
