@@ -44,6 +44,10 @@ public class cmd_Main implements CommandExecutor {
                             ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.GRAY + "Extra-Modifier-Slot" + ChatColor.WHITE + ": [Netherstar] Adds a additional Modifier-Slot to the tool!");
                             index++;
                         }
+                        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Haste.allowed")) {
+                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.DARK_RED + "Haste" + ChatColor.WHITE + ": [Redstone] Tool can destroy blocks faster!");
+                            index++;
+                        }
                         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed")) {
                             ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.RED + "Power" + ChatColor.WHITE + ": [Emerald] Tool can destroy more blocks per swing!");
                             index++;

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class LevelCalculator {
 
     public static int getNextLevelReq(int level) {
-        return (int) (Main.getPlugin().getConfig().getInt("LevelStep") * Math.pow(2, (double) (level - 1)));
+        return (int) (Main.getPlugin().getConfig().getInt("LevelStep") * Math.pow(Main.getPlugin().getConfig().getInt("LevelFactor"), (double) (level - 1)));
     }
 
     public static void addExp(Player p, ItemStack tool, int amount) {

@@ -1,46 +1,55 @@
 chat-prefix: [MineTinker]
 
 LevelStep: 250
+LevelFactor: 2
 AddModifierSlotsPerLevel: 1
 
 Sound:
   OnLevelUp: true
   OnCrafting: true
+  OnEveryCrafting: false
   OnEnchanting: true
 
 AllowedTools:
-##Swords
-  - WOOD_SWORD
-  - STONE_SWORD
-  - IRON_SWORD
-  - GOLD_SWORD
-  - DIAMOND_SWORD
-##Axes
-  - WOOD_AXE
-  - STONE_AXE
-  - IRON_AXE
-  - GOLD_AXE
-  - DIAMOND_AXE
-##Pickaxes
-  - WOOD_PICKAXE
-  - STONE_PICKAXE
-  - IRON_PICKAXE
-  - GOLD_PICKAXE
-  - DIAMOND_PICKAXE
-##Shovels
-  - WOOD_SPADE
-  - STONE_SPADE
-  - IRON_SPADE
-  - GOLD_SPADE
-  - DIAMOND_SPADE
+  Swords:
+    - WOOD_SWORD
+    - STONE_SWORD
+    - IRON_SWORD
+    - GOLD_SWORD
+    - DIAMOND_SWORD
+  Axes:
+    - WOOD_AXE
+    - STONE_AXE
+    - IRON_AXE
+    - GOLD_AXE
+    - DIAMOND_AXE
+  Pickaxes:
+    - WOOD_PICKAXE
+    - STONE_PICKAXE
+    - IRON_PICKAXE
+    - GOLD_PICKAXE
+    - DIAMOND_PICKAXE
+  Shovels:
+    - WOOD_SPADE
+    - STONE_SPADE
+    - IRON_SPADE
+    - GOLD_SPADE
+    - DIAMOND_SPADE
 
 Modifiers:
   Auto-Repair:
     allowed: true
+    MaxLevel: 10
     EnchantCost: 10
+    Percentage: 10
+    HealthRepair: 5
   Extra-Durability:
     allowed: true
+    ExtraDurabilityGain: 100
   Extra-Modifier:
+    allowed: true
+    ExtraModifierGain: 1
+  Haste:
     allowed: true
   Power:
     allowed: true
