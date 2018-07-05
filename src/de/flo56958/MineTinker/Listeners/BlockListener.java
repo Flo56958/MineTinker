@@ -19,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class BlockListener implements Listener {
 
@@ -32,6 +33,24 @@ public class BlockListener implements Listener {
                     ArrayList<String> lore = (ArrayList<String>) meta.getLore();
                     if (lore.contains(Strings.IDENTIFIER)) {
                         LevelCalculator.addExp(e.getPlayer(), tool, 1);
+                        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed")) {
+                            //self-repair check
+                            searchloop:
+                            for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel"); i++) {
+                                if (lore.contains(Strings.SELFREPAIR + i)) {
+                                    //self-repair
+                                    Random rand = new Random();
+                                    int n = rand.nextInt(101);
+                                    if (n <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.PercentagePerLevel") * i) {
+                                        int heal = Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.HealthRepair");
+                                        short dura = (short) (tool.getDurability() - heal);
+                                        if (dura < 0) { dura = 0; }
+                                        e.getPlayer().getInventory().getItemInMainHand().setDurability(dura);
+                                    }
+                                    break searchloop;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -42,21 +61,21 @@ public class BlockListener implements Listener {
     public void onClick(PlayerInteractEvent e) {
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             if (e.getClickedBlock().getType().equals(Material.BOOKSHELF)) {
-                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Auto-Repair.allowed")) {
+                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed")) {
                     if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.MOSSY_COBBLESTONE)) {
                         if (e.getPlayer().getGameMode().equals(GameMode.SURVIVAL) || e.getPlayer().getGameMode().equals(GameMode.ADVENTURE)) {
                             int amount = e.getPlayer().getInventory().getItemInMainHand().getAmount();
-                            if (e.getPlayer().getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Auto-Repair.EnchantCost")) {
-                                int newLevel = e.getPlayer().getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Auto-Repair.EnchantCost");
+                            if (e.getPlayer().getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.EnchantCost")) {
+                                int newLevel = e.getPlayer().getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.EnchantCost");
                                 e.getPlayer().setLevel(newLevel);
                                 e.getPlayer().getInventory().getItemInMainHand().setAmount(amount - 1);
-                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.AUTOREPAIR_MODIFIER);
+                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.SELFREPAIR_MODIFIER);
                                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
                                     e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
                                 }
                                 } else {
                                     ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
-                                    ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Auto-Repair.EnchantCost") + " levels are required!");
+                                    ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.EnchantCost") + " levels are required!");
                                 }
                             e.setCancelled(true);
                         }

@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class Modifiers {
 
-    public static final ItemStack AUTOREPAIR_MODIFIER = ItemGenerator.itemEnchanter(Material.MOSSY_COBBLESTONE, ChatColor.GREEN + "Auto-Repair-Modifier", 1, Enchantment.MENDING, 1);
+    public static final ItemStack SELFREPAIR_MODIFIER = ItemGenerator.itemEnchanter(Material.MOSSY_COBBLESTONE, ChatColor.GREEN + "Self-Repair-Modifier", 1, Enchantment.MENDING, 1);
+    public static final ItemStack REINFORCED_MODIFIER = ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.BLACK + "Reinforced-Modifier", 1, Enchantment.DURABILITY, 1);
 
 }

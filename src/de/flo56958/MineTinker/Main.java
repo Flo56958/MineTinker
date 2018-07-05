@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker;
 
 import de.flo56958.MineTinker.Commands.cmd_Main;
+import de.flo56958.MineTinker.Data.CraftingRecipes;
 import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Listeners.AnvilListener;
 import de.flo56958.MineTinker.Listeners.BlockListener;
@@ -24,6 +25,11 @@ public class Main extends JavaPlugin {
         Bukkit.getLogger().log(Level.INFO, Strings.CHAT_PREFIX + " Registered events!");
 
         loadConfig();
+
+        if (getConfig().getBoolean("Modifiers.Reinforced.allowed")) {
+            CraftingRecipes.registerReinforcedModifier();
+        }
+        Bukkit.getLogger().log(Level.INFO, Strings.CHAT_PREFIX + " Registered crafting recipes!");
     }
 
     private void loadConfig() {

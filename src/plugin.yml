@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: alpha 0.0.1
+version: a2
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -16,6 +16,14 @@ commands:
 permissions:
   minetinker.main:
     description: Allows to access MineTinker
+    default: true
+
+  minetinker.help:
+    description: Allows to access the help of MineTinker-commands
+    default: true
+
+  minetinker.info:
+    description: Allows to access information about MineTinker
     default: true
 
   minetinker.modifiers:

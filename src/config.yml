@@ -8,6 +8,7 @@ Sound:
   OnLevelUp: true
   OnCrafting: true
   OnEveryCrafting: false
+  OnModding: true
   OnEnchanting: true
 
 AllowedTools:
@@ -37,12 +38,12 @@ AllowedTools:
     - DIAMOND_SPADE
 
 Modifiers:
-  Auto-Repair:
+  Self-Repair:
     allowed: true
     MaxLevel: 10
     EnchantCost: 10
-    Percentage: 10
-    HealthRepair: 5
+    PercentagePerLevel: 10
+    HealthRepair: 2
   Extra-Durability:
     allowed: true
     ExtraDurabilityGain: 100

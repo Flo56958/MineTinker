@@ -14,5 +14,6 @@ public class Strings {
     public static final String MODIFIERSTART = ChatColor.WHITE + "Modifiers:";
 
     //Modifiers
-    public static final String AUTOREPAIR = ChatColor.GREEN + "Auto-Repair: ";
+    public static final String SELFREPAIR = ChatColor.GREEN + "Self-Repair: ";
+    public static final String REINFORCED = ChatColor.BLACK + "Reinforced: ";
 }

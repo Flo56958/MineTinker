@@ -36,4 +36,38 @@ public class Events {
             tool.setItemMeta(meta);
         }
     }
+
+    public static void Mod_MaxLevel(Player p, ItemStack tool, String mod) {
+        if (Main.getPlugin().getConfig().getBoolean("Sound.OnModding")) {
+            p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
+        }
+        String name = tool.getItemMeta().getDisplayName();
+        if (tool.getItemMeta().getDisplayName() == null) {
+            name = tool.getType().toString();
+        }
+        ChatWriter.sendMessage(p, ChatColor.RED, name + " is already max level on: " + mod);
+    }
+
+    public static void Mod_AddMod(Player p, ItemStack tool, String s, int slotsRemaining) {
+        if (Main.getPlugin().getConfig().getBoolean("Sound.OnModding")) {
+            p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
+        }
+        String name = tool.getItemMeta().getDisplayName();
+        if (tool.getItemMeta().getDisplayName() == null) {
+            name = tool.getType().toString();
+        }
+        ChatWriter.sendMessage(p, ChatColor.WHITE, name + " has now " + s);
+        ChatWriter.sendMessage(p, ChatColor.WHITE, name + " has now " + slotsRemaining + " free Slots remaining!");
+    }
+
+    public static void Mod_NoSlots(Player p, ItemStack tool, String s) {
+        if (Main.getPlugin().getConfig().getBoolean("Sound.OnModding")) {
+            p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
+        }
+        String name = tool.getItemMeta().getDisplayName();
+        if (tool.getItemMeta().getDisplayName() == null) {
+            name = tool.getType().toString();
+        }
+        ChatWriter.sendMessage(p, ChatColor.RED, name + " has not enough Modifier-Slots for " + s + "!");
+    }
 }

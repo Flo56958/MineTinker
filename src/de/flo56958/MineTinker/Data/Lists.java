@@ -12,5 +12,5 @@ public class Lists {
     public static final List<String> PICKAXES = (List<String>) Main.getPlugin().getConfig().getList("AllowedTools.Pickaxes");
     public static final List<String> SHOVELS = (List<String>) Main.getPlugin().getConfig().getList("AllowedTools.Shovels");
 
-    public static final ItemStack[] MODIFIERS = new ItemStack[] {Modifiers.AUTOREPAIR_MODIFIER};
+    public static final ItemStack[] MODIFIERS = new ItemStack[] {Modifiers.SELFREPAIR_MODIFIER};
 }
