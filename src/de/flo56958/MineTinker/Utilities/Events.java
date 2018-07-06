@@ -70,4 +70,37 @@ public class Events {
         }
         ChatWriter.sendMessage(p, ChatColor.RED, name + " has not enough Modifier-Slots for " + s + "!");
     }
+
+    public static void Upgrade_Fail(Player p, ItemStack tool, String level) {
+        if (Main.getPlugin().getConfig().getBoolean("Sound.OnUpgrade")) {
+            p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
+        }
+        String name = tool.getItemMeta().getDisplayName();
+        if (tool.getItemMeta().getDisplayName() == null) {
+            name = tool.getType().toString();
+        }
+        ChatWriter.sendMessage(p, ChatColor.RED, name + " is already " + level + "!");
+    }
+
+    public static void Upgrade_Prohibited(Player p, ItemStack tool) {
+        if (Main.getPlugin().getConfig().getBoolean("Sound.OnUpgrade")) {
+            p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
+        }
+        String name = tool.getItemMeta().getDisplayName();
+        if (tool.getItemMeta().getDisplayName() == null) {
+            name = tool.getType().toString();
+        }
+        ChatWriter.sendMessage(p, ChatColor.RED, name + " can not be upgraded!");
+    }
+
+    public static void Upgrade_Success(Player p, ItemStack tool, String level) {
+        if (Main.getPlugin().getConfig().getBoolean("Sound.OnUpgrade")) {
+            p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
+        }
+        String name = tool.getItemMeta().getDisplayName();
+        if (tool.getItemMeta().getDisplayName() == null) {
+            name = tool.getType().toString();
+        }
+        ChatWriter.sendMessage(p, ChatColor.WHITE, name + " is now " + level + "!");
+    }
 }

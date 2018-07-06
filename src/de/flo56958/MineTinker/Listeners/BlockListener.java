@@ -34,7 +34,7 @@ public class BlockListener implements Listener {
                     if (lore.contains(Strings.IDENTIFIER)) {
                         LevelCalculator.addExp(e.getPlayer(), tool, 1);
                         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed")) {
-                            //self-repair check
+                            //<editor-fold desc=" self-repair check ">
                             searchloop:
                             for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel"); i++) {
                                 if (lore.contains(Strings.SELFREPAIR + i)) {
@@ -50,6 +50,7 @@ public class BlockListener implements Listener {
                                     break searchloop;
                                 }
                             }
+                            //</editor-fold>
                         }
                     }
                 }

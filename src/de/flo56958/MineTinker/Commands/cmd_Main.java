@@ -25,14 +25,11 @@ public class cmd_Main implements CommandExecutor {
                     } else if ((args[0].toLowerCase().equals("info") || args[0].toLowerCase().equals("i")) && p.hasPermission("minetinker.info")) {
 
                     } else if ((args[0].toLowerCase().equals("modifiers") || args[0].toLowerCase().equals("mods")) && p.hasPermission("minetinker.modifiers")) {
+                        //<editor-fold desc="MODIFIERS">
                         ChatWriter.sendMessage(p, ChatColor.GOLD, "Possible Modifiers:");
                         int index = 1;
                         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed")) {
                             ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.GREEN + "Self-Repair" + ChatColor.WHITE + ": [Enchanted Mossy Cobblestone] Chance to repair the tool while using it!");
-                            index++;
-                        }
-                        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Extra-Durability.allowed")) {
-                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.DARK_GRAY + "Extra-Durability" + ChatColor.WHITE + ": [Diamond] Adds  additional durability to the tool!");
                             index++;
                         }
                         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Extra-Modifier.allowed")) {
@@ -40,21 +37,26 @@ public class cmd_Main implements CommandExecutor {
                             index++;
                         }
                         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Haste.allowed")) {
-                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.DARK_RED + "Haste" + ChatColor.WHITE + ": [Redstone] Tool can destroy blocks faster!");
+                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.DARK_RED + "Haste" + ChatColor.WHITE + ": [Redstone] Tool can destroy blocks faster! (P/A/S)");
                             index++;
                         }
                         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed")) {
-                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.RED + "Power" + ChatColor.WHITE + ": [Emerald] Tool can destroy more blocks per swing!");
+                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.RED + "Power" + ChatColor.WHITE + ": [Emerald] Tool can destroy more blocks per swing! (P/A/S)");
                             index++;
                         }
                         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Reinforced.allowed")) {
-                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.BLACK + "Reinforced" + ChatColor.WHITE + ": [Obsidian] Chance to not use durability when using the tool!");
+                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.BLACK + "Reinforced" + ChatColor.WHITE + ": [Compressed Obsidian] Chance to not use durability when using the tool!");
                             index++;
                         }
                         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Sharpness.allowed")) {
-                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.DARK_RED + "Sharpness" + ChatColor.WHITE + ": [Netherquartz] Tool does additional damage!");
+                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.WHITE + "Sharpness: [Compressed Quartzblock] Tool does additional damage! (SW)");
                             index++;
                         }
+                        if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed")) {
+                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.GREEN + "XP: [XP-Bottle] Tool has the chance to drop XP while using it!");
+                            index++;
+                        }
+                        //</editor-fold>
                     } else {
                         ChatWriter.sendMessage(p, ChatColor.RED, "You have entered a wrong or too many argument(s)!");
                         ChatWriter.sendMessage(p, ChatColor.WHITE, "Possible arguments are:");

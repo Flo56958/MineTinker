@@ -15,5 +15,7 @@ public class Strings {
 
     //Modifiers
     public static final String SELFREPAIR = ChatColor.GREEN + "Self-Repair: ";
+    public static final String SHARPNESS = ChatColor.WHITE + "Sharpness: ";
     public static final String REINFORCED = ChatColor.BLACK + "Reinforced: ";
+    public static final String HASTE = ChatColor.DARK_RED + "Haste: ";
 }

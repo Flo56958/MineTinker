@@ -26,24 +26,21 @@ public class CraftingGrid9Listener implements Listener {
         tools.addAll(Lists.PICKAXES);
         tools.addAll(Lists.SHOVELS);
 
-        for (String current : tools) {
-            if (e.getCurrentItem().getType().toString().equals(current)) {
-                ArrayList<String> lore = new ArrayList<>();
-                lore.add(Strings.IDENTIFIER);
-                lore.add(Strings.LEVELLINE + "1");
-                lore.add(Strings.EXPLINE + "0 / " + LevelCalculator.getNextLevelReq(1));
-                lore.add(Strings.FREEMODIFIERSLOTS + "1");
-                lore.add(Strings.MODIFIERSTART);
-                ItemStack temp = ItemGenerator.changeItem(e.getCurrentItem(), lore);
-                e.setCurrentItem(temp);
-                if (Main.getPlugin().getConfig().getBoolean("Sound.OnCrafting") || Main.getPlugin().getConfig().getBoolean("Sound.OnEveryCrafting")) {
-                    ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
-                }
-                break;
-            } else {
-                if (Main.getPlugin().getConfig().getBoolean("Sound.OnEveryCrafting")) {
-                    ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
-                }
+        if (tools.contains(e.getCurrentItem().getType().toString())) {
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add(Strings.IDENTIFIER);
+            lore.add(Strings.LEVELLINE + "1");
+            lore.add(Strings.EXPLINE + "0 / " + LevelCalculator.getNextLevelReq(1));
+            lore.add(Strings.FREEMODIFIERSLOTS + "1");
+            lore.add(Strings.MODIFIERSTART);
+            ItemStack temp = ItemGenerator.changeItem(e.getCurrentItem(), lore);
+            e.setCurrentItem(temp);
+            if (Main.getPlugin().getConfig().getBoolean("Sound.OnCrafting") || Main.getPlugin().getConfig().getBoolean("Sound.OnEveryCrafting")) {
+                ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
+            }
+        } else {
+            if (Main.getPlugin().getConfig().getBoolean("Sound.OnEveryCrafting")) {
+                ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
             }
         }
     }

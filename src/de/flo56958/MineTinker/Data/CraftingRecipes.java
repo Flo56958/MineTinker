@@ -18,4 +18,26 @@ public class CraftingRecipes {
             Main.getPlugin().getLogger().log(Level.WARNING, "Could not register recipe for the Reinforced-Modifier!"); //executes if the recipe could not initialize
         }
     }
+
+    public static void registerHasteModifier() {
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(Modifiers.HASTE_MODIFIER); //init recipe
+            newRecipe.shape("RRR", "RRR", "RRR"); //makes recipe
+            newRecipe.setIngredient('R', Material.REDSTONE_BLOCK); //set ingredients
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            Main.getPlugin().getLogger().log(Level.WARNING, "Could not register recipe for the Haste-Modifier!"); //executes if the recipe could not initialize
+        }
+    }
+
+    public static void registerSharpnessModifier() {
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(Modifiers.SHARPNESS_MODIFIER); //init recipe
+            newRecipe.shape("QQQ", "QQQ", "QQQ"); //makes recipe
+            newRecipe.setIngredient('Q', Material.QUARTZ_BLOCK); //set ingredients
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            Main.getPlugin().getLogger().log(Level.WARNING, "Could not register recipe for the Sharpness-Modifier!"); //executes if the recipe could not initialize
+        }
+    }
 }

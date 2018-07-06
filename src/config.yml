@@ -1,8 +1,9 @@
 chat-prefix: [MineTinker]
 
 LevelStep: 250
-LevelFactor: 2
+LevelFactor: 2.0
 AddModifierSlotsPerLevel: 1
+Upgradeable: true
 
 Sound:
   OnLevelUp: true
@@ -10,6 +11,7 @@ Sound:
   OnEveryCrafting: false
   OnModding: true
   OnEnchanting: true
+  OnUpgrade: true
 
 AllowedTools:
   Swords:
@@ -44,9 +46,6 @@ Modifiers:
     EnchantCost: 10
     PercentagePerLevel: 10
     HealthRepair: 2
-  Extra-Durability:
-    allowed: true
-    ExtraDurabilityGain: 100
   Extra-Modifier:
     allowed: true
     ExtraModifierGain: 1
@@ -58,3 +57,9 @@ Modifiers:
     allowed: true
   Sharpness:
     allowed: true
+  XP:
+    allowed: true
+    MaxLevel: 10
+    EnchantCost: 10
+    PercentagePerLevel: 10
+    XPAmount: 5

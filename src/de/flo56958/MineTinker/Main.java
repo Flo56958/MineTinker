@@ -29,6 +29,12 @@ public class Main extends JavaPlugin {
         if (getConfig().getBoolean("Modifiers.Reinforced.allowed")) {
             CraftingRecipes.registerReinforcedModifier();
         }
+        if (getConfig().getBoolean("Modifiers.Haste.allowed")) {
+            CraftingRecipes.registerHasteModifier();
+        }
+        if (getConfig().getBoolean("Modifiers.Sharpness.allowed")) {
+            CraftingRecipes.registerSharpnessModifier();
+        }
         Bukkit.getLogger().log(Level.INFO, Strings.CHAT_PREFIX + " Registered crafting recipes!");
     }
 
