@@ -1,4 +1,7 @@
 chat-prefix: [MineTinker]
+logging:
+  standard: true
+  debug: false
 
 LevelStep: 250
 LevelFactor: 2.0
@@ -60,6 +63,5 @@ Modifiers:
   XP:
     allowed: true
     MaxLevel: 10
-    EnchantCost: 10
-    PercentagePerLevel: 10
-    XPAmount: 5
+    PercentagePerLevel: 2
+    XPAmount: 1

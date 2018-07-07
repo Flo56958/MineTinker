@@ -1,10 +1,10 @@
 package de.flo56958.MineTinker.Data;
 
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ShapedRecipe;
-
-import java.util.logging.Level;
 
 public class CraftingRecipes {
 
@@ -15,7 +15,7 @@ public class CraftingRecipes {
             newRecipe.setIngredient('O', Material.OBSIDIAN); //set ingredients
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
         } catch (Exception e) {
-            Main.getPlugin().getLogger().log(Level.WARNING, "Could not register recipe for the Reinforced-Modifier!"); //executes if the recipe could not initialize
+            ChatWriter.log(true, ChatColor.RED + "Could not register recipe for the Reinforced-Modifier!"); //executes if the recipe could not initialize
         }
     }
 
@@ -26,7 +26,7 @@ public class CraftingRecipes {
             newRecipe.setIngredient('R', Material.REDSTONE_BLOCK); //set ingredients
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
         } catch (Exception e) {
-            Main.getPlugin().getLogger().log(Level.WARNING, "Could not register recipe for the Haste-Modifier!"); //executes if the recipe could not initialize
+            ChatWriter.log(true, ChatColor.RED + "Could not register recipe for the Haste-Modifier!"); //executes if the recipe could not initialize
         }
     }
 
@@ -37,7 +37,7 @@ public class CraftingRecipes {
             newRecipe.setIngredient('Q', Material.QUARTZ_BLOCK); //set ingredients
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
         } catch (Exception e) {
-            Main.getPlugin().getLogger().log(Level.WARNING, "Could not register recipe for the Sharpness-Modifier!"); //executes if the recipe could not initialize
+            ChatWriter.log(true, ChatColor.RED + "Could not register recipe for the Sharpness-Modifier!"); //executes if the recipe could not initialize
         }
     }
 }

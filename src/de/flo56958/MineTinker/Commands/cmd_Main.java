@@ -84,9 +84,5 @@ public class cmd_Main implements CommandExecutor {
             ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". Modifiers");
             index++;
         }
-        if (p.hasPermission("minetinker.reload")) {
-            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". Reload");
-            index++;
-        }
     }
 }

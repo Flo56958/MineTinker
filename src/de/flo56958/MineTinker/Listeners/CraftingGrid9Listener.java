@@ -3,6 +3,7 @@ package de.flo56958.MineTinker.Listeners;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.LevelCalculator;
 import org.bukkit.Sound;
@@ -37,6 +38,9 @@ public class CraftingGrid9Listener implements Listener {
             e.setCurrentItem(temp);
             if (Main.getPlugin().getConfig().getBoolean("Sound.OnCrafting") || Main.getPlugin().getConfig().getBoolean("Sound.OnEveryCrafting")) {
                 ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
+            }
+            if (Main.getPlugin().getConfig().getBoolean("logging")) {
+                ChatWriter.log(false, e.getWhoClicked().getName() + " crafted " + ItemGenerator.getDisplayName(e.getCurrentItem()) + "! It is now a MineTinker-Tool!");
             }
         } else {
             if (Main.getPlugin().getConfig().getBoolean("Sound.OnEveryCrafting")) {

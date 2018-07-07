@@ -61,6 +61,12 @@ public class AnvilListener implements Listener {
                                         isModifier = true;
                                     }
                                 }
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed")) {
+                                    if (modifier.getType().equals(Material.EXP_BOTTLE)) {
+                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "XP", (Player) e.getWhoClicked());
+                                        isModifier = true;
+                                    }
+                                }
                                 if (isModifier) {
                                     if (newTool == null) { return; }
                                     int newAmount = e.getWhoClicked().getItemOnCursor().getAmount() - 1;

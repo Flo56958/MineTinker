@@ -29,7 +29,3 @@ permissions:
   minetinker.modifiers:
     description: Allows to access the list of MineTinker-modifiers
     default: true
-
-  minetinker.reload:
-    description: Gives access to reload the MineTinker-config
-    default: op

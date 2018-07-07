@@ -15,6 +15,14 @@ import java.util.ArrayList;
 
 public class ItemGenerator {
 
+    public static String getDisplayName (ItemStack tool) {
+        String name = tool.getItemMeta().getDisplayName();
+        if (tool.getItemMeta().getDisplayName() == null) {
+            name = tool.getType().toString();
+        }
+        return name;
+    }
+
     public static ItemStack changeItem(ItemStack tool, ArrayList<String> lore) {
         ItemMeta meta = tool.getItemMeta();
         meta.setLore(lore);
@@ -178,6 +186,37 @@ public class ItemGenerator {
                     return null;
                 }
                 //</editor-fold>
+            } else if (modifier.equals("XP")) {
+                //<editor-fold desc="XP">
+                int index = 0;
+                boolean hasXP = false;
+                searchloop:
+                for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.XP.MaxLevel"); i++) {
+                    if (lore.contains(Strings.XP + i)) {
+                        index = i;
+                        hasXP = true;
+                        break searchloop;
+                    }
+                }
+                int loreIndex = 0;
+                int level = 1 + index;
+                if (level > Main.getPlugin().getConfig().getInt("Modifiers.XP.MaxLevel")) {
+                    Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + "XP");
+                    return null;
+                }
+                if (hasXP) {
+                    loreIndex = lore.indexOf(Strings.XP + index);
+                }
+                if (loreIndex != 0) {
+                    lore.set(loreIndex, Strings.XP + level);
+                } else {
+                    lore.add(Strings.XP + level);
+                }
+                Events.Mod_AddMod(p, tool, ChatColor.GREEN + "XP " + level, slotsRemaining - 1);
+                lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
+                //</editor-fold>
+            } else {
+                return null;
             }
         } else {
             Events.Mod_NoSlots(p, tool, modifier);
@@ -223,7 +262,7 @@ public class ItemGenerator {
             } else if (upgrade.getType().equals(Material.GOLD_INGOT) && Lists.SWORDS.contains("GOLD_SWORD")) {
                 tool.setType(Material.GOLD_SWORD);
                 Events.Upgrade_Success(p, tool, "GOLD");
-            } else if (upgrade.getType().equals(Material.COBBLESTONE) && Lists.SWORDS.contains("DIAMOND_SWORD")) {
+            } else if (upgrade.getType().equals(Material.DIAMOND) && Lists.SWORDS.contains("DIAMOND_SWORD")) {
                 tool.setType(Material.DIAMOND_SWORD);
                 Events.Upgrade_Success(p, tool, "DIAMOND");
             } else {
@@ -245,7 +284,7 @@ public class ItemGenerator {
             } else if (upgrade.getType().equals(Material.GOLD_INGOT) && Lists.PICKAXES.contains("GOLD_PICKAXE")) {
                 tool.setType(Material.GOLD_PICKAXE);
                 Events.Upgrade_Success(p, tool, "GOLD");
-            } else if (upgrade.getType().equals(Material.COBBLESTONE) && Lists.PICKAXES.contains("DIAMOND_PICKAXE")) {
+            } else if (upgrade.getType().equals(Material.DIAMOND) && Lists.PICKAXES.contains("DIAMOND_PICKAXE")) {
                 tool.setType(Material.DIAMOND_PICKAXE);
                 Events.Upgrade_Success(p, tool, "DIAMOND");
             } else {
@@ -258,16 +297,16 @@ public class ItemGenerator {
             if (upgrade.getType().equals(Material.WOOD) && Lists.AXES.contains("WOOD_AXE")) {
                 tool.setType(Material.WOOD_AXE);
                 Events.Upgrade_Success(p, tool, "WOOD");
-            } else if (upgrade.getType().equals(Material.COBBLESTONE) && Lists.SWORDS.contains("STONE_AXE")) {
+            } else if (upgrade.getType().equals(Material.COBBLESTONE) && Lists.AXES.contains("STONE_AXE")) {
                 tool.setType(Material.STONE_AXE);
                 Events.Upgrade_Success(p, tool, "STONE");
-            } else if (upgrade.getType().equals(Material.IRON_INGOT) && Lists.SWORDS.contains("IRON_AXE")) {
+            } else if (upgrade.getType().equals(Material.IRON_INGOT) && Lists.AXES.contains("IRON_AXE")) {
                 tool.setType(Material.IRON_AXE);
                 Events.Upgrade_Success(p, tool, "IRON");
-            } else if (upgrade.getType().equals(Material.GOLD_INGOT) && Lists.SWORDS.contains("GOLD_AXE")) {
+            } else if (upgrade.getType().equals(Material.GOLD_INGOT) && Lists.AXES.contains("GOLD_AXE")) {
                 tool.setType(Material.GOLD_AXE);
                 Events.Upgrade_Success(p, tool, "GOLD");
-            } else if (upgrade.getType().equals(Material.COBBLESTONE) && Lists.SWORDS.contains("DIAMOND_AXE")) {
+            } else if (upgrade.getType().equals(Material.DIAMOND) && Lists.AXES.contains("DIAMOND_AXE")) {
                 tool.setType(Material.DIAMOND_AXE);
                 Events.Upgrade_Success(p, tool, "DIAMOND");
             } else {
@@ -289,7 +328,7 @@ public class ItemGenerator {
             } else if (upgrade.getType().equals(Material.GOLD_INGOT) && Lists.SHOVELS.contains("GOLD_SPADE")) {
                 tool.setType(Material.GOLD_SPADE);
                 Events.Upgrade_Success(p, tool, "GOLD");
-            } else if (upgrade.getType().equals(Material.COBBLESTONE) && Lists.SHOVELS.contains("DIAMOND_SPADE")) {
+            } else if (upgrade.getType().equals(Material.DIAMOND) && Lists.SHOVELS.contains("DIAMOND_SPADE")) {
                 tool.setType(Material.DIAMOND_SPADE);
                 Events.Upgrade_Success(p, tool, "DIAMOND");
             } else {

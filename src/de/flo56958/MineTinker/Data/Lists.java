@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Main;
 
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public class Lists {
 
     public static final List<String> SWORDS = (List<String>) Main.getPlugin().getConfig().getList("AllowedTools.Swords");
