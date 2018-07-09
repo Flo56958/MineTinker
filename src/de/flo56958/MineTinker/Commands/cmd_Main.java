@@ -1,5 +1,6 @@
 package de.flo56958.MineTinker.Commands;
 
+import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.ChatColor;
@@ -28,12 +29,28 @@ public class cmd_Main implements CommandExecutor {
                         //<editor-fold desc="MODIFIERS">
                         ChatWriter.sendMessage(p, ChatColor.GOLD, "Possible Modifiers:");
                         int index = 1;
+                        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Auto-Smelt.allowed")) {
+                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.YELLOW + "Auto-Smelt" + ChatColor.WHITE + ": [Enhanced Furnace] Chance to smelt ore when mined! (P)");
+                            index++;
+                        }
                         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed")) {
                             ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.GREEN + "Self-Repair" + ChatColor.WHITE + ": [Enchanted Mossy Cobblestone] Chance to repair the tool while using it!");
                             index++;
                         }
+                        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Silk-Touch.allowed")) {
+                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.WHITE + "Silk-Touch: [Enchanted Cobweb] Applies Silk-Touch! (P/A/S)");
+                            index++;
+                        }
+                        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Luck.allowed")) {
+                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.BLUE + "Luck" + ChatColor.WHITE + ": [Compressed Lapis-Block] Lets you get more drops from blocks or mobs!");
+                            index++;
+                        }
                         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Extra-Modifier.allowed")) {
                             ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.GRAY + "Extra-Modifier-Slot" + ChatColor.WHITE + ": [Netherstar] Adds a additional Modifier-Slot to the tool!");
+                            index++;
+                        }
+                        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Fiery.allowed")) {
+                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.YELLOW + "Fiery" + ChatColor.WHITE + ": [Blaze-Rod] Enflames enemies! (SW)");
                             index++;
                         }
                         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Haste.allowed")) {
@@ -53,7 +70,7 @@ public class cmd_Main implements CommandExecutor {
                             index++;
                         }
                         if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed")) {
-                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.GREEN + "XP: [XP-Bottle] Tool has the chance to drop XP while using it!");
+                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.GREEN + "XP" + ChatColor.WHITE + ": [XP-Bottle] Tool has the chance to drop XP while using it!");
                             index++;
                         }
                         //</editor-fold>
@@ -65,7 +82,7 @@ public class cmd_Main implements CommandExecutor {
                 }
             }
         } else {
-            sender.sendMessage("This is a player only command");
+            sender.sendMessage(Strings.CHAT_PREFIX + " This is a player only command");
         }
         return true;
     }

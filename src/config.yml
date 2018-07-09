@@ -1,12 +1,17 @@
 chat-prefix: [MineTinker]
 logging:
-  standard: true
+  standard: false
   debug: false
+  metrics: true
 
-LevelStep: 250
+LevelStep: 100
 LevelFactor: 2.0
 AddModifierSlotsPerLevel: 1
+StartingModifierSlots: 1
+ExpPerBlockBreak: 1
 Upgradeable: true
+AllowEnchanting: false
+DurabilityPercentageRepair: 0.3
 
 Sound:
   OnLevelUp: true
@@ -15,6 +20,7 @@ Sound:
   OnModding: true
   OnEnchanting: true
   OnUpgrade: true
+  OnBreaking: true
 
 AllowedTools:
   Swords:
@@ -41,8 +47,21 @@ AllowedTools:
     - IRON_SPADE
     - GOLD_SPADE
     - DIAMOND_SPADE
+  Hoes:
+    - WOOD_HOE
+    - STONE_HOE
+    - IRON_HOE
+    - GOLD_HOE
+    - DIAMOND_HOE
+  Bows:
+    - BOW
 
 Modifiers:
+  Auto-Smelt:
+    allowed: true
+    MaxLevel: 5
+    PercentagePerLevel: 20
+    Sound: true
   Self-Repair:
     allowed: true
     MaxLevel: 10
@@ -52,6 +71,9 @@ Modifiers:
   Extra-Modifier:
     allowed: true
     ExtraModifierGain: 1
+  Fiery:
+    allowed: true
+    EnchantCost: 10
   Haste:
     allowed: true
   Power:
@@ -60,6 +82,12 @@ Modifiers:
     allowed: true
   Sharpness:
     allowed: true
+  Luck:
+    allowed: true
+    allowedOnSword: true
+  Silk-Touch:
+    allowed: true
+    EnchantCost: 10
   XP:
     allowed: true
     MaxLevel: 10

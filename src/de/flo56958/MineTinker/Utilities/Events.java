@@ -47,7 +47,7 @@ class Events {
         }
         ChatWriter.sendMessage(p, ChatColor.WHITE, ItemGenerator.getDisplayName(tool) + " has now " + s);
         ChatWriter.sendMessage(p, ChatColor.WHITE, ItemGenerator.getDisplayName(tool) + " has now " + slotsRemaining + " free Slots remaining!");
-        ChatWriter.log(false, p.getDisplayName() + " modded " + ItemGenerator.getDisplayName(tool) + " (" + tool.getType().toString() + ") with " + s + "!");
+        ChatWriter.log(false, p.getDisplayName() + " modded " + ItemGenerator.getDisplayName(tool) + " (" + tool.getType().toString() + ") with " + s + ChatColor.GRAY + "!");
     }
 
     public static void Mod_NoSlots(Player p, ItemStack tool, String s) {
@@ -78,5 +78,13 @@ class Events {
         }
         ChatWriter.sendMessage(p, ChatColor.WHITE, ItemGenerator.getDisplayName(tool) + " is now " + level + "!");
         ChatWriter.log(false, p.getDisplayName() + " upgraded " + ItemGenerator.getDisplayName(tool) + " (" + tool.getType().toString() + ") to " + level + "!");
+    }
+
+    public static void ModAndSilk(Player p, String mod) {
+        if (Main.getPlugin().getConfig().getBoolean("Sound.OnModding")) {
+            p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
+        }
+        ChatWriter.sendMessage(p, ChatColor.RED, mod + " and Silk-Touch can't be combined!");
+        ChatWriter.log(false, p.getDisplayName() + " tried to combine " + mod + " and Silk-Touch on one tool!");
     }
 }

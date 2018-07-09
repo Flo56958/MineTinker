@@ -67,6 +67,30 @@ public class AnvilListener implements Listener {
                                         isModifier = true;
                                     }
                                 }
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Luck.allowed")) {
+                                    if (modifier.equals(Modifiers.LUCK_MODIFIER)) {
+                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Luck", (Player) e.getWhoClicked());
+                                        isModifier = true;
+                                    }
+                                }
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Silk-Touch.allowed")) {
+                                    if (modifier.equals(Modifiers.SILKTOUCH_MODIFIER)) {
+                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Silk-Touch", (Player) e.getWhoClicked());
+                                        isModifier = true;
+                                    }
+                                }
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Fiery.allowed")) {
+                                    if (modifier.equals(Modifiers.FIERY_MODIFIER)) {
+                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Fiery", (Player) e.getWhoClicked());
+                                        isModifier = true;
+                                    }
+                                }
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Auto-Smelt.allowed")) {
+                                    if (modifier.equals(Modifiers.AUTOSMELT_MODIFIER)) {
+                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Auto-Smelt", (Player) e.getWhoClicked());
+                                        isModifier = true;
+                                    }
+                                }
                                 if (isModifier) {
                                     if (newTool == null) { return; }
                                     int newAmount = e.getWhoClicked().getItemOnCursor().getAmount() - 1;
@@ -84,7 +108,7 @@ public class AnvilListener implements Listener {
                                         newTool = ItemGenerator.itemUpgrader(i.getItem(0), e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
                                     }
                                 } else if (e.getWhoClicked().getItemOnCursor().getAmount() == 2) { //Sword / Hoe
-                                    if (Lists.SWORDS.contains(i.getItem(0).getType().toString())) {
+                                    if (Lists.SWORDS.contains(i.getItem(0).getType().toString()) || Lists.HOES.contains(i.getItem(0).getType().toString())) {
                                         newTool = ItemGenerator.itemUpgrader(i.getItem(0), e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
                                     }
                                 } else if (e.getWhoClicked().getItemOnCursor().getAmount() == 3) { //Axe / Pickaxe

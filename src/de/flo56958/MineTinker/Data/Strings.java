@@ -19,4 +19,8 @@ public class Strings {
     public static final String REINFORCED = ChatColor.BLACK + "Reinforced: ";
     public static final String HASTE = ChatColor.DARK_RED + "Haste: ";
     public static final String XP = ChatColor.GREEN + "XP: ";
+    public static final String LUCK = ChatColor.BLUE + "Luck: ";
+    public static final String SILKTOUCH = ChatColor.WHITE + "Silk-Touch";
+    public static final String FIERY = ChatColor.YELLOW + "Fiery: ";
+    public static final String AUTOSMELT = ChatColor.YELLOW + "Auto-Smelt: ";
 }

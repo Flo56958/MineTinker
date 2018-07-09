@@ -153,7 +153,7 @@ public class ItemGenerator {
                 //</editor-fold>
             } else if (modifier.equals("Sharpness")) {
                 //<editor-fold desc="SHARPNESS">
-                if (Lists.SWORDS.contains(tool.getType().toString())) {
+                if (Lists.SWORDS.contains(tool.getType().toString()) || Lists.BOWS.contains(tool.getType().toString())) {
                     int index = 0;
                     boolean hasSharpness = false;
                     searchloop:
@@ -178,7 +178,11 @@ public class ItemGenerator {
                     } else {
                         lore.add(Strings.SHARPNESS + level);
                     }
-                    meta.addEnchant(Enchantment.DAMAGE_ALL, level, true);
+                    if (Lists.BOWS.contains(tool.getType().toString())) {
+                        meta.addEnchant(Enchantment.ARROW_DAMAGE, level, true);
+                    } else if (Lists.SWORDS.contains(tool.getType().toString())) {
+                        meta.addEnchant(Enchantment.DAMAGE_ALL, level, true);
+                    }
                     meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                     Events.Mod_AddMod(p, tool, ChatColor.WHITE + "Sharpness " + level, slotsRemaining - 1);
                     lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
@@ -188,6 +192,9 @@ public class ItemGenerator {
                 //</editor-fold>
             } else if (modifier.equals("XP")) {
                 //<editor-fold desc="XP">
+                if (Lists.BOWS.contains(tool.getType().toString())) {
+                    return null;
+                }
                 int index = 0;
                 boolean hasXP = false;
                 searchloop:
@@ -215,8 +222,159 @@ public class ItemGenerator {
                 Events.Mod_AddMod(p, tool, ChatColor.GREEN + "XP " + level, slotsRemaining - 1);
                 lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
                 //</editor-fold>
-            } else {
-                return null;
+            } else if (modifier.equals("Auto-Smelt")) {
+                //<editor-fold desc="AUTO-SMELT">
+                if (lore.contains(Strings.SILKTOUCH)) {
+                    Events.ModAndSilk(p, "Auto-Smelt");
+                }
+                if (Lists.PICKAXES.contains(tool.getType().toString()) ||
+                    Lists.SHOVELS.contains(tool.getType().toString()) ||
+                    Lists.AXES.contains(tool.getType().toString())) {
+                    int index = 0;
+                    boolean hasAutoSmelt = false;
+                    searchloop:
+                    for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.MaxLevel"); i++) {
+                        if (lore.contains(Strings.AUTOSMELT + i)) {
+                            index = i;
+                            hasAutoSmelt = true;
+                            break searchloop;
+                        }
+                    }
+                    int loreIndex = 0;
+                    int level = 1 + index;
+                    if (level > Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.MaxLevel")) {
+                        Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + "Auto-Smelt");
+                        return null;
+                    }
+                    if (hasAutoSmelt) {
+                        loreIndex = lore.indexOf(Strings.AUTOSMELT + index);
+                    }
+                    if (loreIndex != 0) {
+                        lore.set(loreIndex, Strings.AUTOSMELT + level);
+                    } else {
+                        lore.add(Strings.AUTOSMELT + level);
+                    }
+                    Events.Mod_AddMod(p, tool, ChatColor.YELLOW + "Auto-Smelt " + level, slotsRemaining - 1);
+                    lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
+                } else {
+                    return null;
+                }
+                //</editor-fold>
+            } else if (modifier.equals("Luck")) {
+                //<editor-fold desc="LUCK">
+                if (Lists.BOWS.contains(tool.getType().toString())) {
+                    return null;
+                }
+                if (lore.contains(Strings.SILKTOUCH)) {
+                    Events.ModAndSilk(p, "Luck");
+                    return null;
+                }
+                int index = 0;
+                boolean hasLuck = false;
+                searchloop:
+                for (int i = 1; i <= 5; i++) {
+                    if (lore.contains(Strings.LUCK + i)) {
+                        index = i;
+                        hasLuck = true;
+                        break searchloop;
+                    }
+                }
+                int loreIndex = 0;
+                int level = 1 + index;
+                if (level > 3) {
+                    Events.Mod_MaxLevel(p, tool, ChatColor.BLUE + "Luck");
+                    return null;
+                }
+                if (hasLuck) {
+                    loreIndex = lore.indexOf(Strings.LUCK + index);
+                }
+                if (loreIndex != 0) {
+                    lore.set(loreIndex, Strings.LUCK + level);
+                } else {
+                    lore.add(Strings.LUCK + level);
+                }
+                if (Lists.SWORDS.contains(tool.getType().toString())) {
+                    meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, level, true);
+                } else if (Lists.AXES.contains(tool.getType().toString()) || Lists.PICKAXES.contains(tool.getType().toString()) || Lists.SHOVELS.contains(tool.getType().toString()) || Lists.HOES.contains(tool.getType().toString())) {
+                    meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, level, true);
+                } else { return null; }
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                Events.Mod_AddMod(p, tool, ChatColor.BLUE + "Luck " + level, slotsRemaining - 1);
+                lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
+                //</editor-fold>
+            } else if (modifier.equals("Silk-Touch")) {
+                //<editor-fold desc="SILK-TOUCH">
+                if (lore.contains(Strings.SILKTOUCH)) {
+                    Events.Mod_MaxLevel(p, tool, ChatColor.WHITE + "Silk-Touch");
+                    return null;
+                }
+                for (int i = 1; i <= 5; i++) {
+                    if (lore.contains(Strings.LUCK + i)) {
+                        Events.ModAndSilk(p, "Luck");
+                        return null;
+                    }
+                }
+                for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.MaxLevel"); i++) {
+                    if (lore.contains(Strings.AUTOSMELT + i)) {
+                        Events.ModAndSilk(p, "Auto-Smelt");
+                        return null;
+                    }
+                }
+                if (Lists.AXES.contains(tool.getType().toString()) || Lists.PICKAXES.contains(tool.getType().toString()) || Lists.SHOVELS.contains(tool.getType().toString())) {
+                    meta.addEnchant(Enchantment.SILK_TOUCH, 1, true);
+                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                    Events.Mod_AddMod(p, tool, ChatColor.WHITE + "Silk-Touch", slotsRemaining - 1);
+                    lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
+                    lore.add(Strings.SILKTOUCH);
+                } else {
+                    return null;
+                }
+                //</editor-fold>
+            } else if (modifier.equals("Fiery")) {
+                //<editor-fold desc="FIERY">
+                if (Lists.SWORDS.contains(tool.getType().toString())) {
+                    int index = 0;
+                    boolean hasFiery = false;
+                    searchloop:
+                    for (int i = 1; i <= 2; i++) {
+                        if (lore.contains(Strings.FIERY + i)) {
+                            index = i;
+                            hasFiery = true;
+                            break searchloop;
+                        }
+                    }
+                    int loreIndex = 0;
+                    int level = 1 + index;
+                    if (level > 2) {
+                        Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + "Fiery");
+                        return null;
+                    }
+                    if (hasFiery) {
+                        loreIndex = lore.indexOf(Strings.FIERY + index);
+                    }
+                    if (loreIndex != 0) {
+                        lore.set(loreIndex, Strings.FIERY + level);
+                    } else {
+                        lore.add(Strings.FIERY + level);
+                    }
+                    meta.addEnchant(Enchantment.FIRE_ASPECT, level, true);
+                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                    Events.Mod_AddMod(p, tool, ChatColor.YELLOW + "Fiery " + level, slotsRemaining - 1);
+                    lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
+                } else if (Lists.BOWS.contains(tool.getType().toString())){
+                    if (lore.contains(Strings.FIERY + 1)) {
+                        Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + "Fiery");
+                        return null;
+                    }
+                    lore.add(Strings.FIERY + 1);
+                    meta.addEnchant(Enchantment.ARROW_FIRE, 1, true);
+                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                    Events.Mod_AddMod(p, tool, ChatColor.YELLOW + "Fiery", slotsRemaining - 1);
+                    lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
+                } else {
+                    return null;
+                }
+                //</editor-fold>
             }
         } else {
             Events.Mod_NoSlots(p, tool, modifier);
@@ -336,7 +494,30 @@ public class ItemGenerator {
                 return null;
             }
             //</editor-fold>
+        } else if (Lists.HOES.contains(tool.getType().toString())) {
+            //<editor-fold desc="HOES">
+            if (upgrade.getType().equals(Material.WOOD) && Lists.HOES.contains("WOOD_HOE")) {
+                tool.setType(Material.WOOD_HOE);
+                Events.Upgrade_Success(p, tool, "WOOD");
+            } else if (upgrade.getType().equals(Material.COBBLESTONE) && Lists.HOES.contains("STONE_HOE")) {
+                tool.setType(Material.STONE_HOE);
+                Events.Upgrade_Success(p, tool, "STONE");
+            } else if (upgrade.getType().equals(Material.IRON_INGOT) && Lists.HOES.contains("IRON_HOE")) {
+                tool.setType(Material.IRON_HOE);
+                Events.Upgrade_Success(p, tool, "IRON");
+            } else if (upgrade.getType().equals(Material.GOLD_INGOT) && Lists.HOES.contains("GOLD_HOE")) {
+                tool.setType(Material.GOLD_HOE);
+                Events.Upgrade_Success(p, tool, "GOLD");
+            } else if (upgrade.getType().equals(Material.DIAMOND) && Lists.HOES.contains("DIAMOND_HOE")) {
+                tool.setType(Material.DIAMOND_HOE);
+                Events.Upgrade_Success(p, tool, "DIAMOND");
+            } else {
+                Events.Upgrade_Prohibited(p, tool);
+                return null;
+            }
+            //</editor-fold>
         }
+        tool.setDurability((short) 0);
         tool.setItemMeta(meta);
         return tool;
     }

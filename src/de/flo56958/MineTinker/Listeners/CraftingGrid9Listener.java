@@ -26,22 +26,22 @@ public class CraftingGrid9Listener implements Listener {
         tools.addAll(Lists.AXES);
         tools.addAll(Lists.PICKAXES);
         tools.addAll(Lists.SHOVELS);
+        tools.addAll(Lists.HOES);
+        tools.addAll(Lists.BOWS);
 
         if (tools.contains(e.getCurrentItem().getType().toString())) {
             ArrayList<String> lore = new ArrayList<>();
             lore.add(Strings.IDENTIFIER);
             lore.add(Strings.LEVELLINE + "1");
             lore.add(Strings.EXPLINE + "0 / " + LevelCalculator.getNextLevelReq(1));
-            lore.add(Strings.FREEMODIFIERSLOTS + "1");
+            lore.add(Strings.FREEMODIFIERSLOTS + Main.getPlugin().getConfig().getInt("StartingModifierSlots"));
             lore.add(Strings.MODIFIERSTART);
             ItemStack temp = ItemGenerator.changeItem(e.getCurrentItem(), lore);
             e.setCurrentItem(temp);
             if (Main.getPlugin().getConfig().getBoolean("Sound.OnCrafting") || Main.getPlugin().getConfig().getBoolean("Sound.OnEveryCrafting")) {
                 ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
             }
-            if (Main.getPlugin().getConfig().getBoolean("logging")) {
-                ChatWriter.log(false, e.getWhoClicked().getName() + " crafted " + ItemGenerator.getDisplayName(e.getCurrentItem()) + "! It is now a MineTinker-Tool!");
-            }
+            ChatWriter.log(false, e.getWhoClicked().getName() + " crafted " + ItemGenerator.getDisplayName(e.getCurrentItem()) + "! It is now a MineTinker-Tool!");
         } else {
             if (Main.getPlugin().getConfig().getBoolean("Sound.OnEveryCrafting")) {
                 ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);

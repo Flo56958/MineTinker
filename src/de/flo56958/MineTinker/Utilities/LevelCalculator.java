@@ -27,14 +27,13 @@ public class LevelCalculator {
         int exp = Integer.parseInt(expS[1]);
 
         exp = exp + amount;
-        if (exp >= LevelCalculator.getNextLevelReq(level)) {
-            exp = 0;
+        if (exp >= getNextLevelReq(level)) {
             level++;
             lore.set(1, ChatColor.GOLD + "Level:" + ChatColor.WHITE + " " + level);
             LevelUp = true;
         }
 
-        lore.set(2, ChatColor.GOLD + "Exp:" + ChatColor.WHITE + " " + exp + " / " + LevelCalculator.getNextLevelReq(level));
+        lore.set(2, ChatColor.GOLD + "Exp:" + ChatColor.WHITE + " " + exp + " / " + getNextLevelReq(level));
 
         meta.setLore(lore);
         tool.setItemMeta(meta);
