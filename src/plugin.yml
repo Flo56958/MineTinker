@@ -1,12 +1,13 @@
 name: MineTinker
 author: Flo56958
-version: a2
+version: a1
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
 description: A TinkersConstruct inspired server plugin
 website: https://github.com/Flo56958/MineTinker
 database: false
+api-version: 1.13
 
 commands:
    minetinker:

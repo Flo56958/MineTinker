@@ -58,7 +58,7 @@ public class cmd_Main implements CommandExecutor {
                             index++;
                         }
                         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed")) {
-                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.RED + "Power" + ChatColor.WHITE + ": [Emerald] Tool can destroy more blocks per swing! (P/A/S)");
+                            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + ChatColor.GREEN + "Power" + ChatColor.WHITE + ": [Emerald] Tool can destroy more blocks per swing! (P/A/S)");
                             index++;
                         }
                         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Reinforced.allowed")) {

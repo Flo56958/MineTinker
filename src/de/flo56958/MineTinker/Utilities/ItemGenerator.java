@@ -17,7 +17,7 @@ public class ItemGenerator {
 
     public static String getDisplayName (ItemStack tool) {
         String name = tool.getItemMeta().getDisplayName();
-        if (tool.getItemMeta().getDisplayName() == null) {
+        if (tool.getItemMeta().getDisplayName() == null || tool.getItemMeta().getDisplayName().equals("")) {
             name = tool.getType().toString();
         }
         return name;
@@ -260,6 +260,41 @@ public class ItemGenerator {
                     return null;
                 }
                 //</editor-fold>
+            } else if (modifier.equals("Power")) {
+                //<editor-fold desc="POWER">
+                if (Lists.PICKAXES.contains(tool.getType().toString()) ||
+                        Lists.SHOVELS.contains(tool.getType().toString()) ||
+                        Lists.AXES.contains(tool.getType().toString())) {
+                    int index = 0;
+                    boolean hasPower = false;
+                    searchloop:
+                    for (int i = 1; i <= 2; i++) {
+                        if (lore.contains(Strings.POWER + i)) {
+                            index = i;
+                            hasPower = true;
+                            break searchloop;
+                        }
+                    }
+                    int loreIndex = 0;
+                    int level = 1 + index;
+                    if (level > 2) {
+                        Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + "Power");
+                        return null;
+                    }
+                    if (hasPower) {
+                        loreIndex = lore.indexOf(Strings.POWER + index);
+                    }
+                    if (loreIndex != 0) {
+                        lore.set(loreIndex, Strings.POWER + level);
+                    } else {
+                        lore.add(Strings.POWER + level);
+                    }
+                    Events.Mod_AddMod(p, tool, ChatColor.GREEN + "Power " + level, slotsRemaining - 1);
+                    lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
+                } else {
+                    return null;
+                }
+                //</editor-fold>
             } else if (modifier.equals("Luck")) {
                 //<editor-fold desc="LUCK">
                 if (Lists.BOWS.contains(tool.getType().toString())) {
@@ -272,7 +307,7 @@ public class ItemGenerator {
                 int index = 0;
                 boolean hasLuck = false;
                 searchloop:
-                for (int i = 1; i <= 5; i++) {
+                for (int i = 1; i <= 3; i++) {
                     if (lore.contains(Strings.LUCK + i)) {
                         index = i;
                         hasLuck = true;
@@ -308,7 +343,7 @@ public class ItemGenerator {
                     Events.Mod_MaxLevel(p, tool, ChatColor.WHITE + "Silk-Touch");
                     return null;
                 }
-                for (int i = 1; i <= 5; i++) {
+                for (int i = 1; i <= 3; i++) {
                     if (lore.contains(Strings.LUCK + i)) {
                         Events.ModAndSilk(p, "Luck");
                         return null;
@@ -389,7 +424,13 @@ public class ItemGenerator {
         ItemMeta meta = tool.getItemMeta();
         String[] name = tool.getType().toString().split("_");
         //<editor-fold desc="SAME SEARCH">
-        if (name[0].toLowerCase().equals("wood") && upgrade.getType().equals(Material.WOOD)) {
+        if (name[0].toLowerCase().equals("wooden") && (
+                upgrade.getType().equals(Material.ACACIA_PLANKS) ||
+                upgrade.getType().equals(Material.BIRCH_PLANKS) ||
+                upgrade.getType().equals(Material.DARK_OAK_PLANKS) ||
+                upgrade.getType().equals(Material.JUNGLE_PLANKS) ||
+                upgrade.getType().equals(Material.OAK_PLANKS) ||
+                upgrade.getType().equals(Material.SPRUCE_PLANKS))) {
             Events.Upgrade_Fail(p, tool, "WOOD");
             return null;
         } else if (name[0].toLowerCase().equals("stone") && upgrade.getType().equals(Material.COBBLESTONE)) {
@@ -408,8 +449,13 @@ public class ItemGenerator {
         //</editor-fold>
         if (Lists.SWORDS.contains(tool.getType().toString())) {
             //<editor-fold desc="SWORDS">
-            if (upgrade.getType().equals(Material.WOOD) && Lists.SWORDS.contains("WOOD_SWORD")) {
-                tool.setType(Material.WOOD_SWORD);
+            if ((upgrade.getType().equals(Material.ACACIA_PLANKS) ||
+                    upgrade.getType().equals(Material.BIRCH_PLANKS) ||
+                    upgrade.getType().equals(Material.DARK_OAK_PLANKS) ||
+                    upgrade.getType().equals(Material.JUNGLE_PLANKS) ||
+                    upgrade.getType().equals(Material.OAK_PLANKS) ||
+                    upgrade.getType().equals(Material.SPRUCE_PLANKS)) && Lists.SWORDS.contains("WOODEN_SWORD")) {
+                tool.setType(Material.WOODEN_SWORD);
                 Events.Upgrade_Success(p, tool, "WOOD");
             } else if (upgrade.getType().equals(Material.COBBLESTONE) && Lists.SWORDS.contains("STONE_SWORD")) {
                 tool.setType(Material.STONE_SWORD);
@@ -417,8 +463,8 @@ public class ItemGenerator {
             } else if (upgrade.getType().equals(Material.IRON_INGOT) && Lists.SWORDS.contains("IRON_SWORD")) {
                 tool.setType(Material.IRON_SWORD);
                 Events.Upgrade_Success(p, tool, "IRON");
-            } else if (upgrade.getType().equals(Material.GOLD_INGOT) && Lists.SWORDS.contains("GOLD_SWORD")) {
-                tool.setType(Material.GOLD_SWORD);
+            } else if (upgrade.getType().equals(Material.GOLD_INGOT) && Lists.SWORDS.contains("GOLDEN_SWORD")) {
+                tool.setType(Material.GOLDEN_SWORD);
                 Events.Upgrade_Success(p, tool, "GOLD");
             } else if (upgrade.getType().equals(Material.DIAMOND) && Lists.SWORDS.contains("DIAMOND_SWORD")) {
                 tool.setType(Material.DIAMOND_SWORD);
@@ -430,8 +476,13 @@ public class ItemGenerator {
             //</editor-fold>
         } else if (Lists.PICKAXES.contains(tool.getType().toString())) {
             //<editor-fold desc="PICKAXES">
-            if (upgrade.getType().equals(Material.WOOD) && Lists.PICKAXES.contains("WOOD_PICKAXE")) {
-                tool.setType(Material.WOOD_PICKAXE);
+            if ((upgrade.getType().equals(Material.ACACIA_PLANKS) ||
+                    upgrade.getType().equals(Material.BIRCH_PLANKS) ||
+                    upgrade.getType().equals(Material.DARK_OAK_PLANKS) ||
+                    upgrade.getType().equals(Material.JUNGLE_PLANKS) ||
+                    upgrade.getType().equals(Material.OAK_PLANKS) ||
+                    upgrade.getType().equals(Material.SPRUCE_PLANKS)) && Lists.PICKAXES.contains("WOODEN_PICKAXE")) {
+                tool.setType(Material.WOODEN_PICKAXE);
                 Events.Upgrade_Success(p, tool, "WOOD");
             } else if (upgrade.getType().equals(Material.COBBLESTONE) && Lists.PICKAXES.contains("STONE_PICKAXE")) {
                 tool.setType(Material.STONE_PICKAXE);
@@ -439,8 +490,8 @@ public class ItemGenerator {
             } else if (upgrade.getType().equals(Material.IRON_INGOT) && Lists.PICKAXES.contains("IRON_PICKAXE")) {
                 tool.setType(Material.IRON_PICKAXE);
                 Events.Upgrade_Success(p, tool, "IRON");
-            } else if (upgrade.getType().equals(Material.GOLD_INGOT) && Lists.PICKAXES.contains("GOLD_PICKAXE")) {
-                tool.setType(Material.GOLD_PICKAXE);
+            } else if (upgrade.getType().equals(Material.GOLD_INGOT) && Lists.PICKAXES.contains("GOLDEN_PICKAXE")) {
+                tool.setType(Material.GOLDEN_PICKAXE);
                 Events.Upgrade_Success(p, tool, "GOLD");
             } else if (upgrade.getType().equals(Material.DIAMOND) && Lists.PICKAXES.contains("DIAMOND_PICKAXE")) {
                 tool.setType(Material.DIAMOND_PICKAXE);
@@ -452,8 +503,13 @@ public class ItemGenerator {
             //</editor-fold>
         } else if (Lists.AXES.contains(tool.getType().toString())) {
             //<editor-fold desc="AXES">
-            if (upgrade.getType().equals(Material.WOOD) && Lists.AXES.contains("WOOD_AXE")) {
-                tool.setType(Material.WOOD_AXE);
+            if ((upgrade.getType().equals(Material.ACACIA_PLANKS) ||
+                    upgrade.getType().equals(Material.BIRCH_PLANKS) ||
+                    upgrade.getType().equals(Material.DARK_OAK_PLANKS) ||
+                    upgrade.getType().equals(Material.JUNGLE_PLANKS) ||
+                    upgrade.getType().equals(Material.OAK_PLANKS) ||
+                    upgrade.getType().equals(Material.SPRUCE_PLANKS)) && Lists.AXES.contains("WOODEN_AXE")) {
+                tool.setType(Material.WOODEN_AXE);
                 Events.Upgrade_Success(p, tool, "WOOD");
             } else if (upgrade.getType().equals(Material.COBBLESTONE) && Lists.AXES.contains("STONE_AXE")) {
                 tool.setType(Material.STONE_AXE);
@@ -461,8 +517,8 @@ public class ItemGenerator {
             } else if (upgrade.getType().equals(Material.IRON_INGOT) && Lists.AXES.contains("IRON_AXE")) {
                 tool.setType(Material.IRON_AXE);
                 Events.Upgrade_Success(p, tool, "IRON");
-            } else if (upgrade.getType().equals(Material.GOLD_INGOT) && Lists.AXES.contains("GOLD_AXE")) {
-                tool.setType(Material.GOLD_AXE);
+            } else if (upgrade.getType().equals(Material.GOLD_INGOT) && Lists.AXES.contains("GOLDEN_AXE")) {
+                tool.setType(Material.GOLDEN_AXE);
                 Events.Upgrade_Success(p, tool, "GOLD");
             } else if (upgrade.getType().equals(Material.DIAMOND) && Lists.AXES.contains("DIAMOND_AXE")) {
                 tool.setType(Material.DIAMOND_AXE);
@@ -474,20 +530,25 @@ public class ItemGenerator {
             //</editor-fold>
         } else if (Lists.SHOVELS.contains(tool.getType().toString())) {
             //<editor-fold desc="SHOVELS">
-            if (upgrade.getType().equals(Material.WOOD) && Lists.SHOVELS.contains("WOOD_SPADE")) {
-                tool.setType(Material.WOOD_SPADE);
+            if ((upgrade.getType().equals(Material.ACACIA_PLANKS) ||
+                    upgrade.getType().equals(Material.BIRCH_PLANKS) ||
+                    upgrade.getType().equals(Material.DARK_OAK_PLANKS) ||
+                    upgrade.getType().equals(Material.JUNGLE_PLANKS) ||
+                    upgrade.getType().equals(Material.OAK_PLANKS) ||
+                    upgrade.getType().equals(Material.SPRUCE_PLANKS)) && Lists.SHOVELS.contains("WOODEN_SHOVEL")) {
+                tool.setType(Material.WOODEN_SHOVEL);
                 Events.Upgrade_Success(p, tool, "WOOD");
-            } else if (upgrade.getType().equals(Material.COBBLESTONE) && Lists.SHOVELS.contains("STONE_SPADE")) {
-                tool.setType(Material.STONE_SPADE);
+            } else if (upgrade.getType().equals(Material.COBBLESTONE) && Lists.SHOVELS.contains("STONE_SHOVEL")) {
+                tool.setType(Material.STONE_SHOVEL);
                 Events.Upgrade_Success(p, tool, "STONE");
-            } else if (upgrade.getType().equals(Material.IRON_INGOT) && Lists.SHOVELS.contains("IRON_SPADE")) {
-                tool.setType(Material.IRON_SPADE);
+            } else if (upgrade.getType().equals(Material.IRON_INGOT) && Lists.SHOVELS.contains("IRON_SHOVEL")) {
+                tool.setType(Material.IRON_SHOVEL);
                 Events.Upgrade_Success(p, tool, "IRON");
-            } else if (upgrade.getType().equals(Material.GOLD_INGOT) && Lists.SHOVELS.contains("GOLD_SPADE")) {
-                tool.setType(Material.GOLD_SPADE);
+            } else if (upgrade.getType().equals(Material.GOLD_INGOT) && Lists.SHOVELS.contains("GOLDEN_SHOVEL")) {
+                tool.setType(Material.GOLDEN_SHOVEL);
                 Events.Upgrade_Success(p, tool, "GOLD");
-            } else if (upgrade.getType().equals(Material.DIAMOND) && Lists.SHOVELS.contains("DIAMOND_SPADE")) {
-                tool.setType(Material.DIAMOND_SPADE);
+            } else if (upgrade.getType().equals(Material.DIAMOND) && Lists.SHOVELS.contains("DIAMOND_SHOVEL")) {
+                tool.setType(Material.DIAMOND_SHOVEL);
                 Events.Upgrade_Success(p, tool, "DIAMOND");
             } else {
                 Events.Upgrade_Prohibited(p, tool);
@@ -496,8 +557,13 @@ public class ItemGenerator {
             //</editor-fold>
         } else if (Lists.HOES.contains(tool.getType().toString())) {
             //<editor-fold desc="HOES">
-            if (upgrade.getType().equals(Material.WOOD) && Lists.HOES.contains("WOOD_HOE")) {
-                tool.setType(Material.WOOD_HOE);
+            if ((upgrade.getType().equals(Material.ACACIA_PLANKS) ||
+                    upgrade.getType().equals(Material.BIRCH_PLANKS) ||
+                    upgrade.getType().equals(Material.DARK_OAK_PLANKS) ||
+                    upgrade.getType().equals(Material.JUNGLE_PLANKS) ||
+                    upgrade.getType().equals(Material.OAK_PLANKS) ||
+                    upgrade.getType().equals(Material.SPRUCE_PLANKS)) && Lists.HOES.contains("WOODEN_HOE")) {
+                tool.setType(Material.WOODEN_HOE);
                 Events.Upgrade_Success(p, tool, "WOOD");
             } else if (upgrade.getType().equals(Material.COBBLESTONE) && Lists.HOES.contains("STONE_HOE")) {
                 tool.setType(Material.STONE_HOE);
@@ -505,8 +571,8 @@ public class ItemGenerator {
             } else if (upgrade.getType().equals(Material.IRON_INGOT) && Lists.HOES.contains("IRON_HOE")) {
                 tool.setType(Material.IRON_HOE);
                 Events.Upgrade_Success(p, tool, "IRON");
-            } else if (upgrade.getType().equals(Material.GOLD_INGOT) && Lists.HOES.contains("GOLD_HOE")) {
-                tool.setType(Material.GOLD_HOE);
+            } else if (upgrade.getType().equals(Material.GOLD_INGOT) && Lists.HOES.contains("GOLDEN_HOE")) {
+                tool.setType(Material.GOLDEN_HOE);
                 Events.Upgrade_Success(p, tool, "GOLD");
             } else if (upgrade.getType().equals(Material.DIAMOND) && Lists.HOES.contains("DIAMOND_HOE")) {
                 tool.setType(Material.DIAMOND_HOE);

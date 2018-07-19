@@ -1,15 +1,20 @@
 package de.flo56958.MineTinker.Listeners;
 
+import de.flo56958.MineTinker.Data.PlayerData;
 import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Main;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-public class PlayerInventoryListener implements Listener {
+public class PlayerListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
@@ -25,13 +30,19 @@ public class PlayerInventoryListener implements Listener {
                                     String[] name = tool.getType().toString().split("_");
                                     boolean eligible = false;
                                     //<editor-fold desc="SAME SEARCH">
-                                    if (name[0].toLowerCase().equals("wood") && repair.getType().equals(Material.WOOD)) {
+                                    if (name[0].toLowerCase().equals("wooden") && (
+                                            repair.getType().equals(Material.ACACIA_PLANKS) ||
+                                            repair.getType().equals(Material.BIRCH_PLANKS) ||
+                                            repair.getType().equals(Material.DARK_OAK_PLANKS) ||
+                                            repair.getType().equals(Material.JUNGLE_PLANKS) ||
+                                            repair.getType().equals(Material.OAK_PLANKS) ||
+                                            repair.getType().equals(Material.SPRUCE_PLANKS))) {
                                         eligible = true;
                                     } else if (name[0].toLowerCase().equals("stone") && repair.getType().equals(Material.COBBLESTONE)) {
                                         eligible = true;
                                     } else if (name[0].toLowerCase().equals("iron") && repair.getType().equals(Material.IRON_INGOT)) {
                                         eligible = true;
-                                    } else if (name[0].toLowerCase().equals("gold") && repair.getType().equals(Material.GOLD_INGOT)) {
+                                    } else if (name[0].toLowerCase().equals("golden") && repair.getType().equals(Material.GOLD_INGOT)) {
                                         eligible = true;
                                     } else if (name[0].toLowerCase().equals("diamond") && repair.getType().equals(Material.DIAMOND)) {
                                         eligible = true;
@@ -59,5 +70,26 @@ public class PlayerInventoryListener implements Listener {
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void onEntityHit(EntityDamageEvent e) {
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+        PlayerData.BlockFace.put(e.getPlayer(), null);
+        PlayerData.hasPower.put(e.getPlayer(), false);
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        PlayerData.BlockFace.remove(e.getPlayer());
+        PlayerData.hasPower.remove(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
+        PlayerData.BlockFace.replace(e.getPlayer(), e.getBlockFace());
     }
 }

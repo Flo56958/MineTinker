@@ -9,6 +9,7 @@ LevelFactor: 2.0
 AddModifierSlotsPerLevel: 1
 StartingModifierSlots: 1
 ExpPerBlockBreak: 1
+EnableDamageExp: false
 Upgradeable: true
 AllowEnchanting: false
 DurabilityPercentageRepair: 0.3
@@ -24,34 +25,34 @@ Sound:
 
 AllowedTools:
   Swords:
-    - WOOD_SWORD
+    - WOODEN_SWORD
     - STONE_SWORD
     - IRON_SWORD
-    - GOLD_SWORD
+    - GOLDEN_SWORD
     - DIAMOND_SWORD
   Axes:
-    - WOOD_AXE
+    - WOODEN_AXE
     - STONE_AXE
     - IRON_AXE
-    - GOLD_AXE
+    - GOLDEN_AXE
     - DIAMOND_AXE
   Pickaxes:
-    - WOOD_PICKAXE
+    - WOODEN_PICKAXE
     - STONE_PICKAXE
     - IRON_PICKAXE
-    - GOLD_PICKAXE
+    - GOLDEN_PICKAXE
     - DIAMOND_PICKAXE
   Shovels:
-    - WOOD_SPADE
-    - STONE_SPADE
-    - IRON_SPADE
-    - GOLD_SPADE
-    - DIAMOND_SPADE
+    - WOODEN_SHOVEL
+    - STONE_SHOVEL
+    - IRON_SHOVEL
+    - GOLDEN_SHOVEL
+    - DIAMOND_SHOVEL
   Hoes:
-    - WOOD_HOE
+    - WOODEN_HOE
     - STONE_HOE
     - IRON_HOE
-    - GOLD_HOE
+    - GOLDEN_HOE
     - DIAMOND_HOE
   Bows:
     - BOW
@@ -78,6 +79,7 @@ Modifiers:
     allowed: true
   Power:
     allowed: true
+    EnchantCost: 10
   Reinforced:
     allowed: true
   Sharpness:

@@ -62,7 +62,7 @@ public class AnvilListener implements Listener {
                                     }
                                 }
                                 if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed")) {
-                                    if (modifier.getType().equals(Material.EXP_BOTTLE)) {
+                                    if (modifier.getType().equals(Material.EXPERIENCE_BOTTLE)) {
                                         newTool = ItemGenerator.ToolModifier(i.getItem(0), "XP", (Player) e.getWhoClicked());
                                         isModifier = true;
                                     }
@@ -88,6 +88,12 @@ public class AnvilListener implements Listener {
                                 if (Main.getPlugin().getConfig().getBoolean("Modifiers.Auto-Smelt.allowed")) {
                                     if (modifier.equals(Modifiers.AUTOSMELT_MODIFIER)) {
                                         newTool = ItemGenerator.ToolModifier(i.getItem(0), "Auto-Smelt", (Player) e.getWhoClicked());
+                                        isModifier = true;
+                                    }
+                                }
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed")) {
+                                    if (modifier.equals(Modifiers.POWER_MODIFIER)) {
+                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Power", (Player) e.getWhoClicked());
                                         isModifier = true;
                                     }
                                 }

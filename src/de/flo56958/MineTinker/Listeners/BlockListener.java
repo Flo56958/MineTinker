@@ -1,12 +1,18 @@
 package de.flo56958.MineTinker.Listeners;
 
 import de.flo56958.MineTinker.Data.Modifiers;
+import de.flo56958.MineTinker.Data.PlayerData;
 import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.LevelCalculator;
+import de.flo56958.MineTinker.Utilities.PlayerInfo;
+import net.minecraft.server.v1_13_R1.BlockPosition;
 import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -25,12 +31,21 @@ public class BlockListener implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onBlockBreak(BlockBreakEvent e) {
         if (!e.isCancelled()) {
-            if (!(e.getBlock().getType().equals(Material.DOUBLE_PLANT) ||
+            if (!(e.getBlock().getType().equals(Material.KELP_PLANT) ||
+                    e.getBlock().getType().equals(Material.CHORUS_PLANT) ||
                     e.getBlock().getType().equals(Material.DEAD_BUSH) ||
-                    e.getBlock().getType().equals(Material.LONG_GRASS) ||
+                    e.getBlock().getType().equals(Material.SEAGRASS) ||
+                    e.getBlock().getType().equals(Material.GRASS) ||
+                    e.getBlock().getType().equals(Material.TALL_SEAGRASS) ||
+                    e.getBlock().getType().equals(Material.TALL_GRASS) ||
                     e.getBlock().getType().equals(Material.RED_MUSHROOM) ||
                     e.getBlock().getType().equals(Material.BROWN_MUSHROOM) ||
-                    e.getBlock().getType().equals(Material.YELLOW_FLOWER))) {
+                    e.getBlock().getType().equals(Material.SUNFLOWER) ||
+                    e.getBlock().getType().equals(Material.DANDELION) ||
+                    e.getBlock().getType().equals(Material.DANDELION_YELLOW) ||
+                    e.getBlock().getType().equals(Material.LILAC) ||
+                    e.getBlock().getType().equals(Material.LILY_PAD) ||
+                    e.getBlock().getType().equals(Material.BLUE_ORCHID))) {
                 if (e.getPlayer().getGameMode().equals(GameMode.SURVIVAL) || e.getPlayer().getGameMode().equals(GameMode.ADVENTURE)) {
                     ItemStack tool = e.getPlayer().getInventory().getItemInMainHand();
                     ItemMeta meta = tool.getItemMeta();
@@ -89,25 +104,27 @@ public class BlockListener implements Listener {
                                     boolean goodBlock = false;
                                     boolean luck = false;
                                     Material loot = Material.AIR;
-                                    Short data = 0;
                                     switch (e.getBlock().getType()) {
                                         case COBBLESTONE:
                                             goodBlock = true;
                                             loot = Material.STONE;
                                             break;
-                                        case CLAY:
+                                        case TERRACOTTA:
                                             goodBlock = true;
-                                            loot = Material.HARD_CLAY;
+                                            loot = Material.TERRACOTTA;
                                             break;
                                         case SAND:
                                             goodBlock = true;
                                             loot = Material.GLASS;
                                             break;
-                                        case LOG:
-                                        case LOG_2:
+                                        case ACACIA_LOG:
+                                        case BIRCH_LOG:
+                                        case DARK_OAK_LOG:
+                                        case JUNGLE_LOG:
+                                        case OAK_LOG:
+                                        case SPRUCE_LOG:
                                             goodBlock = true;
-                                            loot = Material.COAL;
-                                            data = 1;
+                                            loot = Material.CHARCOAL;
                                             break;
                                         case IRON_ORE:
                                             goodBlock = true;
@@ -121,7 +138,7 @@ public class BlockListener implements Listener {
                                             break;
                                         case NETHERRACK:
                                             goodBlock = true;
-                                            loot = Material.NETHER_BRICK_ITEM;
+                                            loot = Material.NETHER_BRICK;
                                             break;
                                     }
                                     if (goodBlock) {
@@ -143,7 +160,7 @@ public class BlockListener implements Listener {
                                                         }
                                                     }
                                                     e.setDropItems(false);
-                                                    ItemStack items = new ItemStack(loot, amount, data);
+                                                    ItemStack items = new ItemStack(loot, amount);
                                                     e.getBlock().getLocation().getWorld().dropItemNaturally(e.getBlock().getLocation(), items);
                                                     e.getBlock().getLocation().getWorld().spawnParticle(Particle.FLAME, e.getBlock().getLocation(), 5);
                                                     if (Main.getPlugin().getConfig().getBoolean("Modifiers.Auto-Smelt.Sound")) {
@@ -156,6 +173,91 @@ public class BlockListener implements Listener {
                                         }
                                     }
                                     //</editor-fold>
+                                }
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed")) {
+                                    if (!PlayerData.hasPower.get(e.getPlayer())) {
+                                        if (lore.contains(Strings.POWER + 1)) {
+                                            PlayerData.hasPower.replace(e.getPlayer(), true);
+                                            //<editor-fold desc="POWER 1">
+                                            if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.UP)) {
+                                                if (PlayerInfo.getFacingDirection(e.getPlayer()).equals("N") || PlayerInfo.getFacingDirection(e.getPlayer()).equals("S")) {
+                                                    Block b1 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(1, 0, 0));
+                                                    Block b2 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(-1, 0, 0));
+                                                    if (!b1.getType().equals(Material.AIR)) {
+                                                        ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b1.getX(), b1.getY(), b1.getZ()));
+                                                    }
+                                                    if (!b2.getType().equals(Material.AIR)) {
+                                                        ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
+                                                    }
+                                                } else if (PlayerInfo.getFacingDirection(e.getPlayer()).equals("W") || PlayerInfo.getFacingDirection(e.getPlayer()).equals("E")) {
+                                                    Block b1 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, 0, 1));
+                                                    Block b2 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, 0, -1));
+                                                    if (!b1.getType().equals(Material.AIR)) {
+                                                        ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b1.getX(), b1.getY(), b1.getZ()));
+                                                    }
+                                                    if (!b2.getType().equals(Material.AIR)) {
+                                                        ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
+                                                    }
+                                                }
+                                            } else if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.NORTH) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.SOUTH)) {
+                                                Block b1 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(1, 0, 0));
+                                                Block b2 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(-1, 0, 0));
+                                                if (!b1.getType().equals(Material.AIR)) {
+                                                    ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b1.getX(), b1.getY(), b1.getZ()));
+                                                }
+                                                if (!b2.getType().equals(Material.AIR)) {
+                                                    ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
+                                                }
+                                            } else if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.WEST) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.EAST)) {
+                                                Block b1 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, 0, 1));
+                                                Block b2 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, 0, -1));
+                                                if (!b1.getType().equals(Material.AIR)) {
+                                                    ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b1.getX(), b1.getY(), b1.getZ()));
+                                                }
+                                                if (!b2.getType().equals(Material.AIR)) {
+                                                    ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
+                                                }
+                                            }
+                                            //</editor-fold>
+                                        } else if (lore.contains(Strings.POWER + 2)) {
+                                            PlayerData.hasPower.replace(e.getPlayer(), true);
+                                            if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.UP)) {
+                                                for (int x = -1; x <= 1; x++) {
+                                                    for (int z = -1; z <= 1; z++) {
+                                                        if (!(x == 0 && z == 0)) {
+                                                            Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(x, 0, z));
+                                                            if (!b.getType().equals(Material.AIR)) {
+                                                                ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            } else if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.NORTH) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.SOUTH)) {
+                                                for (int x = -1; x <= 1; x++) {
+                                                    for (int y = -1; y <= 1; y++) {
+                                                        if (!(x == 0 && y == 0)) {
+                                                            Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(x, y, 0));
+                                                            if (!b.getType().equals(Material.AIR)) {
+                                                                ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            } else if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.EAST) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.WEST)) {
+                                                for (int z = -1; z <= 1; z++) {
+                                                    for (int y = -1; y <= 1; y++) {
+                                                        if (!(z == 0 && y == 0)) {
+                                                            Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, y, z));
+                                                            if (!b.getType().equals(Material.AIR)) {
+                                                                ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        PlayerData.hasPower.replace(e.getPlayer(), false);
+                                    }
                                 }
                             }
                         }
@@ -215,7 +317,7 @@ public class BlockListener implements Listener {
                     }
                     if (Main.getPlugin().getConfig().getBoolean("Modifiers.Silk-Touch.allowed")) {
                         //<editor-fold desc="SILK-TOUCH">
-                        if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.WEB) && !e.getPlayer().isSneaking()) {
+                        if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.COBWEB) && !e.getPlayer().isSneaking()) {
                             if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
                                 e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.SILKTOUCH_MODIFIER);
                                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
@@ -264,6 +366,34 @@ public class BlockListener implements Listener {
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Fiery.EnchantCost") + " levels are required!");
                                 ChatWriter.log(false,  e.getPlayer().getDisplayName() + " tried to create a Fiery-Modifier but had not enough levels!");
+                            }
+                            e.setCancelled(true);
+                        }
+                        //</editor-fold>
+                    }
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed")) {
+                        //<editor-fold desc="POWER">
+                        if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.EMERALD) && !e.getPlayer().isSneaking()) {
+                            if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
+                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.POWER_MODIFIER);
+                                if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
+                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                }
+                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Power-Modifier in Creative!");
+                            } else if (e.getPlayer().getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Power.EnchantCost")) {
+                                int amount = e.getPlayer().getInventory().getItemInMainHand().getAmount();
+                                int newLevel = e.getPlayer().getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Power.EnchantCost");
+                                e.getPlayer().setLevel(newLevel);
+                                e.getPlayer().getInventory().getItemInMainHand().setAmount(amount - 1);
+                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.POWER_MODIFIER);
+                                if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
+                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                }
+                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Power-Modifier!");
+                            } else {
+                                ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
+                                ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Power.EnchantCost") + " levels are required!");
+                                ChatWriter.log(false,  e.getPlayer().getDisplayName() + " tried to create a Power-Modifier but had not enough levels!");
                             }
                             e.setCancelled(true);
                         }

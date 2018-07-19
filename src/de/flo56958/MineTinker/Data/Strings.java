@@ -23,4 +23,5 @@ public class Strings {
     public static final String SILKTOUCH = ChatColor.WHITE + "Silk-Touch";
     public static final String FIERY = ChatColor.YELLOW + "Fiery: ";
     public static final String AUTOSMELT = ChatColor.YELLOW + "Auto-Smelt: ";
+    public static final String POWER = ChatColor.GREEN + "Power: ";
 }
