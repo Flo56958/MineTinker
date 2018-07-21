@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Data.PlayerData;
 import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Main;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -80,16 +81,20 @@ public class PlayerListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         PlayerData.BlockFace.put(e.getPlayer(), null);
         PlayerData.hasPower.put(e.getPlayer(), false);
+        PlayerData.canBreakBlocks.put(e.getPlayer(), true);
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         PlayerData.BlockFace.remove(e.getPlayer());
         PlayerData.hasPower.remove(e.getPlayer());
+        PlayerData.canBreakBlocks.remove(e.getPlayer());
     }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        PlayerData.BlockFace.replace(e.getPlayer(), e.getBlockFace());
+        if (!e.getBlockFace().equals(BlockFace.SELF)) {
+            PlayerData.BlockFace.replace(e.getPlayer(), e.getBlockFace());
+        }
     }
 }

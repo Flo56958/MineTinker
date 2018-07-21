@@ -57,6 +57,7 @@ public class Main extends JavaPlugin {
         for (Player current : Bukkit.getServer().getOnlinePlayers()) {
             PlayerData.hasPower.put(current, false);
             PlayerData.BlockFace.put(current, null);
+            PlayerData.canBreakBlocks.put(current, true);
         }
     }
 
