@@ -25,9 +25,15 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new BlockListener(), this);
         Bukkit.getPluginManager().registerEvents(new AnvilListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
+        Bukkit.getPluginManager().registerEvents(new EntityListener(), this);
         if (!getConfig().getBoolean("AllowEnchanting")) {
             Bukkit.getPluginManager().registerEvents(new EnchantingTableListener(), this);
         }
+        if (getConfig().getBoolean("Elevator.enabled")) {
+            Bukkit.getPluginManager().registerEvents(new ElevatorListener(), this);
+            CraftingRecipes.registerElevatorMotor();
+        }
+
         ChatWriter.log(false, "Registered events!");
 
         if (getConfig().getBoolean("Modifiers.Auto-Smelt.allowed")) {
@@ -57,7 +63,6 @@ public class Main extends JavaPlugin {
         for (Player current : Bukkit.getServer().getOnlinePlayers()) {
             PlayerData.hasPower.put(current, false);
             PlayerData.BlockFace.put(current, null);
-            PlayerData.canBreakBlocks.put(current, true);
         }
     }
 

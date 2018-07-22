@@ -9,6 +9,7 @@ LevelFactor: 2.0
 AddModifierSlotsPerLevel: 1
 StartingModifierSlots: 1
 ExpPerBlockBreak: 1
+ExpPerSwordSwing: 1
 EnableDamageExp: false
 Upgradeable: true
 AllowEnchanting: false
@@ -95,3 +96,7 @@ Modifiers:
     MaxLevel: 10
     PercentagePerLevel: 2
     XPAmount: 1
+
+Elevator:
+  enabled: true
+  Sound: true

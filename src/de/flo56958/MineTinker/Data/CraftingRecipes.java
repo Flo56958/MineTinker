@@ -2,7 +2,10 @@ package de.flo56958.MineTinker.Data;
 
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ShapedRecipe;
 
 public class CraftingRecipes {
@@ -60,6 +63,18 @@ public class CraftingRecipes {
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
         } catch (Exception e) {
             ChatWriter.log(true, "Could not register recipe for the Auto-Smelt-Modifier!"); //executes if the recipe could not initialize
+        }
+    }
+
+    public static void registerElevatorMotor() {
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(ItemGenerator.itemEnchanter(Material.HOPPER, ChatColor.GRAY + "Elevator-Motor", 1, Enchantment.FIRE_ASPECT, 1)); //init recipe
+            newRecipe.shape("RRR", "RHR", "RRR"); //makes recipe
+            newRecipe.setIngredient('R', Material.REDSTONE); //set ingredients
+            newRecipe.setIngredient('H', Material.HOPPER);
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.log(true, "Could not register recipe for the Elevator-Motor!"); //executes if the recipe could not initialize
         }
     }
 }
