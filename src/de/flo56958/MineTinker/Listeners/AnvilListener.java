@@ -101,7 +101,6 @@ public class AnvilListener implements Listener {
                                     if (newTool == null) { return; }
                                     int newAmount = e.getWhoClicked().getItemOnCursor().getAmount() - 1;
                                     e.getWhoClicked().getItemOnCursor().setAmount(newAmount);
-                                    i.setItem(2, newTool);
                                     e.setCancelled(true);
                                     return;
                                 }
