@@ -1,5 +1,6 @@
 package de.flo56958.MineTinker.Listeners;
 
+import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -18,6 +19,7 @@ public class ElevatorListener implements Listener {
     @EventHandler
     public void onSneak (PlayerToggleSneakEvent e) {
         if (!e.isCancelled()) {
+            if (!Lists.WORLDS_ELEVATOR.contains(e.getPlayer().getWorld().getName())) { return; }
             if (e.isSneaking()) {
                 Player p = e.getPlayer();
                 Location l = p.getLocation();
@@ -47,6 +49,7 @@ public class ElevatorListener implements Listener {
     @EventHandler
     public void onJump (PlayerMoveEvent e) {
         if (!e.isCancelled()) {
+            if (!Lists.WORLDS_ELEVATOR.contains(e.getPlayer().getWorld().getName())) { return; }
             Player p = e.getPlayer();
             Location l = p.getLocation();
             Block b = p.getWorld().getBlockAt(l.add(0, -2, 0));

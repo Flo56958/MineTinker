@@ -33,6 +33,10 @@ public class Main extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new ElevatorListener(), this);
             CraftingRecipes.registerElevatorMotor();
         }
+        if (getConfig().getBoolean("Builderswands.enabled")) {
+            Bukkit.getPluginManager().registerEvents(new BuildersWandListener(),this);
+            CraftingRecipes.registerBuildersWands();
+        }
 
         ChatWriter.log(false, "Registered events!");
 

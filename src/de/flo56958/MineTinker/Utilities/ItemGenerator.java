@@ -30,6 +30,17 @@ public class ItemGenerator {
         return tool;
     }
 
+    public static ItemStack buildersWandCreator(Material m, String name, int amount) {
+        ItemStack wand = new ItemStack(m, amount);
+        ItemMeta meta = wand.getItemMeta();
+        ArrayList<String> lore = new ArrayList<>();
+        meta.setDisplayName(name);
+        lore.add(Strings.IDENTIFIER_BUILDERSWAND);
+        meta.setLore(lore);
+        wand.setItemMeta(meta);
+        return wand;
+    }
+
     public static ItemStack itemEnchanter(Material m, String name, int amount, Enchantment ench, int level) {
         ItemStack item = new ItemStack(m, amount);
         ItemMeta meta = item.getItemMeta();
@@ -405,6 +416,39 @@ public class ItemGenerator {
                     meta.addEnchant(Enchantment.ARROW_FIRE, 1, true);
                     meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                     Events.Mod_AddMod(p, tool, ChatColor.YELLOW + "Fiery", slotsRemaining - 1);
+                    lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
+                } else {
+                    return null;
+                }
+                //</editor-fold>
+            } else if (modifier.equals("Beheading")) {
+                //<editor-fold desc="BEHEADING">
+                if (Lists.SWORDS.contains(tool.getType().toString())) {
+                    int index = 0;
+                    boolean hasBeheading = false;
+                    searchloop:
+                    for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Beheading.MaxLevel"); i++) {
+                        if (lore.contains(Strings.BEHEADING + i)) {
+                            index = i;
+                            hasBeheading = true;
+                            break searchloop;
+                        }
+                    }
+                    int loreIndex = 0;
+                    int level = 1 + index;
+                    if (level > Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel")) {
+                        Events.Mod_MaxLevel(p, tool, ChatColor.DARK_GRAY + "Beheading");
+                        return null;
+                    }
+                    if (hasBeheading) {
+                        loreIndex = lore.indexOf(Strings.BEHEADING + index);
+                    }
+                    if (loreIndex != 0) {
+                        lore.set(loreIndex, Strings.BEHEADING + level);
+                    } else {
+                        lore.add(Strings.BEHEADING + level);
+                    }
+                    Events.Mod_AddMod(p, tool, ChatColor.DARK_GRAY + "Beheading " + level, slotsRemaining - 1);
                     lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
                 } else {
                     return null;

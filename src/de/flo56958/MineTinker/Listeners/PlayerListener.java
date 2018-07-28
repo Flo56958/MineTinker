@@ -1,5 +1,6 @@
 package de.flo56958.MineTinker.Listeners;
 
+import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.PlayerData;
 import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Main;
@@ -19,11 +20,13 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         if (!e.isCancelled()) {
+            if (!Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }
             if (e.getClickedInventory() instanceof PlayerInventory) {
                 if (e.getClickedInventory().getItem(e.getSlot()) != null) {
                     if (e.getClickedInventory().getItem(e.getSlot()).hasItemMeta()) {
                         if (!(e.getClickedInventory().getItem(e.getSlot()).getItemMeta().getLore() == null)) {
-                            if (e.getClickedInventory().getItem(e.getSlot()).getItemMeta().getLore().contains(Strings.IDENTIFIER)) {
+                            if (e.getClickedInventory().getItem(e.getSlot()).getItemMeta().getLore().contains(Strings.IDENTIFIER) ||
+                                    e.getClickedInventory().getItem(e.getSlot()).getItemMeta().getLore().contains(Strings.IDENTIFIER_BUILDERSWAND)) {
                                 if (e.getWhoClicked().getItemOnCursor() != null) {
                                     ItemStack tool = e.getClickedInventory().getItem(e.getSlot());
                                     ItemStack repair = e.getWhoClicked().getItemOnCursor();
@@ -86,6 +89,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
+        if (!Lists.WORLDS.contains(e.getPlayer().getWorld().getName())) { return; }
         if (!e.getBlockFace().equals(BlockFace.SELF)) {
             PlayerData.BlockFace.replace(e.getPlayer(), e.getBlockFace());
         }

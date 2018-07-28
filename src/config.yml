@@ -24,6 +24,11 @@ Sound:
   OnUpgrade: true
   OnBreaking: true
 
+AllowedWorlds:
+  - world
+  - world_nether
+  - world_the_end
+
 AllowedTools:
   Swords:
     - WOODEN_SWORD
@@ -64,6 +69,11 @@ Modifiers:
     MaxLevel: 5
     PercentagePerLevel: 20
     Sound: true
+  Beheading:
+    allowed: true
+    MaxLevel: 10
+    PercentagePerLevel: 10
+    EnchantCost: 10
   Self-Repair:
     allowed: true
     MaxLevel: 10
@@ -100,3 +110,15 @@ Modifiers:
 Elevator:
   enabled: true
   Sound: true
+  AllowedWorlds:
+  - world
+  - world_nether
+  - world_the_end
+
+Builderswands:
+  enabled: true
+  useDurability: true
+  AllowedWorlds:
+  - world
+  - world_nether
+  - world_the_end

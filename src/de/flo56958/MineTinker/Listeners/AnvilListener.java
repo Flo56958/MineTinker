@@ -20,6 +20,7 @@ public class AnvilListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onInventoryClick(InventoryClickEvent e) {
         if (!e.isCancelled()) {
+            if (!Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }
             Inventory i = e.getClickedInventory();
             if (i instanceof AnvilInventory) {
                 int s = e.getRawSlot();
@@ -94,6 +95,12 @@ public class AnvilListener implements Listener {
                                 if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed")) {
                                     if (modifier.equals(Modifiers.POWER_MODIFIER)) {
                                         newTool = ItemGenerator.ToolModifier(i.getItem(0), "Power", (Player) e.getWhoClicked());
+                                        isModifier = true;
+                                    }
+                                }
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Beheading.allowed")) {
+                                    if (modifier.equals(Modifiers.BEHEADING_MODIFIER)) {
+                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Beheading", (Player) e.getWhoClicked());
                                         isModifier = true;
                                     }
                                 }

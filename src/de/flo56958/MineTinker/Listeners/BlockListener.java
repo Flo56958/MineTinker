@@ -1,5 +1,6 @@
 package de.flo56958.MineTinker.Listeners;
 
+import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.Modifiers;
 import de.flo56958.MineTinker.Data.PlayerData;
 import de.flo56958.MineTinker.Data.Strings;
@@ -13,7 +14,6 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
-import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -31,6 +31,7 @@ public class BlockListener implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onBlockBreak(BlockBreakEvent e) {
         if (!e.isCancelled()) {
+            if (!Lists.WORLDS.contains(e.getPlayer().getWorld().getName())) { return; }
              if (!(e.getBlock().getType().equals(Material.KELP_PLANT) ||
                     e.getBlock().getType().equals(Material.CHORUS_PLANT) ||
                     e.getBlock().getType().equals(Material.DEAD_BUSH) ||
@@ -45,7 +46,8 @@ public class BlockListener implements Listener {
                     e.getBlock().getType().equals(Material.DANDELION_YELLOW) ||
                     e.getBlock().getType().equals(Material.LILAC) ||
                     e.getBlock().getType().equals(Material.LILY_PAD) ||
-                    e.getBlock().getType().equals(Material.BLUE_ORCHID))) {
+                    e.getBlock().getType().equals(Material.BLUE_ORCHID) ||
+                    e.getBlock().getType().equals(Material.TORCH))) {
                 if (e.getPlayer().getGameMode().equals(GameMode.SURVIVAL) || e.getPlayer().getGameMode().equals(GameMode.ADVENTURE)) {
                     ItemStack tool = e.getPlayer().getInventory().getItemInMainHand();
                     ItemMeta meta = tool.getItemMeta();
@@ -90,8 +92,7 @@ public class BlockListener implements Listener {
                                             Random rand = new Random();
                                             int n = rand.nextInt(100);
                                             if (n <= Main.getPlugin().getConfig().getInt("Modifiers.XP.PercentagePerLevel") * i) {
-                                                ExperienceOrb orb = e.getPlayer().getWorld().spawn(e.getBlock().getLocation(), ExperienceOrb.class);
-                                                orb.setExperience(Main.getPlugin().getConfig().getInt("Modifiers.XP.XPAmount"));
+                                                e.setExpToDrop(e.getExpToDrop() + Main.getPlugin().getConfig().getInt("Modifiers.XP.XPAmount"));
                                                 ChatWriter.log(false, e.getPlayer().getDisplayName() + " triggered XP on " + ItemGenerator.getDisplayName(tool) + " (" + tool.getType().toString() + ")!");
                                             }
                                             break searchloop;
@@ -183,38 +184,38 @@ public class BlockListener implements Listener {
                                                 if (PlayerInfo.getFacingDirection(e.getPlayer()).equals("N") || PlayerInfo.getFacingDirection(e.getPlayer()).equals("S")) {
                                                     Block b1 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(1, 0, 0));
                                                     Block b2 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(-1, 0, 0));
-                                                    if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.LAVA)) {
+                                                    if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.CAVE_AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.LAVA)) {
                                                         ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b1.getX(), b1.getY(), b1.getZ()));
                                                     }
-                                                    if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.LAVA)) {
+                                                    if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.CAVE_AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.LAVA)) {
                                                         ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
                                                     }
                                                 } else if (PlayerInfo.getFacingDirection(e.getPlayer()).equals("W") || PlayerInfo.getFacingDirection(e.getPlayer()).equals("E")) {
                                                     Block b1 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, 0, 1));
                                                     Block b2 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, 0, -1));
-                                                    if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.LAVA)) {
+                                                    if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.CAVE_AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.LAVA)) {
                                                         ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b1.getX(), b1.getY(), b1.getZ()));
                                                     }
-                                                    if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.LAVA)) {
+                                                    if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.CAVE_AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.LAVA)) {
                                                         ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
                                                     }
                                                 }
                                             } else if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.NORTH) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.SOUTH)) {
                                                 Block b1 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(1, 0, 0));
                                                 Block b2 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(-1, 0, 0));
-                                                if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.LAVA)) {
+                                                if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.CAVE_AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.LAVA)) {
                                                     ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b1.getX(), b1.getY(), b1.getZ()));
                                                 }
-                                                if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.LAVA)) {
+                                                if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.CAVE_AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.LAVA)) {
                                                     ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
                                                 }
                                             } else if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.WEST) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.EAST)) {
                                                 Block b1 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, 0, 1));
                                                 Block b2 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, 0, -1));
-                                                if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.LAVA)) {
+                                                if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.CAVE_AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.LAVA)) {
                                                     ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b1.getX(), b1.getY(), b1.getZ()));
                                                 }
-                                                if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.LAVA)) {
+                                                if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.CAVE_AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.LAVA)) {
                                                     ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
                                                 }
                                             }
@@ -226,7 +227,7 @@ public class BlockListener implements Listener {
                                                     for (int z = -1; z <= 1; z++) {
                                                         if (!(x == 0 && z == 0)) {
                                                             Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(x, 0, z));
-                                                            if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
+                                                            if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
                                                                 ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
                                                             }
                                                         }
@@ -237,7 +238,7 @@ public class BlockListener implements Listener {
                                                     for (int y = -1; y <= 1; y++) {
                                                         if (!(x == 0 && y == 0)) {
                                                             Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(x, y, 0));
-                                                            if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
+                                                            if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
                                                                 ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
                                                             }
                                                         }
@@ -248,7 +249,7 @@ public class BlockListener implements Listener {
                                                     for (int y = -1; y <= 1; y++) {
                                                         if (!(z == 0 && y == 0)) {
                                                             Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, y, z));
-                                                            if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
+                                                            if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
                                                                 ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
                                                             }
                                                         }
@@ -280,7 +281,8 @@ public class BlockListener implements Listener {
                         norm.equals(Modifiers.REINFORCED_MODIFIER) ||
                         norm.equals(Modifiers.SELFREPAIR_MODIFIER) ||
                         norm.equals(Modifiers.SILKTOUCH_MODIFIER) ||
-                        norm.equals(Modifiers.AUTOSMELT_MODIFIER)) {
+                        norm.equals(Modifiers.AUTOSMELT_MODIFIER) ||
+                        norm.equals(Modifiers.BEHEADING_MODIFIER)) {
                     norm.setAmount(temp);
                     e.setCancelled(true);
                     return;
@@ -394,6 +396,34 @@ public class BlockListener implements Listener {
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Power.EnchantCost") + " levels are required!");
                                 ChatWriter.log(false,  e.getPlayer().getDisplayName() + " tried to create a Power-Modifier but had not enough levels!");
+                            }
+                            e.setCancelled(true);
+                        }
+                        //</editor-fold>
+                    }
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Beheading.allowed")) {
+                        //<editor-fold desc="POWER">
+                        if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.WITHER_SKELETON_SKULL) && !e.getPlayer().isSneaking()) {
+                            if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
+                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.BEHEADING_MODIFIER);
+                                if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
+                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                }
+                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Beheading-Modifier in Creative!");
+                            } else if (e.getPlayer().getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Beheading.EnchantCost")) {
+                                int amount = e.getPlayer().getInventory().getItemInMainHand().getAmount();
+                                int newLevel = e.getPlayer().getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Beheading.EnchantCost");
+                                e.getPlayer().setLevel(newLevel);
+                                e.getPlayer().getInventory().getItemInMainHand().setAmount(amount - 1);
+                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.BEHEADING_MODIFIER);
+                                if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
+                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                }
+                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Beheading-Modifier!");
+                            } else {
+                                ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
+                                ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Beheading.EnchantCost") + " levels are required!");
+                                ChatWriter.log(false,  e.getPlayer().getDisplayName() + " tried to create a Beheading-Modifier but had not enough levels!");
                             }
                             e.setCancelled(true);
                         }

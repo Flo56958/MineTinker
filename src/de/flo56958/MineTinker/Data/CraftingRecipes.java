@@ -77,4 +77,52 @@ public class CraftingRecipes {
             ChatWriter.log(true, "Could not register recipe for the Elevator-Motor!"); //executes if the recipe could not initialize
         }
     }
+
+    public static void registerBuildersWands() {
+        try {
+            ShapedRecipe newRecipe1 = new ShapedRecipe(ItemGenerator.buildersWandCreator(Material.WOODEN_SHOVEL, "Wooden Builderswand", 1)); //init recipe
+            newRecipe1.shape("  W", " S ", "S  "); //makes recipe
+            newRecipe1.setIngredient('S', Material.STICK); //set ingredients
+            newRecipe1.setIngredient('W', Material.LEGACY_WOOD);
+            Main.getPlugin().getServer().addRecipe(newRecipe1); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.log(true, "Could not register recipe for the Wooden Builderswand!"); //executes if the recipe could not initialize
+        }
+        try {
+            ShapedRecipe newRecipe2 = new ShapedRecipe(ItemGenerator.buildersWandCreator(Material.STONE_SHOVEL, "Stone Builderswand", 1)); //init recipe
+            newRecipe2.shape("  C", " S ", "S  "); //makes recipe
+            newRecipe2.setIngredient('S', Material.STICK); //set ingredients
+            newRecipe2.setIngredient('C', Material.COBBLESTONE);
+            Main.getPlugin().getServer().addRecipe(newRecipe2); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.log(true, "Could not register recipe for the Stone Builderswand!"); //executes if the recipe could not initialize
+        }
+        try {
+            ShapedRecipe newRecipe3 = new ShapedRecipe(ItemGenerator.buildersWandCreator(Material.IRON_SHOVEL, "Iron Builderswand", 1)); //init recipe
+            newRecipe3.shape("  I", " S ", "S  "); //makes recipe
+            newRecipe3.setIngredient('S', Material.STICK); //set ingredients
+            newRecipe3.setIngredient('I', Material.IRON_INGOT);
+            Main.getPlugin().getServer().addRecipe(newRecipe3); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.log(true, "Could not register recipe for the Iron Builderswand!"); //executes if the recipe could not initialize
+        }
+        try {
+            ShapedRecipe newRecipe4 = new ShapedRecipe(ItemGenerator.buildersWandCreator(Material.GOLDEN_SHOVEL, "Golden Builderswand", 1)); //init recipe
+            newRecipe4.shape("  G", " S ", "S  "); //makes recipe
+            newRecipe4.setIngredient('S', Material.STICK); //set ingredients
+            newRecipe4.setIngredient('G', Material.GOLD_INGOT);
+            Main.getPlugin().getServer().addRecipe(newRecipe4); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.log(true, "Could not register recipe for the Golden Builderswand!"); //executes if the recipe could not initialize
+        }
+        try {
+            ShapedRecipe newRecipe5 = new ShapedRecipe(ItemGenerator.buildersWandCreator(Material.DIAMOND_SHOVEL, "Diamond Builderswand", 1)); //init recipe
+            newRecipe5.shape("  D", " S ", "S  "); //makes recipe
+            newRecipe5.setIngredient('S', Material.STICK); //set ingredients
+            newRecipe5.setIngredient('D', Material.DIAMOND);
+            Main.getPlugin().getServer().addRecipe(newRecipe5); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.log(true, "Could not register recipe for the Diamond Builderswand!"); //executes if the recipe could not initialize
+        }
+    }
 }

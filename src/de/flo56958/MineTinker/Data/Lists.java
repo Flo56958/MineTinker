@@ -14,4 +14,8 @@ public class Lists {
     public static final List<String> HOES = (List<String>) Main.getPlugin().getConfig().getList("AllowedTools.Hoes");
     public static final List<String> BOWS = (List<String>) Main.getPlugin().getConfig().getList("AllowedTools.Bows");
 
+    public static final List<String> WORLDS = (List<String>) Main.getPlugin().getConfig().getList("AllowedWorlds");
+    public static final List<String> WORLDS_ELEVATOR = (List<String>) Main.getPlugin().getConfig().getList("Elevator.AllowedWorlds");
+    public static final List<String> WORLDS_BUILDERSWANDS = (List<String>) Main.getPlugin().getConfig().getList("Builderswands.AllowedWorlds");
+
 }

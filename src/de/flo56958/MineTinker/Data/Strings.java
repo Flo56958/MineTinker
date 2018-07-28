@@ -8,6 +8,8 @@ public class Strings {
     public static final String CHAT_PREFIX = Main.getPlugin().getConfig().getString("chat-prefix");
 
     public static final String IDENTIFIER = ChatColor.WHITE + "MineTinker-Tool";
+    public static final String IDENTIFIER_BUILDERSWAND = ChatColor.WHITE + "MineTinker-Builderswand";
+
     public static final String LEVELLINE = ChatColor.GOLD + "Level:" + ChatColor.WHITE + " ";
     public static final String EXPLINE = ChatColor.GOLD + "Exp:" + ChatColor.WHITE + " ";
     public static final String FREEMODIFIERSLOTS = ChatColor.WHITE + "Free Modifier Slots: ";
@@ -24,4 +26,5 @@ public class Strings {
     public static final String FIERY = ChatColor.YELLOW + "Fiery: ";
     public static final String AUTOSMELT = ChatColor.YELLOW + "Auto-Smelt: ";
     public static final String POWER = ChatColor.GREEN + "Power: ";
+    public static final String BEHEADING = ChatColor.DARK_GRAY + "Beheading: ";
 }

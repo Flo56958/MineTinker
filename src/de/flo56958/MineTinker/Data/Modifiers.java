@@ -17,5 +17,6 @@ public class Modifiers {
     public static final ItemStack FIERY_MODIFIER = ItemGenerator.itemEnchanter(Material.BLAZE_ROD, ChatColor.YELLOW + "Fiery-Modifier", 1, Enchantment.FIRE_ASPECT, 1);
     public static final ItemStack AUTOSMELT_MODIFIER = ItemGenerator.itemEnchanter(Material.FURNACE, ChatColor.YELLOW + "Auto-Smelt-Modifier", 1, Enchantment.FIRE_ASPECT, 1);
     public static final ItemStack POWER_MODIFIER = ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + "Power-Modifier", 1, Enchantment.ARROW_DAMAGE, 1);
+    public static final ItemStack BEHEADING_MODIFIER = ItemGenerator.itemEnchanter(Material.WITHER_SKELETON_SKULL, ChatColor.DARK_GRAY + "Beheading-Modifier", 1, Enchantment.LOOT_BONUS_MOBS, 1);
 
 }
