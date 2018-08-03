@@ -66,43 +66,65 @@ AllowedTools:
 Modifiers:
   Auto-Smelt:
     allowed: true
+    name: Auto-Smelt
+    name_modifier: Auto-Smelt-Modifier
     MaxLevel: 5
     PercentagePerLevel: 20
     Sound: true
   Beheading:
     allowed: true
+    name: Beheading
+    name_modifier: Beheading-Modifier
     MaxLevel: 10
     PercentagePerLevel: 10
     EnchantCost: 10
   Self-Repair:
     allowed: true
+    name: Self-Repair
+    name_modifier: Self-Repair-Modifier
     MaxLevel: 10
     EnchantCost: 10
     PercentagePerLevel: 10
     HealthRepair: 2
   Extra-Modifier:
     allowed: true
+    name: Extra-Modifier
     ExtraModifierGain: 1
   Fiery:
     allowed: true
+    name: Fiery
+    name_modifier: Fiery-Modifier
     EnchantCost: 10
   Haste:
     allowed: true
+    name: Haste
+    name_modifier: Haste-Modifier
   Power:
     allowed: true
+    name: Power
+    name_modifier: Power-Modifier
     EnchantCost: 10
   Reinforced:
     allowed: true
+    name: Reinforced
+    name_modifier: Reinforced-Modifier
   Sharpness:
     allowed: true
+    name: Sharpness
+    name_modifier: Sharpness-Modifier
   Luck:
     allowed: true
+    name: Luck
+    name_modifier: Luck-Modifier
     allowedOnSword: true
   Silk-Touch:
     allowed: true
+    name: Silk-Touch
+    name_modifier: Silk-Touch-Modifier
     EnchantCost: 10
   XP:
     allowed: true
+    name: XP
     MaxLevel: 10
     PercentagePerLevel: 2
     XPAmount: 1

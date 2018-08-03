@@ -125,6 +125,7 @@ public class BlockListener implements Listener {
                                         case OAK_LOG:
                                         case SPRUCE_LOG:
                                             goodBlock = true;
+                                            luck = true;
                                             loot = Material.CHARCOAL;
                                             break;
                                         case IRON_ORE:
@@ -139,6 +140,7 @@ public class BlockListener implements Listener {
                                             break;
                                         case NETHERRACK:
                                             goodBlock = true;
+                                            luck = true;
                                             loot = Material.NETHER_BRICK;
                                             break;
                                     }
@@ -221,6 +223,7 @@ public class BlockListener implements Listener {
                                             }
                                             //</editor-fold>
                                         } else if (lore.contains(Strings.POWER + 2)) {
+                                            //<editor-fold desc="POWER 2">
                                             PlayerData.hasPower.replace(e.getPlayer(), true);
                                             if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.UP)) {
                                                 for (int x = -1; x <= 1; x++) {
@@ -256,6 +259,45 @@ public class BlockListener implements Listener {
                                                     }
                                                 }
                                             }
+                                            //</editor-fold>
+                                        } else if (lore.contains(Strings.POWER + 3)) {
+                                            //<editor-fold desc="POWER 3">
+                                            PlayerData.hasPower.replace(e.getPlayer(), true);
+                                            if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.UP)) {
+                                                for (int x = -2; x <= 2; x++) {
+                                                    for (int z = -2; z <= 2; z++) {
+                                                        if (!(x == 0 && z == 0)) {
+                                                            Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(x, 0, z));
+                                                            if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
+                                                                ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            } else if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.NORTH) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.SOUTH)) {
+                                                for (int x = -2; x <= 2; x++) {
+                                                    for (int y = -2; y <= 2; y++) {
+                                                        if (!(x == 0 && y == 0)) {
+                                                            Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(x, y, 0));
+                                                            if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
+                                                                ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            } else if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.EAST) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.WEST)) {
+                                                for (int z = -2; z <= 2; z++) {
+                                                    for (int y = -2; y <= 2; y++) {
+                                                        if (!(z == 0 && y == 0)) {
+                                                            Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, y, z));
+                                                            if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
+                                                                ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            //</editor-fold>
                                         }
                                         PlayerData.hasPower.replace(e.getPlayer(), false);
                                     }

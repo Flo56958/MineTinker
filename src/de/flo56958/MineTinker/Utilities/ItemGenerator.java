@@ -72,7 +72,7 @@ public class ItemGenerator {
                 int loreIndex = 0;
                 int level = 1 + index;
                 if (level > Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel")) {
-                    Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + "Self-Repair");
+                    Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name"));
                     return null;
                 }
                 if (hasSelfRepair) {
@@ -83,7 +83,7 @@ public class ItemGenerator {
                 } else {
                     lore.add(Strings.SELFREPAIR + level);
                 }
-                Events.Mod_AddMod(p, tool, ChatColor.GREEN + "Self-Repair " + level, slotsRemaining - 1);
+                Events.Mod_AddMod(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name") + " " + level, slotsRemaining - 1);
                 lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
                 if (level == Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel")) {
                     meta.addEnchant(Enchantment.MENDING, 1, true);
@@ -112,7 +112,7 @@ public class ItemGenerator {
                     int loreIndex = 0;
                     int level = 1 + index;
                     if (level > 5) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.DARK_RED + "Haste");
+                        Events.Mod_MaxLevel(p, tool, ChatColor.DARK_RED + Main.getPlugin().getConfig().getString("Modifiers.Haste.name"));
                         return null;
                     }
                     if (hasHaste) {
@@ -125,7 +125,7 @@ public class ItemGenerator {
                     }
                     meta.addEnchant(Enchantment.DIG_SPEED, level, true);
                     meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                    Events.Mod_AddMod(p, tool, ChatColor.DARK_RED + "Haste " + level, slotsRemaining - 1);
+                    Events.Mod_AddMod(p, tool, ChatColor.DARK_RED + Main.getPlugin().getConfig().getString("Modifiers.Haste.name") + " " + level, slotsRemaining - 1);
                     lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
                 } else {
                     return null;
@@ -146,7 +146,7 @@ public class ItemGenerator {
                 int loreIndex = 0;
                 int level = 1 + index;
                 if (level > 3) {
-                    Events.Mod_MaxLevel(p, tool, ChatColor.BLACK + "Reinforced");
+                    Events.Mod_MaxLevel(p, tool, ChatColor.GRAY + Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name"));
                     return null;
                 }
                 if (hasReinforced) {
@@ -159,7 +159,7 @@ public class ItemGenerator {
                 }
                 meta.addEnchant(Enchantment.DURABILITY, level, true);
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                Events.Mod_AddMod(p, tool, ChatColor.BLACK + "Reinforced " + level, slotsRemaining - 1);
+                Events.Mod_AddMod(p, tool, ChatColor.GRAY + Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name")+ " " + level, slotsRemaining - 1);
                 lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
                 //</editor-fold>
             } else if (modifier.equals("Sharpness")) {
@@ -178,7 +178,7 @@ public class ItemGenerator {
                     int loreIndex = 0;
                     int level = 1 + index;
                     if (level > 5) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.WHITE + "Sharpness");
+                        Events.Mod_MaxLevel(p, tool, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name"));
                         return null;
                     }
                     if (hasSharpness) {
@@ -195,7 +195,7 @@ public class ItemGenerator {
                         meta.addEnchant(Enchantment.DAMAGE_ALL, level, true);
                     }
                     meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                    Events.Mod_AddMod(p, tool, ChatColor.WHITE + "Sharpness " + level, slotsRemaining - 1);
+                    Events.Mod_AddMod(p, tool, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name") + " " + level, slotsRemaining - 1);
                     lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
                 } else {
                     return null;
@@ -219,7 +219,7 @@ public class ItemGenerator {
                 int loreIndex = 0;
                 int level = 1 + index;
                 if (level > Main.getPlugin().getConfig().getInt("Modifiers.XP.MaxLevel")) {
-                    Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + "XP");
+                    Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.XP.name"));
                     return null;
                 }
                 if (hasXP) {
@@ -230,13 +230,13 @@ public class ItemGenerator {
                 } else {
                     lore.add(Strings.XP + level);
                 }
-                Events.Mod_AddMod(p, tool, ChatColor.GREEN + "XP " + level, slotsRemaining - 1);
+                Events.Mod_AddMod(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.XP.name") + " " + level, slotsRemaining - 1);
                 lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
                 //</editor-fold>
             } else if (modifier.equals("Auto-Smelt")) {
                 //<editor-fold desc="AUTO-SMELT">
                 if (lore.contains(Strings.SILKTOUCH)) {
-                    Events.ModAndSilk(p, "Auto-Smelt");
+                    Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name"));
                 }
                 if (Lists.PICKAXES.contains(tool.getType().toString()) ||
                     Lists.SHOVELS.contains(tool.getType().toString()) ||
@@ -254,7 +254,7 @@ public class ItemGenerator {
                     int loreIndex = 0;
                     int level = 1 + index;
                     if (level > Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.MaxLevel")) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + "Auto-Smelt");
+                        Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name"));
                         return null;
                     }
                     if (hasAutoSmelt) {
@@ -265,7 +265,7 @@ public class ItemGenerator {
                     } else {
                         lore.add(Strings.AUTOSMELT + level);
                     }
-                    Events.Mod_AddMod(p, tool, ChatColor.YELLOW + "Auto-Smelt " + level, slotsRemaining - 1);
+                    Events.Mod_AddMod(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name") + " " + level, slotsRemaining - 1);
                     lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
                 } else {
                     return null;
@@ -279,7 +279,7 @@ public class ItemGenerator {
                     int index = 0;
                     boolean hasPower = false;
                     searchloop:
-                    for (int i = 1; i <= 2; i++) {
+                    for (int i = 1; i <= 3; i++) {
                         if (lore.contains(Strings.POWER + i)) {
                             index = i;
                             hasPower = true;
@@ -288,8 +288,8 @@ public class ItemGenerator {
                     }
                     int loreIndex = 0;
                     int level = 1 + index;
-                    if (level > 2) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + "Power");
+                    if (level > 3) {
+                        Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Power.name"));
                         return null;
                     }
                     if (hasPower) {
@@ -300,7 +300,7 @@ public class ItemGenerator {
                     } else {
                         lore.add(Strings.POWER + level);
                     }
-                    Events.Mod_AddMod(p, tool, ChatColor.GREEN + "Power " + level, slotsRemaining - 1);
+                    Events.Mod_AddMod(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Power.name") + " " + level, slotsRemaining - 1);
                     lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
                 } else {
                     return null;
@@ -312,7 +312,7 @@ public class ItemGenerator {
                     return null;
                 }
                 if (lore.contains(Strings.SILKTOUCH)) {
-                    Events.ModAndSilk(p, "Luck");
+                    Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Luck.name"));
                     return null;
                 }
                 int index = 0;
@@ -328,7 +328,7 @@ public class ItemGenerator {
                 int loreIndex = 0;
                 int level = 1 + index;
                 if (level > 3) {
-                    Events.Mod_MaxLevel(p, tool, ChatColor.BLUE + "Luck");
+                    Events.Mod_MaxLevel(p, tool, ChatColor.BLUE + Main.getPlugin().getConfig().getString("Modifiers.Luck.name"));
                     return null;
                 }
                 if (hasLuck) {
@@ -345,31 +345,31 @@ public class ItemGenerator {
                     meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, level, true);
                 } else { return null; }
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                Events.Mod_AddMod(p, tool, ChatColor.BLUE + "Luck " + level, slotsRemaining - 1);
+                Events.Mod_AddMod(p, tool, ChatColor.BLUE + Main.getPlugin().getConfig().getString("Modifiers.Luck.name") + " " + level, slotsRemaining - 1);
                 lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
                 //</editor-fold>
             } else if (modifier.equals("Silk-Touch")) {
                 //<editor-fold desc="SILK-TOUCH">
                 if (lore.contains(Strings.SILKTOUCH)) {
-                    Events.Mod_MaxLevel(p, tool, ChatColor.WHITE + "Silk-Touch");
+                    Events.Mod_MaxLevel(p, tool, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name"));
                     return null;
                 }
                 for (int i = 1; i <= 3; i++) {
                     if (lore.contains(Strings.LUCK + i)) {
-                        Events.ModAndSilk(p, "Luck");
+                        Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Luck.name"));
                         return null;
                     }
                 }
                 for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.MaxLevel"); i++) {
                     if (lore.contains(Strings.AUTOSMELT + i)) {
-                        Events.ModAndSilk(p, "Auto-Smelt");
+                        Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name"));
                         return null;
                     }
                 }
                 if (Lists.AXES.contains(tool.getType().toString()) || Lists.PICKAXES.contains(tool.getType().toString()) || Lists.SHOVELS.contains(tool.getType().toString())) {
                     meta.addEnchant(Enchantment.SILK_TOUCH, 1, true);
                     meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                    Events.Mod_AddMod(p, tool, ChatColor.WHITE + "Silk-Touch", slotsRemaining - 1);
+                    Events.Mod_AddMod(p, tool, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name"), slotsRemaining - 1);
                     lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
                     lore.add(Strings.SILKTOUCH);
                 } else {
@@ -392,7 +392,7 @@ public class ItemGenerator {
                     int loreIndex = 0;
                     int level = 1 + index;
                     if (level > 2) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + "Fiery");
+                        Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"));
                         return null;
                     }
                     if (hasFiery) {
@@ -405,17 +405,17 @@ public class ItemGenerator {
                     }
                     meta.addEnchant(Enchantment.FIRE_ASPECT, level, true);
                     meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                    Events.Mod_AddMod(p, tool, ChatColor.YELLOW + "Fiery " + level, slotsRemaining - 1);
+                    Events.Mod_AddMod(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name") + " " + level, slotsRemaining - 1);
                     lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
                 } else if (Lists.BOWS.contains(tool.getType().toString())){
                     if (lore.contains(Strings.FIERY + 1)) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + "Fiery");
+                        Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"));
                         return null;
                     }
                     lore.add(Strings.FIERY + 1);
                     meta.addEnchant(Enchantment.ARROW_FIRE, 1, true);
                     meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                    Events.Mod_AddMod(p, tool, ChatColor.YELLOW + "Fiery", slotsRemaining - 1);
+                    Events.Mod_AddMod(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"), slotsRemaining - 1);
                     lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
                 } else {
                     return null;
@@ -436,8 +436,8 @@ public class ItemGenerator {
                     }
                     int loreIndex = 0;
                     int level = 1 + index;
-                    if (level > Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel")) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.DARK_GRAY + "Beheading");
+                    if (level > Main.getPlugin().getConfig().getInt("Modifiers.Beheading.MaxLevel")) {
+                        Events.Mod_MaxLevel(p, tool, ChatColor.DARK_GRAY + Main.getPlugin().getConfig().getString("Modifiers.Beheading.name"));
                         return null;
                     }
                     if (hasBeheading) {
@@ -448,7 +448,7 @@ public class ItemGenerator {
                     } else {
                         lore.add(Strings.BEHEADING + level);
                     }
-                    Events.Mod_AddMod(p, tool, ChatColor.DARK_GRAY + "Beheading " + level, slotsRemaining - 1);
+                    Events.Mod_AddMod(p, tool, ChatColor.DARK_GRAY + Main.getPlugin().getConfig().getString("Modifiers.Beheading.name") + " " + level, slotsRemaining - 1);
                     lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
                 } else {
                     return null;

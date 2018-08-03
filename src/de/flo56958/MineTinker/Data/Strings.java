@@ -16,15 +16,15 @@ public class Strings {
     public static final String MODIFIERSTART = ChatColor.WHITE + "Modifiers:";
 
     //Modifiers
-    public static final String SELFREPAIR = ChatColor.GREEN + "Self-Repair: ";
-    public static final String SHARPNESS = ChatColor.WHITE + "Sharpness: ";
-    public static final String REINFORCED = ChatColor.BLACK + "Reinforced: ";
-    public static final String HASTE = ChatColor.DARK_RED + "Haste: ";
-    public static final String XP = ChatColor.GREEN + "XP: ";
-    public static final String LUCK = ChatColor.BLUE + "Luck: ";
-    public static final String SILKTOUCH = ChatColor.WHITE + "Silk-Touch";
-    public static final String FIERY = ChatColor.YELLOW + "Fiery: ";
-    public static final String AUTOSMELT = ChatColor.YELLOW + "Auto-Smelt: ";
-    public static final String POWER = ChatColor.GREEN + "Power: ";
-    public static final String BEHEADING = ChatColor.DARK_GRAY + "Beheading: ";
+    public static final String SELFREPAIR = ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name") + ": ";
+    public static final String SHARPNESS = ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name") +  ": ";
+    public static final String REINFORCED = ChatColor.GRAY + Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name") + ": ";
+    public static final String HASTE = ChatColor.DARK_RED + Main.getPlugin().getConfig().getString("Modifiers.Haste.name") + ": ";
+    public static final String XP = ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.XP.name") + ": ";
+    public static final String LUCK = ChatColor.BLUE + Main.getPlugin().getConfig().getString("Modifiers.Luck.name") + ": ";
+    public static final String SILKTOUCH = ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name");
+    public static final String FIERY = ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name") + ": ";
+    public static final String AUTOSMELT = ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name") + ": ";
+    public static final String POWER = ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Power.name") + ": ";
+    public static final String BEHEADING = ChatColor.DARK_GRAY + Main.getPlugin().getConfig().getString("Modifiers.Beheading.name") + ": ";
 }
