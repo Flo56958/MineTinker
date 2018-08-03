@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Listeners;
 
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.Strings;
+import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -146,7 +147,9 @@ public class BuildersWandListener implements Listener {
                                                             }
                                                             b.getWorld().getBlockAt(loc).setType(current.getType());
                                                             current.setAmount(current.getAmount() - 1);
-                                                            wand.setDurability((short) (wand.getDurability() + 1));
+                                                            if (Main.getPlugin().getConfig().getBoolean("Builderswands.useDurability")) {
+                                                                wand.setDurability((short) (wand.getDurability() + 1));
+                                                            }
                                                             if (current.getAmount() == 0) {
                                                                 break loop;
                                                             }
