@@ -60,4 +60,5 @@ public class Lists {
         return allowed;
     }
 
+    public static final List<String> DROPLOOT = (List<String>) Main.getPlugin().getConfig().getList("LevelUpEvents.DropLoot.Items");
 }

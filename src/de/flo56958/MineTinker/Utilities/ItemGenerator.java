@@ -51,12 +51,12 @@ public class ItemGenerator {
         return item;
     }
 
-    public static ItemStack ToolModifier(ItemStack tool, String modifier, Player p) {
+    public static ItemStack ToolModifier(ItemStack tool, String modifier, Player p, boolean event) {
         ItemMeta meta = tool.getItemMeta();
         ArrayList<String> lore = (ArrayList<String>) meta.getLore();
         String slots[] = lore.get(3).split(" ");
         int slotsRemaining = Integer.parseInt(slots[3]);
-        if (slotsRemaining != 0 || modifier.equals("Extra-Modifier")) {
+        if (slotsRemaining != 0 || modifier.equals("Extra-Modifier") || event) {
             if (modifier.equals("Self-Repair")) {
                 //<editor-fold desc="SELF-REPAIR">
                 int index = 0;
@@ -72,7 +72,9 @@ public class ItemGenerator {
                 int loreIndex = 0;
                 int level = 1 + index;
                 if (level > Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel")) {
-                    Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name"));
+                    if (!event) {
+                        Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name"));
+                    }
                     return null;
                 }
                 if (hasSelfRepair) {
@@ -112,7 +114,9 @@ public class ItemGenerator {
                     int loreIndex = 0;
                     int level = 1 + index;
                     if (level > 5) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.DARK_RED + Main.getPlugin().getConfig().getString("Modifiers.Haste.name"));
+                        if (!event) {
+                            Events.Mod_MaxLevel(p, tool, ChatColor.DARK_RED + Main.getPlugin().getConfig().getString("Modifiers.Haste.name"));
+                        }
                         return null;
                     }
                     if (hasHaste) {
@@ -146,7 +150,9 @@ public class ItemGenerator {
                 int loreIndex = 0;
                 int level = 1 + index;
                 if (level > 3) {
-                    Events.Mod_MaxLevel(p, tool, ChatColor.GRAY + Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name"));
+                    if (!event) {
+                        Events.Mod_MaxLevel(p, tool, ChatColor.GRAY + Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name"));
+                    }
                     return null;
                 }
                 if (hasReinforced) {
@@ -178,7 +184,9 @@ public class ItemGenerator {
                     int loreIndex = 0;
                     int level = 1 + index;
                     if (level > 5) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name"));
+                        if (!event) {
+                            Events.Mod_MaxLevel(p, tool, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name"));
+                        }
                         return null;
                     }
                     if (hasSharpness) {
@@ -219,7 +227,9 @@ public class ItemGenerator {
                 int loreIndex = 0;
                 int level = 1 + index;
                 if (level > Main.getPlugin().getConfig().getInt("Modifiers.XP.MaxLevel")) {
-                    Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.XP.name"));
+                    if (!event) {
+                        Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.XP.name"));
+                    }
                     return null;
                 }
                 if (hasXP) {
@@ -236,7 +246,9 @@ public class ItemGenerator {
             } else if (modifier.equals("Auto-Smelt")) {
                 //<editor-fold desc="AUTO-SMELT">
                 if (lore.contains(Strings.SILKTOUCH)) {
-                    Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name"));
+                    if (!event) {
+                        Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name"));
+                    }
                 }
                 if (Lists.PICKAXES.contains(tool.getType().toString()) ||
                     Lists.SHOVELS.contains(tool.getType().toString()) ||
@@ -254,7 +266,9 @@ public class ItemGenerator {
                     int loreIndex = 0;
                     int level = 1 + index;
                     if (level > Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.MaxLevel")) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name"));
+                        if (!event) {
+                            Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name"));
+                        }
                         return null;
                     }
                     if (hasAutoSmelt) {
@@ -289,7 +303,9 @@ public class ItemGenerator {
                     int loreIndex = 0;
                     int level = 1 + index;
                     if (level > 3) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Power.name"));
+                        if (!event) {
+                            Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Power.name"));
+                        }
                         return null;
                     }
                     if (hasPower) {
@@ -312,7 +328,9 @@ public class ItemGenerator {
                     return null;
                 }
                 if (lore.contains(Strings.SILKTOUCH)) {
-                    Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Luck.name"));
+                    if (!event) {
+                        Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Luck.name"));
+                    }
                     return null;
                 }
                 int index = 0;
@@ -328,7 +346,9 @@ public class ItemGenerator {
                 int loreIndex = 0;
                 int level = 1 + index;
                 if (level > 3) {
-                    Events.Mod_MaxLevel(p, tool, ChatColor.BLUE + Main.getPlugin().getConfig().getString("Modifiers.Luck.name"));
+                    if (!event) {
+                        Events.Mod_MaxLevel(p, tool, ChatColor.BLUE + Main.getPlugin().getConfig().getString("Modifiers.Luck.name"));
+                    }
                     return null;
                 }
                 if (hasLuck) {
@@ -351,18 +371,24 @@ public class ItemGenerator {
             } else if (modifier.equals("Silk-Touch")) {
                 //<editor-fold desc="SILK-TOUCH">
                 if (lore.contains(Strings.SILKTOUCH)) {
-                    Events.Mod_MaxLevel(p, tool, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name"));
+                    if (!event) {
+                        Events.Mod_MaxLevel(p, tool, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name"));
+                    }
                     return null;
                 }
                 for (int i = 1; i <= 3; i++) {
                     if (lore.contains(Strings.LUCK + i)) {
-                        Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Luck.name"));
+                        if (!event) {
+                            Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Luck.name"));
+                        }
                         return null;
                     }
                 }
                 for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.MaxLevel"); i++) {
                     if (lore.contains(Strings.AUTOSMELT + i)) {
-                        Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name"));
+                        if (!event) {
+                            Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name"));
+                        }
                         return null;
                     }
                 }
@@ -392,7 +418,9 @@ public class ItemGenerator {
                     int loreIndex = 0;
                     int level = 1 + index;
                     if (level > 2) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"));
+                        if (!event) {
+                            Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"));
+                        }
                         return null;
                     }
                     if (hasFiery) {
@@ -409,7 +437,9 @@ public class ItemGenerator {
                     lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
                 } else if (Lists.BOWS.contains(tool.getType().toString())){
                     if (lore.contains(Strings.FIERY + 1)) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"));
+                        if (!event) {
+                            Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"));
+                        }
                         return null;
                     }
                     lore.add(Strings.FIERY + 1);
@@ -437,7 +467,9 @@ public class ItemGenerator {
                     int loreIndex = 0;
                     int level = 1 + index;
                     if (level > Main.getPlugin().getConfig().getInt("Modifiers.Beheading.MaxLevel")) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.DARK_GRAY + Main.getPlugin().getConfig().getString("Modifiers.Beheading.name"));
+                        if (!event) {
+                            Events.Mod_MaxLevel(p, tool, ChatColor.DARK_GRAY + Main.getPlugin().getConfig().getString("Modifiers.Beheading.name"));
+                        }
                         return null;
                     }
                     if (hasBeheading) {

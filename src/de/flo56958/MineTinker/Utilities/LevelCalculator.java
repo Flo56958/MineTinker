@@ -39,6 +39,7 @@ public class LevelCalculator {
         tool.setItemMeta(meta);
         if (LevelUp) {
             Events.LevelUp(p, tool);
+            Events.LevelUpChance(p, tool);
         }
     }
 }

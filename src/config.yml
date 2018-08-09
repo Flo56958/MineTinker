@@ -13,7 +13,26 @@ ExpPerSwordSwing: 1
 EnableDamageExp: false
 Upgradeable: true
 AllowEnchanting: false
-DurabilityPercentageRepair: 0.3
+DurabilityPercentageRepair: 0.34
+
+LevelUpEvents:
+  enabled: true
+  DurabilityRepair:
+    enabled: true
+    percentage: 50
+  RandomModifier:
+    enabled: true
+    percentage: 10
+  DropLoot:
+    enabled: true
+    percentage: 25
+    minimumDrop: 1
+    maximumDrop: 5
+    Items:
+      - DIAMOND
+      - IRON_INGOT
+      - GOLD_INGOT
+      - EMERALD
 
 Sound:
   OnLevelUp: true

@@ -26,92 +26,95 @@ public class AnvilListener implements Listener {
                 int s = e.getRawSlot();
                 if (s == 1) {       //Mod-Slot
                     if (i.getItem(0) != null) {
-                        if (i.getItem(0).getItemMeta().getLore().contains(Strings.IDENTIFIER)) {
-                            ItemStack newTool = null;
-                            if (e.getWhoClicked().getItemOnCursor().getAmount() == 1) {
-                                //<editor-fold desc="MODIFIERS">
-                                boolean isModifier = true;
-                                ItemStack modifier = e.getWhoClicked().getItemOnCursor();
-                                if (modifier.equals(Modifiers.SELFREPAIR_MODIFIER)) {
-                                    if (Lists.getAllowedModifiers().contains("Self-Repair")) {
-                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Self-Repair", (Player) e.getWhoClicked());
+                        if (i.getItem(0).getItemMeta().hasLore()) {
+                            if (i.getItem(0).getItemMeta().getLore().contains(Strings.IDENTIFIER)) {
+                                ItemStack newTool = null;
+                                if (e.getWhoClicked().getItemOnCursor().getAmount() == 1) {
+                                    //<editor-fold desc="MODIFIERS">
+                                    boolean isModifier = true;
+                                    ItemStack modifier = e.getWhoClicked().getItemOnCursor();
+                                    if (modifier.equals(Modifiers.SELFREPAIR_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains("Self-Repair")) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Self-Repair", (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else if (modifier.getType().equals(Material.NETHER_STAR)) {
+                                        if (Lists.getAllowedModifiers().contains("Extra-Modifier")) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Extra-Modifier", (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else if (modifier.equals(Modifiers.HASTE_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains("Haste")) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Haste", (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else if (modifier.equals(Modifiers.REINFORCED_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains("Reinforced")) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Reinforced", (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else if (modifier.equals(Modifiers.SHARPNESS_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains("Sharpness")) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Sharpness", (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else if (modifier.getType().equals(Material.EXPERIENCE_BOTTLE)) {
+                                        if (Lists.getAllowedModifiers().contains("XP")) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "XP", (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else if (modifier.equals(Modifiers.LUCK_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains("Luck")) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Luck", (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else if (modifier.equals(Modifiers.SILKTOUCH_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains("Silk-Touch")) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Silk-Touch", (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else if (modifier.equals(Modifiers.FIERY_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains("Fiery")) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Fiery", (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else if (modifier.equals(Modifiers.AUTOSMELT_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains("Auto-Smelt")) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Auto-Smelt", (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else if (modifier.equals(Modifiers.POWER_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains("Power")) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Power", (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else if (modifier.equals(Modifiers.BEHEADING_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains("Beheading")) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Beheading", (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else {
+                                        isModifier = false;
                                     }
-                                } else if (modifier.getType().equals(Material.NETHER_STAR)) {
-                                    if (Lists.getAllowedModifiers().contains("Extra-Modifier")) {
-                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Extra-Modifier", (Player) e.getWhoClicked());
+                                    if (isModifier) {
+                                        if (newTool == null) { return; }
+                                        int newAmount = e.getWhoClicked().getItemOnCursor().getAmount() - 1;
+                                        e.getWhoClicked().getItemOnCursor().setAmount(newAmount);
+                                        e.setCancelled(true);
+                                        return;
                                     }
-                                } else if (modifier.equals(Modifiers.HASTE_MODIFIER)) {
-                                    if (Lists.getAllowedModifiers().contains("Haste")) {
-                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Haste", (Player) e.getWhoClicked());
-                                    }
-                                } else if (modifier.equals(Modifiers.REINFORCED_MODIFIER)) {
-                                    if (Lists.getAllowedModifiers().contains("Reinforced")) {
-                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Reinforced", (Player) e.getWhoClicked());
-                                    }
-                                } else if (modifier.equals(Modifiers.SHARPNESS_MODIFIER)) {
-                                    if (Lists.getAllowedModifiers().contains("Sharpness")) {
-                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Sharpness", (Player) e.getWhoClicked());
-                                    }
-                                } else if (modifier.getType().equals(Material.EXPERIENCE_BOTTLE)) {
-                                    if (Lists.getAllowedModifiers().contains("XP")) {
-                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "XP", (Player) e.getWhoClicked());
-                                    }
-                                } else if (modifier.equals(Modifiers.LUCK_MODIFIER)) {
-                                    if (Lists.getAllowedModifiers().contains("Luck")) {
-                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Luck", (Player) e.getWhoClicked());
-                                    }
-                                } else if (modifier.equals(Modifiers.SILKTOUCH_MODIFIER)) {
-                                    if (Lists.getAllowedModifiers().contains("Silk-Touch")) {
-                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Silk-Touch", (Player) e.getWhoClicked());
-                                    }
-                                } else if (modifier.equals(Modifiers.FIERY_MODIFIER)) {
-                                    if (Lists.getAllowedModifiers().contains("Fiery")) {
-                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Fiery", (Player) e.getWhoClicked());
-                                    }
-                                } else if (modifier.equals(Modifiers.AUTOSMELT_MODIFIER)) {
-                                    if (Lists.getAllowedModifiers().contains("Auto-Smelt")) {
-                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Auto-Smelt", (Player) e.getWhoClicked());
-                                    }
-                                } else if (modifier.equals(Modifiers.POWER_MODIFIER)) {
-                                    if (Lists.getAllowedModifiers().contains("Power")) {
-                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Power", (Player) e.getWhoClicked());
-                                    }
-                                } else if (modifier.equals(Modifiers.BEHEADING_MODIFIER)) {
-                                    if (Lists.getAllowedModifiers().contains("Beheading")) {
-                                        newTool = ItemGenerator.ToolModifier(i.getItem(0), "Beheading", (Player) e.getWhoClicked());
-                                    }
-                                } else {
-                                    isModifier = false;
+                                    //</editor-fold>
                                 }
-                                if (isModifier) {
-                                    if (newTool == null) { return; }
-                                    int newAmount = e.getWhoClicked().getItemOnCursor().getAmount() - 1;
-                                    e.getWhoClicked().getItemOnCursor().setAmount(newAmount);
-                                    e.setCancelled(true);
-                                    return;
+                                if (Main.getPlugin().getConfig().getBoolean("Upgradeable")) {
+                                    //<editor-fold desc="UPGRADE">
+                                    if (e.getWhoClicked().getItemOnCursor().getAmount() == 1) { //Shovel
+                                        if (Lists.SHOVELS.contains(i.getItem(0).getType().toString())) {
+                                            newTool = ItemGenerator.itemUpgrader(i.getItem(0), e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
+                                        }
+                                    } else if (e.getWhoClicked().getItemOnCursor().getAmount() == 2) { //Sword / Hoe
+                                        if (Lists.SWORDS.contains(i.getItem(0).getType().toString()) || Lists.HOES.contains(i.getItem(0).getType().toString())) {
+                                            newTool = ItemGenerator.itemUpgrader(i.getItem(0), e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
+                                        }
+                                    } else if (e.getWhoClicked().getItemOnCursor().getAmount() == 3) { //Axe / Pickaxe
+                                        if (Lists.AXES.contains(i.getItem(0).getType().toString()) || Lists.PICKAXES.contains(i.getItem(0).getType().toString())) {
+                                            newTool = ItemGenerator.itemUpgrader(i.getItem(0), e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
+                                        }
+                                    }
+                                    if (newTool != null) {
+                                        e.getWhoClicked().getItemOnCursor().setAmount(0);
+                                        e.setCancelled(true);
+                                    } else { return; }
+                                    //</editor-fold>
                                 }
-                                //</editor-fold>
-                            }
-                            if (Main.getPlugin().getConfig().getBoolean("Upgradeable")) {
-                                //<editor-fold desc="UPGRADE">
-                                if (e.getWhoClicked().getItemOnCursor().getAmount() == 1) { //Shovel
-                                    if (Lists.SHOVELS.contains(i.getItem(0).getType().toString())) {
-                                        newTool = ItemGenerator.itemUpgrader(i.getItem(0), e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
-                                    }
-                                } else if (e.getWhoClicked().getItemOnCursor().getAmount() == 2) { //Sword / Hoe
-                                    if (Lists.SWORDS.contains(i.getItem(0).getType().toString()) || Lists.HOES.contains(i.getItem(0).getType().toString())) {
-                                        newTool = ItemGenerator.itemUpgrader(i.getItem(0), e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
-                                    }
-                                } else if (e.getWhoClicked().getItemOnCursor().getAmount() == 3) { //Axe / Pickaxe
-                                    if (Lists.AXES.contains(i.getItem(0).getType().toString()) || Lists.PICKAXES.contains(i.getItem(0).getType().toString())) {
-                                        newTool = ItemGenerator.itemUpgrader(i.getItem(0), e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
-                                    }
-                                }
-                                if (newTool != null) {
-                                    e.getWhoClicked().getItemOnCursor().setAmount(0);
-                                    e.setCancelled(true);
-                                } else { return; }
-                                //</editor-fold>
+
                             }
                         }
                     }

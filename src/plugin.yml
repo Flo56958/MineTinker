@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: a4
+version: a5
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -31,4 +31,12 @@ permissions:
 
   minetinker.modifiers:
     description: Allows to access the list of MineTinker-modifiers
+    default: true
+
+  minetinker.addexp:
+    description: Allows to access the AddExp-command for MineTinker-Tools
+    default: op
+
+  minetinker.name:
+    description: Allows to access the Name-command for MineTinker-Tools
     default: true
