@@ -43,17 +43,26 @@ public class Main extends JavaPlugin {
         if (getConfig().getBoolean("Modifiers.Auto-Smelt.allowed")) {
             CraftingRecipes.registerAutoSmeltModifier();
         }
-        if (getConfig().getBoolean("Modifiers.Reinforced.allowed")) {
-            CraftingRecipes.registerReinforcedModifier();
+        if (getConfig().getBoolean("Modifiers.Ender.allowed")) {
+            CraftingRecipes.registerEnderModifier();
+        }
+        if (getConfig().getBoolean("Modifiers.Glowing.allowed")) {
+            CraftingRecipes.registerGlowingModifier();
         }
         if (getConfig().getBoolean("Modifiers.Haste.allowed")) {
             CraftingRecipes.registerHasteModifier();
         }
+        if (getConfig().getBoolean("Modifiers.Luck.allowed")) {
+            CraftingRecipes.registerLuckModifier();
+        }
+        if (getConfig().getBoolean("Modifiers.Reinforced.allowed")) {
+            CraftingRecipes.registerReinforcedModifier();
+        }
         if (getConfig().getBoolean("Modifiers.Sharpness.allowed")) {
             CraftingRecipes.registerSharpnessModifier();
         }
-        if (getConfig().getBoolean("Modifiers.Luck.allowed")) {
-            CraftingRecipes.registerLuckModifier();
+        if (getConfig().getBoolean("Modifiers.Shulking.allowed")) {
+            CraftingRecipes.registerShulkingModifier();
         }
         ChatWriter.log(false, "Registered crafting recipes!");
 
@@ -65,8 +74,8 @@ public class Main extends JavaPlugin {
         ChatWriter.log(true, "Debug logging is enabled! You should disable it in the config!");
 
         for (Player current : Bukkit.getServer().getOnlinePlayers()) {
-            PlayerData.hasPower.put(current, false);
-            PlayerData.BlockFace.put(current, null);
+            PlayerData.HASPOWER.put(current, false);
+            PlayerData.BLOCKFACE.put(current, null);
         }
     }
 

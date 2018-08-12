@@ -7,6 +7,6 @@ import java.util.HashMap;
 
 public class PlayerData {
 
-    public static HashMap<Player, BlockFace> BlockFace = new HashMap<>();
-    public static HashMap<Player, Boolean> hasPower = new HashMap<>();
+    public static final HashMap<Player, BlockFace> BLOCKFACE = new HashMap<>();
+    public static final HashMap<Player, Boolean> HASPOWER = new HashMap<>();
 }

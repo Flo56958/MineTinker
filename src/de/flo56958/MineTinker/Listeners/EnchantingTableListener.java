@@ -17,7 +17,7 @@ public class EnchantingTableListener implements Listener {
             if (e.getInventory() instanceof EnchantingInventory) {
                 if (e.getSlot() == 0) {
                     if (e.getWhoClicked().getItemOnCursor().hasItemMeta()) {
-                        if (e.getWhoClicked().getItemOnCursor().getItemMeta().getLore().contains(Strings.IDENTIFIER)) {
+                        if (e.getWhoClicked().getItemOnCursor().getItemMeta().getLore().contains(Strings.IDENTIFIER) || e.getWhoClicked().getItemOnCursor().getItemMeta().getLore().contains(Strings.IDENTIFIER_BUILDERSWAND)) {
                             e.setCancelled(true);
                         }
                     }

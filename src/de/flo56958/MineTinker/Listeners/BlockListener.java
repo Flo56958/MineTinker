@@ -47,6 +47,9 @@ public class BlockListener implements Listener {
                     e.getBlock().getType().equals(Material.LILAC) ||
                     e.getBlock().getType().equals(Material.LILY_PAD) ||
                     e.getBlock().getType().equals(Material.BLUE_ORCHID) ||
+                    e.getBlock().getType().equals(Material.POPPY) ||
+                    e.getBlock().getType().equals(Material.OXEYE_DAISY) ||
+                    e.getBlock().getType().equals(Material.AZURE_BLUET) ||
                     e.getBlock().getType().equals(Material.TORCH))) {
                 if (e.getPlayer().getGameMode().equals(GameMode.SURVIVAL) || e.getPlayer().getGameMode().equals(GameMode.ADVENTURE)) {
                     ItemStack tool = e.getPlayer().getInventory().getItemInMainHand();
@@ -65,7 +68,6 @@ public class BlockListener implements Listener {
                                 LevelCalculator.addExp(e.getPlayer(), tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
                                 if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed")) {
                                     //<editor-fold desc="self-repair check">
-                                    searchloop:
                                     for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel"); i++) {
                                         if (lore.contains(Strings.SELFREPAIR + i)) {
                                             //self-repair
@@ -76,16 +78,15 @@ public class BlockListener implements Listener {
                                                 short dura = (short) (tool.getDurability() - heal);
                                                 if (dura < 0) { dura = 0; }
                                                 e.getPlayer().getInventory().getItemInMainHand().setDurability(dura);
-                                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + " (" + tool.getType().toString() + ")!");
+                                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
                                             }
-                                            break searchloop;
+                                            break;
                                         }
                                     }
                                     //</editor-fold>
                                 }
                                 if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed")) {
                                     //<editor-fold desc="xp check">
-                                    searchloop:
                                     for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.XP.MaxLevel"); i++) {
                                         if (lore.contains(Strings.XP + i)) {
                                             //self-repair
@@ -93,9 +94,9 @@ public class BlockListener implements Listener {
                                             int n = rand.nextInt(100);
                                             if (n <= Main.getPlugin().getConfig().getInt("Modifiers.XP.PercentagePerLevel") * i) {
                                                 e.setExpToDrop(e.getExpToDrop() + Main.getPlugin().getConfig().getInt("Modifiers.XP.XPAmount"));
-                                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " triggered XP on " + ItemGenerator.getDisplayName(tool) + " (" + tool.getType().toString() + ")!");
+                                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " triggered XP on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
                                             }
-                                            break searchloop;
+                                            break;
                                         }
                                     }
                                     //</editor-fold>
@@ -145,7 +146,6 @@ public class BlockListener implements Listener {
                                             break;
                                     }
                                     if (goodBlock) {
-                                        searchloop:
                                         for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.MaxLevel"); i++) {
                                             if (lore.contains(Strings.AUTOSMELT + i)) {
                                                 //self-repair
@@ -154,11 +154,10 @@ public class BlockListener implements Listener {
                                                 if (n <= Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.PercentagePerLevel") * i) {
                                                     int amount = 1;
                                                     if (Main.getPlugin().getConfig().getBoolean("Modifiers.Luck.allowed") && luck) {
-                                                        searchloop2:
                                                         for (int j = 0; j <= 3; j++) {
                                                             if (lore.contains(Strings.LUCK + j)) {
                                                                 amount = amount + j;
-                                                                break searchloop2;
+                                                                break;
                                                             }
                                                         }
                                                     }
@@ -169,20 +168,20 @@ public class BlockListener implements Listener {
                                                     if (Main.getPlugin().getConfig().getBoolean("Modifiers.Auto-Smelt.Sound")) {
                                                         e.getBlock().getLocation().getWorld().playSound(e.getBlock().getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
                                                     }
-                                                    ChatWriter.log(false, e.getPlayer().getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + " (" + tool.getType().toString() + ") while mining " + e.getBlock().getType().toString() + "!");
+                                                    ChatWriter.log(false, e.getPlayer().getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ") while mining " + e.getBlock().getType().toString() + "!");
                                                 }
-                                                break searchloop;
+                                                break;
                                             }
                                         }
                                     }
                                     //</editor-fold>
                                 }
                                 if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed")) {
-                                    if (!PlayerData.hasPower.get(e.getPlayer()) && !e.getPlayer().isSneaking()) {
+                                    if (!PlayerData.HASPOWER.get(e.getPlayer()) && !e.getPlayer().isSneaking()) {
                                         if (lore.contains(Strings.POWER + 1)) {
-                                            PlayerData.hasPower.replace(e.getPlayer(), true);
+                                            PlayerData.HASPOWER.replace(e.getPlayer(), true);
                                             //<editor-fold desc="POWER 1">
-                                            if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.UP)) {
+                                            if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.UP)) {
                                                 if (PlayerInfo.getFacingDirection(e.getPlayer()).equals("N") || PlayerInfo.getFacingDirection(e.getPlayer()).equals("S")) {
                                                     Block b1 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(1, 0, 0));
                                                     Block b2 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(-1, 0, 0));
@@ -202,7 +201,7 @@ public class BlockListener implements Listener {
                                                         ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
                                                     }
                                                 }
-                                            } else if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.NORTH) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.SOUTH)) {
+                                            } else if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.NORTH) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.SOUTH)) {
                                                 Block b1 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(1, 0, 0));
                                                 Block b2 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(-1, 0, 0));
                                                 if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.CAVE_AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.LAVA)) {
@@ -211,7 +210,7 @@ public class BlockListener implements Listener {
                                                 if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.CAVE_AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.LAVA)) {
                                                     ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
                                                 }
-                                            } else if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.WEST) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.EAST)) {
+                                            } else if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.WEST) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.EAST)) {
                                                 Block b1 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, 0, 1));
                                                 Block b2 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, 0, -1));
                                                 if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.CAVE_AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.LAVA)) {
@@ -224,8 +223,8 @@ public class BlockListener implements Listener {
                                             //</editor-fold>
                                         } else if (lore.contains(Strings.POWER + 2)) {
                                             //<editor-fold desc="POWER 2">
-                                            PlayerData.hasPower.replace(e.getPlayer(), true);
-                                            if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.UP)) {
+                                            PlayerData.HASPOWER.replace(e.getPlayer(), true);
+                                            if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.UP)) {
                                                 for (int x = -1; x <= 1; x++) {
                                                     for (int z = -1; z <= 1; z++) {
                                                         if (!(x == 0 && z == 0)) {
@@ -236,7 +235,7 @@ public class BlockListener implements Listener {
                                                         }
                                                     }
                                                 }
-                                            } else if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.NORTH) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.SOUTH)) {
+                                            } else if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.NORTH) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.SOUTH)) {
                                                 for (int x = -1; x <= 1; x++) {
                                                     for (int y = -1; y <= 1; y++) {
                                                         if (!(x == 0 && y == 0)) {
@@ -247,7 +246,7 @@ public class BlockListener implements Listener {
                                                         }
                                                     }
                                                 }
-                                            } else if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.EAST) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.WEST)) {
+                                            } else if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.EAST) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.WEST)) {
                                                 for (int z = -1; z <= 1; z++) {
                                                     for (int y = -1; y <= 1; y++) {
                                                         if (!(z == 0 && y == 0)) {
@@ -262,8 +261,8 @@ public class BlockListener implements Listener {
                                             //</editor-fold>
                                         } else if (lore.contains(Strings.POWER + 3)) {
                                             //<editor-fold desc="POWER 3">
-                                            PlayerData.hasPower.replace(e.getPlayer(), true);
-                                            if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.UP)) {
+                                            PlayerData.HASPOWER.replace(e.getPlayer(), true);
+                                            if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.UP)) {
                                                 for (int x = -2; x <= 2; x++) {
                                                     for (int z = -2; z <= 2; z++) {
                                                         if (!(x == 0 && z == 0)) {
@@ -274,7 +273,7 @@ public class BlockListener implements Listener {
                                                         }
                                                     }
                                                 }
-                                            } else if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.NORTH) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.SOUTH)) {
+                                            } else if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.NORTH) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.SOUTH)) {
                                                 for (int x = -2; x <= 2; x++) {
                                                     for (int y = -2; y <= 2; y++) {
                                                         if (!(x == 0 && y == 0)) {
@@ -285,7 +284,7 @@ public class BlockListener implements Listener {
                                                         }
                                                     }
                                                 }
-                                            } else if (PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.EAST) || PlayerData.BlockFace.get(e.getPlayer()).equals(BlockFace.WEST)) {
+                                            } else if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.EAST) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.WEST)) {
                                                 for (int z = -2; z <= 2; z++) {
                                                     for (int y = -2; y <= 2; y++) {
                                                         if (!(z == 0 && y == 0)) {
@@ -299,7 +298,7 @@ public class BlockListener implements Listener {
                                             }
                                             //</editor-fold>
                                         }
-                                        PlayerData.hasPower.replace(e.getPlayer(), false);
+                                        PlayerData.HASPOWER.replace(e.getPlayer(), false);
                                     }
                                 }
                             }
@@ -313,10 +312,14 @@ public class BlockListener implements Listener {
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
         if (!e.isCancelled()) {
+            ItemStack norm = e.getPlayer().getInventory().getItemInMainHand();
+            if (e.getAction().equals(Action.RIGHT_CLICK_AIR) && (norm.equals(Modifiers.ENDER_MODIFIER))) {
+                e.setCancelled(true);
+                return;
+            }
             if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-                ItemStack norm = e.getPlayer().getInventory().getItemInMainHand();
-                int temp = norm.getAmount();
                 norm.setAmount(1);
+                int temp = norm.getAmount();
                 if (norm.equals(Modifiers.LUCK_MODIFIER) ||
                         norm.equals(Modifiers.SHARPNESS_MODIFIER) ||
                         norm.equals(Modifiers.HASTE_MODIFIER) ||
@@ -324,7 +327,9 @@ public class BlockListener implements Listener {
                         norm.equals(Modifiers.SELFREPAIR_MODIFIER) ||
                         norm.equals(Modifiers.SILKTOUCH_MODIFIER) ||
                         norm.equals(Modifiers.AUTOSMELT_MODIFIER) ||
-                        norm.equals(Modifiers.BEHEADING_MODIFIER)) {
+                        norm.equals(Modifiers.BEHEADING_MODIFIER) ||
+                        norm.equals(Modifiers.ENDER_MODIFIER) ||
+                        norm.equals(Modifiers.GLOWING_MODIFIER)) {
                     norm.setAmount(temp);
                     e.setCancelled(true);
                     return;
@@ -444,7 +449,7 @@ public class BlockListener implements Listener {
                         //</editor-fold>
                     }
                     if (Main.getPlugin().getConfig().getBoolean("Modifiers.Beheading.allowed")) {
-                        //<editor-fold desc="POWER">
+                        //<editor-fold desc="BEHEADING">
                         if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.WITHER_SKELETON_SKULL) && !e.getPlayer().isSneaking()) {
                             if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
                                 e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.BEHEADING_MODIFIER);
@@ -466,6 +471,62 @@ public class BlockListener implements Listener {
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Beheading.EnchantCost") + " levels are required!");
                                 ChatWriter.log(false,  e.getPlayer().getDisplayName() + " tried to create a Beheading-Modifier but had not enough levels!");
+                            }
+                            e.setCancelled(true);
+                        }
+                        //</editor-fold>
+                    }
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Infinity.allowed")) {
+                        //<editor-fold desc="INFINITY">
+                        if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.ARROW) && !e.getPlayer().isSneaking()) {
+                            if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
+                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.INFINITY_MODIFIER);
+                                if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
+                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                }
+                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Infinity-Modifier in Creative!");
+                            } else if (e.getPlayer().getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Infinity.EnchantCost")) {
+                                int amount = e.getPlayer().getInventory().getItemInMainHand().getAmount();
+                                int newLevel = e.getPlayer().getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Infinity.EnchantCost");
+                                e.getPlayer().setLevel(newLevel);
+                                e.getPlayer().getInventory().getItemInMainHand().setAmount(amount - 1);
+                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.INFINITY_MODIFIER);
+                                if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
+                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                }
+                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Infinity-Modifier!");
+                            } else {
+                                ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
+                                ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Infinity.EnchantCost") + " levels are required!");
+                                ChatWriter.log(false,  e.getPlayer().getDisplayName() + " tried to create a Infinity-Modifier but had not enough levels!");
+                            }
+                            e.setCancelled(true);
+                        }
+                        //</editor-fold>
+                    }
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Poisonous.allowed")) {
+                        //<editor-fold desc="POISONOUS">
+                        if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.ROTTEN_FLESH) && !e.getPlayer().isSneaking()) {
+                            if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
+                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.POISONOUS_MODIFIER);
+                                if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
+                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                }
+                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Poisonous-Modifier in Creative!");
+                            } else if (e.getPlayer().getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Poisonous.EnchantCost")) {
+                                int amount = e.getPlayer().getInventory().getItemInMainHand().getAmount();
+                                int newLevel = e.getPlayer().getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Poisonous.EnchantCost");
+                                e.getPlayer().setLevel(newLevel);
+                                e.getPlayer().getInventory().getItemInMainHand().setAmount(amount - 1);
+                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.POISONOUS_MODIFIER);
+                                if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
+                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                }
+                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Poisonous-Modifier!");
+                            } else {
+                                ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
+                                ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Poisonous.EnchantCost") + " levels are required!");
+                                ChatWriter.log(false,  e.getPlayer().getDisplayName() + " tried to create a Poisonous-Modifier but had not enough levels!");
                             }
                             e.setCancelled(true);
                         }

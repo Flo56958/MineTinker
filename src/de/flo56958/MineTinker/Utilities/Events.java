@@ -18,7 +18,7 @@ class Events {
         if (Main.getPlugin().getConfig().getBoolean("Sound.OnLevelUp")) {
             p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.5F);
         }
-        ChatWriter.sendMessage(p, ChatColor.GOLD, ItemGenerator.getDisplayName(tool) + " just got a Level-Up!");
+        ChatWriter.sendMessage(p, ChatColor.GOLD, ItemGenerator.getDisplayName(tool) + ChatColor.GOLD + " just got a Level-Up!");
 
         if (Main.getPlugin().getConfig().getInt("AddModifierSlotsPerLevel") > 0) {
             ItemMeta meta = tool.getItemMeta();
@@ -29,12 +29,12 @@ class Events {
             int newSlots = slots + Main.getPlugin().getConfig().getInt("AddModifierSlotsPerLevel");
             lore.set(3, ChatColor.WHITE + "Free Modifier Slots: " + newSlots);
 
-            ChatWriter.sendMessage(p, ChatColor.GOLD, ItemGenerator.getDisplayName(tool) + " has now " + ChatColor.WHITE + newSlots + ChatColor.GOLD + " free Modifier-Slots!");
+            ChatWriter.sendMessage(p, ChatColor.GOLD, ItemGenerator.getDisplayName(tool) + ChatColor.GOLD + " has now " + ChatColor.WHITE + newSlots + ChatColor.GOLD + " free Modifier-Slots!");
 
             meta.setLore(lore);
             tool.setItemMeta(meta);
         }
-        ChatWriter.log(false, p.getDisplayName() + " leveled up " + ItemGenerator.getDisplayName(tool) + " (" + tool.getType().toString() + ")!");
+        ChatWriter.log(false, p.getDisplayName() + " leveled up " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
     }
 
     static void LevelUpChance(Player p, ItemStack tool) {
@@ -81,38 +81,40 @@ class Events {
         if (Main.getPlugin().getConfig().getBoolean("Sound.OnModding")) {
             p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
         }
-        ChatWriter.sendMessage(p, ChatColor.RED, ItemGenerator.getDisplayName(tool) + " is already max level on: " + mod);
+        ChatWriter.sendMessage(p, ChatColor.RED, ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " is already max level on: " + mod);
     }
 
-    static void Mod_AddMod(Player p, ItemStack tool, String s, int slotsRemaining) {
-        if (Main.getPlugin().getConfig().getBoolean("Sound.OnModding")) {
+    static void Mod_AddMod(Player p, ItemStack tool, String s, int slotsRemaining, boolean event) {
+        if (Main.getPlugin().getConfig().getBoolean("Sound.OnModding") && !event) {
             p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
         }
-        ChatWriter.sendMessage(p, ChatColor.WHITE, ItemGenerator.getDisplayName(tool) + " has now " + s);
-        ChatWriter.sendMessage(p, ChatColor.WHITE, ItemGenerator.getDisplayName(tool) + " has now " + slotsRemaining + " free Slots remaining!");
-        ChatWriter.log(false, p.getDisplayName() + " modded " + ItemGenerator.getDisplayName(tool) + " (" + tool.getType().toString() + ") with " + s + ChatColor.GRAY + "!");
+        ChatWriter.sendMessage(p, ChatColor.WHITE, ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " has now " + s);
+        if (!event) {
+            ChatWriter.sendMessage(p, ChatColor.WHITE, ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " has now " + slotsRemaining + " free Slots remaining!");
+        }
+        ChatWriter.log(false, p.getDisplayName() + " modded " + ItemGenerator.getDisplayName(tool) +  ChatColor.WHITE + " (" + tool.getType().toString() + ") with " + s + ChatColor.GRAY + "!");
     }
 
     static void Mod_NoSlots(Player p, ItemStack tool, String s) {
         if (Main.getPlugin().getConfig().getBoolean("Sound.OnModding")) {
             p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
         }
-        ChatWriter.sendMessage(p, ChatColor.RED, ItemGenerator.getDisplayName(tool) + " has not enough Modifier-Slots for " + s + "!");
+        ChatWriter.sendMessage(p, ChatColor.RED, ItemGenerator.getDisplayName(tool) + ChatColor.RED + " has not enough Modifier-Slots for " + s + "!");
     }
 
     static void Upgrade_Fail(Player p, ItemStack tool, String level) {
         if (Main.getPlugin().getConfig().getBoolean("Sound.OnUpgrade")) {
             p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
         }
-        ChatWriter.sendMessage(p, ChatColor.RED, ItemGenerator.getDisplayName(tool) + " is already " + level + "!");
+        ChatWriter.sendMessage(p, ChatColor.RED, ItemGenerator.getDisplayName(tool) + ChatColor.RED + " is already " + level + "!");
     }
 
     static void Upgrade_Prohibited(Player p, ItemStack tool) {
         if (Main.getPlugin().getConfig().getBoolean("Sound.OnUpgrade")) {
             p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
         }
-        ChatWriter.sendMessage(p, ChatColor.RED, ItemGenerator.getDisplayName(tool) + " can not be upgraded!");
-        ChatWriter.log(false,  ChatColor.RED + p.getDisplayName() + " tried to upgrade " + ItemGenerator.getDisplayName(tool) + " (" + tool.getType().toString() + ") but was not allowed!");
+        ChatWriter.sendMessage(p, ChatColor.RED, ItemGenerator.getDisplayName(tool) + ChatColor.RED + " can not be upgraded!");
+        ChatWriter.log(false,  p.getDisplayName() + " tried to upgrade " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ") but was not allowed!");
     }
 
     static void Upgrade_Success(Player p, ItemStack tool, String level) {
@@ -120,7 +122,7 @@ class Events {
             p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
         }
         ChatWriter.sendMessage(p, ChatColor.WHITE, ItemGenerator.getDisplayName(tool) + " is now " + level + "!");
-        ChatWriter.log(false, p.getDisplayName() + " upgraded " + ItemGenerator.getDisplayName(tool) + " (" + tool.getType().toString() + ") to " + level + "!");
+        ChatWriter.log(false, p.getDisplayName() + " upgraded " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ") to " + level + "!");
     }
 
     static void ModAndSilk(Player p, String mod) {

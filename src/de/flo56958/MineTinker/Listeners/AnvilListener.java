@@ -34,52 +34,72 @@ public class AnvilListener implements Listener {
                                     boolean isModifier = true;
                                     ItemStack modifier = e.getWhoClicked().getItemOnCursor();
                                     if (modifier.equals(Modifiers.SELFREPAIR_MODIFIER)) {
-                                        if (Lists.getAllowedModifiers().contains("Self-Repair")) {
-                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Self-Repair", (Player) e.getWhoClicked(), false);
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name").toLowerCase(), (Player) e.getWhoClicked(), false);
                                         }
                                     } else if (modifier.getType().equals(Material.NETHER_STAR)) {
-                                        if (Lists.getAllowedModifiers().contains("Extra-Modifier")) {
-                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Extra-Modifier", (Player) e.getWhoClicked(), false);
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Extra-Modifier.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Extra-Modifier.name").toLowerCase(), (Player) e.getWhoClicked(), false);
                                         }
                                     } else if (modifier.equals(Modifiers.HASTE_MODIFIER)) {
-                                        if (Lists.getAllowedModifiers().contains("Haste")) {
-                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Haste", (Player) e.getWhoClicked(), false);
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Haste.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Haste.name").toLowerCase(), (Player) e.getWhoClicked(), false);
                                         }
                                     } else if (modifier.equals(Modifiers.REINFORCED_MODIFIER)) {
-                                        if (Lists.getAllowedModifiers().contains("Reinforced")) {
-                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Reinforced", (Player) e.getWhoClicked(), false);
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name").toLowerCase(), (Player) e.getWhoClicked(), false);
                                         }
                                     } else if (modifier.equals(Modifiers.SHARPNESS_MODIFIER)) {
-                                        if (Lists.getAllowedModifiers().contains("Sharpness")) {
-                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Sharpness", (Player) e.getWhoClicked(), false);
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name").toLowerCase(), (Player) e.getWhoClicked(), false);
                                         }
                                     } else if (modifier.getType().equals(Material.EXPERIENCE_BOTTLE)) {
-                                        if (Lists.getAllowedModifiers().contains("XP")) {
-                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "XP", (Player) e.getWhoClicked(), false);
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.XP.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.XP.name").toLowerCase(), (Player) e.getWhoClicked(), false);
                                         }
                                     } else if (modifier.equals(Modifiers.LUCK_MODIFIER)) {
-                                        if (Lists.getAllowedModifiers().contains("Luck")) {
-                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Luck", (Player) e.getWhoClicked(), false);
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Luck.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Luck.name").toLowerCase(), (Player) e.getWhoClicked(), false);
                                         }
                                     } else if (modifier.equals(Modifiers.SILKTOUCH_MODIFIER)) {
-                                        if (Lists.getAllowedModifiers().contains("Silk-Touch")) {
-                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Silk-Touch", (Player) e.getWhoClicked(), false);
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name").toLowerCase(), (Player) e.getWhoClicked(), false);
                                         }
                                     } else if (modifier.equals(Modifiers.FIERY_MODIFIER)) {
-                                        if (Lists.getAllowedModifiers().contains("Fiery")) {
-                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Fiery", (Player) e.getWhoClicked(), false);
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Fiery.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Fiery.name").toLowerCase(), (Player) e.getWhoClicked(), false);
                                         }
                                     } else if (modifier.equals(Modifiers.AUTOSMELT_MODIFIER)) {
-                                        if (Lists.getAllowedModifiers().contains("Auto-Smelt")) {
-                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Auto-Smelt", (Player) e.getWhoClicked(), false);
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name").toLowerCase(), (Player) e.getWhoClicked(), false);
                                         }
                                     } else if (modifier.equals(Modifiers.POWER_MODIFIER)) {
-                                        if (Lists.getAllowedModifiers().contains("Power")) {
-                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Power", (Player) e.getWhoClicked(), false);
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Power.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Power.name").toLowerCase(), (Player) e.getWhoClicked(), false);
                                         }
                                     } else if (modifier.equals(Modifiers.BEHEADING_MODIFIER)) {
-                                        if (Lists.getAllowedModifiers().contains("Beheading")) {
-                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), "Beheading", (Player) e.getWhoClicked(), false);
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Beheading.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Beheading.name").toLowerCase(), (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else if (modifier.equals(Modifiers.INFINITY_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Infinity.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Infinity.name").toLowerCase(), (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else if (modifier.equals(Modifiers.SHULKING_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Shulking.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Shulking.name").toLowerCase(), (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else if (modifier.equals(Modifiers.ENDER_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Ender.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Ender.name").toLowerCase(), (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else if (modifier.equals(Modifiers.POISONOUS_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Poisonous.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Poisonous.name").toLowerCase(), (Player) e.getWhoClicked(), false);
+                                        }
+                                    } else if (modifier.equals(Modifiers.GLOWING_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Glowing.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Glowing.name").toLowerCase(), (Player) e.getWhoClicked(), false);
                                         }
                                     } else {
                                         isModifier = false;
@@ -111,7 +131,7 @@ public class AnvilListener implements Listener {
                                     if (newTool != null) {
                                         e.getWhoClicked().getItemOnCursor().setAmount(0);
                                         e.setCancelled(true);
-                                    } else { return; }
+                                    }
                                     //</editor-fold>
                                 }
 

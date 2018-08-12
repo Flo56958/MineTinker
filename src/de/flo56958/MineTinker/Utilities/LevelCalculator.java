@@ -15,7 +15,7 @@ public class LevelCalculator {
     }
 
     public static void addExp(Player p, ItemStack tool, int amount) {
-        Boolean LevelUp = false;
+        boolean LevelUp = false;
 
         ItemMeta meta = tool.getItemMeta();
         ArrayList<String> lore = (ArrayList<String>) meta.getLore();

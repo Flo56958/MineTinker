@@ -77,21 +77,21 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        PlayerData.BlockFace.put(e.getPlayer(), null);
-        PlayerData.hasPower.put(e.getPlayer(), false);
+        PlayerData.BLOCKFACE.put(e.getPlayer(), null);
+        PlayerData.HASPOWER.put(e.getPlayer(), false);
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        PlayerData.BlockFace.remove(e.getPlayer());
-        PlayerData.hasPower.remove(e.getPlayer());
+        PlayerData.BLOCKFACE.remove(e.getPlayer());
+        PlayerData.HASPOWER.remove(e.getPlayer());
     }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         if (!Lists.WORLDS.contains(e.getPlayer().getWorld().getName())) { return; }
         if (!e.getBlockFace().equals(BlockFace.SELF)) {
-            PlayerData.BlockFace.replace(e.getPlayer(), e.getBlockFace());
+            PlayerData.BLOCKFACE.replace(e.getPlayer(), e.getBlockFace());
         }
     }
 }

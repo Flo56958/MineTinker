@@ -9,15 +9,20 @@ import org.bukkit.inventory.ItemStack;
 
 public class Modifiers {
 
-    public static final ItemStack SELFREPAIR_MODIFIER = ItemGenerator.itemEnchanter(Material.MOSSY_COBBLESTONE, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name_modifier"), 1, Enchantment.MENDING, 1);
-    public static final ItemStack REINFORCED_MODIFIER = ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.GRAY + Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name_modifier"), 1, Enchantment.DURABILITY, 1);
-    public static final ItemStack HASTE_MODIFIER = ItemGenerator.itemEnchanter(Material.REDSTONE_BLOCK, ChatColor.DARK_RED + Main.getPlugin().getConfig().getString("Modifiers.Haste.name_modifier"), 1, Enchantment.DIG_SPEED, 1);
-    public static final ItemStack SHARPNESS_MODIFIER = ItemGenerator.itemEnchanter(Material.QUARTZ_BLOCK, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name_modifier"), 1 , Enchantment.DAMAGE_ALL, 1);
-    public static final ItemStack LUCK_MODIFIER = ItemGenerator.itemEnchanter(Material.LAPIS_BLOCK, ChatColor.BLUE + Main.getPlugin().getConfig().getString("Modifiers.Luck.name_modifier"), 1, Enchantment.LOOT_BONUS_BLOCKS, 1);
-    public static final ItemStack SILKTOUCH_MODIFIER = ItemGenerator.itemEnchanter(Material.COBWEB, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name_modifier"), 1, Enchantment.SILK_TOUCH, 1);
-    public static final ItemStack FIERY_MODIFIER = ItemGenerator.itemEnchanter(Material.BLAZE_ROD, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1);
     public static final ItemStack AUTOSMELT_MODIFIER = ItemGenerator.itemEnchanter(Material.FURNACE, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1);
-    public static final ItemStack POWER_MODIFIER = ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Power.name_modifier"), 1, Enchantment.ARROW_DAMAGE, 1);
     public static final ItemStack BEHEADING_MODIFIER = ItemGenerator.itemEnchanter(Material.WITHER_SKELETON_SKULL, ChatColor.DARK_GRAY + Main.getPlugin().getConfig().getString("Modifiers.Beheading.name_modifier"), 1, Enchantment.LOOT_BONUS_MOBS, 1);
+    public static final ItemStack ENDER_MODIFIER = ItemGenerator.itemEnchanter(Material.ENDER_EYE, ChatColor.DARK_GREEN + Main.getPlugin().getConfig().getString("Modifiers.Ender.name_modifier"), 1, Enchantment.DURABILITY, 1);
+    public static final ItemStack FIERY_MODIFIER = ItemGenerator.itemEnchanter(Material.BLAZE_ROD, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1);
+    public static final ItemStack GLOWING_MODIFIER = ItemGenerator.itemEnchanter(Material.GLOWSTONE, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Glowing.name_modifier"), 1, Enchantment.DURABILITY, 1);
+    public static final ItemStack HASTE_MODIFIER = ItemGenerator.itemEnchanter(Material.REDSTONE_BLOCK, ChatColor.DARK_RED + Main.getPlugin().getConfig().getString("Modifiers.Haste.name_modifier"), 1, Enchantment.DIG_SPEED, 1);
+    public static final ItemStack INFINITY_MODIFIER = ItemGenerator.itemEnchanter(Material.ARROW, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Infinity.name_modifier"), 1, Enchantment.ARROW_INFINITE, 1);
+    public static final ItemStack LUCK_MODIFIER = ItemGenerator.itemEnchanter(Material.LAPIS_BLOCK, ChatColor.BLUE + Main.getPlugin().getConfig().getString("Modifiers.Luck.name_modifier"), 1, Enchantment.LOOT_BONUS_BLOCKS, 1);
+    public static final ItemStack POISONOUS_MODIFIER = ItemGenerator.itemEnchanter(Material.ROTTEN_FLESH, ChatColor.DARK_GREEN + Main.getPlugin().getConfig().getString("Modifiers.Poisonous.name_modifier"), 1, Enchantment.DURABILITY, 1);
+    public static final ItemStack POWER_MODIFIER = ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Power.name_modifier"), 1, Enchantment.ARROW_DAMAGE, 1);
+    public static final ItemStack REINFORCED_MODIFIER = ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.GRAY + Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name_modifier"), 1, Enchantment.DURABILITY, 1);
+    public static final ItemStack SELFREPAIR_MODIFIER = ItemGenerator.itemEnchanter(Material.MOSSY_COBBLESTONE, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name_modifier"), 1, Enchantment.MENDING, 1);
+    public static final ItemStack SHARPNESS_MODIFIER = ItemGenerator.itemEnchanter(Material.QUARTZ_BLOCK, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name_modifier"), 1 , Enchantment.DAMAGE_ALL, 1);
+    public static final ItemStack SHULKING_MODIFIER = ItemGenerator.itemEnchanter(Material.SHULKER_SHELL, ChatColor.LIGHT_PURPLE + Main.getPlugin().getConfig().getString("Modifiers.Shulking.name_modifier"), 1, Enchantment.DURABILITY, 1);
+    public static final ItemStack SILKTOUCH_MODIFIER = ItemGenerator.itemEnchanter(Material.COBWEB, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name_modifier"), 1, Enchantment.SILK_TOUCH, 1);
 
 }

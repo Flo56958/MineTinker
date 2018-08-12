@@ -3,7 +3,6 @@ package de.flo56958.MineTinker.Utilities;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Main;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -56,444 +55,48 @@ public class ItemGenerator {
         ArrayList<String> lore = (ArrayList<String>) meta.getLore();
         String slots[] = lore.get(3).split(" ");
         int slotsRemaining = Integer.parseInt(slots[3]);
-        if (slotsRemaining != 0 || modifier.equals("Extra-Modifier") || event) {
-            if (modifier.equals("Self-Repair")) {
-                //<editor-fold desc="SELF-REPAIR">
-                int index = 0;
-                boolean hasSelfRepair = false;
-                searchloop:
-                for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel"); i++) {
-                    if (lore.contains(Strings.SELFREPAIR + i)) {
-                        index = i;
-                        hasSelfRepair = true;
-                        break searchloop;
-                    }
-                }
-                int loreIndex = 0;
-                int level = 1 + index;
-                if (level > Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel")) {
-                    if (!event) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name"));
-                    }
-                    return null;
-                }
-                if (hasSelfRepair) {
-                    loreIndex = lore.indexOf(Strings.SELFREPAIR + index);
-                }
-                if (loreIndex != 0) {
-                    lore.set(loreIndex, Strings.SELFREPAIR + level);
-                } else {
-                    lore.add(Strings.SELFREPAIR + level);
-                }
-                Events.Mod_AddMod(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name") + " " + level, slotsRemaining - 1);
-                lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
-                if (level == Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel")) {
-                    meta.addEnchant(Enchantment.MENDING, 1, true);
-                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                }
-                //</editor-fold>
-            } else if (modifier.equals("Extra-Modifier")) {
-                //<editor-fold desc="EXTRA-MODIFIER">
-                int extra = Main.getPlugin().getConfig().getInt("Modifiers.Extra-Modifier.ExtraModifierGain");
-                lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining + extra));
-                Events.Mod_AddMod(p, tool, ChatColor.WHITE + "" + extra + " extra Modifier-Slot", slotsRemaining + extra);
-                //</editor-fold>
-            } else if (modifier.equals("Haste")) {
-                //<editor-fold desc="HASTE">
-                if (Lists.AXES.contains(tool.getType().toString()) || Lists.SHOVELS.contains(tool.getType().toString()) || Lists.PICKAXES.contains(tool.getType().toString())) {
-                    int index = 0;
-                    boolean hasHaste = false;
-                    searchloop:
-                    for (int i = 1; i <= 5; i++) {
-                        if (lore.contains(Strings.HASTE + i)) {
-                            index = i;
-                            hasHaste = true;
-                            break searchloop;
-                        }
-                    }
-                    int loreIndex = 0;
-                    int level = 1 + index;
-                    if (level > 5) {
-                        if (!event) {
-                            Events.Mod_MaxLevel(p, tool, ChatColor.DARK_RED + Main.getPlugin().getConfig().getString("Modifiers.Haste.name"));
-                        }
-                        return null;
-                    }
-                    if (hasHaste) {
-                        loreIndex = lore.indexOf(Strings.HASTE + index);
-                    }
-                    if (loreIndex != 0) {
-                        lore.set(loreIndex, Strings.HASTE + level);
-                    } else {
-                        lore.add(Strings.HASTE + level);
-                    }
-                    meta.addEnchant(Enchantment.DIG_SPEED, level, true);
-                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                    Events.Mod_AddMod(p, tool, ChatColor.DARK_RED + Main.getPlugin().getConfig().getString("Modifiers.Haste.name") + " " + level, slotsRemaining - 1);
-                    lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
-                } else {
-                    return null;
-                }
-                //</editor-fold>
-            } else if (modifier.equals("Reinforced")) {
-                //<editor-fold desc="REINFORCED">
-                int index = 0;
-                boolean hasReinforced = false;
-                searchloop:
-                for (int i = 1; i <= 3; i++) {
-                    if (lore.contains(Strings.REINFORCED + i)) {
-                        index = i;
-                        hasReinforced = true;
-                        break searchloop;
-                    }
-                }
-                int loreIndex = 0;
-                int level = 1 + index;
-                if (level > 3) {
-                    if (!event) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.GRAY + Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name"));
-                    }
-                    return null;
-                }
-                if (hasReinforced) {
-                    loreIndex = lore.indexOf(Strings.REINFORCED + index);
-                }
-                if (loreIndex != 0) {
-                    lore.set(loreIndex, Strings.REINFORCED + level);
-                } else {
-                    lore.add(Strings.REINFORCED + level);
-                }
-                meta.addEnchant(Enchantment.DURABILITY, level, true);
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                Events.Mod_AddMod(p, tool, ChatColor.GRAY + Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name")+ " " + level, slotsRemaining - 1);
-                lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
-                //</editor-fold>
-            } else if (modifier.equals("Sharpness")) {
-                //<editor-fold desc="SHARPNESS">
-                if (Lists.SWORDS.contains(tool.getType().toString()) || Lists.BOWS.contains(tool.getType().toString())) {
-                    int index = 0;
-                    boolean hasSharpness = false;
-                    searchloop:
-                    for (int i = 1; i <= 5; i++) {
-                        if (lore.contains(Strings.SHARPNESS + i)) {
-                            index = i;
-                            hasSharpness = true;
-                            break searchloop;
-                        }
-                    }
-                    int loreIndex = 0;
-                    int level = 1 + index;
-                    if (level > 5) {
-                        if (!event) {
-                            Events.Mod_MaxLevel(p, tool, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name"));
-                        }
-                        return null;
-                    }
-                    if (hasSharpness) {
-                        loreIndex = lore.indexOf(Strings.SHARPNESS + index);
-                    }
-                    if (loreIndex != 0) {
-                        lore.set(loreIndex, Strings.SHARPNESS + level);
-                    } else {
-                        lore.add(Strings.SHARPNESS + level);
-                    }
-                    if (Lists.BOWS.contains(tool.getType().toString())) {
-                        meta.addEnchant(Enchantment.ARROW_DAMAGE, level, true);
-                    } else if (Lists.SWORDS.contains(tool.getType().toString())) {
-                        meta.addEnchant(Enchantment.DAMAGE_ALL, level, true);
-                    }
-                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                    Events.Mod_AddMod(p, tool, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name") + " " + level, slotsRemaining - 1);
-                    lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
-                } else {
-                    return null;
-                }
-                //</editor-fold>
-            } else if (modifier.equals("XP")) {
-                //<editor-fold desc="XP">
-                if (Lists.BOWS.contains(tool.getType().toString())) {
-                    return null;
-                }
-                int index = 0;
-                boolean hasXP = false;
-                searchloop:
-                for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.XP.MaxLevel"); i++) {
-                    if (lore.contains(Strings.XP + i)) {
-                        index = i;
-                        hasXP = true;
-                        break searchloop;
-                    }
-                }
-                int loreIndex = 0;
-                int level = 1 + index;
-                if (level > Main.getPlugin().getConfig().getInt("Modifiers.XP.MaxLevel")) {
-                    if (!event) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.XP.name"));
-                    }
-                    return null;
-                }
-                if (hasXP) {
-                    loreIndex = lore.indexOf(Strings.XP + index);
-                }
-                if (loreIndex != 0) {
-                    lore.set(loreIndex, Strings.XP + level);
-                } else {
-                    lore.add(Strings.XP + level);
-                }
-                Events.Mod_AddMod(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.XP.name") + " " + level, slotsRemaining - 1);
-                lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
-                //</editor-fold>
-            } else if (modifier.equals("Auto-Smelt")) {
-                //<editor-fold desc="AUTO-SMELT">
-                if (lore.contains(Strings.SILKTOUCH)) {
-                    if (!event) {
-                        Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name"));
-                    }
-                }
-                if (Lists.PICKAXES.contains(tool.getType().toString()) ||
-                    Lists.SHOVELS.contains(tool.getType().toString()) ||
-                    Lists.AXES.contains(tool.getType().toString())) {
-                    int index = 0;
-                    boolean hasAutoSmelt = false;
-                    searchloop:
-                    for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.MaxLevel"); i++) {
-                        if (lore.contains(Strings.AUTOSMELT + i)) {
-                            index = i;
-                            hasAutoSmelt = true;
-                            break searchloop;
-                        }
-                    }
-                    int loreIndex = 0;
-                    int level = 1 + index;
-                    if (level > Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.MaxLevel")) {
-                        if (!event) {
-                            Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name"));
-                        }
-                        return null;
-                    }
-                    if (hasAutoSmelt) {
-                        loreIndex = lore.indexOf(Strings.AUTOSMELT + index);
-                    }
-                    if (loreIndex != 0) {
-                        lore.set(loreIndex, Strings.AUTOSMELT + level);
-                    } else {
-                        lore.add(Strings.AUTOSMELT + level);
-                    }
-                    Events.Mod_AddMod(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name") + " " + level, slotsRemaining - 1);
-                    lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
-                } else {
-                    return null;
-                }
-                //</editor-fold>
-            } else if (modifier.equals("Power")) {
-                //<editor-fold desc="POWER">
-                if (Lists.PICKAXES.contains(tool.getType().toString()) ||
-                        Lists.SHOVELS.contains(tool.getType().toString()) ||
-                        Lists.AXES.contains(tool.getType().toString())) {
-                    int index = 0;
-                    boolean hasPower = false;
-                    searchloop:
-                    for (int i = 1; i <= 3; i++) {
-                        if (lore.contains(Strings.POWER + i)) {
-                            index = i;
-                            hasPower = true;
-                            break searchloop;
-                        }
-                    }
-                    int loreIndex = 0;
-                    int level = 1 + index;
-                    if (level > 3) {
-                        if (!event) {
-                            Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Power.name"));
-                        }
-                        return null;
-                    }
-                    if (hasPower) {
-                        loreIndex = lore.indexOf(Strings.POWER + index);
-                    }
-                    if (loreIndex != 0) {
-                        lore.set(loreIndex, Strings.POWER + level);
-                    } else {
-                        lore.add(Strings.POWER + level);
-                    }
-                    Events.Mod_AddMod(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Power.name") + " " + level, slotsRemaining - 1);
-                    lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
-                } else {
-                    return null;
-                }
-                //</editor-fold>
-            } else if (modifier.equals("Luck")) {
-                //<editor-fold desc="LUCK">
-                if (Lists.BOWS.contains(tool.getType().toString())) {
-                    return null;
-                }
-                if (lore.contains(Strings.SILKTOUCH)) {
-                    if (!event) {
-                        Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Luck.name"));
-                    }
-                    return null;
-                }
-                int index = 0;
-                boolean hasLuck = false;
-                searchloop:
-                for (int i = 1; i <= 3; i++) {
-                    if (lore.contains(Strings.LUCK + i)) {
-                        index = i;
-                        hasLuck = true;
-                        break searchloop;
-                    }
-                }
-                int loreIndex = 0;
-                int level = 1 + index;
-                if (level > 3) {
-                    if (!event) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.BLUE + Main.getPlugin().getConfig().getString("Modifiers.Luck.name"));
-                    }
-                    return null;
-                }
-                if (hasLuck) {
-                    loreIndex = lore.indexOf(Strings.LUCK + index);
-                }
-                if (loreIndex != 0) {
-                    lore.set(loreIndex, Strings.LUCK + level);
-                } else {
-                    lore.add(Strings.LUCK + level);
-                }
-                if (Lists.SWORDS.contains(tool.getType().toString())) {
-                    meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, level, true);
-                } else if (Lists.AXES.contains(tool.getType().toString()) || Lists.PICKAXES.contains(tool.getType().toString()) || Lists.SHOVELS.contains(tool.getType().toString()) || Lists.HOES.contains(tool.getType().toString())) {
-                    meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, level, true);
-                } else { return null; }
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                Events.Mod_AddMod(p, tool, ChatColor.BLUE + Main.getPlugin().getConfig().getString("Modifiers.Luck.name") + " " + level, slotsRemaining - 1);
-                lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
-                //</editor-fold>
-            } else if (modifier.equals("Silk-Touch")) {
-                //<editor-fold desc="SILK-TOUCH">
-                if (lore.contains(Strings.SILKTOUCH)) {
-                    if (!event) {
-                        Events.Mod_MaxLevel(p, tool, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name"));
-                    }
-                    return null;
-                }
-                for (int i = 1; i <= 3; i++) {
-                    if (lore.contains(Strings.LUCK + i)) {
-                        if (!event) {
-                            Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Luck.name"));
-                        }
-                        return null;
-                    }
-                }
-                for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.MaxLevel"); i++) {
-                    if (lore.contains(Strings.AUTOSMELT + i)) {
-                        if (!event) {
-                            Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name"));
-                        }
-                        return null;
-                    }
-                }
-                if (Lists.AXES.contains(tool.getType().toString()) || Lists.PICKAXES.contains(tool.getType().toString()) || Lists.SHOVELS.contains(tool.getType().toString())) {
-                    meta.addEnchant(Enchantment.SILK_TOUCH, 1, true);
-                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                    Events.Mod_AddMod(p, tool, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name"), slotsRemaining - 1);
-                    lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
-                    lore.add(Strings.SILKTOUCH);
-                } else {
-                    return null;
-                }
-                //</editor-fold>
-            } else if (modifier.equals("Fiery")) {
-                //<editor-fold desc="FIERY">
-                if (Lists.SWORDS.contains(tool.getType().toString())) {
-                    int index = 0;
-                    boolean hasFiery = false;
-                    searchloop:
-                    for (int i = 1; i <= 2; i++) {
-                        if (lore.contains(Strings.FIERY + i)) {
-                            index = i;
-                            hasFiery = true;
-                            break searchloop;
-                        }
-                    }
-                    int loreIndex = 0;
-                    int level = 1 + index;
-                    if (level > 2) {
-                        if (!event) {
-                            Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"));
-                        }
-                        return null;
-                    }
-                    if (hasFiery) {
-                        loreIndex = lore.indexOf(Strings.FIERY + index);
-                    }
-                    if (loreIndex != 0) {
-                        lore.set(loreIndex, Strings.FIERY + level);
-                    } else {
-                        lore.add(Strings.FIERY + level);
-                    }
-                    meta.addEnchant(Enchantment.FIRE_ASPECT, level, true);
-                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                    Events.Mod_AddMod(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name") + " " + level, slotsRemaining - 1);
-                    lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
-                } else if (Lists.BOWS.contains(tool.getType().toString())){
-                    if (lore.contains(Strings.FIERY + 1)) {
-                        if (!event) {
-                            Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"));
-                        }
-                        return null;
-                    }
-                    lore.add(Strings.FIERY + 1);
-                    meta.addEnchant(Enchantment.ARROW_FIRE, 1, true);
-                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                    Events.Mod_AddMod(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"), slotsRemaining - 1);
-                    lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
-                } else {
-                    return null;
-                }
-                //</editor-fold>
-            } else if (modifier.equals("Beheading")) {
-                //<editor-fold desc="BEHEADING">
-                if (Lists.SWORDS.contains(tool.getType().toString())) {
-                    int index = 0;
-                    boolean hasBeheading = false;
-                    searchloop:
-                    for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Beheading.MaxLevel"); i++) {
-                        if (lore.contains(Strings.BEHEADING + i)) {
-                            index = i;
-                            hasBeheading = true;
-                            break searchloop;
-                        }
-                    }
-                    int loreIndex = 0;
-                    int level = 1 + index;
-                    if (level > Main.getPlugin().getConfig().getInt("Modifiers.Beheading.MaxLevel")) {
-                        if (!event) {
-                            Events.Mod_MaxLevel(p, tool, ChatColor.DARK_GRAY + Main.getPlugin().getConfig().getString("Modifiers.Beheading.name"));
-                        }
-                        return null;
-                    }
-                    if (hasBeheading) {
-                        loreIndex = lore.indexOf(Strings.BEHEADING + index);
-                    }
-                    if (loreIndex != 0) {
-                        lore.set(loreIndex, Strings.BEHEADING + level);
-                    } else {
-                        lore.add(Strings.BEHEADING + level);
-                    }
-                    Events.Mod_AddMod(p, tool, ChatColor.DARK_GRAY + Main.getPlugin().getConfig().getString("Modifiers.Beheading.name") + " " + level, slotsRemaining - 1);
-                    lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
-                } else {
-                    return null;
-                }
-                //</editor-fold>
+        if (slotsRemaining != 0 || modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Extra-Modifier.name").toLowerCase()) || event) {
+            if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name").toLowerCase())) {
+                return ModifierApply.AutoSmelt(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Beheading.name").toLowerCase())) {
+                return ModifierApply.Beheading(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Ender.name").toLowerCase())) {
+                return ModifierApply.Ender(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Extra-Modifier.name").toLowerCase())) {
+                return ModifierApply.ExtraModifier(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Fiery.name").toLowerCase())) {
+                return ModifierApply.Fiery(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Glowing.name").toLowerCase())) {
+                return ModifierApply.Glowing(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Haste.name").toLowerCase())) {
+                return ModifierApply.Haste(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Infinity.name").toLowerCase())) {
+                return ModifierApply.Infinity(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Luck.name").toLowerCase())) {
+                return ModifierApply.Luck(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Poisonous.name").toLowerCase())) {
+                return ModifierApply.Poisonous(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Power.name").toLowerCase())) {
+                return ModifierApply.Power(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name").toLowerCase())) {
+                return ModifierApply.Reinforced(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name").toLowerCase())) {
+                return ModifierApply.SelfRepair(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name").toLowerCase())) {
+                return ModifierApply.Sharpness(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Shulking.name").toLowerCase())) {
+                return ModifierApply.Shulking(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name").toLowerCase())) {
+                return ModifierApply.SilkTouch(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.XP.name").toLowerCase())) {
+                return ModifierApply.XP(p, tool, slotsRemaining, event);
+            } else {
+                return null;
             }
         } else {
             Events.Mod_NoSlots(p, tool, modifier);
             return null;
         }
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
     }
 
     public static ItemStack itemUpgrader(ItemStack tool, ItemStack upgrade, Player p) {

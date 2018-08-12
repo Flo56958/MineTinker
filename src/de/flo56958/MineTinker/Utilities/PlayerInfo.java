@@ -14,15 +14,15 @@ public class PlayerInfo {
 
     private static String getDirection(double rot) {
         if (0 <= rot && rot < 45) {
-            return "W"; //W
+            return "W";
         } else if (45 <= rot && rot < 135) {
-            return "N"; //N
+            return "N";
         } else if (135 <= rot && rot < 225) {
-            return "E"; //E
+            return "E";
         } else if (225 <= rot && rot < 315) {
-            return "S"; //S
+            return "S";
         } else if (315 <= rot && rot < 360.0) {
-            return "W"; //W
+            return "W";
         } else {
             return null;
         }

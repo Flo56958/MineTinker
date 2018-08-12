@@ -1,29 +1,31 @@
 chat-prefix: [MineTinker]
 logging:
-  standard: false
-  debug: false
+  standard: false #logs important player activities with MineTinker
+  debug: false #even more information
   metrics: true
 
-LevelStep: 100
+LevelStep: 100 #  *(LevelFactor^LevelOfTool)
 LevelFactor: 2.0
 AddModifierSlotsPerLevel: 1
 StartingModifierSlots: 1
-ExpPerBlockBreak: 1
-ExpPerSwordSwing: 1
-EnableDamageExp: false
-Upgradeable: true
-AllowEnchanting: false
-DurabilityPercentageRepair: 0.34
+ExpPerBlockBreak: 1 #How much XP will the tool get when you break a block
+ExpPerSwordSwing: 1 #How much XP will the tool get when you swing the Sword
+ExpPerArrowHit: 1 #How much XP will the tool get when you hit with the bow
+ExpPerArrowShot: 1 #How much XP will the tool get when you shoot with the bow
+EnableDamageExp: false #When true: Sword will gain XP equal to the damage-value
+Upgradeable: true #Can you upgrade your tools with an anvil
+AllowEnchanting: false #When enabled you can enchant the tools with vanilla methods (not recommended!)
+DurabilityPercentageRepair: 0.34 #How much durability (relative to maximum durability) should the tool recover per item
 
 LevelUpEvents:
   enabled: true
-  DurabilityRepair:
+  DurabilityRepair: #Repairs the tool
     enabled: true
     percentage: 50
-  RandomModifier:
+  RandomModifier: #Applies a random modifier
     enabled: true
     percentage: 10
-  DropLoot:
+  DropLoot: #Drops specific loot
     enabled: true
     percentage: 25
     minimumDrop: 1
@@ -43,12 +45,12 @@ Sound:
   OnUpgrade: true
   OnBreaking: true
 
-AllowedWorlds:
-  - world
-  - world_nether
-  - world_the_end
+AllowedWorlds: #Worlds where MineTinker-Tools can be used
+  - world #default
+  - world_nether #default
+  - world_the_end #default
 
-AllowedTools:
+AllowedTools: #Here you can disable specific variants of the tools
   Swords:
     - WOODEN_SWORD
     - STONE_SWORD
@@ -97,14 +99,11 @@ Modifiers:
     MaxLevel: 10
     PercentagePerLevel: 10
     EnchantCost: 10
-  Self-Repair:
+  Ender:
     allowed: true
-    name: Self-Repair
-    name_modifier: Self-Repair-Modifier
-    MaxLevel: 10
-    EnchantCost: 10
-    PercentagePerLevel: 10
-    HealthRepair: 2
+    name: Ender
+    name_modifier: Ender-Modifier
+    Sound: true #Sound when teleporting
   Extra-Modifier:
     allowed: true
     name: Extra-Modifier
@@ -114,10 +113,30 @@ Modifiers:
     name: Fiery
     name_modifier: Fiery-Modifier
     EnchantCost: 10
+  Glowing:
+    allowed: true
+    name: Glowing
+    name_modifier: Glowing-Modifier
+    Duration: 200 #ticks
   Haste:
     allowed: true
     name: Haste
     name_modifier: Haste-Modifier
+  Infinity:
+    allowed: true
+    name: Infinity
+    name_modifier: Infinity-Modifier
+    EnchantCost: 10
+  Luck:
+    allowed: true
+    name: Luck
+    name_modifier: Luck-Modifier
+  Poisonous:
+    allowed: true
+    name: Poisonous
+    name_modifier: Poisonous-Modifier
+    EnchantCost: 10
+    Duration: 120 #ticks
   Power:
     allowed: true
     name: Power
@@ -127,15 +146,25 @@ Modifiers:
     allowed: true
     name: Reinforced
     name_modifier: Reinforced-Modifier
+  Self-Repair:
+    allowed: true
+    name: Self-Repair
+    name_modifier: Self-Repair-Modifier
+    MaxLevel: 10
+    EnchantCost: 10
+    PercentagePerLevel: 10
+    HealthRepair: 2
   Sharpness:
     allowed: true
     name: Sharpness
     name_modifier: Sharpness-Modifier
-  Luck:
+  Shulking:
     allowed: true
-    name: Luck
-    name_modifier: Luck-Modifier
-    allowedOnSword: true
+    name: Shulking
+    name_modifier: Shulking-Modifier
+    MaxLevel: 10
+    Duration: 20 #ticks
+    EffectMultiplier: 2 #per Level (Level 1 = 0)
   Silk-Touch:
     allowed: true
     name: Silk-Touch
@@ -146,20 +175,20 @@ Modifiers:
     name: XP
     MaxLevel: 10
     PercentagePerLevel: 2
-    XPAmount: 1
+    XPAmount: 1 #amount of XP
 
 Elevator:
   enabled: true
-  Sound: true
-  AllowedWorlds:
-  - world
-  - world_nether
-  - world_the_end
+  Sound: true #(Chest opening and closing)
+  AllowedWorlds: #Worlds where Elevator can be used
+  - world #default
+  - world_nether #default
+  - world_the_end #default
 
 Builderswands:
   enabled: true
   useDurability: true
-  AllowedWorlds:
-  - world
-  - world_nether
-  - world_the_end
+  AllowedWorlds: #Worlds where MineTinker-Builderswands can be used
+  - world #default
+  - world_nether #default
+  - world_the_end #default

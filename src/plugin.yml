@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: a5
+version: a6
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -40,3 +40,15 @@ permissions:
   minetinker.name:
     description: Allows to access the Name-command for MineTinker-Tools
     default: true
+
+  mintinker.addmod:
+    description: Allows to add Modifiers from a MineTinker-Tool
+    default: op
+
+  minetinker.removemod:
+    description: Allows to remove Modifiers from a MineTinker-Tool
+    default: op
+
+  minetinker.setdurability:
+    description: Allows to set the Durability of a MineTinker-Tool
+    default: op

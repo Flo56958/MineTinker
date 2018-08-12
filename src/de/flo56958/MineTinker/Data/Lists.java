@@ -22,40 +22,55 @@ public class Lists {
     public static List<String> getAllowedModifiers(){
         List<String> allowed = new ArrayList<>();
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Auto-Smelt.allowed")) {
-            allowed.add("Auto-Smelt");
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name").toLowerCase());
         }
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Beheading.allowed")) {
-            allowed.add("Beheading");
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Beheading.name").toLowerCase());
+        }
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Ender.allowed")) {
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Ender.name").toLowerCase());
         }
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Extra-Modifier.allowed")) {
-            allowed.add("Extra-Modifier");
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Extra-Modifier.name").toLowerCase());
         }
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Fiery.allowed")) {
-            allowed.add("Fiery");
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Fiery.name").toLowerCase());
+        }
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Glowing.allowed")) {
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Glowing.name").toLowerCase());
         }
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Haste.allowed")) {
-            allowed.add("Haste");
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Haste.name").toLowerCase());
         }
-        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed")) {
-            allowed.add("Power");
-        }
-        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Reinforced.allowed")) {
-            allowed.add("Reinforced");
-        }
-        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Sharpness.allowed")) {
-            allowed.add("Sharpness");
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Infinity.allowed")) {
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Infinity.name").toLowerCase());
         }
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Luck.allowed")) {
-            allowed.add("Luck");
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Luck.name").toLowerCase());
         }
-        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Silk-Touch.allowed")) {
-            allowed.add("Silk-Touch");
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Poisonous.allowed")) {
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Poisonous.name").toLowerCase());
+        }
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed")) {
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Power.name").toLowerCase());
+        }
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Reinforced.allowed")) {
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name").toLowerCase());
         }
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed")) {
-            allowed.add("Self-Repair");
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name").toLowerCase());
+        }
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Sharpness.allowed")) {
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name").toLowerCase());
+        }
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Shulking.allowed")) {
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Shulking.name").toLowerCase());
+        }
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Silk-Touch.allowed")) {
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name").toLowerCase());
         }
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed")) {
-            allowed.add("XP");
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.XP.name").toLowerCase());
         }
         return allowed;
     }
