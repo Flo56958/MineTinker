@@ -318,8 +318,8 @@ public class BlockListener implements Listener {
                 return;
             }
             if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-                norm.setAmount(1);
                 int temp = norm.getAmount();
+                norm.setAmount(1);
                 if (norm.equals(Modifiers.LUCK_MODIFIER) ||
                         norm.equals(Modifiers.SHARPNESS_MODIFIER) ||
                         norm.equals(Modifiers.HASTE_MODIFIER) ||
