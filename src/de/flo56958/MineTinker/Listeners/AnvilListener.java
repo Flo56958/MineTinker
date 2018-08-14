@@ -113,7 +113,7 @@ public class AnvilListener implements Listener {
                                     }
                                     //</editor-fold>
                                 }
-                                if (Main.getPlugin().getConfig().getBoolean("Upgradeable")) {
+                                if (Main.getPlugin().getConfig().getBoolean("Upgradeable") && e.getWhoClicked().hasPermission("minetinker.tool.upgrade")) {
                                     //<editor-fold desc="UPGRADE">
                                     if (e.getWhoClicked().getItemOnCursor().getAmount() == 1) { //Shovel
                                         if (Lists.SHOVELS.contains(i.getItem(0).getType().toString())) {

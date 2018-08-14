@@ -30,6 +30,7 @@ public class CraftingGrid9Listener implements Listener {
         tools.addAll(Lists.BOWS);
         if (!e.isCancelled()) {
             if (!Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }
+            if (!e.getWhoClicked().hasPermission("minetinker.tool.create")) { return; }
             if (tools.contains(e.getCurrentItem().getType().toString())) {
                 if (e.getCurrentItem().getItemMeta().hasLore()) {
                     if (e.getCurrentItem().getItemMeta().getLore().contains(Strings.IDENTIFIER_BUILDERSWAND)) {

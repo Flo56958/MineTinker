@@ -66,7 +66,7 @@ public class BlockListener implements Listener {
                                     return;
                                 }
                                 LevelCalculator.addExp(e.getPlayer(), tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
-                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed")) {
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.selfrepair.use")) {
                                     //<editor-fold desc="self-repair check">
                                     for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel"); i++) {
                                         if (lore.contains(Strings.SELFREPAIR + i)) {
@@ -85,7 +85,7 @@ public class BlockListener implements Listener {
                                     }
                                     //</editor-fold>
                                 }
-                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed")) {
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.xp.use")) {
                                     //<editor-fold desc="xp check">
                                     for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.XP.MaxLevel"); i++) {
                                         if (lore.contains(Strings.XP + i)) {
@@ -101,7 +101,7 @@ public class BlockListener implements Listener {
                                     }
                                     //</editor-fold>
                                 }
-                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Auto-Smelt.allowed")) {
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Auto-Smelt.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.autosmelt.use")) {
                                     //<editor-fold desc="auto-smelt check">
                                     boolean goodBlock = false;
                                     boolean luck = false;
@@ -156,7 +156,7 @@ public class BlockListener implements Listener {
                                                     if (Main.getPlugin().getConfig().getBoolean("Modifiers.Luck.allowed") && luck) {
                                                         for (int j = 0; j <= 3; j++) {
                                                             if (lore.contains(Strings.LUCK + j)) {
-                                                                amount = amount + j;
+                                                                amount = amount + rand.nextInt(j);
                                                                 break;
                                                             }
                                                         }
@@ -176,7 +176,7 @@ public class BlockListener implements Listener {
                                     }
                                     //</editor-fold>
                                 }
-                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed")) {
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.power.use")) {
                                     if (!PlayerData.HASPOWER.get(e.getPlayer()) && !e.getPlayer().isSneaking()) {
                                         if (lore.contains(Strings.POWER + 1)) {
                                             PlayerData.HASPOWER.replace(e.getPlayer(), true);
@@ -221,82 +221,49 @@ public class BlockListener implements Listener {
                                                 }
                                             }
                                             //</editor-fold>
-                                        } else if (lore.contains(Strings.POWER + 2)) {
-                                            //<editor-fold desc="POWER 2">
-                                            PlayerData.HASPOWER.replace(e.getPlayer(), true);
-                                            if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.UP)) {
-                                                for (int x = -1; x <= 1; x++) {
-                                                    for (int z = -1; z <= 1; z++) {
-                                                        if (!(x == 0 && z == 0)) {
-                                                            Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(x, 0, z));
-                                                            if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
-                                                                ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
+                                        }
+                                        if (!PlayerData.HASPOWER.get(e.getPlayer())) {
+                                            for (int level = 2; level <= Main.getPlugin().getConfig().getInt("Modifiers.Power.MaxLevel"); level++) {
+                                                if (lore.contains(Strings.POWER + level)) {
+                                                    //<editor-fold desc="POWER MAX">
+                                                    PlayerData.HASPOWER.replace(e.getPlayer(), true);
+                                                    if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.UP)) {
+                                                        for (int x = -(level - 1); x <= (level - 1); x++) {
+                                                            for (int z = -(level - 1); z <= (level - 1); z++) {
+                                                                if (!(x == 0 && z == 0)) {
+                                                                    Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(x, 0, z));
+                                                                    if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
+                                                                        ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    } else if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.NORTH) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.SOUTH)) {
+                                                        for (int x = -(level - 1); x <= (level - 1); x++) {
+                                                            for (int y = -(level - 1); y <= (level - 1); y++) {
+                                                                if (!(x == 0 && y == 0)) {
+                                                                    Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(x, y, 0));
+                                                                    if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
+                                                                        ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    } else if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.EAST) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.WEST)) {
+                                                        for (int z = -(level - 1); z <= (level - 1); z++) {
+                                                            for (int y = -(level - 1); y <= (level - 1); y++) {
+                                                                if (!(z == 0 && y == 0)) {
+                                                                    Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, y, z));
+                                                                    if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
+                                                                        ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
+                                                                    }
+                                                                }
                                                             }
                                                         }
                                                     }
-                                                }
-                                            } else if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.NORTH) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.SOUTH)) {
-                                                for (int x = -1; x <= 1; x++) {
-                                                    for (int y = -1; y <= 1; y++) {
-                                                        if (!(x == 0 && y == 0)) {
-                                                            Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(x, y, 0));
-                                                            if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
-                                                                ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            } else if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.EAST) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.WEST)) {
-                                                for (int z = -1; z <= 1; z++) {
-                                                    for (int y = -1; y <= 1; y++) {
-                                                        if (!(z == 0 && y == 0)) {
-                                                            Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, y, z));
-                                                            if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
-                                                                ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            //</editor-fold>
-                                        } else if (lore.contains(Strings.POWER + 3)) {
-                                            //<editor-fold desc="POWER 3">
-                                            PlayerData.HASPOWER.replace(e.getPlayer(), true);
-                                            if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.UP)) {
-                                                for (int x = -2; x <= 2; x++) {
-                                                    for (int z = -2; z <= 2; z++) {
-                                                        if (!(x == 0 && z == 0)) {
-                                                            Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(x, 0, z));
-                                                            if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
-                                                                ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            } else if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.NORTH) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.SOUTH)) {
-                                                for (int x = -2; x <= 2; x++) {
-                                                    for (int y = -2; y <= 2; y++) {
-                                                        if (!(x == 0 && y == 0)) {
-                                                            Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(x, y, 0));
-                                                            if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
-                                                                ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            } else if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.EAST) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.WEST)) {
-                                                for (int z = -2; z <= 2; z++) {
-                                                    for (int y = -2; y <= 2; y++) {
-                                                        if (!(z == 0 && y == 0)) {
-                                                            Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, y, z));
-                                                            if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
-                                                                ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
-                                                            }
-                                                        }
-                                                    }
+                                                    //</editor-fold>
                                                 }
                                             }
-                                            //</editor-fold>
                                         }
                                         PlayerData.HASPOWER.replace(e.getPlayer(), false);
                                     }
@@ -336,7 +303,7 @@ public class BlockListener implements Listener {
                 }
                 norm.setAmount(temp);
                 if (e.getClickedBlock().getType().equals(Material.BOOKSHELF)) {
-                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed")) {
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.selfrepair.craft")) {
                         //<editor-fold desc="SELF-REPAIR">
                         if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.MOSSY_COBBLESTONE) && !e.getPlayer().isSneaking()) {
                             if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
@@ -364,7 +331,7 @@ public class BlockListener implements Listener {
                         }
                         //</editor-fold>
                     }
-                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Silk-Touch.allowed")) {
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Silk-Touch.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.silktouch.craft")) {
                         //<editor-fold desc="SILK-TOUCH">
                         if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.COBWEB) && !e.getPlayer().isSneaking()) {
                             if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
@@ -392,7 +359,7 @@ public class BlockListener implements Listener {
                         }
                         //</editor-fold>
                     }
-                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Fiery.allowed")) {
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Fiery.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.fiery.craft")) {
                         //<editor-fold desc="FIERY">
                         if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.BLAZE_ROD) && !e.getPlayer().isSneaking()) {
                             if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
@@ -420,7 +387,7 @@ public class BlockListener implements Listener {
                         }
                         //</editor-fold>
                     }
-                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed")) {
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.power.craft")) {
                         //<editor-fold desc="POWER">
                         if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.EMERALD) && !e.getPlayer().isSneaking()) {
                             if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
@@ -448,7 +415,7 @@ public class BlockListener implements Listener {
                         }
                         //</editor-fold>
                     }
-                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Beheading.allowed")) {
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Beheading.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.beheading.craft")) {
                         //<editor-fold desc="BEHEADING">
                         if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.WITHER_SKELETON_SKULL) && !e.getPlayer().isSneaking()) {
                             if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
@@ -476,7 +443,7 @@ public class BlockListener implements Listener {
                         }
                         //</editor-fold>
                     }
-                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Infinity.allowed")) {
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Infinity.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.infinity.craft")) {
                         //<editor-fold desc="INFINITY">
                         if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.ARROW) && !e.getPlayer().isSneaking()) {
                             if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
@@ -504,7 +471,7 @@ public class BlockListener implements Listener {
                         }
                         //</editor-fold>
                     }
-                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Poisonous.allowed")) {
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Poisonous.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.poisonous.craft")) {
                         //<editor-fold desc="POISONOUS">
                         if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.ROTTEN_FLESH) && !e.getPlayer().isSneaking()) {
                             if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {

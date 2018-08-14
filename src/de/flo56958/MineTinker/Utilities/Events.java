@@ -73,7 +73,7 @@ class Events {
         if (newTool != null) {
             return newTool;
         } else {
-            return LevelUpEvent_RandomModifier_apply(safety, p);
+            return LevelUpEvent_RandomModifier_apply(safety, p); //infinite loop when no modifier can be applied (if extra-modifier is disabled)
         }
     }
 

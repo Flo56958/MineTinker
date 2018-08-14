@@ -37,97 +37,99 @@ public class EntityListener implements Listener {
                 ItemStack tool = p.getInventory().getItemInMainHand();
                 if (tool.hasItemMeta()) {
                     ItemMeta meta = tool.getItemMeta();
-                    ArrayList<String> lore = (ArrayList<String>) meta.getLore();
-                    if (lore.contains(Strings.IDENTIFIER)) {
-                        if (tool.getType().getMaxDurability() - tool.getDurability() <= 1) {
-                            e.setCancelled(true);
-                            if (Main.getPlugin().getConfig().getBoolean("Sound.OnBreaking")) {
-                                p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
+                    if (meta.hasLore()) {
+                        ArrayList<String> lore = (ArrayList<String>) meta.getLore();
+                        if (lore.contains(Strings.IDENTIFIER)) {
+                            if (tool.getType().getMaxDurability() - tool.getDurability() <= 1) {
+                                e.setCancelled(true);
+                                if (Main.getPlugin().getConfig().getBoolean("Sound.OnBreaking")) {
+                                    p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
+                                }
+                                return;
                             }
-                            return;
-                        }
-                        int amount = Main.getPlugin().getConfig().getInt("ExpPerSwordSwing");
-                        if (Main.getPlugin().getConfig().getBoolean("EnableDamageExp")) {
-                            amount = (int) e.getDamage();
-                        }
-                        LevelCalculator.addExp(p, tool, amount);
+                            int amount = Main.getPlugin().getConfig().getInt("ExpPerSwordSwing");
+                            if (Main.getPlugin().getConfig().getBoolean("EnableDamageExp")) {
+                                amount = (int) e.getDamage();
+                            }
+                            LevelCalculator.addExp(p, tool, amount);
 
-                        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed")) {
-                            //<editor-fold desc="self-repair check">
-                            for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel"); i++) {
-                                if (lore.contains(Strings.SELFREPAIR + i)) {
-                                    //self-repair
-                                    Random rand = new Random();
-                                    int n = rand.nextInt(100);
-                                    if (n <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.PercentagePerLevel") * i) {
-                                        int heal = Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.HealthRepair");
-                                        short dura = (short) (tool.getDurability() - heal);
-                                        if (dura < 0) {
-                                            dura = 0;
+                            if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed") && p.hasPermission("minetinker.modifiers.selfrepair.use")) {
+                                //<editor-fold desc="self-repair check">
+                                for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel"); i++) {
+                                    if (lore.contains(Strings.SELFREPAIR + i)) {
+                                        //self-repair
+                                        Random rand = new Random();
+                                        int n = rand.nextInt(100);
+                                        if (n <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.PercentagePerLevel") * i) {
+                                            int heal = Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.HealthRepair");
+                                            short dura = (short) (tool.getDurability() - heal);
+                                            if (dura < 0) {
+                                                dura = 0;
+                                            }
+                                            p.getInventory().getItemInMainHand().setDurability(dura);
+                                            ChatWriter.log(false, p.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
                                         }
-                                        p.getInventory().getItemInMainHand().setDurability(dura);
-                                        ChatWriter.log(false, p.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
-                                    }
-                                    break;
-                                }
-                            }
-                            //</editor-fold>
-                        }
-
-                        if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed")) {
-                            //<editor-fold desc="xp check">
-                            for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.XP.MaxLevel"); i++) {
-                                if (lore.contains(Strings.XP + i)) {
-                                    //xp
-                                    Random rand = new Random();
-                                    int n = rand.nextInt(100);
-                                    if (n <= Main.getPlugin().getConfig().getInt("Modifiers.XP.PercentagePerLevel") * i) {
-                                        ExperienceOrb orb = p.getWorld().spawn(p.getLocation(), ExperienceOrb.class);
-                                        orb.setExperience(Main.getPlugin().getConfig().getInt("Modifiers.XP.XPAmount"));
-                                        ChatWriter.log(false, p.getDisplayName() + " triggered XP on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
-                                    }
-                                    break;
-                                }
-                            }
-                            //</editor-fold>
-                        }
-
-                        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Glowing.allowed")) {
-                            if (lore.contains(Strings.GLOWING)) {
-                                if (!e.getEntity().isDead()) {
-                                    try {
-                                        LivingEntity ent = (LivingEntity) e.getEntity();
-                                        ent.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Main.getPlugin().getConfig().getInt("Modifiers.Glowing.Duration"), 0, false, false));
-                                    } catch (Exception ignored) {
+                                        break;
                                     }
                                 }
+                                //</editor-fold>
                             }
-                        }
 
-                        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Shulking.allowed")) {
-                            //<editor-fold desc="shulking check">
-                            for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Shulking.MaxLevel"); i++) {
-                                if (lore.contains(Strings.SHULKING + i)) {
+                            if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed") && p.hasPermission("minetinker.modifiers.xp.use")) {
+                                //<editor-fold desc="xp check">
+                                for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.XP.MaxLevel"); i++) {
+                                    if (lore.contains(Strings.XP + i)) {
+                                        //xp
+                                        Random rand = new Random();
+                                        int n = rand.nextInt(100);
+                                        if (n <= Main.getPlugin().getConfig().getInt("Modifiers.XP.PercentagePerLevel") * i) {
+                                            ExperienceOrb orb = p.getWorld().spawn(p.getLocation(), ExperienceOrb.class);
+                                            orb.setExperience(Main.getPlugin().getConfig().getInt("Modifiers.XP.XPAmount"));
+                                            ChatWriter.log(false, p.getDisplayName() + " triggered XP on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
+                                        }
+                                        break;
+                                    }
+                                }
+                                //</editor-fold>
+                            }
+
+                            if (Main.getPlugin().getConfig().getBoolean("Modifiers.Glowing.allowed") && p.hasPermission("minetinker.modifiers.glowing.use")) {
+                                if (lore.contains(Strings.GLOWING)) {
                                     if (!e.getEntity().isDead()) {
                                         try {
                                             LivingEntity ent = (LivingEntity) e.getEntity();
-                                            ent.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, Main.getPlugin().getConfig().getInt("Modifiers.Shulking.Duration"), Main.getPlugin().getConfig().getInt("Modifiers.Shulking.EffectMultiplier") * (i - 1), false, false));
+                                            ent.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Main.getPlugin().getConfig().getInt("Modifiers.Glowing.Duration"), 0, false, false));
                                         } catch (Exception ignored) {
                                         }
                                     }
-                                    break;
                                 }
                             }
-                            //</editor-fold>
-                        }
 
-                        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Poisonous.allowed")) {
-                            if (lore.contains(Strings.POISONOUS)) {
-                                if (!e.getEntity().isDead()) {
-                                    try {
-                                        LivingEntity ent = (LivingEntity) e.getEntity();
-                                        ent.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Main.getPlugin().getConfig().getInt("Modifiers.Poisonous.Duration"), 0, false, false));
-                                    } catch (Exception ignored) {
+                            if (Main.getPlugin().getConfig().getBoolean("Modifiers.Shulking.allowed") && p.hasPermission("minetinker.modifiers.shulking.use")) {
+                                //<editor-fold desc="shulking check">
+                                for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Shulking.MaxLevel"); i++) {
+                                    if (lore.contains(Strings.SHULKING + i)) {
+                                        if (!e.getEntity().isDead()) {
+                                            try {
+                                                LivingEntity ent = (LivingEntity) e.getEntity();
+                                                ent.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, Main.getPlugin().getConfig().getInt("Modifiers.Shulking.Duration"), Main.getPlugin().getConfig().getInt("Modifiers.Shulking.EffectMultiplier") * (i - 1), false, false));
+                                            } catch (Exception ignored) {
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                                //</editor-fold>
+                            }
+
+                            if (Main.getPlugin().getConfig().getBoolean("Modifiers.Poisonous.allowed") && p.hasPermission("minetinker.modifiers.poisonous.use")) {
+                                if (lore.contains(Strings.POISONOUS)) {
+                                    if (!e.getEntity().isDead()) {
+                                        try {
+                                            LivingEntity ent = (LivingEntity) e.getEntity();
+                                            ent.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Main.getPlugin().getConfig().getInt("Modifiers.Poisonous.Duration"), 0, false, false));
+                                        } catch (Exception ignored) {
+                                        }
                                     }
                                 }
                             }
@@ -147,31 +149,33 @@ public class EntityListener implements Listener {
         ItemStack tool = p.getInventory().getItemInMainHand();
         if (tool.hasItemMeta()) {
             ItemMeta meta = tool.getItemMeta();
-            if (tool.getItemMeta().hasLore()) {
+            if (meta.hasLore()) {
                 ArrayList<String> lore = (ArrayList<String>) meta.getLore();
                 if (lore.contains(Strings.IDENTIFIER)) {
-                    for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Beheading.MaxLevel"); i++) {
-                        if (lore.contains(Strings.BEHEADING + i)) {
-                            //beheading
-                            Random rand = new Random();
-                            int n = rand.nextInt(100);
-                            if (n <= Main.getPlugin().getConfig().getInt("Modifiers.Beheading.PercentagePerLevel") * i) {
-                                if (mob.getType().equals(EntityType.CREEPER)) {
-                                    p.getWorld().dropItemNaturally(mob.getLocation(), new ItemStack(Material.CREEPER_HEAD, 1));
-                                } else if (mob.getType().equals(EntityType.SKELETON)) {
-                                    p.getWorld().dropItemNaturally(mob.getLocation(), new ItemStack(Material.SKELETON_SKULL, 1));
-                                } else if (mob.getType().equals(EntityType.WITHER_SKELETON)) {
-                                    p.getWorld().dropItemNaturally(mob.getLocation(), new ItemStack(Material.WITHER_SKELETON_SKULL, 1));
-                                } else if (mob.getType().equals(EntityType.ZOMBIE)) {
-                                    p.getWorld().dropItemNaturally(mob.getLocation(), new ItemStack(Material.ZOMBIE_HEAD, 1));
-                                } else if (mob.getType().equals(EntityType.ZOMBIE_VILLAGER)) {
-                                    p.getWorld().dropItemNaturally(mob.getLocation(), new ItemStack(Material.ZOMBIE_HEAD, 1));
-                                } else {
-                                    break;
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Beheading.allowed") && p.hasPermission("minetinker.modifiers.beheading.use")) {
+                        for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Beheading.MaxLevel"); i++) {
+                            if (lore.contains(Strings.BEHEADING + i)) {
+                                //beheading
+                                Random rand = new Random();
+                                int n = rand.nextInt(100);
+                                if (n <= Main.getPlugin().getConfig().getInt("Modifiers.Beheading.PercentagePerLevel") * i) {
+                                    if (mob.getType().equals(EntityType.CREEPER)) {
+                                        p.getWorld().dropItemNaturally(mob.getLocation(), new ItemStack(Material.CREEPER_HEAD, 1));
+                                    } else if (mob.getType().equals(EntityType.SKELETON)) {
+                                        p.getWorld().dropItemNaturally(mob.getLocation(), new ItemStack(Material.SKELETON_SKULL, 1));
+                                    } else if (mob.getType().equals(EntityType.WITHER_SKELETON)) {
+                                        p.getWorld().dropItemNaturally(mob.getLocation(), new ItemStack(Material.WITHER_SKELETON_SKULL, 1));
+                                    } else if (mob.getType().equals(EntityType.ZOMBIE)) {
+                                        p.getWorld().dropItemNaturally(mob.getLocation(), new ItemStack(Material.ZOMBIE_HEAD, 1));
+                                    } else if (mob.getType().equals(EntityType.ZOMBIE_VILLAGER)) {
+                                        p.getWorld().dropItemNaturally(mob.getLocation(), new ItemStack(Material.ZOMBIE_HEAD, 1));
+                                    } else {
+                                        break;
+                                    }
+                                    ChatWriter.log(false, p.getDisplayName() + " triggered Beheading on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
                                 }
-                                ChatWriter.log(false, p.getDisplayName() + " triggered Beheading on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
+                                break;
                             }
-                            break;
                         }
                     }
                 }
@@ -188,13 +192,13 @@ public class EntityListener implements Listener {
                 Entity target = e.getHitEntity();
                 if (tool.hasItemMeta()) {
                     ItemMeta meta = tool.getItemMeta();
-                    if (tool.getItemMeta().hasLore()) {
+                    if (meta.hasLore()) {
                         ArrayList<String> lore = (ArrayList<String>) meta.getLore();
                         if (lore.contains(Strings.IDENTIFIER)) {
                             LevelCalculator.addExp(p, tool, Main.getPlugin().getConfig().getInt("ExpPerArrowHit"));
 
                             if (target != null) {
-                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Shulking.allowed")) {
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Shulking.allowed") && p.hasPermission("minetinker.modifiers.shulking.use")) {
                                     //<editor-fold desc="shulking check">
                                     for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Shulking.MaxLevel"); i++) {
                                         if (lore.contains(Strings.SHULKING + i)) {
@@ -211,7 +215,7 @@ public class EntityListener implements Listener {
                                     //</editor-fold>
                                 }
 
-                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Glowing.allowed")) {
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Glowing.allowed") && p.hasPermission("minetinker.modifiers.glowing.use")) {
                                     if (lore.contains(Strings.GLOWING)) {
                                         if (!e.getEntity().isDead()) {
                                             try {
@@ -223,7 +227,7 @@ public class EntityListener implements Listener {
                                     }
                                 }
 
-                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Poisonous.allowed")) {
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Poisonous.allowed") && p.hasPermission("minetinker.modifiers.poisonous.use")) {
                                     if (lore.contains(Strings.POISONOUS)) {
                                         if (!e.getEntity().isDead()) {
                                             try {
@@ -235,7 +239,7 @@ public class EntityListener implements Listener {
                                     }
                                 }
 
-                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Ender.allowed")) {
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Ender.allowed") && p.hasPermission("minetinker.modifiers.ender.use")) {
                                     if (lore.contains(Strings.ENDER)) {
                                         if (p.isSneaking()) {
                                             Location loc = e.getHitEntity().getLocation().clone();
@@ -258,7 +262,7 @@ public class EntityListener implements Listener {
                     if (tool.getItemMeta().hasLore()) {
                         ArrayList<String> lore = (ArrayList<String>) meta.getLore();
                         if (lore.contains(Strings.IDENTIFIER)) {
-                            if (Main.getPlugin().getConfig().getBoolean("Modifiers.Ender.allowed")) {
+                            if (Main.getPlugin().getConfig().getBoolean("Modifiers.Ender.allowed") && p.hasPermission("minetinker.modifiers.ender.use")) {
                                 if (lore.contains(Strings.ENDER)) {
                                     if (p.isSneaking()) {
                                         p.teleport(e.getEntity().getLocation().add(0, 1, 0));
@@ -283,7 +287,7 @@ public class EntityListener implements Listener {
                 ItemStack tool = p.getInventory().getItemInMainHand();
                 if (tool.hasItemMeta()) {
                     ItemMeta meta = tool.getItemMeta();
-                    if (tool.getItemMeta().hasLore()) {
+                    if (meta.hasLore()) {
                         ArrayList<String> lore = (ArrayList<String>) meta.getLore();
                         if (lore.contains(Strings.IDENTIFIER)) {
                             if (tool.getType().getMaxDurability() - tool.getDurability() <= 1) {
@@ -297,7 +301,7 @@ public class EntityListener implements Listener {
 
                             LevelCalculator.addExp(p, tool, Main.getPlugin().getConfig().getInt("ExpPerArrowShot"));
 
-                            if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed")) {
+                            if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed") && p.hasPermission("minetinker.modifiers.selfrepair.use")) {
                                 //<editor-fold desc="self-repair check">
                                 for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel"); i++) {
                                     if (lore.contains(Strings.SELFREPAIR + i)) {
@@ -319,7 +323,7 @@ public class EntityListener implements Listener {
                                 //</editor-fold>
                             }
 
-                            if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed")) {
+                            if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed") && p.hasPermission("minetinker.modifiers.xp.use")) {
                                 //<editor-fold desc="xp check">
                                 for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.XP.MaxLevel"); i++) {
                                     if (lore.contains(Strings.XP + i)) {

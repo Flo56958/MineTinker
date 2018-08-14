@@ -14,6 +14,7 @@ ExpPerArrowHit: 1 #How much XP will the tool get when you hit with the bow
 ExpPerArrowShot: 1 #How much XP will the tool get when you shoot with the bow
 EnableDamageExp: false #When true: Sword will gain XP equal to the damage-value
 Upgradeable: true #Can you upgrade your tools with an anvil
+Repairable: true #Can you repair your tools in your inventory (instead of an anvil) just by dragging the ressource on the tool
 AllowEnchanting: false #When enabled you can enchant the tools with vanilla methods (not recommended!)
 DurabilityPercentageRepair: 0.34 #How much durability (relative to maximum durability) should the tool recover per item
 
@@ -141,6 +142,7 @@ Modifiers:
     allowed: true
     name: Power
     name_modifier: Power-Modifier
+    MaxLevel: 3
     EnchantCost: 10
   Reinforced:
     allowed: true

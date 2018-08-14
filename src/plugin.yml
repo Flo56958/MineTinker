@@ -1,10 +1,10 @@
 name: MineTinker
 author: Flo56958
-version: a6.1
+version: a6.2
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
-description: A TinkersConstruct inspired server plugin
+description: A TinkersConstruct (and other mods) inspired server plugin
 website: https://github.com/Flo56958/MineTinker
 database: false
 api-version: 1.13
@@ -17,38 +17,297 @@ commands:
 
 
 permissions:
-  minetinker.main:
+  minetinker.*:
+    children:
+      minetinker.commands.*: true
+      minetinker.modifiers.*: true
+      minetinker.elevator.*: true
+      minetinker.builderswands.*: true
+      minetinker.tool.*: true
+
+  minetinker.tool.*:
+    children:
+      minetinker.tool.create: true
+      minetinker.tool.upgrade: true
+      minetinker.tool.repair: true
+
+  minetinker.tool.create:
+    description: Allows to create / craft a MineTinker-Tool
+    default: true
+
+  minetinker.tool.upgrade:
+    description: Allows to upgrade a MineTinker-Tool
+    default: true
+
+  minetinker.tool.repair:
+    description: Allows to repair a MineTinker-Tool in the Inventory
+    default: true
+
+  #Commands:
+  minetinker.commands.*:
+    children:
+      minetinker.commands.main: true
+      minetinker.commands.help: true
+      minetinker.commands.info: true
+      minetinker.commands.modifiers: true
+      minetinker.commands.addexp: true
+      minetinker.commands.name: true
+      minetinker.commands.addmod: true
+      minetinker.commands.removemod: true
+      minetinker.commands.setdurability: true
+
+  minetinker.commands.main:
     description: Allows to access MineTinker
     default: true
 
-  minetinker.help:
+  minetinker.commands.help:
     description: Allows to access the help of MineTinker-commands
     default: true
 
-  minetinker.info:
+  minetinker.commands.info:
     description: Allows to access information about MineTinker
     default: true
 
-  minetinker.modifiers:
+  minetinker.commands.modifiers:
     description: Allows to access the list of MineTinker-modifiers
     default: true
 
-  minetinker.addexp:
+  minetinker.commands.addexp:
     description: Allows to access the AddExp-command for MineTinker-Tools
     default: op
 
-  minetinker.name:
+  minetinker.commands.name:
     description: Allows to access the Name-command for MineTinker-Tools
     default: true
 
-  mintinker.addmod:
+  mintinker.commands.addmod:
     description: Allows to add Modifiers from a MineTinker-Tool
     default: op
 
-  minetinker.removemod:
+  minetinker.commands.removemod:
     description: Allows to remove Modifiers from a MineTinker-Tool
     default: op
 
-  minetinker.setdurability:
+  minetinker.commands.setdurability:
     description: Allows to set the Durability of a MineTinker-Tool
     default: op
+
+  #Modifiers:
+  minetinker.modifiers.*:
+    children:
+      minetinker.modifiers.autosmelt.*: true
+      minetinker.modifiers.beheading.*: true
+      minetinker.modifiers.ender.*: true
+      minetinker.modifiers.extramodifier.*: true
+      minetinker.modifiers.fiery.*: true
+      minetinker.modifiers.glowing.*: true
+      minetinker.modifiers.haste.*: true
+      minetinker.modifiers.infinity.*: true
+      minetinker.modifiers.luck.*: true
+      minetinker.modifiers.poisonous.*: true
+      minetinker.modifiers.power.*: true
+      minetinker.modifiers.reinforced.*: true
+      minetinker.modifiers.selfrepair.*: true
+      minetinker.modifiers.sharpness.*: true
+      minetinker.modifiers.shulking.*: true
+      minetinker.modifiers.silktouch.*: true
+      minetinker.modifiers.xp.*: true
+
+  minetinker.modifiers.autosmelt.*:
+    children:
+      minetinker.modifiers.autosmelt.apply: true
+      minetinker.modifiers.autosmelt.use: true
+  minetinker.modifiers.autosmelt.apply:
+    description: Allows to apply Auto-Smelt to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.autosmelt.use:
+    description: Allows to use Auto-Smelt on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.beheading.*:
+    children:
+      minetinker.modifiers.beheading.apply: true
+      minetinker.modifiers.beheading.craft: true
+      minetinker.modifiers.beheading.use: true
+  minetinker.modifiers.beheading.apply:
+    description: Allows to apply Beheading to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.beheading.craft:
+    description: Allows to craft a Beheading-Modifier
+    default: true
+  minetinker.modifiers.beheading.use:
+    description: Allows to use Beheading on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.ender.*:
+    children:
+      minetinker.modifiers.ender.apply: true
+      minetinker.modifiers.ender.use: true
+  minetinker.modifiers.ender.apply:
+    description: Allows to apply Ender to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.ender.use:
+    description: Allows to use Ender on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.extramodifier.*:
+    children:
+      minetinker.modifiers.extramodifier.apply: true
+  minetinker.modifiers.extramodifier.apply:
+    description: Allows to apply an extra Modifier to a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.fiery.*:
+    children:
+      minetinker.modifiers.fiery.apply: true
+      minetinker.modifiers.fiery.craft: true
+  minetinker.modifiers.fiery.apply:
+    description: Allows to apply Fiery to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.fiery.craft:
+    description: Allows to craft a Fiery-Modifier
+    default: true
+
+  minetinker.modifiers.glowing.*:
+    children:
+      minetinker.modifiers.glowing.apply: true
+      minetinker.modifiers.glowing.use: true
+  minetinker.modifiers.glowing.apply:
+    description: Allows to apply Glowing to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.glowing.use:
+    description: Allows to use Glowing on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.haste.*:
+    children:
+      minetinker.modifiers.haste.apply: true
+  minetinker.modifiers.haste.apply:
+    description: Allows to apply Haste to a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.infinity.*:
+    children:
+      minetinker.modifiers.infinity.apply: true
+      minetinker.modifiers.inifinty.craft: true
+  minetinker.modifiers.infinity.apply:
+    description: Allows to apply Infinity to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.infinity.craft:
+    description: Allows to craft a Infinity-Modifier
+    default: true
+
+  minetinker.modifiers.luck.*:
+    children:
+      minetinker.modifiers.luck.apply: true
+  minetinker.modifiers.luck.apply:
+    description: Allows to apply luck to a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.poisonous.*:
+    children:
+      minetinker.modifiers.poisonous.apply: true
+      minetinker.modifiers.poisonous.craft: true
+      minetinker.modifiers.poisonous.use: true
+  minetinker.modifiers.poisonous.apply:
+    description: Allows to apply Poisonous to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.poisonous.craft:
+    description: Allows to craft a Poisonous-Modifier
+    default: true
+  minetinker.modifiers.poisonous.use:
+    description: Allows to use Poisonous on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.power.*:
+    children:
+      minetinker.modifiers.power.apply: true
+      minetinker.modifiers.power.craft: true
+      minetinker.modifiers.power.use: true
+  minetinker.modifiers.power.apply:
+    description: Allows to apply Power to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.power.craft:
+    description: Allows to craft a Power-Modifier
+    default: true
+  minetinker.modifiers.power.use:
+    description: Allows to use Power on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.reinforced.*:
+    children:
+      minetinker.modifiers.reinforced.apply: true
+  minetinker.modifiers.reinforced.apply:
+    description: Allows to apply Reinforced to a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.selfrepair.*:
+    children:
+      minetinker.modifiers.selfrepair.apply: true
+      minetinker.modifiers.selfrepair.craft: true
+      minetinker.modifiers.selfrepair.use: true
+  minetinker.modifiers.selfrepair.apply:
+    description: Allows to apply Self-Repair to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.selfrepair.craft:
+    description: Allows to craft a Self-Repair-Modifier
+    default: true
+  minetinker.modifiers.selfrepair.use:
+    description: Allows to use Self-Repair on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.sharpness.*:
+    children:
+      minetinker.modifiers.sharpness.apply: true
+  minetinker.modifiers.sharpness.apply:
+    description: Allows to apply Sharpness to a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.shulking.*:
+    children:
+      minetinker.modifiers.shulking.apply: true
+      minetinker.modifiers.shulking.use: true
+  minetinker.modifiers.shulking.apply:
+    description: Allows to apply Shulking to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.shulking.use:
+    description: Allows to use Shulking on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.silktouch.*:
+    children:
+      minetinker.modifiers.silktouch.apply: true
+      minetinker.modifiers.silktouch.craft: true
+  minetinker.modifiers.silktouch.apply:
+    description: Allows to apply Silk-Touch to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.silktouch.craft:
+    description: Allows to craft a Silk-Touch-Modifier
+    default: true
+
+  minetinker.modifiers.xp.*:
+    children:
+      minetinker.modifiers.xp.apply: true
+      minetinker.modifiers.xp.use: true
+  minetinker.modifiers.xp.apply:
+    description: Allows to apply XP to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.xp.use:
+    description: Allows to use XP on a MineTinker-Tool
+    default: true
+
+  #Elevator:
+  minetinker.elevator.*:
+    children:
+      minetinker.elevator.use: true
+  minetinker.elevator.use:
+    description: Allows to use the Elevator of MineTinker
+    default: true
+
+  #Builderswands:
+  minetinker.builderswands.*:
+    children:
+      minetinker.builderswands.use: true
+  minetinker.builderswands.use:
+    description: Allows to use the Builderswands of MineTinker
+    default: true

@@ -43,6 +43,7 @@ public class BuildersWandListener implements Listener {
                 if (wand.getItemMeta().hasLore()) {
                     if (wand.getItemMeta().getLore().contains(Strings.IDENTIFIER_BUILDERSWAND)) {
                         e.setCancelled(true);
+                        if (!e.getPlayer().hasPermission("minetinker.builderswands.use")) { return; }
                         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
                             int _u = 0;
                             int _w = 0;

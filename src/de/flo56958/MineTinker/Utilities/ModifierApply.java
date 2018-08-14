@@ -15,6 +15,7 @@ import java.util.List;
 class ModifierApply {
 
     static ItemStack AutoSmelt(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.autosmelt.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
         if (lore.contains(Strings.SILKTOUCH)) {
@@ -64,6 +65,7 @@ class ModifierApply {
     }
 
     static ItemStack Beheading(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.beheading.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
         if (Lists.SWORDS.contains(tool.getType().toString()) || Lists.BOWS.contains(tool.getType().toString())) {
@@ -105,6 +107,7 @@ class ModifierApply {
     }
 
     static ItemStack Ender(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.ender.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
         if (lore.contains(Strings.ENDER)) {
@@ -128,6 +131,7 @@ class ModifierApply {
     }
 
     static ItemStack ExtraModifier(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.extramodifier.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
@@ -141,6 +145,7 @@ class ModifierApply {
     }
 
     static ItemStack Fiery(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.fiery.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
@@ -200,6 +205,7 @@ class ModifierApply {
     }
 
     static ItemStack Glowing(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.glowing.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
@@ -225,6 +231,7 @@ class ModifierApply {
     }
 
     static ItemStack Haste(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.haste.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
@@ -270,6 +277,7 @@ class ModifierApply {
     }
 
     static ItemStack Infinity(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.infinity.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
@@ -297,6 +305,7 @@ class ModifierApply {
     }
 
     static ItemStack Luck(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.luck.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
@@ -350,6 +359,7 @@ class ModifierApply {
     }
 
     static ItemStack Poisonous(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.poisonous.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
@@ -375,6 +385,7 @@ class ModifierApply {
     }
 
     static ItemStack Power(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.power.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
@@ -383,7 +394,7 @@ class ModifierApply {
                 Lists.AXES.contains(tool.getType().toString())) {
             int index = 0;
             boolean hasPower = false;
-            for (int i = 1; i <= 3; i++) {
+            for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Power.MaxLevel"); i++) {
                 if (lore.contains(Strings.POWER + i)) {
                     index = i;
                     hasPower = true;
@@ -392,7 +403,7 @@ class ModifierApply {
             }
             int loreIndex = 0;
             int level = 1 + index;
-            if (level > 3) {
+            if (level > Main.getPlugin().getConfig().getInt("Modifiers.Power.MaxLevel")) {
                 if (!event) {
                     Events.Mod_MaxLevel(p, tool, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Power.name"));
                 }
@@ -420,6 +431,7 @@ class ModifierApply {
     }
 
     static ItemStack Reinforced(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.reinforced.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
@@ -461,6 +473,7 @@ class ModifierApply {
     }
 
     static ItemStack SelfRepair(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.selfrepair.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
@@ -500,6 +513,7 @@ class ModifierApply {
     }
 
     static ItemStack Sharpness(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.sharpness.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
@@ -549,6 +563,7 @@ class ModifierApply {
     }
 
     static ItemStack Shulking(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.shulking.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
@@ -592,6 +607,7 @@ class ModifierApply {
     }
 
     static ItemStack SilkTouch(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.silktouch.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
@@ -635,6 +651,7 @@ class ModifierApply {
     }
 
     static ItemStack XP(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.xp.apply")) { return null; }
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 

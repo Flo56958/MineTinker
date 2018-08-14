@@ -27,44 +27,46 @@ public class PlayerListener implements Listener {
                         if (!(e.getClickedInventory().getItem(e.getSlot()).getItemMeta().getLore() == null)) {
                             if (e.getClickedInventory().getItem(e.getSlot()).getItemMeta().getLore().contains(Strings.IDENTIFIER) ||
                                     e.getClickedInventory().getItem(e.getSlot()).getItemMeta().getLore().contains(Strings.IDENTIFIER_BUILDERSWAND)) {
-                                if (e.getWhoClicked().getItemOnCursor() != null) {
-                                    ItemStack tool = e.getClickedInventory().getItem(e.getSlot());
-                                    ItemStack repair = e.getWhoClicked().getItemOnCursor();
-                                    String[] name = tool.getType().toString().split("_");
-                                    boolean eligible = false;
-                                    //<editor-fold desc="SAME SEARCH">
-                                    if (name[0].toLowerCase().equals("wooden") && (
-                                            repair.getType().equals(Material.ACACIA_PLANKS) ||
-                                            repair.getType().equals(Material.BIRCH_PLANKS) ||
-                                            repair.getType().equals(Material.DARK_OAK_PLANKS) ||
-                                            repair.getType().equals(Material.JUNGLE_PLANKS) ||
-                                            repair.getType().equals(Material.OAK_PLANKS) ||
-                                            repair.getType().equals(Material.SPRUCE_PLANKS))) {
-                                        eligible = true;
-                                    } else if (name[0].toLowerCase().equals("stone") && repair.getType().equals(Material.COBBLESTONE)) {
-                                        eligible = true;
-                                    } else if (name[0].toLowerCase().equals("iron") && repair.getType().equals(Material.IRON_INGOT)) {
-                                        eligible = true;
-                                    } else if (name[0].toLowerCase().equals("golden") && repair.getType().equals(Material.GOLD_INGOT)) {
-                                        eligible = true;
-                                    } else if (name[0].toLowerCase().equals("diamond") && repair.getType().equals(Material.DIAMOND)) {
-                                        eligible = true;
-                                    }
-                                    if (eligible) {
-                                        double dura = tool.getDurability();
-                                        double maxDura = tool.getType().getMaxDurability();
-                                        int amount = e.getWhoClicked().getItemOnCursor().getAmount();
-                                        double percent = Main.getPlugin().getConfig().getDouble("DurabilityPercentageRepair");
-                                        while (amount > 0 && dura > 0) {
-                                            dura = dura - (maxDura * percent);
-                                            amount--;
+                                if (Main.getPlugin().getConfig().getBoolean("Repairable") && e.getWhoClicked().hasPermission("minetinker.tool.repair")) {
+                                    if (e.getWhoClicked().getItemOnCursor() != null) {
+                                        ItemStack tool = e.getClickedInventory().getItem(e.getSlot());
+                                        ItemStack repair = e.getWhoClicked().getItemOnCursor();
+                                        String[] name = tool.getType().toString().split("_");
+                                        boolean eligible = false;
+                                        //<editor-fold desc="SAME SEARCH">
+                                        if (name[0].toLowerCase().equals("wooden") && (
+                                                repair.getType().equals(Material.ACACIA_PLANKS) ||
+                                                        repair.getType().equals(Material.BIRCH_PLANKS) ||
+                                                        repair.getType().equals(Material.DARK_OAK_PLANKS) ||
+                                                        repair.getType().equals(Material.JUNGLE_PLANKS) ||
+                                                        repair.getType().equals(Material.OAK_PLANKS) ||
+                                                        repair.getType().equals(Material.SPRUCE_PLANKS))) {
+                                            eligible = true;
+                                        } else if (name[0].toLowerCase().equals("stone") && repair.getType().equals(Material.COBBLESTONE)) {
+                                            eligible = true;
+                                        } else if (name[0].toLowerCase().equals("iron") && repair.getType().equals(Material.IRON_INGOT)) {
+                                            eligible = true;
+                                        } else if (name[0].toLowerCase().equals("golden") && repair.getType().equals(Material.GOLD_INGOT)) {
+                                            eligible = true;
+                                        } else if (name[0].toLowerCase().equals("diamond") && repair.getType().equals(Material.DIAMOND)) {
+                                            eligible = true;
                                         }
-                                        if (dura < 0) {
-                                            dura = 0;
+                                        if (eligible) {
+                                            double dura = tool.getDurability();
+                                            double maxDura = tool.getType().getMaxDurability();
+                                            int amount = e.getWhoClicked().getItemOnCursor().getAmount();
+                                            double percent = Main.getPlugin().getConfig().getDouble("DurabilityPercentageRepair");
+                                            while (amount > 0 && dura > 0) {
+                                                dura = dura - (maxDura * percent);
+                                                amount--;
+                                            }
+                                            if (dura < 0) {
+                                                dura = 0;
+                                            }
+                                            tool.setDurability((short) dura);
+                                            e.getWhoClicked().getItemOnCursor().setAmount(amount);
+                                            e.setCancelled(true);
                                         }
-                                        tool.setDurability((short) dura);
-                                        e.getWhoClicked().getItemOnCursor().setAmount(amount);
-                                        e.setCancelled(true);
                                     }
                                 }
                             }

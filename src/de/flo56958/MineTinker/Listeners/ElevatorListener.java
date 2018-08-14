@@ -22,21 +22,23 @@ public class ElevatorListener implements Listener {
             if (!Lists.WORLDS_ELEVATOR.contains(e.getPlayer().getWorld().getName())) { return; }
             if (e.isSneaking()) {
                 Player p = e.getPlayer();
-                Location l = p.getLocation();
-                Block b = p.getWorld().getBlockAt(l.add(0, -2, 0));
-                if (b.getType().equals(Material.HOPPER)) {
-                    Hopper h1 = (Hopper) b.getState();
-                    if (h1.getCustomName().equals(ChatColor.GRAY + "Elevator-Motor")) {
-                        for (int i = l.getBlockY() - 1; i >= 0; i--) {
-                            if (p.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ()).getType().equals(Material.HOPPER)) {
-                                Hopper h2 = (Hopper) p.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ()).getState();
-                                if (h2.getCustomName().equals(ChatColor.GRAY + "Elevator-Motor")) {
-                                    l.add(0, i - l.getBlockY() + 2, 0);
-                                    p.teleport(l);
-                                    if (Main.getPlugin().getConfig().getBoolean("Elevator.Sound")) {
-                                        p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 0.5F, 0.5F);
+                if (p.hasPermission("minetinker.elevator.use")) {
+                    Location l = p.getLocation();
+                    Block b = p.getWorld().getBlockAt(l.add(0, -2, 0));
+                    if (b.getType().equals(Material.HOPPER)) {
+                        Hopper h1 = (Hopper) b.getState();
+                        if (h1.getCustomName().equals(ChatColor.GRAY + "Elevator-Motor")) {
+                            for (int i = l.getBlockY() - 1; i >= 0; i--) {
+                                if (p.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ()).getType().equals(Material.HOPPER)) {
+                                    Hopper h2 = (Hopper) p.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ()).getState();
+                                    if (h2.getCustomName().equals(ChatColor.GRAY + "Elevator-Motor")) {
+                                        l.add(0, i - l.getBlockY() + 2, 0);
+                                        p.teleport(l);
+                                        if (Main.getPlugin().getConfig().getBoolean("Elevator.Sound")) {
+                                            p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 0.5F, 0.5F);
+                                        }
+                                        break;
                                     }
-                                    break;
                                 }
                             }
                         }
@@ -51,22 +53,24 @@ public class ElevatorListener implements Listener {
         if (!e.isCancelled()) {
             if (!Lists.WORLDS_ELEVATOR.contains(e.getPlayer().getWorld().getName())) { return; }
             Player p = e.getPlayer();
-            Location l = p.getLocation();
-            Block b = p.getWorld().getBlockAt(l.add(0, -2, 0));
-            if (e.getTo().getY() > e.getFrom().getY() && e.getTo().getX() == e.getFrom().getX() && e.getTo().getZ() == e.getFrom().getZ()) {
-                if (b.getType().equals(Material.HOPPER)) {
-                    Hopper h1 = (Hopper) b.getState();
-                    if (h1.getCustomName().equals(ChatColor.GRAY + "Elevator-Motor")) {
-                        for (int i = l.getBlockY() + 1; i <= 256; i++) {
-                            if (p.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ()).getType().equals(Material.HOPPER)) {
-                                Hopper h2 = (Hopper) p.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ()).getState();
-                                if (h2.getCustomName().equals(ChatColor.GRAY + "Elevator-Motor")) {
-                                    l.add(0, i - l.getBlockY() + 2, 0);
-                                    p.teleport(l);
-                                    if (Main.getPlugin().getConfig().getBoolean("Elevator.Sound")) {
-                                        p.playSound(p.getLocation(), Sound.BLOCK_CHEST_OPEN, 0.5F, 0.5F);
+            if (p.hasPermission("minetinker.elevator.use")) {
+                Location l = p.getLocation();
+                Block b = p.getWorld().getBlockAt(l.add(0, -2, 0));
+                if (e.getTo().getY() > e.getFrom().getY() && e.getTo().getX() == e.getFrom().getX() && e.getTo().getZ() == e.getFrom().getZ()) {
+                    if (b.getType().equals(Material.HOPPER)) {
+                        Hopper h1 = (Hopper) b.getState();
+                        if (h1.getCustomName().equals(ChatColor.GRAY + "Elevator-Motor")) {
+                            for (int i = l.getBlockY() + 1; i <= 256; i++) {
+                                if (p.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ()).getType().equals(Material.HOPPER)) {
+                                    Hopper h2 = (Hopper) p.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ()).getState();
+                                    if (h2.getCustomName().equals(ChatColor.GRAY + "Elevator-Motor")) {
+                                        l.add(0, i - l.getBlockY() + 2, 0);
+                                        p.teleport(l);
+                                        if (Main.getPlugin().getConfig().getBoolean("Elevator.Sound")) {
+                                            p.playSound(p.getLocation(), Sound.BLOCK_CHEST_OPEN, 0.5F, 0.5F);
+                                        }
+                                        break;
                                     }
-                                    break;
                                 }
                             }
                         }
