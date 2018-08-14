@@ -13,7 +13,7 @@ public class cmd_Main implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
-            if (sender.hasPermission("minetinker.main")) {
+            if (sender.hasPermission("minetinker.commands.main")) {
                 if (args.length == 0) {
                     ChatWriter.sendMessage(p, ChatColor.RED, "You have entered to few arguments!");
                     ChatWriter.sendMessage(p, ChatColor.WHITE, "Possible arguments are:");
