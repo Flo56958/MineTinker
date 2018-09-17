@@ -141,6 +141,7 @@ public class BuildersWandListener implements Listener {
                                                         if (b.getWorld().getBlockAt(loc).getType().equals(Material.AIR) ||
                                                                 b.getWorld().getBlockAt(loc).getType().equals(Material.CAVE_AIR) ||
                                                                 b.getWorld().getBlockAt(loc).getType().equals(Material.WATER) ||
+                                                                b.getWorld().getBlockAt(loc).getType().equals(Material.BUBBLE_COLUMN) ||
                                                                 b.getWorld().getBlockAt(loc).getType().equals(Material.LAVA) ||
                                                                 b.getWorld().getBlockAt(loc).getType().equals(Material.GRASS)) {
                                                             if (wand.getType().getMaxDurability() - wand.getDurability() <= 1) {

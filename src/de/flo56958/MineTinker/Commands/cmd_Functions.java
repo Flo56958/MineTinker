@@ -43,7 +43,7 @@ class cmd_Functions {
     }
 
     static void name(Player p, String[] args) {
-        if (args.length == 2) {
+        if (args.length >= 2) {
             ItemStack tool = p.getInventory().getItemInMainHand();
             if (tool.hasItemMeta()) {
                 if (tool.getItemMeta().hasLore()) {
@@ -79,7 +79,7 @@ class cmd_Functions {
                         if (!(index >= lore.size())) {
                             String remove = lore.get(index);
                             String[] mod = remove.split(":");
-                            mod[0] = mod[0].substring(2);
+                            mod[0] = mod[0].substring(2); //Skipps the ChatColor-Code at the Beginning
                             if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"))) {
                                 meta.removeEnchant(Enchantment.FIRE_ASPECT);
                                 meta.removeEnchant(Enchantment.ARROW_FIRE);

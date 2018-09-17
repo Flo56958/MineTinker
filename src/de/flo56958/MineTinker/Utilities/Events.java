@@ -5,6 +5,7 @@ import de.flo56958.MineTinker.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -61,6 +62,13 @@ class Events {
                 int n = rand.nextInt(100);
                 if (n <= Main.getPlugin().getConfig().getInt("LevelUpEvents.RandomModifier.percentage")) {
                     p.getInventory().setItemInMainHand(LevelUpEvent_RandomModifier_apply(tool, p));
+                }
+            }
+            if (Main.getPlugin().getConfig().getBoolean("LevelUpEvents.DropXP.enabled")) {
+                int n = rand.nextInt(100);
+                if (n <= Main.getPlugin().getConfig().getInt("LevelUpEvents.DropXP.percentage")) {
+                    ExperienceOrb orb = p.getWorld().spawn(p.getLocation(), ExperienceOrb.class);
+                    orb.setExperience(Main.getPlugin().getConfig().getInt("LevelUpEvents.DropXP.amount"));
                 }
             }
         }

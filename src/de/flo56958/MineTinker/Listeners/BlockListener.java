@@ -9,18 +9,24 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.LevelCalculator;
 import de.flo56958.MineTinker.Utilities.PlayerInfo;
-import net.minecraft.server.v1_13_R1.BlockPosition;
+import net.minecraft.server.v1_13_R2.BlockPosition;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.CreatureSpawner;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -31,7 +37,8 @@ public class BlockListener implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onBlockBreak(BlockBreakEvent e) {
         if (!e.isCancelled()) {
-            if (!Lists.WORLDS.contains(e.getPlayer().getWorld().getName())) { return; }
+            Player p = e.getPlayer();
+            if (!Lists.WORLDS.contains(p.getWorld().getName())) { return; }
              if (!(e.getBlock().getType().equals(Material.KELP_PLANT) ||
                     e.getBlock().getType().equals(Material.CHORUS_PLANT) ||
                     e.getBlock().getType().equals(Material.DEAD_BUSH) ||
@@ -51,22 +58,26 @@ public class BlockListener implements Listener {
                     e.getBlock().getType().equals(Material.OXEYE_DAISY) ||
                     e.getBlock().getType().equals(Material.AZURE_BLUET) ||
                     e.getBlock().getType().equals(Material.TORCH))) {
-                if (e.getPlayer().getGameMode().equals(GameMode.SURVIVAL) || e.getPlayer().getGameMode().equals(GameMode.ADVENTURE)) {
-                    ItemStack tool = e.getPlayer().getInventory().getItemInMainHand();
+                if (p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE)) {
+                    ItemStack tool = p.getInventory().getItemInMainHand();
                     ItemMeta meta = tool.getItemMeta();
                     if (!tool.getType().equals(Material.AIR)) {
                         if (meta.hasLore()) {
                             ArrayList<String> lore = (ArrayList<String>) meta.getLore();
                             if (lore.contains(Strings.IDENTIFIER)) {
-                                if (tool.getType().getMaxDurability() - tool.getDurability() <= 1) {
+                                if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 1) {
                                     e.setCancelled(true);
                                     if (Main.getPlugin().getConfig().getBoolean("Sound.OnBreaking")) {
-                                        e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
+                                        p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
                                     }
                                     return;
                                 }
+                                if (PlayerData.HASPOWER.get(e.getPlayer()) && !e.isDropItems()) {
+                                    e.setCancelled(true);
+                                    return;
+                                }
                                 LevelCalculator.addExp(e.getPlayer(), tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
-                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.selfrepair.use")) {
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed") && p.hasPermission("minetinker.modifiers.selfrepair.use")) {
                                     //<editor-fold desc="self-repair check">
                                     for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel"); i++) {
                                         if (lore.contains(Strings.SELFREPAIR + i)) {
@@ -76,16 +87,31 @@ public class BlockListener implements Listener {
                                             if (n <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.PercentagePerLevel") * i) {
                                                 int heal = Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.HealthRepair");
                                                 short dura = (short) (tool.getDurability() - heal);
-                                                if (dura < 0) { dura = 0; }
-                                                e.getPlayer().getInventory().getItemInMainHand().setDurability(dura);
-                                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
+                                                if (dura < 0) {
+                                                    dura = 0;
+                                                }
+                                                p.getInventory().getItemInMainHand().setDurability(dura);
+                                                ChatWriter.log(false, p.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
                                             }
                                             break;
                                         }
                                     }
                                     //</editor-fold>
                                 }
-                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.xp.use")) {
+                                if ((Main.getPlugin().getConfig().getBoolean("Modifiers.Silk-Touch.allowed") && Main.getPlugin().getConfig().getBoolean("Spawners.dropable") && Main.getPlugin().getConfig().getBoolean("Spawners.onlyWithSilkTouch"))
+                                        || (Main.getPlugin().getConfig().getBoolean("Spawners.dropable") && !Main.getPlugin().getConfig().getBoolean("Spawners.onlyWithSilkTouch"))) {
+                                    if (e.getBlock().getType().equals(Material.SPAWNER) && p.hasPermission("minetinker.spawners.mine")) {
+                                        CreatureSpawner cs = (CreatureSpawner) e.getBlock().getState();
+                                        ItemStack s = new ItemStack(Material.SPAWNER, 1, e.getBlock().getData());
+                                        ItemMeta s_meta = s.getItemMeta();
+                                        s_meta.setDisplayName(cs.getSpawnedType().toString());
+                                        s.setItemMeta(s_meta);
+                                        p.getWorld().dropItemNaturally(e.getBlock().getLocation(), s);
+                                        e.setExpToDrop(0);
+                                        ChatWriter.log(false, p.getDisplayName() + " successfully mined a Spawner!");
+                                    }
+                                }
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed") && p.hasPermission("minetinker.modifiers.xp.use")) {
                                     //<editor-fold desc="xp check">
                                     for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.XP.MaxLevel"); i++) {
                                         if (lore.contains(Strings.XP + i)) {
@@ -94,14 +120,14 @@ public class BlockListener implements Listener {
                                             int n = rand.nextInt(100);
                                             if (n <= Main.getPlugin().getConfig().getInt("Modifiers.XP.PercentagePerLevel") * i) {
                                                 e.setExpToDrop(e.getExpToDrop() + Main.getPlugin().getConfig().getInt("Modifiers.XP.XPAmount"));
-                                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " triggered XP on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
+                                                ChatWriter.log(false, p.getDisplayName() + " triggered XP on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
                                             }
                                             break;
                                         }
                                     }
                                     //</editor-fold>
                                 }
-                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Auto-Smelt.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.autosmelt.use")) {
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Auto-Smelt.allowed") && p.hasPermission("minetinker.modifiers.autosmelt.use")) {
                                     //<editor-fold desc="auto-smelt check">
                                     boolean goodBlock = false;
                                     boolean luck = false;
@@ -110,10 +136,6 @@ public class BlockListener implements Listener {
                                         case COBBLESTONE:
                                             goodBlock = true;
                                             loot = Material.STONE;
-                                            break;
-                                        case TERRACOTTA:
-                                            goodBlock = true;
-                                            loot = Material.TERRACOTTA;
                                             break;
                                         case SAND:
                                             goodBlock = true;
@@ -125,6 +147,24 @@ public class BlockListener implements Listener {
                                         case JUNGLE_LOG:
                                         case OAK_LOG:
                                         case SPRUCE_LOG:
+                                        case STRIPPED_ACACIA_LOG:
+                                        case STRIPPED_BIRCH_LOG:
+                                        case STRIPPED_DARK_OAK_LOG:
+                                        case STRIPPED_JUNGLE_LOG:
+                                        case STRIPPED_OAK_LOG:
+                                        case STRIPPED_SPRUCE_LOG:
+                                        case ACACIA_WOOD:
+                                        case BIRCH_WOOD:
+                                        case DARK_OAK_WOOD:
+                                        case JUNGLE_WOOD:
+                                        case OAK_WOOD:
+                                        case SPRUCE_WOOD:
+                                        case STRIPPED_ACACIA_WOOD:
+                                        case STRIPPED_BIRCH_WOOD:
+                                        case STRIPPED_DARK_OAK_WOOD:
+                                        case STRIPPED_JUNGLE_WOOD:
+                                        case STRIPPED_OAK_WOOD:
+                                        case STRIPPED_SPRUCE_WOOD:
                                             goodBlock = true;
                                             luck = true;
                                             loot = Material.CHARCOAL;
@@ -144,6 +184,14 @@ public class BlockListener implements Listener {
                                             luck = true;
                                             loot = Material.NETHER_BRICK;
                                             break;
+                                        case KELP_PLANT:
+                                            goodBlock = true;
+                                            loot = Material.DRIED_KELP;
+                                            break;
+                                        case WET_SPONGE:
+                                            goodBlock = true;
+                                            loot = Material.SPONGE;
+                                            break;
                                     }
                                     if (goodBlock) {
                                         for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.MaxLevel"); i++) {
@@ -154,7 +202,7 @@ public class BlockListener implements Listener {
                                                 if (n <= Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.PercentagePerLevel") * i) {
                                                     int amount = 1;
                                                     if (Main.getPlugin().getConfig().getBoolean("Modifiers.Luck.allowed") && luck) {
-                                                        for (int j = 0; j <= 3; j++) {
+                                                        for (int j = 0; j <= Main.getPlugin().getConfig().getInt("Modifiers.Luck.MaxLevel"); j++) {
                                                             if (lore.contains(Strings.LUCK + j)) {
                                                                 amount = amount + rand.nextInt(j);
                                                                 break;
@@ -168,7 +216,7 @@ public class BlockListener implements Listener {
                                                     if (Main.getPlugin().getConfig().getBoolean("Modifiers.Auto-Smelt.Sound")) {
                                                         e.getBlock().getLocation().getWorld().playSound(e.getBlock().getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
                                                     }
-                                                    ChatWriter.log(false, e.getPlayer().getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ") while mining " + e.getBlock().getType().toString() + "!");
+                                                    ChatWriter.log(false, p.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ") while mining " + e.getBlock().getType().toString() + "!");
                                                 }
                                                 break;
                                             }
@@ -176,8 +224,8 @@ public class BlockListener implements Listener {
                                     }
                                     //</editor-fold>
                                 }
-                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.power.use")) {
-                                    if (!PlayerData.HASPOWER.get(e.getPlayer()) && !e.getPlayer().isSneaking()) {
+                                if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed") && p.hasPermission("minetinker.modifiers.power.use")) {
+                                    if (!PlayerData.HASPOWER.get(e.getPlayer()) && !p.isSneaking()) {
                                         if (lore.contains(Strings.POWER + 1)) {
                                             PlayerData.HASPOWER.replace(e.getPlayer(), true);
                                             //<editor-fold desc="POWER 1">
@@ -185,38 +233,38 @@ public class BlockListener implements Listener {
                                                 if (PlayerInfo.getFacingDirection(e.getPlayer()).equals("N") || PlayerInfo.getFacingDirection(e.getPlayer()).equals("S")) {
                                                     Block b1 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(1, 0, 0));
                                                     Block b2 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(-1, 0, 0));
-                                                    if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.CAVE_AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.LAVA)) {
+                                                    if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.CAVE_AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.BUBBLE_COLUMN) && !b1.getType().equals(Material.LAVA)) {
                                                         ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b1.getX(), b1.getY(), b1.getZ()));
                                                     }
-                                                    if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.CAVE_AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.LAVA)) {
+                                                    if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.CAVE_AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.BUBBLE_COLUMN) && !b2.getType().equals(Material.LAVA)) {
                                                         ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
                                                     }
                                                 } else if (PlayerInfo.getFacingDirection(e.getPlayer()).equals("W") || PlayerInfo.getFacingDirection(e.getPlayer()).equals("E")) {
                                                     Block b1 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, 0, 1));
                                                     Block b2 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, 0, -1));
-                                                    if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.CAVE_AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.LAVA)) {
+                                                    if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.CAVE_AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.BUBBLE_COLUMN) && !b1.getType().equals(Material.LAVA)) {
                                                         ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b1.getX(), b1.getY(), b1.getZ()));
                                                     }
-                                                    if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.CAVE_AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.LAVA)) {
+                                                    if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.CAVE_AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.BUBBLE_COLUMN) && !b2.getType().equals(Material.LAVA)) {
                                                         ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
                                                     }
                                                 }
                                             } else if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.NORTH) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.SOUTH)) {
                                                 Block b1 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(1, 0, 0));
                                                 Block b2 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(-1, 0, 0));
-                                                if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.CAVE_AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.LAVA)) {
+                                                if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.CAVE_AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.BUBBLE_COLUMN) && !b1.getType().equals(Material.LAVA)) {
                                                     ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b1.getX(), b1.getY(), b1.getZ()));
                                                 }
-                                                if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.CAVE_AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.LAVA)) {
+                                                if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.CAVE_AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.BUBBLE_COLUMN) && !b2.getType().equals(Material.LAVA)) {
                                                     ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
                                                 }
                                             } else if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.WEST) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.EAST)) {
                                                 Block b1 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, 0, 1));
                                                 Block b2 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, 0, -1));
-                                                if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.CAVE_AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.LAVA)) {
+                                                if (!b1.getType().equals(Material.AIR) && !b1.getType().equals(Material.CAVE_AIR) && !b1.getType().equals(Material.BEDROCK) && !b1.getType().equals(Material.WATER) && !b1.getType().equals(Material.BUBBLE_COLUMN) && !b1.getType().equals(Material.LAVA)) {
                                                     ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b1.getX(), b1.getY(), b1.getZ()));
                                                 }
-                                                if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.CAVE_AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.LAVA)) {
+                                                if (!b2.getType().equals(Material.AIR) && !b2.getType().equals(Material.CAVE_AIR) && !b2.getType().equals(Material.BEDROCK) && !b2.getType().equals(Material.WATER) && !b2.getType().equals(Material.BUBBLE_COLUMN) && !b2.getType().equals(Material.LAVA)) {
                                                     ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
                                                 }
                                             }
@@ -232,7 +280,7 @@ public class BlockListener implements Listener {
                                                             for (int z = -(level - 1); z <= (level - 1); z++) {
                                                                 if (!(x == 0 && z == 0)) {
                                                                     Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(x, 0, z));
-                                                                    if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
+                                                                    if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.BUBBLE_COLUMN) && !b.getType().equals(Material.LAVA)) {
                                                                         ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
                                                                     }
                                                                 }
@@ -243,7 +291,7 @@ public class BlockListener implements Listener {
                                                             for (int y = -(level - 1); y <= (level - 1); y++) {
                                                                 if (!(x == 0 && y == 0)) {
                                                                     Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(x, y, 0));
-                                                                    if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
+                                                                    if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.BUBBLE_COLUMN) && !b.getType().equals(Material.LAVA)) {
                                                                         ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
                                                                     }
                                                                 }
@@ -254,7 +302,7 @@ public class BlockListener implements Listener {
                                                             for (int y = -(level - 1); y <= (level - 1); y++) {
                                                                 if (!(z == 0 && y == 0)) {
                                                                     Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(0, y, z));
-                                                                    if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.LAVA)) {
+                                                                    if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.BUBBLE_COLUMN) && !b.getType().equals(Material.LAVA)) {
                                                                         ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
                                                                     }
                                                                 }
@@ -279,7 +327,8 @@ public class BlockListener implements Listener {
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
         if (!e.isCancelled()) {
-            ItemStack norm = e.getPlayer().getInventory().getItemInMainHand();
+            Player p = e.getPlayer();
+            ItemStack norm = p.getInventory().getItemInMainHand();
             if (e.getAction().equals(Action.RIGHT_CLICK_AIR) && (norm.equals(Modifiers.ENDER_MODIFIER))) {
                 e.setCancelled(true);
                 return;
@@ -303,197 +352,225 @@ public class BlockListener implements Listener {
                 }
                 norm.setAmount(temp);
                 if (e.getClickedBlock().getType().equals(Material.BOOKSHELF)) {
-                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.selfrepair.craft")) {
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed") && p.hasPermission("minetinker.modifiers.selfrepair.craft")) {
                         //<editor-fold desc="SELF-REPAIR">
-                        if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.MOSSY_COBBLESTONE) && !e.getPlayer().isSneaking()) {
-                            if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
-                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.SELFREPAIR_MODIFIER);
+                        if (p.getInventory().getItemInMainHand().getType().equals(Material.MOSSY_COBBLESTONE) && !p.isSneaking()) {
+                            if (p.getGameMode().equals(GameMode.CREATIVE)) {
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.SELFREPAIR_MODIFIER);
                                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
                                 }
-                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Self-Repair-Modifier in Creative!");
-                            } else if (e.getPlayer().getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.EnchantCost")) {
-                                int amount = e.getPlayer().getInventory().getItemInMainHand().getAmount();
-                                int newLevel = e.getPlayer().getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.EnchantCost");
-                                e.getPlayer().setLevel(newLevel);
-                                e.getPlayer().getInventory().getItemInMainHand().setAmount(amount - 1);
-                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.SELFREPAIR_MODIFIER);
+                                ChatWriter.log(false, p.getDisplayName() + " created a Self-Repair-Modifier in Creative!");
+                            } else if (p.getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.EnchantCost")) {
+                                int amount = p.getInventory().getItemInMainHand().getAmount();
+                                int newLevel = p.getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.EnchantCost");
+                                p.setLevel(newLevel);
+                                p.getInventory().getItemInMainHand().setAmount(amount - 1);
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.SELFREPAIR_MODIFIER);
                                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
                                 }
-                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Self-Repair-Modifier!");
+                                ChatWriter.log(false, p.getDisplayName() + " created a Self-Repair-Modifier!");
                             } else {
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.EnchantCost") + " levels are required!");
-                                ChatWriter.log(false,  e.getPlayer().getDisplayName() + " tried to create a Self-Repair-Modifier but had not enough levels!");
+                                ChatWriter.log(false,  p.getDisplayName() + " tried to create a Self-Repair-Modifier but had not enough levels!");
                             }
                             e.setCancelled(true);
                         }
                         //</editor-fold>
                     }
-                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Silk-Touch.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.silktouch.craft")) {
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Silk-Touch.allowed") && p.hasPermission("minetinker.modifiers.silktouch.craft")) {
                         //<editor-fold desc="SILK-TOUCH">
-                        if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.COBWEB) && !e.getPlayer().isSneaking()) {
-                            if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
-                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.SILKTOUCH_MODIFIER);
+                        if (p.getInventory().getItemInMainHand().getType().equals(Material.COBWEB) && !p.isSneaking()) {
+                            if (p.getGameMode().equals(GameMode.CREATIVE)) {
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.SILKTOUCH_MODIFIER);
                                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
                                 }
-                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Silk-Touch-Modifier in Creative!");
-                            } else if (e.getPlayer().getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Silk-Touch.EnchantCost")) {
-                                int amount = e.getPlayer().getInventory().getItemInMainHand().getAmount();
-                                int newLevel = e.getPlayer().getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Silk-Touch.EnchantCost");
-                                e.getPlayer().setLevel(newLevel);
-                                e.getPlayer().getInventory().getItemInMainHand().setAmount(amount - 1);
-                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.SILKTOUCH_MODIFIER);
+                                ChatWriter.log(false, p.getDisplayName() + " created a Silk-Touch-Modifier in Creative!");
+                            } else if (p.getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Silk-Touch.EnchantCost")) {
+                                int amount = p.getInventory().getItemInMainHand().getAmount();
+                                int newLevel = p.getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Silk-Touch.EnchantCost");
+                                p.setLevel(newLevel);
+                                p.getInventory().getItemInMainHand().setAmount(amount - 1);
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.SILKTOUCH_MODIFIER);
                                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
                                 }
-                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Silk-Touch-Modifier!");
+                                ChatWriter.log(false, p.getDisplayName() + " created a Silk-Touch-Modifier!");
                             } else {
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Silk-Touch.EnchantCost") + " levels are required!");
-                                ChatWriter.log(false,  e.getPlayer().getDisplayName() + " tried to create a Silk-Touch-Modifier but had not enough levels!");
+                                ChatWriter.log(false,  p.getDisplayName() + " tried to create a Silk-Touch-Modifier but had not enough levels!");
                             }
                             e.setCancelled(true);
                         }
                         //</editor-fold>
                     }
-                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Fiery.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.fiery.craft")) {
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Fiery.allowed") && p.hasPermission("minetinker.modifiers.fiery.craft")) {
                         //<editor-fold desc="FIERY">
-                        if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.BLAZE_ROD) && !e.getPlayer().isSneaking()) {
-                            if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
-                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.FIERY_MODIFIER);
+                        if (p.getInventory().getItemInMainHand().getType().equals(Material.BLAZE_ROD) && !p.isSneaking()) {
+                            if (p.getGameMode().equals(GameMode.CREATIVE)) {
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.FIERY_MODIFIER);
                                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
                                 }
-                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Fiery-Modifier in Creative!");
-                            } else if (e.getPlayer().getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Fiery.EnchantCost")) {
-                                int amount = e.getPlayer().getInventory().getItemInMainHand().getAmount();
-                                int newLevel = e.getPlayer().getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Fiery.EnchantCost");
-                                e.getPlayer().setLevel(newLevel);
-                                e.getPlayer().getInventory().getItemInMainHand().setAmount(amount - 1);
-                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.FIERY_MODIFIER);
+                                ChatWriter.log(false, p.getDisplayName() + " created a Fiery-Modifier in Creative!");
+                            } else if (p.getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Fiery.EnchantCost")) {
+                                int amount = p.getInventory().getItemInMainHand().getAmount();
+                                int newLevel = p.getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Fiery.EnchantCost");
+                                p.setLevel(newLevel);
+                                p.getInventory().getItemInMainHand().setAmount(amount - 1);
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.FIERY_MODIFIER);
                                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
                                 }
-                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Fiery-Modifier!");
+                                ChatWriter.log(false, p.getDisplayName() + " created a Fiery-Modifier!");
                             } else {
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Fiery.EnchantCost") + " levels are required!");
-                                ChatWriter.log(false,  e.getPlayer().getDisplayName() + " tried to create a Fiery-Modifier but had not enough levels!");
+                                ChatWriter.log(false,  p.getDisplayName() + " tried to create a Fiery-Modifier but had not enough levels!");
                             }
                             e.setCancelled(true);
                         }
                         //</editor-fold>
                     }
-                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.power.craft")) {
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed") && p.hasPermission("minetinker.modifiers.power.craft")) {
                         //<editor-fold desc="POWER">
-                        if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.EMERALD) && !e.getPlayer().isSneaking()) {
-                            if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
-                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.POWER_MODIFIER);
+                        if (p.getInventory().getItemInMainHand().getType().equals(Material.EMERALD) && !p.isSneaking()) {
+                            if (p.getGameMode().equals(GameMode.CREATIVE)) {
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.POWER_MODIFIER);
                                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
                                 }
-                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Power-Modifier in Creative!");
-                            } else if (e.getPlayer().getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Power.EnchantCost")) {
-                                int amount = e.getPlayer().getInventory().getItemInMainHand().getAmount();
-                                int newLevel = e.getPlayer().getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Power.EnchantCost");
-                                e.getPlayer().setLevel(newLevel);
-                                e.getPlayer().getInventory().getItemInMainHand().setAmount(amount - 1);
-                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.POWER_MODIFIER);
+                                ChatWriter.log(false, p.getDisplayName() + " created a Power-Modifier in Creative!");
+                            } else if (p.getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Power.EnchantCost")) {
+                                int amount = p.getInventory().getItemInMainHand().getAmount();
+                                int newLevel = p.getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Power.EnchantCost");
+                                p.setLevel(newLevel);
+                                p.getInventory().getItemInMainHand().setAmount(amount - 1);
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.POWER_MODIFIER);
                                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
                                 }
-                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Power-Modifier!");
+                                ChatWriter.log(false, p.getDisplayName() + " created a Power-Modifier!");
                             } else {
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Power.EnchantCost") + " levels are required!");
-                                ChatWriter.log(false,  e.getPlayer().getDisplayName() + " tried to create a Power-Modifier but had not enough levels!");
+                                ChatWriter.log(false,  p.getDisplayName() + " tried to create a Power-Modifier but had not enough levels!");
                             }
                             e.setCancelled(true);
                         }
                         //</editor-fold>
                     }
-                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Beheading.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.beheading.craft")) {
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Beheading.allowed") && p.hasPermission("minetinker.modifiers.beheading.craft")) {
                         //<editor-fold desc="BEHEADING">
-                        if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.WITHER_SKELETON_SKULL) && !e.getPlayer().isSneaking()) {
-                            if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
-                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.BEHEADING_MODIFIER);
+                        if (p.getInventory().getItemInMainHand().getType().equals(Material.WITHER_SKELETON_SKULL) && !p.isSneaking()) {
+                            if (p.getGameMode().equals(GameMode.CREATIVE)) {
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.BEHEADING_MODIFIER);
                                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
                                 }
-                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Beheading-Modifier in Creative!");
-                            } else if (e.getPlayer().getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Beheading.EnchantCost")) {
-                                int amount = e.getPlayer().getInventory().getItemInMainHand().getAmount();
-                                int newLevel = e.getPlayer().getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Beheading.EnchantCost");
-                                e.getPlayer().setLevel(newLevel);
-                                e.getPlayer().getInventory().getItemInMainHand().setAmount(amount - 1);
-                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.BEHEADING_MODIFIER);
+                                ChatWriter.log(false, p.getDisplayName() + " created a Beheading-Modifier in Creative!");
+                            } else if (p.getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Beheading.EnchantCost")) {
+                                int amount = p.getInventory().getItemInMainHand().getAmount();
+                                int newLevel = p.getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Beheading.EnchantCost");
+                                p.setLevel(newLevel);
+                                p.getInventory().getItemInMainHand().setAmount(amount - 1);
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.BEHEADING_MODIFIER);
                                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
                                 }
-                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Beheading-Modifier!");
+                                ChatWriter.log(false, p.getDisplayName() + " created a Beheading-Modifier!");
                             } else {
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Beheading.EnchantCost") + " levels are required!");
-                                ChatWriter.log(false,  e.getPlayer().getDisplayName() + " tried to create a Beheading-Modifier but had not enough levels!");
+                                ChatWriter.log(false,  p.getDisplayName() + " tried to create a Beheading-Modifier but had not enough levels!");
                             }
                             e.setCancelled(true);
                         }
                         //</editor-fold>
                     }
-                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Infinity.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.infinity.craft")) {
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Infinity.allowed") && p.hasPermission("minetinker.modifiers.infinity.craft")) {
                         //<editor-fold desc="INFINITY">
-                        if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.ARROW) && !e.getPlayer().isSneaking()) {
-                            if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
-                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.INFINITY_MODIFIER);
+                        if (p.getInventory().getItemInMainHand().getType().equals(Material.ARROW) && !p.isSneaking()) {
+                            if (p.getGameMode().equals(GameMode.CREATIVE)) {
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.INFINITY_MODIFIER);
                                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
                                 }
-                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Infinity-Modifier in Creative!");
-                            } else if (e.getPlayer().getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Infinity.EnchantCost")) {
-                                int amount = e.getPlayer().getInventory().getItemInMainHand().getAmount();
-                                int newLevel = e.getPlayer().getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Infinity.EnchantCost");
-                                e.getPlayer().setLevel(newLevel);
-                                e.getPlayer().getInventory().getItemInMainHand().setAmount(amount - 1);
-                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.INFINITY_MODIFIER);
+                                ChatWriter.log(false, p.getDisplayName() + " created a Infinity-Modifier in Creative!");
+                            } else if (p.getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Infinity.EnchantCost")) {
+                                int amount = p.getInventory().getItemInMainHand().getAmount();
+                                int newLevel = p.getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Infinity.EnchantCost");
+                                p.setLevel(newLevel);
+                                p.getInventory().getItemInMainHand().setAmount(amount - 1);
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.INFINITY_MODIFIER);
                                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
                                 }
-                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Infinity-Modifier!");
+                                ChatWriter.log(false, p.getDisplayName() + " created a Infinity-Modifier!");
                             } else {
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Infinity.EnchantCost") + " levels are required!");
-                                ChatWriter.log(false,  e.getPlayer().getDisplayName() + " tried to create a Infinity-Modifier but had not enough levels!");
+                                ChatWriter.log(false,  p.getDisplayName() + " tried to create a Infinity-Modifier but had not enough levels!");
                             }
                             e.setCancelled(true);
                         }
                         //</editor-fold>
                     }
-                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Poisonous.allowed") && e.getPlayer().hasPermission("minetinker.modifiers.poisonous.craft")) {
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Poisonous.allowed") && p.hasPermission("minetinker.modifiers.poisonous.craft")) {
                         //<editor-fold desc="POISONOUS">
-                        if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.ROTTEN_FLESH) && !e.getPlayer().isSneaking()) {
-                            if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
-                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.POISONOUS_MODIFIER);
+                        if (p.getInventory().getItemInMainHand().getType().equals(Material.ROTTEN_FLESH) && !p.isSneaking()) {
+                            if (p.getGameMode().equals(GameMode.CREATIVE)) {
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.POISONOUS_MODIFIER);
                                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
                                 }
-                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Poisonous-Modifier in Creative!");
-                            } else if (e.getPlayer().getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Poisonous.EnchantCost")) {
-                                int amount = e.getPlayer().getInventory().getItemInMainHand().getAmount();
-                                int newLevel = e.getPlayer().getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Poisonous.EnchantCost");
-                                e.getPlayer().setLevel(newLevel);
-                                e.getPlayer().getInventory().getItemInMainHand().setAmount(amount - 1);
-                                e.getPlayer().getLocation().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Modifiers.POISONOUS_MODIFIER);
+                                ChatWriter.log(false, p.getDisplayName() + " created a Poisonous-Modifier in Creative!");
+                            } else if (p.getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Poisonous.EnchantCost")) {
+                                int amount = p.getInventory().getItemInMainHand().getAmount();
+                                int newLevel = p.getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Poisonous.EnchantCost");
+                                p.setLevel(newLevel);
+                                p.getInventory().getItemInMainHand().setAmount(amount - 1);
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.POISONOUS_MODIFIER);
                                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-                                    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
                                 }
-                                ChatWriter.log(false, e.getPlayer().getDisplayName() + " created a Poisonous-Modifier!");
+                                ChatWriter.log(false, p.getDisplayName() + " created a Poisonous-Modifier!");
                             } else {
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Poisonous.EnchantCost") + " levels are required!");
-                                ChatWriter.log(false,  e.getPlayer().getDisplayName() + " tried to create a Poisonous-Modifier but had not enough levels!");
+                                ChatWriter.log(false,  p.getDisplayName() + " tried to create a Poisonous-Modifier but had not enough levels!");
+                            }
+                            e.setCancelled(true);
+                        }
+                        //</editor-fold>
+                    }
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Sweeping.allowed") && p.hasPermission("minetinker.modifiers.sweeping.craft")) {
+                        //<editor-fold desc="POISONOUS">
+                        if (p.getInventory().getItemInMainHand().getType().equals(Material.IRON_INGOT) && !p.isSneaking()) {
+                            if (p.getGameMode().equals(GameMode.CREATIVE)) {
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.SWEEPING_MODIFIER);
+                                if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                }
+                                ChatWriter.log(false, p.getDisplayName() + " created a Sweeping-Modifier in Creative!");
+                            } else if (p.getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Sweeping.EnchantCost")) {
+                                int amount = p.getInventory().getItemInMainHand().getAmount();
+                                int newLevel = p.getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Sweeping.EnchantCost");
+                                p.setLevel(newLevel);
+                                p.getInventory().getItemInMainHand().setAmount(amount - 1);
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.SWEEPING_MODIFIER);
+                                if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                }
+                                ChatWriter.log(false, p.getDisplayName() + " created a Sweeping-Modifier!");
+                            } else {
+                                ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
+                                ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Sweeping.EnchantCost") + " levels are required!");
+                                ChatWriter.log(false, p.getDisplayName() + " tried to create a Sweeping-Modifier but had not enough levels!");
                             }
                             e.setCancelled(true);
                         }
@@ -501,6 +578,27 @@ public class BlockListener implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public static void onBlockPlace(BlockPlaceEvent e) {
+        if (e.isCancelled()) {
+            return;
+        }
+        Player p = e.getPlayer();
+        Block b = e.getBlockPlaced();
+        BlockState bs = b.getState();
+        if (!p.hasPermission("minetinker.spawners.place") && b.getType().equals(Material.SPAWNER)) {
+            e.setCancelled(true);
+            //return;
+        } else if (p.hasPermission("minetinker.spawners.place") && b.getType().equals(Material.SPAWNER)) {
+            CreatureSpawner cs = (CreatureSpawner) bs;
+            cs.setSpawnedType(EntityType.fromName(e.getItemInHand().getItemMeta().getDisplayName()));
+            bs.update(true);
+            System.out.println(EntityType.fromName(e.getItemInHand().getItemMeta().getDisplayName()));
+            System.out.println(cs.getSpawnedType());
+            ChatWriter.log(false,  p.getDisplayName() + " successfully placed a Spawner!");
         }
     }
 }

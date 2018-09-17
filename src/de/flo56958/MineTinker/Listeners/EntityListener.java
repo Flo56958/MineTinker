@@ -10,7 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -244,7 +244,7 @@ public class EntityListener implements Listener {
                                         if (p.isSneaking()) {
                                             Location loc = e.getHitEntity().getLocation().clone();
                                             e.getHitEntity().teleport(p.getLocation());
-                                            p.teleport(loc);
+                                            p.teleport(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ()));
                                             if (Main.getPlugin().getConfig().getBoolean("Modifiers.Ender.Sound")) {
                                                 p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F);
                                                 p.getWorld().playSound(e.getHitEntity().getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F);

@@ -14,6 +14,7 @@ public class Lists {
     public static final List<String> SHOVELS = (List<String>) Main.getPlugin().getConfig().getList("AllowedTools.Shovels");
     public static final List<String> HOES = (List<String>) Main.getPlugin().getConfig().getList("AllowedTools.Hoes");
     public static final List<String> BOWS = (List<String>) Main.getPlugin().getConfig().getList("AllowedTools.Bows");
+    public static final List<String> MISC = (List<String>) Main.getPlugin().getConfig().getList("AllowedTools.Misc");
 
     public static final List<String> WORLDS = (List<String>) Main.getPlugin().getConfig().getList("AllowedWorlds");
     public static final List<String> WORLDS_ELEVATOR = (List<String>) Main.getPlugin().getConfig().getList("Elevator.AllowedWorlds");
@@ -68,6 +69,9 @@ public class Lists {
         }
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Silk-Touch.allowed")) {
             allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name").toLowerCase());
+        }
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Sweeping.allowed")) {
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Sweeping.name").toLowerCase());
         }
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed")) {
             allowed.add(Main.getPlugin().getConfig().getString("Modifiers.XP.name").toLowerCase());

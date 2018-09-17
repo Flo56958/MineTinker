@@ -152,8 +152,8 @@ class ModifierApply {
         if (Lists.SWORDS.contains(tool.getType().toString())) {
             int index = 0;
             boolean hasFiery = false;
-            for (int i = 1; i <= 2; i++) {
-                if (lore.contains(Strings.FIERY_SWORD + i)) {
+            for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Fiery.MaxLevel"); i++) {
+                if (lore.contains(Strings.FIERY + i)) {
                     index = i;
                     hasFiery = true;
                     break;
@@ -161,19 +161,19 @@ class ModifierApply {
             }
             int loreIndex = 0;
             int level = 1 + index;
-            if (level > 2) {
+            if (level > Main.getPlugin().getConfig().getInt("Modifiers.Fiery.MaxLevel")) {
                 if (!event) {
                     Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"));
                 }
                 return null;
             }
             if (hasFiery) {
-                loreIndex = lore.indexOf(Strings.FIERY_SWORD + index);
+                loreIndex = lore.indexOf(Strings.FIERY + index);
             }
             if (loreIndex != 0) {
-                lore.set(loreIndex, Strings.FIERY_SWORD + level);
+                lore.set(loreIndex, Strings.FIERY + level);
             } else {
-                lore.add(Strings.FIERY_SWORD + level);
+                lore.add(Strings.FIERY + level);
             }
             meta.addEnchant(Enchantment.FIRE_ASPECT, level, true);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -182,16 +182,34 @@ class ModifierApply {
                 lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
             }
         } else if (Lists.BOWS.contains(tool.getType().toString())) {
-            if (lore.contains(Strings.FIERY_BOW)) {
+            int index = 0;
+            boolean hasFiery = false;
+            for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Fiery.MaxLevel"); i++) {
+                if (lore.contains(Strings.FIERY + i)) {
+                    index = i;
+                    hasFiery = true;
+                    break;
+                }
+            }
+            int loreIndex = 0;
+            int level = 1 + index;
+            if (level > Main.getPlugin().getConfig().getInt("Modifiers.Fiery.MaxLevel")) {
                 if (!event) {
                     Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"));
                 }
                 return null;
             }
-            lore.add(Strings.FIERY_BOW);
-            meta.addEnchant(Enchantment.ARROW_FIRE, 1, true);
+            if (hasFiery) {
+                loreIndex = lore.indexOf(Strings.FIERY + index);
+            }
+            if (loreIndex != 0) {
+                lore.set(loreIndex, Strings.FIERY + level);
+            } else {
+                lore.add(Strings.FIERY + level);
+            }
+            meta.addEnchant(Enchantment.ARROW_FIRE, level, true);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            Events.Mod_AddMod(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"), slotsRemaining - 1, event);
+            Events.Mod_AddMod(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name") + " " + level, slotsRemaining - 1, event);
             if (!event) {
                 lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
             }
@@ -238,7 +256,7 @@ class ModifierApply {
         if (Lists.AXES.contains(tool.getType().toString()) || Lists.SHOVELS.contains(tool.getType().toString()) || Lists.PICKAXES.contains(tool.getType().toString())) {
             int index = 0;
             boolean hasHaste = false;
-            for (int i = 1; i <= 5; i++) {
+            for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Haste.MaxLevel"); i++) {
                 if (lore.contains(Strings.HASTE + i)) {
                     index = i;
                     hasHaste = true;
@@ -247,7 +265,7 @@ class ModifierApply {
             }
             int loreIndex = 0;
             int level = 1 + index;
-            if (level > 5) {
+            if (level > Main.getPlugin().getConfig().getInt("Modifiers.Haste.MaxLevel")) {
                 if (!event) {
                     Events.Mod_MaxLevel(p, tool, ChatColor.DARK_RED + Main.getPlugin().getConfig().getString("Modifiers.Haste.name"));
                 }
@@ -317,7 +335,7 @@ class ModifierApply {
         }
         int index = 0;
         boolean hasLuck = false;
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Luck.MaxLevel"); i++) {
             if (lore.contains(Strings.LUCK + i)) {
                 index = i;
                 hasLuck = true;
@@ -326,7 +344,7 @@ class ModifierApply {
         }
         int loreIndex = 0;
         int level = 1 + index;
-        if (level > 3) {
+        if (level > Main.getPlugin().getConfig().getInt("Modifiers.Luck.MaxLevel")) {
             if (!event) {
                 Events.Mod_MaxLevel(p, tool, ChatColor.BLUE + Main.getPlugin().getConfig().getString("Modifiers.Luck.name"));
             }
@@ -437,7 +455,7 @@ class ModifierApply {
 
         int index = 0;
         boolean hasReinforced = false;
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Reinforced.MaxLevel"); i++) {
             if (lore.contains(Strings.REINFORCED + i)) {
                 index = i;
                 hasReinforced = true;
@@ -446,7 +464,7 @@ class ModifierApply {
         }
         int loreIndex = 0;
         int level = 1 + index;
-        if (level > 3) {
+        if (level > Main.getPlugin().getConfig().getInt("Modifiers.Reinforced.MaxLevel")) {
             if (!event) {
                 Events.Mod_MaxLevel(p, tool, ChatColor.GRAY + Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name"));
             }
@@ -520,7 +538,7 @@ class ModifierApply {
         if (Lists.SWORDS.contains(tool.getType().toString()) || Lists.BOWS.contains(tool.getType().toString())) {
             int index = 0;
             boolean hasSharpness = false;
-            for (int i = 1; i <= 5; i++) {
+            for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Sharpness.MaxLevel"); i++) {
                 if (lore.contains(Strings.SHARPNESS + i)) {
                     index = i;
                     hasSharpness = true;
@@ -529,7 +547,7 @@ class ModifierApply {
             }
             int loreIndex = 0;
             int level = 1 + index;
-            if (level > 5) {
+            if (level > Main.getPlugin().getConfig().getInt("Modifiers.Sharpness.MaxLevel")) {
                 if (!event) {
                     Events.Mod_MaxLevel(p, tool, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name"));
                 }
@@ -641,6 +659,52 @@ class ModifierApply {
                 lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
             }
             lore.add(Strings.SILKTOUCH);
+        } else {
+            return null;
+        }
+
+        meta.setLore(lore);
+        tool.setItemMeta(meta);
+        return tool;
+    }
+
+    static ItemStack Sweeping(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.sweeping.apply")) { return null; }
+        ItemMeta meta = tool.getItemMeta();
+        List<String> lore = meta.getLore();
+
+        if (Lists.SWORDS.contains(tool.getType().toString())) {
+            int index = 0;
+            boolean hasSweeping = false;
+            for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Sweeping.MaxLevel"); i++) {
+                if (lore.contains(Strings.SWEEPING + i)) {
+                    index = i;
+                    hasSweeping = true;
+                    break;
+                }
+            }
+            int loreIndex = 0;
+            int level = 1 + index;
+            if (level > Main.getPlugin().getConfig().getInt("Modifiers.Sweeping.MaxLevel")) {
+                if (!event) {
+                    Events.Mod_MaxLevel(p, tool, ChatColor.RED + Main.getPlugin().getConfig().getString("Modifiers.Sweeping.name"));
+                }
+                return null;
+            }
+            if (hasSweeping) {
+                loreIndex = lore.indexOf(Strings.SWEEPING + index);
+            }
+            if (loreIndex != 0) {
+                lore.set(loreIndex, Strings.SWEEPING + level);
+            } else {
+                lore.add(Strings.SWEEPING + level);
+            }
+            meta.addEnchant(Enchantment.SWEEPING_EDGE, level, true);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            Events.Mod_AddMod(p, tool, ChatColor.RED + Main.getPlugin().getConfig().getString("Modifiers.Sweeping.name") + " " + level, slotsRemaining - 1, event);
+            if (!event) {
+                lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
+            }
         } else {
             return null;
         }

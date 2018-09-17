@@ -28,7 +28,7 @@ class cmd_Modifiers {
             index++;
         }
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Fiery.allowed") && p.hasPermission("minetinker.modifiers.fiery.apply")) {
-            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + Strings.FIERY_SWORD + ChatColor.WHITE + "[Blaze-Rod] Inflames enemies! (B/SW)");
+            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + Strings.FIERY + ChatColor.WHITE + "[Blaze-Rod] Inflames enemies! (B/SW)");
             index++;
         }
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Glowing.allowed") && p.hasPermission("minetinker.modifiers.glowing.apply")) {

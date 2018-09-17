@@ -10,7 +10,7 @@ import org.bukkit.inventory.EnchantingInventory;
 
 public class EnchantingTableListener implements Listener {
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onInventoryClick(InventoryClickEvent e) {
         if (!e.isCancelled()) {
             if (!Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }

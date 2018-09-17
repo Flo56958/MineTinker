@@ -88,6 +88,8 @@ public class ItemGenerator {
                 return ModifierApply.Shulking(p, tool, slotsRemaining, event);
             } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name").toLowerCase())) {
                 return ModifierApply.SilkTouch(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Sweeping.name").toLowerCase())) {
+                return ModifierApply.Sweeping(p, tool, slotsRemaining, event);
             } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.XP.name").toLowerCase())) {
                 return ModifierApply.XP(p, tool, slotsRemaining, event);
             } else {

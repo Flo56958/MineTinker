@@ -28,6 +28,7 @@ public class CraftingGrid9Listener implements Listener {
         tools.addAll(Lists.SHOVELS);
         tools.addAll(Lists.HOES);
         tools.addAll(Lists.BOWS);
+        tools.addAll(Lists.MISC);
         if (!e.isCancelled()) {
             if (!Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }
             if (!e.getWhoClicked().hasPermission("minetinker.tool.create")) { return; }
@@ -39,10 +40,12 @@ public class CraftingGrid9Listener implements Listener {
                 }
                 ArrayList<String> lore = new ArrayList<>();
                 lore.add(Strings.IDENTIFIER);
-                lore.add(Strings.LEVELLINE + "1");
-                lore.add(Strings.EXPLINE + "0 / " + LevelCalculator.getNextLevelReq(1));
-                lore.add(Strings.FREEMODIFIERSLOTS + Main.getPlugin().getConfig().getInt("StartingModifierSlots"));
-                lore.add(Strings.MODIFIERSTART);
+                if (!Lists.MISC.contains(e.getCurrentItem().getType().toString())) {
+                    lore.add(Strings.LEVELLINE + "1");
+                    lore.add(Strings.EXPLINE + "0 / " + LevelCalculator.getNextLevelReq(1));
+                    lore.add(Strings.FREEMODIFIERSLOTS + Main.getPlugin().getConfig().getInt("StartingModifierSlots"));
+                    lore.add(Strings.MODIFIERSTART);
+                }
                 ItemStack temp = ItemGenerator.changeItem(e.getCurrentItem(), lore);
                 e.setCurrentItem(temp);
                 if (Main.getPlugin().getConfig().getBoolean("Sound.OnCrafting") || Main.getPlugin().getConfig().getBoolean("Sound.OnEveryCrafting")) {

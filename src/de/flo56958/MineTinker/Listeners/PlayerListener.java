@@ -34,21 +34,29 @@ public class PlayerListener implements Listener {
                                         String[] name = tool.getType().toString().split("_");
                                         boolean eligible = false;
                                         //<editor-fold desc="SAME SEARCH">
-                                        if (name[0].toLowerCase().equals("wooden") && (
-                                                repair.getType().equals(Material.ACACIA_PLANKS) ||
-                                                        repair.getType().equals(Material.BIRCH_PLANKS) ||
-                                                        repair.getType().equals(Material.DARK_OAK_PLANKS) ||
-                                                        repair.getType().equals(Material.JUNGLE_PLANKS) ||
-                                                        repair.getType().equals(Material.OAK_PLANKS) ||
-                                                        repair.getType().equals(Material.SPRUCE_PLANKS))) {
+                                        if (name[0].toLowerCase().equals("wooden") && (repair.getType().equals(Material.ACACIA_PLANKS) ||
+                                                                                        repair.getType().equals(Material.BIRCH_PLANKS) ||
+                                                                                        repair.getType().equals(Material.DARK_OAK_PLANKS) ||
+                                                                                        repair.getType().equals(Material.JUNGLE_PLANKS) ||
+                                                                                        repair.getType().equals(Material.OAK_PLANKS) ||
+                                                                                        repair.getType().equals(Material.SPRUCE_PLANKS))) {
                                             eligible = true;
-                                        } else if (name[0].toLowerCase().equals("stone") && repair.getType().equals(Material.COBBLESTONE)) {
+                                        } else if (name[0].toLowerCase().equals("stone") && (repair.getType().equals(Material.COBBLESTONE) || repair.getType().equals(Material.STONE))) {
                                             eligible = true;
                                         } else if (name[0].toLowerCase().equals("iron") && repair.getType().equals(Material.IRON_INGOT)) {
                                             eligible = true;
                                         } else if (name[0].toLowerCase().equals("golden") && repair.getType().equals(Material.GOLD_INGOT)) {
                                             eligible = true;
                                         } else if (name[0].toLowerCase().equals("diamond") && repair.getType().equals(Material.DIAMOND)) {
+                                            eligible = true;
+                                        } else if (name[0].toLowerCase().equals("bow") && (repair.getType().equals(Material.STICK) || repair.getType().equals(Material.STRING))) {
+                                            eligible = true;
+                                        } else if (name[0].toLowerCase().equals("shield") && (repair.getType().equals(Material.ACACIA_PLANKS) ||
+                                                                                                repair.getType().equals(Material.BIRCH_PLANKS) ||
+                                                                                                repair.getType().equals(Material.DARK_OAK_PLANKS) ||
+                                                                                                repair.getType().equals(Material.JUNGLE_PLANKS) ||
+                                                                                                repair.getType().equals(Material.OAK_PLANKS) ||
+                                                                                                repair.getType().equals(Material.SPRUCE_PLANKS))) {
                                             eligible = true;
                                         }
                                         if (eligible) {

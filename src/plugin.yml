@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: a6.2
+version: a7
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -24,6 +24,7 @@ permissions:
       minetinker.elevator.*: true
       minetinker.builderswands.*: true
       minetinker.tool.*: true
+      minetinker.spawners.*: true
 
   minetinker.tool.*:
     children:
@@ -111,6 +112,7 @@ permissions:
       minetinker.modifiers.sharpness.*: true
       minetinker.modifiers.shulking.*: true
       minetinker.modifiers.silktouch.*: true
+      minetinker.modifiers,sweeping.*: true
       minetinker.modifiers.xp.*: true
 
   minetinker.modifiers.autosmelt.*:
@@ -285,6 +287,17 @@ permissions:
     description: Allows to craft a Silk-Touch-Modifier
     default: true
 
+  minetinker.modifiers.sweeping.*:
+    children:
+      minetinker.modifiers.sweeping.apply: true
+      minetinker.modifiers.sweeping.craft: true
+  minetinker.modifiers.sweeping.apply:
+    description: Allows to apply Sweeping to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.sweeping.craft:
+    description: Allows to craft a Sweeping-Modifier
+    default: true
+
   minetinker.modifiers.xp.*:
     children:
       minetinker.modifiers.xp.apply: true
@@ -294,6 +307,18 @@ permissions:
     default: true
   minetinker.modifiers.xp.use:
     description: Allows to use XP on a MineTinker-Tool
+    default: true
+
+  #Spawners
+  minetinker.spawners.*:
+    children:
+      minetinker.spawners.mine: true
+      minetinker.spawners.place: true
+  minetinker.spawners.mine:
+    description: Allows to mine a Spawner without breaking it.
+    default: true
+  minetinker.spawners.place:
+    description: Allows to place a mined Spawner.
     default: true
 
   #Elevator:
