@@ -149,7 +149,7 @@ class ModifierApply {
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
-        if (Lists.SWORDS.contains(tool.getType().toString())) {
+        if (Lists.SWORDS.contains(tool.getType().toString()) || Lists.BOWS.contains(tool.getType().toString())) {
             int index = 0;
             boolean hasFiery = false;
             for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Fiery.MaxLevel"); i++) {
@@ -175,39 +175,11 @@ class ModifierApply {
             } else {
                 lore.add(Strings.FIERY + level);
             }
-            meta.addEnchant(Enchantment.FIRE_ASPECT, level, true);
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            Events.Mod_AddMod(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name") + " " + level, slotsRemaining - 1, event);
-            if (!event) {
-                lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
+            if (Lists.BOWS.contains(tool.getType().toString())) {
+                meta.addEnchant(Enchantment.ARROW_FIRE, level, true);
+            } else if (Lists.SWORDS.contains(tool.getType().toString())) {
+                meta.addEnchant(Enchantment.FIRE_ASPECT, level, true);
             }
-        } else if (Lists.BOWS.contains(tool.getType().toString())) {
-            int index = 0;
-            boolean hasFiery = false;
-            for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Fiery.MaxLevel"); i++) {
-                if (lore.contains(Strings.FIERY + i)) {
-                    index = i;
-                    hasFiery = true;
-                    break;
-                }
-            }
-            int loreIndex = 0;
-            int level = 1 + index;
-            if (level > Main.getPlugin().getConfig().getInt("Modifiers.Fiery.MaxLevel")) {
-                if (!event) {
-                    Events.Mod_MaxLevel(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"));
-                }
-                return null;
-            }
-            if (hasFiery) {
-                loreIndex = lore.indexOf(Strings.FIERY + index);
-            }
-            if (loreIndex != 0) {
-                lore.set(loreIndex, Strings.FIERY + level);
-            } else {
-                lore.add(Strings.FIERY + level);
-            }
-            meta.addEnchant(Enchantment.ARROW_FIRE, level, true);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             Events.Mod_AddMod(p, tool, ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name") + " " + level, slotsRemaining - 1, event);
             if (!event) {
@@ -282,6 +254,56 @@ class ModifierApply {
             meta.addEnchant(Enchantment.DIG_SPEED, level, true);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             Events.Mod_AddMod(p, tool, ChatColor.DARK_RED + Main.getPlugin().getConfig().getString("Modifiers.Haste.name") + " " + level, slotsRemaining - 1, event);
+            if (!event) {
+                lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
+            }
+        } else {
+            return null;
+        }
+
+        meta.setLore(lore);
+        tool.setItemMeta(meta);
+        return tool;
+    }
+
+    static ItemStack Knockback(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.knockback.apply")) { return null; }
+        ItemMeta meta = tool.getItemMeta();
+        List<String> lore = meta.getLore();
+
+        if (Lists.SWORDS.contains(tool.getType().toString()) || Lists.BOWS.contains(tool.getType().toString())) {
+            int index = 0;
+            boolean hasKnockback = false;
+            for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Knockback.MaxLevel"); i++) {
+                if (lore.contains(Strings.KNOCKBACK + i)) {
+                    index = i;
+                    hasKnockback = true;
+                    break;
+                }
+            }
+            int loreIndex = 0;
+            int level = 1 + index;
+            if (level > Main.getPlugin().getConfig().getInt("Modifiers.Knockback.MaxLevel")) {
+                if (!event) {
+                    Events.Mod_MaxLevel(p, tool, ChatColor.GRAY + Main.getPlugin().getConfig().getString("Modifiers.Knockback.name"));
+                }
+                return null;
+            }
+            if (hasKnockback) {
+                loreIndex = lore.indexOf(Strings.KNOCKBACK + index);
+            }
+            if (loreIndex != 0) {
+                lore.set(loreIndex, Strings.KNOCKBACK + level);
+            } else {
+                lore.add(Strings.KNOCKBACK + level);
+            }
+            if (Lists.BOWS.contains(tool.getType().toString())) {
+                meta.addEnchant(Enchantment.ARROW_KNOCKBACK, level, true);
+            } else if (Lists.SWORDS.contains(tool.getType().toString())) {
+                meta.addEnchant(Enchantment.KNOCKBACK, level, true);
+            }
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            Events.Mod_AddMod(p, tool, ChatColor.GRAY + Main.getPlugin().getConfig().getString("Modifiers.Knockback.name") + " " + level, slotsRemaining - 1, event);
             if (!event) {
                 lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
             }
@@ -381,18 +403,38 @@ class ModifierApply {
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
-        if (lore.contains(Strings.POISONOUS)) {
-            if (!event) {
-                Events.Mod_MaxLevel(p, tool, ChatColor.DARK_GREEN + Main.getPlugin().getConfig().getString("Modifiers.Poisonous.name"));
-            }
-            return null;
-        }
         if (Lists.BOWS.contains(tool.getType().toString()) || Lists.SWORDS.contains(tool.getType().toString())) {
-            Events.Mod_AddMod(p, tool, ChatColor.DARK_GREEN + Main.getPlugin().getConfig().getString("Modifiers.Poisonous.name"), slotsRemaining - 1, event);
+            int index = 0;
+            boolean hasPoisonous = false;
+            for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Poisonous.MaxLevel"); i++) {
+                if (lore.contains(Strings.POISONOUS + i)) {
+                    index = i;
+                    hasPoisonous = true;
+                    break;
+                }
+            }
+
+            int loreIndex = 0;
+            int level = 1 + index;
+            if (level > Main.getPlugin().getConfig().getInt("Modifiers.Poisonous.MaxLevel")) {
+                if (!event) {
+                    Events.Mod_MaxLevel(p, tool, ChatColor.DARK_GREEN + Main.getPlugin().getConfig().getString("Modifiers.Poisonous.name"));
+                }
+                return null;
+            }
+            if (hasPoisonous) {
+                loreIndex = lore.indexOf(Strings.POISONOUS + index);
+            }
+            if (loreIndex != 0) {
+                lore.set(loreIndex, Strings.POISONOUS + level);
+            } else {
+                lore.add(Strings.POISONOUS + level);
+            }
+
+            Events.Mod_AddMod(p, tool, ChatColor.DARK_GREEN + Main.getPlugin().getConfig().getString("Modifiers.Poisonous.name") + " " + level, slotsRemaining - 1, event);
             if (!event) {
                 lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
             }
-            lore.add(Strings.POISONOUS);
         } else {
             return null;
         }
@@ -409,7 +451,8 @@ class ModifierApply {
 
         if (Lists.PICKAXES.contains(tool.getType().toString()) ||
                 Lists.SHOVELS.contains(tool.getType().toString()) ||
-                Lists.AXES.contains(tool.getType().toString())) {
+                Lists.AXES.contains(tool.getType().toString()) ||
+                Lists.HOES.contains(tool.getType().toString())) {
             int index = 0;
             boolean hasPower = false;
             for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Power.MaxLevel"); i++) {
@@ -753,4 +796,5 @@ class ModifierApply {
         tool.setItemMeta(meta);
         return tool;
     }
+
 }

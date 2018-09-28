@@ -30,7 +30,6 @@ public class AnvilListener implements Listener {
                             if (i.getItem(0).getItemMeta().getLore().contains(Strings.IDENTIFIER)) {
                                 ItemStack newTool = null;
                                 if (e.getWhoClicked().getItemOnCursor().getAmount() == 1) {
-                                    //<editor-fold desc="MODIFIERS">
                                     boolean isModifier = true;
                                     ItemStack modifier = e.getWhoClicked().getItemOnCursor();
                                     if (modifier.equals(Modifiers.SELFREPAIR_MODIFIER)) {
@@ -105,6 +104,10 @@ public class AnvilListener implements Listener {
                                         if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Sweeping.name").toLowerCase())) {
                                             newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Sweeping.name").toLowerCase(), (Player) e.getWhoClicked(), false);
                                         }
+                                    } else if (modifier.equals(Modifiers.KNOCKBACK_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Knockback.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Knockback.name").toLowerCase(), (Player) e.getWhoClicked(), false);
+                                        }
                                     } else {
                                         isModifier = false;
                                     }
@@ -115,10 +118,8 @@ public class AnvilListener implements Listener {
                                         e.setCancelled(true);
                                         return;
                                     }
-                                    //</editor-fold>
                                 }
                                 if (Main.getPlugin().getConfig().getBoolean("Upgradeable") && e.getWhoClicked().hasPermission("minetinker.tool.upgrade")) {
-                                    //<editor-fold desc="UPGRADE">
                                     if (e.getWhoClicked().getItemOnCursor().getAmount() == 1) { //Shovel
                                         if (Lists.SHOVELS.contains(i.getItem(0).getType().toString())) {
                                             newTool = ItemGenerator.itemUpgrader(i.getItem(0), e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
@@ -136,9 +137,7 @@ public class AnvilListener implements Listener {
                                         e.getWhoClicked().getItemOnCursor().setAmount(0);
                                         e.setCancelled(true);
                                     }
-                                    //</editor-fold>
                                 }
-
                             }
                         }
                     }

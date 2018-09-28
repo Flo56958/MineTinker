@@ -7,6 +7,7 @@ import de.flo56958.MineTinker.Main;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -33,7 +34,6 @@ public class PlayerListener implements Listener {
                                         ItemStack repair = e.getWhoClicked().getItemOnCursor();
                                         String[] name = tool.getType().toString().split("_");
                                         boolean eligible = false;
-                                        //<editor-fold desc="SAME SEARCH">
                                         if (name[0].toLowerCase().equals("wooden") && (repair.getType().equals(Material.ACACIA_PLANKS) ||
                                                                                         repair.getType().equals(Material.BIRCH_PLANKS) ||
                                                                                         repair.getType().equals(Material.DARK_OAK_PLANKS) ||
@@ -97,7 +97,7 @@ public class PlayerListener implements Listener {
         PlayerData.HASPOWER.remove(e.getPlayer());
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onInteract(PlayerInteractEvent e) {
         if (!Lists.WORLDS.contains(e.getPlayer().getWorld().getName())) { return; }
         if (!e.getBlockFace().equals(BlockFace.SELF)) {

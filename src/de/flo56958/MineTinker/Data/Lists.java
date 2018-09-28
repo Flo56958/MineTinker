@@ -43,6 +43,9 @@ public class Lists {
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Haste.allowed")) {
             allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Haste.name").toLowerCase());
         }
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Knockback.allowed")) {
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Knockback.name").toLowerCase());
+        }
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Infinity.allowed")) {
             allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Infinity.name").toLowerCase());
         }

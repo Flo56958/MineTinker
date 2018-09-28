@@ -90,6 +90,11 @@ class cmd_Functions {
                                 meta.removeEnchant(Enchantment.LOOT_BONUS_MOBS);
                             } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name"))) {
                                 meta.removeEnchant(Enchantment.DURABILITY);
+                            } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Sweeping.name"))) {
+                                meta.removeEnchant(Enchantment.SWEEPING_EDGE);
+                            } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Knockback.name"))) {
+                                meta.removeEnchant(Enchantment.KNOCKBACK);
+                                meta.removeEnchant(Enchantment.ARROW_KNOCKBACK);
                             } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name"))) {
                                 meta.removeEnchant(Enchantment.MENDING);
                             } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name"))) {

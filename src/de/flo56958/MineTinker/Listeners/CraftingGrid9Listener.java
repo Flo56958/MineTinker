@@ -9,7 +9,6 @@ import de.flo56958.MineTinker.Utilities.LevelCalculator;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
@@ -19,7 +18,7 @@ import java.util.List;
 
 public class CraftingGrid9Listener implements Listener {
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler
     public void onCraft(CraftItemEvent e) {
 
         List<String> tools = new ArrayList<>(Lists.SWORDS); //Setting up List of tools

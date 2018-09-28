@@ -70,6 +70,8 @@ public class ItemGenerator {
                 return ModifierApply.Glowing(p, tool, slotsRemaining, event);
             } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Haste.name").toLowerCase())) {
                 return ModifierApply.Haste(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Knockback.name").toLowerCase())) {
+                return ModifierApply.Knockback(p, tool, slotsRemaining, event);
             } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Infinity.name").toLowerCase())) {
                 return ModifierApply.Infinity(p, tool, slotsRemaining, event);
             } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Luck.name").toLowerCase())) {

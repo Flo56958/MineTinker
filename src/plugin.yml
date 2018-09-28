@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: a7
+version: a8
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -81,7 +81,7 @@ permissions:
     description: Allows to access the Name-command for MineTinker-Tools
     default: true
 
-  mintinker.commands.addmod:
+  minetinker.commands.addmod:
     description: Allows to add Modifiers from a MineTinker-Tool
     default: op
 
@@ -112,7 +112,7 @@ permissions:
       minetinker.modifiers.sharpness.*: true
       minetinker.modifiers.shulking.*: true
       minetinker.modifiers.silktouch.*: true
-      minetinker.modifiers,sweeping.*: true
+      minetinker.modifiers.sweeping.*: true
       minetinker.modifiers.xp.*: true
 
   minetinker.modifiers.autosmelt.*:
@@ -186,6 +186,17 @@ permissions:
       minetinker.modifiers.haste.apply: true
   minetinker.modifiers.haste.apply:
     description: Allows to apply Haste to a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.knockback.*:
+    children:
+      minetinker.modifiers.knockback.apply: true
+      minetinker.modifiers.knockback.craft: true
+  minetinker.modifiers.knockback.apply:
+    description: Allows to apply Knockback to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.knockback.craft:
+    description: Allows to craft a Knockback-Modifier
     default: true
 
   minetinker.modifiers.infinity.*:

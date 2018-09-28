@@ -17,9 +17,9 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -34,7 +34,7 @@ import java.util.Random;
 
 public class BlockListener implements Listener {
 
-    @EventHandler (priority = EventPriority.MONITOR)
+    @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         if (!e.isCancelled()) {
             Player p = e.getPlayer();
@@ -78,10 +78,8 @@ public class BlockListener implements Listener {
                                 }
                                 LevelCalculator.addExp(e.getPlayer(), tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
                                 if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed") && p.hasPermission("minetinker.modifiers.selfrepair.use")) {
-                                    //<editor-fold desc="self-repair check">
-                                    for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel"); i++) {
+                                    for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel"); i++) {
                                         if (lore.contains(Strings.SELFREPAIR + i)) {
-                                            //self-repair
                                             Random rand = new Random();
                                             int n = rand.nextInt(100);
                                             if (n <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.PercentagePerLevel") * i) {
@@ -96,7 +94,6 @@ public class BlockListener implements Listener {
                                             break;
                                         }
                                     }
-                                    //</editor-fold>
                                 }
                                 if ((Main.getPlugin().getConfig().getBoolean("Modifiers.Silk-Touch.allowed") && Main.getPlugin().getConfig().getBoolean("Spawners.dropable") && Main.getPlugin().getConfig().getBoolean("Spawners.onlyWithSilkTouch"))
                                         || (Main.getPlugin().getConfig().getBoolean("Spawners.dropable") && !Main.getPlugin().getConfig().getBoolean("Spawners.onlyWithSilkTouch"))) {
@@ -112,8 +109,7 @@ public class BlockListener implements Listener {
                                     }
                                 }
                                 if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed") && p.hasPermission("minetinker.modifiers.xp.use")) {
-                                    //<editor-fold desc="xp check">
-                                    for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.XP.MaxLevel"); i++) {
+                                    for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.XP.MaxLevel"); i++) {
                                         if (lore.contains(Strings.XP + i)) {
                                             //self-repair
                                             Random rand = new Random();
@@ -125,10 +121,8 @@ public class BlockListener implements Listener {
                                             break;
                                         }
                                     }
-                                    //</editor-fold>
                                 }
                                 if (Main.getPlugin().getConfig().getBoolean("Modifiers.Auto-Smelt.allowed") && p.hasPermission("minetinker.modifiers.autosmelt.use")) {
-                                    //<editor-fold desc="auto-smelt check">
                                     boolean goodBlock = false;
                                     boolean luck = false;
                                     Material loot = Material.AIR;
@@ -194,9 +188,8 @@ public class BlockListener implements Listener {
                                             break;
                                     }
                                     if (goodBlock) {
-                                        for (int i = 0; i <= Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.MaxLevel"); i++) {
+                                        for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.MaxLevel"); i++) {
                                             if (lore.contains(Strings.AUTOSMELT + i)) {
-                                                //self-repair
                                                 Random rand = new Random();
                                                 int n = rand.nextInt(100);
                                                 if (n <= Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.PercentagePerLevel") * i) {
@@ -222,13 +215,11 @@ public class BlockListener implements Listener {
                                             }
                                         }
                                     }
-                                    //</editor-fold>
                                 }
                                 if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed") && p.hasPermission("minetinker.modifiers.power.use")) {
                                     if (!PlayerData.HASPOWER.get(e.getPlayer()) && !p.isSneaking()) {
                                         if (lore.contains(Strings.POWER + 1)) {
                                             PlayerData.HASPOWER.replace(e.getPlayer(), true);
-                                            //<editor-fold desc="POWER 1">
                                             if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.UP)) {
                                                 if (PlayerInfo.getFacingDirection(e.getPlayer()).equals("N") || PlayerInfo.getFacingDirection(e.getPlayer()).equals("S")) {
                                                     Block b1 = e.getBlock().getWorld().getBlockAt(e.getBlock().getLocation().add(1, 0, 0));
@@ -268,12 +259,10 @@ public class BlockListener implements Listener {
                                                     ((CraftPlayer) e.getPlayer()).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
                                                 }
                                             }
-                                            //</editor-fold>
                                         }
                                         if (!PlayerData.HASPOWER.get(e.getPlayer())) {
                                             for (int level = 2; level <= Main.getPlugin().getConfig().getInt("Modifiers.Power.MaxLevel"); level++) {
                                                 if (lore.contains(Strings.POWER + level)) {
-                                                    //<editor-fold desc="POWER MAX">
                                                     PlayerData.HASPOWER.replace(e.getPlayer(), true);
                                                     if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.UP)) {
                                                         for (int x = -(level - 1); x <= (level - 1); x++) {
@@ -309,7 +298,6 @@ public class BlockListener implements Listener {
                                                             }
                                                         }
                                                     }
-                                                    //</editor-fold>
                                                 }
                                             }
                                         }
@@ -345,7 +333,8 @@ public class BlockListener implements Listener {
                         norm.equals(Modifiers.AUTOSMELT_MODIFIER) ||
                         norm.equals(Modifiers.BEHEADING_MODIFIER) ||
                         norm.equals(Modifiers.ENDER_MODIFIER) ||
-                        norm.equals(Modifiers.GLOWING_MODIFIER)) {
+                        norm.equals(Modifiers.GLOWING_MODIFIER) ||
+                        norm.equals(Modifiers.KNOCKBACK_MODIFIER)) {
                     norm.setAmount(temp);
                     e.setCancelled(true);
                     return;
@@ -375,6 +364,34 @@ public class BlockListener implements Listener {
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
                                 ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.EnchantCost") + " levels are required!");
                                 ChatWriter.log(false,  p.getDisplayName() + " tried to create a Self-Repair-Modifier but had not enough levels!");
+                            }
+                            e.setCancelled(true);
+                        }
+                        //</editor-fold>
+                    }
+                    if (Main.getPlugin().getConfig().getBoolean("Modifiers.Knockback.allowed") && p.hasPermission("minetinker.modifiers.knockback.craft")) {
+                        //<editor-fold desc="SELF-REPAIR">
+                        if (p.getInventory().getItemInMainHand().getType().equals(Material.TNT) && !p.isSneaking()) {
+                            if (p.getGameMode().equals(GameMode.CREATIVE)) {
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.KNOCKBACK_MODIFIER);
+                                if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                }
+                                ChatWriter.log(false, p.getDisplayName() + " created a Knockback-Modifier in Creative!");
+                            } else if (p.getLevel() >= Main.getPlugin().getConfig().getInt("Modifiers.Knockback.EnchantCost")) {
+                                int amount = p.getInventory().getItemInMainHand().getAmount();
+                                int newLevel = p.getLevel() - Main.getPlugin().getConfig().getInt("Modifiers.Knockback.EnchantCost");
+                                p.setLevel(newLevel);
+                                p.getInventory().getItemInMainHand().setAmount(amount - 1);
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), Modifiers.KNOCKBACK_MODIFIER);
+                                if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
+                                    p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+                                }
+                                ChatWriter.log(false, p.getDisplayName() + " created a Knockback-Modifier!");
+                            } else {
+                                ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, "You do not have enough Levels to perform this action!");
+                                ChatWriter.sendMessage(e.getPlayer(), ChatColor.RED, Main.getPlugin().getConfig().getInt("Modifiers.Knockback.EnchantCost") + " levels are required!");
+                                ChatWriter.log(false,  p.getDisplayName() + " tried to create a Knockback-Modifier but had not enough levels!");
                             }
                             e.setCancelled(true);
                         }
@@ -599,6 +616,231 @@ public class BlockListener implements Listener {
             System.out.println(EntityType.fromName(e.getItemInHand().getItemMeta().getDisplayName()));
             System.out.println(cs.getSpawnedType());
             ChatWriter.log(false,  p.getDisplayName() + " successfully placed a Spawner!");
+        }
+    }
+
+    @EventHandler
+    public static void onHoeUse(PlayerInteractEvent e) {
+        if (e.isCancelled()) { return; }
+        Player p = e.getPlayer();
+        if (!Lists.WORLDS.contains(p.getWorld().getName())) { return; }
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
+        ItemStack tool = p.getInventory().getItemInMainHand();
+        if (!Lists.HOES.contains(tool.getType().toString())) { return; }
+        if (!tool.hasItemMeta()) { return; }
+        ItemMeta meta = tool.getItemMeta();
+        if (!meta.hasLore()) { return; }
+        ArrayList<String> lore = (ArrayList<String>) meta.getLore();
+        if (!lore.contains(Strings.IDENTIFIER)) { return; }
+
+        Boolean apply = false;
+
+        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            if (e.getClickedBlock().getType().equals(Material.GRASS_BLOCK) ||
+                e.getClickedBlock().getType().equals(Material.DIRT)) {
+                apply = true;
+            }
+            if (!p.getWorld().getBlockAt(e.getClickedBlock().getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) { //Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
+                apply = false;
+            }
+        }
+
+        if (!apply) { return; }
+
+        if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 1) {
+            e.setCancelled(true);
+            if (Main.getPlugin().getConfig().getBoolean("Sound.OnBreaking")) {
+                p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
+            }
+            return;
+        }
+
+        LevelCalculator.addExp(e.getPlayer(), tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
+
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed") && p.hasPermission("minetinker.modifiers.selfrepair.use")) {
+            for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel"); i++) {
+                if (lore.contains(Strings.SELFREPAIR + i)) {
+                    Random rand = new Random();
+                    int n = rand.nextInt(100);
+                    if (n <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.PercentagePerLevel") * i) {
+                        int heal = Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.HealthRepair");
+                        short dura = (short) (tool.getDurability() - heal);
+                        if (dura < 0) {
+                            dura = 0;
+                        }
+                        tool.setDurability(dura);
+                        ChatWriter.log(false, p.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
+                    }
+                    break;
+                }
+            }
+        }
+
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed") && p.hasPermission("minetinker.modifiers.xp.use")) {
+            for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.XP.MaxLevel"); i++) {
+                if (lore.contains(Strings.XP + i)) {
+                    Random rand = new Random();
+                    int n = rand.nextInt(100);
+                    if (n <= Main.getPlugin().getConfig().getInt("Modifiers.XP.PercentagePerLevel") * i) {
+                        ExperienceOrb orb = p.getWorld().spawn(p.getLocation(), ExperienceOrb.class);
+                        orb.setExperience(Main.getPlugin().getConfig().getInt("Modifiers.XP.XPAmount"));
+                        ChatWriter.log(false, p.getDisplayName() + " triggered XP on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
+                    }
+                    break;
+                }
+            }
+        }
+
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Power.allowed") && p.hasPermission("minetinker.modifiers.power.use")) {
+            if (!PlayerData.HASPOWER.get(e.getPlayer()) && !p.isSneaking()) {
+                if (lore.contains(Strings.POWER + 1)) {
+                    PlayerData.HASPOWER.replace(e.getPlayer(), true);
+                    if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.UP)) {
+                        if (PlayerInfo.getFacingDirection(e.getPlayer()).equals("N") || PlayerInfo.getFacingDirection(e.getPlayer()).equals("S")) {
+                            Block b1 = p.getWorld().getBlockAt(e.getClickedBlock().getLocation().add(1, 0, 0));
+                            Block b2 = p.getWorld().getBlockAt(e.getClickedBlock().getLocation().add(-1, 0, 0));
+                            if (b1.getType().equals(Material.GRASS_BLOCK) || b1.getType().equals(Material.DIRT)) {
+                                if (b1.getWorld().getBlockAt(b1.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
+                                    tool.setDurability((short) (tool.getDurability() + 1));
+                                    Bukkit.getPluginManager().callEvent(new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, tool, b1, BlockFace.UP));
+                                    b1.setType(Material.FARMLAND); //Event only does Plugin event (no vanilla conversion to Farmland and Tool-Damage)
+                                }
+                            }
+                            if (b2.getType().equals(Material.GRASS_BLOCK) || b2.getType().equals(Material.DIRT)) {
+                                if (b2.getWorld().getBlockAt(b2.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
+                                    tool.setDurability((short) (tool.getDurability() + 1));
+                                    Bukkit.getPluginManager().callEvent(new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, tool, b2, BlockFace.UP));
+                                    b2.setType(Material.FARMLAND); //Event only does Plugin event (no vanilla conversion to Farmland and Tool-Damage)
+                                }
+                            }
+                        } else if (PlayerInfo.getFacingDirection(e.getPlayer()).equals("W") || PlayerInfo.getFacingDirection(e.getPlayer()).equals("E")) {
+                            Block b1 = p.getWorld().getBlockAt(e.getClickedBlock().getLocation().add(0, 0, 1));
+                            Block b2 = p.getWorld().getBlockAt(e.getClickedBlock().getLocation().add(0, 0, -1));
+                            if (b1.getType().equals(Material.GRASS_BLOCK) || b1.getType().equals(Material.DIRT)) {
+                                if (b1.getWorld().getBlockAt(b1.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
+                                    tool.setDurability((short) (tool.getDurability() + 1));
+                                    Bukkit.getPluginManager().callEvent(new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, tool, b1, BlockFace.UP));
+                                    b1.setType(Material.FARMLAND); //Event only does Plugin event (no vanilla conversion to Farmland and Tool-Damage)
+                                }
+                            }
+                            if (b2.getType().equals(Material.GRASS_BLOCK) || b2.getType().equals(Material.DIRT)) {
+                                if (b2.getWorld().getBlockAt(b2.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
+                                    tool.setDurability((short) (tool.getDurability() + 1));
+                                    Bukkit.getPluginManager().callEvent(new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, tool, b2, BlockFace.UP));
+                                    b2.setType(Material.FARMLAND); //Event only does Plugin event (no vanilla conversion to Farmland and Tool-Damage)
+                                }
+                            }
+                        }
+                    }
+                }
+                if (!PlayerData.HASPOWER.get(e.getPlayer())) {
+                    for (int level = 2; level <= Main.getPlugin().getConfig().getInt("Modifiers.Power.MaxLevel"); level++) {
+                        if (lore.contains(Strings.POWER + level)) {
+                            PlayerData.HASPOWER.replace(e.getPlayer(), true);
+                            if (PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(e.getPlayer()).equals(BlockFace.UP)) {
+                                for (int x = -(level - 1); x <= (level - 1); x++) {
+                                    for (int z = -(level - 1); z <= (level - 1); z++) {
+                                        if (!(x == 0 && z == 0)) {
+                                            Block b = p.getWorld().getBlockAt(e.getClickedBlock().getLocation().add(x, 0, z));
+                                            if (b.getType().equals(Material.GRASS_BLOCK) || b.getType().equals(Material.DIRT)) {
+                                                if (b.getWorld().getBlockAt(b.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
+                                                    tool.setDurability((short) (tool.getDurability() + 1));
+                                                    Bukkit.getPluginManager().callEvent(new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, tool, b, BlockFace.UP));
+                                                    b.setType(Material.FARMLAND); //Event only does Plugin event (no vanilla conversion to Farmland and Tool-Damage)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                PlayerData.HASPOWER.replace(e.getPlayer(), false);
+            }
+        }
+    }
+
+    @EventHandler
+    public static void onAxeUse(PlayerInteractEvent e) {
+        if (e.isCancelled()) { return; }
+        Player p = e.getPlayer();
+        if (!Lists.WORLDS.contains(p.getWorld().getName())) { return; }
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
+        ItemStack tool = p.getInventory().getItemInMainHand();
+        if (!Lists.AXES.contains(tool.getType().toString())) { return; }
+        if (!tool.hasItemMeta()) { return; }
+        ItemMeta meta = tool.getItemMeta();
+        if (!meta.hasLore()) { return; }
+        ArrayList<String> lore = (ArrayList<String>) meta.getLore();
+        if (!lore.contains(Strings.IDENTIFIER)) { return; }
+
+        Boolean apply = false;
+
+        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            if (e.getClickedBlock().getType().equals(Material.ACACIA_LOG) ||
+                e.getClickedBlock().getType().equals(Material.BIRCH_LOG) ||
+                e.getClickedBlock().getType().equals(Material.OAK_LOG) ||
+                e.getClickedBlock().getType().equals(Material.DARK_OAK_LOG) ||
+                e.getClickedBlock().getType().equals(Material.JUNGLE_LOG) ||
+                e.getClickedBlock().getType().equals(Material.SPRUCE_LOG)) {
+                apply = true;
+            } else if (e.getClickedBlock().getType().equals(Material.ACACIA_WOOD) ||
+                    e.getClickedBlock().getType().equals(Material.BIRCH_WOOD) ||
+                    e.getClickedBlock().getType().equals(Material.OAK_WOOD) ||
+                    e.getClickedBlock().getType().equals(Material.DARK_OAK_WOOD) ||
+                    e.getClickedBlock().getType().equals(Material.JUNGLE_WOOD) ||
+                    e.getClickedBlock().getType().equals(Material.SPRUCE_WOOD)) {
+                apply = true;
+            }
+        }
+
+        if (!apply) { return; }
+
+        if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 1) {
+            e.setCancelled(true);
+            if (Main.getPlugin().getConfig().getBoolean("Sound.OnBreaking")) {
+                p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
+            }
+            return;
+        }
+
+        LevelCalculator.addExp(e.getPlayer(), tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
+
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Self-Repair.allowed") && p.hasPermission("minetinker.modifiers.selfrepair.use")) {
+            for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.MaxLevel"); i++) {
+                if (lore.contains(Strings.SELFREPAIR + i)) {
+                    //self-repair
+                    Random rand = new Random();
+                    int n = rand.nextInt(100);
+                    if (n <= Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.PercentagePerLevel") * i) {
+                        int heal = Main.getPlugin().getConfig().getInt("Modifiers.Self-Repair.HealthRepair");
+                        short dura = (short) (tool.getDurability() - heal);
+                        if (dura < 0) {
+                            dura = 0;
+                        }
+                        p.getInventory().getItemInMainHand().setDurability(dura);
+                        ChatWriter.log(false, p.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
+                    }
+                    break;
+                }
+            }
+        }
+
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed") && p.hasPermission("minetinker.modifiers.xp.use")) {
+            for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.XP.MaxLevel"); i++) {
+                if (lore.contains(Strings.XP + i)) {
+                    //xp
+                    Random rand = new Random();
+                    int n = rand.nextInt(100);
+                    if (n <= Main.getPlugin().getConfig().getInt("Modifiers.XP.PercentagePerLevel") * i) {
+                        ExperienceOrb orb = p.getWorld().spawn(p.getLocation(), ExperienceOrb.class);
+                        orb.setExperience(Main.getPlugin().getConfig().getInt("Modifiers.XP.XPAmount"));
+                        ChatWriter.log(false, p.getDisplayName() + " triggered XP on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
+                    }
+                    break;
+                }
+            }
         }
     }
 }

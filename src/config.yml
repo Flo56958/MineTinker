@@ -131,6 +131,12 @@ Modifiers:
     name: Haste
     name_modifier: Haste-Modifier
     MaxLevel: 5
+  Knockback:
+    allowed: true
+    name: Knockback
+    name_modifier: Knockback-Modifier
+    MaxLevel: 5
+    EnchantCost: 10
   Infinity:
     allowed: true
     name: Infinity
@@ -145,8 +151,11 @@ Modifiers:
     allowed: true
     name: Poisonous
     name_modifier: Poisonous-Modifier
+    MaxLevel: 5
     EnchantCost: 10
     Duration: 120 #ticks
+    DurationMultiplier: 1.5 #Duration * (Multiplier^Level)
+    EffectMultiplier: 2 #per Level (Level 1 = 0)
   Power:
     allowed: true
     name: Power

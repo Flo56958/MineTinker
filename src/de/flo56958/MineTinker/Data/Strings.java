@@ -22,9 +22,10 @@ public class Strings {
     public static final String FIERY = ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Fiery.name") + ": ";
     public static final String GLOWING = ChatColor.YELLOW + Main.getPlugin().getConfig().getString("Modifiers.Glowing.name");
     public static final String HASTE = ChatColor.DARK_RED + Main.getPlugin().getConfig().getString("Modifiers.Haste.name") + ": ";
+    public static final String KNOCKBACK = ChatColor.GRAY + Main.getPlugin().getConfig().getString("Modifiers.Knockback.name") + ": ";
     public static final String INFINITY = ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Infinity.name");
     public static final String LUCK = ChatColor.BLUE + Main.getPlugin().getConfig().getString("Modifiers.Luck.name") + ": ";
-    public static final String POISONOUS = ChatColor.DARK_GREEN + Main.getPlugin().getConfig().getString("Modifiers.Poisonous.name");
+    public static final String POISONOUS = ChatColor.DARK_GREEN + Main.getPlugin().getConfig().getString("Modifiers.Poisonous.name") + ": ";
     public static final String POWER = ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Power.name") + ": ";
     public static final String REINFORCED = ChatColor.GRAY + Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name") + ": ";
     public static final String SELFREPAIR = ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name") + ": ";
