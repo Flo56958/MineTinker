@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: a8
+version: a9
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -113,6 +113,7 @@ permissions:
       minetinker.modifiers.shulking.*: true
       minetinker.modifiers.silktouch.*: true
       minetinker.modifiers.sweeping.*: true
+      minetinker.modifiers.timber.*: true
       minetinker.modifiers.xp.*: true
 
   minetinker.modifiers.autosmelt.*:
@@ -307,6 +308,17 @@ permissions:
     default: true
   minetinker.modifiers.sweeping.craft:
     description: Allows to craft a Sweeping-Modifier
+    default: true
+
+  minetinker.modifiers.timber.*:
+    children:
+      minetinker.modifiers.timber.apply: true
+      minetinker.modifiers.timber.use: true
+  minetinker.modifiers.timber.apply:
+    description: Allows to apply Timber to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.timber.use:
+    description: Allows to use Timber on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.xp.*:

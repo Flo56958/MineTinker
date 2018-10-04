@@ -8,6 +8,8 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class Lists {
 
+    //List is needed as getList() returns List<>
+
     public static final List<String> SWORDS = (List<String>) Main.getPlugin().getConfig().getList("AllowedTools.Swords");
     public static final List<String> AXES = (List<String>) Main.getPlugin().getConfig().getList("AllowedTools.Axes");
     public static final List<String> PICKAXES = (List<String>) Main.getPlugin().getConfig().getList("AllowedTools.Pickaxes");
@@ -20,8 +22,8 @@ public class Lists {
     public static final List<String> WORLDS_ELEVATOR = (List<String>) Main.getPlugin().getConfig().getList("Elevator.AllowedWorlds");
     public static final List<String> WORLDS_BUILDERSWANDS = (List<String>) Main.getPlugin().getConfig().getList("Builderswands.AllowedWorlds");
 
-    public static List<String> getAllowedModifiers(){
-        List<String> allowed = new ArrayList<>();
+    public static ArrayList<String> getAllowedModifiers(){
+        ArrayList<String> allowed = new ArrayList<>();
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Auto-Smelt.allowed")) {
             allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name").toLowerCase());
         }
@@ -75,6 +77,9 @@ public class Lists {
         }
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.Sweeping.allowed")) {
             allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Sweeping.name").toLowerCase());
+        }
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Timber.allowed")) {
+            allowed.add(Main.getPlugin().getConfig().getString("Modifiers.Timber.name").toLowerCase());
         }
         if (Main.getPlugin().getConfig().getBoolean("Modifiers.XP.allowed")) {
             allowed.add(Main.getPlugin().getConfig().getString("Modifiers.XP.name").toLowerCase());

@@ -26,5 +26,5 @@ public class Modifiers {
     public static final ItemStack SHULKING_MODIFIER = ItemGenerator.itemEnchanter(Material.SHULKER_SHELL, ChatColor.LIGHT_PURPLE + Main.getPlugin().getConfig().getString("Modifiers.Shulking.name_modifier"), 1, Enchantment.DURABILITY, 1);
     public static final ItemStack SILKTOUCH_MODIFIER = ItemGenerator.itemEnchanter(Material.COBWEB, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name_modifier"), 1, Enchantment.SILK_TOUCH, 1);
     public static final ItemStack SWEEPING_MODIFIER = ItemGenerator.itemEnchanter(Material.IRON_INGOT, ChatColor.RED + Main.getPlugin().getConfig().getString("Modifiers.Sweeping.name_modifier"), 1, Enchantment.SWEEPING_EDGE, 1);
-
+    public static final ItemStack TIMBER_MODIFIER = ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Timber.name_modifier"), 1, Enchantment.DIG_SPEED, 1);
 }

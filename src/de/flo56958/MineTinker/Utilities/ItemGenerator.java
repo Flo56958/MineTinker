@@ -92,13 +92,15 @@ public class ItemGenerator {
                 return ModifierApply.SilkTouch(p, tool, slotsRemaining, event);
             } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Sweeping.name").toLowerCase())) {
                 return ModifierApply.Sweeping(p, tool, slotsRemaining, event);
+            } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.Timber.name").toLowerCase())) {
+                return ModifierApply.Timber(p, tool, slotsRemaining, event);
             } else if (modifier.equals(Main.getPlugin().getConfig().getString("Modifiers.XP.name").toLowerCase())) {
                 return ModifierApply.XP(p, tool, slotsRemaining, event);
             } else {
                 return null;
             }
         } else {
-            Events.Mod_NoSlots(p, tool, modifier);
+            Events.Mod_NoSlots(p, tool, modifier.substring(0, 1).toUpperCase() + modifier.substring(1));
             return null;
         }
     }
@@ -106,7 +108,6 @@ public class ItemGenerator {
     public static ItemStack itemUpgrader(ItemStack tool, ItemStack upgrade, Player p) {
         ItemMeta meta = tool.getItemMeta();
         String[] name = tool.getType().toString().split("_");
-        //<editor-fold desc="SAME SEARCH">
         if (name[0].toLowerCase().equals("wooden") && (
                 upgrade.getType().equals(Material.ACACIA_PLANKS) ||
                 upgrade.getType().equals(Material.BIRCH_PLANKS) ||
@@ -129,9 +130,7 @@ public class ItemGenerator {
             Events.Upgrade_Fail(p, tool, "DIAMOND");
             return null;
         }
-        //</editor-fold>
         if (Lists.SWORDS.contains(tool.getType().toString())) {
-            //<editor-fold desc="SWORDS">
             if ((upgrade.getType().equals(Material.ACACIA_PLANKS) ||
                     upgrade.getType().equals(Material.BIRCH_PLANKS) ||
                     upgrade.getType().equals(Material.DARK_OAK_PLANKS) ||
@@ -156,9 +155,7 @@ public class ItemGenerator {
                 Events.Upgrade_Prohibited(p, tool);
                 return null;
             }
-            //</editor-fold>
         } else if (Lists.PICKAXES.contains(tool.getType().toString())) {
-            //<editor-fold desc="PICKAXES">
             if ((upgrade.getType().equals(Material.ACACIA_PLANKS) ||
                     upgrade.getType().equals(Material.BIRCH_PLANKS) ||
                     upgrade.getType().equals(Material.DARK_OAK_PLANKS) ||
@@ -183,9 +180,7 @@ public class ItemGenerator {
                 Events.Upgrade_Prohibited(p, tool);
                 return null;
             }
-            //</editor-fold>
         } else if (Lists.AXES.contains(tool.getType().toString())) {
-            //<editor-fold desc="AXES">
             if ((upgrade.getType().equals(Material.ACACIA_PLANKS) ||
                     upgrade.getType().equals(Material.BIRCH_PLANKS) ||
                     upgrade.getType().equals(Material.DARK_OAK_PLANKS) ||
@@ -210,9 +205,7 @@ public class ItemGenerator {
                 Events.Upgrade_Prohibited(p, tool);
                 return null;
             }
-            //</editor-fold>
         } else if (Lists.SHOVELS.contains(tool.getType().toString())) {
-            //<editor-fold desc="SHOVELS">
             if ((upgrade.getType().equals(Material.ACACIA_PLANKS) ||
                     upgrade.getType().equals(Material.BIRCH_PLANKS) ||
                     upgrade.getType().equals(Material.DARK_OAK_PLANKS) ||
@@ -237,9 +230,7 @@ public class ItemGenerator {
                 Events.Upgrade_Prohibited(p, tool);
                 return null;
             }
-            //</editor-fold>
         } else if (Lists.HOES.contains(tool.getType().toString())) {
-            //<editor-fold desc="HOES">
             if ((upgrade.getType().equals(Material.ACACIA_PLANKS) ||
                     upgrade.getType().equals(Material.BIRCH_PLANKS) ||
                     upgrade.getType().equals(Material.DARK_OAK_PLANKS) ||
@@ -264,7 +255,6 @@ public class ItemGenerator {
                 Events.Upgrade_Prohibited(p, tool);
                 return null;
             }
-            //</editor-fold>
         }
         tool.setDurability((short) 0);
         tool.setItemMeta(meta);

@@ -154,7 +154,7 @@ Modifiers:
     MaxLevel: 5
     EnchantCost: 10
     Duration: 120 #ticks
-    DurationMultiplier: 1.5 #Duration * (Multiplier^Level)
+    DurationMultiplier: 1.1 #Duration * (Multiplier^Level)
     EffectMultiplier: 2 #per Level (Level 1 = 0)
   Power:
     allowed: true
@@ -198,6 +198,10 @@ Modifiers:
     name_modifier: Sweeping-Modifier
     MaxLevel: 5
     EnchantCost: 10
+  Timber:
+    allowed: true
+    name: Timber
+    name_modifier: Timber-Modifier
   XP:
     allowed: true
     name: XP

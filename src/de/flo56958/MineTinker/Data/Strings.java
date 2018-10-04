@@ -33,5 +33,6 @@ public class Strings {
     public static final String SHULKING = ChatColor.LIGHT_PURPLE + Main.getPlugin().getConfig().getString("Modifiers.Shulking.name") + ": ";
     public static final String SILKTOUCH = ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name");
     public static final String SWEEPING = ChatColor.RED + Main.getPlugin().getConfig().getString("Modifiers.Sweeping.name") + ": ";
+    public static final String TIMBER = ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.Timber.name");
     public static final String XP = ChatColor.GREEN + Main.getPlugin().getConfig().getString("Modifiers.XP.name") + ": ";
 }

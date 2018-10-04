@@ -64,6 +64,9 @@ public class Main extends JavaPlugin {
         if (getConfig().getBoolean("Modifiers.Shulking.allowed")) {
             CraftingRecipes.registerShulkingModifier();
         }
+        if (getConfig().getBoolean("Modifiers.Timber.allowed")) {
+            CraftingRecipes.registerTimberModifier();
+        }
         ChatWriter.log(false, "Registered crafting recipes!");
 
         if (getConfig().getBoolean("logging.metrics")) {

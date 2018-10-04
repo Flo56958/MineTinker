@@ -108,6 +108,10 @@ public class AnvilListener implements Listener {
                                         if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Knockback.name").toLowerCase())) {
                                             newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Knockback.name").toLowerCase(), (Player) e.getWhoClicked(), false);
                                         }
+                                    } else if (modifier.equals(Modifiers.TIMBER_MODIFIER)) {
+                                        if (Lists.getAllowedModifiers().contains(Main.getPlugin().getConfig().getString("Modifiers.Timber.name").toLowerCase())) {
+                                            newTool = ItemGenerator.ToolModifier(i.getItem(0), Main.getPlugin().getConfig().getString("Modifiers.Timber.name").toLowerCase(), (Player) e.getWhoClicked(), false);
+                                        }
                                     } else {
                                         isModifier = false;
                                     }

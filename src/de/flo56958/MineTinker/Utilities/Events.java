@@ -133,11 +133,11 @@ class Events {
         ChatWriter.log(false, p.getDisplayName() + " upgraded " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ") to " + level + "!");
     }
 
-    static void ModAndSilk(Player p, String mod) {
+    static void IncompatibleMods(Player p, String mod1, String mod2) {
         if (Main.getPlugin().getConfig().getBoolean("Sound.OnModding")) {
             p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
         }
-        ChatWriter.sendMessage(p, ChatColor.RED, mod + " and Silk-Touch can't be combined!");
-        ChatWriter.log(false, p.getDisplayName() + " tried to combine " + mod + " and Silk-Touch on one tool!");
+        ChatWriter.sendMessage(p, ChatColor.RED, mod1 + " and " + mod2 + " can't be combined!");
+        ChatWriter.log(false, p.getDisplayName() + " tried to combine " + mod1 + " and " + mod2 + " on one tool!");
     }
 }

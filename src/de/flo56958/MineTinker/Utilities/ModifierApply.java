@@ -20,7 +20,7 @@ class ModifierApply {
         List<String> lore = meta.getLore();
         if (lore.contains(Strings.SILKTOUCH)) {
             if (!event) {
-                Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name"));
+                Events.IncompatibleMods(p, Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name"),  Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name"));
             }
             return null;
         }
@@ -351,7 +351,7 @@ class ModifierApply {
 
         if (lore.contains(Strings.SILKTOUCH)) {
             if (!event) {
-                Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Luck.name"));
+                Events.IncompatibleMods(p, Main.getPlugin().getConfig().getString("Modifiers.Luck.name"),  Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name"));
             }
             return null;
         }
@@ -403,7 +403,7 @@ class ModifierApply {
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
-        if (Lists.BOWS.contains(tool.getType().toString()) || Lists.SWORDS.contains(tool.getType().toString())) {
+        if (Lists.BOWS.contains(tool.getType().toString()) || Lists.SWORDS.contains(tool.getType().toString()) || Lists.AXES.contains(tool.getType().toString())) {
             int index = 0;
             boolean hasPoisonous = false;
             for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Poisonous.MaxLevel"); i++) {
@@ -678,10 +678,10 @@ class ModifierApply {
             }
             return null;
         }
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Luck.MaxLevel"); i++) {
             if (lore.contains(Strings.LUCK + i)) {
                 if (!event) {
-                    Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Luck.name"));
+                    Events.IncompatibleMods(p, Main.getPlugin().getConfig().getString("Modifiers.Luck.name"), Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name"));
                 }
                 return null;
             }
@@ -689,7 +689,7 @@ class ModifierApply {
         for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Auto-Smelt.MaxLevel"); i++) {
             if (lore.contains(Strings.AUTOSMELT + i)) {
                 if (!event) {
-                    Events.ModAndSilk(p, Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name"));
+                    Events.IncompatibleMods(p, Main.getPlugin().getConfig().getString("Modifiers.Auto-Smelt.name"), Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name"));
                 }
                 return null;
             }
@@ -748,6 +748,40 @@ class ModifierApply {
             if (!event) {
                 lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
             }
+        } else {
+            return null;
+        }
+
+        meta.setLore(lore);
+        tool.setItemMeta(meta);
+        return tool;
+    }
+
+    static ItemStack Timber(Player p, ItemStack tool, int slotsRemaining, boolean event) {
+        if (!p.hasPermission("minetinker.modifiers.timber.apply")) { return null; }
+        ItemMeta meta = tool.getItemMeta();
+        List<String> lore = meta.getLore();
+
+        if (lore.contains(Strings.TIMBER)) {
+            if (!event) {
+                Events.Mod_MaxLevel(p, tool, Strings.TIMBER);
+            }
+            return null;
+        }
+        for (int i = 1; i <= Main.getPlugin().getConfig().getInt("Modifiers.Power.MaxLevel"); i++) {
+            if (lore.contains(Strings.POWER + i)) {
+                if (!event) {
+                    Events.IncompatibleMods(p, Main.getPlugin().getConfig().getString("Modifiers.Power.name"), Main.getPlugin().getConfig().getString("Modifiers.Timber.name"));
+                }
+                return null;
+            }
+        }
+        if (Lists.AXES.contains(tool.getType().toString())) {
+            Events.Mod_AddMod(p, tool, ChatColor.WHITE + Main.getPlugin().getConfig().getString("Modifiers.Timber.name"), slotsRemaining - 1, event);
+            if (!event) {
+                lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
+            }
+            lore.add(Strings.TIMBER);
         } else {
             return null;
         }

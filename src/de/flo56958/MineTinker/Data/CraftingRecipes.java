@@ -162,4 +162,16 @@ public class CraftingRecipes {
             ChatWriter.log(true, "Could not register recipe for the Diamond Builderswand!"); //executes if the recipe could not initialize
         }
     }
+
+    public static void registerTimberModifier() {
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Timber"), Modifiers.TIMBER_MODIFIER); //init recipe
+            newRecipe.shape("LLL", "LEL", "LLL"); //makes recipe
+            newRecipe.setIngredient('L', Material.OAK_WOOD); //set ingredients
+            newRecipe.setIngredient('E', Material.EMERALD);
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.log(true, "Could not register recipe for the Timber-Modifier!"); //executes if the recipe could not initialize
+        }
+    }
 }

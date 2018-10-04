@@ -9,4 +9,5 @@ public class PlayerData {
 
     public static final HashMap<Player, BlockFace> BLOCKFACE = new HashMap<>();
     public static final HashMap<Player, Boolean> HASPOWER = new HashMap<>();
+
 }
