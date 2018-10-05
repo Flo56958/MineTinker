@@ -15,9 +15,6 @@ public class Timber {
     static ArrayList<Location> locs = new ArrayList<>();
 
     public static boolean init(Player p, Block b) {
-
-        if (!p.hasPermission("minetinker.modifiers.timber.use")) { return false; }
-
         boolean isTreeBottom = false; //checks for Grass or Dirt under Log
         boolean isTreeTop = false; //checks for Leaves above Log
         for (int y = b.getY() - 1; y > 0; y--) {
@@ -48,7 +45,6 @@ public class Timber {
         if (!isTreeBottom || !isTreeTop) { return false; }
 
         PlayerData.HASPOWER.replace(p, true);
-
         locs.add(b.getLocation());
 
         breakTree(p, b);

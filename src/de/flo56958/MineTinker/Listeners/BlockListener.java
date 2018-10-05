@@ -222,15 +222,17 @@ public class BlockListener implements Listener {
             }
         }
 
-        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Timber.allowed") && p.hasPermission("minetinker.modifier.timber.use")) {
+        if (Main.getPlugin().getConfig().getBoolean("Modifiers.Timber.allowed") && p.hasPermission("minetinker.modifiers.timber.use")) {
             if (lore.contains(Strings.TIMBER)) {
-                if (Lists.AXES.contains(tool.getType().toString()) && (e.getBlock().getType().equals(Material.ACACIA_LOG)
-                        || e.getBlock().getType().equals(Material.OAK_LOG)
-                        || e.getBlock().getType().equals(Material.SPRUCE_LOG)
-                        || e.getBlock().getType().equals(Material.JUNGLE_LOG)
-                        || e.getBlock().getType().equals(Material.DARK_OAK_LOG)
-                        || e.getBlock().getType().equals(Material.BIRCH_LOG)) && Timber.init(p, e.getBlock())) {
-                    PlayerData.HASPOWER.replace(p, true);
+                if (!PlayerData.HASPOWER.get(p) && !p.isSneaking()) {
+                    if (Lists.AXES.contains(tool.getType().toString()) && (e.getBlock().getType().equals(Material.ACACIA_LOG)
+                            || e.getBlock().getType().equals(Material.OAK_LOG)
+                            || e.getBlock().getType().equals(Material.SPRUCE_LOG)
+                            || e.getBlock().getType().equals(Material.JUNGLE_LOG)
+                            || e.getBlock().getType().equals(Material.DARK_OAK_LOG)
+                            || e.getBlock().getType().equals(Material.BIRCH_LOG)) && Timber.init(p, e.getBlock())) {
+                        PlayerData.HASPOWER.replace(p, false);
+                    }
                 }
             }
         }
