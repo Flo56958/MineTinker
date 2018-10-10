@@ -4,15 +4,17 @@ logging:
   debug: false #even more information
   metrics: true
 
+chat-messages: true #Will turn off command output
+actionbar-messages: true
+
 LevelStep: 100 #  *(LevelFactor^LevelOfTool)
 LevelFactor: 2.0
 AddModifierSlotsPerLevel: 1
 StartingModifierSlots: 1
 ExpPerBlockBreak: 1 #How much XP will the tool get when you break a block
-ExpPerSwordSwing: 1 #How much XP will the tool get when you swing the Sword
-ExpPerArrowHit: 1 #How much XP will the tool get when you hit with the bow
+ExpPerEntityHit: 1 #How much XP will the tool get when you hit a Entity with Sword / Bow
 ExpPerArrowShot: 1 #How much XP will the tool get when you shoot with the bow
-EnableDamageExp: false #When true: Sword will gain XP equal to the damage-value
+EnableDamageExp: false #When true: Sword/Bow will gain XP equal to the damage-value
 Upgradeable: true #Can you upgrade your tools with an anvil
 Repairable: true #Can you repair your tools in your inventory (instead of an anvil) just by dragging the ressource on the tool
 AllowEnchanting: false #When enabled you can enchant the tools with vanilla methods (not recommended!)
@@ -106,6 +108,10 @@ Modifiers:
     MaxLevel: 10
     PercentagePerLevel: 10
     EnchantCost: 10
+  Directing:
+    allowed: true
+    name: Directing
+    name_modifier: Directing-Modifier
   Ender:
     allowed: true
     name: Ender
@@ -142,6 +148,13 @@ Modifiers:
     name: Infinity
     name_modifier: Infinity-Modifier
     EnchantCost: 10
+  Melting:
+    allowed: true
+    name: Melting
+    name_modifier: Melting-Modifier
+    MaxLevel: 3
+    EnchantCost: 10
+    BonusMultiplier: 0.1 #Percent of Bonus-damage per Level
   Luck:
     allowed: true
     name: Luck
@@ -202,6 +215,14 @@ Modifiers:
     allowed: true
     name: Timber
     name_modifier: Timber-Modifier
+  Webbed:
+    allowed: true
+    name: Webbed
+    name_modifier: Webbed-Modifier
+    MaxLevel: 3
+    Duration: 60 #ticks
+    DurationMultiplier: 1.2 #Duration * (Multiplier^Level)
+    EffectMultiplier: 2 #per Level (Level 1 = 0)
   XP:
     allowed: true
     name: XP
@@ -210,8 +231,12 @@ Modifiers:
     XPAmount: 1 #amount of XP
 
 Spawners:
-  dropable: true
+  enabled: true #Should be disabled when using a different Spawner plugin
   onlyWithSilkTouch: true
+  AllowedWorlds: #Worlds where Spawners can be mined and placed
+    - world #default
+    - world_nether #default
+    - world_the_end #default
 
 Elevator:
   enabled: true
@@ -228,3 +253,12 @@ Builderswands:
   - world #default
   - world_nether #default
   - world_the_end #default
+
+Language:
+  #Tool
+  Identifier: MineTinker-Tool
+  Identifier_Builderswand: MineTinker-Builderswand
+  LevelLine: Level #no spaces
+  ExpLine: Exp #no spaces
+  FreeModifierSlotsLine: Free Modifiers Slots #exactly two spaces for no error
+  ModifiersLine: Modifiers

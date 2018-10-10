@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: a9.1
+version: a10
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -98,12 +98,14 @@ permissions:
     children:
       minetinker.modifiers.autosmelt.*: true
       minetinker.modifiers.beheading.*: true
+      minetinker.modifiers.directing.*: true
       minetinker.modifiers.ender.*: true
       minetinker.modifiers.extramodifier.*: true
       minetinker.modifiers.fiery.*: true
       minetinker.modifiers.glowing.*: true
       minetinker.modifiers.haste.*: true
       minetinker.modifiers.infinity.*: true
+      minetinker.modifiers.melting.*: true
       minetinker.modifiers.luck.*: true
       minetinker.modifiers.poisonous.*: true
       minetinker.modifiers.power.*: true
@@ -114,6 +116,7 @@ permissions:
       minetinker.modifiers.silktouch.*: true
       minetinker.modifiers.sweeping.*: true
       minetinker.modifiers.timber.*: true
+      minetinker.modifiers.webbed.*: true
       minetinker.modifiers.xp.*: true
 
   minetinker.modifiers.autosmelt.*:
@@ -136,10 +139,21 @@ permissions:
     description: Allows to apply Beheading to a MineTinker-Tool
     default: true
   minetinker.modifiers.beheading.craft:
-    description: Allows to craft a Beheading-Modifier
+    description: Allows to craft a Beheading-Modifiers
     default: true
   minetinker.modifiers.beheading.use:
     description: Allows to use Beheading on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.directing.*:
+    children:
+      minetinker.modifiers.directing.apply: true
+      minetinker.modifiers.directing.use: true
+  minetinker.modifiers.directing.apply:
+    description: Allows to apply Directing to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.directing.use:
+    description: Allows to use Directing on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.ender.*:
@@ -157,7 +171,7 @@ permissions:
     children:
       minetinker.modifiers.extramodifier.apply: true
   minetinker.modifiers.extramodifier.apply:
-    description: Allows to apply an extra Modifier to a MineTinker-Tool
+    description: Allows to apply an extra Modifiers to a MineTinker-Tool
     default: true
 
   minetinker.modifiers.fiery.*:
@@ -168,7 +182,7 @@ permissions:
     description: Allows to apply Fiery to a MineTinker-Tool
     default: true
   minetinker.modifiers.fiery.craft:
-    description: Allows to craft a Fiery-Modifier
+    description: Allows to craft a Fiery-Modifiers
     default: true
 
   minetinker.modifiers.glowing.*:
@@ -197,7 +211,7 @@ permissions:
     description: Allows to apply Knockback to a MineTinker-Tool
     default: true
   minetinker.modifiers.knockback.craft:
-    description: Allows to craft a Knockback-Modifier
+    description: Allows to craft a Knockback-Modifiers
     default: true
 
   minetinker.modifiers.infinity.*:
@@ -208,7 +222,22 @@ permissions:
     description: Allows to apply Infinity to a MineTinker-Tool
     default: true
   minetinker.modifiers.infinity.craft:
-    description: Allows to craft a Infinity-Modifier
+    description: Allows to craft a Infinity-Modifiers
+    default: true
+
+  minetinker.modifiers.melting.*:
+    children:
+      minetinker.modifiers.melting.apply: true
+      minetinker.modifiers.melting.craft: true
+      minetinker.modifiers.melting.use: true
+  minetinker.modifiers.melting.apply:
+    description: Allows to apply Melting to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.melting.craft:
+    description: Allows to craft a Melting-Modifiers
+    default: true
+  minetinker.modifiers.melting.use:
+    description: Allows to use the Melting-Modifier on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.luck.*:
@@ -227,7 +256,7 @@ permissions:
     description: Allows to apply Poisonous to a MineTinker-Tool
     default: true
   minetinker.modifiers.poisonous.craft:
-    description: Allows to craft a Poisonous-Modifier
+    description: Allows to craft a Poisonous-Modifiers
     default: true
   minetinker.modifiers.poisonous.use:
     description: Allows to use Poisonous on a MineTinker-Tool
@@ -242,7 +271,7 @@ permissions:
     description: Allows to apply Power to a MineTinker-Tool
     default: true
   minetinker.modifiers.power.craft:
-    description: Allows to craft a Power-Modifier
+    description: Allows to craft a Power-Modifiers
     default: true
   minetinker.modifiers.power.use:
     description: Allows to use Power on a MineTinker-Tool
@@ -264,7 +293,7 @@ permissions:
     description: Allows to apply Self-Repair to a MineTinker-Tool
     default: true
   minetinker.modifiers.selfrepair.craft:
-    description: Allows to craft a Self-Repair-Modifier
+    description: Allows to craft a Self-Repair-Modifiers
     default: true
   minetinker.modifiers.selfrepair.use:
     description: Allows to use Self-Repair on a MineTinker-Tool
@@ -296,7 +325,7 @@ permissions:
     description: Allows to apply Silk-Touch to a MineTinker-Tool
     default: true
   minetinker.modifiers.silktouch.craft:
-    description: Allows to craft a Silk-Touch-Modifier
+    description: Allows to craft a Silk-Touch-Modifiers
     default: true
 
   minetinker.modifiers.sweeping.*:
@@ -307,7 +336,7 @@ permissions:
     description: Allows to apply Sweeping to a MineTinker-Tool
     default: true
   minetinker.modifiers.sweeping.craft:
-    description: Allows to craft a Sweeping-Modifier
+    description: Allows to craft a Sweeping-Modifiers
     default: true
 
   minetinker.modifiers.timber.*:
@@ -319,6 +348,17 @@ permissions:
     default: true
   minetinker.modifiers.timber.use:
     description: Allows to use Timber on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.webbed.*:
+    children:
+      minetinker.modifiers.webbed.apply: true
+      minetinker.modifiers.webbed.use: true
+  minetinker.modifiers.webbed.apply:
+    description: Allows to apply Webbed to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.webbed.use:
+    description: Allows to use Webbed on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.xp.*:

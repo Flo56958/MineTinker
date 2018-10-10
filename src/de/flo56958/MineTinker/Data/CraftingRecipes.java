@@ -174,4 +174,28 @@ public class CraftingRecipes {
             ChatWriter.log(true, "Could not register recipe for the Timber-Modifier!"); //executes if the recipe could not initialize
         }
     }
+
+    public static void registerWebbedModifier() {
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Webbed"), Modifiers.WEBBED_MODIFIER); //init recipe
+            newRecipe.shape("WWW", "WWW", "WWW"); //makes recipe
+            newRecipe.setIngredient('W', Material.COBWEB); //set ingredients
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.log(true, "Could not register recipe for the Webbed-Modifier!"); //executes if the recipe could not initialize
+        }
+    }
+
+    public static void registerDirectingModifier() {
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Directing"), Modifiers.DIRECTING_MODIFIER); //init recipe
+            newRecipe.shape("ECE", "CIC", "ECE"); //makes recipe
+            newRecipe.setIngredient('C', Material.COMPASS); //set ingredients
+            newRecipe.setIngredient('E', Material.ENDER_PEARL);
+            newRecipe.setIngredient('I', Material.IRON_BLOCK);
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.log(true, "Could not register recipe for the Directing-Modifier!"); //executes if the recipe could not initialize
+        }
+    }
 }

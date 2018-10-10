@@ -43,6 +43,9 @@ public class Main extends JavaPlugin {
         if (getConfig().getBoolean("Modifiers.Auto-Smelt.allowed")) {
             CraftingRecipes.registerAutoSmeltModifier();
         }
+        if (getConfig().getBoolean("Modifiers.Directing.allowed")) {
+            CraftingRecipes.registerDirectingModifier();
+        }
         if (getConfig().getBoolean("Modifiers.Ender.allowed")) {
             CraftingRecipes.registerEnderModifier();
         }
@@ -66,6 +69,9 @@ public class Main extends JavaPlugin {
         }
         if (getConfig().getBoolean("Modifiers.Timber.allowed")) {
             CraftingRecipes.registerTimberModifier();
+        }
+        if (getConfig().getBoolean("Modifiers.Webbed.allowed")) {
+            CraftingRecipes.registerWebbedModifier();
         }
         ChatWriter.log(false, "Registered crafting recipes!");
 
