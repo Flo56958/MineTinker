@@ -1,10 +1,11 @@
 package de.flo56958.MineTinker.Utilities;
 
-import de.flo56958.MineTinker.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import de.flo56958.MineTinker.Main;
 
 import java.util.ArrayList;
 

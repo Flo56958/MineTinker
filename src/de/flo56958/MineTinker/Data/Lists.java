@@ -1,7 +1,8 @@
 package de.flo56958.MineTinker.Data;
 
-import de.flo56958.MineTinker.Main;
 import org.bukkit.configuration.file.FileConfiguration;
+
+import de.flo56958.MineTinker.Main;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,9 @@
 package de.flo56958.MineTinker.Utilities;
 
+import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.Strings;
-import de.flo56958.MineTinker.Main;
+
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;

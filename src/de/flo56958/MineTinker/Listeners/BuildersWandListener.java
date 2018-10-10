@@ -1,8 +1,9 @@
 package de.flo56958.MineTinker.Listeners;
 
-import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Utilities.PlayerInfo;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

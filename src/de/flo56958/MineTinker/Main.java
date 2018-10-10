@@ -1,6 +1,6 @@
 package de.flo56958.MineTinker;
 
-import de.flo56958.MineTinker.Commands.cmd_Main;
+import de.flo56958.MineTinker.Commands.Commands;
 import de.flo56958.MineTinker.Data.CraftingRecipes;
 import de.flo56958.MineTinker.Data.PlayerData;
 import de.flo56958.MineTinker.Data.Strings;
@@ -16,7 +16,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.getCommand("minetinker").setExecutor(new cmd_Main());
+        this.getCommand("minetinker").setExecutor(new Commands());
         ChatWriter.log(false, "Registered commands!");
 
         loadConfig();
