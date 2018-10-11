@@ -123,6 +123,10 @@ public class Commands implements CommandExecutor {
         }
         if (p.hasPermission("minetinker.commands.setdurability")) {
             ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". SetDurability (sd)");
+            index++;
+        }
+        if (p.hasPermission("minetinker.commands.give")) {
+            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". Give (g)");
         }
     }
 }

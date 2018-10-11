@@ -18,6 +18,7 @@ EnableDamageExp: false #When true: Sword/Bow will gain XP equal to the damage-va
 Upgradeable: true #Can you upgrade your tools with an anvil
 Repairable: true #Can you repair your tools in your inventory (instead of an anvil) just by dragging the ressource on the tool
 AllowEnchanting: false #When enabled you can enchant the tools with vanilla methods (not recommended!)
+AllowCrafting: true #Only recommended if used in combination with other Plugins that use the crafting grid for tools. If false: Tools are only aquired with give command
 DurabilityPercentageRepair: 0.34 #How much durability (relative to maximum durability) should the tool recover per item
 
 LevelUpEvents:

@@ -299,4 +299,38 @@ public class ItemGenerator {
             ChatWriter.log(false,  p.getDisplayName() + " tried to create a " + modifier + "-Modifiers but had not enough levels!");
         }
     }
+
+    public static ItemStack toolCreate(Material material) {
+        ItemStack tool = new ItemStack(material, 1);
+
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(Strings.IDENTIFIER);
+        lore.add(Strings.LEVELLINE + "1");
+        lore.add(Strings.EXPLINE + "0 / " + LevelCalculator.getNextLevelReq(1));
+        lore.add(Strings.FREEMODIFIERSLOTS + config.getInt("StartingModifierSlots"));
+        lore.add(Strings.MODIFIERSTART);
+
+        ItemMeta meta = tool.getItemMeta();
+        meta.setLore(lore);
+        tool.setItemMeta(meta);
+
+        return tool;
+    }
+
+    public static ItemStack toolCreate(Material material, int level) {
+        ItemStack tool = new ItemStack(material, 1);
+
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(Strings.IDENTIFIER);
+        lore.add(Strings.LEVELLINE + level);
+        lore.add(Strings.EXPLINE + LevelCalculator.getNextLevelReq(level - 1) + " / " + LevelCalculator.getNextLevelReq(level));
+        lore.add(Strings.FREEMODIFIERSLOTS + (config.getInt("StartingModifierSlots") + (config.getInt("AddModifierSlotsPerLevel") * (level - 1))));
+        lore.add(Strings.MODIFIERSTART);
+
+        ItemMeta meta = tool.getItemMeta();
+        meta.setLore(lore);
+        tool.setItemMeta(meta);
+
+        return tool;
+    }
 }
