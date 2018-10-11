@@ -39,8 +39,7 @@ public class PlayerInfo {
 
         if (!meta.hasLore()) { return false; }
         List<String> lore = meta.getLore();
-        if (!lore.contains(Strings.IDENTIFIER)) { return false; }
-        return true;
+        return lore.contains(Strings.IDENTIFIER);
     }
 
     public static boolean isWandViable(ItemStack tool) {
@@ -49,8 +48,7 @@ public class PlayerInfo {
 
         if (!meta.hasLore()) { return false; }
         List<String> lore = meta.getLore();
-        if (!lore.contains(Strings.IDENTIFIER_BUILDERSWAND)) { return false; }
-        return true;
+        return lore.contains(Strings.IDENTIFIER_BUILDERSWAND);
     }
 
 }

@@ -1,18 +1,17 @@
 package de.flo56958.MineTinker.Utilities;
 
+import de.flo56958.MineTinker.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import de.flo56958.MineTinker.Main;
-
 import java.util.ArrayList;
 
 public class LevelCalculator {
 
-    public static int getNextLevelReq(int level) {
-        return (int) (Main.getPlugin().getConfig().getInt("LevelStep") * Math.pow(Main.getPlugin().getConfig().getDouble("LevelFactor"), (double) (level - 1)));
+    static long getNextLevelReq(int level) {
+        return (long) (Main.getPlugin().getConfig().getInt("LevelStep") * Math.pow(Main.getPlugin().getConfig().getDouble("LevelFactor"), (double) (level - 1)));
     }
 
     public static void addExp(Player p, ItemStack tool, int amount) {
@@ -25,7 +24,17 @@ public class LevelCalculator {
         String[] expS = lore.get(2).split(" ");
 
         int level = Integer.parseInt(levelS[1]);
-        int exp = Integer.parseInt(expS[1]);
+        long exp = Long.parseLong(expS[1]);
+        if (exp == Long.MAX_VALUE || exp < 0 || level < 0) {
+            if (Main.getPlugin().getConfig().getBoolean("ResetAtIntOverflow")) {
+                level = 1;
+                lore.set(1, ChatColor.GOLD + "Level:" + ChatColor.WHITE + " " + level);
+                exp = 0;
+                LevelUp = true;
+            } else {
+                return;
+            }
+        }
 
         exp = exp + amount;
         if (exp >= getNextLevelReq(level)) {

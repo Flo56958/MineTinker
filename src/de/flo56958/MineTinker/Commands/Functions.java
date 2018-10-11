@@ -195,34 +195,60 @@ class Functions {
                 try {
                     material = Material.getMaterial(args[1].toUpperCase());
                 } catch (Exception ignored) {
-                    ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a valid tool type!");
+                    Commands.invalidArgs(p);
                     return;
                 }
             } else {
-                ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a valid tool type!");
+                Commands.invalidArgs(p);
                 return;
             }
         } else {
-            ChatWriter.sendMessage(p, ChatColor.RED, "Too few arguments!");
+            Commands.invalidArgs(p);
             return;
         }
         if (args.length == 2) {
-            if(p.getInventory().addItem(ItemGenerator.toolCreate(material)).size() != 0) { //adds items to (full) inventory
-                p.getWorld().dropItem(p.getLocation(), ItemGenerator.toolCreate(material));
+            if(p.getInventory().addItem(ItemGenerator.changeLore(new ItemStack(material, 1), ItemGenerator.createLore())).size() != 0) { //adds items to (full) inventory
+                p.getWorld().dropItem(p.getLocation(), ItemGenerator.changeLore(new ItemStack(material, 1), ItemGenerator.createLore()));
             } // no else as it gets added in if
         } else if (args.length == 3) {
             int level;
             try {
                 level = Integer.parseInt(args[2]);
             } catch (Exception ignored) {
-                ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a valid number!");
+                Commands.invalidArgs(p);
                 return;
             }
-            if(p.getInventory().addItem(ItemGenerator.toolCreate(material, level)).size() != 0) { //adds items to (full) inventory
-                p.getWorld().dropItem(p.getLocation(), ItemGenerator.toolCreate(material, level));
+            if(p.getInventory().addItem(ItemGenerator.changeLore(new ItemStack(material, 1), ItemGenerator.createLore(level))).size() != 0) { //adds items to (full) inventory
+                p.getWorld().dropItem(p.getLocation(), ItemGenerator.changeLore(new ItemStack(material, 1), ItemGenerator.createLore(level)));
             } // no else as it gets added in if
         } else {
-            ChatWriter.sendMessage(p, ChatColor.RED, "Too many arguments!");
+            Commands.invalidArgs(p);
         }
+    }
+
+    public static void convert(Player p, String[] args) {
+        ItemStack tool = p.getInventory().getItemInMainHand();
+        if (Lists.SWORDS.contains(tool.getType().toString()) ||
+            Lists.AXES.contains(tool.getType().toString()) ||
+            Lists.BOWS.contains(tool.getType().toString()) ||
+            Lists.SHOVELS.contains(tool.getType().toString()) ||
+            Lists.HOES.contains(tool.getType().toString()) ||
+            Lists.PICKAXES.contains(tool.getType().toString())) {
+            if (args.length < 2) {
+                tool.setItemMeta(null);
+                ItemGenerator.changeLore(tool, ItemGenerator.createLore());
+            } else if (args.length < 3) {
+                try {
+                    int level = Integer.parseInt(args[1]);
+                    tool.setItemMeta(null);
+                    ItemGenerator.changeLore(tool, ItemGenerator.createLore(level));
+                } catch (Exception ignored){
+                    Commands.invalidArgs(p);
+                }
+            }
+        } else {
+            ChatWriter.sendMessage(p, ChatColor.RED, "Item can't be converted!");
+        }
+
     }
 }

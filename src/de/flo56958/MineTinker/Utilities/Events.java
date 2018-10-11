@@ -1,9 +1,8 @@
 package de.flo56958.MineTinker.Utilities;
 
-import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.Strings;
-
+import de.flo56958.MineTinker.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -30,7 +29,12 @@ class Events {
             String[] slotsS = lore.get(3).split(" ");
 
             int slots = Integer.parseInt(slotsS[3]);
-            int newSlots = slots + config.getInt("AddModifierSlotsPerLevel");
+            int newSlots = slots;
+            if (!(slots == Integer.MAX_VALUE || slots < 0)) {
+                newSlots += config.getInt("AddModifierSlotsPerLevel");
+            } else {
+                newSlots = Integer.MAX_VALUE;
+            }
             lore.set(3, ChatColor.WHITE + Strings.FREEMODIFIERSLOTS + newSlots);
 
             meta.setLore(lore);

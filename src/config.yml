@@ -9,6 +9,7 @@ actionbar-messages: true
 
 LevelStep: 100 #  *(LevelFactor^LevelOfTool)
 LevelFactor: 2.0
+ResetAtVarOverflow: true #Resets Level and Exp at Integer.MAX_VALUE or Long.MAX_VALUE with 1 and 0. false: no more Exp gain
 AddModifierSlotsPerLevel: 1
 StartingModifierSlots: 1
 ExpPerBlockBreak: 1 #How much XP will the tool get when you break a block
@@ -263,3 +264,6 @@ Language:
   ExpLine: Exp #no spaces
   FreeModifierSlotsLine: Free Modifiers Slots #exactly two spaces for no error
   ModifiersLine: Modifiers
+  Commands:
+    NoPermission: You do not have permission to use this command!
+    InvalidArguments: Invalid arguments!

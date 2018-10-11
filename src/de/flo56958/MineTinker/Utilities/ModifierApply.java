@@ -1,9 +1,8 @@
 package de.flo56958.MineTinker.Utilities;
 
-import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.Strings;
-
+import de.flo56958.MineTinker.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -63,9 +62,7 @@ class ModifierApply {
         } else {
             return null;
         }
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeLore(tool, lore);
     }
 
     static ItemStack Beheading(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -105,9 +102,7 @@ class ModifierApply {
         } else {
             return null;
         }
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeLore(tool, lore);
     }
 
     static ItemStack Directing(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -145,9 +140,7 @@ class ModifierApply {
         }
         lore.add(Strings.DIRECTING);
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeLore(tool, lore);
     }
 
     static ItemStack Ender(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -169,9 +162,7 @@ class ModifierApply {
         } else {
             return null;
         }
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeLore(tool, lore);
     }
 
     static ItemStack ExtraModifier(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -180,12 +171,13 @@ class ModifierApply {
         List<String> lore = meta.getLore();
 
         int extra = config.getInt("Modifiers.Extra-Modifier.ExtraModifierGain");
+
+        if (slotsRemaining + extra == Integer.MAX_VALUE || slotsRemaining + extra < 0) { return null; }
+
         lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining + extra));
         Events.Mod_AddMod(p, tool, ChatColor.WHITE + "" + extra + " extra Modifier-Slot", slotsRemaining + extra, event);
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeLore(tool, lore);
     }
 
     static ItemStack Fiery(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -233,9 +225,7 @@ class ModifierApply {
             return null;
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeItem(tool, meta, lore);
     }
 
     static ItemStack Glowing(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -259,9 +249,7 @@ class ModifierApply {
             return null;
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeLore(tool, lore);
     }
 
     static ItemStack Haste(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -305,9 +293,7 @@ class ModifierApply {
             return null;
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeItem(tool, meta, lore);
     }
 
     static ItemStack Knockback(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -355,9 +341,7 @@ class ModifierApply {
             return null;
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeItem(tool, meta, lore);
     }
 
     static ItemStack Infinity(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -383,9 +367,7 @@ class ModifierApply {
             return null;
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeItem(tool, meta, lore);
     }
 
     static ItemStack Melting(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -429,9 +411,7 @@ class ModifierApply {
             return null;
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeLore(tool, lore);
     }
 
     static ItemStack Luck(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -489,9 +469,7 @@ class ModifierApply {
             lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeItem(tool, meta, lore);
     }
 
     static ItemStack Poisonous(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -535,9 +513,7 @@ class ModifierApply {
             return null;
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeLore(tool, lore);
     }
 
     static ItemStack Power(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -582,9 +558,7 @@ class ModifierApply {
             return null;
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeLore(tool, lore);
     }
 
     static ItemStack Reinforced(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -624,9 +598,7 @@ class ModifierApply {
             lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeItem(tool, meta, lore);
     }
 
     static ItemStack SelfRepair(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -664,9 +636,7 @@ class ModifierApply {
             lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeLore(tool, lore);
     }
 
     static ItemStack Sharpness(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -714,9 +684,7 @@ class ModifierApply {
             return null;
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeItem(tool, meta, lore);
     }
 
     static ItemStack Shulking(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -758,9 +726,7 @@ class ModifierApply {
             return null;
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeLore(tool, lore);
     }
 
     static ItemStack SilkTouch(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -808,9 +774,7 @@ class ModifierApply {
             return null;
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeItem(tool, meta, lore);
     }
 
     static ItemStack Sweeping(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -854,9 +818,7 @@ class ModifierApply {
             return null;
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeItem(tool, meta, lore);
     }
 
     static ItemStack Timber(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -888,9 +850,7 @@ class ModifierApply {
             return null;
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeLore(tool, lore);
     }
 
     static ItemStack Webbed(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -934,9 +894,7 @@ class ModifierApply {
             return null;
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeLore(tool, lore);
     }
 
     static ItemStack XP(Player p, ItemStack tool, int slotsRemaining, boolean event) {
@@ -974,9 +932,7 @@ class ModifierApply {
             lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
         }
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
+        return ItemGenerator.changeLore(tool, lore);
     }
 
 }
