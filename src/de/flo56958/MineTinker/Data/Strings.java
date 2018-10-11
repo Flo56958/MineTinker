@@ -1,8 +1,9 @@
 package de.flo56958.MineTinker.Data;
 
-import de.flo56958.MineTinker.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+
+import de.flo56958.MineTinker.Main;
 
 public class Strings {
 

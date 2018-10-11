@@ -1,7 +1,7 @@
 package de.flo56958.MineTinker.Commands;
 
-import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -11,7 +11,7 @@ class Mods {
 
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
-    static void modifierList(Player p) {
+    static void list(Player p) {
         ChatWriter.sendMessage(p, ChatColor.GOLD, "Possible Modifiers:");
         int index = 1;
         if (config.getBoolean("Modifiers.Auto-Smelt.allowed") && p.hasPermission("minetinker.modifiers.autosmelt.apply")) {

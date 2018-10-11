@@ -182,7 +182,7 @@ class Functions {
             ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a value!");
         }
     }
-
+  
     public static void give(Player p, String[] args) {
         Material material;
         if (args.length >= 2) {

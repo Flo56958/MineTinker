@@ -20,26 +20,58 @@ public class Commands implements CommandExecutor {
                     onHelp(p);
                 }
                 if (args.length > 0) {
-                    if ((args[0].toLowerCase().equals("help") || args[0].toLowerCase().equals("?")) && p.hasPermission("minetinker.commands.help")) {
-                        onHelp(p);
-                    } else if ((args[0].toLowerCase().equals("info") || args[0].toLowerCase().equals("i")) && p.hasPermission("minetinker.commands.info")) {
-                        info(p);
-                    } else if ((args[0].toLowerCase().equals("modifiers") || args[0].toLowerCase().equals("mods")) && p.hasPermission("minetinker.commands.modifiers")) {
-                        Mods.modifierList(p);
-                    } else if ((args[0].toLowerCase().equals("addexp") || args[0].toLowerCase().equals("ae")) && p.hasPermission("minetinker.commands.addexp")){
-                        Functions.addExp(p, args);
-                    } else if ((args[0].toLowerCase().equals("name") || args[0].toLowerCase().equals("n")) && p.hasPermission("minetinker.commands.name")){
-                        Functions.name(p, args);
-                    } else if ((args[0].toLowerCase().equals("addmod") || args[0].toLowerCase().equals("am")) && p.hasPermission("minetinker.commands.addmod")){
-                        Functions.addMod(p, args);
-                    } else if ((args[0].toLowerCase().equals("removemod") || args[0].toLowerCase().equals("rm")) && p.hasPermission("minetinker.commands.removemod")){
-                        Functions.removeMod(p, args);
-                    } else if ((args[0].toLowerCase().equals("setdurability") || args[0].toLowerCase().equals("sd")) && p.hasPermission("minetinker.commands.setdurability")){
-                        Functions.setDurability(p, args);
-                    } else if (((args[0].toLowerCase().equals("give") || args[0].toLowerCase().equals("g")) && p.hasPermission("minetinker.commands.give"))) {
-                        Functions.give(p, args);
-                    } else {
-                        ChatWriter.sendMessage(p, ChatColor.RED, "You have entered a wrong or too many argument(s)! Or you do not have permission to use this command");
+                    switch(args[0].toLowerCase()) {
+                    case "help":
+                    case "?":
+                    	if(p.hasPermission("minetinker.commands.help")) {
+                    		onHelp(p);
+                    		break;
+                    	}else noPerm(p); break;
+                    case "info":
+                    case "i":
+                    	if(p.hasPermission("minetinker.commands.info")) {
+                    		ChatWriter.sendMessage(p, ChatColor.WHITE, "MineTinker is a Plugin made by Flo56958.");
+                            ChatWriter.sendMessage(p, ChatColor.WHITE, "It is inspired by different mods (e.g. TinkersConstruct)");
+                            break;
+                    	}else noPerm(p); break;
+                    case "modifiers":
+                    case "mods":
+                    	if(p.hasPermission("minetinker.commands.modifiers")) {
+                    		Mods.list(p);
+                    		break;
+                    	}else noPerm(p); break;
+                    case "addexp":
+                    case "ae":
+                    	if(p.hasPermission("minetinker.commands.addexp")) {
+                    		Functions.addExp(p, args);
+                    		break;
+                    	}else noPerm(p); break;
+                    case "name":
+                    case "n":
+                    	if(p.hasPermission("minetinker.commands.name")) {
+                    		Functions.name(p, args);
+                    		break;
+                    	}else noPerm(p); break;
+                    case "addmod":
+                    case "am":
+                    	if(p.hasPermission("minetinker.commands.addmod")) {
+                    		Functions.addMod(p, args);
+                    		break;
+                    	}else noPerm(p); break;
+                    case "removemod":
+                    case "rm":
+                    	if(p.hasPermission("minetinker.commands.removemod")) {
+                    		Functions.removeMod(p, args);
+                    		break;
+                    	}else noPerm(p); break;
+                    case "setdurability":
+                    case "sd":
+                    	if(p.hasPermission("minetinker.commands.setdurability")) {
+                    		Functions.setDurability(p, args);
+                    		break;
+                    	}else noPerm(p); break;
+                    default:
+                    	invalidArgs(p);
                         ChatWriter.sendMessage(p, ChatColor.WHITE, "Possible arguments are:");
                         onHelp(p);
                     }
@@ -50,10 +82,13 @@ public class Commands implements CommandExecutor {
         }
         return true;
     }
-
-    static void info(Player p) {
-        ChatWriter.sendMessage(p, ChatColor.WHITE, "MineTinker is a Plugin made by Flo56958.");
-        ChatWriter.sendMessage(p, ChatColor.WHITE, "It is inspired by different mods (e.g. TinkersConstruct)");
+    
+    private void invalidArgs(Player p) {
+    	ChatWriter.sendMessage(p, ChatColor.RED, "Invalid arguments!");
+    }
+    
+    private void noPerm(Player p) {
+    	ChatWriter.sendMessage(p, ChatColor.RED, "You do not have permission to use this command!");
     }
 
     private void onHelp (Player p) {
