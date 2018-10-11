@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: a10
+version: a10.1
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -56,6 +56,7 @@ permissions:
       minetinker.commands.addmod: true
       minetinker.commands.removemod: true
       minetinker.commands.setdurability: true
+      minetinker.commands.give: true
 
   minetinker.commands.main:
     description: Allows to access MineTinker
@@ -91,6 +92,10 @@ permissions:
 
   minetinker.commands.setdurability:
     description: Allows to set the Durability of a MineTinker-Tool
+    default: op
+
+  minetinker.commands.give:
+    description: Allows to give MineTinker-Tools through command
     default: op
 
   #Modifiers:

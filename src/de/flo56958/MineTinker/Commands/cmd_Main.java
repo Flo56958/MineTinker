@@ -36,6 +36,8 @@ public class cmd_Main implements CommandExecutor {
                         cmd_Functions.removeMod(p, args);
                     } else if ((args[0].toLowerCase().equals("setdurability") || args[0].toLowerCase().equals("sd")) && p.hasPermission("minetinker.commands.setdurability")){
                         cmd_Functions.setDurability(p, args);
+                    } else if (((args[0].toLowerCase().equals("give") || args[0].toLowerCase().equals("g")) && p.hasPermission("minetinker.commands.give"))) {
+                        cmd_Functions.give(p, args);
                     } else {
                         ChatWriter.sendMessage(p, ChatColor.RED, "You have entered a wrong or too many argument(s)! Or you do not have permission to use this command");
                         ChatWriter.sendMessage(p, ChatColor.WHITE, "Possible arguments are:");
@@ -81,6 +83,10 @@ public class cmd_Main implements CommandExecutor {
         }
         if (p.hasPermission("minetinker.commands.setdurability")) {
             ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". SetDurability (sd)");
+            index++;
+        }
+        if (p.hasPermission("minetinker.commands.give")) {
+            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". Give (g)");
         }
     }
 }

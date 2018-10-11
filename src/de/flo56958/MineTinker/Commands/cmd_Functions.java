@@ -7,6 +7,7 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.LevelCalculator;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -179,6 +180,49 @@ class cmd_Functions {
             }
         } else {
             ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a value!");
+        }
+    }
+
+    public static void give(Player p, String[] args) {
+        Material material;
+        if (args.length >= 2) {
+            if (Lists.SWORDS.contains(args[1].toUpperCase()) ||
+                Lists.AXES.contains(args[1].toUpperCase()) ||
+                Lists.BOWS.contains(args[1].toUpperCase()) ||
+                Lists.SHOVELS.contains(args[1].toUpperCase()) ||
+                Lists.HOES.contains(args[1].toUpperCase()) ||
+                Lists.PICKAXES.contains(args[1].toUpperCase())) {
+                try {
+                    material = Material.getMaterial(args[1].toUpperCase());
+                } catch (Exception ignored) {
+                    ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a valid tool type!");
+                    return;
+                }
+            } else {
+                ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a valid tool type!");
+                return;
+            }
+        } else {
+            ChatWriter.sendMessage(p, ChatColor.RED, "Too few arguments!");
+            return;
+        }
+        if (args.length == 2) {
+            if(p.getInventory().addItem(ItemGenerator.toolCreate(material)).size() != 0) { //adds items to (full) inventory
+                p.getWorld().dropItem(p.getLocation(), ItemGenerator.toolCreate(material));
+            } // no else as it gets added in if
+        } else if (args.length == 3) {
+            int level;
+            try {
+                level = Integer.parseInt(args[2]);
+            } catch (Exception ignored) {
+                ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a valid number!");
+                return;
+            }
+            if(p.getInventory().addItem(ItemGenerator.toolCreate(material, level)).size() != 0) { //adds items to (full) inventory
+                p.getWorld().dropItem(p.getLocation(), ItemGenerator.toolCreate(material, level));
+            } // no else as it gets added in if
+        } else {
+            ChatWriter.sendMessage(p, ChatColor.RED, "Too many arguments!");
         }
     }
 }

@@ -21,7 +21,9 @@ public class Main extends JavaPlugin {
 
         loadConfig();
 
-        Bukkit.getPluginManager().registerEvents(new CraftingGrid9Listener(), this);
+        if (getConfig().getBoolean("AllowCrafting")) {
+            Bukkit.getPluginManager().registerEvents(new CraftingGrid9Listener(), this);
+        }
         Bukkit.getPluginManager().registerEvents(new BlockListener(), this);
         Bukkit.getPluginManager().registerEvents(new AnvilListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
