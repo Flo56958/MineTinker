@@ -15,7 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-class cmd_Functions {
+class Functions {
 
     static void addExp(Player p, String[] args) {
         if (args.length == 2) {

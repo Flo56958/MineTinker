@@ -7,7 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-class cmd_Modifiers {
+class Mods {
 
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
