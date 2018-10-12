@@ -24,10 +24,22 @@ public enum ToolType {
 	TRIDENT,
 	OTHER;
 	
+	/**
+	 * get the tooltype from a string
+	 * 
+	 * @param name the tooltype name
+	 * @return tooltype instance, null if invalid name
+	 */
 	public static ToolType get(String name) {
 		return valueOf(name);
 	}
 	
+	/**
+	 * get the tooltype for a given material
+	 * 
+	 * @param mat the material to check
+	 * @return material's tooltype, null if invalid
+	 */
 	public static ToolType get(Material mat) {
 		for(ToolType tt : values()) {
 			if(tt.getMats().contains(mat)) return tt;
@@ -35,6 +47,11 @@ public enum ToolType {
 		return null;
 	}
 	
+	/**
+	 * get all materials from a given tooltype
+	 * 
+	 * @return list of materials
+	 */
 	public List<Material> getMats(){
 		List<Material> mats = new ArrayList<>();
 		switch(this) {
