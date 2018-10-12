@@ -1,11 +1,11 @@
 package de.flo56958.MineTinker.Commands;
 
 import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.LevelCalculator;
+import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -20,50 +20,39 @@ class Functions {
     static void addExp(Player p, String[] args) {
         if (args.length == 2) {
             ItemStack tool = p.getInventory().getItemInMainHand();
-            if (tool.hasItemMeta()) {
-                if (tool.getItemMeta().hasLore()) {
-                    if (tool.getItemMeta().getLore().contains(Strings.IDENTIFIER)) {
-                        try {
-                            int amount = Integer.parseInt(args[1]);
-                            LevelCalculator.addExp(p, tool, amount);
-                        } catch (Exception e) {
-                            ChatWriter.sendMessage(p, ChatColor.RED, "You need to enter a number!");
-                        }
-                    } else {
-                        ChatWriter.sendMessage(p, ChatColor.RED, "This command works only with a MineTinker-Tool!");
-                    }
-                } else {
-                    ChatWriter.sendMessage(p, ChatColor.RED, "This command works only with a MineTinker-Tool!");
+            if (PlayerInfo.isToolViable(tool)) {
+                try {
+                    int amount = Integer.parseInt(args[1]);
+                    LevelCalculator.addExp(p, tool, amount);
+                } catch (Exception e) {
+                    Commands.invalidArgs(p);
                 }
             } else {
-                ChatWriter.sendMessage(p, ChatColor.RED, "This command works only with a MineTinker-Tool!");
+                Commands.invalidTool(p);
             }
         } else {
-            ChatWriter.sendMessage(p, ChatColor.RED, "You have entered to few arguments!");
+            Commands.invalidArgs(p);
         }
     }
 
     static void name(Player p, String[] args) {
         if (args.length >= 2) {
             ItemStack tool = p.getInventory().getItemInMainHand();
-            if (tool.hasItemMeta()) {
-                if (tool.getItemMeta().hasLore()) {
-                    if (tool.getItemMeta().getLore().contains(Strings.IDENTIFIER)) {
-                        String name = args[1].replace('^', '§');
-                        ItemMeta meta = tool.getItemMeta().clone();
-                        meta.setDisplayName(name);
-                        tool.setItemMeta(meta);
-                    } else {
-                        ChatWriter.sendMessage(p, ChatColor.RED, "This command works only with a MineTinker-Tool!");
-                    }
-                } else {
-                    ChatWriter.sendMessage(p, ChatColor.RED, "This command works only with a MineTinker-Tool!");
+            if (PlayerInfo.isToolViable(tool)) {
+                String name = "";
+                for (int i = 1; i < args.length; i++) {
+                    name = name + " " + args[i].replace('^', '§');
                 }
+                name = name.substring(1);
+                System.out.println("----" + name);
+                ItemMeta meta = tool.getItemMeta().clone();
+                meta.setDisplayName(name);
+                tool.setItemMeta(meta);
             } else {
-                ChatWriter.sendMessage(p, ChatColor.RED, "This command works only with a MineTinker-Tool!");
+                Commands.invalidTool(p);
             }
         } else {
-            ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a name!");
+            Commands.invalidArgs(p);
         }
     }
 
@@ -72,52 +61,48 @@ class Functions {
             try {
                 int index = Integer.parseInt(args[1]);
                 ItemStack tool = p.getInventory().getItemInMainHand();
-                if (tool.hasItemMeta()) {
+                if (PlayerInfo.isToolViable(tool)) {
                     ItemMeta meta = tool.getItemMeta();
-                    if (meta.hasLore()) {
-                        List<String> lore = meta.getLore();
-                        index = index + 4;
-                        if (!(index >= lore.size())) {
-                            String remove = lore.get(index);
-                            String[] mod = remove.split(":");
-                            mod[0] = mod[0].substring(2); //Skipps the ChatColor-Code at the Beginning TODO: Dual Chatcodes need to be implemented
-                            if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"))) {
-                                meta.removeEnchant(Enchantment.FIRE_ASPECT);
-                                meta.removeEnchant(Enchantment.ARROW_FIRE);
-                            } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Haste.name"))) {
-                                meta.removeEnchant(Enchantment.DIG_SPEED);
-                            } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Luck.name"))) {
-                                meta.removeEnchant(Enchantment.LOOT_BONUS_BLOCKS);
-                                meta.removeEnchant(Enchantment.LOOT_BONUS_MOBS);
-                            } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name"))) {
-                                meta.removeEnchant(Enchantment.DURABILITY);
-                            } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Sweeping.name"))) {
-                                meta.removeEnchant(Enchantment.SWEEPING_EDGE);
-                            } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Knockback.name"))) {
-                                meta.removeEnchant(Enchantment.KNOCKBACK);
-                                meta.removeEnchant(Enchantment.ARROW_KNOCKBACK);
-                            } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name"))) {
-                                meta.removeEnchant(Enchantment.MENDING);
-                            } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name"))) {
-                                meta.removeEnchant(Enchantment.ARROW_DAMAGE);
-                                meta.removeEnchant(Enchantment.DAMAGE_ALL);
-                            } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name"))) {
-                                meta.removeEnchant(Enchantment.SILK_TOUCH);
-                            } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Infinity.name"))) {
-                                meta.removeEnchant(Enchantment.ARROW_INFINITE);
-                            }
-                            lore.remove(index);
-                            meta.setLore(lore);
-                            tool.setItemMeta(meta);
-                            p.getInventory().setItemInMainHand(tool);
+                    List<String> lore = meta.getLore();
+                    index = index + 4; //To start when modifier start
+                    if (!(index >= lore.size())) {
+                        String remove = lore.get(index);
+                        String[] mod = remove.split(":");
+                        mod[0] = mod[0].substring(2); //Skipps the ChatColor-Code at the Beginning TODO: Dual Chatcodes need to be implemented
+                        if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"))) {
+                            meta.removeEnchant(Enchantment.FIRE_ASPECT);
+                            meta.removeEnchant(Enchantment.ARROW_FIRE);
+                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Haste.name"))) {
+                            meta.removeEnchant(Enchantment.DIG_SPEED);
+                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Luck.name"))) {
+                            meta.removeEnchant(Enchantment.LOOT_BONUS_BLOCKS);
+                            meta.removeEnchant(Enchantment.LOOT_BONUS_MOBS);
+                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name"))) {
+                            meta.removeEnchant(Enchantment.DURABILITY);
+                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Sweeping.name"))) {
+                            meta.removeEnchant(Enchantment.SWEEPING_EDGE);
+                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Knockback.name"))) {
+                            meta.removeEnchant(Enchantment.KNOCKBACK);
+                            meta.removeEnchant(Enchantment.ARROW_KNOCKBACK);
+                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name"))) {
+                            meta.removeEnchant(Enchantment.MENDING);
+                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name"))) {
+                            meta.removeEnchant(Enchantment.ARROW_DAMAGE);
+                            meta.removeEnchant(Enchantment.DAMAGE_ALL);
+                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name"))) {
+                            meta.removeEnchant(Enchantment.SILK_TOUCH);
+                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Infinity.name"))) {
+                            meta.removeEnchant(Enchantment.ARROW_INFINITE);
                         }
+                        lore.remove(index);
+                        p.getInventory().setItemInMainHand(ItemGenerator.changeItem(tool, meta, lore));
                     }
                 }
             } catch (Exception e) {
-                ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a mod-index number!");
+                Commands.invalidArgs(p);
             }
         } else {
-            ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a mod-index number!");
+            Commands.invalidArgs(p);
         }
     }
 
@@ -125,36 +110,26 @@ class Functions {
         if (args.length == 2) {
             if (Lists.getAllowedModifiers().contains(args[1].toLowerCase())) {
                 ItemStack tool = p.getInventory().getItemInMainHand().clone();
-                if (tool.hasItemMeta()) {
-                    if (tool.getItemMeta().hasLore()) {
-                        if (tool.getItemMeta().getLore().contains(Strings.IDENTIFIER)) {
-                            tool = ItemGenerator.ToolModifier(tool, args[1].toLowerCase(), p, true);
-                            if (tool != null) {
-                                p.getInventory().setItemInMainHand(tool);
-                            }
-                        } else {
-                            ChatWriter.sendMessage(p, ChatColor.RED, "This command works only with a MineTinker-Tool!");
-                        }
-                    } else {
-                        ChatWriter.sendMessage(p, ChatColor.RED, "This command works only with a MineTinker-Tool!");
+                if (PlayerInfo.isToolViable(tool)) {
+                    tool = ItemGenerator.ToolModifier(tool, args[1].toLowerCase(), p, true);
+                    if (tool != null) {
+                        p.getInventory().setItemInMainHand(tool);
                     }
                 } else {
-                    ChatWriter.sendMessage(p, ChatColor.RED, "This command works only with a MineTinker-Tool!");
+                    Commands.invalidTool(p);
                 }
             } else {
-                ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a available mod! (You need to use custom names)");
+                ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a available modifier! (You need to use custom names)");
             }
         } else {
-            ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a mod!");
+            Commands.invalidArgs(p);
         }
     }
 
     static void setDurability(Player p, String[] args) {
         if (args.length == 2) {
             ItemStack tool = p.getInventory().getItemInMainHand();
-            if (tool.hasItemMeta()) {
-                if (tool.getItemMeta().hasLore()) {
-                    if (tool.getItemMeta().getLore().contains(Strings.IDENTIFIER)) {
+            if (PlayerInfo.isToolViable(tool)) {
                         try {
                             int dura = Integer.parseInt(args[1]);
                             if (dura <= tool.getType().getMaxDurability()) {
@@ -169,29 +144,23 @@ class Functions {
                                 ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a valid number or 'full'!");
                             }
                         }
-                    } else {
-                        ChatWriter.sendMessage(p, ChatColor.RED, "This command works only with a MineTinker-Tool!");
-                    }
-                } else {
-                    ChatWriter.sendMessage(p, ChatColor.RED, "This command works only with a MineTinker-Tool!");
-                }
             } else {
-                ChatWriter.sendMessage(p, ChatColor.RED, "This command works only with a MineTinker-Tool!");
+                Commands.invalidTool(p);
             }
         } else {
-            ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a value!");
+            Commands.invalidArgs(p);
         }
     }
-  
+
     public static void give(Player p, String[] args) {
         Material material;
         if (args.length >= 2) {
             if (Lists.SWORDS.contains(args[1].toUpperCase()) ||
-                Lists.AXES.contains(args[1].toUpperCase()) ||
-                Lists.BOWS.contains(args[1].toUpperCase()) ||
-                Lists.SHOVELS.contains(args[1].toUpperCase()) ||
-                Lists.HOES.contains(args[1].toUpperCase()) ||
-                Lists.PICKAXES.contains(args[1].toUpperCase())) {
+                    Lists.AXES.contains(args[1].toUpperCase()) ||
+                    Lists.BOWS.contains(args[1].toUpperCase()) ||
+                    Lists.SHOVELS.contains(args[1].toUpperCase()) ||
+                    Lists.HOES.contains(args[1].toUpperCase()) ||
+                    Lists.PICKAXES.contains(args[1].toUpperCase())) {
                 try {
                     material = Material.getMaterial(args[1].toUpperCase());
                 } catch (Exception ignored) {
@@ -207,7 +176,7 @@ class Functions {
             return;
         }
         if (args.length == 2) {
-            if(p.getInventory().addItem(ItemGenerator.changeLore(new ItemStack(material, 1), ItemGenerator.createLore())).size() != 0) { //adds items to (full) inventory
+            if (p.getInventory().addItem(ItemGenerator.changeLore(new ItemStack(material, 1), ItemGenerator.createLore())).size() != 0) { //adds items to (full) inventory
                 p.getWorld().dropItem(p.getLocation(), ItemGenerator.changeLore(new ItemStack(material, 1), ItemGenerator.createLore()));
             } // no else as it gets added in if
         } else if (args.length == 3) {
@@ -218,7 +187,7 @@ class Functions {
                 Commands.invalidArgs(p);
                 return;
             }
-            if(p.getInventory().addItem(ItemGenerator.changeLore(new ItemStack(material, 1), ItemGenerator.createLore(level))).size() != 0) { //adds items to (full) inventory
+            if (p.getInventory().addItem(ItemGenerator.changeLore(new ItemStack(material, 1), ItemGenerator.createLore(level))).size() != 0) { //adds items to (full) inventory
                 p.getWorld().dropItem(p.getLocation(), ItemGenerator.changeLore(new ItemStack(material, 1), ItemGenerator.createLore(level)));
             } // no else as it gets added in if
         } else {
@@ -229,11 +198,11 @@ class Functions {
     public static void convert(Player p, String[] args) {
         ItemStack tool = p.getInventory().getItemInMainHand();
         if (Lists.SWORDS.contains(tool.getType().toString()) ||
-            Lists.AXES.contains(tool.getType().toString()) ||
-            Lists.BOWS.contains(tool.getType().toString()) ||
-            Lists.SHOVELS.contains(tool.getType().toString()) ||
-            Lists.HOES.contains(tool.getType().toString()) ||
-            Lists.PICKAXES.contains(tool.getType().toString())) {
+                Lists.AXES.contains(tool.getType().toString()) ||
+                Lists.BOWS.contains(tool.getType().toString()) ||
+                Lists.SHOVELS.contains(tool.getType().toString()) ||
+                Lists.HOES.contains(tool.getType().toString()) ||
+                Lists.PICKAXES.contains(tool.getType().toString())) {
             if (args.length < 2) {
                 tool.setItemMeta(null);
                 ItemGenerator.changeLore(tool, ItemGenerator.createLore());
@@ -242,7 +211,7 @@ class Functions {
                     int level = Integer.parseInt(args[1]);
                     tool.setItemMeta(null);
                     ItemGenerator.changeLore(tool, ItemGenerator.createLore(level));
-                } catch (Exception ignored){
+                } catch (Exception ignored) {
                     Commands.invalidArgs(p);
                 }
             }

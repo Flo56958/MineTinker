@@ -103,6 +103,10 @@ public class Commands implements CommandExecutor {
         ChatWriter.sendMessage(p, ChatColor.RED, config.getString("Language.Commands.InvalidArguments"));
     }
 
+    static void invalidTool(Player p) {
+        ChatWriter.sendMessage(p, ChatColor.RED, config.getString("Language.Commands.InvalidTool"));
+    }
+
     private void noPerm(Player p) {
         ChatWriter.sendMessage(p, ChatColor.RED, config.getString("Language.Commands.NoPermission"));
     }
