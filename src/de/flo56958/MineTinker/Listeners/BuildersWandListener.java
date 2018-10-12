@@ -1,9 +1,8 @@
 package de.flo56958.MineTinker.Listeners;
 
-import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Utilities.PlayerInfo;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -49,7 +48,7 @@ public class BuildersWandListener implements Listener {
         int _w = 0;
         Player p = e.getPlayer();
         if (!p.isSneaking()) {
-            switch (wand.getType()) {
+            switch (wand.getType()) {  //TODO: custom Builderswand sizes
                 case STONE_SHOVEL:
                     _w = 1;
                     break;
@@ -135,10 +134,10 @@ public class BuildersWandListener implements Listener {
                                         }
                                         b.getWorld().getBlockAt(loc).setType(current.getType());
                                         current.setAmount(current.getAmount() - 1);
-                                        if (Main.getPlugin().getConfig().getBoolean("Builderswands.useDurability")) {
+                                        if (Main.getPlugin().getConfig().getBoolean("Builderswands.useDurability")) { //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
                                             wand.setDurability((short) (wand.getDurability() + 1));
                                         }
-                                        if (current.getAmount() == 0) {
+                                        if (current.getAmount() == 0) { //TODO: Add Exp gain for Builderswands
                                             break loop;
                                         }
                                     }

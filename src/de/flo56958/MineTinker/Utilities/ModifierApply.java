@@ -13,7 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-class ModifierApply {
+class ModifierApply { //TODO: Make modular Modifier-system
 
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
@@ -841,7 +841,7 @@ class ModifierApply {
             }
         }
         if (Lists.AXES.contains(tool.getType().toString())) {
-            Events.Mod_AddMod(p, tool, ChatColor.WHITE + config.getString("Modifiers.Timber.name"), slotsRemaining - 1, event);
+            Events.Mod_AddMod(p, tool, ChatColor.GREEN + config.getString("Modifiers.Timber.name"), slotsRemaining - 1, event);
             if (!event) {
                 lore.set(3, Strings.FREEMODIFIERSLOTS + (slotsRemaining - 1));
             }

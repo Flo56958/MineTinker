@@ -2,7 +2,6 @@ package de.flo56958.MineTinker.Data;
 
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -31,10 +30,10 @@ public class Modifiers {
     public static final ItemStack FIERY_MODIFIER = ItemGenerator.itemEnchanter(Material.BLAZE_ROD, ChatColor.YELLOW + config.getString("Modifiers.Fiery.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1);
     public static final ItemStack GLOWING_MODIFIER = ItemGenerator.itemEnchanter(Material.GLOWSTONE, ChatColor.YELLOW + config.getString("Modifiers.Glowing.name_modifier"), 1, Enchantment.DURABILITY, 1);
     public static final ItemStack HASTE_MODIFIER = ItemGenerator.itemEnchanter(Material.REDSTONE_BLOCK, ChatColor.DARK_RED + config.getString("Modifiers.Haste.name_modifier"), 1, Enchantment.DIG_SPEED, 1);
-    public static final ItemStack KNOCKBACK_MODIFIER = ItemGenerator.itemEnchanter(Material.TNT, ChatColor.GRAY + config.getString("Modifiers.Knockback.name_modifier"), 1, Enchantment.KNOCKBACK, 1);
     public static final ItemStack INFINITY_MODIFIER = ItemGenerator.itemEnchanter(Material.ARROW, ChatColor.WHITE + config.getString("Modifiers.Infinity.name_modifier"), 1, Enchantment.ARROW_INFINITE, 1);
-    public static final ItemStack MELTING_MODIFIER = ItemGenerator.itemEnchanter(Material.MAGMA_BLOCK, ChatColor.GOLD + config.getString("Modifiers.Melting.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1);
+    public static final ItemStack KNOCKBACK_MODIFIER = ItemGenerator.itemEnchanter(Material.TNT, ChatColor.GRAY + config.getString("Modifiers.Knockback.name_modifier"), 1, Enchantment.KNOCKBACK, 1);
     public static final ItemStack LUCK_MODIFIER = ItemGenerator.itemEnchanter(Material.LAPIS_BLOCK, ChatColor.BLUE + config.getString("Modifiers.Luck.name_modifier"), 1, Enchantment.LOOT_BONUS_BLOCKS, 1);
+    public static final ItemStack MELTING_MODIFIER = ItemGenerator.itemEnchanter(Material.MAGMA_BLOCK, ChatColor.GOLD + config.getString("Modifiers.Melting.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1);
     public static final ItemStack POISONOUS_MODIFIER = ItemGenerator.itemEnchanter(Material.ROTTEN_FLESH, ChatColor.DARK_GREEN + config.getString("Modifiers.Poisonous.name_modifier"), 1, Enchantment.DURABILITY, 1);
     public static final ItemStack POWER_MODIFIER = ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Modifiers.Power.name_modifier"), 1, Enchantment.ARROW_DAMAGE, 1);
     public static final ItemStack REINFORCED_MODIFIER = ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.GRAY + config.getString("Modifiers.Reinforced.name_modifier"), 1, Enchantment.DURABILITY, 1);

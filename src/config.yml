@@ -265,5 +265,6 @@ Language:
   FreeModifierSlotsLine: Free Modifiers Slots #exactly two spaces for no error
   ModifiersLine: Modifiers
   Commands:
-    NoPermission: You do not have permission to use this command!
     InvalidArguments: Invalid arguments!
+    NoPermission: You do not have permission to use this command!
+    NotAPlayer: This is a player only command!

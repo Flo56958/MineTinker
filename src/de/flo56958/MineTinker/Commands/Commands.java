@@ -20,12 +20,34 @@ public class Commands implements CommandExecutor {
             Player p = (Player) sender;
             if (sender.hasPermission("minetinker.commands.main")) {
                 if (args.length == 0) {
-                    ChatWriter.sendMessage(p, ChatColor.RED, "You have entered to few arguments!");
-                    ChatWriter.sendMessage(p, ChatColor.WHITE, "Possible arguments are:");
-                    onHelp(p);
+                    invalidArgs(p);
                 }
                 if (args.length > 0) {
                     switch (args[0].toLowerCase()) {
+                        case "addexp":
+                        case "ae":
+                            if (p.hasPermission("minetinker.commands.addexp")) {
+                                Functions.addExp(p, args);
+                            } else noPerm(p);
+                            break;
+                        case "addmod":
+                        case "am":
+                            if (p.hasPermission("minetinker.commands.addmod")) {
+                                Functions.addMod(p, args);
+                            } else noPerm(p);
+                            break;
+                        case "convert":
+                        case "c":
+                            if (p.hasPermission("minetinker.command.convert")) {
+                                Functions.convert(p, args);
+                            } else noPerm(p);
+                            break;
+                        case "give":
+                        case "g":
+                            if (p.hasPermission("minetinker.command.give")) {
+                                Functions.give(p, args);
+                            } else noPerm(p);
+                            break;
                         case "help":
                         case "?":
                         case "h":
@@ -46,22 +68,10 @@ public class Commands implements CommandExecutor {
                                 Mods.list(p);
                             } else noPerm(p);
                             break;
-                        case "addexp":
-                        case "ae":
-                            if (p.hasPermission("minetinker.commands.addexp")) {
-                                Functions.addExp(p, args);
-                            } else noPerm(p);
-                            break;
                         case "name":
                         case "n":
                             if (p.hasPermission("minetinker.commands.name")) {
                                 Functions.name(p, args);
-                            } else noPerm(p);
-                            break;
-                        case "addmod":
-                        case "am":
-                            if (p.hasPermission("minetinker.commands.addmod")) {
-                                Functions.addMod(p, args);
                             } else noPerm(p);
                             break;
                         case "removemod":
@@ -76,18 +86,6 @@ public class Commands implements CommandExecutor {
                                 Functions.setDurability(p, args);
                             } else noPerm(p);
                             break;
-                        case "give":
-                        case "g":
-                            if (p.hasPermission("minetinker.command.give")) {
-                                Functions.give(p, args);
-                            } else noPerm(p);
-                            break;
-                        case "convert":
-                        case "c":
-                            if (p.hasPermission("minetinker.command.convert")) {
-                                Functions.convert(p, args);
-                            } else noPerm(p);
-                            break;
                         default:
                             invalidArgs(p);
                             ChatWriter.sendMessage(p, ChatColor.WHITE, "Possible arguments are:");
@@ -96,7 +94,7 @@ public class Commands implements CommandExecutor {
                 }
             }
         } else {
-            sender.sendMessage(Strings.CHAT_PREFIX + " This is a player only command");
+            sender.sendMessage(Strings.CHAT_PREFIX + " " + config.getString("Language.Commands.NotAPlayer"));
         }
         return true;
     }

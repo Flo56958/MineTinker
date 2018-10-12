@@ -1,10 +1,9 @@
 package de.flo56958.MineTinker.Listeners;
 
-import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.PlayerData;
 import de.flo56958.MineTinker.Data.Strings;
-
+import de.flo56958.MineTinker.Main;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftInventory;
@@ -39,13 +38,7 @@ public class PlayerListener implements Listener {
                     ItemStack repair = e.getWhoClicked().getItemOnCursor();
                     String[] name = tool.getType().toString().split("_");
                     boolean eligible = false;
-                    if (name[0].toLowerCase().equals("wooden") &&
-                            (repair.getType().equals(Material.ACACIA_PLANKS) ||
-                             repair.getType().equals(Material.BIRCH_PLANKS) ||
-                             repair.getType().equals(Material.DARK_OAK_PLANKS) ||
-                             repair.getType().equals(Material.JUNGLE_PLANKS) ||
-                             repair.getType().equals(Material.OAK_PLANKS) ||
-                             repair.getType().equals(Material.SPRUCE_PLANKS))) {
+                    if (name[0].toLowerCase().equals("wooden") && Lists.getWoodPlanks().contains(repair.getType())) {
                         eligible = true;
                     } else if (name[0].toLowerCase().equals("stone") && (repair.getType().equals(Material.COBBLESTONE) || repair.getType().equals(Material.STONE))) {
                         eligible = true;
@@ -57,13 +50,7 @@ public class PlayerListener implements Listener {
                         eligible = true;
                     } else if (name[0].toLowerCase().equals("bow") && (repair.getType().equals(Material.STICK) || repair.getType().equals(Material.STRING))) {
                         eligible = true;
-                    } else if (name[0].toLowerCase().equals("shield") &&
-                            (repair.getType().equals(Material.ACACIA_PLANKS) ||
-                             repair.getType().equals(Material.BIRCH_PLANKS) ||
-                             repair.getType().equals(Material.DARK_OAK_PLANKS) ||
-                             repair.getType().equals(Material.JUNGLE_PLANKS) ||
-                             repair.getType().equals(Material.OAK_PLANKS) ||
-                             repair.getType().equals(Material.SPRUCE_PLANKS))) {
+                    } else if (name[0].toLowerCase().equals("shield") && Lists.getWoodPlanks().contains(repair.getType())) {
                         eligible = true;
                     }
                     if (eligible) {

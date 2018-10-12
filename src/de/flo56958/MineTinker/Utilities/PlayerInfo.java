@@ -34,6 +34,7 @@ public class PlayerInfo {
     }
 
     public static boolean isToolViable(ItemStack tool) {
+        if (tool == null) { return false; }
         if (!tool.hasItemMeta()) { return false; }
         ItemMeta meta = tool.getItemMeta();
 
@@ -42,9 +43,9 @@ public class PlayerInfo {
         return lore.contains(Strings.IDENTIFIER);
     }
 
-    public static boolean isWandViable(ItemStack tool) {
-        if (!tool.hasItemMeta()) { return false; }
-        ItemMeta meta = tool.getItemMeta();
+    public static boolean isWandViable(ItemStack wand) {
+        if (!wand.hasItemMeta()) { return false; }
+        ItemMeta meta = wand.getItemMeta();
 
         if (!meta.hasLore()) { return false; }
         List<String> lore = meta.getLore();

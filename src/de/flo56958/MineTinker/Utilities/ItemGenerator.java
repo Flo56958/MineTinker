@@ -42,7 +42,7 @@ public class ItemGenerator {
         return tool;
     }
 
-    public static ItemStack buildersWandCreator(Material m, String name, int amount) {
+    public static ItemStack buildersWandCreator(Material m, String name, int amount) { //TODO: Modify to implement Modifiers
         ItemStack wand = new ItemStack(m, amount);
         ItemMeta meta = wand.getItemMeta();
         ArrayList<String> lore = new ArrayList<>();

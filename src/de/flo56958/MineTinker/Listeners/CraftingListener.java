@@ -13,7 +13,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 
 import java.util.ArrayList;
 
-public class CraftingGrid9Listener implements Listener {
+public class CraftingListener implements Listener {
 
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
