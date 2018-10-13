@@ -1,15 +1,14 @@
 package com.minetinker.modifiers;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.minetinker.data.Strings;
+import com.minetinker.utilities.ChatWriter;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
-import de.flo56958.MineTinker.Data.Strings;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import net.md_5.bungee.api.ChatColor;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModManager {
 	
@@ -191,7 +190,7 @@ public class ModManager {
 			List<String> lore = getModInfo(is);
 			for(String s: new ArrayList<>(lore)) {
 				if(s.startsWith(mod.getName())) {
-					lore.remove(lore.indexOf(s));
+					lore.remove(s);
 				}
 			}
 			setModInfo(is, lore);

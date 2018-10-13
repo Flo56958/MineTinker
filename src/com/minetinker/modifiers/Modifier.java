@@ -1,14 +1,13 @@
 package com.minetinker.modifiers;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.minetinker.data.ToolType;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import de.flo56958.MineTinker.Data.ToolType;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class Modifier {
 

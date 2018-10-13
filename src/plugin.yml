@@ -1,7 +1,7 @@
 name: MineTinker
-author: Flo56958
-version: a10.1
-main: de.flo56958.MineTinker.Main
+author: Flo56958, Automatizer
+version: a11
+main: com.minetinker.Main
 prefix: MineTinker
 
 description: A TinkersConstruct (and other mods) inspired server plugin
