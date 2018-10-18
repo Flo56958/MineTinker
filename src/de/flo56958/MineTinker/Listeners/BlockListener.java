@@ -81,18 +81,19 @@ public class BlockListener implements Listener {
 
         ModifierEffect.selfRepair(p, tool);
 
-        if (Lists.WORLDS_SPAWNERS.contains(p.getWorld().toString())) {
-            if ((config.getBoolean("Modifiers.Silk-Touch.allowed") && config.getBoolean("Spawners.enabled") && config.getBoolean("Spawners.onlyWithSilkTouch"))
-                    || (config.getBoolean("Spawners.enabled") && !config.getBoolean("Spawners.onlyWithSilkTouch"))) {
+        if (Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
+            if (config.getBoolean("Spawners.enabled")) {
                 if (e.getBlock().getType().equals(Material.SPAWNER) && p.hasPermission("minetinker.spawners.mine")) {
-                    CreatureSpawner cs = (CreatureSpawner) e.getBlock().getState();
-                    ItemStack s = new ItemStack(Material.SPAWNER, 1, e.getBlock().getData());
-                    ItemMeta s_meta = s.getItemMeta();
-                    s_meta.setDisplayName(cs.getSpawnedType().toString());
-                    s.setItemMeta(s_meta);
-                    p.getWorld().dropItemNaturally(e.getBlock().getLocation(), s);
-                    e.setExpToDrop(0);
-                    ChatWriter.log(false, p.getDisplayName() + " successfully mined a Spawner!");
+                    if ((config.getBoolean("Spawners.onlyWithSilkTouch") && lore.contains(Strings.SILKTOUCH)) || !config.getBoolean("Spawners.onlyWithSilkTouch")) {
+                        CreatureSpawner cs = (CreatureSpawner) e.getBlock().getState();
+                        ItemStack s = new ItemStack(Material.SPAWNER, 1, e.getBlock().getData());
+                        ItemMeta s_meta = s.getItemMeta();
+                        s_meta.setDisplayName(cs.getSpawnedType().toString());
+                        s.setItemMeta(s_meta);
+                        p.getWorld().dropItemNaturally(e.getBlock().getLocation(), s);
+                        e.setExpToDrop(0);
+                        ChatWriter.log(false, p.getDisplayName() + " successfully mined a Spawner!");
+                    }
                 }
             }
         }

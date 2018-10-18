@@ -23,7 +23,7 @@ public class Lists {
     public static final List<String> WORLDS = config.getStringList("AllowedWorlds");
     public static final List<String> WORLDS_ELEVATOR = config.getStringList("Elevator.AllowedWorlds");
     public static final List<String> WORLDS_BUILDERSWANDS = config.getStringList("Builderswands.AllowedWorlds");
-    public static final List<String> WORLDS_SPAWNERS = config.getStringList("Spawner.AllowedWorlds");
+    public static final List<String> WORLDS_SPAWNERS = config.getStringList("Spawners.AllowedWorlds");
 
     public static ArrayList<String> getAllowedModifiers(){
         ArrayList<String> allowed = new ArrayList<>();

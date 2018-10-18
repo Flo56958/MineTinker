@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: a10.1.1
+version: a10.1.2
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -58,6 +58,7 @@ permissions:
       minetinker.commands.setdurability: true
       minetinker.commands.give: true
       minetinker.commands.reload: true
+      minetinker.commands.convert: true
 
   minetinker.commands.main:
     description: Allows to access MineTinker
@@ -101,6 +102,10 @@ permissions:
 
   minetinker.commands.reload:
     description: Allows to reload the MineTinker-Config
+    default: op
+
+  minetinker.commands.convert:
+    description: Allows to convert a tool to a MineTinker-Tool
     default: op
 
   #Modifiers:
