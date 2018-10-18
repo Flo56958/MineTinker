@@ -1,8 +1,10 @@
 package de.flo56958.MineTinker.Listeners;
 
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Utilities.PlayerInfo;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -14,6 +16,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 public class BuildersWandListener implements Listener {
@@ -132,7 +135,19 @@ public class BuildersWandListener implements Listener {
                                         if (wand.getType().getMaxDurability() - wand.getDurability() <= 1) {
                                             break loop;
                                         }
-                                        b.getWorld().getBlockAt(loc).setType(current.getType());
+
+                                        boolean canBuild = true;
+                                        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+                                        // WorldGuard may not be loaded
+                                        if (plugin instanceof WorldGuardPlugin) {
+                                            WorldGuardPlugin wg = (WorldGuardPlugin) plugin;
+
+                                            canBuild = ((WorldGuardPlugin) plugin).canBuild(p, b.getWorld().getBlockAt(loc));
+                                        }
+                                        if (canBuild) {
+                                            b.getWorld().getBlockAt(loc).setType(current.getType());
+                                        } else { continue; }
+
                                         current.setAmount(current.getAmount() - 1);
                                         if (Main.getPlugin().getConfig().getBoolean("Builderswands.useDurability")) { //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
                                             wand.setDurability((short) (wand.getDurability() + 1));

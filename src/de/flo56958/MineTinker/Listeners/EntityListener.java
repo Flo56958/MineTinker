@@ -1,10 +1,9 @@
 package de.flo56958.MineTinker.Listeners;
 
-import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.Strings;
+import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Utilities.*;
-
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Arrow;
@@ -66,17 +65,18 @@ public class EntityListener implements Listener {
             amount = (int) e.getDamage();
         }
 
-        ModifierEffect.selfRepair(p, tool);
+        if (!Lists.BOWS.contains(tool.getType().toString())) {
+            ModifierEffect.selfRepair(p, tool);
+        }
 
         ModifierEffect.xp(p, tool);
 
         if (config.getBoolean("Modifiers.Glowing.allowed") && p.hasPermission("minetinker.modifiers.glowing.use")) {
             if (lore.contains(Strings.GLOWING)) {
                 if (!e.getEntity().isDead()) {
-                    try {
+                    if (e.getEntity() instanceof LivingEntity) {
                         LivingEntity ent = (LivingEntity) e.getEntity();
                         ent.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, config.getInt("Modifiers.Glowing.Duration"), 0, false, false));
-                    } catch (Exception ignored) {
                     }
                 }
             }
@@ -86,10 +86,9 @@ public class EntityListener implements Listener {
             for (int i = 1; i <= config.getInt("Modifiers.Shulking.MaxLevel"); i++) {
                 if (lore.contains(Strings.SHULKING + i)) {
                     if (!e.getEntity().isDead()) {
-                        try {
+                        if (e.getEntity() instanceof LivingEntity) {
                             LivingEntity ent = (LivingEntity) e.getEntity();
                             ent.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, config.getInt("Modifiers.Shulking.Duration"), config.getInt("Modifiers.Shulking.EffectMultiplier") * (i - 1), false, false));
-                        } catch (Exception ignored) {
                         }
                     }
                     break;
@@ -101,12 +100,11 @@ public class EntityListener implements Listener {
             for (int i = 1; i <= config.getInt("Modifiers.Poisonous.MaxLevel"); i++) {
                 if (lore.contains(Strings.POISONOUS + i)) {
                     if (!e.getEntity().isDead()) {
-                        try {
+                        if (e.getEntity() instanceof LivingEntity) {
                             LivingEntity ent = (LivingEntity) e.getEntity();
                             int duration = (int) (config.getInt("Modifiers.Poisonous.Duration") * Math.pow(config.getDouble("Modifiers.Poisonous.DurationMultiplier"), (i - 1)));
                             int amplifier = config.getInt("Modifiers.Poisonous.EffectMultiplier") * (i - 1);
                             ent.addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration, amplifier, false, false));
-                        } catch (Exception ignored) {
                         }
                     }
                     break;
@@ -118,12 +116,11 @@ public class EntityListener implements Listener {
             for (int i = 1; i <= config.getInt("Modifiers.Webbed.MaxLevel"); i++) {
                 if (lore.contains(Strings.WEBBED + i)) {
                     if (!e.getEntity().isDead()) {
-                        try {
+                        if (e.getEntity() instanceof LivingEntity) {
                             LivingEntity ent = (LivingEntity) e.getEntity();
                             int duration = (int) (config.getInt("Modifiers.Webbed.Duration") * Math.pow(config.getDouble("Modifiers.Webbed.DurationMultiplier"), (i - 1)));
                             int amplifier = config.getInt("Modifiers.Webbed.EffectMultiplier") * (i - 1) / 2;
                             ent.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration, amplifier, false, false));
-                        } catch (Exception ignored) {
                         }
                     }
                     break;
@@ -135,7 +132,7 @@ public class EntityListener implements Listener {
             for (int i = 1; i <= config.getInt("Modifiers.Melting.MaxLevel"); i++) {
                 if (lore.contains(Strings.MELTING + i)) {
                     if (!e.getEntity().isDead()) {
-                        try {
+                        if (e.getEntity() instanceof LivingEntity) {
                             LivingEntity ent = (LivingEntity) e.getEntity();
                             if (ent.getFireTicks() != 0) {
                                 double damage = e.getDamage();
@@ -143,7 +140,6 @@ public class EntityListener implements Listener {
                                 e.setDamage(damage);
                                 amount = (int) damage;
                             }
-                        } catch (Exception ignored) {
                         }
                     }
                     break;
