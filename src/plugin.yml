@@ -1,13 +1,12 @@
 name: MineTinker
 author: Flo56958
-version: a10.1
+version: a10.1.1
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
 description: A TinkersConstruct (and other mods) inspired server plugin
 website: https://github.com/Flo56958/MineTinker
 database: false
-softdepend: [WorldGuard]
 api-version: 1.13
 
 commands:
