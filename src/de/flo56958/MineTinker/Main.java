@@ -22,7 +22,7 @@ public class Main extends JavaPlugin {
         loadConfig();
 
         if (getConfig().getBoolean("AllowCrafting")) {
-            Bukkit.getPluginManager().registerEvents(new CraftingGrid9Listener(), this);
+            Bukkit.getPluginManager().registerEvents(new CraftingListener(), this);
         }
         Bukkit.getPluginManager().registerEvents(new BlockListener(), this);
         Bukkit.getPluginManager().registerEvents(new AnvilListener(), this);
@@ -79,7 +79,9 @@ public class Main extends JavaPlugin {
 
         if (getConfig().getBoolean("logging.metrics")) {
             Metrics metrics = new Metrics(this);
-            Bukkit.getConsoleSender().sendMessage(Strings.CHAT_PREFIX + " Started Metrics-service! Thank you for enabling it in the config! It helps to maintain the Plugin and fix bugs. (Data is anonymously sent)");
+            Bukkit.getConsoleSender().sendMessage(Strings.CHAT_PREFIX + " Started Metrics-service! Thank you for enabling it in the config! It helps to maintain the Plugin and fix bugs. (Data is send anonymously)");
+        } else {
+            Bukkit.getConsoleSender().sendMessage(Strings.CHAT_PREFIX + " Metrics-service disabled! The service helps to maintain the Plugin and fix bugs. (Data is send anonymously)");
         }
         ChatWriter.log(false, "Standard logging is enabled! You can disable it in the config!");
         ChatWriter.log(true, "Debug logging is enabled! You should disable it in the config!");

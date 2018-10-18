@@ -9,6 +9,7 @@ actionbar-messages: true
 
 LevelStep: 100 #  *(LevelFactor^LevelOfTool)
 LevelFactor: 2.0
+ResetAtVarOverflow: true #Resets Level and Exp at Integer.MAX_VALUE or Long.MAX_VALUE with 1 and 0. false: no more Exp gain
 AddModifierSlotsPerLevel: 1
 StartingModifierSlots: 1
 ExpPerBlockBreak: 1 #How much XP will the tool get when you break a block
@@ -241,6 +242,7 @@ Spawners:
 
 Elevator:
   enabled: true
+  name: Elevator-Motor
   Sound: true #(Chest opening and closing)
   AllowedWorlds: #Worlds where Elevator can be used
   - world #default
@@ -250,6 +252,11 @@ Elevator:
 Builderswands:
   enabled: true
   useDurability: true
+  name_wood: Wooden Builderswand
+  name_stone: Stone Builderswand
+  name_iron: Iron Builderswand
+  name_gold: Golden Builderswand
+  name_diamond: Diamond Builderswand
   AllowedWorlds: #Worlds where MineTinker-Builderswands can be used
   - world #default
   - world_nether #default
@@ -263,3 +270,8 @@ Language:
   ExpLine: Exp #no spaces
   FreeModifierSlotsLine: Free Modifiers Slots #exactly two spaces for no error
   ModifiersLine: Modifiers
+  Commands:
+    InvalidArguments: Invalid arguments!
+    InvalidTool: Invalid tool!
+    NoPermission: You do not have permission to use this command!
+    NotAPlayer: This is a player only command!

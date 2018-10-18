@@ -1,7 +1,7 @@
 package de.flo56958.MineTinker.Utilities;
 
-import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Data.Strings;
+import de.flo56958.MineTinker.Main;
 import net.minecraft.server.v1_13_R2.ChatComponentText;
 import net.minecraft.server.v1_13_R2.ChatMessageType;
 import net.minecraft.server.v1_13_R2.PacketPlayOutChat;
@@ -33,7 +33,7 @@ public class ChatWriter {
         }
     }
 
-    public static void sendActionBar(Player p, String message) {
+    public static void sendActionBar(Player p, String message) { //Extract from the source code of the Actionbar-API (altered)
         if (!Main.getPlugin().getConfig().getBoolean("actionbar-messages")) { return; }
         if (!p.isOnline()) { return; } // Player may have logged out
         CraftPlayer cp = (CraftPlayer) p;
@@ -43,7 +43,7 @@ public class ChatWriter {
         pC.sendPacket(ppOC);
     }
 
-    public static void sendActionBar(Player p, String message, int duration) {
+    public static void sendActionBar(Player p, String message, int duration) { //Extract from the source code of the Actionbar-API (altered)
         sendActionBar(p, message);
 
         if (duration >= 0) {

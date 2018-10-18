@@ -1,9 +1,8 @@
 package de.flo56958.MineTinker.Utilities;
 
-import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.Strings;
-
+import de.flo56958.MineTinker.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -16,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemGenerator {
 
@@ -29,14 +29,20 @@ public class ItemGenerator {
         return name;
     }
 
-    public static ItemStack changeItem(ItemStack tool, ArrayList<String> lore) {
+    public static ItemStack changeLore(ItemStack tool, List<String> lore) {
         ItemMeta meta = tool.getItemMeta();
         meta.setLore(lore);
         tool.setItemMeta(meta);
         return tool;
     }
 
-    public static ItemStack buildersWandCreator(Material m, String name, int amount) {
+    public static ItemStack changeItem(ItemStack tool, ItemMeta meta, List<String> lore) {
+        meta.setLore(lore);
+        tool.setItemMeta(meta);
+        return tool;
+    }
+
+    public static ItemStack buildersWandCreator(Material m, String name, int amount) { //TODO: Modify to implement Modifiers
         ItemStack wand = new ItemStack(m, amount);
         ItemMeta meta = wand.getItemMeta();
         ArrayList<String> lore = new ArrayList<>();
@@ -300,37 +306,23 @@ public class ItemGenerator {
         }
     }
 
-    public static ItemStack toolCreate(Material material) {
-        ItemStack tool = new ItemStack(material, 1);
-
+    public static List<String> createLore() {
         ArrayList<String> lore = new ArrayList<>();
         lore.add(Strings.IDENTIFIER);
         lore.add(Strings.LEVELLINE + "1");
         lore.add(Strings.EXPLINE + "0 / " + LevelCalculator.getNextLevelReq(1));
         lore.add(Strings.FREEMODIFIERSLOTS + config.getInt("StartingModifierSlots"));
         lore.add(Strings.MODIFIERSTART);
-
-        ItemMeta meta = tool.getItemMeta();
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-
-        return tool;
+        return lore;
     }
 
-    public static ItemStack toolCreate(Material material, int level) {
-        ItemStack tool = new ItemStack(material, 1);
-
+    public static List<String> createLore(int level) {
         ArrayList<String> lore = new ArrayList<>();
         lore.add(Strings.IDENTIFIER);
         lore.add(Strings.LEVELLINE + level);
         lore.add(Strings.EXPLINE + LevelCalculator.getNextLevelReq(level - 1) + " / " + LevelCalculator.getNextLevelReq(level));
         lore.add(Strings.FREEMODIFIERSLOTS + (config.getInt("StartingModifierSlots") + (config.getInt("AddModifierSlotsPerLevel") * (level - 1))));
         lore.add(Strings.MODIFIERSTART);
-
-        ItemMeta meta = tool.getItemMeta();
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-
-        return tool;
+        return lore;
     }
 }

@@ -7,6 +7,7 @@ prefix: MineTinker
 description: A TinkersConstruct (and other mods) inspired server plugin
 website: https://github.com/Flo56958/MineTinker
 database: false
+softdepend: [WorldGuard]
 api-version: 1.13
 
 commands:
@@ -57,6 +58,7 @@ permissions:
       minetinker.commands.removemod: true
       minetinker.commands.setdurability: true
       minetinker.commands.give: true
+      minetinker.commands.reload: true
 
   minetinker.commands.main:
     description: Allows to access MineTinker
@@ -96,6 +98,10 @@ permissions:
 
   minetinker.commands.give:
     description: Allows to give MineTinker-Tools through command
+    default: op
+
+  minetinker.commands.reload:
+    description: Allows to reload the MineTinker-Config
     default: op
 
   #Modifiers:

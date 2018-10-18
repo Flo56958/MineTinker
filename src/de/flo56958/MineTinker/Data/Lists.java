@@ -1,8 +1,9 @@
 package de.flo56958.MineTinker.Data;
 
-import org.bukkit.configuration.file.FileConfiguration;
-
 import de.flo56958.MineTinker.Main;
+import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +97,98 @@ public class Lists {
             allowed.add(config.getString("Modifiers.XP.name").toLowerCase());
         }
         return allowed;
+    }
+
+    public static ArrayList<ItemStack> getModifierItems() {
+        ArrayList<ItemStack> modifiers = new ArrayList<>();
+        modifiers.add(Modifiers.AUTOSMELT_MODIFIER);
+        modifiers.add(Modifiers.BEHEADING_MODIFIER);
+        modifiers.add(Modifiers.DIRECTING_MODIFIER);
+        modifiers.add(Modifiers.ENDER_MODIFIER);
+        modifiers.add(Modifiers.FIERY_MODIFIER);
+        modifiers.add(Modifiers.GLOWING_MODIFIER);
+        modifiers.add(Modifiers.HASTE_MODIFIER);
+        modifiers.add(Modifiers.INFINITY_MODIFIER);
+        modifiers.add(Modifiers.KNOCKBACK_MODIFIER);
+        modifiers.add(Modifiers.LUCK_MODIFIER);
+        modifiers.add(Modifiers.MELTING_MODIFIER);
+        modifiers.add(Modifiers.POISONOUS_MODIFIER);
+        modifiers.add(Modifiers.POWER_MODIFIER);
+        modifiers.add(Modifiers.REINFORCED_MODIFIER);
+        modifiers.add(Modifiers.SELFREPAIR_MODIFIER);
+        modifiers.add(Modifiers.SHARPNESS_MODIFIER);
+        modifiers.add(Modifiers.SHULKING_MODIFIER);
+        modifiers.add(Modifiers.SILKTOUCH_MODIFIER);
+        modifiers.add(Modifiers.SWEEPING_MODIFIER);
+        modifiers.add(Modifiers.TIMBER_MODIFIER);
+        modifiers.add(Modifiers.WEBBED_MODIFIER);
+        return modifiers;
+    }
+
+    public static ArrayList<Material> getWoodLeaves() {
+        ArrayList<Material> mats = new ArrayList<>();
+        mats.add(Material.ACACIA_LEAVES);
+        mats.add(Material.BIRCH_LEAVES);
+        mats.add(Material.DARK_OAK_LEAVES);
+        mats.add(Material.JUNGLE_LEAVES);
+        mats.add(Material.OAK_LEAVES);
+        mats.add(Material.SPRUCE_LEAVES);
+        return mats;
+    }
+
+    public static ArrayList<Material> getWoodPlanks() {
+        ArrayList<Material> mats = new ArrayList<>();
+        mats.add(Material.ACACIA_PLANKS);
+        mats.add(Material.BIRCH_PLANKS);
+        mats.add(Material.DARK_OAK_PLANKS);
+        mats.add(Material.JUNGLE_PLANKS);
+        mats.add(Material.OAK_PLANKS);
+        mats.add(Material.SPRUCE_PLANKS);
+        return mats;
+    }
+
+    public static ArrayList<Material> getWoodLogs() {
+        ArrayList<Material> mats = new ArrayList<>();
+        mats.add(Material.ACACIA_LOG);
+        mats.add(Material.BIRCH_LOG);
+        mats.add(Material.DARK_OAK_LOG);
+        mats.add(Material.JUNGLE_LOG);
+        mats.add(Material.OAK_LOG);
+        mats.add(Material.SPRUCE_LOG);
+        return mats;
+    }
+
+    public static ArrayList<Material> getWoodStrippedLogs() {
+        ArrayList<Material> mats = new ArrayList<>();
+        mats.add(Material.STRIPPED_ACACIA_LOG);
+        mats.add(Material.STRIPPED_BIRCH_LOG);
+        mats.add(Material.STRIPPED_DARK_OAK_LOG);
+        mats.add(Material.STRIPPED_JUNGLE_LOG);
+        mats.add(Material.STRIPPED_OAK_LOG);
+        mats.add(Material.STRIPPED_SPRUCE_LOG);
+        return mats;
+    }
+
+    public static ArrayList<Material> getWoodWood() {
+        ArrayList<Material> mats = new ArrayList<>();
+        mats.add(Material.ACACIA_WOOD);
+        mats.add(Material.BIRCH_WOOD);
+        mats.add(Material.DARK_OAK_WOOD);
+        mats.add(Material.JUNGLE_WOOD);
+        mats.add(Material.OAK_WOOD);
+        mats.add(Material.SPRUCE_WOOD);
+        return mats;
+    }
+
+    public static ArrayList<Material> getWoodStrippedWood() {
+        ArrayList<Material> mats = new ArrayList<>();
+        mats.add(Material.STRIPPED_ACACIA_WOOD);
+        mats.add(Material.STRIPPED_BIRCH_WOOD);
+        mats.add(Material.STRIPPED_DARK_OAK_WOOD);
+        mats.add(Material.STRIPPED_JUNGLE_WOOD);
+        mats.add(Material.STRIPPED_OAK_WOOD);
+        mats.add(Material.STRIPPED_SPRUCE_WOOD);
+        return mats;
     }
 
     public static final List<String> DROPLOOT = config.getStringList("LevelUpEvents.DropLoot.Items");
