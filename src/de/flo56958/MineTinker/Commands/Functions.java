@@ -39,14 +39,14 @@ class Functions {
         if (args.length >= 2) {
             ItemStack tool = p.getInventory().getItemInMainHand();
             if (PlayerInfo.isToolViable(tool)) {
-                String name = "";
+                StringBuilder name = new StringBuilder();
                 for (int i = 1; i < args.length; i++) {
-                    name = name + " " + args[i].replace('^', '§');
+                    name.append(" ").append(args[i].replace('^', '§'));
                 }
-                name = name.substring(1);
+                name = new StringBuilder(name.substring(1));
                 System.out.println("----" + name);
                 ItemMeta meta = tool.getItemMeta().clone();
-                meta.setDisplayName(name);
+                meta.setDisplayName(name.toString());
                 tool.setItemMeta(meta);
             } else {
                 Commands.invalidTool(p);
@@ -152,7 +152,7 @@ class Functions {
         }
     }
 
-    public static void give(Player p, String[] args) {
+    static void give(Player p, String[] args) {
         Material material;
         if (args.length >= 2) {
             if (Lists.SWORDS.contains(args[1].toUpperCase()) ||
@@ -195,7 +195,7 @@ class Functions {
         }
     }
 
-    public static void convert(Player p, String[] args) {
+    static void convert(Player p, String[] args) {
         ItemStack tool = p.getInventory().getItemInMainHand();
         if (Lists.SWORDS.contains(tool.getType().toString()) ||
                 Lists.AXES.contains(tool.getType().toString()) ||

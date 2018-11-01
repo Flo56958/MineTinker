@@ -7,10 +7,7 @@ import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Utilities.*;
 import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.CreatureSpawner;
+import org.bukkit.block.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.EntityType;
@@ -83,7 +80,7 @@ public class BlockListener implements Listener {
 
         if (Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
             if (config.getBoolean("Spawners.enabled")) {
-                if (e.getBlock().getType().equals(Material.SPAWNER) && p.hasPermission("minetinker.spawners.mine")) {
+                if (e.getBlock().getState() instanceof CreatureSpawner && p.hasPermission("minetinker.spawners.mine")) {
                     if ((config.getBoolean("Spawners.onlyWithSilkTouch") && lore.contains(Strings.SILKTOUCH)) || !config.getBoolean("Spawners.onlyWithSilkTouch")) {
                         CreatureSpawner cs = (CreatureSpawner) e.getBlock().getState();
                         ItemStack s = new ItemStack(Material.SPAWNER, 1, e.getBlock().getData());
@@ -227,14 +224,16 @@ public class BlockListener implements Listener {
         }
 
         if (config.getBoolean("Modifiers.Directing.allowed") && p.hasPermission("minetinker.modifiers.directing.use")) {
-            if (lore.contains(Strings.DIRECTING) && !autosmeltTrigger) {
-                List<ItemStack> drops = (List<ItemStack>) e.getBlock().getDrops(tool);  //TODO: Get real drops (for Luck and Silk-Touch compability
-                for (ItemStack current : drops) {
-                    if(p.getInventory().addItem(current).size() != 0) { //adds items to (full) inventory
-                        p.getWorld().dropItem(p.getLocation(), current);
-                    } // no else as it gets added in if
+            if (!(e.getBlock().getState() instanceof Container) || !(e.getBlock().getState() instanceof CreatureSpawner)) { //for NBT-Data lost due to Directing
+                if (lore.contains(Strings.DIRECTING) && !autosmeltTrigger) {
+                    List<ItemStack> drops = (List<ItemStack>) e.getBlock().getDrops(tool);  //TODO: Get real drops (for Luck and Silk-Touch compability (incl. NBT-Data)
+                    for (ItemStack current : drops) {
+                        if(p.getInventory().addItem(current).size() != 0) { //adds items to (full) inventory
+                            p.getWorld().dropItem(p.getLocation(), current);
+                        } // no else as it gets added in if
+                    }
+                    e.setDropItems(false);
                 }
-                e.setDropItems(false);
             }
         }
 
