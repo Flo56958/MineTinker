@@ -242,6 +242,7 @@ Spawners:
 
 Elevator:
   enabled: true
+  name: Elevator-Motor
   Sound: true #(Chest opening and closing)
   AllowedWorlds: #Worlds where Elevator can be used
   - world #default
@@ -251,6 +252,11 @@ Elevator:
 Builderswands:
   enabled: true
   useDurability: true
+  name_wood: Wooden Builderswand
+  name_stone: Stone Builderswand
+  name_iron: Iron Builderswand
+  name_gold: Golden Builderswand
+  name_diamond: Diamond Builderswand
   AllowedWorlds: #Worlds where MineTinker-Builderswands can be used
   - world #default
   - world_nether #default
@@ -266,5 +272,6 @@ Language:
   ModifiersLine: Modifiers
   Commands:
     InvalidArguments: Invalid arguments!
+    InvalidTool: Invalid tool!
     NoPermission: You do not have permission to use this command!
     NotAPlayer: This is a player only command!

@@ -74,6 +74,12 @@ public class Commands implements CommandExecutor {
                                 Functions.name(p, args);
                             } else noPerm(p);
                             break;
+                        case "reload":
+                        case "r":
+                            if (p.hasPermission("minetinker.commands.reload")) {
+                                reload(p);
+                            } else noPerm(p);
+                            break;
                         case "removemod":
                         case "rm":
                             if (p.hasPermission("minetinker.commands.removemod")) {
@@ -101,6 +107,10 @@ public class Commands implements CommandExecutor {
 
     static void invalidArgs(Player p) {
         ChatWriter.sendMessage(p, ChatColor.RED, config.getString("Language.Commands.InvalidArguments"));
+    }
+
+    static void invalidTool(Player p) {
+        ChatWriter.sendMessage(p, ChatColor.RED, config.getString("Language.Commands.InvalidTool"));
     }
 
     private void noPerm(Player p) {
@@ -141,6 +151,10 @@ public class Commands implements CommandExecutor {
             ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". Name (n)");
             index++;
         }
+        if (p.hasPermission("minetinker.commands.reload")) {
+            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". Reload (r)");
+            index++;
+        }
         if (p.hasPermission("minetinker.commands.removemod")) {
             ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". RemoveMod (rm)");
             index++;
@@ -148,5 +162,11 @@ public class Commands implements CommandExecutor {
         if (p.hasPermission("minetinker.commands.setdurability")) {
             ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". SetDurability (sd)");
         }
+    }
+
+    private void reload(Player p) {
+        ChatWriter.sendMessage(p, ChatColor.RED, "Reloading Config!");
+        Main.getPlugin().reloadConfig();
+        ChatWriter.sendMessage(p, ChatColor.RED, "Finished!");
     }
 }

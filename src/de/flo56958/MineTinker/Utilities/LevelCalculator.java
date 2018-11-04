@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class LevelCalculator {
 
@@ -18,7 +18,7 @@ public class LevelCalculator {
         boolean LevelUp = false;
 
         ItemMeta meta = tool.getItemMeta();
-        ArrayList<String> lore = (ArrayList<String>) meta.getLore();
+        List<String> lore = meta.getLore();
 
         String[] levelS = lore.get(1).split(" ");
         String[] expS = lore.get(2).split(" ");
