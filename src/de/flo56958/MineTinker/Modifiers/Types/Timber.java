@@ -1,21 +1,61 @@
-package de.flo56958.MineTinker.Utilities;
+package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Data.PlayerData;
+import de.flo56958.MineTinker.Data.ModifierFailCause;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.ModifierFailEvent;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import net.minecraft.server.v1_13_R2.BlockPosition;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class Timber {
+public class Timber extends Modifier {
+
+    private static final ModManager modManager = Main.getModManager();
+    private static PluginManager pluginManager = Bukkit.getPluginManager();
+    private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     private static final ArrayList<Location> locs = new ArrayList<>();
 
-    public static boolean init(Player p, Block b) {
+    public Timber() {
+        super(config.getString("Modifiers.Timber.name"),
+                "[Wooden Emerald] Chop down trees in an instant!",
+                ModifierType.TIMBER,
+                ChatColor.GREEN,
+                1,
+                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Modifiers.Timber.name_modifier"), 1, Enchantment.DIG_SPEED, 1),
+                new ArrayList<>(Collections.singletonList(ToolType.AXE)),
+                Main.getPlugin());
+    }
+
+    @Override
+    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (modManager.hasMod(tool, modManager.get(ModifierType.POWER))) {
+            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+            return null;
+        }
+
+        return Modifier.checkAndAdd(p, tool, this, "timber", isCommand);
+    }
+
+    public void effect(Player p, ItemStack tool, Block b) {
+        if (!modManager.hasMod(tool, this)) { return; }
+
         ArrayList<Material> allowed = new ArrayList<>();
         allowed.addAll(Lists.getWoodLogs());
         allowed.addAll(Lists.getWoodWood());
@@ -23,7 +63,7 @@ public class Timber {
         boolean isTreeTop = false; //checks for Leaves above Log
         for (int y = b.getY() - 1; y > 0; y--) {
             if (p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(Material.GRASS_BLOCK) || p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(Material.DIRT)) {
-                 isTreeBottom = true;
+                isTreeBottom = true;
             }
             if (!p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(b.getType())) {
                 break;
@@ -41,16 +81,15 @@ public class Timber {
             }
         }
 
-        if (!isTreeBottom || !isTreeTop) { return false; } //TODO: Improve tree check
+        if (!isTreeBottom || !isTreeTop) { return; } //TODO: Improve tree check
 
-        PlayerData.HASPOWER.replace(p, true);
+        Power.HASPOWER.replace(p, true);
         locs.add(b.getLocation());
 
         breakTree(p, b, allowed);
 
         locs.clear();
-
-        return true;
+        Power.HASPOWER.replace(p, false);
     }
 
     private static void breakTree(Player p, Block b, ArrayList<Material> allowed) { //TODO: Improve algorythm

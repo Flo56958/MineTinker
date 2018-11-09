@@ -1,10 +1,11 @@
 package de.flo56958.MineTinker.Commands;
 
-import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.LevelCalculator;
 import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,13 +18,24 @@ import java.util.List;
 
 class Functions {
 
+    private static final ModManager modManager = Main.getModManager();
+
+    static void modList(Player p) {
+        ChatWriter.sendMessage(p, ChatColor.GOLD, "Possible Modifiers:");
+        int index = 1;
+        for (Modifier m : modManager.getAllMods()) {
+            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". " + m.getColor() + m.getName() + ChatColor.WHITE + ": " + m.getDescription());
+            index++;
+        }
+    }
+
     static void addExp(Player p, String[] args) {
         if (args.length == 2) {
             ItemStack tool = p.getInventory().getItemInMainHand();
             if (PlayerInfo.isToolViable(tool)) {
                 try {
                     int amount = Integer.parseInt(args[1]);
-                    LevelCalculator.addExp(p, tool, amount);
+                    modManager.addExp(p, tool, amount);
                 } catch (Exception e) {
                     Commands.invalidArgs(p);
                 }
@@ -67,7 +79,7 @@ class Functions {
                     index = index + 4; //To start when modifier start
                     if (!(index >= lore.size())) {
                         String remove = lore.get(index);
-                        String[] mod = remove.split(":");
+                        String[] mod = remove.split(": ");
                         mod[0] = mod[0].substring(2); //Skipps the ChatColor-Code at the Beginning TODO: Dual Chatcodes need to be implemented
                         if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"))) {
                             meta.removeEnchant(Enchantment.FIRE_ASPECT);
@@ -108,18 +120,17 @@ class Functions {
 
     static void addMod(Player p, String[] args) {
         if (args.length == 2) {
-            if (Lists.getAllowedModifiers().contains(args[1].toLowerCase())) {
-                ItemStack tool = p.getInventory().getItemInMainHand().clone();
-                if (PlayerInfo.isToolViable(tool)) {
-                    tool = ItemGenerator.ToolModifier(tool, args[1].toLowerCase(), p, true);
-                    if (tool != null) {
-                        p.getInventory().setItemInMainHand(tool);
+            for (Modifier m : modManager.getAllMods()) {
+                if (m.getName().equalsIgnoreCase(args[1])) {
+                    ItemStack tool = p.getInventory().getItemInMainHand().clone();
+                    if (PlayerInfo.isToolViable(tool)) {
+                        tool = m.applyMod(p, tool, true);
+                        if (tool != null) {
+                            p.getInventory().setItemInMainHand(tool);
+                        }
                     }
-                } else {
-                    Commands.invalidTool(p);
+                    break;
                 }
-            } else {
-                ChatWriter.sendMessage(p, ChatColor.RED, "Please enter a available modifier! (You need to use custom names)");
             }
         } else {
             Commands.invalidArgs(p);
@@ -155,19 +166,18 @@ class Functions {
     static void give(Player p, String[] args) {
         Material material;
         if (args.length >= 2) {
-            if (Lists.SWORDS.contains(args[1].toUpperCase()) ||
-                    Lists.AXES.contains(args[1].toUpperCase()) ||
-                    Lists.BOWS.contains(args[1].toUpperCase()) ||
-                    Lists.SHOVELS.contains(args[1].toUpperCase()) ||
-                    Lists.HOES.contains(args[1].toUpperCase()) ||
-                    Lists.PICKAXES.contains(args[1].toUpperCase())) {
-                try {
-                    material = Material.getMaterial(args[1].toUpperCase());
-                } catch (Exception ignored) {
-                    Commands.invalidArgs(p);
-                    return;
-                }
-            } else {
+            try {
+                material = Material.getMaterial(args[1].toUpperCase());
+            } catch (Exception ignored) {
+                Commands.invalidArgs(p);
+                return;
+            }
+            if (!(ToolType.AXE.getMaterials().contains(material) ||
+                    ToolType.BOW.getMaterials().contains(material) ||
+                    ToolType.HOE.getMaterials().contains(material) ||
+                    ToolType.PICKAXE.getMaterials().contains(material) ||
+                    ToolType.SHOVEL.getMaterials().contains(material) ||
+                    ToolType.SWORD.getMaterials().contains(material))) {
                 Commands.invalidArgs(p);
                 return;
             }
@@ -197,12 +207,12 @@ class Functions {
 
     static void convert(Player p, String[] args) {
         ItemStack tool = p.getInventory().getItemInMainHand();
-        if (Lists.SWORDS.contains(tool.getType().toString()) ||
-                Lists.AXES.contains(tool.getType().toString()) ||
-                Lists.BOWS.contains(tool.getType().toString()) ||
-                Lists.SHOVELS.contains(tool.getType().toString()) ||
-                Lists.HOES.contains(tool.getType().toString()) ||
-                Lists.PICKAXES.contains(tool.getType().toString())) {
+        if (!(ToolType.AXE.getMaterials().contains(tool.getType()) ||
+                ToolType.BOW.getMaterials().contains(tool.getType()) ||
+                ToolType.HOE.getMaterials().contains(tool.getType()) ||
+                ToolType.PICKAXE.getMaterials().contains(tool.getType()) ||
+                ToolType.SHOVEL.getMaterials().contains(tool.getType()) ||
+                ToolType.SWORD.getMaterials().contains(tool.getType()))) {
             if (args.length < 2) {
                 tool.setItemMeta(null);
                 ItemGenerator.changeLore(tool, ItemGenerator.createLore());

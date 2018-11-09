@@ -50,6 +50,7 @@ Sound:
   OnCrafting: true
   OnEveryCrafting: false
   OnModding: true
+  OnFail: true
   OnEnchanting: true
   OnUpgrade: true
   OnBreaking: true
@@ -58,42 +59,6 @@ AllowedWorlds: #Worlds where MineTinker-Tools can be used
   - world #default
   - world_nether #default
   - world_the_end #default
-
-AllowedTools: #Here you can disable specific variants of the tools
-  Swords:
-    - WOODEN_SWORD
-    - STONE_SWORD
-    - IRON_SWORD
-    - GOLDEN_SWORD
-    - DIAMOND_SWORD
-  Axes:
-    - WOODEN_AXE
-    - STONE_AXE
-    - IRON_AXE
-    - GOLDEN_AXE
-    - DIAMOND_AXE
-  Pickaxes:
-    - WOODEN_PICKAXE
-    - STONE_PICKAXE
-    - IRON_PICKAXE
-    - GOLDEN_PICKAXE
-    - DIAMOND_PICKAXE
-  Shovels:
-    - WOODEN_SHOVEL
-    - STONE_SHOVEL
-    - IRON_SHOVEL
-    - GOLDEN_SHOVEL
-    - DIAMOND_SHOVEL
-  Hoes:
-    - WOODEN_HOE
-    - STONE_HOE
-    - IRON_HOE
-    - GOLDEN_HOE
-    - DIAMOND_HOE
-  Bows:
-    - BOW
-  Misc:
-    - SHIELD
 
 Modifiers:
   Auto-Smelt:
@@ -119,6 +84,12 @@ Modifiers:
     name: Ender
     name_modifier: Ender-Modifier
     Sound: true #Sound when teleporting
+  Experienced:
+    allowed: true
+    name: Experienced
+    MaxLevel: 10
+    PercentagePerLevel: 2
+    Amount: 1 #amount of XP
   Extra-Modifier:
     allowed: true
     name: Extra-Modifier
@@ -133,7 +104,9 @@ Modifiers:
     allowed: true
     name: Glowing
     name_modifier: Glowing-Modifier
+    MaxLevel: 3
     Duration: 200 #ticks
+    DurationMultiplier: 1.1 #Duration * (Multiplier^Level)
   Haste:
     allowed: true
     name: Haste
@@ -170,7 +143,7 @@ Modifiers:
     EnchantCost: 10
     Duration: 120 #ticks
     DurationMultiplier: 1.1 #Duration * (Multiplier^Level)
-    EffectMultiplier: 2 #per Level (Level 1 = 0)
+    EffectAmplifier: 2 #per Level (Level 1 = 0)
   Power:
     allowed: true
     name: Power
@@ -201,7 +174,7 @@ Modifiers:
     name_modifier: Shulking-Modifier
     MaxLevel: 10
     Duration: 20 #ticks
-    EffectMultiplier: 2 #per Level (Level 1 = 0)
+    EffectAmplifier: 2 #per Level (Level 1 = 0)
   Silk-Touch:
     allowed: true
     name: Silk-Touch
@@ -224,13 +197,7 @@ Modifiers:
     MaxLevel: 3
     Duration: 60 #ticks
     DurationMultiplier: 1.2 #Duration * (Multiplier^Level)
-    EffectMultiplier: 2 #per Level (Level 1 = 0)
-  XP:
-    allowed: true
-    name: XP
-    MaxLevel: 10
-    PercentagePerLevel: 2
-    XPAmount: 1 #amount of XP
+    EffectAmplifier: 2 #per Level (Level 1 = 0)
 
 Spawners:
   enabled: true #Should be disabled when using a different Spawner plugin

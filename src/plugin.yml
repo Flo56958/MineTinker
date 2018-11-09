@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: a10.1.3
+version: a11
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -57,7 +57,6 @@ permissions:
       minetinker.commands.removemod: true
       minetinker.commands.setdurability: true
       minetinker.commands.give: true
-      minetinker.commands.reload: true
       minetinker.commands.convert: true
 
   minetinker.commands.main:
@@ -100,10 +99,6 @@ permissions:
     description: Allows to give MineTinker-Tools through command
     default: op
 
-  minetinker.commands.reload:
-    description: Allows to reload the MineTinker-Config
-    default: op
-
   minetinker.commands.convert:
     description: Allows to convert a tool to a MineTinker-Tool
     default: op
@@ -132,7 +127,7 @@ permissions:
       minetinker.modifiers.sweeping.*: true
       minetinker.modifiers.timber.*: true
       minetinker.modifiers.webbed.*: true
-      minetinker.modifiers.xp.*: true
+      minetinker.modifiers.experienced.*: true
 
   minetinker.modifiers.autosmelt.*:
     children:
@@ -376,14 +371,14 @@ permissions:
     description: Allows to use Webbed on a MineTinker-Tool
     default: true
 
-  minetinker.modifiers.xp.*:
+  minetinker.modifiers.experienced.*:
     children:
-      minetinker.modifiers.xp.apply: true
-      minetinker.modifiers.xp.use: true
-  minetinker.modifiers.xp.apply:
+      minetinker.modifiers.experienced.apply: true
+      minetinker.modifiers.experienced.use: true
+  minetinker.modifiers.experienced.apply:
     description: Allows to apply XP to a MineTinker-Tool
     default: true
-  minetinker.modifiers.xp.use:
+  minetinker.modifiers.experienced.use:
     description: Allows to use XP on a MineTinker-Tool
     default: true
 

@@ -1,11 +1,13 @@
 package de.flo56958.MineTinker.Listeners;
 
 import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Data.Modifiers;
+import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.PlayerInfo;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 public class AnvilListener implements Listener {
 
     private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final ModManager modManager = Main.getModManager();
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onInventoryClick(InventoryClickEvent e) { //TODO: Add Slot 1 to Slot 0   |or|   add Slot 0 as a viable option
@@ -28,6 +31,9 @@ public class AnvilListener implements Listener {
         Inventory i = e.getClickedInventory();
         if (!(i instanceof AnvilInventory)) { return; } //TODO: Add the feature to modify a tool directly in the inventory
 
+        if (!(e.getWhoClicked() instanceof Player)) { return; }
+
+        Player p = (Player) e.getWhoClicked();
         int s = e.getRawSlot();
         if (s != 1) { return; }      //Mod-Slot
 
@@ -36,100 +42,18 @@ public class AnvilListener implements Listener {
 
         ItemStack newTool = null;
 
-        if (e.getWhoClicked().getItemOnCursor().getAmount() == 1) { //TODO: Change code so you can apply more than one modifier at a time
+        if (p.getItemOnCursor().getAmount() == 1) { //TODO: Change code so you can apply more than one modifier at a time
             boolean isModifier = true;
-            ItemStack modifier = e.getWhoClicked().getItemOnCursor();
-            if (modifier.equals(Modifiers.AUTOSMELT_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Auto-Smelt.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Auto-Smelt.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.BEHEADING_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Beheading.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Beheading.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.DIRECTING_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Directing.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Directing.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.ENDER_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Ender.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Ender.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.getType().equals(Material.NETHER_STAR)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Extra-Modifier.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Extra-Modifier.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.FIERY_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Fiery.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Fiery.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.GLOWING_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Glowing.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Glowing.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.HASTE_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Haste.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Haste.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.INFINITY_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Infinity.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Infinity.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.KNOCKBACK_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Knockback.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Knockback.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.LUCK_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Luck.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Luck.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.MELTING_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Melting.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Melting.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.POISONOUS_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Poisonous.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Poisonous.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.POWER_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Power.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Power.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.REINFORCED_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Reinforced.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Reinforced.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.SELFREPAIR_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Self-Repair.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Self-Repair.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.SHARPNESS_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Sharpness.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Sharpness.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.SHULKING_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Shulking.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Shulking.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.SILKTOUCH_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Silk-Touch.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Silk-Touch.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.SWEEPING_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Sweeping.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Sweeping.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.TIMBER_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Timber.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Timber.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.equals(Modifiers.WEBBED_MODIFIER)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.Webbed.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.Webbed.name").toLowerCase(), (Player) e.getWhoClicked(), false);
-                }
-            } else if (modifier.getType().equals(Material.EXPERIENCE_BOTTLE)) {
-                if (Lists.getAllowedModifiers().contains(config.getString("Modifiers.XP.name").toLowerCase())) {
-                    newTool = ItemGenerator.ToolModifier(tool, config.getString("Modifiers.XP.name").toLowerCase(), (Player) e.getWhoClicked(), false);
+            ItemStack modifier = p.getItemOnCursor();
+
+            if (modManager.get(ModifierType.EXTRA_MODIFIER) != null && modifier.equals(modManager.get(ModifierType.EXTRA_MODIFIER).getModItem())) {
+                newTool = modManager.get(ModifierType.EXTRA_MODIFIER).applyMod(p, tool, false);
+            } else if (modManager.getFreeSlots(tool) > 0) {
+                boolean success = false;
+                for (Modifier m : modManager.getAllMods()) {
+                    if (m.getModItem().equals(modifier)) {
+                        newTool = m.applyMod(p, tool, false);
+                    }
                 }
             } else {
                 isModifier = false;
@@ -148,17 +72,17 @@ public class AnvilListener implements Listener {
         if (config.getBoolean("Upgradeable") && e.getWhoClicked().hasPermission("minetinker.tool.upgrade")) {
             switch (e.getWhoClicked().getItemOnCursor().getAmount()) {
                 case 1:
-                    if (Lists.SHOVELS.contains(tool.getType().toString())) {
+                    if (ToolType.SHOVEL.getMaterials().contains(tool.getType())) {
                         newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
                     }
                     break;
                 case 2:
-                    if (Lists.SWORDS.contains(tool.getType().toString()) || Lists.HOES.contains(tool.getType().toString())) {
+                    if (ToolType.SWORD.getMaterials().contains(tool.getType()) || ToolType.HOE.getMaterials().contains(tool.getType())) {
                         newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
                     }
                     break;
                 case 3:
-                    if (Lists.AXES.contains(tool.getType().toString()) || Lists.PICKAXES.contains(tool.getType().toString())) {
+                    if (ToolType.AXE.getMaterials().contains(tool.getType()) || ToolType.PICKAXE.getMaterials().contains(tool.getType())) {
                         newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
                     }
                     break;

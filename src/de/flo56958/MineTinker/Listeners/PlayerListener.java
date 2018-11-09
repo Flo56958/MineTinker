@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.PlayerData;
 import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Types.Power;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftInventory;
@@ -77,13 +78,13 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         PlayerData.BLOCKFACE.put(e.getPlayer(), null);
-        PlayerData.HASPOWER.put(e.getPlayer(), false);
+        Power.HASPOWER.put(e.getPlayer(), false);
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         PlayerData.BLOCKFACE.remove(e.getPlayer());
-        PlayerData.HASPOWER.remove(e.getPlayer());
+        Power.HASPOWER.remove(e.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.LOW)

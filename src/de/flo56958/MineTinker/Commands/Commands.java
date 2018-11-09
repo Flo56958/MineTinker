@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 public class Commands implements CommandExecutor {
 
-    private static FileConfiguration config = Main.getPlugin().getConfig();
+    private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -65,19 +65,13 @@ public class Commands implements CommandExecutor {
                         case "modifiers":
                         case "mods":
                             if (p.hasPermission("minetinker.commands.modifiers")) {
-                                Mods.list(p);
+                                Functions.modList(p);
                             } else noPerm(p);
                             break;
                         case "name":
                         case "n":
                             if (p.hasPermission("minetinker.commands.name")) {
                                 Functions.name(p, args);
-                            } else noPerm(p);
-                            break;
-                        case "reload":
-                        case "r":
-                            if (p.hasPermission("minetinker.commands.reload")) {
-                                reload(p);
                             } else noPerm(p);
                             break;
                         case "removemod":
@@ -149,10 +143,6 @@ public class Commands implements CommandExecutor {
         }
         if (p.hasPermission("minetinker.commands.name")) {
             ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". Name (n)");
-            index++;
-        }
-        if (p.hasPermission("minetinker.commands.reload")) {
-            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". Reload (r)");
             index++;
         }
         if (p.hasPermission("minetinker.commands.removemod")) {
