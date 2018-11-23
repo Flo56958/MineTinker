@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -37,7 +38,8 @@ public class Shulking extends Modifier {
                 ChatColor.LIGHT_PURPLE,
                 config.getInt("Modifiers.Shulking.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.SHULKER_SHELL, ChatColor.LIGHT_PURPLE + config.getString("Modifiers.Shulking.name_modifier"), 1, Enchantment.DURABILITY, 1),
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
+                                                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
         this.duration = config.getInt("Modifiers.Shulking.Duration");
         this.effectAmplifier = config.getInt("Modifiers.Shulking.EffectAmplifier");
@@ -49,8 +51,7 @@ public class Shulking extends Modifier {
     }
 
     public void effect(Player p, ItemStack tool, Entity e) {
-        if (p.hasPermission("minetinker.modifiers.shulking.use")) { return; }
-        if (e.isDead()) { return; }
+        if (!p.hasPermission("minetinker.modifiers.shulking.use")) { return; }
         if (!modManager.hasMod(tool, this)) { return; }
         if (!(e instanceof LivingEntity)) { return; }
 
@@ -59,6 +60,7 @@ public class Shulking extends Modifier {
 
         LivingEntity ent = (LivingEntity) e;
         ent.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, this.duration, amplifier, false, false));
+        ChatWriter.log(false, p.getDisplayName() + " triggered Shulking on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 
 }

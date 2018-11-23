@@ -26,12 +26,13 @@ public class Reinforced extends Modifier {
 
     public Reinforced() {
         super(config.getString("Modifiers.Reinforced.name"),
-                "[Compressed Obsidian] Chance to not use durability when using the tool!",
+                "[Compressed Obsidian] Chance to not use durability when using the tool/armor!",
                 ModifierType.REINFORCED,
                 ChatColor.DARK_GRAY,
                 config.getInt("Modifiers.Reinforced.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.DARK_GRAY + config.getString("Modifiers.Reinforced.name_modifier"), 1, Enchantment.DURABILITY, 1),
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
+                                                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
     }
 

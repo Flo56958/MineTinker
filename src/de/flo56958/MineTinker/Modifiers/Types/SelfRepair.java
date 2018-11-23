@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class SelfRepair extends Modifier {
+public class SelfRepair extends Modifier implements Enchantable {
 
     private static final ModManager modManager = Main.getModManager();
     private static PluginManager pluginManager = Bukkit.getPluginManager();
@@ -35,7 +36,8 @@ public class SelfRepair extends Modifier {
                 ChatColor.GREEN,
                 config.getInt("Modifiers.Self-Repair.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.MOSSY_COBBLESTONE, ChatColor.GREEN + config.getString("Modifiers.Self-Repair.name_modifier"), 1, Enchantment.MENDING, 1),
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
+                                                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
         this.percentagePerLevel = config.getInt("Modifiers.Self-Repair.PercentagePerLevel");
         this.healthRepair = config.getInt("Modifiers.Self-Repair.HealthRepair");
@@ -61,8 +63,14 @@ public class SelfRepair extends Modifier {
                 dura = 0;
             }
 
-            p.getInventory().getItemInMainHand().setDurability(dura);
-            ChatWriter.log(false, p.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
+            tool.setDurability(dura);
+            ChatWriter.log(false, p.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
         }
+    }
+
+    @Override
+    public void enchantItem(Player p, ItemStack item) {
+        if (!p.hasPermission("minetinker.modifiers.selfrepair.craft")) { return; }
+        ItemGenerator.createModifierItem(p, this, "Self-Repair");
     }
 }

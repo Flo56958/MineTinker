@@ -26,6 +26,19 @@ public class CraftingRecipes {
         }
     }
 
+    public static void registerProtectingModifier() {
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Protecting"), modManager.get(ModifierType.PROTECTING).getModItem()); //init recipe
+            newRecipe.shape("DID", "IOI", "DID"); //makes recipe
+            newRecipe.setIngredient('D', Material.DIAMOND);
+            newRecipe.setIngredient('I', Material.IRON_INGOT);
+            newRecipe.setIngredient('O', Material.OBSIDIAN); //set ingredients
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.log(true, "Could not register recipe for the Protecting-Modifier!"); //executes if the recipe could not initialize
+        }
+    }
+
     public static void registerHasteModifier() {
         try {
             ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Haste"), modManager.get(ModifierType.HASTE).getModItem()); //init recipe

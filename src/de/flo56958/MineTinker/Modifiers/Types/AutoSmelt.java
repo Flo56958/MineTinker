@@ -65,6 +65,11 @@ public class AutoSmelt extends Modifier {
                 loot = Material.STONE;
                 break;
 
+            case COAL_ORE:
+            case COAL_BLOCK:
+                goodBlock = true;
+                loot = Material.AIR;
+
             case SAND:
                 goodBlock = true;
                 loot = Material.GLASS;
@@ -152,7 +157,7 @@ public class AutoSmelt extends Modifier {
                     if (this.hasSound) {
                         b.getLocation().getWorld().playSound(b.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
                     }
-                    ChatWriter.log(false, p.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ") while mining " + e.getBlock().getType().toString() + "!");
+                    ChatWriter.log(false, p.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") while mining " + e.getBlock().getType().toString() + "!");
                 }
             }
 

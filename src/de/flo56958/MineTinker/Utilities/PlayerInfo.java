@@ -1,11 +1,6 @@
 package de.flo56958.MineTinker.Utilities;
 
-import de.flo56958.MineTinker.Data.Strings;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.List;
 
 public class PlayerInfo {
 
@@ -31,25 +26,6 @@ public class PlayerInfo {
         } else {
             return null;
         }
-    }
-
-    public static boolean isToolViable(ItemStack tool) {
-        if (tool == null) { return false; }
-        if (!tool.hasItemMeta()) { return false; }
-        ItemMeta meta = tool.getItemMeta();
-
-        if (!meta.hasLore()) { return false; }
-        List<String> lore = meta.getLore();
-        return lore.contains(Strings.IDENTIFIER);
-    }
-
-    public static boolean isWandViable(ItemStack wand) {
-        if (!wand.hasItemMeta()) { return false; }
-        ItemMeta meta = wand.getItemMeta();
-
-        if (!meta.hasLore()) { return false; }
-        List<String> lore = meta.getLore();
-        return lore.contains(Strings.IDENTIFIER_BUILDERSWAND);
     }
 
 }

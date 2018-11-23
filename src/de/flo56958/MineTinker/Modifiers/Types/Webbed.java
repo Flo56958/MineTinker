@@ -6,6 +6,7 @@ import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -38,9 +39,10 @@ public class Webbed extends Modifier {
                 "[Compressed Cobweb] Slowes Foes!",
                 ModifierType.WEBBED,
                 ChatColor.WHITE,
-                1,
+                config.getInt("Modifiers.Webbed.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.COBWEB, ChatColor.WHITE + config.getString("Modifiers.Webbed.name_modifier"), 1, Enchantment.DAMAGE_ALL, 1),
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
+                                                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
         this.duration = config.getInt("Modifiers.Webbed.Duration");
         this.durationMultiplier = config.getDouble("Modifiers.Webbed.DurationMultiplier");
@@ -70,7 +72,7 @@ public class Webbed extends Modifier {
         int amplifier = this.effectAmplifier * (level - 1) / 2;
 
         ent.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration, amplifier, false, false));
-
+        ChatWriter.log(false, p.getDisplayName() + " triggered Webbed on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 
 }

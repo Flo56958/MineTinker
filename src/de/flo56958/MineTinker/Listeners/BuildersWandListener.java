@@ -3,6 +3,7 @@ package de.flo56958.MineTinker.Listeners;
 //import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,6 +20,8 @@ import org.bukkit.util.Vector;
 
 public class BuildersWandListener implements Listener {
 
+    private static final ModManager modManager = Main.getModManager();
+
     @EventHandler
     public void onBlockBreak (BlockBreakEvent e) {
         if (e.isCancelled()) { return; }
@@ -26,7 +29,7 @@ public class BuildersWandListener implements Listener {
 
         ItemStack wand = e.getPlayer().getInventory().getItemInMainHand();
 
-        if (!PlayerInfo.isWandViable(wand)) { return; }
+        if (!modManager.isWandViable(wand)) { return; }
 
         e.setCancelled(true);
     }
@@ -38,7 +41,7 @@ public class BuildersWandListener implements Listener {
 
         ItemStack wand = e.getPlayer().getInventory().getItemInMainHand();
 
-        if (!PlayerInfo.isWandViable(wand)) { return; }
+        if (!modManager.isWandViable(wand)) { return; }
 
         e.setCancelled(true);
 

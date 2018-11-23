@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Types.*;
-import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,6 +12,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -29,8 +29,8 @@ public class EntityListener implements Listener {
     private static final ModManager modManager = Main.getModManager();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
-    @EventHandler
-    public void onDamage (EntityDamageByEntityEvent e) {
+    @EventHandler(priority = EventPriority.LOW)
+    public void onDamage(EntityDamageByEntityEvent e) {
         if (e.isCancelled()) { return; }
         if (!Lists.WORLDS.contains(e.getDamager().getWorld().getName())) { return; }
 
@@ -47,7 +47,7 @@ public class EntityListener implements Listener {
         } else { return; }
 
         ItemStack tool = p.getInventory().getItemInMainHand();
-        if (!PlayerInfo.isToolViable(tool)) { return; }
+        if (!modManager.isToolViable(tool)) { return; }
 
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
@@ -75,7 +75,7 @@ public class EntityListener implements Listener {
         }
 
         if (modManager.get(ModifierType.POISONOUS) != null) {
-            ((Poisonous) modManager.get(ModifierType.POISONOUS)).effect(p, tool, e);
+            ((Poisonous) modManager.get(ModifierType.POISONOUS)).effect(p, tool, e.getEntity());
         }
 
         if (modManager.get(ModifierType.SHULKING) != null) {
@@ -108,7 +108,7 @@ public class EntityListener implements Listener {
         if (!Lists.WORLDS.contains(p.getWorld().getName())) { return; }
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (!PlayerInfo.isToolViable(tool)) { return; }
+        if (!modManager.isToolViable(tool)) { return; }
 
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
@@ -133,7 +133,7 @@ public class EntityListener implements Listener {
         Player p = (Player) e.getEntity().getShooter();
         ItemStack tool = p.getInventory().getItemInMainHand();
         if (e.getHitBlock() != null) {
-            if (!PlayerInfo.isToolViable(tool)) { return; }
+            if (!modManager.isToolViable(tool)) { return; }
 
             if (modManager.get(ModifierType.ENDER) != null) {
                 ((Ender) modManager.get(ModifierType.ENDER)).effect(p, tool, e);
@@ -149,7 +149,7 @@ public class EntityListener implements Listener {
         Player p = (Player) e.getEntity().getShooter();
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (!PlayerInfo.isToolViable(tool)) { return; }
+        if (!modManager.isToolViable(tool)) { return; }
 
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();

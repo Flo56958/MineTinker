@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
@@ -21,7 +22,7 @@ import org.bukkit.plugin.PluginManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SilkTouch extends Modifier {
+public class SilkTouch extends Modifier implements Enchantable {
 
     private static final ModManager modManager = Main.getModManager();
     private static PluginManager pluginManager = Bukkit.getPluginManager();
@@ -61,5 +62,11 @@ public class SilkTouch extends Modifier {
         tool.setItemMeta(meta);
 
         return tool;
+    }
+
+    @Override
+    public void enchantItem(Player p, ItemStack item) {
+        if (!p.hasPermission("minetinker.modifiers.silktouch.craft")) { return; }
+        ItemGenerator.createModifierItem(p, this, "Silk-Touch");
     }
 }

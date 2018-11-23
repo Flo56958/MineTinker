@@ -15,6 +15,7 @@ public class Lists {
     public static final List<String> WORLDS_ELEVATOR = config.getStringList("Elevator.AllowedWorlds");
     public static final List<String> WORLDS_BUILDERSWANDS = config.getStringList("Builderswands.AllowedWorlds");
     public static final List<String> WORLDS_SPAWNERS = config.getStringList("Spawners.AllowedWorlds");
+    public static final List<String> WORLDS_EASYHARVEST = config.getStringList("EasyHarvest.AllowedWorlds");
 
     public static ArrayList<Material> getWoodLeaves() {
         ArrayList<Material> mats = new ArrayList<>();

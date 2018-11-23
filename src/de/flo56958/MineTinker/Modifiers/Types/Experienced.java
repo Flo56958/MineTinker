@@ -35,7 +35,8 @@ public class Experienced extends Modifier {
                 ChatColor.GREEN,
                 config.getInt("Modifiers.Experienced.MaxLevel"),
                 new ItemStack(Material.EXPERIENCE_BOTTLE, 1),
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
+                                                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
         this.percentagePerLevel = config.getInt("Modifiers.Experienced.PercentagePerLevel");
         this.amount = config.getInt("Modifiers.Experienced.Amount");

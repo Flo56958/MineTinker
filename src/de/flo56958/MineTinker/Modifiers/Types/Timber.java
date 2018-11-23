@@ -7,6 +7,7 @@ import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import net.minecraft.server.v1_13_R2.BlockPosition;
 import org.bukkit.Bukkit;
@@ -90,6 +91,8 @@ public class Timber extends Modifier {
 
         locs.clear();
         Power.HASPOWER.replace(p, false);
+
+        ChatWriter.log(false, p.getDisplayName() + " triggered Glowing on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 
     private static void breakTree(Player p, Block b, ArrayList<Material> allowed) { //TODO: Improve algorythm
@@ -98,12 +101,11 @@ public class Timber extends Modifier {
                 for (int dz = -1; dz <= 1; dz++) {
                     Location loc = b.getLocation().clone();
                     loc.add(dx, dy, dz);
-                    if (!locs.contains(loc)) {
-                        locs.add(loc);
-                        if (allowed.contains(p.getWorld().getBlockAt(loc).getType())) {
-                            breakTree(p, p.getWorld().getBlockAt(loc), allowed);
-                            ((CraftPlayer) p).getHandle().playerInteractManager.breakBlock(new BlockPosition(loc.getX(), loc.getY(), loc.getZ()));
-                        }
+                    if (locs.contains(loc)) { continue; }
+                    locs.add(loc);
+                    if (allowed.contains(p.getWorld().getBlockAt(loc).getType())) {
+                        breakTree(p, p.getWorld().getBlockAt(loc), allowed);
+                        ((CraftPlayer) p).getHandle().playerInteractManager.breakBlock(new BlockPosition(loc.getX(), loc.getY(), loc.getZ()));
                     }
                 }
             }

@@ -116,9 +116,11 @@ permissions:
       minetinker.modifiers.haste.*: true
       minetinker.modifiers.infinity.*: true
       minetinker.modifiers.melting.*: true
+      minetinker.modifiers.lightweight.*: true
       minetinker.modifiers.luck.*: true
       minetinker.modifiers.poisonous.*: true
       minetinker.modifiers.power.*: true
+      minetinker.modifiers.protecting.*: true
       minetinker.modifiers.reinforced.*: true
       minetinker.modifiers.selfrepair.*: true
       minetinker.modifiers.sharpness.*: true
@@ -250,6 +252,16 @@ permissions:
     description: Allows to use the Melting-Modifier on a MineTinker-Tool
     default: true
 
+  minetinker.modifiers.lightweight.*:
+    children:
+      minetinker.modifiers.lightweight.apply: true
+    minetinker.modifiers.lightweight.apply:
+      description: Allows to apply Light-Weight to MineTinker-Armor
+      default: true
+    minetinker.modifiers.lightweight.craft:
+      description: Allows to craft the Light-Weight-Modifier
+      default: true
+
   minetinker.modifiers.luck.*:
     children:
       minetinker.modifiers.luck.apply: true
@@ -286,6 +298,14 @@ permissions:
   minetinker.modifiers.power.use:
     description: Allows to use Power on a MineTinker-Tool
     default: true
+
+  minetinker.modifiers.protecting.*:
+    children:
+      minetinker.modifiers.protecting.apply: true
+  minetinker.modifiers.protecting.apply:
+    description: Allows to apply Protecting to MineTinker-Armor
+    default: true
+
 
   minetinker.modifiers.reinforced.*:
     children:

@@ -68,7 +68,7 @@ public enum ToolType {
 		case ELYTRA:
 			materials.add(Material.ELYTRA); break;
 		case HELMET:
-			materials.addAll(Arrays.asList(Material.LEATHER_HELMET, Material.CHAINMAIL_HELMET, Material.IRON_HELMET, Material.GOLDEN_HELMET, Material.DIAMOND_HELMET)); break;
+			materials.addAll(Arrays.asList(Material.LEATHER_HELMET, Material.CHAINMAIL_HELMET, Material.IRON_HELMET, Material.GOLDEN_HELMET, Material.DIAMOND_HELMET, Material.TURTLE_HELMET)); break;
 		case HOE:
 			materials.addAll(Arrays.asList(Material.WOODEN_HOE, Material.STONE_HOE, Material.IRON_HOE, Material.GOLDEN_HOE, Material.DIAMOND_HOE)); break;
 		case LEGGINGS:

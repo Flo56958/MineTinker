@@ -1,6 +1,5 @@
 package de.flo56958.MineTinker.Utilities;
 
-import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Main;
 import net.minecraft.server.v1_13_R2.ChatComponentText;
 import net.minecraft.server.v1_13_R2.ChatMessageType;
@@ -15,20 +14,22 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class ChatWriter {
 
+    public static final String CHAT_PREFIX = Main.getPlugin().getConfig().getString("chat-prefix");
+
     public static void sendMessage(CommandSender receiver, ChatColor color, String message) {
         if (Main.getPlugin().getConfig().getBoolean("chat-messages")) {
-            receiver.sendMessage(Strings.CHAT_PREFIX + " " + color + message);
+            receiver.sendMessage(CHAT_PREFIX + " " + color + message);
         }
     }
 
     public static void log(boolean debug, String message) {
         if (debug) {
             if (Main.getPlugin().getConfig().getBoolean("logging.debug")) {
-                Bukkit.getConsoleSender().sendMessage(Strings.CHAT_PREFIX + " " + ChatColor.RED + message);
+                Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + ChatColor.RED + message);
             }
         } else {
             if (Main.getPlugin().getConfig().getBoolean("logging.standard")) {
-                Bukkit.getConsoleSender().sendMessage(Strings.CHAT_PREFIX + " " + message);
+                Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + message);
             }
         }
     }

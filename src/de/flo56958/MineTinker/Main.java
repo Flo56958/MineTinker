@@ -3,7 +3,6 @@ package de.flo56958.MineTinker;
 import de.flo56958.MineTinker.Commands.Commands;
 import de.flo56958.MineTinker.Data.CraftingRecipes;
 import de.flo56958.MineTinker.Data.PlayerData;
-import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Listeners.*;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
@@ -33,6 +32,7 @@ public class Main extends JavaPlugin {
         }
         Bukkit.getPluginManager().registerEvents(new BlockListener(), this);
         Bukkit.getPluginManager().registerEvents(new AnvilListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ArmorListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityListener(), this);
         Bukkit.getPluginManager().registerEvents(new TinkerListener(), this);
@@ -47,13 +47,16 @@ public class Main extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new BuildersWandListener(),this);
             CraftingRecipes.registerBuildersWands();
         }
+        if (getConfig().getBoolean("EasyHarvest.enabled")) {
+            Bukkit.getPluginManager().registerEvents(new EasyHarvestListener(),this);
+        }
         ChatWriter.log(false, "Registered events!");
 
         if (getConfig().getBoolean("logging.metrics")) {
             Metrics metrics = new Metrics(this);
-            Bukkit.getConsoleSender().sendMessage(Strings.CHAT_PREFIX + " Started Metrics-service! Thank you for enabling it in the config! It helps to maintain the Plugin and fix bugs. (Data is send anonymously)");
+            Bukkit.getConsoleSender().sendMessage(ChatWriter.CHAT_PREFIX + " Started Metrics-service! Thank you for enabling it in the config! It helps to maintain the Plugin and fix bugs. (Data is send anonymously)");
         } else {
-            Bukkit.getConsoleSender().sendMessage(Strings.CHAT_PREFIX + " Metrics-service disabled! The service helps to maintain the Plugin and fix bugs. (Data is send anonymously)");
+            Bukkit.getConsoleSender().sendMessage(ChatWriter.CHAT_PREFIX + " Metrics-service disabled! The service helps to maintain the Plugin and fix bugs. (Data is send anonymously)");
         }
         ChatWriter.log(false, "Standard logging is enabled! You can disable it in the config!");
         ChatWriter.log(true, "Debug logging is enabled! You should disable it in the config!");

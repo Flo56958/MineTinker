@@ -130,6 +130,11 @@ Modifiers:
     MaxLevel: 3
     EnchantCost: 10
     BonusMultiplier: 0.1 #Percent of Bonus-damage per Level
+  Light-Weight:
+    allowed: true
+    name: Light-Weight
+    name_modifier: Light-Weight-Modifier
+    MaxLevel: 3
   Luck:
     allowed: true
     name: Luck
@@ -148,12 +153,18 @@ Modifiers:
     allowed: true
     name: Power
     name_modifier: Power-Modifier
+    lv1_vertical: false
     MaxLevel: 3
     EnchantCost: 10
+  Protecting:
+    allowed: true
+    name: Protecting
+    name_modifier: Enriched Obsidian
+    MaxLevel: 5
   Reinforced:
     allowed: true
     name: Reinforced
-    name_modifier: Reinforced-Modifier
+    name_modifier: Compressed Obsidian
     MaxLevel: 3
   Self-Repair:
     allowed: true
@@ -229,10 +240,20 @@ Builderswands:
   - world_nether #default
   - world_the_end #default
 
+EasyHarvest:
+  enabled: true
+  replant: true
+  Sound: true
+  AllowedWorlds: #Worlds where MineTinker-Builderswands can be used
+    - world #default
+    - world_nether #default
+    - world_the_end #default
+
 Language:
   #Tool
-  Identifier: MineTinker-Tool
+  Identifier_Armor: MineTinker-Armor
   Identifier_Builderswand: MineTinker-Builderswand
+  Identifier_Tool: MineTinker-Tool
   LevelLine: Level #no spaces
   ExpLine: Exp #no spaces
   FreeModifierSlotsLine: Free Modifiers Slots #exactly two spaces for no error

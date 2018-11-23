@@ -1,6 +1,5 @@
 package de.flo56958.MineTinker.Commands;
 
-import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.ChatColor;
@@ -58,7 +57,7 @@ public class Commands implements CommandExecutor {
                         case "info":
                         case "i":
                             if (p.hasPermission("minetinker.commands.info")) {
-                                ChatWriter.sendMessage(p, ChatColor.WHITE, "MineTinker is a Plugin made by Flo56958.");
+                                ChatWriter.sendMessage(p, ChatColor.WHITE, "MineTinker (" + Main.getPlugin().getDescription().getVersion() + ") is a Plugin made by Flo56958.");
                                 ChatWriter.sendMessage(p, ChatColor.WHITE, "It is inspired by different mods (e.g. TinkersConstruct)");
                             } else noPerm(p);
                             break;
@@ -94,7 +93,7 @@ public class Commands implements CommandExecutor {
                 }
             }
         } else {
-            sender.sendMessage(Strings.CHAT_PREFIX + " " + config.getString("Language.Commands.NotAPlayer"));
+            sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + config.getString("Language.Commands.NotAPlayer"));
         }
         return true;
     }

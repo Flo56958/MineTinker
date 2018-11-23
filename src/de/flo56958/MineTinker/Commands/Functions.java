@@ -6,7 +6,6 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -32,7 +31,7 @@ class Functions {
     static void addExp(Player p, String[] args) {
         if (args.length == 2) {
             ItemStack tool = p.getInventory().getItemInMainHand();
-            if (PlayerInfo.isToolViable(tool)) {
+            if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
                 try {
                     int amount = Integer.parseInt(args[1]);
                     modManager.addExp(p, tool, amount);
@@ -50,13 +49,12 @@ class Functions {
     static void name(Player p, String[] args) {
         if (args.length >= 2) {
             ItemStack tool = p.getInventory().getItemInMainHand();
-            if (PlayerInfo.isToolViable(tool)) {
+            if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
                 StringBuilder name = new StringBuilder();
                 for (int i = 1; i < args.length; i++) {
                     name.append(" ").append(args[i].replace('^', '§'));
                 }
                 name = new StringBuilder(name.substring(1));
-                System.out.println("----" + name);
                 ItemMeta meta = tool.getItemMeta().clone();
                 meta.setDisplayName(name.toString());
                 tool.setItemMeta(meta);
@@ -73,7 +71,7 @@ class Functions {
             try {
                 int index = Integer.parseInt(args[1]);
                 ItemStack tool = p.getInventory().getItemInMainHand();
-                if (PlayerInfo.isToolViable(tool)) {
+                if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
                     ItemMeta meta = tool.getItemMeta();
                     List<String> lore = meta.getLore();
                     index = index + 4; //To start when modifier start
@@ -105,6 +103,10 @@ class Functions {
                             meta.removeEnchant(Enchantment.SILK_TOUCH);
                         } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Infinity.name"))) {
                             meta.removeEnchant(Enchantment.ARROW_INFINITE);
+                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Protecting.name"))) {
+                            meta.removeEnchant(Enchantment.PROTECTION_ENVIRONMENTAL);
+                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Light-Weight.name"))) {
+                            meta.removeEnchant(Enchantment.PROTECTION_FALL);
                         }
                         lore.remove(index);
                         p.getInventory().setItemInMainHand(ItemGenerator.changeItem(tool, meta, lore));
@@ -123,7 +125,7 @@ class Functions {
             for (Modifier m : modManager.getAllMods()) {
                 if (m.getName().equalsIgnoreCase(args[1])) {
                     ItemStack tool = p.getInventory().getItemInMainHand().clone();
-                    if (PlayerInfo.isToolViable(tool)) {
+                    if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
                         tool = m.applyMod(p, tool, true);
                         if (tool != null) {
                             p.getInventory().setItemInMainHand(tool);
@@ -140,7 +142,7 @@ class Functions {
     static void setDurability(Player p, String[] args) {
         if (args.length == 2) {
             ItemStack tool = p.getInventory().getItemInMainHand();
-            if (PlayerInfo.isToolViable(tool)) {
+            if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
                         try {
                             int dura = Integer.parseInt(args[1]);
                             if (dura <= tool.getType().getMaxDurability()) {
@@ -177,7 +179,11 @@ class Functions {
                     ToolType.HOE.getMaterials().contains(material) ||
                     ToolType.PICKAXE.getMaterials().contains(material) ||
                     ToolType.SHOVEL.getMaterials().contains(material) ||
-                    ToolType.SWORD.getMaterials().contains(material))) {
+                    ToolType.SWORD.getMaterials().contains(material) ||
+                    ToolType.HELMET.getMaterials().contains(material) ||
+                    ToolType.CHESTPLATE.getMaterials().contains(material) ||
+                    ToolType.LEGGINGS.getMaterials().contains(material) ||
+                    ToolType.BOOTS.getMaterials().contains(material))) {
                 Commands.invalidArgs(p);
                 return;
             }

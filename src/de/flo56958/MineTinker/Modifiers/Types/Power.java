@@ -5,8 +5,10 @@ import de.flo56958.MineTinker.Data.PlayerData;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import net.minecraft.server.v1_13_R2.BlockPosition;
@@ -28,13 +30,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class Power extends Modifier {
+public class Power extends Modifier implements Enchantable {
 
     private static final ModManager modManager = Main.getModManager();
     private static PluginManager pluginManager = Bukkit.getPluginManager();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     public static final HashMap<Player, Boolean> HASPOWER = new HashMap<>();
+
+    private boolean lv1_vertical;
 
     public Power() {
         super(config.getString("Modifiers.Power.name"),
@@ -45,6 +49,7 @@ public class Power extends Modifier {
                 ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Modifiers.Power.name_modifier"), 1, Enchantment.ARROW_DAMAGE, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL)),
                 Main.getPlugin());
+        this.lv1_vertical = config.getBoolean("Modifiers.Power.lv1_vertical");
     }
 
     @Override
@@ -68,12 +73,33 @@ public class Power extends Modifier {
     public void effect(Player p, ItemStack tool, Block b) {
         if (!checkPower(p, tool)) { return; }
 
+        ChatWriter.log(false, p.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+
         HASPOWER.replace(p, true);
 
         int level = modManager.getModLevel(tool, this);
 
         if (level == 1) {
-            if (PlayerData.BLOCKFACE.get(p).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(p).equals(BlockFace.UP)) {
+            if (lv1_vertical) {
+                if (PlayerData.BLOCKFACE.get(p).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(p).equals(BlockFace.UP)) {
+                    if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
+                        Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
+                        Block b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
+                        powerBlockBreak(b1, (CraftPlayer) p);
+                        powerBlockBreak(b2, (CraftPlayer) p);
+                    } else if (PlayerInfo.getFacingDirection(p).equals("W") || PlayerInfo.getFacingDirection(p).equals("E")) {
+                        Block b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
+                        Block b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
+                        powerBlockBreak(b1, (CraftPlayer) p);
+                        powerBlockBreak(b2, (CraftPlayer) p);
+                    }
+                } else {
+                    Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 1, 0));
+                    Block b2 = b.getWorld().getBlockAt(b.getLocation().add(0, -1, 0));
+                    powerBlockBreak(b1, (CraftPlayer) p);
+                    powerBlockBreak(b2, (CraftPlayer) p);
+                }
+            } else if (PlayerData.BLOCKFACE.get(p).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(p).equals(BlockFace.UP)) {
                 if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
                     Block b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
                     Block b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
@@ -134,6 +160,8 @@ public class Power extends Modifier {
     public void effect(Player p, ItemStack tool, PlayerInteractEvent e) {
         if (!checkPower(p, tool)) { return; }
 
+        ChatWriter.log(false, p.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+
         HASPOWER.replace(p, true);
 
         int level = modManager.getModLevel(tool, this);
@@ -182,5 +210,11 @@ public class Power extends Modifier {
                 b.setType(Material.FARMLAND); //Event only does Plugin event (no vanilla conversion to Farmland and Tool-Damage)
             }
         }
+    }
+
+    @Override
+    public void enchantItem(Player p, ItemStack item) {
+        if (!p.hasPermission("minetinker.modifiers.power.craft")) { return; }
+        ItemGenerator.createModifierItem(p, this, "Power");
     }
 }

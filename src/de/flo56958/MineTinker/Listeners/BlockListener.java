@@ -3,12 +3,11 @@ package de.flo56958.MineTinker.Listeners;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Modifiers.Types.*;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -34,7 +33,6 @@ public class BlockListener implements Listener {
 
     private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = Main.getModManager();
-
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
@@ -63,7 +61,7 @@ public class BlockListener implements Listener {
         if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (!PlayerInfo.isToolViable(tool)) { return; }
+        if (!modManager.isToolViable(tool)) { return; }
 
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
@@ -147,64 +145,12 @@ public class BlockListener implements Listener {
             }
             norm.setAmount(temp);
             if (e.getClickedBlock().getType().equals(Material.BOOKSHELF)) {
-                if (config.getBoolean("Modifiers.Beheading.allowed") && p.hasPermission("minetinker.modifiers.beheading.craft")) {
-                    if (p.getInventory().getItemInMainHand().getType().equals(Material.WITHER_SKELETON_SKULL) && !p.isSneaking()) {
-                        ItemGenerator.createModifierItem(p, "Beheading", modManager.get(ModifierType.BEHEADING).getModItem());
-                        e.setCancelled(true);
-                    }
-                }
-                if (config.getBoolean("Modifiers.Fiery.allowed") && p.hasPermission("minetinker.modifiers.fiery.craft")) {
-                    if (p.getInventory().getItemInMainHand().getType().equals(Material.BLAZE_ROD) && !p.isSneaking()) {
-                        ItemGenerator.createModifierItem(p, "Fiery", modManager.get(ModifierType.FIERY).getModItem());
-                        e.setCancelled(true);
-                    }
-                }
-                if (config.getBoolean("Modifiers.Infinity.allowed") && p.hasPermission("minetinker.modifiers.infinity.craft")) {
-                    if (p.getInventory().getItemInMainHand().getType().equals(Material.ARROW) && !p.isSneaking()) {
-                        ItemGenerator.createModifierItem(p, "Infinity", modManager.get(ModifierType.INFINITY).getModItem());
-                        e.setCancelled(true);
-                    }
-                }
-                if (config.getBoolean("Modifiers.Knockback.allowed") && p.hasPermission("minetinker.modifiers.knockback.craft")) {
-                    if (p.getInventory().getItemInMainHand().getType().equals(Material.TNT) && !p.isSneaking()) {
-                        ItemGenerator.createModifierItem(p, "Knockback", modManager.get(ModifierType.KNOCKBACK).getModItem());
-                        e.setCancelled(true);
-                    }
-                }
-                if (config.getBoolean("Modifiers.Melting.allowed") && p.hasPermission("minetinker.modifiers.melting.craft")) {
-                    if (p.getInventory().getItemInMainHand().getType().equals(Material.MAGMA_BLOCK) && !p.isSneaking()) {
-                        ItemGenerator.createModifierItem(p, "Melting", modManager.get(ModifierType.MELTING).getModItem());
-                        e.setCancelled(true);
-                    }
-                }
-                if (config.getBoolean("Modifiers.Power.allowed") && p.hasPermission("minetinker.modifiers.power.craft")) {
-                    if (p.getInventory().getItemInMainHand().getType().equals(Material.EMERALD) && !p.isSneaking()) {
-                        ItemGenerator.createModifierItem(p, "Power", modManager.get(ModifierType.POWER).getModItem());
-                        e.setCancelled(true);
-                    }
-                }
-                if (config.getBoolean("Modifiers.Poisonous.allowed") && p.hasPermission("minetinker.modifiers.poisonous.craft")) {
-                    if (p.getInventory().getItemInMainHand().getType().equals(Material.ROTTEN_FLESH) && !p.isSneaking()) {
-                        ItemGenerator.createModifierItem(p, "Poisonous", modManager.get(ModifierType.POISONOUS).getModItem());
-                        e.setCancelled(true);
-                    }
-                }
-                if (config.getBoolean("Modifiers.Self-Repair.allowed") && p.hasPermission("minetinker.modifiers.selfrepair.craft")) {
-                    if (p.getInventory().getItemInMainHand().getType().equals(Material.MOSSY_COBBLESTONE) && !p.isSneaking()) {
-                        ItemGenerator.createModifierItem(p, "Self-Repair", modManager.get(ModifierType.SELF_REPAIR).getModItem());
-                        e.setCancelled(true);
-                    }
-                }
-                if (config.getBoolean("Modifiers.Silk-Touch.allowed") && p.hasPermission("minetinker.modifiers.silktouch.craft")) {
-                    if (p.getInventory().getItemInMainHand().getType().equals(Material.COBWEB) && !p.isSneaking()) {
-                        ItemGenerator.createModifierItem(p, "Silk-Touch", modManager.get(ModifierType.SILK_TOUCH).getModItem());
-                        e.setCancelled(true);
-                    }
-                }
-                if (config.getBoolean("Modifiers.Sweeping.allowed") && p.hasPermission("minetinker.modifiers.sweeping.craft")) {
-                    if (p.getInventory().getItemInMainHand().getType().equals(Material.IRON_INGOT) && !p.isSneaking()) {
-                        ItemGenerator.createModifierItem(p, "Sweeping", modManager.get(ModifierType.SWEEPING).getModItem());
-                        e.setCancelled(true);
+                ItemStack item = p.getInventory().getItemInMainHand();
+                for (Modifier m : modManager.getAllMods()) {
+                    if (m instanceof Enchantable) {
+                        if (m.getModItem().getType().equals(item.getType())) {
+                            ((Enchantable) m).enchantItem(p, item);
+                        }
                     }
                 }
             }
@@ -242,19 +188,21 @@ public class BlockListener implements Listener {
         ItemStack tool = p.getInventory().getItemInMainHand();
         if (!ToolType.HOE.getMaterials().contains(tool.getType())) { return; }
 
-        if (!PlayerInfo.isToolViable(tool)) { return; }
+        if (!modManager.isToolViable(tool)) { return; }
 
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
 
+        Block b = e.getClickedBlock();
+
         boolean apply = false;
 
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            if (e.getClickedBlock().getType().equals(Material.GRASS_BLOCK) ||
-                e.getClickedBlock().getType().equals(Material.DIRT)) {
+            if (b.getType().equals(Material.GRASS_BLOCK) ||
+                b.getType().equals(Material.DIRT)) {
                 apply = true;
             }
-            if (!p.getWorld().getBlockAt(e.getClickedBlock().getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) { //Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
+            if (!p.getWorld().getBlockAt(b.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) { //Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
                 apply = false;
             }
         }
@@ -282,7 +230,6 @@ public class BlockListener implements Listener {
         if (modManager.get(ModifierType.POWER) != null) {
             ((Power) modManager.get(ModifierType.POWER)).effect(p, tool, e);
         }
-
     }
 
     @EventHandler
@@ -294,7 +241,7 @@ public class BlockListener implements Listener {
         ItemStack tool = p.getInventory().getItemInMainHand();
         if (!ToolType.AXE.getMaterials().contains(tool.getType())) { return; }
 
-        if (!PlayerInfo.isToolViable(tool)) { return; }
+        if (!modManager.isToolViable(tool)) { return; }
 
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();
@@ -349,7 +296,7 @@ public class BlockListener implements Listener {
         ItemStack tool = p.getInventory().getItemInMainHand();
         if (!ToolType.SHOVEL.getMaterials().contains(tool.getType())) { return; }
 
-        if (!PlayerInfo.isToolViable(tool)) { return; }
+        if (!modManager.isToolViable(tool)) { return; }
 
         ItemMeta meta = tool.getItemMeta();
         List<String> lore = meta.getLore();

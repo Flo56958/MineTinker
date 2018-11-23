@@ -2,8 +2,8 @@ package de.flo56958.MineTinker.Listeners;
 
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.PlayerData;
-import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -21,6 +21,8 @@ import org.bukkit.inventory.PlayerInventory;
 
 public class PlayerListener implements Listener {
 
+    private static final ModManager modManager = Main.getModManager();
+
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         if (!e.isCancelled()) {
@@ -29,10 +31,7 @@ public class PlayerListener implements Listener {
 
             ItemStack tool = e.getClickedInventory().getItem(e.getSlot());
 
-            if (tool == null) { return; }
-            if (!tool.hasItemMeta()) { return; }
-            if (!tool.getItemMeta().hasLore()) { return; }
-            if (!(tool.getItemMeta().getLore().contains(Strings.IDENTIFIER) || tool.getItemMeta().getLore().contains(Strings.IDENTIFIER_BUILDERSWAND))) { return; }
+            if (!(modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool))) { return; }
 
             if (Main.getPlugin().getConfig().getBoolean("Repairable") && e.getWhoClicked().hasPermission("minetinker.tool.repair")) {
                 if (e.getWhoClicked().getItemOnCursor() != null) {
@@ -52,6 +51,8 @@ public class PlayerListener implements Listener {
                     } else if (name[0].toLowerCase().equals("bow") && (repair.getType().equals(Material.STICK) || repair.getType().equals(Material.STRING))) {
                         eligible = true;
                     } else if (name[0].toLowerCase().equals("shield") && Lists.getWoodPlanks().contains(repair.getType())) {
+                        eligible = true;
+                    } else if (name[0].toLowerCase().equals("leather") && repair.getType().equals(Material.LEATHER)) {
                         eligible = true;
                     }
                     if (eligible) {

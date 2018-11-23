@@ -1,7 +1,6 @@
 package de.flo56958.MineTinker.Listeners;
 
 import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Events.ModifierApplyEvent;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Events.ToolLevelUpEvent;
@@ -52,7 +51,7 @@ public class TinkerListener implements Listener {
             p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
         }
         ChatWriter.sendActionBar(p, "Failed to apply " + mod.getName() + " on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + e.getFailCause().toString() + ")");
-        ChatWriter.log(false, p.getDisplayName() + " failed to apply " + mod.getColor() + mod.getName() + " " + (modManager.getModLevel(tool, mod) + 1) + " on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") (" + e.getFailCause().toString() + ")");
+        ChatWriter.log(false, p.getDisplayName() + " failed to apply " + mod.getColor() + mod.getName() + ChatColor.GRAY + " " + (modManager.getModLevel(tool, mod) + 1) + " on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") (" + e.getFailCause().toString() + ")");
     }
 
     @EventHandler
@@ -76,7 +75,7 @@ public class TinkerListener implements Listener {
             } else {
                 newSlots = Integer.MAX_VALUE;
             }
-            lore.set(3, ChatColor.WHITE + Strings.FREEMODIFIERSLOTS + newSlots);
+            lore.set(3, modManager.FREEMODIFIERSLOTS + newSlots);
 
             meta.setLore(lore);
             tool.setItemMeta(meta);
@@ -112,7 +111,13 @@ public class TinkerListener implements Listener {
             if (config.getBoolean("LevelUpEvents.RandomModifier.enabled")) {
                 int n = rand.nextInt(100);
                 if (n <= config.getInt("LevelUpEvents.RandomModifier.percentage")) {
-                    p.getInventory().setItemInMainHand(LevelUpEvent_RandomModifier_apply(tool, p, 1));
+                    for (int i = 0; i < p.getInventory().getSize(); i++) {
+                        if (p.getInventory().getItem(i) != null && p.getInventory().getItem(i).equals(tool)) {  //Can be NULL!
+                            tool = LevelUpEvent_RandomModifier_apply(tool, p, 1);
+                            p.getInventory().setItem(i, tool);
+                            break;
+                        }
+                    }
                 }
             }
             if (config.getBoolean("LevelUpEvents.DropXP.enabled")) {
@@ -126,7 +131,7 @@ public class TinkerListener implements Listener {
     }
 
     private static ItemStack LevelUpEvent_RandomModifier_apply(ItemStack tool, Player p, int insurance) {
-        if (insurance == 20) { return tool; }
+        if (insurance >= 30) { return tool; }
 
         int index = new Random().nextInt(modManager.getAllMods().size());
         ItemStack safety = tool.clone();

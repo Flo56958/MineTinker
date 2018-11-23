@@ -33,7 +33,8 @@ public class ExtraModifier extends Modifier {
                 ChatColor.WHITE,
                 -1,
                 new ItemStack(Material.NETHER_STAR, 1),
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
+                                                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
         this.gain = config.getInt("Modifiers.Extra-Modifier.ExtraModifierGain");
     }

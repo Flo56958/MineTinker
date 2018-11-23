@@ -20,32 +20,32 @@ import org.bukkit.plugin.PluginManager;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Sweeping extends Modifier implements Enchantable {
+public class LightWeight extends Modifier implements Enchantable {
 
     private static final ModManager modManager = Main.getModManager();
     private static PluginManager pluginManager = Bukkit.getPluginManager();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
-    public Sweeping() {
-        super(config.getString("Modifiers.Sweeping.name"),
-                "[Enchanted Iron Ingot] More damage over a greater area!",
-                ModifierType.SWEEPING,
-                ChatColor.RED,
-                config.getInt("Modifiers.Sweeping.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.IRON_INGOT, ChatColor.RED + config.getString("Modifiers.Sweeping.name_modifier"), 1, Enchantment.SWEEPING_EDGE, 1),
-                new ArrayList<>(Collections.singletonList(ToolType.SWORD)),
+    public LightWeight() {
+        super(config.getString("Modifiers.Light-Weight.name"),
+                "[Enchanted Feather] You fall like a feather - sort of...",
+                ModifierType.LIGHT_WEIGHT,
+                ChatColor.GRAY,
+                config.getInt("Modifiers.Light-Weight.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.FEATHER, ChatColor.GRAY + config.getString("Modifiers.Light-Weight.name_modifier"), 1, Enchantment.DURABILITY, 1),
+                new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
                 Main.getPlugin());
     }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "sweeping", isCommand) == null) {
+        if (Modifier.checkAndAdd(p, tool, this, "lightweight", isCommand) == null) {
             return null;
         }
 
         ItemMeta meta = tool.getItemMeta();
 
-        meta.addEnchant(Enchantment.SWEEPING_EDGE, modManager.getModLevel(tool, this), true);
+        meta.addEnchant(Enchantment.PROTECTION_FALL, modManager.getModLevel(tool, this), true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
         tool.setItemMeta(meta);
@@ -55,7 +55,7 @@ public class Sweeping extends Modifier implements Enchantable {
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.sweeping.craft")) { return; }
-        ItemGenerator.createModifierItem(p, this, "Sweeping");
+        if (!p.hasPermission("minetinker.modifiers.lightweight.craft")) { return; }
+        ItemGenerator.createModifierItem(p, this, "Light-Weight");
     }
 }

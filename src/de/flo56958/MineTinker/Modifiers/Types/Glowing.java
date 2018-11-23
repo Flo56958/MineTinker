@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -50,16 +51,13 @@ public class Glowing extends Modifier {
     }
 
     public void effect(Player p, ItemStack tool, EntityDamageByEntityEvent e) {
-        if (p.hasPermission("minetinker.modifiers.glowing.use")) {
-            if (modManager.hasMod(tool, this)) {
-                if (!e.getEntity().isDead()) {
-                    if (e.getEntity() instanceof LivingEntity) {
-                        LivingEntity ent = (LivingEntity) e.getEntity();
-                        int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (modManager.getModLevel(tool, this) - 1)));
-                        ent.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, duration, 0, false, false));
-                    }
-                }
-            }
-        }
+        if (!p.hasPermission("minetinker.modifiers.glowing.use")) { return; }
+        if (!modManager.hasMod(tool, this)) { return; }
+        if (!(e.getEntity() instanceof LivingEntity)) { return; }
+
+        LivingEntity ent = (LivingEntity) e.getEntity();
+        int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (modManager.getModLevel(tool, this) - 1)));
+        ent.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, duration, 0, false, false));
+        ChatWriter.log(false, p.getDisplayName() + " triggered Glowing on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 }
