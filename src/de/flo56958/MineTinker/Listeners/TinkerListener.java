@@ -18,9 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class TinkerListener implements Listener {
@@ -50,7 +48,7 @@ public class TinkerListener implements Listener {
         if (config.getBoolean("Sound.OnFail")) {
             p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
         }
-        ChatWriter.sendActionBar(p, "Failed to apply " + mod.getName() + " on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + e.getFailCause().toString() + ")");
+        ChatWriter.sendActionBar(p, "Failed to apply " + mod.getColor() + mod.getName() + ChatColor.WHITE + " on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + e.getFailCause().toString() + ")");
         ChatWriter.log(false, p.getDisplayName() + " failed to apply " + mod.getColor() + mod.getName() + ChatColor.GRAY + " " + (modManager.getModLevel(tool, mod) + 1) + " on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") (" + e.getFailCause().toString() + ")");
     }
 
@@ -64,21 +62,13 @@ public class TinkerListener implements Listener {
         }
 
         if (config.getInt("AddModifierSlotsPerLevel") > 0) {
-            ItemMeta meta = tool.getItemMeta();
-            ArrayList<String> lore = (ArrayList<String>) meta.getLore();
-            String[] slotsS = lore.get(3).split(" ");
-
-            int slots = Integer.parseInt(slotsS[3]);
-            int newSlots = slots;
+            int slots = modManager.getFreeSlots(tool);
             if (!(slots == Integer.MAX_VALUE || slots < 0)) {
-                newSlots += config.getInt("AddModifierSlotsPerLevel");
+                slots += config.getInt("AddModifierSlotsPerLevel");
             } else {
-                newSlots = Integer.MAX_VALUE;
+                slots = Integer.MAX_VALUE;
             }
-            lore.set(3, modManager.FREEMODIFIERSLOTS + newSlots);
-
-            meta.setLore(lore);
-            tool.setItemMeta(meta);
+            modManager.setFreeSlots(tool, slots);
         }
 
         ChatWriter.sendActionBar(p, ItemGenerator.getDisplayName(tool) + ChatColor.GOLD + " just got a Level-Up!");
@@ -113,7 +103,7 @@ public class TinkerListener implements Listener {
                 if (n <= config.getInt("LevelUpEvents.RandomModifier.percentage")) {
                     for (int i = 0; i < p.getInventory().getSize(); i++) {
                         if (p.getInventory().getItem(i) != null && p.getInventory().getItem(i).equals(tool)) {  //Can be NULL!
-                            tool = LevelUpEvent_RandomModifier_apply(tool, p, 1);
+                            tool = LevelUpEvent_RandomModifier_apply(tool, p, 0);
                             p.getInventory().setItem(i, tool);
                             break;
                         }
@@ -135,7 +125,7 @@ public class TinkerListener implements Listener {
 
         int index = new Random().nextInt(modManager.getAllMods().size());
         ItemStack safety = tool.clone();
-        ItemStack newTool = modManager.getAllMods().get(index).applyMod(p, tool, false);
+        ItemStack newTool = modManager.getAllMods().get(index).applyMod(p, tool, true);
         if (newTool != null) {
             return newTool;
         } else {

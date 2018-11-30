@@ -166,27 +166,42 @@ public class Power extends Modifier implements Enchantable {
 
         int level = modManager.getModLevel(tool, this);
 
+        Block b = e.getClickedBlock();
+
         if (level == 1) {
             if (PlayerData.BLOCKFACE.get(p).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(p).equals(BlockFace.UP)) {
+                Block b1;
+                Block b2;
                 if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
-                    Block b1 = p.getWorld().getBlockAt(e.getClickedBlock().getLocation().add(1, 0, 0));
-                    Block b2 = p.getWorld().getBlockAt(e.getClickedBlock().getLocation().add(-1, 0, 0));
-                    powerCreateFarmland(p, tool, b1);
-                    powerCreateFarmland(p, tool, b2);
+                    if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
+                        b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
+                        b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
+                    } else {
+                        b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
+                        b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
+                    }
                 } else if (PlayerInfo.getFacingDirection(p).equals("W") || PlayerInfo.getFacingDirection(p).equals("E")) {
-                    Block b1 = p.getWorld().getBlockAt(e.getClickedBlock().getLocation().add(0, 0, 1));
-                    Block b2 = p.getWorld().getBlockAt(e.getClickedBlock().getLocation().add(0, 0, -1));
-                    powerCreateFarmland(p, tool, b1);
-                    powerCreateFarmland(p, tool, b2);
+                    if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
+                        b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
+                        b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
+                    } else {
+                        b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
+                        b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
+                    }
+                } else {
+                    b1 = b;
+                    b2 = b;
                 }
+                powerCreateFarmland(p, tool, b1);
+                powerCreateFarmland(p, tool, b2);
             }
         } else {
             if (PlayerData.BLOCKFACE.get(p).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(p).equals(BlockFace.UP)) {
                 for (int x = -(level - 1); x <= (level - 1); x++) {
                     for (int z = -(level - 1); z <= (level - 1); z++) {
                         if (!(x == 0 && z == 0)) {
-                            Block b = p.getWorld().getBlockAt(e.getClickedBlock().getLocation().add(x, 0, z));
-                            powerCreateFarmland(p, tool, b);
+                            Block b_ = p.getWorld().getBlockAt(b.getLocation().add(x, 0, z));
+                            powerCreateFarmland(p, tool, b_);
                         }
                     }
                 }

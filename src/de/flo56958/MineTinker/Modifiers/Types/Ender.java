@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -13,12 +14,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Ender extends Modifier {
+public class Ender extends Modifier implements Craftable {
 
     private static final ModManager modManager = Main.getModManager();
     private static PluginManager pluginManager = Bukkit.getPluginManager();
@@ -72,6 +74,19 @@ public class Ender extends Modifier {
                     ChatWriter.log(false, p.getDisplayName() + " triggered Ender on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
                 }
             }
+        }
+    }
+
+    @Override
+    public void registerCraftingRecipe() {
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Ender"), modManager.get(ModifierType.ENDER).getModItem()); //init recipe
+            newRecipe.shape("PPP", "PEP", "PPP"); //makes recipe
+            newRecipe.setIngredient('P', Material.ENDER_PEARL); //set ingredients
+            newRecipe.setIngredient('E', Material.ENDER_EYE);
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.log(true, "Could not register recipe for the Ender-Modifier!"); //executes if the recipe could not initialize
         }
     }
 }

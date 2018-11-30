@@ -46,7 +46,7 @@ public abstract class Modifier {
 		return color;
 	}
 	
-	public int getMaxLvl() { return maxLvl; }
+	private int getMaxLvl() { return maxLvl; }
 	
 	public Map<String, Object> getOptions(){
 		return options;
@@ -56,11 +56,11 @@ public abstract class Modifier {
 		return modItem;
 	}
 	
-	public ArrayList<ToolType> getAllowedTools(){
+	protected ArrayList<ToolType> getAllowedTools(){
 		return allowedTools;
 	}
 
-	public Plugin getSource() { return source; }
+	Plugin getSource() { return source; }
 
 	/**
 	 * register a new modifier to the list

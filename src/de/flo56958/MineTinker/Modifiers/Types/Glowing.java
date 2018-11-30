@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -9,12 +10,14 @@ import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -22,7 +25,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Glowing extends Modifier {
+public class Glowing extends Modifier implements Craftable {
 
     private static final ModManager modManager = Main.getModManager();
     private static PluginManager pluginManager = Bukkit.getPluginManager();
@@ -59,5 +62,18 @@ public class Glowing extends Modifier {
         int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (modManager.getModLevel(tool, this) - 1)));
         ent.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, duration, 0, false, false));
         ChatWriter.log(false, p.getDisplayName() + " triggered Glowing on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+    }
+
+    @Override
+    public void registerCraftingRecipe() {
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Glowing"), modManager.get(ModifierType.GLOWING).getModItem()); //init recipe
+            newRecipe.shape("GGG", "GEG", "GGG"); //makes recipe
+            newRecipe.setIngredient('G', Material.GLOWSTONE_DUST); //set ingredients
+            newRecipe.setIngredient('E', Material.ENDER_EYE);
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.log(true, "Could not register recipe for the Glowing-Modifier!"); //executes if the recipe could not initialize
+        }
     }
 }

@@ -18,6 +18,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -74,7 +75,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        if (Power.HASPOWER.get(p) && e.getBlock().getDrops(tool).isEmpty()) {
+        if (Power.HASPOWER.get(p) && e.getBlock().getDrops(tool).isEmpty() && !e.getBlock().getType().equals(Material.NETHER_WART)) { //Necessary for EasyHarvest NetherWard-Break
             e.setCancelled(true);
             return;
         }
@@ -146,34 +147,30 @@ public class BlockListener implements Listener {
             norm.setAmount(temp);
             if (e.getClickedBlock().getType().equals(Material.BOOKSHELF)) {
                 ItemStack item = p.getInventory().getItemInMainHand();
-                for (Modifier m : modManager.getAllMods()) {
-                    if (m instanceof Enchantable) {
-                        if (m.getModItem().getType().equals(item.getType())) {
-                            ((Enchantable) m).enchantItem(p, item);
-                        }
+                for (Modifier m : modManager.getEnchantableMods()) {
+                    if (m.getModItem().getType().equals(item.getType())) {
+                        ((Enchantable) m).enchantItem(p, item);
                     }
                 }
             }
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public static void onBlockPlace(BlockPlaceEvent e) {
         if (e.isCancelled()) { return; }
 
         Player p = e.getPlayer();
         Block b = e.getBlockPlaced();
         BlockState bs = b.getState();
-        if (config.getBoolean("Spawners.enabled") && Lists.WORLDS_SPAWNERS.contains(p.getWorld().toString())) {
-            if (!p.hasPermission("minetinker.spawners.place") && b.getType().equals(Material.SPAWNER)) {
+        if (config.getBoolean("Spawners.enabled") && Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
+            if (!p.hasPermission("minetinker.spawners.place") && b.getState() instanceof CreatureSpawner) {
                 e.setCancelled(true);
                 //return;
-            } else if (p.hasPermission("minetinker.spawners.place") && b.getType().equals(Material.SPAWNER)) {
+            } else if (p.hasPermission("minetinker.spawners.place") && b.getState() instanceof CreatureSpawner) {
                 CreatureSpawner cs = (CreatureSpawner) bs;
                 cs.setSpawnedType(EntityType.fromName(e.getItemInHand().getItemMeta().getDisplayName()));
                 bs.update(true);
-                System.out.println(EntityType.fromName(e.getItemInHand().getItemMeta().getDisplayName()));
-                System.out.println(cs.getSpawnedType());
                 ChatWriter.log(false,  p.getDisplayName() + " successfully placed a Spawner!");
             }
         }

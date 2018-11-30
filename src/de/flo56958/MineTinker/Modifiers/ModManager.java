@@ -1,6 +1,5 @@
 package de.flo56958.MineTinker.Modifiers;
 
-import de.flo56958.MineTinker.Data.CraftingRecipes;
 import de.flo56958.MineTinker.Events.ToolLevelUpEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Types.*;
@@ -25,6 +24,8 @@ public class ModManager {
      * all instances of modifier
      */
     private final ArrayList<Modifier> mods = new ArrayList<>();
+    private final ArrayList<Modifier> craftableMods = new ArrayList<>();
+    private final ArrayList<Modifier> enchantableMods = new ArrayList<>();
 
     private ModManager instance;
 
@@ -63,18 +64,15 @@ public class ModManager {
     public void init() {
         if (config.getBoolean("Modifiers.Auto-Smelt.allowed")) {
             register(new AutoSmelt());
-            CraftingRecipes.registerAutoSmeltModifier();
         }
         if (config.getBoolean("Modifiers.Beheading.allowed")) {
             register(new Beheading());
         }
         if (config.getBoolean("Modifiers.Directing.allowed")) {
             register(new Directing());
-            CraftingRecipes.registerDirectingModifier();
         }
         if (config.getBoolean("Modifiers.Ender.allowed")) {
             register(new Ender());
-            CraftingRecipes.registerEnderModifier();
         }
         if (config.getBoolean("Modifiers.Experienced.allowed")) {
             register(new Experienced());
@@ -87,11 +85,9 @@ public class ModManager {
         }
         if (config.getBoolean("Modifiers.Glowing.allowed")) {
             register(new Glowing());
-            CraftingRecipes.registerGlowingModifier();
         }
         if (config.getBoolean("Modifiers.Haste.allowed")) {
             register(new Haste());
-            CraftingRecipes.registerHasteModifier();
         }
         if (config.getBoolean("Modifiers.Infinity.allowed")) {
             register(new Infinity());
@@ -104,7 +100,6 @@ public class ModManager {
         }
         if (config.getBoolean("Modifiers.Luck.allowed")) {
             register(new Luck());
-            CraftingRecipes.registerLuckModifier();
         }
         if (config.getBoolean("Modifiers.Melting.allowed")) {
             register(new Melting());
@@ -117,22 +112,18 @@ public class ModManager {
         }
         if (config.getBoolean("Modifiers.Protecting.allowed")) {
             register(new Protecting());
-            CraftingRecipes.registerProtectingModifier();
         }
         if (config.getBoolean("Modifiers.Reinforced.allowed")) {
             register(new Reinforced());
-            CraftingRecipes.registerReinforcedModifier();
         }
         if (config.getBoolean("Modifiers.Self-Repair.allowed")) {
             register(new SelfRepair());
         }
         if (config.getBoolean("Modifiers.Sharpness.allowed")) {
             register(new Sharpness());
-            CraftingRecipes.registerSharpnessModifier();
         }
         if (config.getBoolean("Modifiers.Shulking.allowed")) {
             register(new Shulking());
-            CraftingRecipes.registerShulkingModifier();
         }
         if (config.getBoolean("Modifiers.Silk-Touch.allowed")) {
             register(new SilkTouch());
@@ -145,7 +136,19 @@ public class ModManager {
         }
         if (config.getBoolean("Modifiers.Webbed.allowed")) {
             register(new Webbed());
-            CraftingRecipes.registerWebbedModifier();
+        }
+
+        for (Modifier m : this.mods) {
+            if (m instanceof Craftable) {
+                this.craftableMods.add(m);
+            }
+            if (m instanceof Enchantable) {
+                this.enchantableMods.add(m);
+            }
+        }
+
+        for (Modifier m : this.craftableMods) {
+            ((Craftable) m).registerCraftingRecipe();
         }
     }
 
@@ -165,8 +168,22 @@ public class ModManager {
      * @return the modifier list
      */
     public List<Modifier> getAllMods() {
-        return mods;
+        return this.mods;
     }
+
+    /**
+     * get all the craftable modifiers in the list
+     *
+     * @return the craftable modifier list
+     */
+    public List<Modifier> getCraftableMods() { return this.craftableMods; }
+
+    /**
+     * get all the enchantable modifiers in the list
+     *
+     * @return the enchantable modifier list
+     */
+    public List<Modifier> getEnchantableMods() { return this.enchantableMods; }
 
     /**
      * get a specific modifier instance
@@ -189,7 +206,7 @@ public class ModManager {
      * @param is the item to add the modifier to
      * @param mod the modifier to add
      */
-    public void addMod(ItemStack is, Modifier mod) {
+    void addMod(ItemStack is, Modifier mod) {
         if(isToolViable(is) || isArmorViable(is)) {
             ItemMeta meta = is.getItemMeta();
             List<String> lore = meta.getLore();
@@ -267,8 +284,7 @@ public class ModManager {
         List<String> lore = im.getLore();
         for(String s : lore) {
             if(s.startsWith(this.FREEMODIFIERSLOTS)) {
-                String number = s.substring(this.FREEMODIFIERSLOTS.length());
-                return Integer.parseInt(number);
+                return Integer.parseInt(s.substring(this.FREEMODIFIERSLOTS.length()));
             }
         }
         return 0;
@@ -291,6 +307,83 @@ public class ModManager {
         }
     }
 
+    /**
+     * gets what level the tool has
+     *
+     * @param is the item to get the information from
+     */
+    public int getLevel(ItemStack is) {
+        ItemMeta meta = is.getItemMeta();
+        List<String> lore = meta.getLore();
+        for(String s : lore) {
+            if(s.startsWith(this.LEVELLINE)) {
+                String s_ = s.substring(this.LEVELLINE.length());
+                try {
+                    return Integer.parseInt(s_);
+                } catch (Exception e) {
+                    return -1;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * sets the level of the tool
+     *
+     * @param is the item to get the information from
+     */
+    public void setLevel(ItemStack is, int level) {
+        ItemMeta meta = is.getItemMeta();
+        List<String> lore = meta.getLore();
+        for(String s : lore) {
+            if(s.startsWith(this.LEVELLINE)) {
+                lore.set(lore.indexOf(s), this.LEVELLINE + level);
+                meta.setLore(lore);
+                is.setItemMeta(meta);
+            }
+        }
+    }
+
+    /**
+     * gets the amount of exp the tool has
+     *
+     * @param is the item to get the information from
+     */
+    public long getExp(ItemStack is) {
+        ItemMeta meta = is.getItemMeta();
+        List<String> lore = meta.getLore();
+        for(String s : lore) {
+            if(s.startsWith(this.EXPLINE)) {
+                String s_ = s.substring(this.EXPLINE.length());
+                String[] s__ = s_.split(" / ");
+                try {
+                    return Long.parseLong(s__[0]);
+                } catch (Exception e) {
+                    return -1;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * sets the exp amount of the tool
+     *
+     * @param is the item to get the information from
+     */
+    public void setExp(ItemStack is, long exp) {
+        ItemMeta meta = is.getItemMeta();
+        List<String> lore = meta.getLore();
+        for(String s : lore) {
+            if(s.startsWith(this.EXPLINE)) {
+                lore.set(lore.indexOf(s), this.EXPLINE + exp + " / " + getNextLevelReq(getLevel(is)));
+                meta.setLore(lore);
+                is.setItemMeta(meta);
+            }
+        }
+    }
+
     public boolean hasMod(ItemStack is, Modifier mod) {
         return getModIndex(is, mod) != -1;
     }
@@ -302,19 +395,15 @@ public class ModManager {
     public void addExp(Player p, ItemStack tool, int amount) {
         boolean LevelUp = false;
 
-        ItemMeta meta = tool.getItemMeta();
-        List<String> lore = meta.getLore();
+        int level = this.getLevel(tool);
+        long exp = this.getExp(tool);
 
-        String[] levelS = lore.get(1).split(" ");
-        String[] expS = lore.get(2).split(" ");
-
-        int level = Integer.parseInt(levelS[1]);
-        long exp = Long.parseLong(expS[1]);
+        if (level == -1 || exp == -1) { return; }
 
         if (exp == Long.MAX_VALUE || exp + 1 < 0 || level + 1 < 0) {
             if (Main.getPlugin().getConfig().getBoolean("ResetAtIntOverflow")) {
                 level = 1;
-                lore.set(1, this.LEVELLINE + level);
+                setLevel(tool, level);
                 exp = 0;
                 LevelUp = true;
             } else {
@@ -325,14 +414,12 @@ public class ModManager {
         exp = exp + amount;
         if (exp >= getNextLevelReq(level)) {
             level++;
-            lore.set(1, this.LEVELLINE + level);
+            setLevel(tool, level);
             LevelUp = true;
         }
 
-        lore.set(2, this.EXPLINE + exp + " / " + getNextLevelReq(level));
+        setExp(tool, exp);
 
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
         if (LevelUp) {
             pluginManager.callEvent(new ToolLevelUpEvent(p, tool));
         }

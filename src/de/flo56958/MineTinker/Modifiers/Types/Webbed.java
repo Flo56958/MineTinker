@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -11,12 +12,14 @@ import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -24,7 +27,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Webbed extends Modifier {
+public class Webbed extends Modifier implements Craftable {
 
     private static final ModManager modManager = Main.getModManager();
     private static PluginManager pluginManager = Bukkit.getPluginManager();
@@ -75,4 +78,15 @@ public class Webbed extends Modifier {
         ChatWriter.log(false, p.getDisplayName() + " triggered Webbed on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 
+    @Override
+    public void registerCraftingRecipe() {
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Webbed"), modManager.get(ModifierType.WEBBED).getModItem()); //init recipe
+            newRecipe.shape("WWW", "WWW", "WWW"); //makes recipe
+            newRecipe.setIngredient('W', Material.COBWEB); //set ingredients
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.log(true, "Could not register recipe for the Webbed-Modifier!"); //executes if the recipe could not initialize
+        }
+    }
 }

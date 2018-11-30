@@ -26,18 +26,10 @@ public class CraftingListener implements Listener {
         ArrayList<ToolType> tools = new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD));
 
         ArrayList<ToolType> armor = new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA));
-        if (e.isCancelled()) {
-            return;
-        }
-        if (!(e.getWhoClicked() instanceof Player)) {
-            return;
-        }
-        if (!Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) {
-            return;
-        }
-        if (!e.getWhoClicked().hasPermission("minetinker.tool.create")) {
-            return;
-        }
+        if (e.isCancelled()) { return; }
+        if (!(e.getWhoClicked() instanceof Player)) { return; }
+        if (!Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }
+        if (!e.getWhoClicked().hasPermission("minetinker.tool.create")) { return; }
 
         ArrayList<String> lore = new ArrayList<>();
         if (tools.contains(ToolType.get(e.getCurrentItem().getType()))) {
@@ -48,6 +40,7 @@ public class CraftingListener implements Listener {
             if (config.getBoolean("Sound.OnEveryCrafting")) {
                 ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
             }
+            return;
         }
 
         lore.add(modManager.LEVELLINE + "1");

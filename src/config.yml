@@ -254,9 +254,9 @@ Language:
   Identifier_Armor: MineTinker-Armor
   Identifier_Builderswand: MineTinker-Builderswand
   Identifier_Tool: MineTinker-Tool
-  LevelLine: Level #no spaces
-  ExpLine: Exp #no spaces
-  FreeModifierSlotsLine: Free Modifiers Slots #exactly two spaces for no error
+  LevelLine: Level
+  ExpLine: Exp
+  FreeModifierSlotsLine: Free Modifiers Slots
   ModifiersLine: Modifiers
   Commands:
     InvalidArguments: Invalid arguments!

@@ -5,27 +5,26 @@ import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import net.minecraft.server.v1_13_R2.BlockPosition;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Timber extends Modifier {
+public class Timber extends Modifier implements Craftable {
 
     private static final ModManager modManager = Main.getModManager();
     private static PluginManager pluginManager = Bukkit.getPluginManager();
@@ -109,6 +108,19 @@ public class Timber extends Modifier {
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public void registerCraftingRecipe() {
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Timber"), modManager.get(ModifierType.TIMBER).getModItem()); //init recipe
+            newRecipe.shape("LLL", "LEL", "LLL"); //makes recipe
+            newRecipe.setIngredient('L', Material.OAK_WOOD); //set ingredients
+            newRecipe.setIngredient('E', Material.EMERALD);
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.log(true, "Could not register recipe for the Timber-Modifier!"); //executes if the recipe could not initialize
         }
     }
 }

@@ -2,24 +2,28 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Protecting extends Modifier {
+public class Protecting extends Modifier implements Craftable {
     private static final ModManager modManager = Main.getModManager();
     private static PluginManager pluginManager = Bukkit.getPluginManager();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
@@ -49,5 +53,19 @@ public class Protecting extends Modifier {
         tool.setItemMeta(meta);
 
         return tool;
+    }
+
+    @Override
+    public void registerCraftingRecipe() {
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Protecting"), modManager.get(ModifierType.PROTECTING).getModItem()); //init recipe
+            newRecipe.shape("DID", "IOI", "DID"); //makes recipe
+            newRecipe.setIngredient('D', Material.DIAMOND);
+            newRecipe.setIngredient('I', Material.IRON_INGOT);
+            newRecipe.setIngredient('O', Material.OBSIDIAN); //set ingredients
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.log(true, "Could not register recipe for the Protecting-Modifier!"); //executes if the recipe could not initialize
+        }
     }
 }

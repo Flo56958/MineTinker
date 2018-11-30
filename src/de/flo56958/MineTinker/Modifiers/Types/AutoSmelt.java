@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -15,13 +16,14 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class AutoSmelt extends Modifier {
+public class AutoSmelt extends Modifier implements Craftable {
 
     private static final ModManager modManager = Main.getModManager();
     private static PluginManager pluginManager = Bukkit.getPluginManager();
@@ -69,6 +71,7 @@ public class AutoSmelt extends Modifier {
             case COAL_BLOCK:
                 goodBlock = true;
                 loot = Material.AIR;
+                break;
 
             case SAND:
                 goodBlock = true;
@@ -161,6 +164,19 @@ public class AutoSmelt extends Modifier {
                 }
             }
 
+        }
+    }
+
+    @Override
+    public void registerCraftingRecipe() {
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Autosmelt"), modManager.get(ModifierType.AUTO_SMELT).getModItem()); //init recipe
+            newRecipe.shape("CCC", "CFC", "CCC"); //makes recipe
+            newRecipe.setIngredient('C', Material.FURNACE); //set ingredients
+            newRecipe.setIngredient('F', Material.BLAZE_ROD);
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.log(true, "Could not register recipe for the Auto-Smelt-Modifier!"); //executes if the recipe could not initialize
         }
     }
 }

@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: a11
+version: a11.3
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -255,6 +255,7 @@ permissions:
   minetinker.modifiers.lightweight.*:
     children:
       minetinker.modifiers.lightweight.apply: true
+      minetinker.modifiers.lightweight.craft: true
     minetinker.modifiers.lightweight.apply:
       description: Allows to apply Light-Weight to MineTinker-Armor
       default: true
