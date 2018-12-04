@@ -1,8 +1,6 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
@@ -54,12 +52,7 @@ public class Webbed extends Modifier implements Craftable {
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.hasMod(tool, modManager.get(ModifierType.POWER))) {
-            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-            return null;
-        }
-
-        return Modifier.checkAndAdd(p, tool, this, "timber", isCommand);
+        return Modifier.checkAndAdd(p, tool, this, "webbed", isCommand);
     }
 
     public void effect(Player p, ItemStack tool, Entity e) {

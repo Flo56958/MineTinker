@@ -48,9 +48,11 @@ public class AutoSmelt extends Modifier implements Craftable {
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
 
-        if (modManager.hasMod(tool, modManager.get(ModifierType.SILK_TOUCH))) {
-            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-            return null;
+        if (modManager.get(ModifierType.SILK_TOUCH) != null) {
+            if (modManager.hasMod(tool, modManager.get(ModifierType.SILK_TOUCH))) {
+                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                return null;
+            }
         }
 
         return Modifier.checkAndAdd(p, tool, this, "autosmelt", isCommand);

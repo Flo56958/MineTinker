@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: a11.3
+version: a11.4
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -9,13 +9,14 @@ website: https://github.com/Flo56958/MineTinker
 database: false
 api-version: 1.13
 
+####################################################
 commands:
    minetinker:
      aliases: [mt]
      description: Main Command of MineTinker
      usage: /minetinker
 
-
+####################################################
 permissions:
   minetinker.*:
     children:

@@ -83,6 +83,7 @@ Modifiers:
     allowed: true
     name: Ender
     name_modifier: Ender-Modifier
+    CompatibleWithInfinity: true
     Sound: true #Sound when teleporting
   Experienced:
     allowed: true
@@ -135,6 +136,7 @@ Modifiers:
     name: Light-Weight
     name_modifier: Light-Weight-Modifier
     MaxLevel: 3
+    EnchantCost: 10
   Luck:
     allowed: true
     name: Luck

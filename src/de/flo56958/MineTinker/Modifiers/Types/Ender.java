@@ -1,6 +1,8 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
+import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
@@ -26,6 +28,7 @@ public class Ender extends Modifier implements Craftable {
     private static PluginManager pluginManager = Bukkit.getPluginManager();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
+    private final boolean compatibleWithInfinity;
     private final boolean hasSound;
 
     public Ender() {
@@ -38,10 +41,19 @@ public class Ender extends Modifier implements Craftable {
                 new ArrayList<>(Collections.singletonList(ToolType.BOW)),
                 Main.getPlugin());
         this.hasSound = config.getBoolean("Modifiers.Ender.Sound");
+        this.compatibleWithInfinity = config.getBoolean("Modifiers.Ender.CompatibleWithInfinity");
     }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (!this.compatibleWithInfinity) {
+            if (modManager.get(ModifierType.INFINITY) != null) {
+                if (modManager.hasMod(tool, modManager.get(ModifierType.INFINITY))) {
+                    pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                    return null;
+                }
+            }
+        }
         return Modifier.checkAndAdd(p, tool, this, "ender", isCommand);
     }
 

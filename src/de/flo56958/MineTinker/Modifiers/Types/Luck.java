@@ -33,7 +33,7 @@ public class Luck extends Modifier implements Craftable {
 
     public Luck() {
         super(config.getString("Modifiers.Luck.name"),
-                "[Enchanted TNT] Knockbacks Enemies further!",
+                "[Compressed Lapis Block] Get more loot from enemies and blocks!",
                 ModifierType.LUCK,
                 ChatColor.BLUE,
                 config.getInt("Modifiers.Luck.MaxLevel"),
@@ -44,9 +44,11 @@ public class Luck extends Modifier implements Craftable {
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.hasMod(tool, modManager.get(ModifierType.SILK_TOUCH))) {
-            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-            return null;
+        if (modManager.get(ModifierType.SILK_TOUCH) != null) {
+            if (modManager.hasMod(tool, modManager.get(ModifierType.SILK_TOUCH))) {
+                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                return null;
+            }
         }
         if (Modifier.checkAndAdd(p, tool, this, "luck", isCommand) == null) {
             return null;

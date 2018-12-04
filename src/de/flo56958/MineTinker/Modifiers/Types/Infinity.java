@@ -1,6 +1,8 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
+import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
@@ -26,6 +28,8 @@ public class Infinity extends Modifier implements Enchantable {
     private static PluginManager pluginManager = Bukkit.getPluginManager();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
+    private final boolean compatibleWithEnder;
+
     public Infinity() {
         super(config.getString("Modifiers.Infinity.name"),
                 "[Enchanted Arrow] You only need one Arrow to shoot a bow!",
@@ -35,10 +39,19 @@ public class Infinity extends Modifier implements Enchantable {
                 ItemGenerator.itemEnchanter(Material.ARROW, ChatColor.WHITE + config.getString("Modifiers.Infinity.name_modifier"), 1, Enchantment.ARROW_INFINITE, 1),
                 new ArrayList<>(Collections.singletonList(ToolType.BOW)),
                 Main.getPlugin());
+        this.compatibleWithEnder = config.getBoolean("Modifiers.Ender.CompatibleWithInfinity");
     }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (!this.compatibleWithEnder) {
+            if (modManager.get(ModifierType.ENDER) != null) {
+                if (modManager.hasMod(tool, modManager.get(ModifierType.ENDER))) {
+                    pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                    return null;
+                }
+            }
+        }
         if (Modifier.checkAndAdd(p, tool, this, "infinity", isCommand) == null) {
             return null;
         }

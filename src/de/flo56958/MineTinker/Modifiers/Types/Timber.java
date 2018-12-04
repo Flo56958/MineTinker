@@ -45,9 +45,11 @@ public class Timber extends Modifier implements Craftable {
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.hasMod(tool, modManager.get(ModifierType.POWER))) {
-            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-            return null;
+        if (modManager.get(ModifierType.POWER) != null) {
+            if (modManager.hasMod(tool, modManager.get(ModifierType.POWER))) {
+                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                return null;
+            }
         }
 
         return Modifier.checkAndAdd(p, tool, this, "timber", isCommand);

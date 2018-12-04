@@ -42,13 +42,17 @@ public class SilkTouch extends Modifier implements Enchantable {
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
 
-        if (modManager.hasMod(tool, modManager.get(ModifierType.AUTO_SMELT))) {
-            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-            return null;
+        if (modManager.get(ModifierType.AUTO_SMELT) != null) {
+            if (modManager.hasMod(tool, modManager.get(ModifierType.AUTO_SMELT))) {
+                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                return null;
+            }
         }
-        if (modManager.hasMod(tool, modManager.get(ModifierType.LUCK))) {
-            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-            return null;
+        if (modManager.get(ModifierType.LUCK) != null) {
+            if (modManager.hasMod(tool, modManager.get(ModifierType.LUCK))) {
+                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                return null;
+            }
         }
         if (Modifier.checkAndAdd(p, tool, this, "silktouch", isCommand) == null) {
             return null;
