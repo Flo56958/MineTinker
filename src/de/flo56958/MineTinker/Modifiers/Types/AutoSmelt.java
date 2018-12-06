@@ -140,6 +140,11 @@ public class AutoSmelt extends Modifier implements Craftable {
                 goodBlock = true;
                 loot = Material.SPONGE;
                 break;
+
+            case CLAY:
+                goodBlock = true;
+                loot = Material.BRICK;
+                break;
         }
         if (goodBlock) {
             if (modManager.hasMod(tool, this)) {
