@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -30,6 +31,7 @@ public class Webbed extends Modifier implements Craftable {
     private static final ModManager modManager = Main.getModManager();
     private static PluginManager pluginManager = Bukkit.getPluginManager();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final FileConfiguration recipesConfig = Main.getMain().getRecipeConfig();
 
     private final int duration;
     private final double durationMultiplier;
@@ -75,8 +77,14 @@ public class Webbed extends Modifier implements Craftable {
     public void registerCraftingRecipe() {
         try {
             ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Webbed"), modManager.get(ModifierType.WEBBED).getModItem()); //init recipe
-            newRecipe.shape("WWW", "WWW", "WWW"); //makes recipe
-            newRecipe.setIngredient('W', Material.COBWEB); //set ingredients
+            String top = recipesConfig.getString("Recipes.Webbed.Top");
+            String middle = recipesConfig.getString("Recipes.Webbed.Middle");
+            String bottom = recipesConfig.getString("Recipes.Webbed.Bottom");
+            ConfigurationSection materials = recipesConfig.getConfigurationSection("Recipes.Webbed.Materials");
+            newRecipe.shape(top, middle, bottom); //makes recipe
+            for (String key : materials.getKeys(false)) {
+                newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
+            }
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
         } catch (Exception e) {
             ChatWriter.log(true, "Could not register recipe for the Webbed-Modifier!"); //executes if the recipe could not initialize

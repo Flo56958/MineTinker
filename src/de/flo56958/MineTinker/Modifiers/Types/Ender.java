@@ -10,6 +10,7 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -27,6 +28,7 @@ public class Ender extends Modifier implements Craftable {
     private static final ModManager modManager = Main.getModManager();
     private static PluginManager pluginManager = Bukkit.getPluginManager();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final FileConfiguration recipesConfig = Main.getMain().getRecipeConfig();
 
     private final boolean compatibleWithInfinity;
     private final boolean hasSound;
@@ -93,9 +95,14 @@ public class Ender extends Modifier implements Craftable {
     public void registerCraftingRecipe() {
         try {
             ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Ender"), modManager.get(ModifierType.ENDER).getModItem()); //init recipe
-            newRecipe.shape("PPP", "PEP", "PPP"); //makes recipe
-            newRecipe.setIngredient('P', Material.ENDER_PEARL); //set ingredients
-            newRecipe.setIngredient('E', Material.ENDER_EYE);
+            String top = recipesConfig.getString("Recipes.Ender.Top");
+            String middle = recipesConfig.getString("Recipes.Ender.Middle");
+            String bottom = recipesConfig.getString("Recipes.Ender.Bottom");
+            ConfigurationSection materials = recipesConfig.getConfigurationSection("Recipes.Ender.Materials");
+            newRecipe.shape(top, middle, bottom); //makes recipe
+            for (String key : materials.getKeys(false)) {
+                newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
+            }
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
         } catch (Exception e) {
             ChatWriter.log(true, "Could not register recipe for the Ender-Modifier!"); //executes if the recipe could not initialize

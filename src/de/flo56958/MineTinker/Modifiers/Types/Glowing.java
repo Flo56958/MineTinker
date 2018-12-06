@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
@@ -30,6 +31,7 @@ public class Glowing extends Modifier implements Craftable {
     private static final ModManager modManager = Main.getModManager();
     private static PluginManager pluginManager = Bukkit.getPluginManager();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final FileConfiguration recipesConfig = Main.getMain().getRecipeConfig();
 
     private final int duration;
     private final double durationMultiplier;
@@ -68,9 +70,14 @@ public class Glowing extends Modifier implements Craftable {
     public void registerCraftingRecipe() {
         try {
             ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Glowing"), modManager.get(ModifierType.GLOWING).getModItem()); //init recipe
-            newRecipe.shape("GGG", "GEG", "GGG"); //makes recipe
-            newRecipe.setIngredient('G', Material.GLOWSTONE_DUST); //set ingredients
-            newRecipe.setIngredient('E', Material.ENDER_EYE);
+            String top = recipesConfig.getString("Recipes.Glowing.Top");
+            String middle = recipesConfig.getString("Recipes.Glowing.Middle");
+            String bottom = recipesConfig.getString("Recipes.Glowing.Bottom");
+            ConfigurationSection materials = recipesConfig.getConfigurationSection("Recipes.Glowing.Materials");
+            newRecipe.shape(top, middle, bottom); //makes recipe
+            for (String key : materials.getKeys(false)) {
+                newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
+            }
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
         } catch (Exception e) {
             ChatWriter.log(true, "Could not register recipe for the Glowing-Modifier!"); //executes if the recipe could not initialize
