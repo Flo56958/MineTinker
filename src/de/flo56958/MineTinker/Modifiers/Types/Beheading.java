@@ -2,15 +2,13 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -24,24 +22,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Beheading extends Modifier implements Enchantable {
+public class Beheading extends Modifier implements Enchantable, Craftable {
 
     private static final ModManager modManager = Main.getModManager();
-    private static PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final PluginManager pluginManager = Bukkit.getPluginManager();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Beheading.yml");
 
     private final int percentagePerLevel;
 
     public Beheading() {
-        super(config.getString("Modifiers.Beheading.name"),
+        super(config.getString("Beheading.name"),
                 "[Enchanted Wither-Skull] Chance to drop the head of the mob!",
                 ModifierType.BEHEADING,
                 ChatColor.DARK_GRAY,
                 config.getInt("Modifiers.Auto-Smelt.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.WITHER_SKELETON_SKULL, ChatColor.DARK_GRAY + config.getString("Modifiers.Beheading.name_modifier"), 1, Enchantment.LOOT_BONUS_MOBS, 1),
+                ItemGenerator.itemEnchanter(Material.WITHER_SKELETON_SKULL, ChatColor.DARK_GRAY + config.getString("Beheading.name_modifier"), 1, Enchantment.LOOT_BONUS_MOBS, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
-        this.percentagePerLevel = config.getInt("Modifiers.Beheading.PercentagePerLevel");
+        this.percentagePerLevel = config.getInt("Beheading.PercentagePerLevel");
     }
 
     @Override
@@ -51,7 +49,7 @@ public class Beheading extends Modifier implements Enchantable {
 
     public ItemStack effect(Player p, ItemStack tool, Entity mob) {
         ItemStack loot = new ItemStack(Material.AIR, 1);
-        if (p.hasPermission("minetinker.modifiers.beheading.use")) {
+        if (p.hasPermission("minetinker.Beheading.use")) {
             if (modManager.hasMod(tool, this)) {
                 Random rand = new Random();
                 int n = rand.nextInt(100);
@@ -84,7 +82,12 @@ public class Beheading extends Modifier implements Enchantable {
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.beheading.craft")) { return; }
+        if (!p.hasPermission("minetinker.Beheading.craft")) { return; }
         ItemGenerator.createModifierItem(p, this, "Beheading");
+    }
+
+    @Override
+    public void registerCraftingRecipe() {
+        _registerCraftingRecipe(config, modManager, ModifierType.BEHEADING, "Beheading", "Modifier_Beheading");
     }
 }

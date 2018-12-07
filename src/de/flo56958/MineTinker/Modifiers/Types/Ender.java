@@ -10,14 +10,12 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
@@ -26,24 +24,23 @@ import java.util.Collections;
 public class Ender extends Modifier implements Craftable {
 
     private static final ModManager modManager = Main.getModManager();
-    private static PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
-    private static final FileConfiguration recipesConfig = Main.getMain().getRecipeConfig();
+    private static final PluginManager pluginManager = Bukkit.getPluginManager();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Ender.yml");
 
     private final boolean compatibleWithInfinity;
     private final boolean hasSound;
 
     public Ender() {
-        super(config.getString("Modifiers.Ender.name"),
+        super(config.getString("Ender.name"),
                 "[Special Endereye] Teleports you while sneaking to the arrow location!",
                 ModifierType.ENDER,
                 ChatColor.DARK_GREEN,
                 1,
-                ItemGenerator.itemEnchanter(Material.ENDER_EYE, ChatColor.DARK_GREEN + config.getString("Modifiers.Ender.name_modifier"), 1, Enchantment.DURABILITY, 1),
+                ItemGenerator.itemEnchanter(Material.ENDER_EYE, ChatColor.DARK_GREEN + config.getString("Ender.name_modifier"), 1, Enchantment.DURABILITY, 1),
                 new ArrayList<>(Collections.singletonList(ToolType.BOW)),
                 Main.getPlugin());
-        this.hasSound = config.getBoolean("Modifiers.Ender.Sound");
-        this.compatibleWithInfinity = config.getBoolean("Modifiers.Ender.CompatibleWithInfinity");
+        this.hasSound = config.getBoolean("Ender.Sound");
+        this.compatibleWithInfinity = config.getBoolean("Ender.CompatibleWithInfinity");
     }
 
     @Override
@@ -93,19 +90,6 @@ public class Ender extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        try {
-            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Ender"), modManager.get(ModifierType.ENDER).getModItem()); //init recipe
-            String top = recipesConfig.getString("Recipes.Ender.Top");
-            String middle = recipesConfig.getString("Recipes.Ender.Middle");
-            String bottom = recipesConfig.getString("Recipes.Ender.Bottom");
-            ConfigurationSection materials = recipesConfig.getConfigurationSection("Recipes.Ender.Materials");
-            newRecipe.shape(top, middle, bottom); //makes recipe
-            for (String key : materials.getKeys(false)) {
-                newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
-            }
-            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
-        } catch (Exception e) {
-            ChatWriter.log(true, "Could not register recipe for the Ender-Modifier!"); //executes if the recipe could not initialize
-        }
+        _registerCraftingRecipe(config, modManager, ModifierType.ENDER, "Ender", "Modifier_Ender");
     }
 }

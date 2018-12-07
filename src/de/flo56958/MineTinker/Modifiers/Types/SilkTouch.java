@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -22,19 +23,19 @@ import org.bukkit.plugin.PluginManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SilkTouch extends Modifier implements Enchantable {
+public class SilkTouch extends Modifier implements Enchantable, Craftable {
 
     private static final ModManager modManager = Main.getModManager();
-    private static PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final PluginManager pluginManager = Bukkit.getPluginManager();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Silk-Touch.yml");
 
     public SilkTouch() {
-        super(config.getString("Modifiers.Silk-Touch.name"),
+        super(config.getString("Silk-Touch.name"),
                 "[Enchanted Cobweb] Applies Silk-Touch!",
                 ModifierType.SILK_TOUCH,
                 ChatColor.WHITE,
                 1,
-                ItemGenerator.itemEnchanter(Material.COBWEB, ChatColor.WHITE + config.getString("Modifiers.Silk-Touch.name_modifier"), 1, Enchantment.SILK_TOUCH, 1),
+                ItemGenerator.itemEnchanter(Material.COBWEB, ChatColor.WHITE + config.getString("Silk-Touch.name_modifier"), 1, Enchantment.SILK_TOUCH, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL)),
                 Main.getPlugin());
     }
@@ -72,5 +73,10 @@ public class SilkTouch extends Modifier implements Enchantable {
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.silktouch.craft")) { return; }
         ItemGenerator.createModifierItem(p, this, "Silk-Touch");
+    }
+
+    @Override
+    public void registerCraftingRecipe() {
+        _registerCraftingRecipe(config, modManager, ModifierType.SILK_TOUCH, "Silk-Touch", "Modifier_SilkTouch");
     }
 }

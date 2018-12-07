@@ -1,0 +1,9 @@
+Beheading:
+  allowed: true
+  name: Beheading
+  name_modifier: Beheading-Modifier
+  MaxLevel: 10
+  PercentagePerLevel: 10
+  EnchantCost: 10
+  Recipe:
+    Enabled: false

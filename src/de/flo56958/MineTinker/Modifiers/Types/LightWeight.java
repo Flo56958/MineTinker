@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -20,19 +21,19 @@ import org.bukkit.plugin.PluginManager;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class LightWeight extends Modifier implements Enchantable {
+public class LightWeight extends Modifier implements Enchantable, Craftable {
 
     private static final ModManager modManager = Main.getModManager();
-    private static PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final PluginManager pluginManager = Bukkit.getPluginManager();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Light-Weight.yml");
 
     public LightWeight() {
-        super(config.getString("Modifiers.Light-Weight.name"),
+        super(config.getString("Light-Weight.name"),
                 "[Enchanted Feather] You fall like a feather - sort of...",
                 ModifierType.LIGHT_WEIGHT,
                 ChatColor.GRAY,
-                config.getInt("Modifiers.Light-Weight.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.FEATHER, ChatColor.GRAY + config.getString("Modifiers.Light-Weight.name_modifier"), 1, Enchantment.DURABILITY, 1),
+                config.getInt("Light-Weight.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.FEATHER, ChatColor.GRAY + config.getString("Light-Weight.name_modifier"), 1, Enchantment.DURABILITY, 1),
                 new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
                 Main.getPlugin());
     }
@@ -57,5 +58,10 @@ public class LightWeight extends Modifier implements Enchantable {
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.lightweight.craft")) { return; }
         ItemGenerator.createModifierItem(p, this, "Light-Weight");
+    }
+
+    @Override
+    public void registerCraftingRecipe() {
+        _registerCraftingRecipe(config, modManager, ModifierType.LIGHT_WEIGHT, "Light-Weight", "Modifier_LightWeight");
     }
 }

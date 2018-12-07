@@ -1,0 +1,9 @@
+Melting:
+  allowed: true
+  name: Melting
+  name_modifier: Melting-Modifier
+  MaxLevel: 3
+  EnchantCost: 10
+  BonusMultiplier: 0.1 #Percent of Bonus-damage per Level
+  Recipe:
+    Enabled: false

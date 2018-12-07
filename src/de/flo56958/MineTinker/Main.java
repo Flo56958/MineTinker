@@ -7,6 +7,7 @@ import de.flo56958.MineTinker.Listeners.*;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.Config;
 import de.flo56958.MineTinker.bStats.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -22,7 +23,7 @@ import java.io.IOException;
 public class Main extends JavaPlugin {
 
     private static ModManager modManager;
-    private FileConfiguration recipeConfig;
+    private Config configurations = new Config(this);
     private static Main tinkerMain;
 
     @Override
@@ -33,7 +34,6 @@ public class Main extends JavaPlugin {
         tinkerMain = this;
 
         loadConfig();
-        createRecipeConfig();
 
         modManager = new ModManager();
         modManager.init();
@@ -96,22 +96,5 @@ public class Main extends JavaPlugin {
 
     public static Main getMain() { return tinkerMain; }
 
-    public FileConfiguration getRecipeConfig() {
-        return this.recipeConfig;
-    }
-
-    private void createRecipeConfig() {
-        File customConfigFile = new File(getDataFolder(), "recipes.yml");
-        if (!customConfigFile.exists()) {
-            customConfigFile.getParentFile().mkdirs();
-            saveResource("recipes.yml", false);
-        }
-
-        recipeConfig = new YamlConfiguration();
-        try {
-            recipeConfig.load(customConfigFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-    }
+    public Config getConfigurations() { return this.configurations; }
 }

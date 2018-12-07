@@ -1,0 +1,8 @@
+Fiery:
+  allowed: true
+  name: Fiery
+  name_modifier: Fiery-Modifier
+  MaxLevel: 2
+  EnchantCost: 10
+  Recipe:
+    Enabled: false

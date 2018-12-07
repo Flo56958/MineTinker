@@ -11,13 +11,11 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
@@ -27,23 +25,22 @@ import java.util.Random;
 public class AutoSmelt extends Modifier implements Craftable {
 
     private static final ModManager modManager = Main.getModManager();
-    private static PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
-    private static final FileConfiguration recipesConfig = Main.getMain().getRecipeConfig();
+    private static final PluginManager pluginManager = Bukkit.getPluginManager();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Auto-Smelt.yml");
     private final int percentagePerLevel;
     private final boolean hasSound;
 
     public AutoSmelt() {
-        super(config.getString("Modifiers.Auto-Smelt.name"),
+        super(config.getString("Auto-Smelt.name"),
                 "[Enhanced Furnace] Chance to smelt ore when mined!",
                 ModifierType.AUTO_SMELT,
                 ChatColor.YELLOW,
-                config.getInt("Modifiers.Auto-Smelt.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.FURNACE, ChatColor.YELLOW + config.getString("Modifiers.Auto-Smelt.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1),
+                config.getInt("Auto-Smelt.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.FURNACE, ChatColor.YELLOW + config.getString("Auto-Smelt.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL)),
                 Main.getPlugin());
-        this.percentagePerLevel = config.getInt("Modifiers.Auto-Smelt.PercentagePerLevel");
-        this.hasSound = config.getBoolean("Modifiers.Auto-Smelt.Sound");
+        this.percentagePerLevel = config.getInt("Auto-Smelt.PercentagePerLevel");
+        this.hasSound = config.getBoolean("Auto-Smelt.Sound");
     }
 
     @Override
@@ -65,15 +62,15 @@ public class AutoSmelt extends Modifier implements Craftable {
         boolean luck = false;
         Material loot = Material.AIR;
         switch (b.getType()) {
+            case STONE:
+                if (config.getBoolean("Auto-Smelt.smelt_stone")) {
+                    goodBlock = true;
+                    loot = Material.STONE;
+                }
+                break;
             case COBBLESTONE:
                 goodBlock = true;
                 loot = Material.STONE;
-                break;
-
-            case COAL_ORE:
-            case COAL_BLOCK:
-                goodBlock = true;
-                loot = Material.AIR;
                 break;
 
             case SAND:
@@ -177,19 +174,6 @@ public class AutoSmelt extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        try {
-            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Autosmelt"), modManager.get(ModifierType.AUTO_SMELT).getModItem()); //init recipe
-            String top = recipesConfig.getString("Recipes.Autosmelt.Top");
-            String middle = recipesConfig.getString("Recipes.Autosmelt.Middle");
-            String bottom = recipesConfig.getString("Recipes.Autosmelt.Bottom");
-            ConfigurationSection materials = recipesConfig.getConfigurationSection("Recipes.Autosmelt.Materials");
-            newRecipe.shape(top, middle, bottom); //makes recipe
-            for (String key : materials.getKeys(false)) {
-                newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
-            }
-            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
-        } catch (Exception e) {
-            ChatWriter.log(true, "Could not register recipe for the Auto-Smelt-Modifier!"); //executes if the recipe could not initialize
-        }
+        _registerCraftingRecipe(config, modManager, ModifierType.AUTO_SMELT, "Auto-Smelt", "Modifier_Autosmelt");
     }
 }

@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -20,19 +21,19 @@ import org.bukkit.plugin.PluginManager;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Sweeping extends Modifier implements Enchantable {
+public class Sweeping extends Modifier implements Enchantable, Craftable {
 
     private static final ModManager modManager = Main.getModManager();
-    private static PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final PluginManager pluginManager = Bukkit.getPluginManager();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Sweeping.yml");
 
     public Sweeping() {
-        super(config.getString("Modifiers.Sweeping.name"),
+        super(config.getString("Sweeping.name"),
                 "[Enchanted Iron Ingot] More damage over a greater area!",
                 ModifierType.SWEEPING,
                 ChatColor.RED,
-                config.getInt("Modifiers.Sweeping.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.IRON_INGOT, ChatColor.RED + config.getString("Modifiers.Sweeping.name_modifier"), 1, Enchantment.SWEEPING_EDGE, 1),
+                config.getInt("Sweeping.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.IRON_INGOT, ChatColor.RED + config.getString("Sweeping.name_modifier"), 1, Enchantment.SWEEPING_EDGE, 1),
                 new ArrayList<>(Collections.singletonList(ToolType.SWORD)),
                 Main.getPlugin());
     }
@@ -57,5 +58,10 @@ public class Sweeping extends Modifier implements Enchantable {
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.sweeping.craft")) { return; }
         ItemGenerator.createModifierItem(p, this, "Sweeping");
+    }
+
+    @Override
+    public void registerCraftingRecipe() {
+        _registerCraftingRecipe(config, modManager, ModifierType.SWEEPING, "Sweeping", "Modifier_Sweeping");
     }
 }

@@ -10,15 +10,12 @@ import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -29,27 +26,26 @@ import java.util.Arrays;
 public class Webbed extends Modifier implements Craftable {
 
     private static final ModManager modManager = Main.getModManager();
-    private static PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
-    private static final FileConfiguration recipesConfig = Main.getMain().getRecipeConfig();
+    private static final PluginManager pluginManager = Bukkit.getPluginManager();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Webbed.yml");
 
     private final int duration;
     private final double durationMultiplier;
     private final int effectAmplifier;
 
     public Webbed() {
-        super(config.getString("Modifiers.Webbed.name"),
+        super(config.getString("Webbed.name"),
                 "[Compressed Cobweb] Slowes Foes!",
                 ModifierType.WEBBED,
                 ChatColor.WHITE,
-                config.getInt("Modifiers.Webbed.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.COBWEB, ChatColor.WHITE + config.getString("Modifiers.Webbed.name_modifier"), 1, Enchantment.DAMAGE_ALL, 1),
+                config.getInt("Webbed.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.COBWEB, ChatColor.WHITE + config.getString("Webbed.name_modifier"), 1, Enchantment.DAMAGE_ALL, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
-        this.duration = config.getInt("Modifiers.Webbed.Duration");
-        this.durationMultiplier = config.getDouble("Modifiers.Webbed.DurationMultiplier");
-        this.effectAmplifier = config.getInt("Modifiers.Webbed.EffectAmplifier");
+        this.duration = config.getInt("Webbed.Duration");
+        this.durationMultiplier = config.getDouble("Webbed.DurationMultiplier");
+        this.effectAmplifier = config.getInt("Webbed.EffectAmplifier");
     }
 
     @Override
@@ -75,19 +71,6 @@ public class Webbed extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        try {
-            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Webbed"), modManager.get(ModifierType.WEBBED).getModItem()); //init recipe
-            String top = recipesConfig.getString("Recipes.Webbed.Top");
-            String middle = recipesConfig.getString("Recipes.Webbed.Middle");
-            String bottom = recipesConfig.getString("Recipes.Webbed.Bottom");
-            ConfigurationSection materials = recipesConfig.getConfigurationSection("Recipes.Webbed.Materials");
-            newRecipe.shape(top, middle, bottom); //makes recipe
-            for (String key : materials.getKeys(false)) {
-                newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
-            }
-            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
-        } catch (Exception e) {
-            ChatWriter.log(true, "Could not register recipe for the Webbed-Modifier!"); //executes if the recipe could not initialize
-        }
+        _registerCraftingRecipe(config, modManager, ModifierType.WEBBED, "Webbed", "Modifier_Webbed");
     }
 }

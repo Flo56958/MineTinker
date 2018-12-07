@@ -7,19 +7,15 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 
@@ -29,17 +25,16 @@ import java.util.Arrays;
 public class Luck extends Modifier implements Craftable {
 
     private static final ModManager modManager = Main.getModManager();
-    private static PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
-    private static final FileConfiguration recipesConfig = Main.getMain().getRecipeConfig();
+    private static final PluginManager pluginManager = Bukkit.getPluginManager();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Luck.yml");
 
     public Luck() {
-        super(config.getString("Modifiers.Luck.name"),
+        super(config.getString("Luck.name"),
                 "[Compressed Lapis Block] Get more loot from enemies and blocks!",
                 ModifierType.LUCK,
                 ChatColor.BLUE,
-                config.getInt("Modifiers.Luck.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.LAPIS_BLOCK, ChatColor.BLUE + config.getString("Modifiers.Luck.name_modifier"), 1, Enchantment.LOOT_BONUS_BLOCKS, 1),
+                config.getInt("Luck.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.LAPIS_BLOCK, ChatColor.BLUE + config.getString("Luck.name_modifier"), 1, Enchantment.LOOT_BONUS_BLOCKS, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD)),
                 Main.getPlugin());
     }
@@ -81,19 +76,6 @@ public class Luck extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        try {
-            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Luck"), modManager.get(ModifierType.LUCK).getModItem()); //init recipe
-            String top = recipesConfig.getString("Recipes.Luck.Top");
-            String middle = recipesConfig.getString("Recipes.Luck.Middle");
-            String bottom = recipesConfig.getString("Recipes.Luck.Bottom");
-            ConfigurationSection materials = recipesConfig.getConfigurationSection("Recipes.Luck.Materials");
-            newRecipe.shape(top, middle, bottom); //makes recipe
-            for (String key : materials.getKeys(false)) {
-                newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
-            }
-            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
-        } catch (Exception e) {
-            ChatWriter.log(true, "Could not register recipe for the Luck-Modifier!"); //executes if the recipe could not initialize
-        }
+        _registerCraftingRecipe(config, modManager, ModifierType.LUCK, "Luck", "Modifier_Luck");
     }
 }
