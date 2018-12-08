@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Events.ToolLevelUpEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Types.*;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -62,79 +63,80 @@ public class ModManager {
     }
 
     public void init() {
-        if (config.getBoolean("Modifiers.Auto-Smelt.allowed")) {
+        Config configs = Main.getMain().getConfigurations();
+        if (configs.getConfig("Auto-Smelt.yml").getBoolean("Auto-Smelt.allowed")) {
             register(new AutoSmelt());
         }
-        if (config.getBoolean("Modifiers.Beheading.allowed")) {
+        if (configs.getConfig("Beheading.yml").getBoolean("Beheading.allowed")) {
             register(new Beheading());
         }
-        if (config.getBoolean("Modifiers.Directing.allowed")) {
+        if (configs.getConfig("Directing.yml").getBoolean("Directing.allowed")) {
             register(new Directing());
         }
-        if (config.getBoolean("Modifiers.Ender.allowed")) {
+        if (configs.getConfig("Ender.yml").getBoolean("Ender.allowed")) {
             register(new Ender());
         }
-        if (config.getBoolean("Modifiers.Experienced.allowed")) {
+        if (configs.getConfig("Experienced.yml").getBoolean("Experienced.allowed")) {
             register(new Experienced());
         }
-        if (config.getBoolean("Modifiers.Extra-Modifier.allowed")) {
+        if (configs.getConfig("Extra-Modifier.yml").getBoolean("Extra-Modifier.allowed")) {
             register(new ExtraModifier());
         }
-        if (config.getBoolean("Modifiers.Fiery.allowed")) {
+        if (configs.getConfig("Fiery.yml").getBoolean("Fiery.allowed")) {
             register(new Fiery());
         }
-        if (config.getBoolean("Modifiers.Glowing.allowed")) {
+        if (configs.getConfig("Glowing.yml").getBoolean("Glowing.allowed")) {
             register(new Glowing());
         }
-        if (config.getBoolean("Modifiers.Haste.allowed")) {
+        if (configs.getConfig("Haste.yml").getBoolean("Haste.allowed")) {
             register(new Haste());
         }
-        if (config.getBoolean("Modifiers.Infinity.allowed")) {
+        if (configs.getConfig("Infinity.yml").getBoolean("Infinity.allowed")) {
             register(new Infinity());
         }
-        if (config.getBoolean("Modifiers.Knockback.allowed")) {
+        if (configs.getConfig("Knockback.yml").getBoolean("Knockback.allowed")) {
             register(new Knockback());
         }
-        if (config.getBoolean("Modifiers.Light-Weight.allowed")) {
+        if (configs.getConfig("Light-Weight.yml").getBoolean("Light-Weight.allowed")) {
             register(new LightWeight());
         }
-        if (config.getBoolean("Modifiers.Luck.allowed")) {
+        if (configs.getConfig("Luck.yml").getBoolean("Luck.allowed")) {
             register(new Luck());
         }
-        if (config.getBoolean("Modifiers.Melting.allowed")) {
+        if (configs.getConfig("Melting.yml").getBoolean("Melting.allowed")) {
             register(new Melting());
         }
-        if (config.getBoolean("Modifiers.Poisonous.allowed")) {
+        if (configs.getConfig("Poisonous.yml").getBoolean("Poisonous.allowed")) {
             register(new Poisonous());
         }
-        if (config.getBoolean("Modifiers.Power.allowed")) {
+        if (configs.getConfig("Power.yml").getBoolean("Power.allowed")) {
             register(new Power());
         }
-        if (config.getBoolean("Modifiers.Protecting.allowed")) {
+        if (configs.getConfig("Protecting.yml").getBoolean("Protecting.allowed")) {
             register(new Protecting());
         }
-        if (config.getBoolean("Modifiers.Reinforced.allowed")) {
+        if (configs.getConfig("Reinforced.yml").getBoolean("Reinforced.allowed")) {
             register(new Reinforced());
         }
-        if (config.getBoolean("Modifiers.Self-Repair.allowed")) {
+        if (configs.getConfig("Self-Repair.yml").getBoolean("Self-Repair.allowed")) {
             register(new SelfRepair());
         }
-        if (config.getBoolean("Modifiers.Sharpness.allowed")) {
+        if (configs.getConfig("Sharpness.yml").getBoolean("Sharpness.allowed")) {
             register(new Sharpness());
         }
-        if (config.getBoolean("Modifiers.Shulking.allowed")) {
+        if (configs.getConfig("Shulking.yml").getBoolean("Shulking.allowed")) {
             register(new Shulking());
         }
-        if (config.getBoolean("Modifiers.Silk-Touch.allowed")) {
+        if (configs.getConfig("Silk-Touch.yml").getBoolean("Silk-Touch.allowed")) {
             register(new SilkTouch());
         }
-        if (config.getBoolean("Modifiers.Sweeping.allowed")) {
+        if (configs.getConfig("Sweeping.yml").getBoolean("Sweeping.allowed")) {
             register(new Sweeping());
         }
-        if (config.getBoolean("Modifiers.Timber.allowed")) {
+        if (configs.getConfig("Timber.yml").getBoolean("Timber.allowed")) {
             register(new Timber());
         }
-        if (config.getBoolean("Modifiers.Webbed.allowed")) {
+        if (configs.getConfig("Webbed.yml").getBoolean("Webbed.allowed")) {
             register(new Webbed());
         }
 

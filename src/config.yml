@@ -1,4 +1,5 @@
 chat-prefix: [MineTinker]
+
 logging:
   standard: false #logs important player activities with MineTinker
   debug: false #even more information
@@ -60,58 +61,6 @@ AllowedWorlds: #Worlds where MineTinker-Tools can be used
   - world_nether #default
   - world_the_end #default
 
-Modifiers:
-  Auto-Smelt:
-    allowed: true
-  Beheading:
-    allowed: true
-  Directing:
-    allowed: true
-  Ender:
-    allowed: true
-  Experienced:
-    allowed: true
-  Extra-Modifier:
-    allowed: true
-  Fiery:
-    allowed: true
-  Glowing:
-    allowed: true
-  Haste:
-    allowed: true
-  Knockback:
-    allowed: true
-  Infinity:
-    allowed: true
-  Melting:
-    allowed: true
-  Light-Weight:
-    allowed: true
-  Luck:
-    allowed: true
-  Poisonous:
-    allowed: true
-  Power:
-    allowed: true
-  Protecting:
-    allowed: true
-  Reinforced:
-    allowed: true
-  Self-Repair:
-    allowed: true
-  Sharpness:
-    allowed: true
-  Shulking:
-    allowed: true
-  Silk-Touch:
-    allowed: true
-  Sweeping:
-    allowed: true
-  Timber:
-    allowed: true
-  Webbed:
-    allowed: true
-
 Spawners:
   enabled: true #Should be disabled when using a different Spawner plugin
   onlyWithSilkTouch: true
@@ -119,28 +68,6 @@ Spawners:
     - world #default
     - world_nether #default
     - world_the_end #default
-
-Elevator:
-  enabled: true
-  name: Elevator-Motor
-  Sound: true #(Chest opening and closing)
-  AllowedWorlds: #Worlds where Elevator can be used
-  - world #default
-  - world_nether #default
-  - world_the_end #default
-
-Builderswands:
-  enabled: true
-  useDurability: true
-  name_wood: Wooden Builderswand
-  name_stone: Stone Builderswand
-  name_iron: Iron Builderswand
-  name_gold: Golden Builderswand
-  name_diamond: Diamond Builderswand
-  AllowedWorlds: #Worlds where MineTinker-Builderswands can be used
-  - world #default
-  - world_nether #default
-  - world_the_end #default
 
 EasyHarvest:
   enabled: true

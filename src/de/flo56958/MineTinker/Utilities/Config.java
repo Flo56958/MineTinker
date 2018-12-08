@@ -23,6 +23,8 @@ public class Config {
 
         for (String modifier : modifiers) createConfig("Modifiers" + File.separator, modifier);
 
+        createConfig("", "BuildersWand.yml");
+        createConfig("", "Elevator.yml");
     }
 
     public FileConfiguration getConfig(String file) {
