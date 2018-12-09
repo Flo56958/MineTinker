@@ -1,0 +1,12 @@
+BuildersWand:
+  enabled: true
+  useDurability: true
+  name_wood: Wooden Builderswand
+  name_stone: Stone Builderswand
+  name_iron: Iron Builderswand
+  name_gold: Golden Builderswand
+  name_diamond: Diamond Builderswand
+  AllowedWorlds: #Worlds where MineTinker-Builderswands can be used
+  - world #default
+  - world_nether #default
+  - world_the_end #default

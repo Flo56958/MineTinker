@@ -1,0 +1,10 @@
+Self-Repair:
+  allowed: true
+  name: Self-Repair
+  name_modifier: Self-Repair-Modifier
+  MaxLevel: 10
+  EnchantCost: 10
+  PercentagePerLevel: 10
+  HealthRepair: 2
+  Recipe:
+    Enabled: false

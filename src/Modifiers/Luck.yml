@@ -1,0 +1,12 @@
+Luck:
+  allowed: true
+  name: Luck
+  name_modifier: Luck-Modifier
+  MaxLevel: 5
+  Recipe:
+    Enabled: true
+    Top: "LLL"
+    Middle: "LLL"
+    Bottom: "LLL"
+    Materials:
+      L: "LAPIS_BLOCK"

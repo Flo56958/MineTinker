@@ -1,0 +1,15 @@
+Shulking:
+  allowed: true
+  name: Shulking
+  name_modifier: Shulking-Modifier
+  MaxLevel: 10
+  Duration: 20 #ticks
+  EffectAmplifier: 2 #per Level (Level 1 = 0)
+  Recipe:
+    Enabled: true
+    Top: " S "
+    Middle: " C "
+    Bottom: " S "
+    Materials:
+      S: "SHULKER_SHELL"
+      C: "CHORUS_FRUIT"

@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
@@ -25,23 +24,23 @@ import java.util.Collections;
 public class Ender extends Modifier implements Craftable {
 
     private static final ModManager modManager = Main.getModManager();
-    private static PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final PluginManager pluginManager = Bukkit.getPluginManager();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Ender.yml");
 
     private final boolean compatibleWithInfinity;
     private final boolean hasSound;
 
     public Ender() {
-        super(config.getString("Modifiers.Ender.name"),
+        super(config.getString("Ender.name"),
                 "[Special Endereye] Teleports you while sneaking to the arrow location!",
                 ModifierType.ENDER,
                 ChatColor.DARK_GREEN,
                 1,
-                ItemGenerator.itemEnchanter(Material.ENDER_EYE, ChatColor.DARK_GREEN + config.getString("Modifiers.Ender.name_modifier"), 1, Enchantment.DURABILITY, 1),
+                ItemGenerator.itemEnchanter(Material.ENDER_EYE, ChatColor.DARK_GREEN + config.getString("Ender.name_modifier"), 1, Enchantment.DURABILITY, 1),
                 new ArrayList<>(Collections.singletonList(ToolType.BOW)),
                 Main.getPlugin());
-        this.hasSound = config.getBoolean("Modifiers.Ender.Sound");
-        this.compatibleWithInfinity = config.getBoolean("Modifiers.Ender.CompatibleWithInfinity");
+        this.hasSound = config.getBoolean("Ender.Sound");
+        this.compatibleWithInfinity = config.getBoolean("Ender.CompatibleWithInfinity");
     }
 
     @Override
@@ -91,14 +90,6 @@ public class Ender extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        try {
-            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Ender"), modManager.get(ModifierType.ENDER).getModItem()); //init recipe
-            newRecipe.shape("PPP", "PEP", "PPP"); //makes recipe
-            newRecipe.setIngredient('P', Material.ENDER_PEARL); //set ingredients
-            newRecipe.setIngredient('E', Material.ENDER_EYE);
-            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
-        } catch (Exception e) {
-            ChatWriter.log(true, "Could not register recipe for the Ender-Modifier!"); //executes if the recipe could not initialize
-        }
+        _registerCraftingRecipe(config, modManager, ModifierType.ENDER, "Ender", "Modifier_Ender");
     }
 }

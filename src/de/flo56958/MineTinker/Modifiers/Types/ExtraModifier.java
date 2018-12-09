@@ -22,12 +22,12 @@ public class ExtraModifier extends Modifier {
 
     private static final ModManager modManager = Main.getModManager();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Extra-Modifier.yml");
 
     private final int gain;
 
     public ExtraModifier() {
-        super(config.getString("Modifiers.Extra-Modifier.name"),
+        super(config.getString("Extra-Modifier.name"),
                 "[Netherstar] Adds a additional Modifiers-Slot to the tool!",
                 ModifierType.EXTRA_MODIFIER,
                 ChatColor.WHITE,
@@ -36,7 +36,7 @@ public class ExtraModifier extends Modifier {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
-        this.gain = config.getInt("Modifiers.Extra-Modifier.ExtraModifierGain");
+        this.gain = config.getInt("Extra-Modifier.ExtraModifierGain");
     }
 
     @Override

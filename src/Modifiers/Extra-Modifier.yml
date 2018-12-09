@@ -1,0 +1,6 @@
+Extra-Modifier:
+  allowed: true
+  name: Extra-Modifier
+  ExtraModifierGain: 1
+  Recipe:
+    Enabled: false

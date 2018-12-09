@@ -1,0 +1,11 @@
+Poisonous:
+  allowed: true
+  name: Poisonous
+  name_modifier: Poisonous-Modifier
+  MaxLevel: 5
+  EnchantCost: 10
+  Duration: 120 #ticks
+  DurationMultiplier: 1.1 #Duration * (Multiplier^Level)
+  EffectAmplifier: 2 #per Level (Level 1 = 0)
+  Recipe:
+    Enabled: false

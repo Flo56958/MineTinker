@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -21,25 +22,25 @@ import org.bukkit.plugin.PluginManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Melting extends Modifier implements Enchantable {
+public class Melting extends Modifier implements Enchantable, Craftable {
 
     private static final ModManager modManager = Main.getModManager();
-    private static PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final PluginManager pluginManager = Bukkit.getPluginManager();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Melting.yml");
 
     private final double bonusMultiplier;
 
     public Melting() {
-        super(config.getString("Modifiers.Melting.name"),
+        super(config.getString("Melting.name"),
                 "[Enchanted Magma block] Extra damage against burning enemies!",
                 ModifierType.MELTING,
                 ChatColor.GOLD,
-                config.getInt("Modifiers.Melting.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.MAGMA_BLOCK, ChatColor.GOLD + config.getString("Modifiers.Melting.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1),
+                config.getInt("Melting.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.MAGMA_BLOCK, ChatColor.GOLD + config.getString("Melting.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.CHESTPLATE, ToolType.LEGGINGS)),
                 Main.getPlugin());
-        this.bonusMultiplier = config.getDouble("Modifiers.Melting.BonusMultiplier");
+        this.bonusMultiplier = config.getDouble("Melting.BonusMultiplier");
     }
 
     @Override
@@ -95,5 +96,10 @@ public class Melting extends Modifier implements Enchantable {
             p.setFireTicks(0);
             ChatWriter.log(false, p.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(piece) + ChatColor.GRAY + " (" + piece.getType().toString() + ")!");
         }
+    }
+
+    @Override
+    public void registerCraftingRecipe() {
+        _registerCraftingRecipe(config, modManager, ModifierType.MELTING, "Melting", "Modifier_Melting");
     }
 }

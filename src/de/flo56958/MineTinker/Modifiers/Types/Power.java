@@ -5,6 +5,7 @@ import de.flo56958.MineTinker.Data.PlayerData;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -30,26 +31,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class Power extends Modifier implements Enchantable {
-
+public class Power extends Modifier implements Enchantable, Craftable {
     private static final ModManager modManager = Main.getModManager();
-    private static PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final PluginManager pluginManager = Bukkit.getPluginManager();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Power.yml");
 
     public static final HashMap<Player, Boolean> HASPOWER = new HashMap<>();
 
     private boolean lv1_vertical;
 
     public Power() {
-        super(config.getString("Modifiers.Power.name"),
+        super(config.getString("Power.name"),
                 "[Enchanted Emerald] Tool can destroy more blocks per swing!",
                 ModifierType.POWER,
                 ChatColor.GREEN,
-                config.getInt("Modifiers.Power.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Modifiers.Power.name_modifier"), 1, Enchantment.ARROW_DAMAGE, 1),
+                config.getInt("Power.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Power.name_modifier"), 1, Enchantment.ARROW_DAMAGE, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL)),
                 Main.getPlugin());
-        this.lv1_vertical = config.getBoolean("Modifiers.Power.lv1_vertical");
+        this.lv1_vertical = config.getBoolean("Power.lv1_vertical");
     }
 
     @Override
@@ -175,7 +175,7 @@ public class Power extends Modifier implements Enchantable {
                 Block b1;
                 Block b2;
                 if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
-                    if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
+                    if (config.getBoolean("Power.lv1_vertical")) {
                         b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
                         b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
                     } else {
@@ -183,7 +183,7 @@ public class Power extends Modifier implements Enchantable {
                         b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
                     }
                 } else if (PlayerInfo.getFacingDirection(p).equals("W") || PlayerInfo.getFacingDirection(p).equals("E")) {
-                    if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
+                    if (config.getBoolean("Power.lv1_vertical")) {
                         b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
                         b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
                     } else {
@@ -233,5 +233,10 @@ public class Power extends Modifier implements Enchantable {
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.power.craft")) { return; }
         ItemGenerator.createModifierItem(p, this, "Power");
+    }
+
+    @Override
+    public void registerCraftingRecipe() {
+        _registerCraftingRecipe(config, modManager, ModifierType.POWER, "Power", "Modifier_Power");
     }
 }

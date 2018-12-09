@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -23,11 +24,11 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Poisonous extends Modifier implements Enchantable {
+public class Poisonous extends Modifier implements Enchantable, Craftable {
 
     private static final ModManager modManager = Main.getModManager();
-    private static PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final PluginManager pluginManager = Bukkit.getPluginManager();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Poisonous.yml");
 
     private final int duration;
     private final double durationMultiplier;
@@ -35,18 +36,18 @@ public class Poisonous extends Modifier implements Enchantable {
 
 
     public Poisonous() {
-        super(config.getString("Modifiers.Poisonous.name"),
+        super(config.getString("Poisonous.name"),
                 "[Enchanted Rotten Flesh] Poisons enemies!",
                 ModifierType.POISONOUS,
                 ChatColor.DARK_GREEN,
-                config.getInt("Modifiers.Poisonous.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.ROTTEN_FLESH, ChatColor.DARK_GREEN + config.getString("Modifiers.Poisonous.name_modifier"), 1, Enchantment.DURABILITY, 1),
+                config.getInt("Poisonous.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.ROTTEN_FLESH, ChatColor.DARK_GREEN + config.getString("Poisonous.name_modifier"), 1, Enchantment.DURABILITY, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
-        this.duration = config.getInt("Modifiers.Poisonous.Duration");
-        this.durationMultiplier = config.getDouble("Modifiers.Poisonous.DurationMultiplier");
-        this.effectAmplifier = config.getInt("Modifiers.Poisonous.EffectAmplifier");
+        this.duration = config.getInt("Poisonous.Duration");
+        this.durationMultiplier = config.getDouble("Poisonous.DurationMultiplier");
+        this.effectAmplifier = config.getInt("Poisonous.EffectAmplifier");
     }
 
     @Override
@@ -71,5 +72,10 @@ public class Poisonous extends Modifier implements Enchantable {
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.poisonous.craft")) { return; }
         ItemGenerator.createModifierItem(p, this, "Poisonous");
+    }
+
+    @Override
+    public void registerCraftingRecipe() {
+        _registerCraftingRecipe(config, modManager, ModifierType.POISONOUS, "Poisonous", "Modifier_Poisonous");
     }
 }

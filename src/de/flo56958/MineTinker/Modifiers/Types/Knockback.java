@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -20,19 +21,19 @@ import org.bukkit.plugin.PluginManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Knockback extends Modifier implements Enchantable {
+public class Knockback extends Modifier implements Enchantable, Craftable {
 
     private static final ModManager modManager = Main.getModManager();
-    private static PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final PluginManager pluginManager = Bukkit.getPluginManager();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Knockback.yml");
 
     public Knockback() {
-        super(config.getString("Modifiers.Knockback.name"),
+        super(config.getString("Knockback.name"),
                 "[Enchanted TNT] Knockbacks Enemies further!",
                 ModifierType.KNOCKBACK,
                 ChatColor.GRAY,
-                config.getInt("Modifiers.Knockback.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.TNT, ChatColor.GRAY + config.getString("Modifiers.Knockback.name_modifier"), 1, Enchantment.KNOCKBACK, 1),
+                config.getInt("Knockback.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.TNT, ChatColor.GRAY + config.getString("Knockback.name_modifier"), 1, Enchantment.KNOCKBACK, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
     }
@@ -63,5 +64,10 @@ public class Knockback extends Modifier implements Enchantable {
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.knockback.craft")) { return; }
         ItemGenerator.createModifierItem(p, this, "Knockback");
+    }
+
+    @Override
+    public void registerCraftingRecipe() {
+        _registerCraftingRecipe(config, modManager, ModifierType.KNOCKBACK, "Knockback", "Modifier_Knockback");
     }
 }

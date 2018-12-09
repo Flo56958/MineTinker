@@ -1,0 +1,14 @@
+Ender:
+  allowed: true
+  name: Ender
+  name_modifier: Ender-Modifier
+  CompatibleWithInfinity: true
+  Sound: true
+  Recipe:
+    Enabled: true
+    Top: "PPP"
+    Middle: "PEP"
+    Bottom: "PPP"
+    Materials:
+      P: "ENDER_PEARL"
+      E: "ENDER_EYE"

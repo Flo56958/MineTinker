@@ -1,0 +1,12 @@
+Timber:
+  allowed: true
+  name: Timber
+  name_modifier: Timber-Modifier
+  Recipe:
+    Enabled: true
+    Top: "LLL"
+    Middle: "LEL"
+    Bottom: "LLL"
+    Materials:
+      L: "OAK_WOOD"
+      E: "EMERALD"

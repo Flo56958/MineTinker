@@ -1,0 +1,15 @@
+Glowing:
+  allowed: true
+  name: Glowing
+  name_modifier: Glowing-Modifier
+  MaxLevel: 3
+  Duration: 200 #ticks
+  DurationMultiplier: 1.1 #Duration * (Multiplier^Level)
+  Recipe:
+    Enabled: true
+    Top: "GGG"
+    Middle: "GEG"
+    Bottom: "GGG"
+    Materials:
+      G: "GLOWSTONE_DUST"
+      E: "ENDER_EYE"

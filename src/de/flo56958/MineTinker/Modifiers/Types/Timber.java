@@ -18,7 +18,6 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
@@ -27,18 +26,18 @@ import java.util.Collections;
 public class Timber extends Modifier implements Craftable {
 
     private static final ModManager modManager = Main.getModManager();
-    private static PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final PluginManager pluginManager = Bukkit.getPluginManager();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Timber.yml");
 
     private static final ArrayList<Location> locs = new ArrayList<>();
 
     public Timber() {
-        super(config.getString("Modifiers.Timber.name"),
+        super(config.getString("Timber.name"),
                 "[Wooden Emerald] Chop down trees in an instant!",
                 ModifierType.TIMBER,
                 ChatColor.GREEN,
                 1,
-                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Modifiers.Timber.name_modifier"), 1, Enchantment.DIG_SPEED, 1),
+                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Timber.name_modifier"), 1, Enchantment.DIG_SPEED, 1),
                 new ArrayList<>(Collections.singletonList(ToolType.AXE)),
                 Main.getPlugin());
     }
@@ -115,14 +114,6 @@ public class Timber extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        try {
-            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Modifier_Timber"), modManager.get(ModifierType.TIMBER).getModItem()); //init recipe
-            newRecipe.shape("LLL", "LEL", "LLL"); //makes recipe
-            newRecipe.setIngredient('L', Material.OAK_WOOD); //set ingredients
-            newRecipe.setIngredient('E', Material.EMERALD);
-            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
-        } catch (Exception e) {
-            ChatWriter.log(true, "Could not register recipe for the Timber-Modifier!"); //executes if the recipe could not initialize
-        }
+        _registerCraftingRecipe(config, modManager, ModifierType.TIMBER, "Timber", "Modifier_Timber");
     }
 }

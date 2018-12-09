@@ -1,0 +1,12 @@
+Haste:
+  allowed: true
+  name: Haste
+  name_modifier: Haste-Modifier
+  MaxLevel: 5
+  Recipe:
+    Enabled: true
+    Top: "RRR"
+    Middle: "RRR"
+    Bottom: "RRR"
+    Materials:
+      R: "REDSTONE_BLOCK"

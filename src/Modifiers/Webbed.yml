@@ -1,0 +1,15 @@
+Webbed:
+  allowed: true
+  name: Webbed
+  name_modifier: Webbed-Modifier
+  MaxLevel: 3
+  Duration: 60 #ticks
+  DurationMultiplier: 1.2 #Duration * (Multiplier^Level)
+  EffectAmplifier: 2 #per Level (Level 1 = 0)
+  Recipe:
+    Enabled: true
+    Top: "WWW"
+    Middle: "WWW"
+    Bottom: "WWW"
+    Materials:
+      W: "COBWEB"

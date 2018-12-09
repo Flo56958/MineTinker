@@ -7,20 +7,31 @@ import de.flo56958.MineTinker.Listeners.*;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.Config;
 import de.flo56958.MineTinker.bStats.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.IOException;
+
 public class Main extends JavaPlugin {
 
     private static ModManager modManager;
+    private Config configurations = new Config(this);
+    private static Main tinkerMain;
 
     @Override
     public void onEnable() {
         this.getCommand("minetinker").setExecutor(new Commands());
         ChatWriter.log(false, "Registered commands!");
+
+        tinkerMain = this;
 
         loadConfig();
 
@@ -82,4 +93,8 @@ public class Main extends JavaPlugin {
     }
 
     public static ModManager getModManager() { return modManager; }
+
+    public static Main getMain() { return tinkerMain; }
+
+    public Config getConfigurations() { return this.configurations; }
 }

@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -19,27 +20,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Experienced extends Modifier {
+public class Experienced extends Modifier implements Craftable {
 
     private static final ModManager modManager = Main.getModManager();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Experienced.yml");
 
     private final int percentagePerLevel;
     private final int amount;
 
     public Experienced() {
-        super(config.getString("Modifiers.Experienced.name"),
+        super(config.getString("Experienced.name"),
                 "[Bottle o' Experience] Tool has the chance to drop XP while using it!",
                 ModifierType.EXPERIENCED,
                 ChatColor.GREEN,
-                config.getInt("Modifiers.Experienced.MaxLevel"),
+                config.getInt("Experienced.MaxLevel"),
                 new ItemStack(Material.EXPERIENCE_BOTTLE, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
-        this.percentagePerLevel = config.getInt("Modifiers.Experienced.PercentagePerLevel");
-        this.amount = config.getInt("Modifiers.Experienced.Amount");
+        this.percentagePerLevel = config.getInt("Experienced.PercentagePerLevel");
+        this.amount = config.getInt("Experienced.Amount");
     }
 
     @Override
@@ -60,5 +61,10 @@ public class Experienced extends Modifier {
             orb.setExperience(this.amount);
             ChatWriter.log(false, p.getDisplayName() + " triggered Experienced on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
         }
+    }
+
+    @Override
+    public void registerCraftingRecipe() {
+        _registerCraftingRecipe(config, modManager, ModifierType.EXPERIENCED, "Experienced", "Modifier_Experienced");
     }
 }
