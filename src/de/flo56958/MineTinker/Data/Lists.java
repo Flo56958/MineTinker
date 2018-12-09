@@ -12,8 +12,8 @@ public class Lists {
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     public static final List<String> WORLDS = config.getStringList("AllowedWorlds");
-    public static final List<String> WORLDS_ELEVATOR = config.getStringList("Elevator.AllowedWorlds");
-    public static final List<String> WORLDS_BUILDERSWANDS = config.getStringList("Builderswands.AllowedWorlds");
+    public static final List<String> WORLDS_ELEVATOR = Main.getMain().getConfigurations().getConfig("Elevator.yml").getStringList("Elevator.AllowedWorlds");
+    public static final List<String> WORLDS_BUILDERSWANDS = Main.getMain().getConfigurations().getConfig("BuildersWand.yml").getStringList("BuildersWand.AllowedWorlds");
     public static final List<String> WORLDS_SPAWNERS = config.getStringList("Spawners.AllowedWorlds");
     public static final List<String> WORLDS_EASYHARVEST = config.getStringList("EasyHarvest.AllowedWorlds");
 

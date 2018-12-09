@@ -45,16 +45,19 @@ public class Main extends JavaPlugin {
         if (!getConfig().getBoolean("AllowEnchanting")) {
             Bukkit.getPluginManager().registerEvents(new EnchantingTableListener(), this);
         }
-        if (getConfig().getBoolean("Elevator.enabled")) {
+        if (configurations.getConfig("Elevator.yml").getBoolean("Elevator.enabled")) {
             Bukkit.getPluginManager().registerEvents(new ElevatorListener(), this);
             CraftingRecipes.registerElevatorMotor();
+            ChatWriter.log(false, "Enabled Elevators!");
         }
-        if (getConfig().getBoolean("Builderswands.enabled")) {
+        if (configurations.getConfig("BuildersWand.yml").getBoolean("BuildersWand.enabled")) {
             Bukkit.getPluginManager().registerEvents(new BuildersWandListener(),this);
             CraftingRecipes.registerBuildersWands();
+            ChatWriter.log(false, "Enabled BuildersWands!");
         }
         if (getConfig().getBoolean("EasyHarvest.enabled")) {
             Bukkit.getPluginManager().registerEvents(new EasyHarvestListener(),this);
+            ChatWriter.log(false, "Enabled EasyHarvest!");
         }
         ChatWriter.log(false, "Registered events!");
 

@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,6 +22,7 @@ import org.bukkit.util.Vector;
 public class BuildersWandListener implements Listener {
 
     private static final ModManager modManager = Main.getModManager();
+    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("BuildersWand.yml");
 
     @EventHandler
     public void onBlockBreak (BlockBreakEvent e) {
@@ -152,7 +154,7 @@ public class BuildersWandListener implements Listener {
                                         //} else { continue; }
 
                                         current.setAmount(current.getAmount() - 1);
-                                        if (Main.getPlugin().getConfig().getBoolean("Builderswands.useDurability")) { //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
+                                        if (config.getBoolean("BuildersWand.useDurability")) { //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
                                             wand.setDurability((short) (wand.getDurability() + 1));
                                         }
                                         if (current.getAmount() == 0) { //TODO: Add Exp gain for Builderswands

@@ -6,3 +6,10 @@ Elevator:
   - world #default
   - world_nether #default
   - world_the_end #default
+  Recipe:
+    Top: "RRR"
+    Middle: "RHR"
+    Bottom: "RRR"
+    Materials:
+      H: "HOPPER"
+      R: "REDSTONE"

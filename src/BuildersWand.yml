@@ -10,3 +10,39 @@ BuildersWand:
   - world #default
   - world_nether #default
   - world_the_end #default
+  Recipes:
+    Wood:
+      Top: "  W"
+      Middle: " S "
+      Bottom: "S  "
+      Materials:
+        S: "STICK"
+        W: "LEGACY_WOOD"
+    Stone:
+      Top: "  C"
+      Middle: " S "
+      Bottom: "S  "
+      Materials:
+        C: "COBBLESTONE"
+        S: "STICK"
+    Iron:
+      Top: "  I"
+      Middle: " S "
+      Bottom: "S  "
+      Materials:
+        I: "IRON_INGOT"
+        S: "STICK"
+    Gold:
+      Top: "  G"
+      Middle: " S "
+      Bottom: "S  "
+      Materials:
+        G: "GOLD_INGOT"
+        S: "STICK"
+    Diamond:
+      Top: "  D"
+      Middle: " S "
+      Bottom: "S  "
+      Materials:
+        D: "DIAMOND"
+        S: "STICK"
