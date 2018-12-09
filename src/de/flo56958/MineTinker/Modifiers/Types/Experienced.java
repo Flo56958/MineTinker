@@ -31,7 +31,7 @@ public class Experienced extends Modifier implements Craftable {
 
     public Experienced() {
         super(config.getString("Experienced.name"),
-                "[Bottle o' Experience] Tool has the chance to drop XP while using it!",
+                "[Bottle o' Experience] " + config.getString("Experienced.description"),
                 ModifierType.EXPERIENCED,
                 ChatColor.GREEN,
                 config.getInt("Experienced.MaxLevel"),
@@ -65,6 +65,6 @@ public class Experienced extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.EXPERIENCED, "Experienced", "Modifier_Experienced");
+        _registerCraftingRecipe(config, this, "Experienced", "Modifier_Experienced");
     }
 }

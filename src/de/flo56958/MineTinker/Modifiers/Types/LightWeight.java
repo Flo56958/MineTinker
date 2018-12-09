@@ -29,7 +29,7 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
 
     public LightWeight() {
         super(config.getString("Light-Weight.name"),
-                "[Enchanted Feather] You fall like a feather - sort of...",
+                "[" + config.getString("Light-Weight.name_modifier") + "] " + config.getString("Light-Weight.description"),
                 ModifierType.LIGHT_WEIGHT,
                 ChatColor.GRAY,
                 config.getInt("Light-Weight.MaxLevel"),
@@ -57,11 +57,11 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.lightweight.craft")) { return; }
-        ItemGenerator.createModifierItem(p, this, "Light-Weight");
+        _createModifierItem(config, p, this, "Light-Weight");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.LIGHT_WEIGHT, "Light-Weight", "Modifier_LightWeight");
+        _registerCraftingRecipe(config, this, "Light-Weight", "Modifier_LightWeight");
     }
 }

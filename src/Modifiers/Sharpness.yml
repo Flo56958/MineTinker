@@ -1,7 +1,8 @@
 Sharpness:
   allowed: true
   name: Sharpness
-  name_modifier: Sharpness-Modifier
+  name_modifier: Compressed Quartzblock
+  description: Weapon does additional damage!
   MaxLevel: 5
   Recipe:
     Enabled: true

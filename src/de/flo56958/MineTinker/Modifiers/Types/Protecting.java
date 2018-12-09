@@ -27,7 +27,7 @@ public class Protecting extends Modifier implements Craftable {
 
     public Protecting() {
         super(config.getString("Protecting.name"),
-                "[Enriched Obsidian] Your armor protects you better against all damage!",
+                "[" + config.getString("Protecting.name_modifier") + "] " + config.getString("Protecting.description"),
                 ModifierType.PROTECTING,
                 ChatColor.GRAY,
                 config.getInt("Protecting.MaxLevel"),
@@ -54,6 +54,6 @@ public class Protecting extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.PROTECTING, "Protecting", "Modifier_Protecting");
+        _registerCraftingRecipe(config, this, "Protecting", "Modifier_Protecting");
     }
 }

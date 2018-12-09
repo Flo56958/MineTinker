@@ -28,7 +28,7 @@ public class Directing extends Modifier implements Craftable {
 
     public Directing() {
         super(config.getString("Directing.name"),
-                "[Enhanced Compass] Loot goes directly into Inventory.",
+                "[" + config.getString("Directing.name_modifier") + "] " + config.getString("Directing.description"),
                 ModifierType.DIRECTING,
                 ChatColor.GRAY,
                 1,
@@ -69,6 +69,6 @@ public class Directing extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.DIRECTING, "Directing", "Modifier_Directing");
+        _registerCraftingRecipe(config, this, "Directing", "Modifier_Directing");
     }
 }

@@ -1,25 +1,25 @@
 package de.flo56958.MineTinker.Utilities;
 
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.ToolUpgradeEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItemGenerator {
 
+    private static final PluginManager pluginManager = Bukkit.getPluginManager();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = Main.getModManager();
 
@@ -75,28 +75,28 @@ public class ItemGenerator {
                 upgrade.getType().equals(Material.JUNGLE_PLANKS) ||
                 upgrade.getType().equals(Material.OAK_PLANKS) ||
                 upgrade.getType().equals(Material.SPRUCE_PLANKS))) {
-            Events.Upgrade_Fail(p, tool, "WOOD");
+            pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
         } else if (name[0].toLowerCase().equals("stone") && upgrade.getType().equals(Material.COBBLESTONE)) {
-            Events.Upgrade_Fail(p, tool, "STONE");
+            pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
         } else if (name[0].toLowerCase().equals("iron") && upgrade.getType().equals(Material.IRON_INGOT)) {
-            Events.Upgrade_Fail(p, tool, "IRON");
+            pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
         } else if (name[0].toLowerCase().equals("gold") && upgrade.getType().equals(Material.GOLD_INGOT)) {
-            Events.Upgrade_Fail(p, tool, "GOLD");
+            pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
         } else if (name[0].toLowerCase().equals("diamond") && upgrade.getType().equals(Material.DIAMOND)) {
-            Events.Upgrade_Fail(p, tool, "DIAMOND");
+            pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
         } else if (name[0].toLowerCase().equals("leather") && upgrade.getType().equals(Material.LEATHER)) {
-            Events.Upgrade_Fail(p, tool, "LEATHER");
+            pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
         } else if (name[0].toLowerCase().equals("turtle") && upgrade.getType().equals(Material.SCUTE)) {
-            Events.Upgrade_Fail(p, tool, "SCUTE");
+            pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
         } else if (name[0].toLowerCase().equals("chainmail") && upgrade.getType().equals(Material.IRON_BARS)) {
-            Events.Upgrade_Fail(p, tool, "CHAIN");
+            pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
         }
         if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
@@ -107,21 +107,21 @@ public class ItemGenerator {
                     upgrade.getType().equals(Material.OAK_PLANKS) ||
                     upgrade.getType().equals(Material.SPRUCE_PLANKS))) {
                 tool.setType(Material.WOODEN_SWORD);
-                Events.Upgrade_Success(p, tool, "WOOD");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.COBBLESTONE)) {
                 tool.setType(Material.STONE_SWORD);
-                Events.Upgrade_Success(p, tool, "STONE");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.IRON_INGOT)) {
                 tool.setType(Material.IRON_SWORD);
-                Events.Upgrade_Success(p, tool, "IRON");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.GOLD_INGOT)) {
                 tool.setType(Material.GOLDEN_SWORD);
-                Events.Upgrade_Success(p, tool, "GOLD");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.DIAMOND)) {
                 tool.setType(Material.DIAMOND_SWORD);
-                Events.Upgrade_Success(p, tool, "DIAMOND");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else {
-                Events.Upgrade_Prohibited(p, tool);
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                 return null;
             }
         } else if (ToolType.PICKAXE.getMaterials().contains(tool.getType())) {
@@ -132,21 +132,21 @@ public class ItemGenerator {
                     upgrade.getType().equals(Material.OAK_PLANKS) ||
                     upgrade.getType().equals(Material.SPRUCE_PLANKS))) {
                 tool.setType(Material.WOODEN_PICKAXE);
-                Events.Upgrade_Success(p, tool, "WOOD");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.COBBLESTONE)) {
                 tool.setType(Material.STONE_PICKAXE);
-                Events.Upgrade_Success(p, tool, "STONE");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.IRON_INGOT)) {
                 tool.setType(Material.IRON_PICKAXE);
-                Events.Upgrade_Success(p, tool, "IRON");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.GOLD_INGOT)) {
                 tool.setType(Material.GOLDEN_PICKAXE);
-                Events.Upgrade_Success(p, tool, "GOLD");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.DIAMOND)) {
                 tool.setType(Material.DIAMOND_PICKAXE);
-                Events.Upgrade_Success(p, tool, "DIAMOND");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else {
-                Events.Upgrade_Prohibited(p, tool);
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                 return null;
             }
         } else if (ToolType.AXE.getMaterials().contains(tool.getType())) {
@@ -157,21 +157,21 @@ public class ItemGenerator {
                     upgrade.getType().equals(Material.OAK_PLANKS) ||
                     upgrade.getType().equals(Material.SPRUCE_PLANKS))) {
                 tool.setType(Material.WOODEN_AXE);
-                Events.Upgrade_Success(p, tool, "WOOD");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.COBBLESTONE)) {
                 tool.setType(Material.STONE_AXE);
-                Events.Upgrade_Success(p, tool, "STONE");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.IRON_INGOT)) {
                 tool.setType(Material.IRON_AXE);
-                Events.Upgrade_Success(p, tool, "IRON");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.GOLD_INGOT)) {
                 tool.setType(Material.GOLDEN_AXE);
-                Events.Upgrade_Success(p, tool, "GOLD");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.DIAMOND)) {
                 tool.setType(Material.DIAMOND_AXE);
-                Events.Upgrade_Success(p, tool, "DIAMOND");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else {
-                Events.Upgrade_Prohibited(p, tool);
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                 return null;
             }
         } else if (ToolType.SHOVEL.getMaterials().contains(tool.getType())) {
@@ -182,21 +182,21 @@ public class ItemGenerator {
                     upgrade.getType().equals(Material.OAK_PLANKS) ||
                     upgrade.getType().equals(Material.SPRUCE_PLANKS))) {
                 tool.setType(Material.WOODEN_SHOVEL);
-                Events.Upgrade_Success(p, tool, "WOOD");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.COBBLESTONE)) {
                 tool.setType(Material.STONE_SHOVEL);
-                Events.Upgrade_Success(p, tool, "STONE");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.IRON_INGOT)) {
                 tool.setType(Material.IRON_SHOVEL);
-                Events.Upgrade_Success(p, tool, "IRON");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.GOLD_INGOT)) {
                 tool.setType(Material.GOLDEN_SHOVEL);
-                Events.Upgrade_Success(p, tool, "GOLD");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.DIAMOND)) {
                 tool.setType(Material.DIAMOND_SHOVEL);
-                Events.Upgrade_Success(p, tool, "DIAMOND");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else {
-                Events.Upgrade_Prohibited(p, tool);
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                 return null;
             }
         } else if (ToolType.HOE.getMaterials().contains(tool.getType())) {
@@ -207,136 +207,110 @@ public class ItemGenerator {
                     upgrade.getType().equals(Material.OAK_PLANKS) ||
                     upgrade.getType().equals(Material.SPRUCE_PLANKS))) {
                 tool.setType(Material.WOODEN_HOE);
-                Events.Upgrade_Success(p, tool, "WOOD");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.COBBLESTONE)) {
                 tool.setType(Material.STONE_HOE);
-                Events.Upgrade_Success(p, tool, "STONE");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.IRON_INGOT)) {
                 tool.setType(Material.IRON_HOE);
-                Events.Upgrade_Success(p, tool, "IRON");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.GOLD_INGOT)) {
                 tool.setType(Material.GOLDEN_HOE);
-                Events.Upgrade_Success(p, tool, "GOLD");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.DIAMOND)) {
                 tool.setType(Material.DIAMOND_HOE);
-                Events.Upgrade_Success(p, tool, "DIAMOND");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else {
-                Events.Upgrade_Prohibited(p, tool);
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                 return null;
             }
         } else if (ToolType.HELMET.getMaterials().contains(tool.getType())) {
             if (upgrade.getType().equals(Material.LEATHER)) {
                 tool.setType(Material.LEATHER_HELMET);
-                Events.Upgrade_Success(p, tool, "LEATHER");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.IRON_INGOT)) {
                 tool.setType(Material.IRON_HELMET);
-                Events.Upgrade_Success(p, tool, "IRON");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.GOLD_INGOT)) {
                 tool.setType(Material.GOLDEN_HELMET);
-                Events.Upgrade_Success(p, tool, "GOLD");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.DIAMOND)) {
                 tool.setType(Material.DIAMOND_HELMET);
-                Events.Upgrade_Success(p, tool, "DIAMOND");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.SCUTE)) {
                 tool.setType(Material.TURTLE_HELMET);
-                Events.Upgrade_Success(p, tool, "DIAMOND");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.IRON_BARS)) {
                 tool.setType(Material.CHAINMAIL_HELMET);
-                Events.Upgrade_Success(p, tool, "DIAMOND");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else {
-                Events.Upgrade_Prohibited(p, tool);
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                 return null;
             }
         } else if (ToolType.CHESTPLATE.getMaterials().contains(tool.getType())) {
             if (upgrade.getType().equals(Material.LEATHER)) {
                 tool.setType(Material.LEATHER_CHESTPLATE);
-                Events.Upgrade_Success(p, tool, "LEATHER");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.IRON_INGOT)) {
                 tool.setType(Material.IRON_CHESTPLATE);
-                Events.Upgrade_Success(p, tool, "IRON");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.GOLD_INGOT)) {
                 tool.setType(Material.GOLDEN_CHESTPLATE);
-                Events.Upgrade_Success(p, tool, "GOLD");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.DIAMOND)) {
                 tool.setType(Material.DIAMOND_CHESTPLATE);
-                Events.Upgrade_Success(p, tool, "DIAMOND");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.IRON_BARS)) {
                 tool.setType(Material.CHAINMAIL_CHESTPLATE);
-                Events.Upgrade_Success(p, tool, "DIAMOND");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else {
-                Events.Upgrade_Prohibited(p, tool);
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                 return null;
             }
         } else if (ToolType.LEGGINGS.getMaterials().contains(tool.getType())) {
             if (upgrade.getType().equals(Material.LEATHER)) {
                 tool.setType(Material.LEATHER_LEGGINGS);
-                Events.Upgrade_Success(p, tool, "LEATHER");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.IRON_INGOT)) {
                 tool.setType(Material.IRON_LEGGINGS);
-                Events.Upgrade_Success(p, tool, "IRON");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.GOLD_INGOT)) {
                 tool.setType(Material.GOLDEN_LEGGINGS);
-                Events.Upgrade_Success(p, tool, "GOLD");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.DIAMOND)) {
                 tool.setType(Material.DIAMOND_LEGGINGS);
-                Events.Upgrade_Success(p, tool, "DIAMOND");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.IRON_BARS)) {
                 tool.setType(Material.CHAINMAIL_LEGGINGS);
-                Events.Upgrade_Success(p, tool, "DIAMOND");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else {
-                Events.Upgrade_Prohibited(p, tool);
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                 return null;
             }
         } else if (ToolType.BOOTS.getMaterials().contains(tool.getType())) {
             if (upgrade.getType().equals(Material.LEATHER)) {
                 tool.setType(Material.LEATHER_BOOTS);
-                Events.Upgrade_Success(p, tool, "LEATHER");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.IRON_INGOT)) {
                 tool.setType(Material.IRON_BOOTS);
-                Events.Upgrade_Success(p, tool, "IRON");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.GOLD_INGOT)) {
                 tool.setType(Material.GOLDEN_BOOTS);
-                Events.Upgrade_Success(p, tool, "GOLD");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.DIAMOND)) {
                 tool.setType(Material.DIAMOND_BOOTS);
-                Events.Upgrade_Success(p, tool, "DIAMOND");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else if (upgrade.getType().equals(Material.IRON_BARS)) {
                 tool.setType(Material.CHAINMAIL_BOOTS);
-                Events.Upgrade_Success(p, tool, "DIAMOND");
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, true));
             } else {
-                Events.Upgrade_Prohibited(p, tool);
+                pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                 return null;
             }
         }
         tool.setDurability((short) 0);
         tool.setItemMeta(meta);
         return tool;
-    }
-
-    public static void createModifierItem(Player p, Modifier mod, String modifier) {
-        if (p.getGameMode().equals(GameMode.CREATIVE)) {
-            p.getLocation().getWorld().dropItemNaturally(p.getLocation(), mod.getModItem());
-            if (config.getBoolean("Sound.OnEnchanting")) {
-                p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
-            }
-            ChatWriter.log(false, p.getDisplayName() + " created a " + mod.getName() + "-Modifiers in Creative!");
-        } else if (p.getLevel() >= config.getInt("Modifiers." + modifier + ".EnchantCost")) {
-            int amount = p.getInventory().getItemInMainHand().getAmount();
-            int newLevel = p.getLevel() - config.getInt("Modifiers." + modifier + ".EnchantCost");
-            p.setLevel(newLevel);
-            p.getInventory().getItemInMainHand().setAmount(amount - 1);
-            if (p.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
-                p.getWorld().dropItem(p.getLocation(), mod.getModItem());
-            } // no else as it gets added in if
-            if (config.getBoolean("Sound.OnEnchanting")) {
-                p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
-            }
-            ChatWriter.log(false, p.getDisplayName() + " created a " + mod.getName() + "-Modifiers!");
-        } else {
-            ChatWriter.sendActionBar(p, ChatColor.RED + "" + config.getInt("Modifiers." + modifier + ".EnchantCost") + " levels required!");
-            ChatWriter.log(false, p.getDisplayName() + " tried to create a " + mod.getName() + "-Modifiers but had not enough levels!");
-        }
-
     }
 
     public static List<String> createLore() {

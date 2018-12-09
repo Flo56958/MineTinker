@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Events.ModifierApplyEvent;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Events.ToolLevelUpEvent;
+import de.flo56958.MineTinker.Events.ToolUpgradeEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -25,6 +26,23 @@ public class TinkerListener implements Listener {
 
     private static final ModManager modManager = Main.getModManager();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
+
+    @EventHandler
+    public void onToolUpgrade(ToolUpgradeEvent e) {
+        Player p = e.getPlayer();
+        ItemStack tool = e.getTool();
+        if (e.isWasSuccessful()) {
+            if (config.getBoolean("Sound.OnUpgrade")) {
+                p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
+            }
+            ChatWriter.sendActionBar(p, ItemGenerator.getDisplayName(tool) + " is now " + tool.getType().toString().split("_")[0] + "!");
+            ChatWriter.log(false, p.getDisplayName() + " upgraded " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ") to " + tool.getType().toString() + "!");
+        } else {
+            if (config.getBoolean("Sound.OnUpgrade")) {
+                p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
+            }
+        }
+    }
 
     @EventHandler
     public void onModifierApply(ModifierApplyEvent e) {

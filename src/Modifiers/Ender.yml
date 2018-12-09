@@ -1,9 +1,10 @@
 Ender:
   allowed: true
   name: Ender
-  name_modifier: Ender-Modifier
-  CompatibleWithInfinity: true
-  Sound: true
+  name_modifier: Special Endereye
+  description: Teleports you while sneaking to the arrow location!
+  CompatibleWithInfinity: true #Should Ender be compatible with Infinity (the combination might be too OP for some)
+  Sound: true #Enderman-Teleport-Sound
   Recipe:
     Enabled: true
     Top: "PPP"

@@ -1,7 +1,8 @@
 Directing:
   allowed: true
   name: Directing
-  name_modifier: Directing-Modifier
+  name_modifier: Enhanced Compass
+  description: Loot goes directly into Inventory!
   Directing:
     Enabled: true
     Top: "ECE"

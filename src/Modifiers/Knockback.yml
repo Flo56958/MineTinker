@@ -1,7 +1,8 @@
 Knockback:
   allowed: true
   name: Knockback
-  name_modifier: Knockback-Modifier
+  name_modifier: Enchanted TNT
+  description: Knockbacks Enemies further!
   MaxLevel: 5
   EnchantCost: 10
   Recipe:

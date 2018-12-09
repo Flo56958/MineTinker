@@ -1,7 +1,8 @@
 Luck:
   allowed: true
   name: Luck
-  name_modifier: Luck-Modifier
+  name_modifier: Compressed Lapis-Block
+  description: Get more loot from enemies and blocks!
   MaxLevel: 5
   Recipe:
     Enabled: true

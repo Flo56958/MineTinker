@@ -35,7 +35,7 @@ public class Webbed extends Modifier implements Craftable {
 
     public Webbed() {
         super(config.getString("Webbed.name"),
-                "[Compressed Cobweb] Slowes Foes!",
+                "[" + config.getString("Webbed.name_modifier") + "] " + config.getString("Webbed.description"),
                 ModifierType.WEBBED,
                 ChatColor.WHITE,
                 config.getInt("Webbed.MaxLevel"),
@@ -71,6 +71,6 @@ public class Webbed extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.WEBBED, "Webbed", "Modifier_Webbed");
+        _registerCraftingRecipe(config, this, "Webbed", "Modifier_Webbed");
     }
 }

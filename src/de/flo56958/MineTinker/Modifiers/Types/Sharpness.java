@@ -28,7 +28,7 @@ public class Sharpness extends Modifier implements Craftable {
 
     public Sharpness() {
         super(config.getString("Sharpness.name"),
-                "[Compressed Quartzblock] Tool does additional damage!",
+                "[" + config.getString("Sharpness.name_modifier") + "] " + config.getString("Sharpness.description"),
                 ModifierType.SHARPNESS,
                 ChatColor.WHITE,
                 config.getInt("Sharpness.MaxLevel"),
@@ -62,6 +62,6 @@ public class Sharpness extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.SHARPNESS, "Sharpness", "Modifier_Sharpness");
+        _registerCraftingRecipe(config, this, "Sharpness", "Modifier_Sharpness");
     }
 }

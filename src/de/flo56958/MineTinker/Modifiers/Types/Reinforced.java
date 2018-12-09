@@ -27,7 +27,7 @@ public class Reinforced extends Modifier implements Craftable {
 
     public Reinforced() {
         super(config.getString("Reinforced.name"),
-                "[Compressed Obsidian] Chance to not use durability when using the tool/armor!",
+                "[" + config.getString("Reinforced.name_modifier") + "] " + config.getString("Reinforced.description"),
                 ModifierType.REINFORCED,
                 ChatColor.DARK_GRAY,
                 config.getInt("Reinforced.MaxLevel"),
@@ -55,6 +55,6 @@ public class Reinforced extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.REINFORCED, "Reinforced", "Modifier_Reinforced");
+        _registerCraftingRecipe(config, this, "Reinforced", "Modifier_Reinforced");
     }
 }

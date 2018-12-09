@@ -28,7 +28,7 @@ public class Haste extends Modifier implements Craftable {
 
     public Haste() {
         super(config.getString("Haste.name"),
-                "[Compressed Redstoneblock] Tool can destroy blocks faster!",
+                "[" + config.getString("Haste.name_modifier") + "] " + config.getString("Haste.description"),
                 ModifierType.HASTE,
                 ChatColor.DARK_RED,
                 config.getInt("Haste.MaxLevel"),
@@ -55,6 +55,6 @@ public class Haste extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.HASTE, "Haste", "Modifier_Haste");
+        _registerCraftingRecipe(config, this, "Haste", "Modifier_Haste");
     }
 }

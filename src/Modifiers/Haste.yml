@@ -1,7 +1,8 @@
 Haste:
   allowed: true
   name: Haste
-  name_modifier: Haste-Modifier
+  name_modifier: Compressed Redstoneblock
+  description: Tool can destroy blocks faster!
   MaxLevel: 5
   Recipe:
     Enabled: true

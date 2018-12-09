@@ -25,55 +25,58 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        if (!e.isCancelled()) {
-            if (!Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }
-            if (!(e.getClickedInventory() instanceof PlayerInventory || e.getClickedInventory() instanceof DoubleChestInventory || e.getClickedInventory() instanceof CraftInventory)) { return; }
+        if (e.isCancelled()) { return; }
+        if (!Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }
+        if (!(e.getClickedInventory() instanceof PlayerInventory || e.getClickedInventory() instanceof DoubleChestInventory || e.getClickedInventory() instanceof CraftInventory)) { return; }
 
-            ItemStack tool = e.getClickedInventory().getItem(e.getSlot());
+        ItemStack tool = e.getClickedInventory().getItem(e.getSlot());
 
-            if (!(modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool))) { return; }
+        if (!(modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool))) { return; }
 
-            if (Main.getPlugin().getConfig().getBoolean("Repairable") && e.getWhoClicked().hasPermission("minetinker.tool.repair")) {
-                if (e.getWhoClicked().getItemOnCursor() != null) {
-                    ItemStack repair = e.getWhoClicked().getItemOnCursor();
-                    String[] name = tool.getType().toString().split("_");
-                    boolean eligible = false;
-                    if (name[0].toLowerCase().equals("wooden") && Lists.getWoodPlanks().contains(repair.getType())) {
-                        eligible = true;
-                    } else if (name[0].toLowerCase().equals("stone") && (repair.getType().equals(Material.COBBLESTONE) || repair.getType().equals(Material.STONE))) {
-                        eligible = true;
-                    } else if (name[0].toLowerCase().equals("iron") && repair.getType().equals(Material.IRON_INGOT)) {
-                        eligible = true;
-                    } else if (name[0].toLowerCase().equals("golden") && repair.getType().equals(Material.GOLD_INGOT)) {
-                        eligible = true;
-                    } else if (name[0].toLowerCase().equals("diamond") && repair.getType().equals(Material.DIAMOND)) {
-                        eligible = true;
-                    } else if (name[0].toLowerCase().equals("bow") && (repair.getType().equals(Material.STICK) || repair.getType().equals(Material.STRING))) {
-                        eligible = true;
-                    } else if (name[0].toLowerCase().equals("shield") && Lists.getWoodPlanks().contains(repair.getType())) {
-                        eligible = true;
-                    } else if (name[0].toLowerCase().equals("leather") && repair.getType().equals(Material.LEATHER)) {
-                        eligible = true;
-                    }
-                    if (eligible) {
-                        double dura = tool.getDurability();
-                        double maxDura = tool.getType().getMaxDurability();
-                        int amount = e.getWhoClicked().getItemOnCursor().getAmount();
-                        double percent = Main.getPlugin().getConfig().getDouble("DurabilityPercentageRepair");
-                        while (amount > 0 && dura > 0) {
-                            dura = dura - (maxDura * percent);
-                            amount--;
-                        }
-                        if (dura < 0) {
-                            dura = 0;
-                        }
-                        tool.setDurability((short) dura);
-                        e.getWhoClicked().getItemOnCursor().setAmount(amount);
-                        e.setCancelled(true);
-                    }
-                }
-            }
+        if (!(Main.getPlugin().getConfig().getBoolean("Repairable") && e.getWhoClicked().hasPermission("minetinker.tool.repair"))) { return; }
+
+        if (e.getWhoClicked().getItemOnCursor() == null) { return; }
+
+        ItemStack repair = e.getWhoClicked().getItemOnCursor();
+        String[] name = tool.getType().toString().split("_");
+        boolean eligible = false;
+        if (name[0].toLowerCase().equals("wooden") && Lists.getWoodPlanks().contains(repair.getType())) {
+            eligible = true;
+        } else if (name[0].toLowerCase().equals("stone") && (repair.getType().equals(Material.COBBLESTONE) || repair.getType().equals(Material.STONE))) {
+            eligible = true;
+        } else if (name[0].toLowerCase().equals("iron") && repair.getType().equals(Material.IRON_INGOT)) {
+            eligible = true;
+        } else if (name[0].toLowerCase().equals("golden") && repair.getType().equals(Material.GOLD_INGOT)) {
+            eligible = true;
+        } else if (name[0].toLowerCase().equals("diamond") && repair.getType().equals(Material.DIAMOND)) {
+            eligible = true;
+        } else if (name[0].toLowerCase().equals("bow") && (repair.getType().equals(Material.STICK) || repair.getType().equals(Material.STRING))) {
+            eligible = true;
+        } else if (name[0].toLowerCase().equals("shield") && Lists.getWoodPlanks().contains(repair.getType())) {
+            eligible = true;
+        } else if (name[0].toLowerCase().equals("leather") && repair.getType().equals(Material.LEATHER)) {
+            eligible = true;
+        } else if (name[0].toLowerCase().equals("chainmail") && repair.getType().equals(Material.IRON_BARS)) {
+            eligible = true;
         }
+        if (eligible) {
+            double dura = tool.getDurability();
+            double maxDura = tool.getType().getMaxDurability();
+            int amount = e.getWhoClicked().getItemOnCursor().getAmount();
+            double percent = Main.getPlugin().getConfig().getDouble("DurabilityPercentageRepair");
+            while (amount > 0 && dura > 0) {
+                dura = dura - (maxDura * percent);
+                amount--;
+            }
+            if (dura < 0) {
+                dura = 0;
+            }
+            tool.setDurability((short) dura);
+            e.getWhoClicked().getItemOnCursor().setAmount(amount);
+            e.setCancelled(true);
+        }
+
+
     }
 
     @EventHandler

@@ -29,7 +29,7 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
 
     public Sweeping() {
         super(config.getString("Sweeping.name"),
-                "[Enchanted Iron Ingot] More damage over a greater area!",
+                "[" + config.getString("Sweeping.name_modifier") + "] " + config.getString("Sweeping.description"),
                 ModifierType.SWEEPING,
                 ChatColor.RED,
                 config.getInt("Sweeping.MaxLevel"),
@@ -57,11 +57,11 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.sweeping.craft")) { return; }
-        ItemGenerator.createModifierItem(p, this, "Sweeping");
+        _createModifierItem(config, p, this, "Sweeping");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.SWEEPING, "Sweeping", "Modifier_Sweeping");
+        _registerCraftingRecipe(config, this, "Sweeping", "Modifier_Sweeping");
     }
 }

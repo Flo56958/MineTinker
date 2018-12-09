@@ -213,12 +213,16 @@ class Functions {
 
     static void convert(Player p, String[] args) {
         ItemStack tool = p.getInventory().getItemInMainHand();
-        if (!(ToolType.AXE.getMaterials().contains(tool.getType()) ||
+        if (ToolType.AXE.getMaterials().contains(tool.getType()) ||
                 ToolType.BOW.getMaterials().contains(tool.getType()) ||
                 ToolType.HOE.getMaterials().contains(tool.getType()) ||
                 ToolType.PICKAXE.getMaterials().contains(tool.getType()) ||
                 ToolType.SHOVEL.getMaterials().contains(tool.getType()) ||
-                ToolType.SWORD.getMaterials().contains(tool.getType()))) {
+                ToolType.SWORD.getMaterials().contains(tool.getType()) ||
+                ToolType.HELMET.getMaterials().contains(tool.getType()) ||
+                ToolType.CHESTPLATE.getMaterials().contains(tool.getType()) ||
+                ToolType.LEGGINGS.getMaterials().contains(tool.getType()) ||
+                ToolType.BOOTS.getMaterials().contains(tool.getType())) {
             if (args.length < 2) {
                 tool.setItemMeta(null);
                 ItemGenerator.changeLore(tool, ItemGenerator.createLore());

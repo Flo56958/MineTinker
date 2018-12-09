@@ -2,6 +2,7 @@ Reinforced:
   allowed: true
   name: Reinforced
   name_modifier: Compressed Obsidian
+  description: Chance to not use durability when using the tool/armor!
   MaxLevel: 3
   Recipe:
     Enabled: true

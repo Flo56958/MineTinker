@@ -32,7 +32,7 @@ public class Ender extends Modifier implements Craftable {
 
     public Ender() {
         super(config.getString("Ender.name"),
-                "[Special Endereye] Teleports you while sneaking to the arrow location!",
+                "[" + config.getString("Ender.name_modifier") + "] " + config.getString("Ender.description"),
                 ModifierType.ENDER,
                 ChatColor.DARK_GREEN,
                 1,
@@ -90,6 +90,6 @@ public class Ender extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.ENDER, "Ender", "Modifier_Ender");
+        _registerCraftingRecipe(config, this, "Ender", "Modifier_Ender");
     }
 }

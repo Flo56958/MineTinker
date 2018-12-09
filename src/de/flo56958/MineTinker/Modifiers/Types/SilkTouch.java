@@ -31,7 +31,7 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
 
     public SilkTouch() {
         super(config.getString("Silk-Touch.name"),
-                "[Enchanted Cobweb] Applies Silk-Touch!",
+                "[" + config.getString("Silk-Touch.name_modifier") + "] " + config.getString("Silk-Touch.description"),
                 ModifierType.SILK_TOUCH,
                 ChatColor.WHITE,
                 1,
@@ -72,11 +72,11 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.silktouch.craft")) { return; }
-        ItemGenerator.createModifierItem(p, this, "Silk-Touch");
+        _createModifierItem(config, p, this, "Silk-Touch");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.SILK_TOUCH, "Silk-Touch", "Modifier_SilkTouch");
+        _registerCraftingRecipe(config, this, "Silk-Touch", "Modifier_SilkTouch");
     }
 }

@@ -1,7 +1,10 @@
 Infinity:
   allowed: true
   name: Infinity
-  name_modifier: Infinity-Modifier
+  name_modifier: Enchanted Arrow
+  description: You only need one Arrow to shoot a bow!
   EnchantCost: 10
   Recipe:
     Enabled: false
+
+#Check Ender.yml for Compatibility-option for Ender and Infinity

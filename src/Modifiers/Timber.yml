@@ -1,7 +1,8 @@
 Timber:
   allowed: true
   name: Timber
-  name_modifier: Timber-Modifier
+  name_modifier: Wooden Emerald
+  description: Chop down trees in an instant!
   Recipe:
     Enabled: true
     Top: "LLL"

@@ -29,7 +29,7 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
 
     public Knockback() {
         super(config.getString("Knockback.name"),
-                "[Enchanted TNT] Knockbacks Enemies further!",
+                "[" + config.getString("Knockback.name_modifier") + "] " + config.getString("Knockback.description"),
                 ModifierType.KNOCKBACK,
                 ChatColor.GRAY,
                 config.getInt("Knockback.MaxLevel"),
@@ -63,11 +63,11 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.knockback.craft")) { return; }
-        ItemGenerator.createModifierItem(p, this, "Knockback");
+        _createModifierItem(config, p, this, "Knockback");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.KNOCKBACK, "Knockback", "Modifier_Knockback");
+        _registerCraftingRecipe(config, this, "Knockback", "Modifier_Knockback");
     }
 }

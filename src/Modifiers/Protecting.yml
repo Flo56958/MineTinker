@@ -2,6 +2,7 @@ Protecting:
   allowed: true
   name: Protecting
   name_modifier: Enriched Obsidian
+  description: Your armor protects you better against all damage!
   MaxLevel: 5
   Recipe:
     Enabled: true

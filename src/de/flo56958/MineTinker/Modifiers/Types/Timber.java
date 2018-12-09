@@ -11,7 +11,10 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import net.minecraft.server.v1_13_R2.BlockPosition;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
@@ -33,7 +36,7 @@ public class Timber extends Modifier implements Craftable {
 
     public Timber() {
         super(config.getString("Timber.name"),
-                "[Wooden Emerald] Chop down trees in an instant!",
+                "[" + config.getString("Timber.name_modifier") + "] " + config.getString("Timber.description"),
                 ModifierType.TIMBER,
                 ChatColor.GREEN,
                 1,
@@ -92,7 +95,7 @@ public class Timber extends Modifier implements Craftable {
         locs.clear();
         Power.HASPOWER.replace(p, false);
 
-        ChatWriter.log(false, p.getDisplayName() + " triggered Glowing on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+        ChatWriter.log(false, p.getDisplayName() + " triggered Timber on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 
     private static void breakTree(Player p, Block b, ArrayList<Material> allowed) { //TODO: Improve algorythm
@@ -114,6 +117,6 @@ public class Timber extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.TIMBER, "Timber", "Modifier_Timber");
+        _registerCraftingRecipe(config, this, "Timber", "Modifier_Timber");
     }
 }

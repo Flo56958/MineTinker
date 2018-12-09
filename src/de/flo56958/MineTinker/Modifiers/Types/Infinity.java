@@ -33,14 +33,14 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
 
     public Infinity() {
         super(config.getString("Infinity.name"),
-                "[Enchanted Arrow] You only need one Arrow to shoot a bow!",
+                "[" + config.getString("Infinity.name_modifier") + "] " + config.getString("Infinity.description"),
                 ModifierType.INFINITY,
                 ChatColor.WHITE,
                 1,
                 ItemGenerator.itemEnchanter(Material.ARROW, ChatColor.WHITE + config.getString("Infinity.name_modifier"), 1, Enchantment.ARROW_INFINITE, 1),
                 new ArrayList<>(Collections.singletonList(ToolType.BOW)),
                 Main.getPlugin());
-        this.compatibleWithEnder = config.getBoolean("Ender.CompatibleWithInfinity");
+        this.compatibleWithEnder = Main.getMain().getConfigurations().getConfig("Ender.yml").getBoolean("Ender.CompatibleWithInfinity");
     }
 
     @Override
@@ -70,11 +70,11 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.infinity.craft")) { return; }
-        ItemGenerator.createModifierItem(p, this, "Infinity");
+        _createModifierItem(config, p, this, "Infinity");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.INFINITY, "Infinity", "Modifier_Infinity");
+        _registerCraftingRecipe(config, this, "Infinity", "Modifier_Infinity");
     }
 }

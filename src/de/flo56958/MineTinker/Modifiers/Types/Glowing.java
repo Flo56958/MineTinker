@@ -35,7 +35,7 @@ public class Glowing extends Modifier implements Craftable {
 
     public Glowing() {
         super(config.getString("Glowing.name"),
-                "[Ender-Glowstone] Makes Enemies glow!",
+                "[" + config.getString("Glowing.name_modifier") + "] " + config.getString("Glowing.description"),
                 ModifierType.GLOWING,
                 ChatColor.YELLOW,
                 config.getInt("Glowing.MaxLevel"),
@@ -64,6 +64,6 @@ public class Glowing extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.GLOWING, "Glowing", "Modifier_Glowing");
+        _registerCraftingRecipe(config, this, "Glowing", "Modifier_Glowing");
     }
 }

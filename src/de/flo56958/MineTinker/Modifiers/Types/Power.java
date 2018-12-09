@@ -38,11 +38,11 @@ public class Power extends Modifier implements Enchantable, Craftable {
 
     public static final HashMap<Player, Boolean> HASPOWER = new HashMap<>();
 
-    private boolean lv1_vertical;
+    private final boolean lv1_vertical;
 
     public Power() {
         super(config.getString("Power.name"),
-                "[Enchanted Emerald] Tool can destroy more blocks per swing!",
+                "[" + config.getString("Power.name_modifier") + "] " + config.getString("Power.description"),
                 ModifierType.POWER,
                 ChatColor.GREEN,
                 config.getInt("Power.MaxLevel"),
@@ -232,11 +232,11 @@ public class Power extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.power.craft")) { return; }
-        ItemGenerator.createModifierItem(p, this, "Power");
+        _createModifierItem(config, p, this, "Power");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.POWER, "Power", "Modifier_Power");
+        _registerCraftingRecipe(config, this, "Power", "Modifier_Power");
     }
 }

@@ -1,10 +1,11 @@
 Self-Repair:
   allowed: true
   name: Self-Repair
-  name_modifier: Self-Repair-Modifier
+  name_modifier: Enchanted mossy Cobblestone
+  description: Chance to repair the tool / armor while using it!
   MaxLevel: 10
   EnchantCost: 10
-  PercentagePerLevel: 10
-  HealthRepair: 2
+  PercentagePerLevel: 10 #100% at Level 10 (not necessary for unbreakable tool in most cases)
+  HealthRepair: 2 #How much durability should be repaired per trigger
   Recipe:
     Enabled: false

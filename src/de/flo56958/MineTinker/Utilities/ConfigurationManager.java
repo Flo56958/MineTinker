@@ -9,11 +9,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class Config {
-    private Main main;
-    private HashMap<String, FileConfiguration> configs = new HashMap<>();
+public class ConfigurationManager {
+    private final Main main;
+    private final HashMap<String, FileConfiguration> configs = new HashMap<>();
 
-    public Config(Main main) {
+    public ConfigurationManager(Main main) {
         this.main = main;
 
         String[] modifiers = { "Auto-Smelt.yml", "Beheading.yml", "Directing.yml", "Ender.yml", "Experienced.yml", "Fiery.yml",

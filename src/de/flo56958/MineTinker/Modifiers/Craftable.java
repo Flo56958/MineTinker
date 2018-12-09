@@ -1,7 +1,6 @@
 package de.flo56958.MineTinker.Modifiers;
 
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -12,10 +11,10 @@ import org.bukkit.inventory.ShapedRecipe;
 public interface Craftable {
     void registerCraftingRecipe();
 
-    default void _registerCraftingRecipe(FileConfiguration config, ModManager modManager, ModifierType modifierType, String name, String keyName) {
+    default void _registerCraftingRecipe(FileConfiguration config, Modifier mod, String name, String keyName) {
         if (config.getBoolean(name + ".Recipe.Enabled")) {
             try {
-                ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), keyName), modManager.get(modifierType).getModItem()); //init recipe
+                ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), keyName), mod.getModItem()); //init recipe
                 String top = config.getString(name + ".Recipe.Top");
                 String middle = config.getString(name + ".Recipe.Middle");
                 String bottom = config.getString(name + ".Recipe.Bottom");

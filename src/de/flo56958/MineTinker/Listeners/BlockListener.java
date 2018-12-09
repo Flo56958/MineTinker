@@ -35,32 +35,16 @@ public class BlockListener implements Listener {
     private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = Main.getModManager();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent e) {
         if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
-        if (!Lists.WORLDS.contains(p.getWorld().getName())) { return; }
-        if (e.getBlock().getType().equals(Material.KELP_PLANT) ||
-                e.getBlock().getType().equals(Material.CHORUS_PLANT) ||
-                e.getBlock().getType().equals(Material.DEAD_BUSH) ||
-                e.getBlock().getType().equals(Material.SEAGRASS) ||
-                e.getBlock().getType().equals(Material.GRASS) ||
-                e.getBlock().getType().equals(Material.TALL_SEAGRASS) ||
-                e.getBlock().getType().equals(Material.TALL_GRASS) ||
-                e.getBlock().getType().equals(Material.RED_MUSHROOM) ||
-                e.getBlock().getType().equals(Material.BROWN_MUSHROOM) ||
-                e.getBlock().getType().equals(Material.SUNFLOWER) ||
-                e.getBlock().getType().equals(Material.DANDELION) ||
-                e.getBlock().getType().equals(Material.DANDELION_YELLOW) ||
-                e.getBlock().getType().equals(Material.LILAC) ||
-                e.getBlock().getType().equals(Material.LILY_PAD) ||
-                e.getBlock().getType().equals(Material.BLUE_ORCHID) ||
-                e.getBlock().getType().equals(Material.POPPY) ||
-                e.getBlock().getType().equals(Material.OXEYE_DAISY) ||
-                e.getBlock().getType().equals(Material.AZURE_BLUET) ||
-                e.getBlock().getType().equals(Material.TORCH)) { return; }
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
         ItemStack tool = p.getInventory().getItemInMainHand();
+        if (!Lists.WORLDS.contains(p.getWorld().getName())) { return; }
+        if (e.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS || ToolType.HOE.getMaterials().contains(tool.getType()))) { return; }
+
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
+
 
         if (!modManager.isToolViable(tool)) { return; }
 
@@ -123,7 +107,7 @@ public class BlockListener implements Listener {
     }
 
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onClick(PlayerInteractEvent e) {
         if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
@@ -156,7 +140,7 @@ public class BlockListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public static void onBlockPlace(BlockPlaceEvent e) {
         if (e.isCancelled()) { return; }
 
@@ -176,7 +160,7 @@ public class BlockListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public static void onHoeUse(PlayerInteractEvent e) {
         if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
@@ -229,7 +213,7 @@ public class BlockListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public static void onAxeUse(PlayerInteractEvent e) {
         if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
@@ -284,7 +268,7 @@ public class BlockListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public static void onShovelUse(PlayerInteractEvent e) {
         if (e.isCancelled()) { return; }
         Player p = e.getPlayer();

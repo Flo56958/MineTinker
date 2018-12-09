@@ -1,7 +1,8 @@
 Sweeping:
   allowed: true
   name: Sweeping
-  name_modifier: Sweeping-Modifier
+  name_modifier: Enchanted Iron Ingot
+  description: More damage over a greater area!
   MaxLevel: 5
   EnchantCost: 10
   Recipe:

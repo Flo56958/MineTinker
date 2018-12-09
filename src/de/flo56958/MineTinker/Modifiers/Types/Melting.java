@@ -32,7 +32,7 @@ public class Melting extends Modifier implements Enchantable, Craftable {
 
     public Melting() {
         super(config.getString("Melting.name"),
-                "[Enchanted Magma block] Extra damage against burning enemies!",
+                "[" + config.getString("Melting.name_modifier") + "] " + config.getString("Melting.description"),
                 ModifierType.MELTING,
                 ChatColor.GOLD,
                 config.getInt("Melting.MaxLevel"),
@@ -69,7 +69,7 @@ public class Melting extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.melting.craft")) { return; }
-        ItemGenerator.createModifierItem(p, this, "Melting");
+        _createModifierItem(config, p, this, "Melting");
     }
 
     public void effect_armor(Player p, ItemStack piece, EntityDamageByEntityEvent e) {
@@ -100,6 +100,6 @@ public class Melting extends Modifier implements Enchantable, Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.MELTING, "Melting", "Modifier_Melting");
+        _registerCraftingRecipe(config, this, "Melting", "Modifier_Melting");
     }
 }

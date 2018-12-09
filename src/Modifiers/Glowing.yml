@@ -1,10 +1,11 @@
 Glowing:
   allowed: true
   name: Glowing
-  name_modifier: Glowing-Modifier
+  name_modifier: Ender-Glowstone
+  decription: Makes Enemies glow!
   MaxLevel: 3
-  Duration: 200 #ticks
-  DurationMultiplier: 1.1 #Duration * (Multiplier^Level)
+  Duration: 200 #ticks INTEGER (20 ticks ~ 1 sec)
+  DurationMultiplier: 1.1 #Duration * (Multiplier^Level) DOUBLE
   Recipe:
     Enabled: true
     Top: "GGG"

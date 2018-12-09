@@ -1,6 +1,6 @@
 Extra-Modifier:
   allowed: true
   name: Extra-Modifier
-  ExtraModifierGain: 1
-  Recipe:
-    Enabled: false
+  description: Adds a additional Modifiers-Slot to the tool!
+  ExtraModifierGain: 1 #How much Slots should be added per Nether-Star
+  modifier_item: NETHER_STAR #Needs to be a viable Material-Type

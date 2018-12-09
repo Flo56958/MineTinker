@@ -8,7 +8,10 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -32,7 +35,7 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
 
     public Beheading() {
         super(config.getString("Beheading.name"),
-                "[Enchanted Wither-Skull] Chance to drop the head of the mob!",
+                "[" + config.getString("Beheading.name_modifier") + "] " + config.getString("Beheading.description"),
                 ModifierType.BEHEADING,
                 ChatColor.DARK_GRAY,
                 config.getInt("Modifiers.Auto-Smelt.MaxLevel"),
@@ -83,11 +86,11 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.Beheading.craft")) { return; }
-        ItemGenerator.createModifierItem(p, this, "Beheading");
+        _createModifierItem(config, p, this, "Beheading");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.BEHEADING, "Beheading", "Modifier_Beheading");
+        _registerCraftingRecipe(config, this, "Beheading", "Modifier_Beheading");
     }
 }

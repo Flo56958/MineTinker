@@ -32,7 +32,7 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
 
     public SelfRepair() {
         super(config.getString("Self-Repair.name"),
-                "[Enchanted Mossy Cobblestone] Chance to repair the tool while using it!",
+                "[" + config.getString("Self-Repair.name_modifier") + "] " + config.getString("Self-Repair.description"),
                 ModifierType.SELF_REPAIR,
                 ChatColor.GREEN,
                 config.getInt("Self-Repair.MaxLevel"),
@@ -72,11 +72,11 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.selfrepair.craft")) { return; }
-        ItemGenerator.createModifierItem(p, this, "Self-Repair");
+        _createModifierItem(config, p, this, "Self-Repair");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.SELF_REPAIR, "Self-Repair", "Modifier_SelfRepair");
+        _registerCraftingRecipe(config, this, "Self-Repair", "Modifier_SelfRepair");
     }
 }

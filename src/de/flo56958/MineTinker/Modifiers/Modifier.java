@@ -70,7 +70,7 @@ public abstract class Modifier {
 	 */
 	public abstract ItemStack applyMod(Player p, ItemStack tool, boolean isCommand);
 
-	public Modifier(String name, String description, ModifierType type, ChatColor color, int maxLvl, ItemStack modItem, ArrayList<ToolType> allowedTools, Plugin source) {
+	protected Modifier(String name, String description, ModifierType type, ChatColor color, int maxLvl, ItemStack modItem, ArrayList<ToolType> allowedTools, Plugin source) {
 		this.name = name;
 		this.description = description;
 		this.type = type;

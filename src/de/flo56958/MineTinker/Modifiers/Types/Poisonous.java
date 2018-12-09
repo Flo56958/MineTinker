@@ -37,7 +37,7 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
 
     public Poisonous() {
         super(config.getString("Poisonous.name"),
-                "[Enchanted Rotten Flesh] Poisons enemies!",
+                "[" + config.getString("Poisonous.name_modifier") + "] " + config.getString("Poisonous.description"),
                 ModifierType.POISONOUS,
                 ChatColor.DARK_GREEN,
                 config.getInt("Poisonous.MaxLevel"),
@@ -71,11 +71,11 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.poisonous.craft")) { return; }
-        ItemGenerator.createModifierItem(p, this, "Poisonous");
+        _createModifierItem(config, p, this, "Poisonous");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.POISONOUS, "Poisonous", "Modifier_Poisonous");
+        _registerCraftingRecipe(config, this, "Poisonous", "Modifier_Poisonous");
     }
 }

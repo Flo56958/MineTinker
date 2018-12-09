@@ -32,7 +32,7 @@ public class AutoSmelt extends Modifier implements Craftable {
 
     public AutoSmelt() {
         super(config.getString("Auto-Smelt.name"),
-                "[Enhanced Furnace] Chance to smelt ore when mined!",
+                "[" + config.getString("Auto-Smelt.name_modifier") + "] " + config.getString("Auto-Smelt.description"),
                 ModifierType.AUTO_SMELT,
                 ChatColor.YELLOW,
                 config.getInt("Auto-Smelt.MaxLevel"),
@@ -58,23 +58,23 @@ public class AutoSmelt extends Modifier implements Craftable {
 
     public void effect(Player p, ItemStack tool, Block b, BlockBreakEvent e) {
         if (!p.hasPermission("minetinker.modifiers.autosmelt.use")) { return; }//TODO: Think about more blocks for Auto-Smelt
-        boolean goodBlock = false;
-        boolean luck = false;
+        if (!modManager.hasMod(tool, this)) { return; }
+
+        if (!config.getBoolean("Auto-Smelt.works_under_water")) {
+            if (p.isSwimming() || p.getWorld().getBlockAt(p.getLocation()).getType().equals(Material.WATER)) { return; }
+        }
+
+        boolean allowLuck = false;
+        int amount = 1;
         Material loot = Material.AIR;
         switch (b.getType()) {
             case STONE:
-                if (config.getBoolean("Auto-Smelt.smelt_stone")) {
-                    goodBlock = true;
-                    loot = Material.STONE;
-                }
-                break;
+                if (!config.getBoolean("Auto-Smelt.smelt_stone")) { break; }
             case COBBLESTONE:
-                goodBlock = true;
                 loot = Material.STONE;
                 break;
 
             case SAND:
-                goodBlock = true;
                 loot = Material.GLASS;
                 break;
 
@@ -105,75 +105,74 @@ public class AutoSmelt extends Modifier implements Craftable {
             case STRIPPED_JUNGLE_WOOD:
             case STRIPPED_OAK_WOOD:
             case STRIPPED_SPRUCE_WOOD:
-                goodBlock = true;
-                luck = true;
+                allowLuck = true;
                 loot = Material.CHARCOAL;
                 break;
 
             case IRON_ORE:
-                goodBlock = true;
-                luck = true;
+                allowLuck = true;
                 loot = Material.IRON_INGOT;
                 break;
 
             case GOLD_ORE:
-                goodBlock = true;
-                luck = true;
+                allowLuck = true;
                 loot = Material.GOLD_INGOT;
                 break;
 
             case NETHERRACK:
-                goodBlock = true;
-                luck = true;
+                allowLuck = true;
                 loot = Material.NETHER_BRICK;
                 break;
 
             case KELP_PLANT:
-                goodBlock = true;
                 loot = Material.DRIED_KELP;
                 break;
 
             case WET_SPONGE:
-                goodBlock = true;
                 loot = Material.SPONGE;
                 break;
 
-            case CLAY:
-                goodBlock = true;
-                loot = Material.BRICK;
+            case COAL_ORE:
+            case COAL_BLOCK:
+                if (!config.getBoolean("Auto-Smelt.burn_coal")) { return; }
+                loot = Material.AIR;
                 break;
+
+            case CLAY:
+                loot = Material.BRICK;
+                amount = 4;
+                break;
+
+            default:
+                return;
         }
-        if (goodBlock) {
-            if (modManager.hasMod(tool, this)) {
-                Random rand = new Random();
-                int n = rand.nextInt(100);
-                if (n <= this.percentagePerLevel * modManager.getModLevel(tool, this)) {
-                    int amount = 1;
 
-                    if (luck && modManager.get(ModifierType.LUCK) != null) {
-                        int level = modManager.getModLevel(tool, modManager.get(ModifierType.LUCK));
-                        if (level > 0) {
-                            amount = amount + rand.nextInt(level);
-                        }
-                    }
-
-                    e.setDropItems(false);
-                    ItemStack items = new ItemStack(loot, amount);
-                    b.getLocation().getWorld().dropItemNaturally(b.getLocation(), items);
-
-                    b.getLocation().getWorld().spawnParticle(Particle.FLAME, b.getLocation(), 5);
-                    if (this.hasSound) {
-                        b.getLocation().getWorld().playSound(b.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
-                    }
-                    ChatWriter.log(false, p.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") while mining " + e.getBlock().getType().toString() + "!");
+        Random rand = new Random();
+        int n = rand.nextInt(100);
+        if (n <= this.percentagePerLevel * modManager.getModLevel(tool, this)) {
+            if (allowLuck && modManager.get(ModifierType.LUCK) != null) {
+                int level = modManager.getModLevel(tool, modManager.get(ModifierType.LUCK));
+                if (level > 0) {
+                    amount = amount + rand.nextInt(level) * amount; //Times amount is for clay as it drops 4 per block
                 }
             }
 
+            if (!loot.equals(Material.AIR)) {
+                ItemStack items = new ItemStack(loot, amount);
+                b.getLocation().getWorld().dropItemNaturally(b.getLocation(), items);
+            }
+            e.setDropItems(false);
+
+            b.getLocation().getWorld().spawnParticle(Particle.FLAME, b.getLocation(), 5);
+            if (this.hasSound) {
+                b.getLocation().getWorld().playSound(b.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
+            }
+            ChatWriter.log(false, p.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") while mining " + e.getBlock().getType().toString() + "!");
         }
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.AUTO_SMELT, "Auto-Smelt", "Modifier_Autosmelt");
+        _registerCraftingRecipe(config, this, "Auto-Smelt", "Modifier_Autosmelt");
     }
 }

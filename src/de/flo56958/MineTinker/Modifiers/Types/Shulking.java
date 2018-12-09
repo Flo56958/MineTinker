@@ -34,7 +34,7 @@ public class Shulking extends Modifier implements Craftable {
 
     public Shulking() {
         super(config.getString("Shulking.name"),
-                "[Special Shulkershell] Makes enemies levitate!",
+                "[" + config.getString("Shulking.name_modifier") + "] " + config.getString("Shulking.description"),
                 ModifierType.SHULKING,
                 ChatColor.LIGHT_PURPLE,
                 config.getInt("Shulking.MaxLevel"),
@@ -66,6 +66,6 @@ public class Shulking extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.SHULKING, "Shulking", "Modifier_Shulking");
+        _registerCraftingRecipe(config, this, "Shulking", "Modifier_Shulking");
     }
 }

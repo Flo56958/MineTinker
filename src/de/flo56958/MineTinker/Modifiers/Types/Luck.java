@@ -30,7 +30,7 @@ public class Luck extends Modifier implements Craftable {
 
     public Luck() {
         super(config.getString("Luck.name"),
-                "[Compressed Lapis Block] Get more loot from enemies and blocks!",
+                "[" + config.getString("Luck.name_modifier") + "] " + config.getString("Luck.description"),
                 ModifierType.LUCK,
                 ChatColor.BLUE,
                 config.getInt("Luck.MaxLevel"),
@@ -76,6 +76,6 @@ public class Luck extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.LUCK, "Luck", "Modifier_Luck");
+        _registerCraftingRecipe(config, this, "Luck", "Modifier_Luck");
     }
 }

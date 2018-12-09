@@ -4,7 +4,7 @@ import de.flo56958.MineTinker.Events.ToolLevelUpEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Types.*;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.Config;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -63,7 +63,7 @@ public class ModManager {
     }
 
     public void init() {
-        Config configs = Main.getMain().getConfigurations();
+        ConfigurationManager configs = Main.getMain().getConfigurations();
         if (configs.getConfig("Auto-Smelt.yml").getBoolean("Auto-Smelt.allowed")) {
             register(new AutoSmelt());
         }

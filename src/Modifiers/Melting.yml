@@ -1,9 +1,10 @@
 Melting:
   allowed: true
   name: Melting
-  name_modifier: Melting-Modifier
+  name_modifier: Enchanted Magma block
+  description: Extra damage against burning enemies and less damage taken while on fire!
   MaxLevel: 3
   EnchantCost: 10
-  BonusMultiplier: 0.1 #Percent of Bonus-damage per Level
+  BonusMultiplier: 0.1 #Percent of Bonus-damage per Level or Damage-reduction on Armor
   Recipe:
     Enabled: false

@@ -29,7 +29,7 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
 
     public Fiery() {
         super(config.getString("Fiery.name"),
-                "[Blaze-Rod] Inflames enemies!",
+                "[" + config.getString("Fiery.name_modifier") + "] " + config.getString("Fiery.description"),
                 ModifierType.FIERY,
                 ChatColor.YELLOW,
                 config.getInt("Fiery.MaxLevel"),
@@ -61,11 +61,11 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.fiery.craft")) { return; }
-        ItemGenerator.createModifierItem(p, this, "Fiery");
+        _createModifierItem(config, p, this, "Fiery");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, modManager, ModifierType.FIERY, "Fiery", "Modifier_Fiery");
+        _registerCraftingRecipe(config, this, "Fiery", "Modifier_Fiery");
     }
 }

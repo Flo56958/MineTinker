@@ -28,11 +28,11 @@ public class ExtraModifier extends Modifier {
 
     public ExtraModifier() {
         super(config.getString("Extra-Modifier.name"),
-                "[Netherstar] Adds a additional Modifiers-Slot to the tool!",
+                "[" + config.getString("Extra-Modifier.modifier_item")+ "] " + config.getString("Extra-Modifier.description"),
                 ModifierType.EXTRA_MODIFIER,
                 ChatColor.WHITE,
                 -1,
-                new ItemStack(Material.NETHER_STAR, 1),
+                new ItemStack(Material.getMaterial(config.getString("Extra-Modifier.modifier_item")), 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
