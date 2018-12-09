@@ -1,0 +1,8 @@
+Knockback:
+  allowed: true
+  name: Knockback
+  name_modifier: Knockback-Modifier
+  MaxLevel: 5
+  EnchantCost: 10
+  Recipe:
+    Enabled: false

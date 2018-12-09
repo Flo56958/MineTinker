@@ -1,0 +1,8 @@
+Light-Weight:
+  allowed: true
+  name: Light-Weight
+  name_modifier: Light-Weight-Modifier
+  MaxLevel: 3
+  EnchantCost: 10
+  Recipe:
+    Enabled: false

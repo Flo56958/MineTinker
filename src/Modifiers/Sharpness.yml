@@ -1,0 +1,12 @@
+Sharpness:
+  allowed: true
+  name: Sharpness
+  name_modifier: Sharpness-Modifier
+  MaxLevel: 5
+  Recipe:
+    Enabled: true
+    Top: "QQQ"
+    Middle: "QQQ"
+    Bottom: "QQQ"
+    Materials:
+      Q: "QUARTZ_BLOCK"

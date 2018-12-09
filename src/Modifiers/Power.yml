@@ -1,0 +1,9 @@
+Power:
+  allowed: true
+  name: Power
+  name_modifier: Power-Modifier
+  lv1_vertical: false
+  MaxLevel: 3
+  EnchantCost: 10
+  Recipe:
+    Enabled: false

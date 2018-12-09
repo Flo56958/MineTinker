@@ -1,0 +1,8 @@
+Elevator:
+  enabled: true
+  name: Elevator-Motor
+  Sound: true #(Chest opening and closing)
+  AllowedWorlds: #Worlds where Elevator can be used
+  - world #default
+  - world_nether #default
+  - world_the_end #default

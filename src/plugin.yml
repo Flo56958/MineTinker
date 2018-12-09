@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: a10.1.3
+version: a11.4
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -9,13 +9,14 @@ website: https://github.com/Flo56958/MineTinker
 database: false
 api-version: 1.13
 
+####################################################
 commands:
    minetinker:
      aliases: [mt]
      description: Main Command of MineTinker
      usage: /minetinker
 
-
+####################################################
 permissions:
   minetinker.*:
     children:
@@ -57,7 +58,6 @@ permissions:
       minetinker.commands.removemod: true
       minetinker.commands.setdurability: true
       minetinker.commands.give: true
-      minetinker.commands.reload: true
       minetinker.commands.convert: true
 
   minetinker.commands.main:
@@ -100,10 +100,6 @@ permissions:
     description: Allows to give MineTinker-Tools through command
     default: op
 
-  minetinker.commands.reload:
-    description: Allows to reload the MineTinker-Config
-    default: op
-
   minetinker.commands.convert:
     description: Allows to convert a tool to a MineTinker-Tool
     default: op
@@ -121,9 +117,11 @@ permissions:
       minetinker.modifiers.haste.*: true
       minetinker.modifiers.infinity.*: true
       minetinker.modifiers.melting.*: true
+      minetinker.modifiers.lightweight.*: true
       minetinker.modifiers.luck.*: true
       minetinker.modifiers.poisonous.*: true
       minetinker.modifiers.power.*: true
+      minetinker.modifiers.protecting.*: true
       minetinker.modifiers.reinforced.*: true
       minetinker.modifiers.selfrepair.*: true
       minetinker.modifiers.sharpness.*: true
@@ -132,7 +130,7 @@ permissions:
       minetinker.modifiers.sweeping.*: true
       minetinker.modifiers.timber.*: true
       minetinker.modifiers.webbed.*: true
-      minetinker.modifiers.xp.*: true
+      minetinker.modifiers.experienced.*: true
 
   minetinker.modifiers.autosmelt.*:
     children:
@@ -255,6 +253,17 @@ permissions:
     description: Allows to use the Melting-Modifier on a MineTinker-Tool
     default: true
 
+  minetinker.modifiers.lightweight.*:
+    children:
+      minetinker.modifiers.lightweight.apply: true
+      minetinker.modifiers.lightweight.craft: true
+    minetinker.modifiers.lightweight.apply:
+      description: Allows to apply Light-Weight to MineTinker-Armor
+      default: true
+    minetinker.modifiers.lightweight.craft:
+      description: Allows to craft the Light-Weight-Modifier
+      default: true
+
   minetinker.modifiers.luck.*:
     children:
       minetinker.modifiers.luck.apply: true
@@ -291,6 +300,14 @@ permissions:
   minetinker.modifiers.power.use:
     description: Allows to use Power on a MineTinker-Tool
     default: true
+
+  minetinker.modifiers.protecting.*:
+    children:
+      minetinker.modifiers.protecting.apply: true
+  minetinker.modifiers.protecting.apply:
+    description: Allows to apply Protecting to MineTinker-Armor
+    default: true
+
 
   minetinker.modifiers.reinforced.*:
     children:
@@ -376,14 +393,14 @@ permissions:
     description: Allows to use Webbed on a MineTinker-Tool
     default: true
 
-  minetinker.modifiers.xp.*:
+  minetinker.modifiers.experienced.*:
     children:
-      minetinker.modifiers.xp.apply: true
-      minetinker.modifiers.xp.use: true
-  minetinker.modifiers.xp.apply:
+      minetinker.modifiers.experienced.apply: true
+      minetinker.modifiers.experienced.use: true
+  minetinker.modifiers.experienced.apply:
     description: Allows to apply XP to a MineTinker-Tool
     default: true
-  minetinker.modifiers.xp.use:
+  minetinker.modifiers.experienced.use:
     description: Allows to use XP on a MineTinker-Tool
     default: true
 

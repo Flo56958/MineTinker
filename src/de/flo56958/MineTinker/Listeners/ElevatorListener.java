@@ -32,11 +32,13 @@ public class ElevatorListener implements Listener {
         if (!(b.getState() instanceof Hopper)) { return; }
 
         Hopper h1 = (Hopper) b.getState();
+        if (h1.getCustomName() == null) { return; } //name could be NULL
         if (!h1.getCustomName().equals(ChatColor.GRAY + Main.getPlugin().getConfig().getString("Elevator.name"))) { return; }
 
         for (int i = l.getBlockY() - 1; i >= 0; i--) {
             if (p.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ()).getState() instanceof Hopper) {
                 Hopper h2 = (Hopper) p.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ()).getState();
+                if (h2.getCustomName() == null) { continue; } //name could be NULL
                 if (h2.getCustomName().equals(ChatColor.GRAY + Main.getPlugin().getConfig().getString("Elevator.name"))) {
                     l.add(0, i - l.getBlockY() + 2, 0);
                     p.teleport(l);
@@ -65,10 +67,12 @@ public class ElevatorListener implements Listener {
         if (!(b.getState() instanceof Hopper)) { return; }
 
         Hopper h1 = (Hopper) b.getState();
+        if (h1.getCustomName() == null) { return; }
         if (h1.getCustomName().equals(ChatColor.GRAY + Main.getPlugin().getConfig().getString("Elevator.name"))) {
             for (int i = l.getBlockY() + 1; i <= 256; i++) {
                 if (p.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ()).getState() instanceof Hopper) {
                     Hopper h2 = (Hopper) p.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ()).getState();
+                    if (h2.getCustomName() == null) { continue; }
                     if (h2.getCustomName().equals(ChatColor.GRAY + Main.getPlugin().getConfig().getString("Elevator.name"))) {
                         l.add(0, i - l.getBlockY() + 2, 0);
                         p.teleport(l);

@@ -1,6 +1,5 @@
 package de.flo56958.MineTinker.Commands;
 
-import de.flo56958.MineTinker.Data.Strings;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.ChatColor;
@@ -12,7 +11,7 @@ import org.bukkit.entity.Player;
 
 public class Commands implements CommandExecutor {
 
-    private static FileConfiguration config = Main.getPlugin().getConfig();
+    private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -58,14 +57,14 @@ public class Commands implements CommandExecutor {
                         case "info":
                         case "i":
                             if (p.hasPermission("minetinker.commands.info")) {
-                                ChatWriter.sendMessage(p, ChatColor.WHITE, "MineTinker is a Plugin made by Flo56958.");
+                                ChatWriter.sendMessage(p, ChatColor.WHITE, "MineTinker (" + Main.getPlugin().getDescription().getVersion() + ") is a Plugin made by Flo56958.");
                                 ChatWriter.sendMessage(p, ChatColor.WHITE, "It is inspired by different mods (e.g. TinkersConstruct)");
                             } else noPerm(p);
                             break;
                         case "modifiers":
                         case "mods":
                             if (p.hasPermission("minetinker.commands.modifiers")) {
-                                Mods.list(p);
+                                Functions.modList(p);
                             } else noPerm(p);
                             break;
                         case "name":
@@ -100,7 +99,7 @@ public class Commands implements CommandExecutor {
                 }
             }
         } else {
-            sender.sendMessage(Strings.CHAT_PREFIX + " " + config.getString("Language.Commands.NotAPlayer"));
+            sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + config.getString("Language.Commands.NotAPlayer"));
         }
         return true;
     }

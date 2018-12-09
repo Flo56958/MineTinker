@@ -1,0 +1,7 @@
+Silk-Touch:
+  allowed: true
+  name: Silk-Touch
+  name_modifier: Silk-Touch-Modifier
+  EnchantCost: 10
+  Recipe:
+    Enabled: false

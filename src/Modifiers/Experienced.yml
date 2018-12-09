@@ -1,0 +1,8 @@
+Experienced:
+  allowed: true
+  name: Experienced
+  MaxLevel: 10
+  PercentagePerLevel: 2
+  Amount: 1
+  Recipe:
+    Enabled: false

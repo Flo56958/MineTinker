@@ -1,0 +1,14 @@
+Protecting:
+  allowed: true
+  name: Protecting
+  name_modifier: Enriched Obsidian
+  MaxLevel: 5
+  Recipe:
+    Enabled: true
+    Top: "DID"
+    Middle: "IOI"
+    Bottom: "DID"
+    Materials:
+      D: "DIAMOND"
+      I: "IRON_INGOT"
+      O: "OBSIDIAN"

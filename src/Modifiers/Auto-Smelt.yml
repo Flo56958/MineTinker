@@ -1,0 +1,16 @@
+Auto-Smelt:
+  allowed: true
+  name: Auto-Smelt
+  name_modifier: Auto-Smelt-Modifier
+  smelt_stone: false
+  MaxLevel: 5
+  PercentagePerLevel: 20
+  Sound: true
+  Recipe:
+    Enabled: true
+    Top: CCC
+    Middle: CFC
+    Bottom: CCC
+    Materials:
+      C: FURNACE
+      F: BLAZE_ROD
