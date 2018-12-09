@@ -22,6 +22,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        getLogger().info("Server is running NMS version " + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]);
         this.getCommand("minetinker").setExecutor(new Commands());
         ChatWriter.log(false, "Registered commands!");
 
