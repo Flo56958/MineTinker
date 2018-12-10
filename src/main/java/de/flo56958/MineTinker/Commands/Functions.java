@@ -66,6 +66,7 @@ class Functions {
         }
     }
 
+    @SuppressWarnings("IfCanBeSwitch")
     static void removeMod(Player p, String[] args) {
         if (args.length == 2) {
             try {

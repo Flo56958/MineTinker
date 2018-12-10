@@ -26,16 +26,5 @@
             <version>1.13-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.13-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
-            <version>1.0.0</version>
-        </dependency>
     </dependencies>
 </project>

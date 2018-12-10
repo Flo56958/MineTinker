@@ -95,5 +95,5 @@ public class Main extends JavaPlugin {
 
     public static Main getMain() { return tinkerMain; }
 
-    public ConfigurationManager getConfigurations() { return this.configurations; }
+    public ConfigurationManager getConfigurations() { return configurations; }
 }
