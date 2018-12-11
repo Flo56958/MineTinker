@@ -6,7 +6,5 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 
 public class PlayerData {
-
-    public static final HashMap<Player, BlockFace> BLOCKFACE = new HashMap<>();
-
+    public static final HashMap<Player, BlockFace> BLOCKFACE = new HashMap<>(); //TODO: Relocate to different class and delete PlayerData
 }

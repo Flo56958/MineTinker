@@ -9,7 +9,8 @@ public enum ModifierFailCause {
     NO_PERMISSION,
     NO_FREE_SLOTS;
 
-    public String toString() {
+    @Override
+    public String toString() { //TODO: relocate to Lang-config
         switch(this) {
             case INCOMPATIBLE_MODIFIERS: return "Incompatible Modifiers!";
             case INVALID_TOOLTYPE: return "Invalid Tool-Type!";

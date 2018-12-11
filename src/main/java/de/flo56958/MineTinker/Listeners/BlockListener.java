@@ -33,7 +33,7 @@ import java.util.List;
 public class BlockListener implements Listener {
 
     private static final FileConfiguration config = Main.getPlugin().getConfig();
-    private static final ModManager modManager = Main.getModManager();
+    private static final ModManager modManager = ModManager.instance();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent e) {

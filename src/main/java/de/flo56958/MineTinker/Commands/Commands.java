@@ -22,7 +22,7 @@ public class Commands implements CommandExecutor {
                     invalidArgs(p);
                 }
                 if (args.length > 0) {
-                    switch (args[0].toLowerCase()) {
+                    switch (args[0].toLowerCase()) { //first argument is the specifier for the command
                         case "addexp":
                         case "ae":
                             if (p.hasPermission("minetinker.commands.addexp")) {
@@ -73,12 +73,12 @@ public class Commands implements CommandExecutor {
                                 Functions.name(p, args);
                             } else noPerm(p);
                             break;
-                        case "reload":
-                        case "r":
-                            if (p.hasPermission("minetinker.commands.reload")) {
-                                reload(p);
-                            } else noPerm(p);
-                            break;
+//                        case "reload":
+//                        case "r":
+//                            if (p.hasPermission("minetinker.commands.reload")) {
+//                                reload(p);
+//                            } else noPerm(p);
+//                            break;
                         case "removemod":
                         case "rm":
                             if (p.hasPermission("minetinker.commands.removemod")) {
@@ -104,68 +104,84 @@ public class Commands implements CommandExecutor {
         return true;
     }
 
-    static void invalidArgs(Player p) {
-        ChatWriter.sendMessage(p, ChatColor.RED, config.getString("Language.Commands.InvalidArguments"));
+    /**
+     * Outputs the error message "Invalig Arguments" in the Players chat
+     * @param player
+     */
+    static void invalidArgs(Player player) {
+        ChatWriter.sendMessage(player, ChatColor.RED, config.getString("Language.Commands.InvalidArguments"));
     }
 
-    static void invalidTool(Player p) {
-        ChatWriter.sendMessage(p, ChatColor.RED, config.getString("Language.Commands.InvalidTool"));
+    /**
+     * Outputs the error message "Invalid Tool/Armor" in the Players chat
+     * @param player
+     */
+    static void invalidTool(Player player) {
+        ChatWriter.sendMessage(player, ChatColor.RED, config.getString("Language.Commands.InvalidTool"));
     }
 
-    private void noPerm(Player p) {
-        ChatWriter.sendMessage(p, ChatColor.RED, config.getString("Language.Commands.NoPermission"));
+    /**
+     * Outputs the error message "No Permissions" in the Players chat
+     * @param player
+     */
+    private void noPerm(Player player) {
+        ChatWriter.sendMessage(player, ChatColor.RED, config.getString("Language.Commands.NoPermission"));
     }
 
-    private void onHelp(Player p) {
+    /**
+     * Outputs all available commands from MineTinker in the chat of the Player
+     * @param player
+     */
+    private void onHelp(Player player) {
         int index = 1;
-        if (p.hasPermission("minetinker.commands.addexp")) {
-            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". AddExp (ae)");
+        if (player.hasPermission("minetinker.commands.addexp")) {
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". AddExp (ae)");
             index++;
         }
-        if (p.hasPermission("minetinker.commands.addmod")) {
-            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". AddMod (am)");
+        if (player.hasPermission("minetinker.commands.addmod")) {
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". AddMod (am)");
             index++;
         }
-        if (p.hasPermission("minetinker.commands.convert")) {
-            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". Convert (c)");
+        if (player.hasPermission("minetinker.commands.convert")) {
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Convert (c)");
             index++;
         }
-        if (p.hasPermission("minetinker.commands.give")) {
-            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". Give (g)");
+        if (player.hasPermission("minetinker.commands.give")) {
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Give (g)");
             index++;
         }
-        if (p.hasPermission("minetinker.commands.help")) {
-            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". Help (?)");
+        if (player.hasPermission("minetinker.commands.help")) {
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Help (?)");
             index++;
         }
-        if (p.hasPermission("minetinker.commands.info")) {
-            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". Info (i)");
+        if (player.hasPermission("minetinker.commands.info")) {
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Info (i)");
             index++;
         }
-        if (p.hasPermission("minetinker.commands.modifiers")) {
-            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". Modifiers (mods)");
+        if (player.hasPermission("minetinker.commands.modifiers")) {
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Modifiers (mods)");
             index++;
         }
-        if (p.hasPermission("minetinker.commands.name")) {
-            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". Name (n)");
+        if (player.hasPermission("minetinker.commands.name")) {
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Name (n)");
             index++;
         }
-        if (p.hasPermission("minetinker.commands.reload")) {
-            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". Reload (r)");
+//        if (player.hasPermission("minetinker.commands.reload")) {
+//            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Reload (r)");
+//            index++;
+//        }
+        if (player.hasPermission("minetinker.commands.removemod")) {
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". RemoveMod (rm)");
             index++;
         }
-        if (p.hasPermission("minetinker.commands.removemod")) {
-            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". RemoveMod (rm)");
-            index++;
-        }
-        if (p.hasPermission("minetinker.commands.setdurability")) {
-            ChatWriter.sendMessage(p, ChatColor.WHITE, index + ". SetDurability (sd)");
+        if (player.hasPermission("minetinker.commands.setdurability")) {
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". SetDurability (sd)");
         }
     }
 
-    private void reload(Player p) {
-        ChatWriter.sendMessage(p, ChatColor.RED, "Reloading Config!");
-        Main.getPlugin().reloadConfig();
-        ChatWriter.sendMessage(p, ChatColor.RED, "Finished!");
-    }
+//    private void reload(Player p) { TODO: Make reload command work again
+//        ChatWriter.sendMessage(p, ChatColor.RED, "Reloading Config!");
+//        Main.getPlugin().reloadConfig();
+//        ChatWriter.sendMessage(p, ChatColor.RED, "Finished!");
+//    }
 }

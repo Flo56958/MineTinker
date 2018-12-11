@@ -1,6 +1,5 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 
 public enum ModifierType {
@@ -31,7 +30,7 @@ public enum ModifierType {
     TIMBER,
     WEBBED;
 
-    private final ModManager modManager = Main.getModManager();
+    private final ModManager modManager = ModManager.instance();
 
     public String getName() {
         return modManager.get(this).getName();

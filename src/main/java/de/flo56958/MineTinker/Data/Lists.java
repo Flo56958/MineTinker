@@ -17,6 +17,9 @@ public class Lists {
     public static final List<String> WORLDS_SPAWNERS = config.getStringList("Spawners.AllowedWorlds");
     public static final List<String> WORLDS_EASYHARVEST = config.getStringList("EasyHarvest.AllowedWorlds");
 
+    /**
+     * @return All Leaf Type
+     */
     public static ArrayList<Material> getWoodLeaves() {
         ArrayList<Material> mats = new ArrayList<>();
         mats.add(Material.ACACIA_LEAVES);
@@ -28,6 +31,9 @@ public class Lists {
         return mats;
     }
 
+    /**
+     * @return All Plank types
+     */
     public static ArrayList<Material> getWoodPlanks() {
         ArrayList<Material> mats = new ArrayList<>();
         mats.add(Material.ACACIA_PLANKS);
@@ -39,6 +45,9 @@ public class Lists {
         return mats;
     }
 
+    /**
+     * @return All Log types
+     */
     public static ArrayList<Material> getWoodLogs() {
         ArrayList<Material> mats = new ArrayList<>();
         mats.add(Material.ACACIA_LOG);
@@ -50,6 +59,9 @@ public class Lists {
         return mats;
     }
 
+    /**
+     * @return All stripped Log types
+     */
     public static ArrayList<Material> getWoodStrippedLogs() {
         ArrayList<Material> mats = new ArrayList<>();
         mats.add(Material.STRIPPED_ACACIA_LOG);
@@ -61,6 +73,9 @@ public class Lists {
         return mats;
     }
 
+    /**
+     * @return All Wood types
+     */
     public static ArrayList<Material> getWoodWood() {
         ArrayList<Material> mats = new ArrayList<>();
         mats.add(Material.ACACIA_WOOD);
@@ -72,6 +87,9 @@ public class Lists {
         return mats;
     }
 
+    /**
+     * @return All stripped Wood types
+     */
     public static ArrayList<Material> getWoodStrippedWood() {
         ArrayList<Material> mats = new ArrayList<>();
         mats.add(Material.STRIPPED_ACACIA_WOOD);

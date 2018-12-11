@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class ArmorListener implements Listener {
 
-    private static final ModManager modManager = Main.getModManager();
+    private static final ModManager modManager = ModManager.instance();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     @EventHandler(priority = EventPriority.NORMAL)

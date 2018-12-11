@@ -21,7 +21,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 public class PlayerListener implements Listener {
 
-    private static final ModManager modManager = Main.getModManager();
+    private static final ModManager modManager = ModManager.instance();
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
@@ -79,18 +79,30 @@ public class PlayerListener implements Listener {
 
     }
 
+    /**
+     * Adds the Player to the HashMaps BLOCKFACE and HASPOWER
+     * @param e PlayerJoinEvent
+     */
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         PlayerData.BLOCKFACE.put(e.getPlayer(), null);
         Power.HASPOWER.put(e.getPlayer(), false);
     }
 
+    /**
+     * Removes the Player form the HashMaps BLOCKFACE and HASPOWER
+     * @param e PlayerQuitEvent
+     */
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         PlayerData.BLOCKFACE.remove(e.getPlayer());
         Power.HASPOWER.remove(e.getPlayer());
     }
 
+    /**
+     * Updates the HashMap BLOCKFACE with the clicked face of the Block
+     * @param e PlayerInteractEvent
+     */
     @EventHandler(priority = EventPriority.LOW)
     public void onInteract(PlayerInteractEvent e) {
         if (!Lists.WORLDS.contains(e.getPlayer().getWorld().getName())) { return; }

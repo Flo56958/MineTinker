@@ -22,7 +22,7 @@ import java.util.Arrays;
 
 public class Sharpness extends Modifier implements Craftable {
 
-    private static final ModManager modManager = Main.getModManager();
+    private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
     private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Sharpness.yml");
 

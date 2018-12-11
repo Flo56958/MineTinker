@@ -19,7 +19,7 @@ import java.util.Arrays;
 public class CraftingListener implements Listener {
 
     private static final FileConfiguration config = Main.getPlugin().getConfig();
-    private static final ModManager modManager = Main.getModManager();
+    private static final ModManager modManager = ModManager.instance();
 
     @EventHandler
     public void onCraft(CraftItemEvent e) {

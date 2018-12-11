@@ -21,14 +21,20 @@ public class ModManager {
     private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
 
-    /*
-     * all instances of modifier
+    /**
+     * stores the list of allowed modifiers
      */
     private final ArrayList<Modifier> mods = new ArrayList<>();
+    /**
+     * sublist of mods which contains all modifiers that can be crafted (if enabled)
+     */
     private final ArrayList<Modifier> craftableMods = new ArrayList<>();
+    /**
+     * sublist of mods which contains all modifiers that are crafted through the bookshelf
+     */
     private final ArrayList<Modifier> enchantableMods = new ArrayList<>();
 
-    private ModManager instance;
+    private static ModManager instance;
 
     public final String IDENTIFIER_ARMOR;
     public final String IDENTIFIER_BUILDERSWAND;
@@ -39,7 +45,10 @@ public class ModManager {
     public final String FREEMODIFIERSLOTS;
     public final String MODIFIERSTART;
 
-    public ModManager() {
+    /**
+     * Class constructor (no parameters)
+     */
+    private ModManager() {
         this.IDENTIFIER_ARMOR = ChatColor.WHITE + config.getString("Language.Identifier_Armor");
         this.IDENTIFIER_BUILDERSWAND = ChatColor.WHITE + config.getString("Language.Identifier_Builderswand");
         this.IDENTIFIER_TOOL = ChatColor.WHITE + config.getString("Language.Identifier_Tool");
@@ -55,14 +64,18 @@ public class ModManager {
      *
      * @return the instance
      */
-    public ModManager instance() {
+    public static ModManager instance() {
         if(instance == null) {
             instance = new ModManager();
+            instance.init();
         }
         return instance;
     }
 
-    public void init() {
+    /**
+     * checks and loads all modifiers with configurations settings into memory
+     */
+    private void init() {
         ConfigurationManager configs = Main.getMain().getConfigurations();
         if (configs.getConfig("Auto-Smelt.yml").getBoolean("Auto-Smelt.allowed")) {
             register(new AutoSmelt());
@@ -386,14 +399,30 @@ public class ModManager {
         }
     }
 
-    public boolean hasMod(ItemStack is, Modifier mod) {
-        return getModIndex(is, mod) != -1;
+    /**
+     * @param tool The Tool that is checked
+     * @param mod The modifier that is checked in tool
+     * @return if the tool has the mod
+     */
+    public boolean hasMod(ItemStack tool, Modifier mod) {
+        return getModIndex(tool, mod) != -1;
     }
 
+    /**
+     * calculates the required exp for the given level
+     * @param level
+     * @return long value of the exp required
+     */
     public long getNextLevelReq(int level) {
         return (long) (Main.getPlugin().getConfig().getInt("LevelStep") * Math.pow(Main.getPlugin().getConfig().getDouble("LevelFactor"), (double) (level - 1)));
     }
 
+    /**
+     *
+     * @param p Player that uses the tool
+     * @param tool tool that needs to get exp
+     * @param amount how much exp should the tool get
+     */
     public void addExp(Player p, ItemStack tool, int amount) {
         boolean LevelUp = false;
 
@@ -427,6 +456,11 @@ public class ModManager {
         }
     }
 
+    /**
+     * checks if the ItemStack is viable is viable
+     * @param armor
+     * @return
+     */
     public boolean isArmorViable(ItemStack armor) {
         if (armor == null) { return false; }
         if (!armor.hasItemMeta()) { return false; }

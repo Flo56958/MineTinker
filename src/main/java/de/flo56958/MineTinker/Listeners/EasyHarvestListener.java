@@ -23,7 +23,7 @@ import org.bukkit.material.NetherWarts;
 
 public class EasyHarvestListener implements Listener {
 
-    private static final ModManager modManager = Main.getModManager();
+    private static final ModManager modManager = ModManager.instance();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     @EventHandler

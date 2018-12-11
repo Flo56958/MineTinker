@@ -31,8 +31,7 @@ public class Main extends JavaPlugin {
         configurations = new ConfigurationManager(this);
         loadConfig();
 
-        modManager = new ModManager();
-        modManager.init();
+        modManager = ModManager.instance();
 
         if (getConfig().getBoolean("AllowCrafting")) {
             Bukkit.getPluginManager().registerEvents(new CraftingListener(), this);
@@ -81,6 +80,9 @@ public class Main extends JavaPlugin {
         ChatWriter.log(false, "Shutting down!");
     }
 
+    /**
+     * loads the main config of MineTinker
+     */
     private void loadConfig() {
         getConfig().options().copyDefaults(true);
         saveConfig();
@@ -91,9 +93,10 @@ public class Main extends JavaPlugin {
         return Bukkit.getPluginManager().getPlugin("MineTinker");
     }
 
-    public static ModManager getModManager() { return modManager; }
-
     public static Main getMain() { return tinkerMain; }
 
+    /**
+     * @return The ConfigurationManager of MineTinker
+     */
     public ConfigurationManager getConfigurations() { return configurations; }
 }

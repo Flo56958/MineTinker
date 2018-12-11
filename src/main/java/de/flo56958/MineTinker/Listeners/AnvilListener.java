@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack;
 public class AnvilListener implements Listener {
 
     private static final FileConfiguration config = Main.getPlugin().getConfig();
-    private static final ModManager modManager = Main.getModManager();
+    private static final ModManager modManager = ModManager.instance();
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onInventoryClick(InventoryClickEvent e) { //TODO: Add Slot 1 to Slot 0   |or|   add Slot 0 as a viable option

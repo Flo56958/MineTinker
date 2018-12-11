@@ -24,7 +24,7 @@ import java.util.Random;
 
 public class AutoSmelt extends Modifier implements Craftable {
 
-    private static final ModManager modManager = Main.getModManager();
+    private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
     private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Auto-Smelt.yml");
     private final int percentagePerLevel;

@@ -4,6 +4,10 @@ import org.bukkit.entity.Player;
 
 public class PlayerInfo {
 
+    /**
+     * @param player
+     * @return The facing direction of the player in Degrees
+     */
     public static String getFacingDirection(Player player) {
         double rot = (player.getLocation().getYaw() - 90) % 360;
         if (rot < 0) {
@@ -12,6 +16,10 @@ public class PlayerInfo {
         return getDirection(rot);
     }
 
+    /**
+     * @param rot The rotation in degrees
+     * @return The compass facing direction
+     */
     private static String getDirection(double rot) {
         if (0 <= rot && rot < 45) {
             return "W";

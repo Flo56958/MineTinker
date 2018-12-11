@@ -11,8 +11,15 @@ import java.util.HashMap;
 
 public class ConfigurationManager {
     private final Main main;
+    /**
+     * Stores all config-files with their name
+     */
     private final HashMap<String, FileConfiguration> configs = new HashMap<>();
 
+    /**
+     * Class constructor
+     * @param main The main class-instance
+     */
     public ConfigurationManager(Main main) {
         this.main = main;
 
@@ -27,10 +34,20 @@ public class ConfigurationManager {
         createConfig("", "Elevator.yml");
     }
 
+    /**
+     * Gets the specified config file
+     * @param file The Name of the file
+     * @return The FileConfiguration with the given name
+     */
     public FileConfiguration getConfig(String file) {
         return configs.get(file);
     }
 
+    /**
+     * creates a config file in the specifid folder
+     * @param folder The name of the folder
+     * @param file The name of the file
+     */
     private void createConfig(String folder, String file) {
         File customConfigFile = new File(main.getDataFolder(), folder + file);
         if (!customConfigFile.exists()) {

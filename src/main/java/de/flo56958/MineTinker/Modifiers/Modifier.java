@@ -4,32 +4,26 @@ import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierApplyEvent;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
-import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class Modifier {
 
-	private static final ModManager modManager = Main.getModManager();
+	private static final ModManager modManager = ModManager.instance();
 	private static final PluginManager pluginManager = Bukkit.getPluginManager();
-	private static FileConfiguration config = Main.getPlugin().getConfig();
 
 	private final String name;
 	private final ModifierType type;
 	private final String description;
 	private final ChatColor color;
 	private final int maxLvl;
-	private HashMap<String, Object> options;
 	private final ItemStack modItem;
 	private final ArrayList<ToolType> allowedTools;
 	private final Plugin source;
@@ -47,11 +41,7 @@ public abstract class Modifier {
 	}
 	
 	private int getMaxLvl() { return maxLvl; }
-	
-	public Map<String, Object> getOptions(){
-		return options;
-	}
-	
+
 	public ItemStack getModItem() {
 		return modItem;
 	}
@@ -70,6 +60,17 @@ public abstract class Modifier {
 	 */
 	public abstract ItemStack applyMod(Player p, ItemStack tool, boolean isCommand);
 
+	/**
+	 * Class constructor
+	 * @param name Name of the Modifier
+	 * @param description
+	 * @param type ModifierType of the Modifier
+	 * @param color Color of the Modifier
+	 * @param maxLvl Maximum Level cap of the Modifier
+	 * @param modItem ItemStack that is required to craft the Modifier
+	 * @param allowedTools Lists of ToolTypes where the Modifier is allowed on
+	 * @param source The Plugin that registered the Modifier
+	 */
 	protected Modifier(String name, String description, ModifierType type, ChatColor color, int maxLvl, ItemStack modItem, ArrayList<ToolType> allowedTools, Plugin source) {
 		this.name = name;
 		this.description = description;
@@ -81,7 +82,7 @@ public abstract class Modifier {
 		this.source = source;
 	}
 
-	public static ItemStack checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission,  boolean isCommand) {
+	public static ItemStack checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand) {
 		if (!p.hasPermission("minetinker.modifiers." + permission + ".apply")) {
 			pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_PERMISSION, isCommand));
 			return null;

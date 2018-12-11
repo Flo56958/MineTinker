@@ -17,6 +17,14 @@ public class ModifierFailEvent extends Event {
     private final ModifierFailCause failCause;
     private final boolean isCommand;
 
+    /**
+     * Event constructor
+     * @param player The player that is involved in the Event
+     * @param tool The Itemstack that could not get modified
+     * @param mod The Modifier that was not able to be applied
+     * @param failCause The cause of the failure
+     * @param isCommand Was the Event triggered as a result of a command input?
+     */
     public ModifierFailEvent(Player player, ItemStack tool, Modifier mod, ModifierFailCause failCause, boolean isCommand) {
         this.player = player;
         this.tool = tool;

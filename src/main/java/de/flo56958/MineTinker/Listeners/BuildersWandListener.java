@@ -21,7 +21,7 @@ import org.bukkit.util.Vector;
 
 public class BuildersWandListener implements Listener {
 
-    private static final ModManager modManager = Main.getModManager();
+    private static final ModManager modManager = ModManager.instance();
     private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("BuildersWand.yml");
 
     @EventHandler

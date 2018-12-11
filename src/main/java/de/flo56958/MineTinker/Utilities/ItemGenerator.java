@@ -21,7 +21,7 @@ public class ItemGenerator {
 
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
-    private static final ModManager modManager = Main.getModManager();
+    private static final ModManager modManager = ModManager.instance();
 
     public static String getDisplayName (ItemStack tool) {
         String name = tool.getItemMeta().getDisplayName();

@@ -25,14 +25,14 @@ import java.util.Random;
 
 public class TinkerListener implements Listener {
 
-    private static final ModManager modManager = Main.getModManager();
+    private static final ModManager modManager = ModManager.instance();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     @EventHandler
     public void onToolUpgrade(ToolUpgradeEvent e) {
         Player p = e.getPlayer();
         ItemStack tool = e.getTool();
-        if (e.isWasSuccessful()) {
+        if (e.isSuccessful()) {
             if (config.getBoolean("Sound.OnUpgrade")) {
                 p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
             }

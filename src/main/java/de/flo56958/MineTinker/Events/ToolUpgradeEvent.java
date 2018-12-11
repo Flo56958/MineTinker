@@ -13,6 +13,12 @@ public class ToolUpgradeEvent extends Event {
     private final ItemStack tool;
     private final boolean wasSuccessful;
 
+    /**
+     * Event constructor
+     * @param player The Player that is involved in the Event
+     * @param tool The Tool that was upgraded or failed to upgrade
+     * @param wasSuccessful Was the upgrade successful?
+     */
     public ToolUpgradeEvent(Player player, ItemStack tool, boolean wasSuccessful) {
         this.player = player;
         this.tool = tool;
@@ -30,6 +36,6 @@ public class ToolUpgradeEvent extends Event {
 
     public ItemStack getTool() { return tool; }
 
-    public boolean isWasSuccessful() { return wasSuccessful; }
+    public boolean isSuccessful() { return wasSuccessful; }
 
 }

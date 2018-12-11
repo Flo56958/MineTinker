@@ -14,8 +14,11 @@ import org.bukkit.inventory.ShapedRecipe;
 
 public class CraftingRecipes {
 
-    private static final ModManager modManager = Main.getModManager();
+    private static final ModManager modManager = ModManager.instance();
 
+    /**
+     * tries to register the recipe for the elevator motor
+     */
     public static void registerElevatorMotor() {
         FileConfiguration config = Main.getMain().getConfigurations().getConfig("Elevator.yml");
         try {
@@ -30,10 +33,13 @@ public class CraftingRecipes {
             }
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
         } catch (Exception e) {
-            ChatWriter.log(true, "Could not register recipe for the " + config.getString("Elevator.name") + "!"); //executes if the recipe could not initialize
+            ChatWriter.logError("Could not register recipe for the " + config.getString("Elevator.name") + "!"); //executes if the recipe could not initialize
         }
     }
 
+    /**
+     * tries to register the Builderswand recipes
+     */
     public static void registerBuildersWands() {
         FileConfiguration config = Main.getMain().getConfigurations().getConfig("BuildersWand.yml");
         try {
@@ -48,7 +54,7 @@ public class CraftingRecipes {
             }
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
         } catch (Exception e) {
-            ChatWriter.log(true, "Could not register recipe for the Wooden Builderswand!"); //executes if the recipe could not initialize
+            ChatWriter.logError("Could not register recipe for the Wooden Builderswand!"); //executes if the recipe could not initialize
         }
         try {
             ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Builderswand_Stone"), ItemGenerator.buildersWandCreator(Material.STONE_SHOVEL, config.getString("BuildersWand.name_stone"), 1)); //init recipe
@@ -62,7 +68,7 @@ public class CraftingRecipes {
             }
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
         } catch (Exception e) {
-            ChatWriter.log(true, "Could not register recipe for the Stone Builderswand!"); //executes if the recipe could not initialize
+            ChatWriter.logError("Could not register recipe for the Stone Builderswand!"); //executes if the recipe could not initialize
         }
         try {
             ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Builderswand_Iron"), ItemGenerator.buildersWandCreator(Material.IRON_SHOVEL, config.getString("BuildersWand.name_iron"), 1)); //init recipe
@@ -76,7 +82,7 @@ public class CraftingRecipes {
             }
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
         } catch (Exception e) {
-            ChatWriter.log(true, "Could not register recipe for the Iron Builderswand!"); //executes if the recipe could not initialize
+            ChatWriter.logError("Could not register recipe for the Iron Builderswand!"); //executes if the recipe could not initialize
         }
         try {
             ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Builderswand_Gold"), ItemGenerator.buildersWandCreator(Material.GOLDEN_SHOVEL, config.getString("BuildersWand.name_gold"), 1)); //init recipe
@@ -90,7 +96,7 @@ public class CraftingRecipes {
             }
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
         } catch (Exception e) {
-            ChatWriter.log(true, "Could not register recipe for the Golden Builderswand!"); //executes if the recipe could not initialize
+            ChatWriter.logError("Could not register recipe for the Golden Builderswand!"); //executes if the recipe could not initialize
         }
         try {
             ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Builderswand_Diamond"), ItemGenerator.buildersWandCreator(Material.DIAMOND_SHOVEL, config.getString("BuildersWand.name_diamond"), 1)); //init recipe
@@ -104,7 +110,7 @@ public class CraftingRecipes {
             }
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
         } catch (Exception e) {
-            ChatWriter.log(true, "Could not register recipe for the Diamond Builderswand!"); //executes if the recipe could not initialize
+            ChatWriter.logError("Could not register recipe for the Diamond Builderswand!"); //executes if the recipe could not initialize
         }
     }
 }

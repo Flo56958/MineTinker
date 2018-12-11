@@ -17,6 +17,14 @@ public class ModifierApplyEvent extends Event {
 
     private final boolean isCommand;
 
+    /**
+     * Event constructor
+     * @param player The Player that is involved in the Event
+     * @param tool The Itemstack that gets modified
+     * @param mod The Modifier that is involved
+     * @param slotsRemaining How many Slots are remaining on the Tool/Armor
+     * @param isCommand Was the Event triggered as a result of a command input?
+     */
     public ModifierApplyEvent(Player player, ItemStack tool, Modifier mod, int slotsRemaining, boolean isCommand) {
         this.player = player;
         this.tool = tool;

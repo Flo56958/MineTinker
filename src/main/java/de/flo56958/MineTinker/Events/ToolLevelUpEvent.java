@@ -11,6 +11,11 @@ public class ToolLevelUpEvent extends Event {
     private final Player player;
     private final ItemStack tool;
 
+    /**
+     * Event constructor
+     * @param player The Player that was involved in the Event
+     * @param tool The Tool that got a Level-up
+     */
     public ToolLevelUpEvent(Player player, ItemStack tool) {
         this.player = player;
         this.tool = tool;

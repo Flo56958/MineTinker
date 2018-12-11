@@ -25,7 +25,7 @@ public interface Craftable {
                 }
                 Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
             } catch (Exception e) {
-                ChatWriter.log(true, "Could not register recipe for the " +name + "-Modifier!"); //executes if the recipe could not initialize
+                ChatWriter.logError("Could not register recipe for the " +name + "-Modifier!"); //executes if the recipe could not initialize
             }
         }
     }

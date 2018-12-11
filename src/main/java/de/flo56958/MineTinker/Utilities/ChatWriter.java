@@ -12,47 +12,79 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.logging.Level;
+
 public class ChatWriter {
 
     public static final String CHAT_PREFIX = Main.getPlugin().getConfig().getString("chat-prefix");
 
+    /**
+     * Sends a chat message
+     * @param receiver
+     * @param color The ChatColor after the CHAT_PREFIX
+     * @param message
+     */
     public static void sendMessage(CommandSender receiver, ChatColor color, String message) {
         if (Main.getPlugin().getConfig().getBoolean("chat-messages")) {
             receiver.sendMessage(CHAT_PREFIX + " " + color + message);
         }
     }
 
+    /**
+     * Logs specific information on MineTinker-Activities
+     * @param debug Is the information a (unnecessary) debug information?
+     * @param message
+     */
     public static void log(boolean debug, String message) {
         if (debug) {
             if (Main.getPlugin().getConfig().getBoolean("logging.debug")) {
-                Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + ChatColor.RED + message);
+                Bukkit.getLogger().log(Level.WARNING, CHAT_PREFIX + " " + ChatColor.RED + message);
             }
         } else {
             if (Main.getPlugin().getConfig().getBoolean("logging.standard")) {
-                Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + message);
+                Bukkit.getLogger().log(Level.INFO, CHAT_PREFIX + " " + message);
             }
         }
     }
 
-    public static void sendActionBar(Player p, String message) { //Extract from the source code of the Actionbar-API (altered)
+    /**
+     * Logs severe errors.
+     * @param message
+     */
+    public static void logError(String message) {
+        Bukkit.getLogger().log(Level.SEVERE, CHAT_PREFIX + " "+ message);
+    }
+
+    /**
+     * Sends a message to the players actionbar
+     * @param player
+     * @param message
+     */
+    public static void sendActionBar(Player player, String message) { //Extract from the source code of the Actionbar-API (altered)
         if (!Main.getPlugin().getConfig().getBoolean("actionbar-messages")) { return; }
-        if (!p.isOnline()) { return; } // Player may have logged out
-        CraftPlayer cp = (CraftPlayer) p;
+        if (!player.isOnline()) { return; } // Player may have logged out
+        CraftPlayer cp = (CraftPlayer) player;
         ChatComponentText ccT = new ChatComponentText(message);
         PacketPlayOutChat ppOC = new PacketPlayOutChat(ccT, ChatMessageType.GAME_INFO);
         PlayerConnection pC = cp.getHandle().playerConnection;
         pC.sendPacket(ppOC);
     }
 
-    public static void sendActionBar(Player p, String message, int duration) { //Extract from the source code of the Actionbar-API (altered)
-        sendActionBar(p, message);
+    /**
+     * Send a message to the players actionbar over a specific period of time
+     * @param player
+     * @param message
+     * @param duration in ticks
+     */
+    public static void sendActionBar(Player player, String message, int duration) { //Extract from the source code of the Actionbar-API (altered)
+        sendActionBar(player, message);
 
         if (duration >= 0) {
             // Sends empty message at the end of the duration. Allows messages shorter than 3 seconds, ensures precision.
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    sendActionBar(p, "");
+                    sendActionBar(player, "");
                 }
             }.runTaskLater(Main.getPlugin(), duration + 1);
         }
@@ -63,7 +95,7 @@ public class ChatWriter {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    sendActionBar(p, message);
+                    sendActionBar(player, message);
                 }
             }.runTaskLater(Main.getPlugin(), (long) duration);
         }
