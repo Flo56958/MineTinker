@@ -6,10 +6,9 @@ BuildersWand:
   name_iron: Iron Builderswand
   name_gold: Golden Builderswand
   name_diamond: Diamond Builderswand
-  AllowedWorlds: #Worlds where MineTinker-Builderswands can be used
-  - world #default
-  - world_nether #default
-  - world_the_end #default
+  BannedWorlds: #Worlds where MineTinker-Builderswands can't be used
+   - bannedExample1
+   - bannedExample2
   Recipes:
     Wood:
       Top: "  W"

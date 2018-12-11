@@ -1,7 +1,6 @@
 package de.flo56958.MineTinker.Listeners;
 
 import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Data.PlayerData;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
@@ -28,7 +27,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.isCancelled()) { return; }
-        if (!Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }
+        if (Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }
         if (!(e.getClickedInventory() instanceof PlayerInventory || e.getClickedInventory() instanceof DoubleChestInventory || e.getClickedInventory() instanceof CraftInventory)) { return; }
 
         ItemStack tool = e.getClickedInventory().getItem(e.getSlot());
@@ -87,7 +86,7 @@ public class PlayerListener implements Listener {
      */
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        PlayerData.BLOCKFACE.put(e.getPlayer(), null);
+        Lists.BLOCKFACE.put(e.getPlayer(), null);
         Power.HASPOWER.put(e.getPlayer(), false);
         if (Main.getPlugin().getConfig().getBoolean("SendUpdateNotificationToOPs")) {
             if (e.getPlayer().isOp()) {
@@ -108,7 +107,7 @@ public class PlayerListener implements Listener {
      */
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        PlayerData.BLOCKFACE.remove(e.getPlayer());
+        Lists.BLOCKFACE.remove(e.getPlayer());
         Power.HASPOWER.remove(e.getPlayer());
     }
 
@@ -118,9 +117,9 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOW)
     public void onInteract(PlayerInteractEvent e) {
-        if (!Lists.WORLDS.contains(e.getPlayer().getWorld().getName())) { return; }
+        if (Lists.WORLDS.contains(e.getPlayer().getWorld().getName())) { return; }
         if (!e.getBlockFace().equals(BlockFace.SELF)) {
-            PlayerData.BLOCKFACE.replace(e.getPlayer(), e.getBlockFace());
+            Lists.BLOCKFACE.replace(e.getPlayer(), e.getBlockFace());
         }
     }
 }

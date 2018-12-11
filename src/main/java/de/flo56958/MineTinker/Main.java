@@ -2,7 +2,7 @@ package de.flo56958.MineTinker;
 
 import de.flo56958.MineTinker.Commands.Commands;
 import de.flo56958.MineTinker.Data.CraftingRecipes;
-import de.flo56958.MineTinker.Data.PlayerData;
+import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Listeners.*;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
@@ -26,7 +26,6 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        //getLogger().info("Server is running NMS version " + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]);
         this.getCommand("minetinker").setExecutor(new Commands());
         ChatWriter.log(false, "Registered commands!");
 
@@ -76,7 +75,7 @@ public class Main extends JavaPlugin {
 
         for (Player current : Bukkit.getServer().getOnlinePlayers()) {
             Power.HASPOWER.put(current, false);
-            PlayerData.BLOCKFACE.put(current, null);
+            Lists.BLOCKFACE.put(current, null);
         }
 
         if (getConfig().getBoolean("CheckForUpdates")) {

@@ -32,7 +32,7 @@ public class EntityListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamage(EntityDamageByEntityEvent e) {
         if (e.isCancelled()) { return; }
-        if (!Lists.WORLDS.contains(e.getDamager().getWorld().getName())) { return; }
+        if (Lists.WORLDS.contains(e.getDamager().getWorld().getName())) { return; }
 
         Player p;
 
@@ -105,7 +105,7 @@ public class EntityListener implements Listener {
         LivingEntity mob = e.getEntity();
         Player p = mob.getKiller();
         if (p == null) { return; }
-        if (!Lists.WORLDS.contains(p.getWorld().getName())) { return; }
+        if (Lists.WORLDS.contains(p.getWorld().getName())) { return; }
         ItemStack tool = p.getInventory().getItemInMainHand();
 
         if (!modManager.isToolViable(tool)) { return; }

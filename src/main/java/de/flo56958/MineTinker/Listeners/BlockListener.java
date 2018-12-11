@@ -40,7 +40,7 @@ public class BlockListener implements Listener {
         if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
         ItemStack tool = p.getInventory().getItemInMainHand();
-        if (!Lists.WORLDS.contains(p.getWorld().getName())) { return; }
+        if (Lists.WORLDS.contains(p.getWorld().getName())) { return; }
         if (e.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS || ToolType.HOE.getMaterials().contains(tool.getType()))) { return; }
 
         if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
@@ -66,7 +66,7 @@ public class BlockListener implements Listener {
 
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 
-        if (Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
+        if (!Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
             if (config.getBoolean("Spawners.enabled")) {
                 if (e.getBlock().getState() instanceof CreatureSpawner && p.hasPermission("minetinker.spawners.mine")) {
                     if ((config.getBoolean("Spawners.onlyWithSilkTouch") && modManager.hasMod(tool, modManager.get(ModifierType.SILK_TOUCH))) || !config.getBoolean("Spawners.onlyWithSilkTouch")) {
@@ -147,7 +147,7 @@ public class BlockListener implements Listener {
         Player p = e.getPlayer();
         Block b = e.getBlockPlaced();
         BlockState bs = b.getState();
-        if (config.getBoolean("Spawners.enabled") && Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
+        if (config.getBoolean("Spawners.enabled") && !Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
             if (!p.hasPermission("minetinker.spawners.place") && b.getState() instanceof CreatureSpawner) {
                 e.setCancelled(true);
                 //return;
@@ -164,7 +164,7 @@ public class BlockListener implements Listener {
     public static void onHoeUse(PlayerInteractEvent e) {
         if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
-        if (!Lists.WORLDS.contains(p.getWorld().getName())) { return; }
+        if (Lists.WORLDS.contains(p.getWorld().getName())) { return; }
         if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
         ItemStack tool = p.getInventory().getItemInMainHand();
         if (!ToolType.HOE.getMaterials().contains(tool.getType())) { return; }
@@ -217,7 +217,7 @@ public class BlockListener implements Listener {
     public static void onAxeUse(PlayerInteractEvent e) {
         if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
-        if (!Lists.WORLDS.contains(p.getWorld().getName())) { return; }
+        if (Lists.WORLDS.contains(p.getWorld().getName())) { return; }
         if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
         ItemStack tool = p.getInventory().getItemInMainHand();
         if (!ToolType.AXE.getMaterials().contains(tool.getType())) { return; }
@@ -272,7 +272,7 @@ public class BlockListener implements Listener {
     public static void onShovelUse(PlayerInteractEvent e) {
         if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
-        if (!Lists.WORLDS.contains(p.getWorld().getName())) { return; }
+        if (Lists.WORLDS.contains(p.getWorld().getName())) { return; }
         if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
         ItemStack tool = p.getInventory().getItemInMainHand();
         if (!ToolType.SHOVEL.getMaterials().contains(tool.getType())) { return; }

@@ -78,6 +78,10 @@ public class AutoSmelt extends Modifier implements Craftable {
                 loot = Material.GLASS;
                 break;
 
+            case RED_SAND:
+                loot = Material.RED_STAINED_GLASS;
+                break;
+
             case ACACIA_LOG:
             case BIRCH_LOG:
             case DARK_OAK_LOG:

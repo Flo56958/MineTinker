@@ -2,20 +2,26 @@ package de.flo56958.MineTinker.Data;
 
 import de.flo56958.MineTinker.Main;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Lists {
 
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
-    public static final List<String> WORLDS = config.getStringList("AllowedWorlds");
-    public static final List<String> WORLDS_ELEVATOR = Main.getMain().getConfigurations().getConfig("Elevator.yml").getStringList("Elevator.AllowedWorlds");
-    public static final List<String> WORLDS_BUILDERSWANDS = Main.getMain().getConfigurations().getConfig("BuildersWand.yml").getStringList("BuildersWand.AllowedWorlds");
-    public static final List<String> WORLDS_SPAWNERS = config.getStringList("Spawners.AllowedWorlds");
-    public static final List<String> WORLDS_EASYHARVEST = config.getStringList("EasyHarvest.AllowedWorlds");
+    public static final List<String> WORLDS = config.getStringList("BannedWorlds");
+    public static final List<String> WORLDS_ELEVATOR = Main.getMain().getConfigurations().getConfig("Elevator.yml").getStringList("Elevator.BannedWorlds");
+    public static final List<String> WORLDS_BUILDERSWANDS = Main.getMain().getConfigurations().getConfig("BuildersWand.yml").getStringList("BuildersWand.BannedWorlds");
+    public static final List<String> WORLDS_SPAWNERS = config.getStringList("Spawners.BannedWorlds");
+    public static final List<String> WORLDS_EASYHARVEST = config.getStringList("EasyHarvest.BannedWorlds");
+
+    public static final HashMap<Player, BlockFace> BLOCKFACE = new HashMap<>();
+
 
     /**
      * @return All Leaf Type

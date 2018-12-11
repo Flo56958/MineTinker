@@ -174,7 +174,7 @@ public class ModManager {
      */
     private void register(Modifier mod) {
         mods.add(mod);
-        ChatWriter.log(false, ChatColor.GREEN + "Registered the " + mod.getColor() + mod.getName() + ChatColor.GREEN + " modifier from " + mod.getSource().getName() + ".");
+        ChatWriter.logColor(ChatColor.GREEN + "Registered the " + mod.getColor() + mod.getName() + ChatColor.GREEN + " modifier from " + mod.getSource().getName() + ".");
     }
 
     /**

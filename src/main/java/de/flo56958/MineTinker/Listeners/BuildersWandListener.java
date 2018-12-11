@@ -27,7 +27,7 @@ public class BuildersWandListener implements Listener {
     @EventHandler
     public void onBlockBreak (BlockBreakEvent e) {
         if (e.isCancelled()) { return; }
-        if (!Lists.WORLDS_BUILDERSWANDS.contains(e.getPlayer().getWorld().getName())) { return; }
+        if (Lists.WORLDS_BUILDERSWANDS.contains(e.getPlayer().getWorld().getName())) { return; }
 
         ItemStack wand = e.getPlayer().getInventory().getItemInMainHand();
 
@@ -39,7 +39,7 @@ public class BuildersWandListener implements Listener {
     @EventHandler
     public void onClick (PlayerInteractEvent e) {
         if (e.isCancelled()) { return; }
-        if (!Lists.WORLDS_BUILDERSWANDS.contains(e.getPlayer().getWorld().getName())) { return; }
+        if (Lists.WORLDS_BUILDERSWANDS.contains(e.getPlayer().getWorld().getName())) { return; }
 
         ItemStack wand = e.getPlayer().getInventory().getItemInMainHand();
 

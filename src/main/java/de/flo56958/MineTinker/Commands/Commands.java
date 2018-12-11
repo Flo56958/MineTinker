@@ -35,6 +35,14 @@ public class Commands implements CommandExecutor {
                                 Functions.addMod(p, args);
                             } else noPerm(p);
                             break;
+                        case "checkupdate":
+                        case "cu":
+                            if (p.hasPermission("minetinker.command.checkupdate")) {
+                                if (Main.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
+                                    Main.getUpdater().checkForUpdate(p);
+                                } else ChatWriter.sendMessage(p, ChatColor.RED, "Checking for updates is disabled by the server admin!");
+                            } else noPerm(p);
+                            break;
                         case "convert":
                         case "c":
                             if (p.hasPermission("minetinker.command.convert")) {
@@ -45,6 +53,12 @@ public class Commands implements CommandExecutor {
                         case "g":
                             if (p.hasPermission("minetinker.command.give")) {
                                 Functions.give(p, args);
+                            } else noPerm(p);
+                            break;
+                        case "givemodifieritem":
+                        case "gm":
+                            if (p.hasPermission("minetinker.command.givemodifieritem")) {
+                                Functions.giveModifierItem(p, args);
                             } else noPerm(p);
                             break;
                         case "help":
@@ -142,12 +156,20 @@ public class Commands implements CommandExecutor {
             ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". AddMod (am)");
             index++;
         }
+        if (player.hasPermission("minetinker.commands.checkupdate")) {
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Checkupdate (cu)");
+            index++;
+        }
         if (player.hasPermission("minetinker.commands.convert")) {
             ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Convert (c)");
             index++;
         }
         if (player.hasPermission("minetinker.commands.give")) {
             ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Give (g)");
+            index++;
+        }
+        if (player.hasPermission("minetinker.commands.givemodifieritem")) {
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". GiveModifierItem (gm)");
             index++;
         }
         if (player.hasPermission("minetinker.commands.help")) {

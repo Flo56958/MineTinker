@@ -28,7 +28,7 @@ public class CraftingListener implements Listener {
         ArrayList<ToolType> armor = new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA));
         if (e.isCancelled()) { return; }
         if (!(e.getWhoClicked() instanceof Player)) { return; }
-        if (!Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }
+        if (Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }
         if (!e.getWhoClicked().hasPermission("minetinker.tool.create")) { return; }
 
         ArrayList<String> lore = new ArrayList<>();

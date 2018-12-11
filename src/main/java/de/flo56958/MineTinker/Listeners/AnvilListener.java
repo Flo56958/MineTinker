@@ -25,7 +25,7 @@ public class AnvilListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onInventoryClick(InventoryClickEvent e) { //TODO: Add Slot 1 to Slot 0   |or|   add Slot 0 as a viable option
         if (e.isCancelled()) { return; }
-        if (!Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }
+        if (Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }
 
         Inventory i = e.getClickedInventory();
         if (!(i instanceof AnvilInventory)) { return; } //TODO: Add the feature to modify a tool directly in the inventory
@@ -51,7 +51,10 @@ public class AnvilListener implements Listener {
                 for (Modifier m : modManager.getAllMods()) {
                     if (m.getModItem().equals(modifier)) {
                         newTool = m.applyMod(p, tool, false);
+                        isModifier = true;
                         break;
+                    } else {
+                        isModifier = false; //for shovel upgrade
                     }
                 }
             } else {

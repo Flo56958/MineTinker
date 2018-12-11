@@ -1,6 +1,8 @@
 package de.flo56958.MineTinker.Utilities;
 
 import de.flo56958.MineTinker.Main;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -10,6 +12,7 @@ import java.net.URL;
 public class Updater {
 
     private String onlineVersion = "";
+    private String version = Main.getPlugin().getDescription().getVersion();
     private boolean hasUpdate = false;
 
     public String getOnlineVersion() { return onlineVersion; }
@@ -59,18 +62,42 @@ public class Updater {
      * Compares the online version number with the plugin version
      */
     public void checkForUpdate() {
-        String version = Main.getPlugin().getDescription().getVersion();
-        this.onlineVersion = this.checkOnline();
-
+        if (!this.hasUpdate) {
+            this.onlineVersion = this.checkOnline();
+        }
         if (this.onlineVersion.equals("")) {
             ChatWriter.logInfo("MineTinker is unable to check for updates.");
-        } else if (!version.equals(this.onlineVersion)) {
+            this.hasUpdate = false;
+        } else if (!this.version.equals(this.onlineVersion)) {
             ChatWriter.logInfo("There is an update available on spigotmc.org!");
-            ChatWriter.logInfo("Your version: " + version);
+            ChatWriter.logInfo("Your version: " + this.version);
             ChatWriter.logInfo("Online Version: " + this.onlineVersion);
             this.hasUpdate = true;
         } else {
             ChatWriter.log(false, "You have the newest version of MineTinker installed!");
+            this.hasUpdate = false;
+        }
+    }
+
+    /**
+     * Compares the online version number with the plugin version (initiated by a players command)
+     * @param player That gets the information printed in his chat
+     */
+    public void checkForUpdate(Player player) {
+        if (!this.hasUpdate) {
+            this.onlineVersion = this.checkOnline();
+        }
+        if (this.onlineVersion.equals("")) {
+            ChatWriter.sendMessage(player, ChatColor.RED, "Unable to check for updates!");
+            this.hasUpdate = false;
+        } else if (!this.version.equals(this.onlineVersion)) {
+            ChatWriter.sendMessage(player, ChatColor.WHITE, "There is an update available on spigotmc.org!");
+            ChatWriter.sendMessage(player, ChatColor.WHITE, "Your version: " + this.version);
+            ChatWriter.sendMessage(player, ChatColor.WHITE, "Online Version: " + this.onlineVersion);
+            this.hasUpdate = true;
+        } else {
+            ChatWriter.log(false, "You have the newest version of MineTinker installed!");
+            this.hasUpdate = false;
         }
     }
 }

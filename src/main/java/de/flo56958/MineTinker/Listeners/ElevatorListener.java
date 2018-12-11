@@ -22,7 +22,7 @@ public class ElevatorListener implements Listener {
     public void onSneak (PlayerToggleSneakEvent e) {
         if (e.isCancelled()) { return; }
 
-        if (!Lists.WORLDS_ELEVATOR.contains(e.getPlayer().getWorld().getName())) { return; }
+        if (Lists.WORLDS_ELEVATOR.contains(e.getPlayer().getWorld().getName())) { return; }
 
         if (!e.isSneaking()) { return; }
 
@@ -45,7 +45,7 @@ public class ElevatorListener implements Listener {
                 if (h2.getCustomName().equals(ChatColor.GRAY + config.getString("Elevator.name"))) {
                     l.add(0, i - l.getBlockY() + 2, 0);
                     p.teleport(l);
-                    if (Main.getPlugin().getConfig().getBoolean("Elevator.Sound")) {
+                    if (config.getBoolean("Elevator.Sound")) {
                         p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 0.5F, 0.5F);
                     }
                     break;
@@ -57,7 +57,7 @@ public class ElevatorListener implements Listener {
     @EventHandler
     public void onJump (PlayerMoveEvent e) {
         if (e.isCancelled()) { return; }
-        if (!Lists.WORLDS_ELEVATOR.contains(e.getPlayer().getWorld().getName())) { return; }
+        if (Lists.WORLDS_ELEVATOR.contains(e.getPlayer().getWorld().getName())) { return; }
 
         Player p = e.getPlayer();
         if (!p.hasPermission("minetinker.elevator.use")) { return; }
@@ -79,7 +79,7 @@ public class ElevatorListener implements Listener {
                     if (h2.getCustomName().equals(ChatColor.GRAY + config.getString("Elevator.name"))) {
                         l.add(0, i - l.getBlockY() + 2, 0);
                         p.teleport(l);
-                        if (Main.getPlugin().getConfig().getBoolean("Elevator.Sound")) {
+                        if (config.getBoolean("Elevator.Sound")) {
                             p.playSound(p.getLocation(), Sound.BLOCK_CHEST_OPEN, 0.5F, 0.5F);
                         }
                         break;

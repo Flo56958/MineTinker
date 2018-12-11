@@ -38,26 +38,32 @@ public class ChatWriter {
     public static void log(boolean debug, String message) {
         if (debug) {
             if (Main.getPlugin().getConfig().getBoolean("logging.debug")) {
-                Bukkit.getLogger().log(Level.WARNING, CHAT_PREFIX + " " + ChatColor.RED + message);
+                Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + ChatColor.RED + message);
             }
         } else {
             if (Main.getPlugin().getConfig().getBoolean("logging.standard")) {
-                Bukkit.getLogger().log(Level.INFO, CHAT_PREFIX + " " + message);
+                Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + message);
             }
         }
     }
 
     /**
-     * Logs severe errors.
+     * Logs severe errors. (not toggleable)
      * @param message
      */
     public static void logError(String message) { Bukkit.getLogger().log(Level.SEVERE, CHAT_PREFIX + " "+ message); }
 
     /**
-     * Logs information.
+     * Logs information. (not toggleable)
      * @param message
      */
     public static void logInfo(String message) { Bukkit.getLogger().log(Level.INFO, CHAT_PREFIX + " " + message); }
+
+    /**
+     * Logs information with the ability to have text color (not toggleable)
+     * @param message
+     */
+    public static void logColor(String message) { Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + message); }
 
     /**
      * Sends a message to the players actionbar

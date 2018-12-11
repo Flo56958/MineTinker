@@ -58,27 +58,24 @@ Sound:
   OnUpgrade: true
   OnBreaking: true
 
-AllowedWorlds: #Worlds where MineTinker-Tools can be used
-  - world #default
-  - world_nether #default
-  - world_the_end #default
+BannedWorlds: #Worlds where MineTinker-Tools can't be used
+  - bannedExample1
+  - bannedExample2
 
 Spawners:
   enabled: true #Should be disabled when using a different Spawner plugin
   onlyWithSilkTouch: true
-  AllowedWorlds: #Worlds where Spawners can be mined and placed
-    - world #default
-    - world_nether #default
-    - world_the_end #default
+  BannedWorlds: #Worlds where Spawners can't be mined and placed
+    - bannedExample1
+    - bannedExample2
 
 EasyHarvest:
   enabled: true
   replant: true
   Sound: true
-  AllowedWorlds: #Worlds where MineTinker-Builderswands can be used
-    - world #default
-    - world_nether #default
-    - world_the_end #default
+  BannedWorlds: #Worlds where EasyHarvest can't be used
+    - bannedExample1
+    - bannedExample2
 
 Language:
   #Tool

@@ -23,7 +23,7 @@ public class ArmorListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDamage(EntityDamageByEntityEvent e) {
         if (e.isCancelled()) { return; }
-        if (!Lists.WORLDS.contains(e.getEntity().getWorld().getName())) { return; }
+        if (Lists.WORLDS.contains(e.getEntity().getWorld().getName())) { return; }
 
         if (!(e.getEntity() instanceof Player)) { return; }
 
@@ -70,7 +70,7 @@ public class ArmorListener implements Listener {
     @EventHandler
     public void onPlayerDamage(EntityDamageEvent e) {
         if (e.isCancelled()) { return; }
-        if (!Lists.WORLDS.contains(e.getEntity().getWorld().getName())) { return; }
+        if (Lists.WORLDS.contains(e.getEntity().getWorld().getName())) { return; }
 
         if (!(e.getEntity() instanceof Player)) { return; }
 

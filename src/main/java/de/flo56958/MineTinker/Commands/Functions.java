@@ -280,4 +280,33 @@ class Functions {
         }
 
     }
+
+    /**
+     * gives the player the requested modifier item from the specific modifier
+     * @param player
+     * @param args command input of the player - parsed down from onCommand()
+     */
+    public static void giveModifierItem(Player player, String[] args) {
+        if (args.length >= 2) {
+            for (Modifier mod : modManager.getAllMods()) {
+                if (mod.getName().equalsIgnoreCase(args[1])) {
+                    int amount = 1;
+                    if (args.length >= 3) {
+                        try {
+                            amount = Integer.parseInt(args[2]);
+                        } catch (Exception e) {
+                            Commands.invalidArgs(player);
+                            return;
+                        }
+                    }
+                    for (int i = 0; i < amount; i++) {
+                        if (player.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
+                            player.getWorld().dropItem(player.getLocation(), mod.getModItem());
+                        } // no else as it gets added in if
+                    }
+                    break;
+                }
+            }
+        }
+    }
 }

@@ -1,7 +1,7 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
+import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.ModifierFailCause;
-import de.flo56958.MineTinker.Data.PlayerData;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
@@ -83,7 +83,7 @@ public class Power extends Modifier implements Enchantable, Craftable {
 
         if (level == 1) {
             if (lv1_vertical) {
-                if (PlayerData.BLOCKFACE.get(p).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(p).equals(BlockFace.UP)) {
+                if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
                     if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
                         Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
                         Block b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
@@ -101,7 +101,7 @@ public class Power extends Modifier implements Enchantable, Craftable {
                     powerBlockBreak(b1, (CraftPlayer) p);
                     powerBlockBreak(b2, (CraftPlayer) p);
                 }
-            } else if (PlayerData.BLOCKFACE.get(p).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(p).equals(BlockFace.UP)) {
+            } else if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
                 if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
                     Block b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
                     Block b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
@@ -113,12 +113,12 @@ public class Power extends Modifier implements Enchantable, Craftable {
                     powerBlockBreak(b1, (CraftPlayer) p);
                     powerBlockBreak(b2, (CraftPlayer) p);
                 }
-            } else if (PlayerData.BLOCKFACE.get(p).equals(BlockFace.NORTH) || PlayerData.BLOCKFACE.get(p).equals(BlockFace.SOUTH)) {
+            } else if (Lists.BLOCKFACE.get(p).equals(BlockFace.NORTH) || Lists.BLOCKFACE.get(p).equals(BlockFace.SOUTH)) {
                 Block b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
                 Block b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
                 powerBlockBreak(b1, (CraftPlayer) p);
                 powerBlockBreak(b2, (CraftPlayer) p);
-            } else if (PlayerData.BLOCKFACE.get(p).equals(BlockFace.WEST) || PlayerData.BLOCKFACE.get(p).equals(BlockFace.EAST)) {
+            } else if (Lists.BLOCKFACE.get(p).equals(BlockFace.WEST) || Lists.BLOCKFACE.get(p).equals(BlockFace.EAST)) {
                 Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
                 Block b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
                 powerBlockBreak(b1, (CraftPlayer) p);
@@ -126,7 +126,7 @@ public class Power extends Modifier implements Enchantable, Craftable {
             }
         } else {
             HASPOWER.replace(p, true);
-            if (PlayerData.BLOCKFACE.get(p).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(p).equals(BlockFace.UP)) {
+            if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
                 for (int x = -(level - 1); x <= (level - 1); x++) {
                     for (int z = -(level - 1); z <= (level - 1); z++) {
                         if (!(x == 0 && z == 0)) {
@@ -135,7 +135,7 @@ public class Power extends Modifier implements Enchantable, Craftable {
                         }
                     }
                 }
-            } else if (PlayerData.BLOCKFACE.get(p).equals(BlockFace.NORTH) || PlayerData.BLOCKFACE.get(p).equals(BlockFace.SOUTH)) {
+            } else if (Lists.BLOCKFACE.get(p).equals(BlockFace.NORTH) || Lists.BLOCKFACE.get(p).equals(BlockFace.SOUTH)) {
                 for (int x = -(level - 1); x <= (level - 1); x++) {
                     for (int y = -(level - 1); y <= (level - 1); y++) {
                         if (!(x == 0 && y == 0)) {
@@ -144,7 +144,7 @@ public class Power extends Modifier implements Enchantable, Craftable {
                         }
                     }
                 }
-            } else if (PlayerData.BLOCKFACE.get(p).equals(BlockFace.EAST) || PlayerData.BLOCKFACE.get(p).equals(BlockFace.WEST)) {
+            } else if (Lists.BLOCKFACE.get(p).equals(BlockFace.EAST) || Lists.BLOCKFACE.get(p).equals(BlockFace.WEST)) {
                 for (int z = -(level - 1); z <= (level - 1); z++) {
                     for (int y = -(level - 1); y <= (level - 1); y++) {
                         if (!(z == 0 && y == 0)) {
@@ -171,7 +171,7 @@ public class Power extends Modifier implements Enchantable, Craftable {
         Block b = e.getClickedBlock();
 
         if (level == 1) {
-            if (PlayerData.BLOCKFACE.get(p).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(p).equals(BlockFace.UP)) {
+            if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
                 Block b1;
                 Block b2;
                 if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
@@ -198,7 +198,7 @@ public class Power extends Modifier implements Enchantable, Craftable {
                 powerCreateFarmland(p, tool, b2);
             }
         } else {
-            if (PlayerData.BLOCKFACE.get(p).equals(BlockFace.DOWN) || PlayerData.BLOCKFACE.get(p).equals(BlockFace.UP)) {
+            if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
                 for (int x = -(level - 1); x <= (level - 1); x++) {
                     for (int z = -(level - 1); z <= (level - 1); z++) {
                         if (!(x == 0 && z == 0)) {

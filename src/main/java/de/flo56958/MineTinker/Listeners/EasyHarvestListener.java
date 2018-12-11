@@ -31,7 +31,7 @@ public class EasyHarvestListener implements Listener {
         if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) { return; }
         Player p = e.getPlayer();
 
-        if (!Lists.WORLDS_EASYHARVEST.contains(p.getWorld().getName())) { return; }
+        if (Lists.WORLDS_EASYHARVEST.contains(p.getWorld().getName())) { return; }
         if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
 
         ItemStack tool = p.getInventory().getItemInMainHand();
