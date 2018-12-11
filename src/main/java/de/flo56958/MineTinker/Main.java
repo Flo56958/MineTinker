@@ -8,11 +8,13 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.Updater;
 import de.flo56958.MineTinker.bStats.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Main extends JavaPlugin {
 
@@ -20,9 +22,11 @@ public class Main extends JavaPlugin {
     private static ConfigurationManager configurations;
     private static Main tinkerMain;
 
+    private static Updater updater;
+
     @Override
     public void onEnable() {
-        getLogger().info("Server is running NMS version " + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]);
+        //getLogger().info("Server is running NMS version " + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]);
         this.getCommand("minetinker").setExecutor(new Commands());
         ChatWriter.log(false, "Registered commands!");
 
@@ -74,6 +78,16 @@ public class Main extends JavaPlugin {
             Power.HASPOWER.put(current, false);
             PlayerData.BLOCKFACE.put(current, null);
         }
+
+        if (getConfig().getBoolean("CheckForUpdates")) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    updater = new Updater();
+                    updater.checkForUpdate();
+                }
+            }.runTaskLater(Main.getPlugin(), 20);
+        }
     }
 
     public void onDisable() {
@@ -94,6 +108,8 @@ public class Main extends JavaPlugin {
     }
 
     public static Main getMain() { return tinkerMain; }
+
+    public static Updater getUpdater() { return updater; }
 
     /**
      * @return The ConfigurationManager of MineTinker

@@ -31,7 +31,7 @@ public class ChatWriter {
     }
 
     /**
-     * Logs specific information on MineTinker-Activities
+     * Logs specific information on MineTinker-Activities (toggleable through config)
      * @param debug Is the information a (unnecessary) debug information?
      * @param message
      */
@@ -51,9 +51,13 @@ public class ChatWriter {
      * Logs severe errors.
      * @param message
      */
-    public static void logError(String message) {
-        Bukkit.getLogger().log(Level.SEVERE, CHAT_PREFIX + " "+ message);
-    }
+    public static void logError(String message) { Bukkit.getLogger().log(Level.SEVERE, CHAT_PREFIX + " "+ message); }
+
+    /**
+     * Logs information.
+     * @param message
+     */
+    public static void logInfo(String message) { Bukkit.getLogger().log(Level.INFO, CHAT_PREFIX + " " + message); }
 
     /**
      * Sends a message to the players actionbar

@@ -1,4 +1,6 @@
 chat-prefix: [MineTinker]
+CheckForUpdates: true #Checks for updates on startup
+SendUpdateNotificationToOPs: true #If there is an update the server OP get a notification
 
 logging:
   standard: false #logs important player activities with MineTinker
