@@ -26,15 +26,16 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.getCommand("minetinker").setExecutor(new Commands());
-        ChatWriter.log(false, "Registered commands!");
-
         tinkerMain = this;
 
         configurations = new ConfigurationManager(this);
         loadConfig();
 
         modManager = ModManager.instance();
+        ChatWriter.log(false, "Set up internals.");
+
+        this.getCommand("minetinker").setExecutor(new Commands()); //must be after internals as it would throw a NullPointerException
+        ChatWriter.log(false, "Registered commands!");
 
         if (getConfig().getBoolean("AllowCrafting")) {
             Bukkit.getPluginManager().registerEvents(new CraftingListener(), this);

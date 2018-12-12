@@ -94,4 +94,3 @@ Language:
     InvalidArguments: Invalid arguments!
     InvalidTool: Invalid tool!
     NoPermission: You do not have permission to use this command!
-    NotAPlayer: This is a player only command!

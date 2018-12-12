@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Commands;
 
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -9,7 +10,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Iterator;
 
 public class Commands implements CommandExecutor {
 
@@ -116,7 +120,23 @@ public class Commands implements CommandExecutor {
                 }
             }
         } else {
-            sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + config.getString("Language.Commands.NotAPlayer"));
+            if (args.length > 0) {
+                switch (args[0].toLowerCase()) { //first argument is the specifier for the command
+                    case "info":
+                    case "i":
+                        sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + "MineTinker (" + Main.getPlugin().getDescription().getVersion() + ") is a Plugin made by Flo56958.");
+                        sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + "It is inspired by different mods (e.g. TinkersConstruct)");
+                        break;
+                    case "reload":
+                    case "r":
+                        reload(sender);
+                        break;
+                    default:
+                        onHelpConsole(sender);
+                }
+            } else {
+                onHelpConsole(sender);
+            }
         }
         return true;
     }
@@ -152,64 +172,81 @@ public class Commands implements CommandExecutor {
     private void onHelp(Player player) {
         int index = 1;
         if (player.hasPermission("minetinker.commands.addexp")) {
-            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". AddExp (ae)");
-            index++;
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". AddExp (ae)");
         }
         if (player.hasPermission("minetinker.commands.addmod")) {
-            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". AddMod (am)");
-            index++;
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". AddMod (am)");
         }
         if (player.hasPermission("minetinker.commands.checkupdate")) {
-            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Checkupdate (cu)");
-            index++;
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". Checkupdate (cu)");
         }
         if (player.hasPermission("minetinker.commands.convert")) {
-            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Convert (c)");
-            index++;
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". Convert (c)");
         }
         if (player.hasPermission("minetinker.commands.give")) {
-            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Give (g)");
-            index++;
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". Give (g)");
         }
         if (player.hasPermission("minetinker.commands.givemodifieritem")) {
-            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". GiveModifierItem (gm)");
-            index++;
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". GiveModifierItem (gm)");
         }
         if (player.hasPermission("minetinker.commands.help")) {
-            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Help (?)");
-            index++;
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". Help (?)");
         }
         if (player.hasPermission("minetinker.commands.info")) {
-            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Info (i)");
-            index++;
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". Info (i)");
         }
         if (player.hasPermission("minetinker.commands.modifiers")) {
-            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Modifiers (mods)");
-            index++;
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". Modifiers (mods)");
         }
         if (player.hasPermission("minetinker.commands.name")) {
-            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Name (n)");
-            index++;
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". Name (n)");
         }
         if (player.hasPermission("minetinker.commands.reload")) {
-            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Reload (r)");
-            index++;
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". Reload (r)");
         }
         if (player.hasPermission("minetinker.commands.removemod")) {
-            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". RemoveMod (rm)");
-            index++;
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". RemoveMod (rm)");
         }
         if (player.hasPermission("minetinker.commands.setdurability")) {
-            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". SetDurability (sd)");
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". SetDurability (sd)");
         }
     }
 
-    private void reload(Player p) { //TODO: Make reload command work again
-        ChatWriter.sendMessage(p, ChatColor.RED, "Reloading Config!");
+    /**
+     * Outputs all available commands from MineTinker in the console
+     * @param sender
+     */
+    private void onHelpConsole(CommandSender sender) {
+        int index = 1;
+        sender.sendMessage(ChatWriter.CHAT_PREFIX + index++ + ". Info (i)");
+        sender.sendMessage(ChatWriter.CHAT_PREFIX + index + ". reload (r)");
+    }
+
+    /**
+     * reloads the plugins configuration
+     * @param sender
+     */
+    private void reload(CommandSender sender) {
+        ChatWriter.sendMessage(sender, ChatColor.RED, "NOTE: It is possible that the plugin will not work correctly after reload!");
+        ChatWriter.sendMessage(sender, ChatColor.RED, "NOTE: Elevator and Builderswands need a complete restart to function correctly on the new configurations!");
+
+        ChatWriter.sendMessage(sender, ChatColor.WHITE, "Clearing recipes!");
+        Iterator<Recipe> it = Main.getPlugin().getServer().recipeIterator(); //TODO: Better algorithm for removing recipes from modifiers
+        while (it.hasNext()) {
+            Recipe rec = it.next();
+            for (Modifier mod : modManager.getAllMods()) {
+                if (mod.getModItem().equals(rec.getResult())) {
+                    it.remove();
+                    break;
+                }
+            }
+        }
+
+        ChatWriter.sendMessage(sender, ChatColor.WHITE, "Reloading Config!");
         Main.getPlugin().reloadConfig();
         Main.getMain().getConfigurations().reload();
 
-        ChatWriter.sendMessage(p, ChatColor.RED, "Reloading ModManager!");
+        ChatWriter.sendMessage(sender, ChatColor.WHITE, "Reloading ModManager!");
         modManager.reload();
 
         if (config.getBoolean("CheckForUpdates")) {
