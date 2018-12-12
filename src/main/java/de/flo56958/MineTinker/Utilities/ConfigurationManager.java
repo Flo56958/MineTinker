@@ -16,17 +16,17 @@ public class ConfigurationManager {
      */
     private final HashMap<String, FileConfiguration> configs = new HashMap<>();
 
+    private final String[] modifiers = { "Auto-Smelt.yml", "Beheading.yml", "Directing.yml", "Ender.yml", "Experienced.yml", "Fiery.yml",
+            "Glowing.yml", "Haste.yml", "Infinity.yml", "Knockback.yml", "Light-Weight.yml", "Luck.yml", "Melting.yml",
+            "Poisonous.yml", "Power.yml", "Protecting.yml", "Reinforced.yml", "Self-Repair.yml", "Sharpness.yml",
+            "Shulking.yml", "Silk-Touch.yml", "Sweeping.yml", "Timber.yml", "Webbed.yml", "Extra-Modifier.yml" };
+
     /**
      * Class constructor
      * @param main The main class-instance
      */
     public ConfigurationManager(Main main) {
         this.main = main;
-
-        String[] modifiers = { "Auto-Smelt.yml", "Beheading.yml", "Directing.yml", "Ender.yml", "Experienced.yml", "Fiery.yml",
-                "Glowing.yml", "Haste.yml", "Infinity.yml", "Knockback.yml", "Light-Weight.yml", "Luck.yml", "Melting.yml",
-                "Poisonous.yml", "Power.yml", "Protecting.yml", "Reinforced.yml", "Self-Repair.yml", "Sharpness.yml",
-                "Shulking.yml", "Silk-Touch.yml", "Sweeping.yml", "Timber.yml", "Webbed.yml", "Extra-Modifier.yml" };
 
         for (String modifier : modifiers) createConfig("Modifiers" + File.separator, modifier);
 
@@ -41,6 +41,13 @@ public class ConfigurationManager {
      */
     public FileConfiguration getConfig(String file) {
         return configs.get(file);
+    }
+
+    public void reload() {
+        for (String modifier : modifiers) createConfig("Modifiers" + File.separator, modifier);
+
+        createConfig("", "BuildersWand.yml");
+        createConfig("", "Elevator.yml");
     }
 
     /**

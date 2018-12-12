@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker.Commands;
 
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -8,10 +9,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Commands implements CommandExecutor {
 
     private static final FileConfiguration config = Main.getPlugin().getConfig();
+    private static final ModManager modManager = ModManager.instance();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -87,12 +90,12 @@ public class Commands implements CommandExecutor {
                                 Functions.name(p, args);
                             } else noPerm(p);
                             break;
-//                        case "reload":
-//                        case "r":
-//                            if (p.hasPermission("minetinker.commands.reload")) {
-//                                reload(p);
-//                            } else noPerm(p);
-//                            break;
+                        case "reload":
+                        case "r":
+                            if (p.hasPermission("minetinker.commands.reload")) {
+                                reload(p);
+                            } else noPerm(p);
+                            break;
                         case "removemod":
                         case "rm":
                             if (p.hasPermission("minetinker.commands.removemod")) {
@@ -119,7 +122,7 @@ public class Commands implements CommandExecutor {
     }
 
     /**
-     * Outputs the error message "Invalig Arguments" in the Players chat
+     * Outputs the error message "Invalid Arguments" in the Players chat
      * @param player
      */
     static void invalidArgs(Player player) {
@@ -188,10 +191,10 @@ public class Commands implements CommandExecutor {
             ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Name (n)");
             index++;
         }
-//        if (player.hasPermission("minetinker.commands.reload")) {
-//            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Reload (r)");
-//            index++;
-//        }
+        if (player.hasPermission("minetinker.commands.reload")) {
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". Reload (r)");
+            index++;
+        }
         if (player.hasPermission("minetinker.commands.removemod")) {
             ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". RemoveMod (rm)");
             index++;
@@ -201,9 +204,21 @@ public class Commands implements CommandExecutor {
         }
     }
 
-//    private void reload(Player p) { TODO: Make reload command work again
-//        ChatWriter.sendMessage(p, ChatColor.RED, "Reloading Config!");
-//        Main.getPlugin().reloadConfig();
-//        ChatWriter.sendMessage(p, ChatColor.RED, "Finished!");
-//    }
+    private void reload(Player p) { //TODO: Make reload command work again
+        ChatWriter.sendMessage(p, ChatColor.RED, "Reloading Config!");
+        Main.getPlugin().reloadConfig();
+        Main.getMain().getConfigurations().reload();
+
+        ChatWriter.sendMessage(p, ChatColor.RED, "Reloading ModManager!");
+        modManager.reload();
+
+        if (config.getBoolean("CheckForUpdates")) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Main.getUpdater().checkForUpdate();
+                }
+            }.runTaskLater(Main.getPlugin(), 20);
+        }
+    }
 }

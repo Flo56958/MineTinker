@@ -8,9 +8,7 @@ import de.flo56958.MineTinker.Modifiers.Types.*;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -138,6 +136,19 @@ public class EntityListener implements Listener {
             if (modManager.get(ModifierType.ENDER) != null) {
                 ((Ender) modManager.get(ModifierType.ENDER)).effect(p, tool, e);
             }
+        }
+
+        int amount = 0;
+        if (e.getEntity() instanceof EnderDragon) {
+            amount = config.getInt("BowExtraExp.OnEnderDragonHit");
+        } else if (e.getEntity() instanceof EnderCrystal) {
+            amount = config.getInt("BowExtraExp.OnEndCrystalHit");
+        } else if (e.getEntity() instanceof Wither) {
+            amount = config.getInt("BowExtraExp.OnWitherHit");
+        }
+
+        if (amount != 0) {
+            modManager.addExp(p, tool, amount);
         }
     }
 

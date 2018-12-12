@@ -72,6 +72,14 @@ public class ModManager {
         return instance;
     }
 
+    public void reload() {
+        this.mods.clear();
+        this.craftableMods.clear();
+        this.enchantableMods.clear();
+
+        init();
+    }
+
     /**
      * checks and loads all modifiers with configurations settings into memory
      */

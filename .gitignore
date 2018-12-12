@@ -33,6 +33,7 @@ hs_err_pid*
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+/.idea/
 
 # Generated files
 .idea/**/contentModel.xml
@@ -59,7 +60,7 @@ hs_err_pid*
 .idea/modules
 
 # Maven generated files
-target/
+/target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup

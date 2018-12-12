@@ -18,6 +18,10 @@ StartingModifierSlots: 1
 ExpPerBlockBreak: 1 #How much XP will the tool get when you break a block
 ExpPerEntityHit: 1 #How much XP will the tool get when you hit a Entity with Sword / Bow
 ExpPerArrowShot: 1 #How much XP will the tool get when you shoot with the bow
+BowExtraExp:
+  OnEnderDragonHit: 5 #How much XP will the bow get when you hit the ender dragon
+  OnEndCrystalHit: 10 #How much XP will the bow get when you hit a end crystal
+  OnWitherHit: 3 #How much XP will the bow get when you hit the wither boss
 EnableDamageExp: false #When true: Sword/Bow will gain XP equal to the damage-value
 Upgradeable: true #Can you upgrade your tools with an anvil
 Repairable: true #Can you repair your tools in your inventory (instead of an anvil) just by dragging the ressource on the tool
