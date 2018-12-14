@@ -47,7 +47,11 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
         ItemMeta meta = tool.getItemMeta();
 
         meta.addEnchant(Enchantment.SWEEPING_EDGE, modManager.getModLevel(tool, this), true);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        if (config.getBoolean("HideEnchants")) {
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        } else {
+            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
 
         tool.setItemMeta(meta);
 
