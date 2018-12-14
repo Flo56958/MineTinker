@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -37,81 +36,74 @@ public class AnvilListener implements Listener {
         if (s != 1) { return; }      //Mod-Slot
 
         ItemStack tool = i.getItem(0);
+
         if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) { return; }
 
         ItemStack newTool = null;
 
-        if (p.getItemOnCursor().getAmount() == 1) { //TODO: Change code so you can apply more than one modifier at a time
-            boolean isModifier = true;
-            ItemStack modifier = p.getItemOnCursor();
+        ItemStack modifier = p.getItemOnCursor();
+        ItemStack modifierTester = modifier.clone();
+        modifierTester.setAmount(1);
 
-            if (modManager.get(ModifierType.EXTRA_MODIFIER) != null && modifier.equals(modManager.get(ModifierType.EXTRA_MODIFIER).getModItem())) {
-                newTool = modManager.get(ModifierType.EXTRA_MODIFIER).applyMod(p, tool, false);
-            } else if (modManager.getFreeSlots(tool) > 0) {
-                for (Modifier m : modManager.getAllMods()) {
-                    if (m.getModItem().equals(modifier)) {
-                        newTool = m.applyMod(p, tool, false);
-                        isModifier = true;
-                        break;
-                    } else {
-                        isModifier = false; //for shovel upgrade
-                    }
-                }
-            } else {
-                isModifier = false;
-            }
-            if (isModifier) {
-                if (newTool == null) {
-                    return;
-                }
-                int newAmount = e.getWhoClicked().getItemOnCursor().getAmount() - 1;
-                e.getWhoClicked().getItemOnCursor().setAmount(newAmount);
-                e.setCancelled(true);
-                return;
+        Modifier mod = null;
+
+        for (Modifier m : modManager.getAllMods()) {
+            if (m.getModItem().equals(modifierTester)) {
+                mod = m;
             }
         }
 
-        if (config.getBoolean("Upgradeable") && e.getWhoClicked().hasPermission("minetinker.tool.upgrade")) {
-            switch (e.getWhoClicked().getItemOnCursor().getAmount()) {
-                case 1:
-                    if (ToolType.SHOVEL.getMaterials().contains(tool.getType())) {
-                        newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
-                    }
-                    break;
-                case 2:
-                    if (ToolType.SWORD.getMaterials().contains(tool.getType()) || ToolType.HOE.getMaterials().contains(tool.getType())) {
-                        newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
-                    }
-                    break;
-                case 3:
-                    if (ToolType.AXE.getMaterials().contains(tool.getType()) || ToolType.PICKAXE.getMaterials().contains(tool.getType())) {
-                        newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
-                    }
-                    break;
-                case 4:
-                    if (ToolType.BOOTS.getMaterials().contains(tool.getType())) {
-                        newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
-                    }
-                    break;
-                case 5:
-                    if (ToolType.HELMET.getMaterials().contains(tool.getType())) {
-                        newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
-                    }
-                    break;
-                case 7:
-                    if (ToolType.LEGGINGS.getMaterials().contains(tool.getType())) {
-                        newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
-                    }
-                    break;
-                case 8:
-                    if (ToolType.CHESTPLATE.getMaterials().contains(tool.getType())) {
-                        newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
-                    }
-                    break;
+        if (mod != null) {
+            for (; modifier.getAmount() > 0; modifier.setAmount(modifier.getAmount() - 1)) {
+                newTool = mod.applyMod(p, tool, false);
+
+                if (newTool == null) { break; }
+                tool = newTool;
             }
-            if (newTool != null) {
-                e.getWhoClicked().getItemOnCursor().setAmount(0);
-                e.setCancelled(true);
+            e.setCancelled(true);
+        } else {
+            if (config.getBoolean("Upgradeable") && e.getWhoClicked().hasPermission("minetinker.tool.upgrade")) {
+                switch (e.getWhoClicked().getItemOnCursor().getAmount()) {
+                    case 1:
+                        if (ToolType.SHOVEL.getMaterials().contains(tool.getType())) {
+                            newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
+                        }
+                        break;
+                    case 2:
+                        if (ToolType.SWORD.getMaterials().contains(tool.getType()) || ToolType.HOE.getMaterials().contains(tool.getType())) {
+                            newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
+                        }
+                        break;
+                    case 3:
+                        if (ToolType.AXE.getMaterials().contains(tool.getType()) || ToolType.PICKAXE.getMaterials().contains(tool.getType())) {
+                            newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
+                        }
+                        break;
+                    case 4:
+                        if (ToolType.BOOTS.getMaterials().contains(tool.getType())) {
+                            newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
+                        }
+                        break;
+                    case 5:
+                        if (ToolType.HELMET.getMaterials().contains(tool.getType())) {
+                            newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
+                        }
+                        break;
+                    case 7:
+                        if (ToolType.LEGGINGS.getMaterials().contains(tool.getType())) {
+                            newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
+                        }
+                        break;
+                    case 8:
+                        if (ToolType.CHESTPLATE.getMaterials().contains(tool.getType())) {
+                            newTool = ItemGenerator.itemUpgrader(tool, e.getWhoClicked().getItemOnCursor(), (Player) e.getWhoClicked());
+                        }
+                        break;
+                }
+                if (newTool != null) {
+                    e.getWhoClicked().getItemOnCursor().setAmount(0);
+                    e.setCancelled(true);
+                }
             }
         }
     }

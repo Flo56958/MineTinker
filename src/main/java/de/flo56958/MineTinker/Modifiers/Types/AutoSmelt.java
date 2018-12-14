@@ -69,7 +69,7 @@ public class AutoSmelt extends Modifier implements Craftable {
         Material loot = Material.AIR;
         switch (b.getType()) {
             case STONE:
-                if (!config.getBoolean("Auto-Smelt.smelt_stone")) { break; }
+                if (!config.getBoolean("Auto-Smelt.smelt_stone")) { return; }
             case COBBLESTONE:
                 loot = Material.STONE;
                 break;

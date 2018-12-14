@@ -45,9 +45,7 @@ public class Commands implements CommandExecutor {
                         case "checkupdate":
                         case "cu":
                             if (p.hasPermission("minetinker.command.checkupdate")) {
-                                if (Main.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
-                                    Main.getUpdater().checkForUpdate(p);
-                                } else ChatWriter.sendMessage(p, ChatColor.RED, "Checking for updates is disabled by the server admin!");
+                                Functions.checkUpdate(p);
                             } else noPerm(p);
                             break;
                         case "convert":
@@ -122,6 +120,10 @@ public class Commands implements CommandExecutor {
         } else {
             if (args.length > 0) {
                 switch (args[0].toLowerCase()) { //first argument is the specifier for the command
+                    case "checkupdate":
+                    case "cu":
+                        Functions.checkUpdate(sender);
+                        break;
                     case "info":
                     case "i":
                         sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + "MineTinker (" + Main.getPlugin().getDescription().getVersion() + ") is a Plugin made by Flo56958.");
@@ -218,6 +220,7 @@ public class Commands implements CommandExecutor {
      */
     private void onHelpConsole(CommandSender sender) {
         int index = 1;
+        sender.sendMessage(ChatWriter.CHAT_PREFIX + index++ + ". CheckUpdate (cu)");
         sender.sendMessage(ChatWriter.CHAT_PREFIX + index++ + ". Info (i)");
         sender.sendMessage(ChatWriter.CHAT_PREFIX + index + ". reload (r)");
     }
@@ -253,7 +256,7 @@ public class Commands implements CommandExecutor {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    Main.getUpdater().checkForUpdate();
+                    Main.getUpdater().checkForUpdate(sender);
                 }
             }.runTaskLater(Main.getPlugin(), 20);
         }

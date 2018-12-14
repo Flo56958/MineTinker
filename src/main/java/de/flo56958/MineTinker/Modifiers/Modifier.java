@@ -83,6 +83,10 @@ public abstract class Modifier {
 	}
 
 	public static ItemStack checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand) {
+		if (modManager.getFreeSlots(tool) < 1 && !mod.getType().equals(ModifierType.EXTRA_MODIFIER)) {
+			pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_FREE_SLOTS, isCommand));
+			return null;
+		}
 		if (!p.hasPermission("minetinker.modifiers." + permission + ".apply")) {
 			pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_PERMISSION, isCommand));
 			return null;

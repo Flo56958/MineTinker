@@ -8,16 +8,20 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
 class Functions {
 
     private static final ModManager modManager = ModManager.instance();
+    private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     /**
      * Outputs all available mods to the players chat
@@ -308,5 +312,17 @@ class Functions {
                 }
             }
         }
+    }
+
+    public static void checkUpdate(CommandSender sender) {
+        if (config.getBoolean("CheckForUpdates")) {
+            ChatWriter.sendMessage(sender, ChatColor.WHITE, "Checking for Updates...");
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Main.getUpdater().checkForUpdate(sender);
+                }
+            }.runTaskLater(Main.getPlugin(), 20);
+        } else ChatWriter.sendMessage(sender, ChatColor.RED, "Checking for updates is disabled by the server admin!");
     }
 }

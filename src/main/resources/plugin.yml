@@ -61,6 +61,7 @@ permissions:
       minetinker.commands.givemodifieritem: true
       minetinker.commands.convert: true
       minetinker.commands.checkupdate: true
+      minetinker.commands.reload: true
 
   minetinker.commands.main:
     description: Allows to access MineTinker
@@ -112,6 +113,10 @@ permissions:
 
   minetinker.commands.checkupdate:
     description: Allows to check for a MineTinker update
+    default: op
+
+  minetinker.commands.reload:
+    description: Allows to reload the configuration-files from MineTinker
     default: op
 
   #Modifiers:

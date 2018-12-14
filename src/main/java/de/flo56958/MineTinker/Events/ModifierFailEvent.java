@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker.Events;
 
 import de.flo56958.MineTinker.Data.ModifierFailCause;
+import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -16,6 +17,21 @@ public class ModifierFailEvent extends Event {
     private final Modifier mod;
     private final ModifierFailCause failCause;
     private final boolean isCommand;
+
+    /**
+     * Event constructor
+     * @param player The player that is involved in the Event
+     * @param tool The Itemstack that could not get modified
+     * @param failCause The cause of the failure
+     * @param isCommand Was the Event triggered as a result of a command input?
+     */
+    public ModifierFailEvent(Player player, ItemStack tool, ModifierFailCause failCause, boolean isCommand) {
+        this.player = player;
+        this.tool = tool;
+        this.mod = ModManager.instance().getAllMods().get(0);
+        this.failCause = failCause;
+        this.isCommand = isCommand;
+    }
 
     /**
      * Event constructor
