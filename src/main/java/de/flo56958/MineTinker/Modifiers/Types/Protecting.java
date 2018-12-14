@@ -45,7 +45,11 @@ public class Protecting extends Modifier implements Craftable {
         ItemMeta meta = tool.getItemMeta();
 
         meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, modManager.getModLevel(tool, this), true);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        if (config.getBoolean("HideEnchants")) {
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        } else {
+            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
 
         tool.setItemMeta(meta);
 

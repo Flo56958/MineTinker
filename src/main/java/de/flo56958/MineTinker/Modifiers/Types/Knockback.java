@@ -53,8 +53,11 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
         } else if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
             meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);
         }
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
+        if (config.getBoolean("HideEnchants")) {
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        } else {
+            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
         tool.setItemMeta(meta);
 
         return tool;
