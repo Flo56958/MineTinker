@@ -62,7 +62,7 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
         ItemMeta meta = tool.getItemMeta();
 
         meta.addEnchant(Enchantment.SILK_TOUCH, modManager.getModLevel(tool, this), true);
-        if (config.getBoolean("HideEnchants")) {
+        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         } else {
             meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);

@@ -60,7 +60,7 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
         ItemMeta meta = tool.getItemMeta();
 
         meta.addEnchant(Enchantment.ARROW_INFINITE, modManager.getModLevel(tool, this), true);
-        if (config.getBoolean("HideEnchants")) {
+        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         } else {
             meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);

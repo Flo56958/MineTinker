@@ -66,7 +66,9 @@ public class Timber extends Modifier implements Craftable {
         boolean isTreeBottom = false; //checks for Grass or Dirt under Log
         boolean isTreeTop = false; //checks for Leaves above Log
         for (int y = b.getY() - 1; y > 0; y--) {
-            if (p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(Material.GRASS_BLOCK) || p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(Material.DIRT)) {
+            if (p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(Material.GRASS_BLOCK) //for freshly grown trees
+                    || p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(Material.DIRT)
+                    || p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(Material.PODZOL)) { //for the 2x2 spruce trees
                 isTreeBottom = true;
             }
             if (!p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(b.getType())) {

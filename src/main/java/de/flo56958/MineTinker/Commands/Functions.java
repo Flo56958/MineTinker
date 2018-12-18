@@ -24,14 +24,14 @@ class Functions {
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     /**
-     * Outputs all available mods to the players chat
-     * @param player
+     * Outputs all available mods to the command sender chat
+     * @param sender
      */
-    static void modList(Player player) {
-        ChatWriter.sendMessage(player, ChatColor.GOLD, "Possible Modifiers:");
+    static void modList(CommandSender sender) {
+        ChatWriter.sendMessage(sender, ChatColor.GOLD, "Possible Modifiers:");
         int index = 1;
         for (Modifier m : modManager.getAllMods()) {
-            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". " + m.getColor() + m.getName() + ChatColor.WHITE + ": " + m.getDescription());
+            ChatWriter.sendMessage(sender, ChatColor.WHITE, index + ". " + m.getColor() + m.getName() + ChatColor.WHITE + ": " + m.getDescription());
             index++;
         }
     }

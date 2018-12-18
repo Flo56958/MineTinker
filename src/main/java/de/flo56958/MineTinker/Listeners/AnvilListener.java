@@ -41,12 +41,12 @@ public class AnvilListener implements Listener {
 			if(e.getSlot() == 2) {
 				if (Lists.WORLDS.contains(player.getWorld().getName())) { return; }
 		        	if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) { return; }
-				
+			
 				if(e.isShiftClick())
 					player.getInventory().addItem(inv.getItem(2));
 				else
 					e.setCursor(inv.getItem(2));
-				
+        
 				Modifier mod = null;
 	        		ItemStack modifierTester = modifier.clone();
 				modifierTester.setAmount(1);

@@ -66,7 +66,7 @@ public class AutoSmelt extends Modifier implements Craftable {
 
         boolean allowLuck = false;
         int amount = 1;
-        Material loot = Material.AIR;
+        Material loot;
         switch (b.getType()) {
             case STONE:
                 if (!config.getBoolean("Auto-Smelt.smelt_stone")) { return; }
