@@ -25,7 +25,7 @@ public class AnvilListener implements Listener {
     private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = ModManager.instance();
     
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onInventoryClick(InventoryClickEvent e) {
 		HumanEntity he = e.getWhoClicked();
 		
@@ -33,32 +33,38 @@ public class AnvilListener implements Listener {
 			AnvilInventory inv = (AnvilInventory) e.getClickedInventory();
 			Player player = (Player) he;
 			
+			ItemStack tool = inv.getItem(0);
+	    		ItemStack modifier = inv.getItem(1);
+			
+			if(tool == null || modifier == null)return;
+			
 			if(e.getSlot() == 2) {
+				if (Lists.WORLDS.contains(player.getWorld().getName())) { return; }
+		        	if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) { return; }
+				
 				if(e.isShiftClick())
 					player.getInventory().addItem(inv.getItem(2));
 				else
 					e.setCursor(inv.getItem(2));
 				
-				ItemStack modifier = inv.getItem(1);
-				
 				Modifier mod = null;
 	        		ItemStack modifierTester = modifier.clone();
-	            		modifierTester.setAmount(1);
-	        	
-	        	for (Modifier m : modManager.getAllMods()) {
-	                 	if (m.getModItem().equals(modifierTester)) {
-	                 	    mod = m;
-	                 	}
-	            	}
+				modifierTester.setAmount(1);
+
+				for (Modifier m : modManager.getAllMods()) {
+					if (m.getModItem().equals(modifierTester)) {
+					    mod = m;
+					}
+				}
 				
-			if(mod != null && modifier.getAmount() > 1) {
-				modifier.setAmount(modifier.getAmount() - 1);
-				inv.setItem(1, modifier);
-			} else {
-				inv.setItem(1, null);
-			}
-			
-			inv.setItem(0, null);
+				if(mod != null && modifier.getAmount() > 1) {
+					modifier.setAmount(modifier.getAmount() - 1);
+					inv.setItem(1, modifier);
+				}else {
+					inv.setItem(1, null);
+				}
+				
+				inv.setItem(0, null);
 			}
 		}
 	}
@@ -94,13 +100,13 @@ public class AnvilListener implements Listener {
         
         {
         	ItemStack modifierTester = modifier.clone();
-            modifierTester.setAmount(1);
+            	modifierTester.setAmount(1);
         	
         	 for (Modifier m : modManager.getAllMods()) {
-                 if (m.getModItem().equals(modifierTester)) {
-                     mod = m;
-                 }
-             }
+			 if (m.getModItem().equals(modifierTester)) {
+			     mod = m;
+			 }
+            	 }
         }
         
         ItemStack newTool = null;
