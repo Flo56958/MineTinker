@@ -38,7 +38,7 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
                 "[" + config.getString("Beheading.name_modifier") + "] " + config.getString("Beheading.description"),
                 ModifierType.BEHEADING,
                 ChatColor.DARK_GRAY,
-                config.getInt("Modifiers.Auto-Smelt.MaxLevel"),
+                config.getInt("Beheading.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.WITHER_SKELETON_SKULL, ChatColor.DARK_GRAY + config.getString("Beheading.name_modifier"), 1, Enchantment.LOOT_BONUS_MOBS, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
