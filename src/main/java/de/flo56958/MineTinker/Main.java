@@ -18,7 +18,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class Main extends JavaPlugin {
 
-    private static ModManager modManager;
     private static ConfigurationManager configurations;
     private static Main tinkerMain;
 
@@ -31,7 +30,7 @@ public class Main extends JavaPlugin {
         configurations = new ConfigurationManager(this);
         loadConfig();
 
-        modManager = ModManager.instance();
+        ModManager modManager = ModManager.instance();
         ChatWriter.log(false, "Set up internals.");
 
         Commands cmd = new Commands();

@@ -12,7 +12,7 @@ import java.net.URL;
 public class Updater {
 
     private String onlineVersion = "";
-    private String version = Main.getPlugin().getDescription().getVersion();
+    private final String version = Main.getPlugin().getDescription().getVersion();
     private boolean hasUpdate = false;
 
     public String getOnlineVersion() { return onlineVersion; }
@@ -24,7 +24,7 @@ public class Updater {
      * @return the online version number OR ""
      */
     private String checkOnline() {
-        String oVersion = "";
+        String oVersion;
 
         try {
             URL url = new URL("https://www.spigotmc.org/resources/minetinker.58940/");
