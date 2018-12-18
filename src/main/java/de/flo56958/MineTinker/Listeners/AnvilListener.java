@@ -42,23 +42,23 @@ public class AnvilListener implements Listener {
 				ItemStack modifier = inv.getItem(1);
 				
 				Modifier mod = null;
-	        	ItemStack modifierTester = modifier.clone();
-	            modifierTester.setAmount(1);
+	        		ItemStack modifierTester = modifier.clone();
+	            		modifierTester.setAmount(1);
 	        	
-	        	 for (Modifier m : modManager.getAllMods()) {
-	                 if (m.getModItem().equals(modifierTester)) {
-	                     mod = m;
-	                 }
-	             }
+	        	for (Modifier m : modManager.getAllMods()) {
+	                 	if (m.getModItem().equals(modifierTester)) {
+	                 	    mod = m;
+	                 	}
+	            	}
 				
-				if(mod != null && modifier.getAmount() > 1) {
-					modifier.setAmount(modifier.getAmount() - 1);
-					inv.setItem(1, modifier);
-				}else {
-					inv.setItem(1, null);
-				}
-				
-				inv.setItem(0, null);
+			if(mod != null && modifier.getAmount() > 1) {
+				modifier.setAmount(modifier.getAmount() - 1);
+				inv.setItem(1, modifier);
+			} else {
+				inv.setItem(1, null);
+			}
+			
+			inv.setItem(0, null);
 			}
 		}
 	}
@@ -108,7 +108,6 @@ public class AnvilListener implements Listener {
         if (mod != null)
         	newTool = mod.applyMod(player, tool.clone(), false);
         else {
-        	System.out.println("#6");
             if (config.getBoolean("Upgradeable") && player.hasPermission("minetinker.tool.upgrade")) {
                 switch (i.getItem(1).getAmount()) {
                     case 1:
