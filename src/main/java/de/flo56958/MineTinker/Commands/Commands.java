@@ -6,19 +6,25 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
-public class Commands implements CommandExecutor {
+public class Commands implements TabExecutor {
 
     private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = ModManager.instance();
+
+    private static final String[] cmds = {"addexp", "addmod", "checkupdate",
+            "convert", "give", "givemodifieritem", "help", "info", "modifiers",
+            "name", "reload", "removemod", "setdurability"};
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -260,5 +266,20 @@ public class Commands implements CommandExecutor {
                 }
             }.runTaskLater(Main.getPlugin(), 20);
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (args.length > 1) {
+            return null;
+        }
+
+        ArrayList<String> result = new ArrayList<>();
+        for (String s : cmds) {
+            if (sender.hasPermission("minetinker.commmands." + s)) {
+                result.add(s);
+            }
+        }
+        return result;
     }
 }

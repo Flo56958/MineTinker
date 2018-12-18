@@ -34,7 +34,9 @@ public class Main extends JavaPlugin {
         modManager = ModManager.instance();
         ChatWriter.log(false, "Set up internals.");
 
-        this.getCommand("minetinker").setExecutor(new Commands()); //must be after internals as it would throw a NullPointerException
+        Commands cmd = new Commands();
+        this.getCommand("minetinker").setExecutor(cmd); //must be after internals as it would throw a NullPointerException
+        this.getCommand("minetinker").setTabCompleter(cmd);
         ChatWriter.log(false, "Registered commands!");
 
         if (getConfig().getBoolean("AllowCrafting")) {
