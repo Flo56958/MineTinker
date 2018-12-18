@@ -1,10 +1,12 @@
 package de.flo56958.MineTinker.Commands;
 
+import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -14,6 +16,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,9 +25,16 @@ public class Commands implements TabExecutor {
     private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = ModManager.instance();
 
+    /**
+     * all commands
+     */
     private static final String[] cmds = {"addexp", "addmod", "checkupdate",
             "convert", "give", "givemodifieritem", "help", "info", "modifiers",
             "name", "reload", "removemod", "setdurability"};
+    /**
+     * all console commands
+     */
+    private static final String[] cmds_console = {"checkupdate", "info", "modifiers", "reload"};
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -135,6 +145,10 @@ public class Commands implements TabExecutor {
                         sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + "MineTinker (" + Main.getPlugin().getDescription().getVersion() + ") is a Plugin made by Flo56958.");
                         sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + "It is inspired by different mods (e.g. TinkersConstruct)");
                         break;
+                    case "modifiers":
+                    case "mods":
+                        Functions.modList(sender);
+                        break;
                     case "reload":
                     case "r":
                         reload(sender);
@@ -151,6 +165,7 @@ public class Commands implements TabExecutor {
 
     /**
      * Outputs the error message "Invalid Arguments" in the Players chat
+     *
      * @param player
      */
     static void invalidArgs(Player player) {
@@ -159,6 +174,7 @@ public class Commands implements TabExecutor {
 
     /**
      * Outputs the error message "Invalid Tool/Armor" in the Players chat
+     *
      * @param player
      */
     static void invalidTool(Player player) {
@@ -167,6 +183,7 @@ public class Commands implements TabExecutor {
 
     /**
      * Outputs the error message "No Permissions" in the Players chat
+     *
      * @param player
      */
     private void noPerm(Player player) {
@@ -175,6 +192,7 @@ public class Commands implements TabExecutor {
 
     /**
      * Outputs all available commands from MineTinker in the chat of the Player
+     *
      * @param player
      */
     private void onHelp(Player player) {
@@ -222,17 +240,20 @@ public class Commands implements TabExecutor {
 
     /**
      * Outputs all available commands from MineTinker in the console
+     *
      * @param sender
      */
     private void onHelpConsole(CommandSender sender) {
         int index = 1;
         sender.sendMessage(ChatWriter.CHAT_PREFIX + index++ + ". CheckUpdate (cu)");
         sender.sendMessage(ChatWriter.CHAT_PREFIX + index++ + ". Info (i)");
+        sender.sendMessage(ChatWriter.CHAT_PREFIX + index++ + ". Modifiers (mods)");
         sender.sendMessage(ChatWriter.CHAT_PREFIX + index + ". reload (r)");
     }
 
     /**
      * reloads the plugins configuration
+     *
      * @param sender
      */
     private void reload(CommandSender sender) {
@@ -270,16 +291,48 @@ public class Commands implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (args.length > 1) {
-            return null;
+        ArrayList<String> result = new ArrayList<>();
+
+        switch (args.length) {
+            case 0:
+                return null;
+            case 1: //top level command
+                if (sender instanceof Player) {
+                    for (String s : cmds) {
+                        if (sender.hasPermission("minetinker.commmands." + s)) {
+                            result.add(s);
+                        }
+                    }
+                } else {
+                    result.addAll(Arrays.asList(cmds_console));
+                }
+                break;
+
+            case 2:
+                switch (args[0]) {
+                    case "addmod":
+                    case "am":
+                    case "givemodifieritem":
+                    case "gm":
+                        for (Modifier mod : modManager.getAllMods()) {
+                            result.add(mod.getName());
+                        }
+
+                        break;
+                    case "give":
+                    case "g":
+                        for (ToolType type : ToolType.values()) {
+                            for (Material mat : type.getMaterials()) {
+                                result.add(mat.toString());
+                            }
+                        }
+                }
+                break;
         }
 
-        ArrayList<String> result = new ArrayList<>();
-        for (String s : cmds) {
-            if (sender.hasPermission("minetinker.commmands." + s)) {
-                result.add(s);
-            }
-        }
+        result.removeIf(s -> !s.toLowerCase().startsWith(args[args.length - 1].toLowerCase()));
+        // filter out any command that is not the beginning of the typed command
+
         return result;
     }
 }
