@@ -2,10 +2,12 @@ package de.flo56958.MineTinker.Listeners;
 
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.ModifierApplyEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -69,6 +71,8 @@ public class AnvilListener implements Listener {
             }
 
             inv.setItem(0, null);
+
+            Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(inv.getItem(2)), false));
         }
 	}
     

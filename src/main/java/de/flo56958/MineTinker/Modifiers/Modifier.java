@@ -106,9 +106,10 @@ public abstract class Modifier {
 
 		if (!isCommand) {
 			modManager.setFreeSlots(tool, --freeSlots);
+		} else {
+			Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(p, tool, mod, freeSlots, true));
 		}
 
-		pluginManager.callEvent(new ModifierApplyEvent(p, tool, mod, freeSlots, isCommand));
 		return tool;
 	}
 	
