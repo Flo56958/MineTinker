@@ -96,7 +96,7 @@ public class Updater {
             ChatWriter.sendMessage(sender, ChatColor.WHITE, "Online Version: " + this.onlineVersion);
             this.hasUpdate = true;
         } else {
-            ChatWriter.log(false, "You have the newest version of MineTinker installed!");
+            ChatWriter.sendMessage(sender, ChatColor.WHITE, "You have the newest version of MineTinker installed!");
             this.hasUpdate = false;
         }
     }

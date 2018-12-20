@@ -315,7 +315,7 @@ public class ItemGenerator {
 
     public static List<String> createLore() {
         ArrayList<String> lore = new ArrayList<>();
-        lore.add(modManager.IDENTIFIER_TOOL);
+        //lore.add(modManager.IDENTIFIER_TOOL);
         lore.add(modManager.LEVELLINE + "1");
         lore.add(modManager.EXPLINE + "0 / " + modManager.getNextLevelReq(1));
         lore.add(modManager.FREEMODIFIERSLOTS + config.getInt("StartingModifierSlots"));
@@ -325,7 +325,7 @@ public class ItemGenerator {
 
     public static List<String> createLore(int level) {
         ArrayList<String> lore = new ArrayList<>();
-        lore.add(modManager.IDENTIFIER_TOOL);
+        //lore.add(modManager.IDENTIFIER_TOOL);
         lore.add(modManager.LEVELLINE + level);
         lore.add(modManager.EXPLINE + modManager.getNextLevelReq(level - 1) + " / " + modManager.getNextLevelReq(level));
         lore.add(modManager.FREEMODIFIERSLOTS + (config.getInt("StartingModifierSlots") + (config.getInt("AddModifierSlotsPerLevel") * (level - 1))));

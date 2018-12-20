@@ -2,7 +2,6 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Events.ModifierApplyEvent;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
@@ -58,7 +57,6 @@ public class ExtraModifier extends Modifier {
         int amount = slotsRemaining + gain;
 
         modManager.setFreeSlots(tool, amount);
-        pluginManager.callEvent(new ModifierApplyEvent(p, tool, this, amount, isCommand));
         return tool;
     }
 }

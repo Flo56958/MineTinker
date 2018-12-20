@@ -36,6 +36,7 @@ public class AnvilListener implements Listener {
 
         ItemStack tool = inv.getItem(0);
         ItemStack modifier = inv.getItem(1);
+        ItemStack newTool = inv.getItem(2);
 
         if (tool == null || modifier == null) { return; }
 
@@ -44,13 +45,13 @@ public class AnvilListener implements Listener {
             if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) { return; }
 
             if (e.isShiftClick()) {
-                if (player.getInventory().addItem(inv.getItem(2)).size() != 0) { //adds items to (full) inventory and then case if inventory is full
+                if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
                     e.setCancelled(true);
                     return;
                 } // no else as it gets added in if-clause
                 //player.getInventory().addItem(inv.getItem(2));
             } else {
-                e.setCursor(inv.getItem(2));
+                e.setCursor(newTool);
             }
 
             Modifier mod = null;
@@ -72,7 +73,7 @@ public class AnvilListener implements Listener {
 
             inv.setItem(0, null);
 
-            Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(inv.getItem(2)), false));
+            Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
         }
 	}
     

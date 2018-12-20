@@ -54,7 +54,7 @@ public class CraftingListener implements Listener {
             return;
         }
 
-        lore.addAll(ItemGenerator.createLore(1));
+        lore.addAll(ItemGenerator.createLore());
 
         currentItem = ItemGenerator.changeLore(currentItem, lore);
         e.setCurrentItem(currentItem);

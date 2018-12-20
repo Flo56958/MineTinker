@@ -59,7 +59,8 @@ public class BlockListener implements Listener {
             return;
         }
 
-        if (Power.HASPOWER.get(p) && e.getBlock().getDrops(tool).isEmpty() && !e.getBlock().getType().equals(Material.NETHER_WART)) { //Necessary for EasyHarvest NetherWard-Break
+        if (Power.HASPOWER.get(p) && !ToolType.PICKAXE.getMaterials().contains(tool.getType())
+                && e.getBlock().getDrops(tool).isEmpty() && !e.getBlock().getType().equals(Material.NETHER_WART)) { //Necessary for EasyHarvest NetherWard-Break
             e.setCancelled(true);
             return;
         }
@@ -69,7 +70,8 @@ public class BlockListener implements Listener {
         if (!Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
             if (config.getBoolean("Spawners.enabled")) {
                 if (e.getBlock().getState() instanceof CreatureSpawner && p.hasPermission("minetinker.spawners.mine")) {
-                    if ((config.getBoolean("Spawners.onlyWithSilkTouch") && modManager.hasMod(tool, modManager.get(ModifierType.SILK_TOUCH))) || !config.getBoolean("Spawners.onlyWithSilkTouch")) {
+                    if ((config.getBoolean("Spawners.onlyWithSilkTouch") && modManager.hasMod(tool, modManager.get(ModifierType.SILK_TOUCH)))
+                            || !config.getBoolean("Spawners.onlyWithSilkTouch")) {
                         CreatureSpawner cs = (CreatureSpawner) e.getBlock().getState();
                         ItemStack s = new ItemStack(Material.SPAWNER, 1, e.getBlock().getData());
                         ItemMeta s_meta = s.getItemMeta();

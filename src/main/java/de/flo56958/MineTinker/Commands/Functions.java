@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.LinkedList;
 import java.util.List;
 
 class Functions {
@@ -206,6 +207,8 @@ class Functions {
      */
     static void give(Player player, String[] args) {
         Material material;
+        List<String> lore = new LinkedList<>();
+
         if (args.length >= 2) {
             try {
                 material = Material.getMaterial(args[1].toUpperCase());
@@ -213,16 +216,20 @@ class Functions {
                 Commands.invalidArgs(player);
                 return;
             }
-            if (!(ToolType.AXE.getMaterials().contains(material) ||
+
+            if (ToolType.AXE.getMaterials().contains(material) ||
                     ToolType.BOW.getMaterials().contains(material) ||
                     ToolType.HOE.getMaterials().contains(material) ||
                     ToolType.PICKAXE.getMaterials().contains(material) ||
                     ToolType.SHOVEL.getMaterials().contains(material) ||
-                    ToolType.SWORD.getMaterials().contains(material) ||
-                    ToolType.HELMET.getMaterials().contains(material) ||
+                    ToolType.SWORD.getMaterials().contains(material)) {
+                lore.add(modManager.IDENTIFIER_TOOL);
+            } else if (ToolType.HELMET.getMaterials().contains(material) ||
                     ToolType.CHESTPLATE.getMaterials().contains(material) ||
                     ToolType.LEGGINGS.getMaterials().contains(material) ||
-                    ToolType.BOOTS.getMaterials().contains(material))) {
+                    ToolType.BOOTS.getMaterials().contains(material)) {
+                lore.add(modManager.IDENTIFIER_ARMOR);
+            } else {
                 Commands.invalidArgs(player);
                 return;
             }
@@ -230,9 +237,11 @@ class Functions {
             Commands.invalidArgs(player);
             return;
         }
+
         if (args.length == 2) {
-            if (player.getInventory().addItem(ItemGenerator.changeLore(new ItemStack(material, 1), ItemGenerator.createLore())).size() != 0) { //adds items to (full) inventory
-                player.getWorld().dropItem(player.getLocation(), ItemGenerator.changeLore(new ItemStack(material, 1), ItemGenerator.createLore()));
+            lore.addAll(ItemGenerator.createLore());
+            if (player.getInventory().addItem(ItemGenerator.changeLore(new ItemStack(material, 1), lore)).size() != 0) { //adds items to (full) inventory
+                player.getWorld().dropItem(player.getLocation(), ItemGenerator.changeLore(new ItemStack(material, 1), lore));
             } // no else as it gets added in if
         } else if (args.length == 3) {
             int level;
@@ -242,8 +251,10 @@ class Functions {
                 Commands.invalidArgs(player);
                 return;
             }
-            if (player.getInventory().addItem(ItemGenerator.changeLore(new ItemStack(material, 1), ItemGenerator.createLore(level))).size() != 0) { //adds items to (full) inventory
-                player.getWorld().dropItem(player.getLocation(), ItemGenerator.changeLore(new ItemStack(material, 1), ItemGenerator.createLore(level)));
+
+            lore.addAll(ItemGenerator.createLore(level));
+            if (player.getInventory().addItem(ItemGenerator.changeLore(new ItemStack(material, 1), lore)).size() != 0) { //adds items to (full) inventory
+                player.getWorld().dropItem(player.getLocation(), ItemGenerator.changeLore(new ItemStack(material, 1), lore));
             } // no else as it gets added in if
         } else {
             Commands.invalidArgs(player);
@@ -257,32 +268,38 @@ class Functions {
      */
     static void convert(Player player, String[] args) {
         ItemStack tool = player.getInventory().getItemInMainHand();
+        List<String> lore = new LinkedList<>();
         if (ToolType.AXE.getMaterials().contains(tool.getType()) ||
                 ToolType.BOW.getMaterials().contains(tool.getType()) ||
                 ToolType.HOE.getMaterials().contains(tool.getType()) ||
                 ToolType.PICKAXE.getMaterials().contains(tool.getType()) ||
                 ToolType.SHOVEL.getMaterials().contains(tool.getType()) ||
-                ToolType.SWORD.getMaterials().contains(tool.getType()) ||
-                ToolType.HELMET.getMaterials().contains(tool.getType()) ||
+                ToolType.SWORD.getMaterials().contains(tool.getType())) {
+            lore.add(modManager.IDENTIFIER_TOOL);
+        } else if (ToolType.HELMET.getMaterials().contains(tool.getType()) ||
                 ToolType.CHESTPLATE.getMaterials().contains(tool.getType()) ||
                 ToolType.LEGGINGS.getMaterials().contains(tool.getType()) ||
                 ToolType.BOOTS.getMaterials().contains(tool.getType())) {
-            if (args.length < 2) {
-                tool.setItemMeta(null);
-                ItemGenerator.changeLore(tool, ItemGenerator.createLore());
-            } else if (args.length < 3) {
-                try {
-                    int level = Integer.parseInt(args[1]);
-                    tool.setItemMeta(null);
-                    ItemGenerator.changeLore(tool, ItemGenerator.createLore(level));
-                } catch (Exception ignored) {
-                    Commands.invalidArgs(player);
-                }
-            }
+            lore.add(modManager.IDENTIFIER_ARMOR);
         } else {
             ChatWriter.sendMessage(player, ChatColor.RED, "Item can't be converted!");
+            return;
         }
 
+        if (args.length < 2) {
+            tool.setItemMeta(null);
+            lore.addAll(ItemGenerator.createLore());
+            ItemGenerator.changeLore(tool, lore);
+        } else if (args.length < 3) {
+            try {
+                int level = Integer.parseInt(args[1]);
+                tool.setItemMeta(null);
+                lore.addAll(ItemGenerator.createLore(level));
+                ItemGenerator.changeLore(tool, lore);
+            } catch (Exception ignored) {
+                Commands.invalidArgs(player);
+            }
+        }
     }
 
     /**
