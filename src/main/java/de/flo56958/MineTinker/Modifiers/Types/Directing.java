@@ -24,7 +24,7 @@ public class Directing extends Modifier implements Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Directing.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Directing.yml");
 
     public Directing() {
         super(config.getString("Directing.name"),

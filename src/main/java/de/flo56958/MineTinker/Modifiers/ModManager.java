@@ -84,7 +84,7 @@ public class ModManager {
      * checks and loads all modifiers with configurations settings into memory
      */
     private void init() {
-        ConfigurationManager configs = Main.getMain().getConfigurations();
+        ConfigurationManager configs = Main.getConfigurations();
         if (configs.getConfig("Auto-Smelt.yml").getBoolean("Auto-Smelt.allowed")) {
             register(new AutoSmelt());
         }

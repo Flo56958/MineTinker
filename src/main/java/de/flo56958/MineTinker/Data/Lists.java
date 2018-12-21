@@ -15,8 +15,8 @@ public class Lists {
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     public static final List<String> WORLDS = config.getStringList("BannedWorlds");
-    public static final List<String> WORLDS_ELEVATOR = Main.getMain().getConfigurations().getConfig("Elevator.yml").getStringList("Elevator.BannedWorlds");
-    public static final List<String> WORLDS_BUILDERSWANDS = Main.getMain().getConfigurations().getConfig("BuildersWand.yml").getStringList("BuildersWand.BannedWorlds");
+    public static final List<String> WORLDS_ELEVATOR = Main.getConfigurations().getConfig("Elevator.yml").getStringList("Elevator.BannedWorlds");
+    public static final List<String> WORLDS_BUILDERSWANDS = Main.getConfigurations().getConfig("BuildersWand.yml").getStringList("BuildersWand.BannedWorlds");
     public static final List<String> WORLDS_SPAWNERS = config.getStringList("Spawners.BannedWorlds");
     public static final List<String> WORLDS_EASYHARVEST = config.getStringList("EasyHarvest.BannedWorlds");
 

@@ -24,7 +24,7 @@ public class Experienced extends Modifier implements Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Experienced.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Experienced.yml");
 
     private final int percentagePerLevel;
     private final int amount;

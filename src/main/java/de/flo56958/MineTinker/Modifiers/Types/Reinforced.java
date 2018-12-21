@@ -23,7 +23,7 @@ import java.util.Arrays;
 public class Reinforced extends Modifier implements Craftable {
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Reinforced.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Reinforced.yml");
 
     public Reinforced() {
         super(config.getString("Reinforced.name"),

@@ -4,7 +4,7 @@ Power:
   name_modifier: Enchanted Emerald
   description: Tool can destroy more blocks per swing!
   lv1_vertical: false #Should the 3x1 at level 1 be horizontal (false) or vertical (true)
-  MaxLevel: 3 #Algorythm for area of effect (except for level 1): (level * 2) - 1 x (level * 2) - 1
+  MaxLevel: 3 #Algorithm for area of effect (except for level 1): (level * 2) - 1 x (level * 2) - 1
   EnchantCost: 10
   Recipe:
     Enabled: false

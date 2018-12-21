@@ -113,6 +113,7 @@ public class BlockListener implements Listener {
     public void onClick(PlayerInteractEvent e) {
         if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
+        Block b = e.getClickedBlock();
         ItemStack norm = p.getInventory().getItemInMainHand();
         if (e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
             if (modManager.get(ModifierType.ENDER) != null) {
@@ -121,6 +122,19 @@ public class BlockListener implements Listener {
                 }
             }
         } else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            if (!p.isSneaking()) {
+                if (b.getType().equals(Material.ANVIL)
+                    || b.getType().equals(Material.CRAFTING_TABLE)
+                    || b.getType().equals(Material.CHEST)
+                    || b.getType().equals(Material.ENDER_CHEST)
+                    || b.getType().equals(Material.DROPPER)
+                    || b.getType().equals(Material.HOPPER)
+                    || b.getType().equals(Material.DISPENSER)
+                    || b.getType().equals(Material.TRAPPED_CHEST)
+                    || b.getType().equals(Material.FURNACE)) {
+                    return;
+                }
+            }
             int temp = norm.getAmount();
             norm.setAmount(1);
             for (Modifier m : modManager.getAllMods()) {
@@ -131,7 +145,7 @@ public class BlockListener implements Listener {
                 }
             }
             norm.setAmount(temp);
-            if (e.getClickedBlock().getType().equals(Material.BOOKSHELF)) {
+            if (b.getType().equals(Material.BOOKSHELF)) {
                 ItemStack item = p.getInventory().getItemInMainHand();
                 for (Modifier m : modManager.getEnchantableMods()) {
                     if (m.getModItem().getType().equals(item.getType())) {

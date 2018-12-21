@@ -27,7 +27,7 @@ public class Glowing extends Modifier implements Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Glowing.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Glowing.yml");
 
     private final int duration;
     private final double durationMultiplier;

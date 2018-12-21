@@ -39,7 +39,7 @@ public class CraftingListener implements Listener {
 
         if (!player.hasPermission("minetinker.tool.create")) { return; }
 
-        ItemStack currentItem = e.getCurrentItem();
+        ItemStack currentItem = e.getCurrentItem().clone();
 
         if (Lists.WORLDS.contains(player.getWorld().getName())) { return; }
 

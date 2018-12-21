@@ -26,7 +26,7 @@ public class Melting extends Modifier implements Enchantable, Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Melting.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Melting.yml");
 
     private final double bonusMultiplier;
 

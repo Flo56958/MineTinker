@@ -25,7 +25,7 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Sweeping.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Sweeping.yml");
 
     public Sweeping() {
         super(config.getString("Sweeping.name"),

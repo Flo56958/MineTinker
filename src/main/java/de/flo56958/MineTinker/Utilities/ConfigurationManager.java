@@ -28,7 +28,9 @@ public class ConfigurationManager {
     public ConfigurationManager(Main main) {
         this.main = main;
 
-        for (String modifier : modifiers) createConfig("Modifiers" + File.separator, modifier);
+        for (String modifier : modifiers) {
+            createConfig("Modifiers" + File.separator, modifier);
+        }
 
         createConfig("", "BuildersWand.yml");
         createConfig("", "Elevator.yml");
@@ -44,7 +46,9 @@ public class ConfigurationManager {
     }
 
     public void reload() {
-        for (String modifier : modifiers) createConfig("Modifiers" + File.separator, modifier);
+        for (String modifier : modifiers) {
+            createConfig("Modifiers" + File.separator, modifier);
+        }
 
         createConfig("", "BuildersWand.yml");
         createConfig("", "Elevator.yml");

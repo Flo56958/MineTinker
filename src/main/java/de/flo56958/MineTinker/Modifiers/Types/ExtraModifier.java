@@ -21,7 +21,7 @@ public class ExtraModifier extends Modifier {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Extra-Modifier.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Extra-Modifier.yml");
 
     private final int gain;
 

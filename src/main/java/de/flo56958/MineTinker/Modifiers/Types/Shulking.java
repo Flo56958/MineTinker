@@ -27,7 +27,7 @@ public class Shulking extends Modifier implements Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Shulking.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Shulking.yml");
 
     private final int duration;
     private final int effectAmplifier;

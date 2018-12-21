@@ -24,7 +24,7 @@ public class Haste extends Modifier implements Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Haste.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Haste.yml");
 
     public Haste() {
         super(config.getString("Haste.name"),

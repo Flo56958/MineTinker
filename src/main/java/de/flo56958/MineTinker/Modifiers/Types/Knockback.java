@@ -25,7 +25,7 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Knockback.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Knockback.yml");
 
     public Knockback() {
         super(config.getString("Knockback.name"),

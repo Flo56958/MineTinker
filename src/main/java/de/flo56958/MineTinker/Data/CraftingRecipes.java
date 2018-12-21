@@ -20,7 +20,7 @@ public class CraftingRecipes {
      * tries to register the recipe for the elevator motor
      */
     public static void registerElevatorMotor() {
-        FileConfiguration config = Main.getMain().getConfigurations().getConfig("Elevator.yml");
+        FileConfiguration config = Main.getConfigurations().getConfig("Elevator.yml");
         try {
             ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Elevator_Motor"), ItemGenerator.itemEnchanter(Material.HOPPER, ChatColor.GRAY + config.getString("Elevator.name"), 1, Enchantment.FIRE_ASPECT, 1)); //init recipe
             String top = config.getString("Elevator.Recipe.Top");
@@ -41,7 +41,7 @@ public class CraftingRecipes {
      * tries to register the Builderswand recipes
      */
     public static void registerBuildersWands() {
-        FileConfiguration config = Main.getMain().getConfigurations().getConfig("BuildersWand.yml");
+        FileConfiguration config = Main.getConfigurations().getConfig("BuildersWand.yml");
         try {
             ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Builderswand_Wood"), ItemGenerator.buildersWandCreator(Material.WOODEN_SHOVEL, config.getString("BuildersWand.name_wood"), 1)); //init recipe
             String top = config.getString("BuildersWand.Recipes.Wood.Top");

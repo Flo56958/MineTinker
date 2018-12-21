@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 public class ElevatorListener implements Listener {
 
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Elevator.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Elevator.yml");
 
     @EventHandler
     public void onSneak (PlayerToggleSneakEvent e) {

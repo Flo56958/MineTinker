@@ -26,7 +26,7 @@ public class Luck extends Modifier implements Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Luck.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Luck.yml");
 
     public Luck() {
         super(config.getString("Luck.name"),

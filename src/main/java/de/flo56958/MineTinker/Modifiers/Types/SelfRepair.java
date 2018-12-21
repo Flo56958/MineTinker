@@ -25,7 +25,7 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Self-Repair.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Self-Repair.yml");
 
     private final int percentagePerLevel;
     private final int healthRepair;

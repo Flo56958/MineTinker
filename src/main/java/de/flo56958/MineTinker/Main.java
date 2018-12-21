@@ -19,18 +19,16 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class Main extends JavaPlugin {
 
     private static ConfigurationManager configurations;
-    private static Main tinkerMain;
 
     private static Updater updater;
 
     @Override
     public void onEnable() {
-        tinkerMain = this;
-
         configurations = new ConfigurationManager(this);
         loadConfig();
 
-        ModManager modManager = ModManager.instance();
+        ModManager.instance();
+
         ChatWriter.log(false, "Set up internals.");
 
         Commands cmd = new Commands();
@@ -108,12 +106,11 @@ public class Main extends JavaPlugin {
         return Bukkit.getPluginManager().getPlugin("MineTinker");
     }
 
-    public static Main getMain() { return tinkerMain; }
-
     public static Updater getUpdater() { return updater; }
 
     /**
      * @return The ConfigurationManager of MineTinker
      */
-    public ConfigurationManager getConfigurations() { return configurations; }
+    public static ConfigurationManager getConfigurations() { return configurations; }
+
 }

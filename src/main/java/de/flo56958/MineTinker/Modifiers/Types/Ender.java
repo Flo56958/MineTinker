@@ -25,7 +25,7 @@ public class Ender extends Modifier implements Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Ender.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Ender.yml");
 
     private final boolean compatibleWithInfinity;
     private final boolean hasSound;

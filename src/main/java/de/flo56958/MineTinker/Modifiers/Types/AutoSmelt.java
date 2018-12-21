@@ -26,7 +26,7 @@ public class AutoSmelt extends Modifier implements Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Auto-Smelt.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Auto-Smelt.yml");
     private final int percentagePerLevel;
     private final boolean hasSound;
 

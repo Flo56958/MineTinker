@@ -27,7 +27,7 @@ public class Webbed extends Modifier implements Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Webbed.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Webbed.yml");
 
     private final int duration;
     private final double durationMultiplier;

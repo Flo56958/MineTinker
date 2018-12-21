@@ -30,7 +30,7 @@ public class Timber extends Modifier implements Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Timber.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Timber.yml");
 
     private static final ArrayList<Location> locs = new ArrayList<>();
 

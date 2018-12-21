@@ -25,7 +25,7 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Fiery.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Fiery.yml");
 
     public Fiery() {
         super(config.getString("Fiery.name"),

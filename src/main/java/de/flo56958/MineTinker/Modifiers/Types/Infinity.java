@@ -27,7 +27,7 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Infinity.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Infinity.yml");
 
     private final boolean compatibleWithEnder;
 
@@ -40,7 +40,7 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
                 ItemGenerator.itemEnchanter(Material.ARROW, ChatColor.WHITE + config.getString("Infinity.name_modifier"), 1, Enchantment.ARROW_INFINITE, 1),
                 new ArrayList<>(Collections.singletonList(ToolType.BOW)),
                 Main.getPlugin());
-        this.compatibleWithEnder = Main.getMain().getConfigurations().getConfig("Ender.yml").getBoolean("Ender.CompatibleWithInfinity");
+        this.compatibleWithEnder = Main.getConfigurations().getConfig("Ender.yml").getBoolean("Ender.CompatibleWithInfinity");
     }
 
     @Override

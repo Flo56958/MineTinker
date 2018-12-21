@@ -28,7 +28,7 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
 
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Poisonous.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Poisonous.yml");
 
     private final int duration;
     private final double durationMultiplier;

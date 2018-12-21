@@ -34,7 +34,7 @@ import java.util.HashMap;
 public class Power extends Modifier implements Enchantable, Craftable {
     private static final ModManager modManager = ModManager.instance();
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getMain().getConfigurations().getConfig("Power.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Power.yml");
 
     public static final HashMap<Player, Boolean> HASPOWER = new HashMap<>();
 
