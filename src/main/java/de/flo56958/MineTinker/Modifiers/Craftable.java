@@ -1,8 +1,5 @@
 package de.flo56958.MineTinker.Modifiers;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -10,6 +7,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
+
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 
 public interface Craftable {
     void registerCraftingRecipe();

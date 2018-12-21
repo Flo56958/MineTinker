@@ -1,7 +1,5 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import static de.flo56958.MineTinker.Modifiers.Craftable.modManager;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
