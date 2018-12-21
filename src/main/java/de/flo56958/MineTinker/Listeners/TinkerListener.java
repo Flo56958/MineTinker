@@ -20,6 +20,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -127,14 +128,14 @@ public class TinkerListener implements Listener {
                         if (p.getInventory().getItem(i) != null && p.getInventory().getItem(i).equals(tool)) {  //Can be NULL!
                             ItemStack newTool = null;
                             ItemStack safety = tool.clone();
-                            List<Modifier> mods = modManager.getAllMods();
+                            List<Modifier> mods = new ArrayList<>(modManager.getAllMods());
                             while (newTool == null) {
                                 int index = new Random().nextInt(mods.size());
                                 newTool = mods.get(index).applyMod(p, safety, true);
                                 if (newTool == null) {
                                     mods.remove(index); //Remove the failed modifier from the the list of the possibles
                                 }
-                                if (mods.size() == 0) { break; } //Secures that the while will terminate after some time (if all modifiers were removed)
+                                if (mods.isEmpty()) { break; } //Secures that the while will terminate after some time (if all modifiers were removed)
                             }
                             if (newTool != null) { //while could have been broken out of -> newTool could still be null
                                 tool = newTool;
