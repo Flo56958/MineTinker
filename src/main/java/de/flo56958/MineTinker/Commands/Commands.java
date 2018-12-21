@@ -234,7 +234,7 @@ public class Commands implements TabExecutor {
             ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". RemoveMod (rm)");
         }
         if (player.hasPermission("minetinker.commands.setdurability")) {
-            ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". SetDurability (sd)");
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". SetDurability (sd)");
         }
     }
 

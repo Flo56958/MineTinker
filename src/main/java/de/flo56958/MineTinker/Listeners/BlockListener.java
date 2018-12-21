@@ -1,5 +1,13 @@
 package de.flo56958.MineTinker.Listeners;
 
+import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Enchantable;
+import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Modifiers.Types.*;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -19,20 +27,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
-import de.flo56958.MineTinker.Modifiers.ModManager;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Modifiers.Types.AutoSmelt;
-import de.flo56958.MineTinker.Modifiers.Types.Experienced;
-import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
-import de.flo56958.MineTinker.Modifiers.Types.Power;
-import de.flo56958.MineTinker.Modifiers.Types.SelfRepair;
-import de.flo56958.MineTinker.Modifiers.Types.Timber;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 
 public class BlockListener implements Listener {
 
@@ -97,7 +91,7 @@ public class BlockListener implements Listener {
             ((AutoSmelt) modManager.get(ModifierType.AUTO_SMELT)).effect(p, tool, e.getBlock(), e);
         }
 
-        if (modManager.get(ModifierType.POWER) != null) {
+        if (modManager.get(ModifierType.POWER) != null && !ToolType.HOE.getMaterials().contains(tool.getType())) { //So Hoe does not trigger Power while breaking something (Hoe can only use special Hoe-Power)
             ((Power) modManager.get(ModifierType.POWER)).effect(p, tool, e.getBlock());
         }
 

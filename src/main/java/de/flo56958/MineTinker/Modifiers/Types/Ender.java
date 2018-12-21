@@ -8,7 +8,10 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -21,7 +24,7 @@ import java.util.Collections;
 
 public class Ender extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Mains.getConfigurations().getConfig("Ender.yml");
+    private static final FileConfiguration config = Main.getConfigurations().getConfig("Ender.yml");
 
     private final boolean compatibleWithInfinity;
     private final boolean hasSound;

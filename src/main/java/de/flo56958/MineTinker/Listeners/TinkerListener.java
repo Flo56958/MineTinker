@@ -125,11 +125,11 @@ public class TinkerListener implements Listener {
             if (config.getBoolean("LevelUpEvents.RandomModifier.enabled")) { //TODO: Simplify code
                 int n = rand.nextInt(100);
                 if (n <= config.getInt("LevelUpEvents.RandomModifier.percentage")) {
-                    for (int i = 0; i < p.getInventory().getSize(); i++) { //Do not know why this is here (trying to
+                    for (int i = 0; i < p.getInventory().getSize(); i++) { //Do not know why this is here
                         if (p.getInventory().getItem(i) != null && p.getInventory().getItem(i).equals(tool)) {  //Can be NULL!
                             ItemStack newTool = null;
                             ItemStack safety = tool.clone();
-                            List<Modifier> mods = new ArrayList<>(modManager.getAllMods());
+                            List<Modifier> mods = new ArrayList<>(modManager.getAllMods()); //necessary as the failed modifiers get removed from the list (so a copy is in order)
                             while (newTool == null) {
                                 int index = new Random().nextInt(mods.size());
                                 newTool = mods.get(index).applyMod(p, safety, true);

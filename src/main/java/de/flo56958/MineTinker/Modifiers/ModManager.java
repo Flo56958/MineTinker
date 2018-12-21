@@ -1,8 +1,10 @@
 package de.flo56958.MineTinker.Modifiers;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import de.flo56958.MineTinker.Events.ToolLevelUpEvent;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Types.*;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -11,36 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Events.ToolLevelUpEvent;
-import de.flo56958.MineTinker.Modifiers.Types.AutoSmelt;
-import de.flo56958.MineTinker.Modifiers.Types.Beheading;
-import de.flo56958.MineTinker.Modifiers.Types.Directing;
-import de.flo56958.MineTinker.Modifiers.Types.Ender;
-import de.flo56958.MineTinker.Modifiers.Types.Experienced;
-import de.flo56958.MineTinker.Modifiers.Types.ExtraModifier;
-import de.flo56958.MineTinker.Modifiers.Types.Fiery;
-import de.flo56958.MineTinker.Modifiers.Types.Glowing;
-import de.flo56958.MineTinker.Modifiers.Types.Haste;
-import de.flo56958.MineTinker.Modifiers.Types.Infinity;
-import de.flo56958.MineTinker.Modifiers.Types.Knockback;
-import de.flo56958.MineTinker.Modifiers.Types.LightWeight;
-import de.flo56958.MineTinker.Modifiers.Types.Luck;
-import de.flo56958.MineTinker.Modifiers.Types.Melting;
-import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
-import de.flo56958.MineTinker.Modifiers.Types.Poisonous;
-import de.flo56958.MineTinker.Modifiers.Types.Power;
-import de.flo56958.MineTinker.Modifiers.Types.Protecting;
-import de.flo56958.MineTinker.Modifiers.Types.Reinforced;
-import de.flo56958.MineTinker.Modifiers.Types.SelfRepair;
-import de.flo56958.MineTinker.Modifiers.Types.Sharpness;
-import de.flo56958.MineTinker.Modifiers.Types.Shulking;
-import de.flo56958.MineTinker.Modifiers.Types.SilkTouch;
-import de.flo56958.MineTinker.Modifiers.Types.Sweeping;
-import de.flo56958.MineTinker.Modifiers.Types.Timber;
-import de.flo56958.MineTinker.Modifiers.Types.Webbed;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModManager {
 
@@ -361,7 +335,7 @@ public class ModManager {
      *
      * @param is the item to get the information from
      */
-    public int getLevel(ItemStack is) {
+    private int getLevel(ItemStack is) {
         ItemMeta meta = is.getItemMeta();
         List<String> lore = meta.getLore();
         for(String s : lore) {
@@ -382,7 +356,7 @@ public class ModManager {
      *
      * @param is the item to get the information from
      */
-    public void setLevel(ItemStack is, int level) {
+    private void setLevel(ItemStack is, int level) {
         ItemMeta meta = is.getItemMeta();
         List<String> lore = meta.getLore();
         for(String s : lore) {
@@ -399,7 +373,7 @@ public class ModManager {
      *
      * @param is the item to get the information from
      */
-    public long getExp(ItemStack is) {
+    private long getExp(ItemStack is) {
         ItemMeta meta = is.getItemMeta();
         List<String> lore = meta.getLore();
         for(String s : lore) {
@@ -421,7 +395,7 @@ public class ModManager {
      *
      * @param is the item to get the information from
      */
-    public void setExp(ItemStack is, long exp) {
+    private void setExp(ItemStack is, long exp) {
         ItemMeta meta = is.getItemMeta();
         List<String> lore = meta.getLore();
         for(String s : lore) {

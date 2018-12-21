@@ -23,8 +23,8 @@ public class CraftingListener implements Listener {
     private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = ModManager.instance();
 
-    private static ArrayList<ToolType> tools;
-    private static ArrayList<ToolType> armor;
+    private static final ArrayList<ToolType> tools;
+    private static final ArrayList<ToolType> armor;
 
     static {
         tools = new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD));
@@ -56,8 +56,7 @@ public class CraftingListener implements Listener {
 
         lore.addAll(ItemGenerator.createLore());
 
-        currentItem = ItemGenerator.changeLore(currentItem, lore);
-        e.setCurrentItem(currentItem);
+        ItemGenerator.changeLore(currentItem, lore); //does not need 'currentItem = '
 
         //Shift Clicking -> Add All CraftItems (converted) + cancel event
         if(e.isShiftClick()) {
@@ -94,6 +93,10 @@ public class CraftingListener implements Listener {
             }
 
             e.setCancelled(true);
+
+            if (counter < min) { return; }
+        } else {
+            e.setCurrentItem(currentItem);
         }
 
         if (config.getBoolean("Sound.OnCrafting") || config.getBoolean("Sound.OnEveryCrafting"))

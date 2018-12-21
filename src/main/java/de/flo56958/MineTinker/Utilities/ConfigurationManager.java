@@ -59,6 +59,7 @@ public class ConfigurationManager {
      * @param folder The name of the folder
      * @param file The name of the file
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void createConfig(String folder, String file) {
         File customConfigFile = new File(main.getDataFolder(), folder + file);
         if (!customConfigFile.exists()) {
