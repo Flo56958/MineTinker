@@ -64,7 +64,7 @@ public class ModManager {
      *
      * @return the instance
      */
-    public static ModManager instance() {
+    public synchronized static ModManager instance() {
         if(instance == null) {
             instance = new ModManager();
             instance.init();

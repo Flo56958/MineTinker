@@ -49,7 +49,6 @@ public class BlockListener implements Listener {
         if (!modManager.isToolViable(tool)) { return; }
 
         ItemMeta meta = tool.getItemMeta();
-        List<String> lore = meta.getLore();
 
         if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2) {
             e.setCancelled(true);
@@ -174,8 +173,6 @@ public class BlockListener implements Listener {
         if (!modManager.isToolViable(tool)) { return; }
 
         ItemMeta meta = tool.getItemMeta();
-        List<String> lore = meta.getLore();
-
         Block b = e.getClickedBlock();
 
         boolean apply = false;
@@ -227,8 +224,6 @@ public class BlockListener implements Listener {
         if (!modManager.isToolViable(tool)) { return; }
 
         ItemMeta meta = tool.getItemMeta();
-        List<String> lore = meta.getLore();
-
         boolean apply = false;
 
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
@@ -282,8 +277,6 @@ public class BlockListener implements Listener {
         if (!modManager.isToolViable(tool)) { return; }
 
         ItemMeta meta = tool.getItemMeta();
-        List<String> lore = meta.getLore();
-
         boolean apply = false;
 
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
