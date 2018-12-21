@@ -130,7 +130,7 @@ public class TinkerListener implements Listener {
                             List<Modifier> mods = modManager.getAllMods();
                             while (newTool == null) {
                                 int index = new Random().nextInt(mods.size());
-                                newTool = modManager.getAllMods().get(index).applyMod(p, safety, true);
+                                newTool = mods.get(index).applyMod(p, safety, true);
                                 if (newTool == null) {
                                     mods.remove(index); //Remove the failed modifier from the the list of the possibles
                                 }
