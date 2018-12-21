@@ -73,7 +73,8 @@ public class TinkerListener implements Listener {
         }
     }
 
-    @EventHandler
+    @SuppressWarnings("deprecation")
+	@EventHandler
     public void onToolLevelUp(ToolLevelUpEvent e) {
         Player p = e.getPlayer();
         ItemStack tool = e.getTool();

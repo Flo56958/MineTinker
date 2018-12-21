@@ -65,7 +65,8 @@ public class ItemGenerator {
         return item;
     }
 
-    public static ItemStack itemUpgrader(ItemStack tool, ItemStack upgrade, Player p) {
+    @SuppressWarnings("deprecation")
+	public static ItemStack itemUpgrader(ItemStack tool, ItemStack upgrade, Player p) {
         ItemMeta meta = tool.getItemMeta();
         String[] name = tool.getType().toString().split("_");
         if (name[0].toLowerCase().equals("wooden") && (

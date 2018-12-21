@@ -216,7 +216,8 @@ public class Power extends Modifier implements Enchantable, Craftable {
         }
     }
 
-    private static void powerCreateFarmland(Player p, ItemStack tool, Block b) {
+    @SuppressWarnings("deprecation")
+	private static void powerCreateFarmland(Player p, ItemStack tool, Block b) {
         if (b.getType().equals(Material.GRASS_BLOCK) || b.getType().equals(Material.DIRT)) {
             if (b.getWorld().getBlockAt(b.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
                 tool.setDurability((short) (tool.getDurability() + 1));

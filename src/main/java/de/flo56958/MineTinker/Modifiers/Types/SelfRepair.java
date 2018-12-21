@@ -44,7 +44,8 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
         return Modifier.checkAndAdd(p, tool, this, "selfrepair", isCommand);
     }
 
-    public void effect(Player p, ItemStack tool) {
+    @SuppressWarnings("deprecation")
+	public void effect(Player p, ItemStack tool) {
         if (!p.hasPermission("minetinker.modifiers.selfrepair.use")) { return; }
         if (!modManager.hasMod(tool, this)) { return; }
 

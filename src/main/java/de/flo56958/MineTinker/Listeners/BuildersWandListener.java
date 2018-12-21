@@ -36,7 +36,8 @@ public class BuildersWandListener implements Listener {
         e.setCancelled(true);
     }
 
-    @EventHandler
+    @SuppressWarnings("deprecation")
+	@EventHandler
     public void onClick (PlayerInteractEvent e) {
         if (e.isCancelled()) { return; }
         if (Lists.WORLDS_BUILDERSWANDS.contains(e.getPlayer().getWorld().getName())) { return; }
@@ -70,6 +71,7 @@ public class BuildersWandListener implements Listener {
                     _u = 2;
                     _w = 2;
                     break;
+                default:
             }
         }
 

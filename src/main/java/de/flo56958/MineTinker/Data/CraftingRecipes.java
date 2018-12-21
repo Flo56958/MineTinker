@@ -1,9 +1,5 @@
 package de.flo56958.MineTinker.Data;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.ModManager;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -12,9 +8,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ShapedRecipe;
 
-public class CraftingRecipes {
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
 
-    private static final ModManager modManager = ModManager.instance();
+public class CraftingRecipes {
 
     /**
      * tries to register the recipe for the elevator motor

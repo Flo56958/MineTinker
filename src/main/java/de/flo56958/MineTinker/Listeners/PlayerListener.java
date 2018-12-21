@@ -24,7 +24,8 @@ public class PlayerListener implements Listener {
 
     private static final ModManager modManager = ModManager.instance();
 
-    @EventHandler
+    @SuppressWarnings("deprecation")
+	@EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.isCancelled()) { return; }
         if (Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }
