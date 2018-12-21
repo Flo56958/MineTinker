@@ -1,13 +1,5 @@
 package de.flo56958.MineTinker.Listeners;
 
-import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
-import de.flo56958.MineTinker.Modifiers.ModManager;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Modifiers.Types.*;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -28,14 +20,27 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.List;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Modifiers.Enchantable;
+import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Modifiers.Types.AutoSmelt;
+import de.flo56958.MineTinker.Modifiers.Types.Experienced;
+import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
+import de.flo56958.MineTinker.Modifiers.Types.Power;
+import de.flo56958.MineTinker.Modifiers.Types.SelfRepair;
+import de.flo56958.MineTinker.Modifiers.Types.Timber;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 
 public class BlockListener implements Listener {
 
     private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = ModManager.instance();
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @SuppressWarnings("deprecation")
+	@EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent e) {
         if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
@@ -49,7 +54,6 @@ public class BlockListener implements Listener {
         if (!modManager.isToolViable(tool)) { return; }
 
         ItemMeta meta = tool.getItemMeta();
-        List<String> lore = meta.getLore();
 
         if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2) {
             e.setCancelled(true);
@@ -156,7 +160,8 @@ public class BlockListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @SuppressWarnings("deprecation")
+	@EventHandler(priority = EventPriority.HIGHEST)
     public static void onBlockPlace(BlockPlaceEvent e) {
         if (e.isCancelled()) { return; }
 
@@ -188,8 +193,6 @@ public class BlockListener implements Listener {
         if (!modManager.isToolViable(tool)) { return; }
 
         ItemMeta meta = tool.getItemMeta();
-        List<String> lore = meta.getLore();
-
         Block b = e.getClickedBlock();
 
         boolean apply = false;
@@ -241,8 +244,6 @@ public class BlockListener implements Listener {
         if (!modManager.isToolViable(tool)) { return; }
 
         ItemMeta meta = tool.getItemMeta();
-        List<String> lore = meta.getLore();
-
         boolean apply = false;
 
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
@@ -296,8 +297,6 @@ public class BlockListener implements Listener {
         if (!modManager.isToolViable(tool)) { return; }
 
         ItemMeta meta = tool.getItemMeta();
-        List<String> lore = meta.getLore();
-
         boolean apply = false;
 
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {

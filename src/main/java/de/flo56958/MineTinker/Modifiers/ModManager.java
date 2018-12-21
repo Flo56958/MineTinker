@@ -1,10 +1,8 @@
 package de.flo56958.MineTinker.Modifiers;
 
-import de.flo56958.MineTinker.Events.ToolLevelUpEvent;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Types.*;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,8 +11,36 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 
-import java.util.ArrayList;
-import java.util.List;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Events.ToolLevelUpEvent;
+import de.flo56958.MineTinker.Modifiers.Types.AutoSmelt;
+import de.flo56958.MineTinker.Modifiers.Types.Beheading;
+import de.flo56958.MineTinker.Modifiers.Types.Directing;
+import de.flo56958.MineTinker.Modifiers.Types.Ender;
+import de.flo56958.MineTinker.Modifiers.Types.Experienced;
+import de.flo56958.MineTinker.Modifiers.Types.ExtraModifier;
+import de.flo56958.MineTinker.Modifiers.Types.Fiery;
+import de.flo56958.MineTinker.Modifiers.Types.Glowing;
+import de.flo56958.MineTinker.Modifiers.Types.Haste;
+import de.flo56958.MineTinker.Modifiers.Types.Infinity;
+import de.flo56958.MineTinker.Modifiers.Types.Knockback;
+import de.flo56958.MineTinker.Modifiers.Types.LightWeight;
+import de.flo56958.MineTinker.Modifiers.Types.Luck;
+import de.flo56958.MineTinker.Modifiers.Types.Melting;
+import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
+import de.flo56958.MineTinker.Modifiers.Types.Poisonous;
+import de.flo56958.MineTinker.Modifiers.Types.Power;
+import de.flo56958.MineTinker.Modifiers.Types.Protecting;
+import de.flo56958.MineTinker.Modifiers.Types.Reinforced;
+import de.flo56958.MineTinker.Modifiers.Types.SelfRepair;
+import de.flo56958.MineTinker.Modifiers.Types.Sharpness;
+import de.flo56958.MineTinker.Modifiers.Types.Shulking;
+import de.flo56958.MineTinker.Modifiers.Types.SilkTouch;
+import de.flo56958.MineTinker.Modifiers.Types.Sweeping;
+import de.flo56958.MineTinker.Modifiers.Types.Timber;
+import de.flo56958.MineTinker.Modifiers.Types.Webbed;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 
 public class ModManager {
 
@@ -24,15 +50,15 @@ public class ModManager {
     /**
      * stores the list of allowed modifiers
      */
-    private final ArrayList<Modifier> mods = new ArrayList<>();
+    private final List<Modifier> mods = new ArrayList<>();
     /**
      * sublist of mods which contains all modifiers that can be crafted (if enabled)
      */
-    private final ArrayList<Modifier> craftableMods = new ArrayList<>();
+    private final List<Modifier> craftableMods = new ArrayList<>();
     /**
      * sublist of mods which contains all modifiers that are crafted through the bookshelf
      */
-    private final ArrayList<Modifier> enchantableMods = new ArrayList<>();
+    private final List<Modifier> enchantableMods = new ArrayList<>();
 
     private static ModManager instance;
 
@@ -64,7 +90,7 @@ public class ModManager {
      *
      * @return the instance
      */
-    public static ModManager instance() {
+    public synchronized static ModManager instance() {
         if(instance == null) {
             instance = new ModManager();
             instance.init();

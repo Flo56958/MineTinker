@@ -16,8 +16,8 @@ import java.util.ArrayList;
 
 public abstract class Modifier {
 
-	private static final ModManager modManager = ModManager.instance();
-	private static final PluginManager pluginManager = Bukkit.getPluginManager();
+	protected static final ModManager modManager = ModManager.instance();
+	protected static final PluginManager pluginManager = Bukkit.getPluginManager();
 
 	private final String name;
 	private final ModifierType type;

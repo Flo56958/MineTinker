@@ -174,7 +174,8 @@ class Functions {
      * @param player
      * @param args command input of the player - parsed down from onCommand()
      */
-    static void setDurability(Player player, String[] args) {
+    @SuppressWarnings("deprecation")
+	static void setDurability(Player player, String[] args) {
         if (args.length == 2) {
             ItemStack tool = player.getInventory().getItemInMainHand();
             if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {

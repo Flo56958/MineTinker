@@ -28,7 +28,7 @@ public class Main extends JavaPlugin {
         loadConfig();
 
         ModManager.instance();
-
+        
         ChatWriter.log(false, "Set up internals.");
 
         Commands cmd = new Commands();
@@ -65,7 +65,7 @@ public class Main extends JavaPlugin {
         ChatWriter.log(false, "Registered events!");
 
         if (getConfig().getBoolean("logging.metrics")) {
-            Metrics metrics = new Metrics(this);
+            new Metrics(this);
             Bukkit.getConsoleSender().sendMessage(ChatWriter.CHAT_PREFIX + " Started Metrics-service! Thank you for enabling it in the config! It helps to maintain the Plugin and fix bugs. (Data is send anonymously)");
         } else {
             Bukkit.getConsoleSender().sendMessage(ChatWriter.CHAT_PREFIX + " Metrics-service disabled! The service helps to maintain the Plugin and fix bugs. (Data is send anonymously)");

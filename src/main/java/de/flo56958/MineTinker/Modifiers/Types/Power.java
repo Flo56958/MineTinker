@@ -7,7 +7,6 @@ import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
-import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
@@ -25,15 +24,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
 public class Power extends Modifier implements Enchantable, Craftable {
-    private static final ModManager modManager = ModManager.instance();
-    private static final PluginManager pluginManager = Bukkit.getPluginManager();
+	
     private static final FileConfiguration config = Main.getConfigurations().getConfig("Power.yml");
 
     public static final HashMap<Player, Boolean> HASPOWER = new HashMap<>();
@@ -219,7 +216,8 @@ public class Power extends Modifier implements Enchantable, Craftable {
         }
     }
 
-    private static void powerCreateFarmland(Player p, ItemStack tool, Block b) {
+    @SuppressWarnings("deprecation")
+	private static void powerCreateFarmland(Player p, ItemStack tool, Block b) {
         if (b.getType().equals(Material.GRASS_BLOCK) || b.getType().equals(Material.DIRT)) {
             if (b.getWorld().getBlockAt(b.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
                 tool.setDurability((short) (tool.getDurability() + 1));

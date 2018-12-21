@@ -1,5 +1,29 @@
 package de.flo56958.MineTinker.bStats;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.zip.GZIPOutputStream;
+
+import javax.net.ssl.HttpsURLConnection;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -9,23 +33,11 @@ import org.bukkit.plugin.ServicePriority;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import javax.net.ssl.HttpsURLConnection;
-import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.logging.Level;
-import java.util.zip.GZIPOutputStream;
-
 /**
  * bStats collects some data for plugin authors.
  * <p>
  * Check out https://bStats.org/ to learn more about bStats!
  */
-@SuppressWarnings("ALL")
 public class Metrics {
 
     static {
@@ -186,7 +198,8 @@ public class Metrics {
      *
      * @return The plugin specific data.
      */
-    public JSONObject getPluginData() {
+    @SuppressWarnings("unchecked")
+	public JSONObject getPluginData() {
         JSONObject data = new JSONObject();
 
         String pluginName = plugin.getDescription().getName();
@@ -213,7 +226,8 @@ public class Metrics {
      *
      * @return The server specific data.
      */
-    private JSONObject getServerData() {
+    @SuppressWarnings("unchecked")
+	private JSONObject getServerData() {
         // Minecraft specific data
         int playerAmount;
         try {
@@ -256,7 +270,8 @@ public class Metrics {
     /**
      * Collects the data and sends it afterwards.
      */
-    private void submitData() {
+    @SuppressWarnings("unchecked")
+	private void submitData() {
         final JSONObject data = getServerData();
 
         JSONArray pluginData = new JSONArray();
@@ -382,7 +397,8 @@ public class Metrics {
             this.chartId = chartId;
         }
 
-        private JSONObject getRequestJsonObject() {
+        @SuppressWarnings("unchecked")
+		private JSONObject getRequestJsonObject() {
             JSONObject chart = new JSONObject();
             chart.put("chartId", chartId);
             try {
@@ -423,7 +439,8 @@ public class Metrics {
             this.callable = callable;
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
+		@Override
         protected JSONObject getChartData() throws Exception {
             JSONObject data = new JSONObject();
             String value = callable.call();
@@ -454,7 +471,8 @@ public class Metrics {
             this.callable = callable;
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
+		@Override
         protected JSONObject getChartData() throws Exception {
             JSONObject data = new JSONObject();
             JSONObject values = new JSONObject();
@@ -498,7 +516,8 @@ public class Metrics {
             this.callable = callable;
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
+		@Override
         public JSONObject getChartData() throws Exception {
             JSONObject data = new JSONObject();
             JSONObject values = new JSONObject();
@@ -547,7 +566,8 @@ public class Metrics {
             this.callable = callable;
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
+		@Override
         protected JSONObject getChartData() throws Exception {
             JSONObject data = new JSONObject();
             int value = callable.call();
@@ -579,7 +599,8 @@ public class Metrics {
             this.callable = callable;
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
+		@Override
         protected JSONObject getChartData() throws Exception {
             JSONObject data = new JSONObject();
             JSONObject values = new JSONObject();
@@ -624,7 +645,8 @@ public class Metrics {
             this.callable = callable;
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
+		@Override
         protected JSONObject getChartData() throws Exception {
             JSONObject data = new JSONObject();
             JSONObject values = new JSONObject();
@@ -662,7 +684,8 @@ public class Metrics {
             this.callable = callable;
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
+		@Override
         protected JSONObject getChartData() throws Exception {
             JSONObject data = new JSONObject();
             JSONObject values = new JSONObject();
