@@ -35,6 +35,17 @@ public class Melting extends Modifier implements Enchantable, Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Auto-Smelt";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Extra damage against burning enemies and less damage taken while on fire!");
+    	config.addDefault(key + ".description", "Chance to smelt ore when mined!");
+    	config.addDefault(key + ".MaxLevel", 3);
+    	config.addDefault(key + ".EnchantCost", 10);
+    	config.addDefault(key + ".BonusMultiplier", 0.1); //#Percent of Bonus-damage per Level or Damage-reduction on Armor
+    	config.addDefault(key + ".Recipe.Enabled", false);
         
         init(config.getString("Melting.name"),
                 "[" + config.getString("Melting.name_modifier") + "] " + config.getString("Melting.description"),
