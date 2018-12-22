@@ -105,8 +105,6 @@ public class ModManager {
     	for(Modifier m : allMods) {
     		m.reload();
     		
-    		System.out.println(m.isAllowed());
-    		
     		if(m.isAllowed())
     			register(m);
     		else
