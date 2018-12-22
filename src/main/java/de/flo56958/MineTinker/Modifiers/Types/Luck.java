@@ -47,6 +47,8 @@ public class Luck extends Modifier implements Craftable {
     	config.addDefault(key + ".Recipe.Bottom", "LLL");
     	config.addDefault(key + ".Recipe.Materials.L", "LAPIS_BLOCK");
     	
+    	ConfigurationManager.saveConfig(config);
+    	
         init(config.getString("Luck.name"),
                 "[" + config.getString("Luck.name_modifier") + "] " + config.getString("Luck.description"),
                 config.getInt("Luck.MaxLevel"),

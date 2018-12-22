@@ -48,6 +48,8 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".PercentagePerLevel", 10); //#100% at Level 10 (not necessary for unbreakable tool in most cases)
     	config.addDefault(key + ".HealthRepair", 2); //#How much durability should be repaired per trigger
     	config.addDefault(key + ".Recipe.Enabled", false);
+    	
+    	ConfigurationManager.saveConfig(config);
         
         init(config.getString("Self-Repair.name"),
                 "[" + config.getString("Self-Repair.name_modifier") + "] " + config.getString("Self-Repair.description"),

@@ -41,6 +41,8 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".MaxLevel", 5);
     	config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".Recipe.Enabled", false);
+    	
+    	ConfigurationManager.saveConfig(config);
         
         init(config.getString("Sweeping.name"),
                 "[" + config.getString("Sweeping.name_modifier") + "] " + config.getString("Sweeping.description"),

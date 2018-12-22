@@ -59,6 +59,8 @@ public class Power extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".Recipe.Enabled", false);
         
+    	ConfigurationManager.saveConfig(config);
+    	
         init(config.getString("Power.name"),
                 "[" + config.getString("Power.name_modifier") + "] " + config.getString("Power.description"),
                 config.getInt("Power.MaxLevel"),

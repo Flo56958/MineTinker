@@ -53,6 +53,8 @@ public class Ender extends Modifier implements Craftable {
     	config.addDefault(key + ".Recipe.Bottom", "PPP");
     	config.addDefault(key + ".Recipe.Materials.P", "ENDER_PEARL");
     	config.addDefault(key + ".Recipe.Materials.E", "ENDER_EYE");
+    	
+    	ConfigurationManager.saveConfig(config);
         
         init(config.getString("Ender.name"),
                 "[" + config.getString("Ender.name_modifier") + "] " + config.getString("Ender.description"),

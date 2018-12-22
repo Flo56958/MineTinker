@@ -43,6 +43,8 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".Recipe.Enabled", false);
     	
+    	ConfigurationManager.saveConfig(config);
+    	
         init(config.getString("Light-Weight.name"),
                 "[" + config.getString("Light-Weight.name_modifier") + "] " + config.getString("Light-Weight.description"),
                 config.getInt("Light-Weight.MaxLevel"),

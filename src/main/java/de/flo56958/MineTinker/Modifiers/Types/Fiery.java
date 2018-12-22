@@ -43,6 +43,8 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".Recipe.Enabled", false);
     	
+    	ConfigurationManager.saveConfig(config);
+    	
         init(config.getString("Fiery.name"),
                 "[" + config.getString("Fiery.name_modifier") + "] " + config.getString("Fiery.description"),
                 config.getInt("Fiery.MaxLevel"),

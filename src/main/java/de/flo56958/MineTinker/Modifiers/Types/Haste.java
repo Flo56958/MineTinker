@@ -45,6 +45,8 @@ public class Haste extends Modifier implements Craftable {
     	config.addDefault(key + ".Recipe.Bottom", "RRR");
     	config.addDefault(key + ".Recipe.Materials.R", "REDSTONE_BLOCK");
         
+    	ConfigurationManager.saveConfig(config);
+    	
         init(config.getString("Haste.name"),
                 "[" + config.getString("Haste.name_modifier") + "] " + config.getString("Haste.description"),
                 config.getInt("Haste.MaxLevel"),

@@ -47,6 +47,8 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".Recipe.Enabled", false);
     	//#Check Ender.yml for Compatibility-option for Ender and Infinity
     	
+    	ConfigurationManager.saveConfig(config);
+    	
         init(config.getString("Infinity.name"),
                 "[" + config.getString("Infinity.name_modifier") + "] " + config.getString("Infinity.description"),
                 1,

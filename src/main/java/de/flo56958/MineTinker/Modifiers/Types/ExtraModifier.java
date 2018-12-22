@@ -40,6 +40,8 @@ public class ExtraModifier extends Modifier {
     	config.addDefault(key + ".ExtraModifierGain", 1); //#How much Slots should be added per Nether-Star
     	config.addDefault(key + ".modifier_item", "NETHER_STAR"); //#Needs to be a viable Material-Type
         
+    	ConfigurationManager.saveConfig(config);
+    	
         init(config.getString("Extra-Modifier.name"),
                 "[" + config.getString("Extra-Modifier.modifier_item")+ "] " + config.getString("Extra-Modifier.description"),
                 -1,

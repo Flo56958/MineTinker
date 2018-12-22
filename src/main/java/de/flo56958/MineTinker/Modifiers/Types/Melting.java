@@ -48,6 +48,8 @@ public class Melting extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".BonusMultiplier", 0.1); //#Percent of Bonus-damage per Level or Damage-reduction on Armor
     	config.addDefault(key + ".Recipe.Enabled", false);
         
+    	ConfigurationManager.saveConfig(config);
+    	
         init(config.getString("Melting.name"),
                 "[" + config.getString("Melting.name_modifier") + "] " + config.getString("Melting.description"),
                 config.getInt("Melting.MaxLevel"),

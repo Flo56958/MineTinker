@@ -44,6 +44,8 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".Recipe.Enabled", false);
     	
+    	ConfigurationManager.saveConfig(config);
+    	
         init(config.getString("Silk-Touch.name"),
                 "[" + config.getString("Silk-Touch.name_modifier") + "] " + config.getString("Silk-Touch.description"),
                 1,

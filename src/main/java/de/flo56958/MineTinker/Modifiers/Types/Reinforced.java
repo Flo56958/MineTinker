@@ -46,6 +46,8 @@ public class Reinforced extends Modifier implements Craftable {
     	config.addDefault(key + ".Recipe.Bottom", "OOO");
     	config.addDefault(key + ".Recipe.Materials.O", "OBSIDIAN");
         
+    	ConfigurationManager.saveConfig(config);
+    	
         init(config.getString("Reinforced.name"),
                 "[" + config.getString("Reinforced.name_modifier") + "] " + config.getString("Reinforced.description"),
                 config.getInt("Reinforced.MaxLevel"),

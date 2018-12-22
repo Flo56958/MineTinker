@@ -47,6 +47,8 @@ public class Protecting extends Modifier implements Craftable {
      	config.addDefault(key + ".Recipe.Materials.I", "IRON_INGOT");
      	config.addDefault(key + ".Recipe.Materials.O", "OBSIDIAN");
          
+     	ConfigurationManager.saveConfig(config);
+     	
         init(config.getString("Protecting.name"),
                  "[" + config.getString("Protecting.name_modifier") + "] " + config.getString("Protecting.description"),
                  config.getInt("Protecting.MaxLevel"),

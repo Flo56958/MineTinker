@@ -55,6 +55,8 @@ public class Glowing extends Modifier implements Craftable {
     	config.addDefault(key + ".Recipe.Materials.G", "GLOWSTONE_DUST");
     	config.addDefault(key + ".Recipe.Materials.E", "ENDER_EYE");
         
+    	ConfigurationManager.saveConfig(config);
+    	
         init(config.getString("Glowing.name"),
                 "[" + config.getString("Glowing.name_modifier") + "] " + config.getString("Glowing.description"),
                 config.getInt("Glowing.MaxLevel"),

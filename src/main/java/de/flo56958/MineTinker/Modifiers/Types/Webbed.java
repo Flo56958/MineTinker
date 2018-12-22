@@ -56,6 +56,8 @@ public class Webbed extends Modifier implements Craftable {
     	config.addDefault(key + ".Recipe.Middle", "WWW");
     	config.addDefault(key + ".Recipe.Bottom", "WWW");
     	config.addDefault(key + ".Recipe.Materials.W", "COBWEB");
+    	
+    	ConfigurationManager.saveConfig(config);
         
         init(getConfig().getString("Webbed.name"),
                 "[" + getConfig().getString("Webbed.name_modifier") + "] " + getConfig().getString("Webbed.description"),

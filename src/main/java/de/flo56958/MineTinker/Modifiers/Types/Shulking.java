@@ -54,6 +54,8 @@ public class Shulking extends Modifier implements Craftable {
     	config.addDefault(key + ".Recipe.Bottom", "S");
     	config.addDefault(key + ".Recipe.Materials.S", "SHULKER_SHELL");
     	config.addDefault(key + ".Recipe.Materials.C", "CHORUS_FRUIT");
+    	
+    	ConfigurationManager.saveConfig(config);
         
         init(config.getString("Shulking.name"),
                 "[" + config.getString("Shulking.name_modifier") + "] " + config.getString("Shulking.description"),

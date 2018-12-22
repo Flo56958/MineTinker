@@ -46,6 +46,8 @@ public class Experienced extends Modifier implements Craftable {
     	config.addDefault(key + ".Amount", 1); //#How much XP should be dropped when triggered
     	config.addDefault(key + ".Recipe.Enabled", false);
     	
+    	ConfigurationManager.saveConfig(config);
+    	
         init(config.getString("Experienced.name"),
                 "[Bottle o' Experience] " + config.getString("Experienced.description"),
                 config.getInt("Experienced.MaxLevel"),

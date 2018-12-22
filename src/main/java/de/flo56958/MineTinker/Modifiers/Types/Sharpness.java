@@ -45,6 +45,8 @@ public class Sharpness extends Modifier implements Craftable {
     	config.addDefault(key + ".Recipe.Bottom", "QQQ");
     	config.addDefault(key + ".Recipe.Materials.Q", "QUARTZ_BLOCK");
         
+    	ConfigurationManager.saveConfig(config);
+    	
         init(config.getString("Sharpness.name"),
                 "[" + config.getString("Sharpness.name_modifier") + "] " + config.getString("Sharpness.description"),
                 config.getInt("Sharpness.MaxLevel"),

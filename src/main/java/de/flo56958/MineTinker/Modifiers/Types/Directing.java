@@ -46,6 +46,8 @@ public class Directing extends Modifier implements Craftable {
     	config.addDefault(key + ".Directing.Materials.E", "ENDER_PEARL");
     	config.addDefault(key + ".Directing.Materials.I", "IRON_BLOCK");
     	
+    	ConfigurationManager.saveConfig(config);
+    	
         init(config.getString("Directing.name"),
                 "[" + config.getString("Directing.name_modifier") + "] " + config.getString("Directing.description"),
                 1,

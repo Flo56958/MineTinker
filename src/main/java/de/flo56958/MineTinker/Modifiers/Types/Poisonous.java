@@ -53,6 +53,8 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".DurationMultiplier", 1.1); //#Duration * (Multiplier^Level) DOUBLE
     	config.addDefault(key + ".EffectAmplifier", 2); //#per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...) INTEGER
     	config.addDefault(key + ".Recipe.Enabled", false);
+    	
+    	ConfigurationManager.saveConfig(config);
         
         init(config.getString("Poisonous.name"),
                 "[" + config.getString("Poisonous.name_modifier") + "] " + config.getString("Poisonous.description"),

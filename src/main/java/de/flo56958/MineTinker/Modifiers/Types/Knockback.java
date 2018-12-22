@@ -43,6 +43,8 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
      	config.addDefault(key + ".EnchantCost", 10);
      	config.addDefault(key + ".Recipe.Enabled", false);
         
+     	ConfigurationManager.saveConfig(config);
+     	
      	init(config.getString("Knockback.name"),
                  "[" + config.getString("Knockback.name_modifier") + "] " + config.getString("Knockback.description"),
                  config.getInt("Knockback.MaxLevel"),

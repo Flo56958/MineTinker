@@ -52,6 +52,8 @@ public class Timber extends Modifier implements Craftable {
     	config.addDefault(key + ".Recipe.Bottom", "LLL");
     	config.addDefault(key + ".Recipe.Materials.L", "OAK_WOOD");
     	config.addDefault(key + ".Recipe.Materials.E", "EMERALD");
+    	
+    	ConfigurationManager.saveConfig(config);
         
         init(config.getString("Timber.name"),
                 "[" + config.getString("Timber.name_modifier") + "] " + config.getString("Timber.description"),
