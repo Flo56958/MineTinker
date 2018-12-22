@@ -26,17 +26,15 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
                 ChatColor.RED,
                 new ArrayList<>(Collections.singletonList(ToolType.SWORD)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Sweeping.name"),
                 "[" + config.getString("Sweeping.name_modifier") + "] " + config.getString("Sweeping.description"),
                 config.getInt("Sweeping.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.IRON_INGOT, ChatColor.RED + config.getString("Sweeping.name_modifier"), 1, Enchantment.SWEEPING_EDGE, 1));
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

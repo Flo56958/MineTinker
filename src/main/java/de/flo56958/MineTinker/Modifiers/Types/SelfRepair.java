@@ -22,8 +22,8 @@ import java.util.Random;
 
 public class SelfRepair extends Modifier implements Enchantable, Craftable {
 
-    private final int percentagePerLevel;
-    private final int healthRepair;
+    private int percentagePerLevel;
+    private int healthRepair;
 
     public SelfRepair() {
         super(ModifierType.SELF_REPAIR,
@@ -31,8 +31,10 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Self-Repair.name"),
                 "[" + config.getString("Self-Repair.name_modifier") + "] " + config.getString("Self-Repair.description"),
@@ -41,10 +43,6 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
         
         this.percentagePerLevel = config.getInt("Self-Repair.PercentagePerLevel");
         this.healthRepair = config.getInt("Self-Repair.HealthRepair");
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

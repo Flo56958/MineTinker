@@ -24,15 +24,17 @@ import java.util.Collections;
 
 public class Infinity extends Modifier implements Enchantable, Craftable {
 
-    private final boolean compatibleWithEnder;
+    private boolean compatibleWithEnder;
 
     public Infinity() {
         super(ModifierType.INFINITY,
                 ChatColor.WHITE,
                 new ArrayList<>(Collections.singletonList(ToolType.BOW)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Infinity.name"),
                 "[" + config.getString("Infinity.name_modifier") + "] " + config.getString("Infinity.description"),
@@ -40,10 +42,6 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
                 ItemGenerator.itemEnchanter(Material.ARROW, ChatColor.WHITE + config.getString("Infinity.name_modifier"), 1, Enchantment.ARROW_INFINITE, 1));
         
         this.compatibleWithEnder = Main.getConfigurations().getConfig("Ender.yml").getBoolean("Ender.CompatibleWithInfinity");
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

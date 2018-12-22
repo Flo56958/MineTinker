@@ -29,17 +29,15 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
                 ChatColor.WHITE,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Silk-Touch.name"),
                 "[" + config.getString("Silk-Touch.name_modifier") + "] " + config.getString("Silk-Touch.description"),
                 1,
                 ItemGenerator.itemEnchanter(Material.COBWEB, ChatColor.WHITE + config.getString("Silk-Touch.name_modifier"), 1, Enchantment.SILK_TOUCH, 1));
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

@@ -27,17 +27,15 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
                 ChatColor.GRAY,
                 new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Light-Weight.name"),
                 "[" + config.getString("Light-Weight.name_modifier") + "] " + config.getString("Light-Weight.description"),
                 config.getInt("Light-Weight.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.FEATHER, ChatColor.GRAY + config.getString("Light-Weight.name_modifier"), 1, Enchantment.DURABILITY, 1));
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

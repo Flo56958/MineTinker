@@ -34,15 +34,17 @@ public class Power extends Modifier implements Enchantable, Craftable {
 
     public static final HashMap<Player, Boolean> HASPOWER = new HashMap<>();
 
-    private final boolean lv1_vertical;
+    private boolean lv1_vertical;
 
     public Power() {
         super(ModifierType.POWER,
                 ChatColor.GREEN,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Power.name"),
                 "[" + config.getString("Power.name_modifier") + "] " + config.getString("Power.description"),
@@ -50,10 +52,6 @@ public class Power extends Modifier implements Enchantable, Craftable {
                 ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Power.name_modifier"), 1, Enchantment.ARROW_DAMAGE, 1));
         
         this.lv1_vertical = config.getBoolean("Power.lv1_vertical");
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

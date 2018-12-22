@@ -23,7 +23,7 @@ import java.util.Arrays;
 
 public class Melting extends Modifier implements Enchantable, Craftable {
 
-    private final double bonusMultiplier;
+    private double bonusMultiplier;
 
     public Melting() {
         super(ModifierType.MELTING,
@@ -31,8 +31,10 @@ public class Melting extends Modifier implements Enchantable, Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.CHESTPLATE, ToolType.LEGGINGS)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Melting.name"),
                 "[" + config.getString("Melting.name_modifier") + "] " + config.getString("Melting.description"),
@@ -40,10 +42,6 @@ public class Melting extends Modifier implements Enchantable, Craftable {
                 ItemGenerator.itemEnchanter(Material.MAGMA_BLOCK, ChatColor.GOLD + config.getString("Melting.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1));
         
         this.bonusMultiplier = config.getDouble("Melting.BonusMultiplier");
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

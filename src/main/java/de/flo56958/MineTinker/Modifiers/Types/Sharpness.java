@@ -26,17 +26,15 @@ public class Sharpness extends Modifier implements Craftable {
                 ChatColor.WHITE,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Sharpness.name"),
                 "[" + config.getString("Sharpness.name_modifier") + "] " + config.getString("Sharpness.description"),
                 config.getInt("Sharpness.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.QUARTZ_BLOCK, ChatColor.WHITE + config.getString("Sharpness.name_modifier"), 1 , Enchantment.DAMAGE_ALL, 1));
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

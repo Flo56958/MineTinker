@@ -34,8 +34,6 @@ public class Ender extends Modifier implements Craftable {
                 ChatColor.DARK_GREEN,
                 new ArrayList<>(Collections.singletonList(ToolType.BOW)),
                 Main.getPlugin());
-        
-        reload();
     }
     
     public void reload() {

@@ -26,17 +26,15 @@ public class Haste extends Modifier implements Craftable {
                 ChatColor.DARK_RED,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Haste.name"),
                 "[" + config.getString("Haste.name_modifier") + "] " + config.getString("Haste.description"),
                 config.getInt("Haste.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.REDSTONE_BLOCK, ChatColor.DARK_RED + config.getString("Haste.name_modifier"), 1, Enchantment.DIG_SPEED, 1));
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

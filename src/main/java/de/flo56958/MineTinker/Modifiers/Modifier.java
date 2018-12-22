@@ -78,6 +78,7 @@ public abstract class Modifier {
 		this.allowedTools = allowedTools;
 		this.source = source;
 		init("", "", 1, new ItemStack(Material.BEDROCK, 1)); //init, maybe someone forget it
+		reload();
 	}
 	
 	/**
@@ -99,6 +100,8 @@ public abstract class Modifier {
 		this.maxLvl = maxLvl;
 		this.modItem = modItem;
 	}
+	
+	public abstract void reload();
 
 	public static ItemStack checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand) {
 		if (modManager.getFreeSlots(tool) < 1 && !mod.getType().equals(ModifierType.EXTRA_MODIFIER)) {

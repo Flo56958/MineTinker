@@ -27,17 +27,15 @@ public class Reinforced extends Modifier implements Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Reinforced.name"),
                 "[" + config.getString("Reinforced.name_modifier") + "] " + config.getString("Reinforced.description"),
                 config.getInt("Reinforced.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.DARK_GRAY + config.getString("Reinforced.name_modifier"), 1, Enchantment.DURABILITY, 1));
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

@@ -28,17 +28,15 @@ public class Luck extends Modifier implements Craftable {
                 ChatColor.BLUE,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Luck.name"),
                 "[" + config.getString("Luck.name_modifier") + "] " + config.getString("Luck.description"),
                 config.getInt("Luck.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.LAPIS_BLOCK, ChatColor.BLUE + config.getString("Luck.name_modifier"), 1, Enchantment.LOOT_BONUS_BLOCKS, 1));
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

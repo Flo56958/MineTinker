@@ -26,17 +26,15 @@ public class Protecting extends Modifier implements Craftable {
                 ChatColor.GRAY,
                 new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
-        
-        init(config.getString("Protecting.name"),
-                "[" + config.getString("Protecting.name_modifier") + "] " + config.getString("Protecting.description"),
-                config.getInt("Protecting.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.GRAY + config.getString("Protecting.name_modifier"), 1, Enchantment.PROTECTION_ENVIRONMENTAL, 1));
     }
     
     public void reload() {
-    	
+    	 FileConfiguration config = getConfig();
+         
+         init(config.getString("Protecting.name"),
+                 "[" + config.getString("Protecting.name_modifier") + "] " + config.getString("Protecting.description"),
+                 config.getInt("Protecting.MaxLevel"),
+                 ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.GRAY + config.getString("Protecting.name_modifier"), 1, Enchantment.PROTECTION_ENVIRONMENTAL, 1));
     }
 
     @Override

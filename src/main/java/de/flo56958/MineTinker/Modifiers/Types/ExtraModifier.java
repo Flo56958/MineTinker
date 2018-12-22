@@ -18,7 +18,7 @@ import de.flo56958.MineTinker.Utilities.modifiers_Config;
 
 public class ExtraModifier extends Modifier {
 
-    private final int gain;
+    private int gain;
 
     public ExtraModifier() {
         super(ModifierType.EXTRA_MODIFIER,
@@ -26,8 +26,10 @@ public class ExtraModifier extends Modifier {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Extra-Modifier.name"),
                 "[" + config.getString("Extra-Modifier.modifier_item")+ "] " + config.getString("Extra-Modifier.description"),
@@ -35,10 +37,6 @@ public class ExtraModifier extends Modifier {
                 new ItemStack(Material.getMaterial(config.getString("Extra-Modifier.modifier_item")), 1));
         
         this.gain = config.getInt("Extra-Modifier.ExtraModifierGain");
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

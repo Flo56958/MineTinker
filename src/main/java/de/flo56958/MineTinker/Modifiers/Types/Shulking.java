@@ -24,8 +24,8 @@ import de.flo56958.MineTinker.Utilities.modifiers_Config;
 
 public class Shulking extends Modifier implements Craftable {
 
-    private final int duration;
-    private final int effectAmplifier;
+    private int duration;
+    private int effectAmplifier;
 
     public Shulking() {
         super(ModifierType.SHULKING,
@@ -33,8 +33,10 @@ public class Shulking extends Modifier implements Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Shulking.name"),
                 "[" + config.getString("Shulking.name_modifier") + "] " + config.getString("Shulking.description"),
@@ -43,10 +45,6 @@ public class Shulking extends Modifier implements Craftable {
     
         this.duration = config.getInt("Shulking.Duration");
         this.effectAmplifier = config.getInt("Shulking.EffectAmplifier");
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

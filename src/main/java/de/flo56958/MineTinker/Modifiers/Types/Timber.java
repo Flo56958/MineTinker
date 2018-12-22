@@ -34,17 +34,15 @@ public class Timber extends Modifier implements Craftable {
                 ChatColor.GREEN,
                 new ArrayList<>(Collections.singletonList(ToolType.AXE)),
                 Main.getPlugin());
-        
+    }
+    
+    public void reload() {
         FileConfiguration config = getConfig();
         
         init(config.getString("Timber.name"),
                 "[" + config.getString("Timber.name_modifier") + "] " + config.getString("Timber.description"),
                 1,
-                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Timber.name_modifier"), 1, Enchantment.DIG_SPEED, 1));
-    }
-    
-    public void reload() {
-    	
+                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Timber.name_modifier"), 1, Enchantment.DIG_SPEED, 1));    	
     }
 
     @Override

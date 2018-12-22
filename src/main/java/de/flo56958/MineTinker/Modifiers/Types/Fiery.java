@@ -27,17 +27,15 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
                 ChatColor.YELLOW,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Fiery.name"),
                 "[" + config.getString("Fiery.name_modifier") + "] " + config.getString("Fiery.description"),
                 config.getInt("Fiery.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.BLAZE_ROD, ChatColor.YELLOW + config.getString("Fiery.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1));
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

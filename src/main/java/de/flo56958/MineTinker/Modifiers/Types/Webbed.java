@@ -24,9 +24,9 @@ import de.flo56958.MineTinker.Utilities.modifiers_Config;
 
 public class Webbed extends Modifier implements Craftable {
 
-    private final int duration;
-    private final double durationMultiplier;
-    private final int effectAmplifier;
+    private int duration;
+    private double durationMultiplier;
+    private int effectAmplifier;
 
     public Webbed() {
         super(ModifierType.WEBBED,
@@ -34,7 +34,9 @@ public class Webbed extends Modifier implements Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
-        
+    }
+    
+    public void reload() {
         FileConfiguration config = getConfig();
         
         init(getConfig().getString("Webbed.name"),
@@ -45,10 +47,6 @@ public class Webbed extends Modifier implements Craftable {
         this.duration = config.getInt("Webbed.Duration");
         this.durationMultiplier = config.getDouble("Webbed.DurationMultiplier");
         this.effectAmplifier = config.getInt("Webbed.EffectAmplifier");
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

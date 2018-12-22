@@ -26,8 +26,6 @@ public class Directing extends Modifier implements Craftable {
                 ChatColor.GRAY,
                 new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
-        
-        reload();
     }
     
     public void reload() {

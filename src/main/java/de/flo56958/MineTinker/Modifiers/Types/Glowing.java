@@ -24,8 +24,8 @@ import java.util.Arrays;
 
 public class Glowing extends Modifier implements Craftable {
 
-    private final int duration;
-    private final double durationMultiplier;
+    private int duration;
+    private double durationMultiplier;
 
 
     public Glowing() {
@@ -33,8 +33,10 @@ public class Glowing extends Modifier implements Craftable {
                 ChatColor.YELLOW,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Glowing.name"),
                 "[" + config.getString("Glowing.name_modifier") + "] " + config.getString("Glowing.description"),
@@ -43,10 +45,6 @@ public class Glowing extends Modifier implements Craftable {
         
         this.duration = config.getInt("Glowing.Duration");
         this.durationMultiplier = config.getDouble("Glowing.DurationMultiplier");
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

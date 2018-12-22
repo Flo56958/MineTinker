@@ -33,8 +33,6 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
                 ChatColor.DARK_GRAY,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
-        
-        reload();
     }
     
     public void reload() {

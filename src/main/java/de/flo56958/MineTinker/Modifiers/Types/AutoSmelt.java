@@ -29,7 +29,6 @@ public class AutoSmelt extends Modifier implements Craftable {
 
     public AutoSmelt() {
         super(ModifierType.AUTO_SMELT, ChatColor.YELLOW, new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL)), Main.getPlugin());
-        reload();
     }
     
     public void reload() {

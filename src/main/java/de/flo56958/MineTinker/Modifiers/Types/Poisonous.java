@@ -25,9 +25,9 @@ import de.flo56958.MineTinker.Utilities.modifiers_Config;
 
 public class Poisonous extends Modifier implements Enchantable, Craftable {
 	
-    private final int duration;
-    private final double durationMultiplier;
-    private final int effectAmplifier;
+    private int duration;
+    private double durationMultiplier;
+    private int effectAmplifier;
 
     public Poisonous() {
         super(ModifierType.POISONOUS,
@@ -35,8 +35,10 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Poisonous.name"),
                 "[" + config.getString("Poisonous.name_modifier") + "] " + config.getString("Poisonous.description"),
@@ -46,10 +48,6 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
         this.duration = config.getInt("Poisonous.Duration");
         this.durationMultiplier = config.getDouble("Poisonous.DurationMultiplier");
         this.effectAmplifier = config.getInt("Poisonous.EffectAmplifier");
-    }
-    
-    public void reload() {
-    	
     }
 
     @Override

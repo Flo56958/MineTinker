@@ -27,17 +27,15 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
                 ChatColor.GRAY,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
-        
-        init(config.getString("Knockback.name"),
-                "[" + config.getString("Knockback.name_modifier") + "] " + config.getString("Knockback.description"),
-                config.getInt("Knockback.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.TNT, ChatColor.GRAY + config.getString("Knockback.name_modifier"), 1, Enchantment.KNOCKBACK, 1));
     }
     
     public void reload() {
-    	
+    	 FileConfiguration config = getConfig();
+         
+         init(config.getString("Knockback.name"),
+                 "[" + config.getString("Knockback.name_modifier") + "] " + config.getString("Knockback.description"),
+                 config.getInt("Knockback.MaxLevel"),
+                 ItemGenerator.itemEnchanter(Material.TNT, ChatColor.GRAY + config.getString("Knockback.name_modifier"), 1, Enchantment.KNOCKBACK, 1));
     }
 
     @Override
