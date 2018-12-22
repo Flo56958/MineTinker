@@ -38,13 +38,13 @@ public class Directing extends Modifier implements Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enhanced Compass");
     	config.addDefault(key + ".description", "Loot goes directly into Inventory!");
-    	config.addDefault(key + ".Directing.Enabled", true);
-    	config.addDefault(key + ".Directing.Top", "ECE");
-    	config.addDefault(key + ".Directing.Middle", "CIC");
-    	config.addDefault(key + ".Directing.Bottom", "ECE");
-    	config.addDefault(key + ".Directing.Materials.C", "COMPASS");
-    	config.addDefault(key + ".Directing.Materials.E", "ENDER_PEARL");
-    	config.addDefault(key + ".Directing.Materials.I", "IRON_BLOCK");
+    	config.addDefault(key + ".Recipe.Enabled", true);
+    	config.addDefault(key + ".Recipe.Top", "ECE");
+    	config.addDefault(key + ".Recipe.Middle", "CIC");
+    	config.addDefault(key + ".Recipe.Bottom", "ECE");
+    	config.addDefault(key + ".Recipe.Materials.C", "COMPASS");
+    	config.addDefault(key + ".Recipe.Materials.E", "ENDER_PEARL");
+    	config.addDefault(key + ".Recipe.Materials.I", "IRON_BLOCK");
     	
     	ConfigurationManager.saveConfig(config);
     	
