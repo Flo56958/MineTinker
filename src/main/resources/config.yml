@@ -30,6 +30,13 @@ AllowCrafting: true #Only recommended if used in combination with other Plugins 
 HideEnchants: true #Should the vanilla enchantments be hidden on the tool
 DurabilityPercentageRepair: 0.34 #How much durability (relative to maximum durability) should the tool recover per item
 
+ItemBehaviour:
+  ShowName: true
+  SetGlowing: true
+  SetInvulnerable: true
+  SetPersistent: true
+  ForModItems: true
+
 LevelUpEvents:
   enabled: true
   DurabilityRepair: #Repairs the tool

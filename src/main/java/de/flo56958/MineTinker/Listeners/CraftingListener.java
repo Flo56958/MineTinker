@@ -44,7 +44,7 @@ public class CraftingListener implements Listener {
         if (Lists.WORLDS.contains(player.getWorld().getName())) { return; }
 
         ArrayList<String> lore = new ArrayList<>();
-        if (tools.contains(ToolType.get(currentItem.getType()))) {
+        if (tools.contains(ToolType.get(currentItem.getType())) && !modManager.isWandViable(currentItem)) {
             lore.add(modManager.IDENTIFIER_TOOL);
         } else if (armor.contains(ToolType.get(currentItem.getType()))) {
             lore.add(modManager.IDENTIFIER_ARMOR);

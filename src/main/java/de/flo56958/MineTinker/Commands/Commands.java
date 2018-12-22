@@ -1,10 +1,11 @@
 package de.flo56958.MineTinker.Commands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -15,12 +16,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Modifiers.ModManager;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class Commands implements TabExecutor {
 
@@ -280,6 +279,8 @@ public class Commands implements TabExecutor {
 
         ChatWriter.sendMessage(sender, ChatColor.WHITE, "Reloading ModManager!");
         modManager.reload();
+
+        ChatWriter.sendMessage(sender, ChatColor.WHITE, "Done reloading!");
 
         if (config.getBoolean("CheckForUpdates")) {
             new BukkitRunnable() {

@@ -77,9 +77,8 @@ public class PlayerListener implements Listener {
             e.getWhoClicked().getItemOnCursor().setAmount(amount);
             e.setCancelled(true);
         }
-
-
     }
+
 
     /**
      * Adds the Player to the HashMaps BLOCKFACE and HASPOWER
