@@ -45,16 +45,6 @@ public class AnvilListener implements Listener {
             if (Lists.WORLDS.contains(player.getWorld().getName())) { return; }
             if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) { return; }
 
-            if (e.isShiftClick()) {
-                if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
-                    e.setCancelled(true);
-                    return;
-                } // no else as it gets added in if-clause
-                //player.getInventory().addItem(inv.getItem(2));
-            } else {
-                e.setCursor(newTool);
-            }
-
             Modifier mod = null;
             ItemStack modifierTester = modifier.clone();
             modifierTester.setAmount(1);
@@ -65,6 +55,17 @@ public class AnvilListener implements Listener {
                 }
             }
 
+            if (mod == null && tool.getType().equals(newTool.getType())) { return; } //Vanilla anvil use
+
+            if (e.isShiftClick()) {
+                if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
+                    e.setCancelled(true);
+                    return;
+                } // no else as it gets added in if-clause
+            } else {
+                e.setCursor(newTool);
+            }
+
             if (mod != null) {
             	if(modifier.getAmount() > 1) {
             		modifier.setAmount(modifier.getAmount() - 1);
@@ -72,11 +73,12 @@ public class AnvilListener implements Listener {
             	} else {
             		inv.setItem(1, null);
             	}
+                Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
+            } else {
+                inv.setItem(1, null); //when item upgrading
             }
 
             inv.setItem(0, null);
-
-            Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
         }
 	}
     
@@ -178,7 +180,6 @@ public class AnvilListener implements Listener {
         	e.setResult(newTool);
         	
         	i.setRepairCost(0);
-        	//i.setMaximumRepairCost(0);
         }
     }
 }

@@ -1,14 +1,13 @@
 package de.flo56958.MineTinker.Utilities;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-
+import de.flo56958.MineTinker.Main;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import de.flo56958.MineTinker.Main;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 
 public class ConfigurationManager {
 	private ConfigurationManager() {}
