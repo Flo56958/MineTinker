@@ -65,11 +65,13 @@ public class AnvilListener implements Listener {
                 }
             }
 
-            if (mod != null && modifier.getAmount() > 1) {
-                modifier.setAmount(modifier.getAmount() - 1);
-                inv.setItem(1, modifier);
-            } else {
-                inv.setItem(1, null);
+            if (mod != null) {
+            	if(modifier.getAmount() > 1) {
+            		modifier.setAmount(modifier.getAmount() - 1);
+                    inv.setItem(1, modifier);
+            	} else {
+            		inv.setItem(1, null);
+            	}
             }
 
             inv.setItem(0, null);
