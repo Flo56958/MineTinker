@@ -6,6 +6,8 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,21 +24,23 @@ import java.util.Arrays;
 
 public class Glowing extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Glowing.yml");
-
     private final int duration;
     private final double durationMultiplier;
 
 
     public Glowing() {
-        super(config.getString("Glowing.name"),
-                "[" + config.getString("Glowing.name_modifier") + "] " + config.getString("Glowing.description"),
-                ModifierType.GLOWING,
+        super(ModifierType.GLOWING,
                 ChatColor.YELLOW,
-                config.getInt("Glowing.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.GLOWSTONE, ChatColor.YELLOW + config.getString("Glowing.name_modifier"), 1, Enchantment.DURABILITY, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Glowing.name"),
+                "[" + config.getString("Glowing.name_modifier") + "] " + config.getString("Glowing.description"),
+                config.getInt("Glowing.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.GLOWSTONE, ChatColor.YELLOW + config.getString("Glowing.name_modifier"), 1, Enchantment.DURABILITY, 1));
+        
         this.duration = config.getInt("Glowing.Duration");
         this.durationMultiplier = config.getDouble("Glowing.DurationMultiplier");
     }
@@ -59,6 +63,10 @@ public class Glowing extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Glowing", "Modifier_Glowing");
+        _registerCraftingRecipe(getConfig(), this, "Glowing", "Modifier_Glowing");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Glowing);
     }
 }

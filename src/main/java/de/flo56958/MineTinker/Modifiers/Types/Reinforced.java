@@ -5,6 +5,8 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -18,19 +20,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Reinforced extends Modifier implements Craftable {
-	
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Reinforced.yml");
 
     public Reinforced() {
-        super(config.getString("Reinforced.name"),
-                "[" + config.getString("Reinforced.name_modifier") + "] " + config.getString("Reinforced.description"),
-                ModifierType.REINFORCED,
+        super(ModifierType.REINFORCED,
                 ChatColor.DARK_GRAY,
-                config.getInt("Reinforced.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.DARK_GRAY + config.getString("Reinforced.name_modifier"), 1, Enchantment.DURABILITY, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Reinforced.name"),
+                "[" + config.getString("Reinforced.name_modifier") + "] " + config.getString("Reinforced.description"),
+                config.getInt("Reinforced.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.DARK_GRAY + config.getString("Reinforced.name_modifier"), 1, Enchantment.DURABILITY, 1));
     }
 
     @Override
@@ -55,6 +58,10 @@ public class Reinforced extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Reinforced", "Modifier_Reinforced");
+        _registerCraftingRecipe(getConfig(), this, "Reinforced", "Modifier_Reinforced");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Reinforced);
     }
 }

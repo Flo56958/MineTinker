@@ -6,6 +6,8 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,17 +22,18 @@ import java.util.Arrays;
 
 public class Fiery extends Modifier implements Enchantable, Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Fiery.yml");
-
     public Fiery() {
-        super(config.getString("Fiery.name"),
-                "[" + config.getString("Fiery.name_modifier") + "] " + config.getString("Fiery.description"),
-                ModifierType.FIERY,
+        super(ModifierType.FIERY,
                 ChatColor.YELLOW,
-                config.getInt("Fiery.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.BLAZE_ROD, ChatColor.YELLOW + config.getString("Fiery.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Fiery.name"),
+                "[" + config.getString("Fiery.name_modifier") + "] " + config.getString("Fiery.description"),
+                config.getInt("Fiery.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.BLAZE_ROD, ChatColor.YELLOW + config.getString("Fiery.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1));
     }
 
     @Override
@@ -60,11 +63,15 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.fiery.craft")) { return; }
-        _createModifierItem(config, p, this, "Fiery");
+        _createModifierItem(getConfig(), p, this, "Fiery");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Fiery", "Modifier_Fiery");
+        _registerCraftingRecipe(getConfig(), this, "Fiery", "Modifier_Fiery");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Fiery);
     }
 }

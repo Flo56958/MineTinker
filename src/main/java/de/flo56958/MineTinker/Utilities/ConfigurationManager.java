@@ -15,25 +15,23 @@ public class ConfigurationManager {
      * Stores all config-files with their name
      */
     private final HashMap<String, FileConfiguration> configs = new HashMap<>();
-
-    private final String[] modifiers = { "Auto-Smelt.yml", "Beheading.yml", "Directing.yml", "Ender.yml", "Experienced.yml", "Fiery.yml",
-            "Glowing.yml", "Haste.yml", "Infinity.yml", "Knockback.yml", "Light-Weight.yml", "Luck.yml", "Melting.yml",
-            "Poisonous.yml", "Power.yml", "Protecting.yml", "Reinforced.yml", "Self-Repair.yml", "Sharpness.yml",
-            "Shulking.yml", "Silk-Touch.yml", "Sweeping.yml", "Timber.yml", "Webbed.yml", "Extra-Modifier.yml" };
-
+    
     /**
      * Class constructor
      * @param main The main class-instance
      */
     public ConfigurationManager(Main main) {
         this.main = main;
-
-        for (String modifier : modifiers) {
-            createConfig("Modifiers" + File.separator, modifier);
-        }
-
-        createConfig("", "BuildersWand.yml");
-        createConfig("", "Elevator.yml");
+       reload();
+    }
+    
+    /**
+     * Gets the specified config file
+     * @param file The Name of the file (Enum modifiers_Config)
+     * @return The FileConfiguration with the given name
+     */
+    public FileConfiguration getConfig(modifiers_Config modifier) {
+        return configs.get(modifier.toString());
     }
 
     /**
@@ -46,8 +44,8 @@ public class ConfigurationManager {
     }
 
     public void reload() {
-        for (String modifier : modifiers) {
-            createConfig("Modifiers" + File.separator, modifier);
+        for (modifiers_Config modifier : modifiers_Config.values()) {
+            createConfig("Modifiers" + File.separator, modifier.toString());
         }
 
         createConfig("", "BuildersWand.yml");

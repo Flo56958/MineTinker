@@ -8,6 +8,8 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,20 +26,22 @@ import java.util.Collections;
 
 public class Ender extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Ender.yml");
-
     private final boolean compatibleWithInfinity;
     private final boolean hasSound;
 
     public Ender() {
-        super(config.getString("Ender.name"),
-                "[" + config.getString("Ender.name_modifier") + "] " + config.getString("Ender.description"),
-                ModifierType.ENDER,
+        super(ModifierType.ENDER,
                 ChatColor.DARK_GREEN,
-                1,
-                ItemGenerator.itemEnchanter(Material.ENDER_EYE, ChatColor.DARK_GREEN + config.getString("Ender.name_modifier"), 1, Enchantment.DURABILITY, 1),
                 new ArrayList<>(Collections.singletonList(ToolType.BOW)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Ender.name"),
+                "[" + config.getString("Ender.name_modifier") + "] " + config.getString("Ender.description"),
+                1,
+                ItemGenerator.itemEnchanter(Material.ENDER_EYE, ChatColor.DARK_GREEN + config.getString("Ender.name_modifier"), 1, Enchantment.DURABILITY, 1));
+        
         this.hasSound = config.getBoolean("Ender.Sound");
         this.compatibleWithInfinity = config.getBoolean("Ender.CompatibleWithInfinity");
     }
@@ -89,6 +93,10 @@ public class Ender extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Ender", "Modifier_Ender");
+        _registerCraftingRecipe(getConfig(), this, "Ender", "Modifier_Ender");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Ender);
     }
 }

@@ -6,6 +6,8 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,17 +22,18 @@ import java.util.Collections;
 
 public class LightWeight extends Modifier implements Enchantable, Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Light-Weight.yml");
-
     public LightWeight() {
-        super(config.getString("Light-Weight.name"),
-                "[" + config.getString("Light-Weight.name_modifier") + "] " + config.getString("Light-Weight.description"),
-                ModifierType.LIGHT_WEIGHT,
+        super(ModifierType.LIGHT_WEIGHT,
                 ChatColor.GRAY,
-                config.getInt("Light-Weight.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.FEATHER, ChatColor.GRAY + config.getString("Light-Weight.name_modifier"), 1, Enchantment.DURABILITY, 1),
                 new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Light-Weight.name"),
+                "[" + config.getString("Light-Weight.name_modifier") + "] " + config.getString("Light-Weight.description"),
+                config.getInt("Light-Weight.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.FEATHER, ChatColor.GRAY + config.getString("Light-Weight.name_modifier"), 1, Enchantment.DURABILITY, 1));
     }
 
     @Override
@@ -55,11 +58,15 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.lightweight.craft")) { return; }
-        _createModifierItem(config, p, this, "Light-Weight");
+        _createModifierItem(getConfig(), p, this, "Light-Weight");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Light-Weight", "Modifier_LightWeight");
+        _registerCraftingRecipe(getConfig(), this, "Light-Weight", "Modifier_LightWeight");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Light_Weight);
     }
 }

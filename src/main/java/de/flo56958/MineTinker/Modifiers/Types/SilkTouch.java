@@ -20,20 +20,22 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
 
 public class SilkTouch extends Modifier implements Enchantable, Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Silk-Touch.yml");
-
     public SilkTouch() {
-        super(config.getString("Silk-Touch.name"),
-                "[" + config.getString("Silk-Touch.name_modifier") + "] " + config.getString("Silk-Touch.description"),
-                ModifierType.SILK_TOUCH,
+        super(ModifierType.SILK_TOUCH,
                 ChatColor.WHITE,
-                1,
-                ItemGenerator.itemEnchanter(Material.COBWEB, ChatColor.WHITE + config.getString("Silk-Touch.name_modifier"), 1, Enchantment.SILK_TOUCH, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Silk-Touch.name"),
+                "[" + config.getString("Silk-Touch.name_modifier") + "] " + config.getString("Silk-Touch.description"),
+                1,
+                ItemGenerator.itemEnchanter(Material.COBWEB, ChatColor.WHITE + config.getString("Silk-Touch.name_modifier"), 1, Enchantment.SILK_TOUCH, 1));
     }
 
     @Override
@@ -72,11 +74,15 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.silktouch.craft")) { return; }
-        _createModifierItem(config, p, this, "Silk-Touch");
+        _createModifierItem(getConfig(), p, this, "Silk-Touch");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Silk-Touch", "Modifier_SilkTouch");
+        _registerCraftingRecipe(getConfig(), this, "Silk-Touch", "Modifier_SilkTouch");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Silk_Touch);
     }
 }

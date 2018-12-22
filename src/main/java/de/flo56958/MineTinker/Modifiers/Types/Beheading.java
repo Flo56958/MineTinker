@@ -7,6 +7,8 @@ import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -24,19 +26,21 @@ import java.util.Random;
 
 public class Beheading extends Modifier implements Enchantable, Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Beheading.yml");
-
     private final int percentagePerLevel;
 
     public Beheading() {
-        super(config.getString("Beheading.name"),
-                "[" + config.getString("Beheading.name_modifier") + "] " + config.getString("Beheading.description"),
-                ModifierType.BEHEADING,
+        super(ModifierType.BEHEADING,
                 ChatColor.DARK_GRAY,
-                config.getInt("Beheading.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.WITHER_SKELETON_SKULL, ChatColor.DARK_GRAY + config.getString("Beheading.name_modifier"), 1, Enchantment.LOOT_BONUS_MOBS, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Beheading.name"),
+                "[" + config.getString("Beheading.name_modifier") + "] " + config.getString("Beheading.description"),
+                config.getInt("Beheading.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.WITHER_SKELETON_SKULL, ChatColor.DARK_GRAY + config.getString("Beheading.name_modifier"), 1, Enchantment.LOOT_BONUS_MOBS, 1));
+        
         this.percentagePerLevel = config.getInt("Beheading.PercentagePerLevel");
     }
 
@@ -81,11 +85,15 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.Beheading.craft")) { return; }
-        _createModifierItem(config, p, this, "Beheading");
+        _createModifierItem(getConfig(), p, this, "Beheading");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Beheading", "Modifier_Beheading");
+        _registerCraftingRecipe(getConfig(), this, "Beheading", "Modifier_Beheading");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Beheading);
     }
 }

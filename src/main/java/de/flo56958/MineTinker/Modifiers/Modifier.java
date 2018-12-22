@@ -7,6 +7,7 @@ import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -19,12 +20,12 @@ public abstract class Modifier {
 	protected static final ModManager modManager = ModManager.instance();
 	protected static final PluginManager pluginManager = Bukkit.getPluginManager();
 
-	private final String name;
+	private String name;
 	private final ModifierType type;
-	private final String description;
+	private String description;
 	private final ChatColor color;
-	private final int maxLvl;
-	private final ItemStack modItem;
+	private int maxLvl;
+	private ItemStack modItem;
 	private final ArrayList<ToolType> allowedTools;
 	private final Plugin source;
 	
@@ -71,15 +72,32 @@ public abstract class Modifier {
 	 * @param allowedTools Lists of ToolTypes where the Modifier is allowed on
 	 * @param source The Plugin that registered the Modifier
 	 */
-	protected Modifier(String name, String description, ModifierType type, ChatColor color, int maxLvl, ItemStack modItem, ArrayList<ToolType> allowedTools, Plugin source) {
-		this.name = name;
-		this.description = description;
+	protected Modifier(ModifierType type, ChatColor color, ArrayList<ToolType> allowedTools, Plugin source) {
 		this.type = type;
 		this.color = color;
-		this.maxLvl = maxLvl;
-		this.modItem = modItem;
 		this.allowedTools = allowedTools;
 		this.source = source;
+		init("", "", 1, new ItemStack(Material.BEDROCK, 1)); //init, maybe someone forget it
+	}
+	
+	/**
+	 * @param name Name of the Modifier
+	 * @param description
+	 * @param type ModifierType of the Modifier
+	 * @param color Color of the Modifier
+	 * @param maxLvl Maximum Level cap of the Modifier
+	 * @param modItem ItemStack that is required to craft the Modifier
+	 * @param allowedTools Lists of ToolTypes where the Modifier is allowed on
+	 * @param source The Plugin that registered the Modifier
+	 */
+	/*
+	 * can be changed at any time
+	 */
+	protected void init(String name, String description, int maxLvl, ItemStack modItem) {
+		this.name = name;
+		this.description = description;
+		this.maxLvl = maxLvl;
+		this.modItem = modItem;
 	}
 
 	public static ItemStack checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand) {

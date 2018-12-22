@@ -7,6 +7,8 @@ import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,20 +23,22 @@ import java.util.Arrays;
 
 public class Melting extends Modifier implements Enchantable, Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Melting.yml");
-
     private final double bonusMultiplier;
 
     public Melting() {
-        super(config.getString("Melting.name"),
-                "[" + config.getString("Melting.name_modifier") + "] " + config.getString("Melting.description"),
-                ModifierType.MELTING,
+        super(ModifierType.MELTING,
                 ChatColor.GOLD,
-                config.getInt("Melting.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.MAGMA_BLOCK, ChatColor.GOLD + config.getString("Melting.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.CHESTPLATE, ToolType.LEGGINGS)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Melting.name"),
+                "[" + config.getString("Melting.name_modifier") + "] " + config.getString("Melting.description"),
+                config.getInt("Melting.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.MAGMA_BLOCK, ChatColor.GOLD + config.getString("Melting.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1));
+        
         this.bonusMultiplier = config.getDouble("Melting.BonusMultiplier");
     }
 
@@ -64,7 +68,7 @@ public class Melting extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.melting.craft")) { return; }
-        _createModifierItem(config, p, this, "Melting");
+        _createModifierItem(getConfig(), p, this, "Melting");
     }
 
     public void effect_armor(Player p, ItemStack piece, EntityDamageByEntityEvent e) {
@@ -95,6 +99,10 @@ public class Melting extends Modifier implements Enchantable, Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Melting", "Modifier_Melting");
+        _registerCraftingRecipe(getConfig(), this, "Melting", "Modifier_Melting");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Melting);
     }
 }

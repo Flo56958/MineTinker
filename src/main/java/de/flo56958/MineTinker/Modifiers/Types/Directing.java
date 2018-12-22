@@ -5,6 +5,8 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,17 +21,18 @@ import java.util.List;
 
 public class Directing extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Directing.yml");
-
     public Directing() {
-        super(config.getString("Directing.name"),
-                "[" + config.getString("Directing.name_modifier") + "] " + config.getString("Directing.description"),
-                ModifierType.DIRECTING,
+        super(	ModifierType.DIRECTING,
                 ChatColor.GRAY,
-                1,
-                ItemGenerator.itemEnchanter(Material.COMPASS, ChatColor.GRAY + config.getString("Directing.name_modifier"), 1, Enchantment.BINDING_CURSE, 1),
                 new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(	config.getString("Directing.name"),
+                "[" + config.getString("Directing.name_modifier") + "] " + config.getString("Directing.description"),
+                1,
+                ItemGenerator.itemEnchanter(Material.COMPASS, ChatColor.GRAY + config.getString("Directing.name_modifier"), 1, Enchantment.BINDING_CURSE, 1));
     }
 
     @Override
@@ -64,6 +67,10 @@ public class Directing extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Directing", "Modifier_Directing");
+        _registerCraftingRecipe(getConfig(), this, "Directing", "Modifier_Directing");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Directing);
     }
 }

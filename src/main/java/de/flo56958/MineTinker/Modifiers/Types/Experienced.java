@@ -6,6 +6,8 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,21 +21,23 @@ import java.util.Random;
 
 public class Experienced extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Experienced.yml");
-
     private final int percentagePerLevel;
     private final int amount;
 
     public Experienced() {
-        super(config.getString("Experienced.name"),
-                "[Bottle o' Experience] " + config.getString("Experienced.description"),
-                ModifierType.EXPERIENCED,
+        super(ModifierType.EXPERIENCED,
                 ChatColor.GREEN,
-                config.getInt("Experienced.MaxLevel"),
-                new ItemStack(Material.EXPERIENCE_BOTTLE, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Experienced.name"),
+                "[Bottle o' Experience] " + config.getString("Experienced.description"),
+                config.getInt("Experienced.MaxLevel"),
+                new ItemStack(Material.EXPERIENCE_BOTTLE, 1));
+        
         this.percentagePerLevel = config.getInt("Experienced.PercentagePerLevel");
         this.amount = config.getInt("Experienced.Amount");
     }
@@ -60,6 +64,10 @@ public class Experienced extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Experienced", "Modifier_Experienced");
+        _registerCraftingRecipe(getConfig(), this, "Experienced", "Modifier_Experienced");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Experienced);
     }
 }

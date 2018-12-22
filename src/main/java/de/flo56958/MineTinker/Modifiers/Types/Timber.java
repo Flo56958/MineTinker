@@ -22,23 +22,25 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
 import net.minecraft.server.v1_13_R2.BlockPosition;
 
 public class Timber extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Timber.yml");
-
     private static final ArrayList<Location> locs = new ArrayList<>();
 
     public Timber() {
-        super(config.getString("Timber.name"),
-                "[" + config.getString("Timber.name_modifier") + "] " + config.getString("Timber.description"),
-                ModifierType.TIMBER,
+        super(ModifierType.TIMBER,
                 ChatColor.GREEN,
-                1,
-                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Timber.name_modifier"), 1, Enchantment.DIG_SPEED, 1),
                 new ArrayList<>(Collections.singletonList(ToolType.AXE)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(getConfig().getString("Timber.name"),
+                "[" + getConfig().getString("Timber.name_modifier") + "] " + getConfig().getString("Timber.description"),
+                1,
+                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + getConfig().getString("Timber.name_modifier"), 1, Enchantment.DIG_SPEED, 1));
     }
 
     @Override
@@ -115,6 +117,10 @@ public class Timber extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Timber", "Modifier_Timber");
+        _registerCraftingRecipe(getConfig(), this, "Timber", "Modifier_Timber");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Timber);
     }
 }

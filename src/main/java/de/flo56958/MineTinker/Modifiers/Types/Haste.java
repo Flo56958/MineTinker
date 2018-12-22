@@ -5,6 +5,8 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,17 +21,18 @@ import java.util.Arrays;
 
 public class Haste extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Haste.yml");
-
     public Haste() {
-        super(config.getString("Haste.name"),
-                "[" + config.getString("Haste.name_modifier") + "] " + config.getString("Haste.description"),
-                ModifierType.HASTE,
+        super(ModifierType.HASTE,
                 ChatColor.DARK_RED,
-                config.getInt("Haste.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.REDSTONE_BLOCK, ChatColor.DARK_RED + config.getString("Haste.name_modifier"), 1, Enchantment.DIG_SPEED, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Haste.name"),
+                "[" + config.getString("Haste.name_modifier") + "] " + config.getString("Haste.description"),
+                config.getInt("Haste.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.REDSTONE_BLOCK, ChatColor.DARK_RED + config.getString("Haste.name_modifier"), 1, Enchantment.DIG_SPEED, 1));
     }
 
     @Override
@@ -53,6 +56,10 @@ public class Haste extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Haste", "Modifier_Haste");
+        _registerCraftingRecipe(getConfig(), this, "Haste", "Modifier_Haste");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Haste);
     }
 }

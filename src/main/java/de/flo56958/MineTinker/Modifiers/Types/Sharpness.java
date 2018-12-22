@@ -5,6 +5,8 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,17 +21,18 @@ import java.util.Arrays;
 
 public class Sharpness extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Sharpness.yml");
-
     public Sharpness() {
-        super(config.getString("Sharpness.name"),
-                "[" + config.getString("Sharpness.name_modifier") + "] " + config.getString("Sharpness.description"),
-                ModifierType.SHARPNESS,
+        super(ModifierType.SHARPNESS,
                 ChatColor.WHITE,
-                config.getInt("Sharpness.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.QUARTZ_BLOCK, ChatColor.WHITE + config.getString("Sharpness.name_modifier"), 1 , Enchantment.DAMAGE_ALL, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Sharpness.name"),
+                "[" + config.getString("Sharpness.name_modifier") + "] " + config.getString("Sharpness.description"),
+                config.getInt("Sharpness.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.QUARTZ_BLOCK, ChatColor.WHITE + config.getString("Sharpness.name_modifier"), 1 , Enchantment.DAMAGE_ALL, 1));
     }
 
     @Override
@@ -60,6 +63,10 @@ public class Sharpness extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Sharpness", "Modifier_Sharpness");
+        _registerCraftingRecipe(getConfig(), this, "Sharpness", "Modifier_Sharpness");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Sharpness);
     }
 }

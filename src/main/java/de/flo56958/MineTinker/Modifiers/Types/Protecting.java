@@ -5,6 +5,8 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,17 +21,18 @@ import java.util.Arrays;
 
 public class Protecting extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Protecting.yml");
-
     public Protecting() {
-        super(config.getString("Protecting.name"),
-                "[" + config.getString("Protecting.name_modifier") + "] " + config.getString("Protecting.description"),
-                ModifierType.PROTECTING,
+        super(ModifierType.PROTECTING,
                 ChatColor.GRAY,
-                config.getInt("Protecting.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.GRAY + config.getString("Protecting.name_modifier"), 1, Enchantment.PROTECTION_ENVIRONMENTAL, 1),
                 new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Protecting.name"),
+                "[" + config.getString("Protecting.name_modifier") + "] " + config.getString("Protecting.description"),
+                config.getInt("Protecting.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.GRAY + config.getString("Protecting.name_modifier"), 1, Enchantment.PROTECTION_ENVIRONMENTAL, 1));
     }
 
     @Override
@@ -54,6 +57,10 @@ public class Protecting extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Protecting", "Modifier_Protecting");
+        _registerCraftingRecipe(getConfig(), this, "Protecting", "Modifier_Protecting");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Protecting);
     }
 }

@@ -8,6 +8,8 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
+
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,20 +24,19 @@ import java.util.Random;
 
 public class AutoSmelt extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Auto-Smelt.yml");
-
     private final int percentagePerLevel;
     private final boolean hasSound;
 
     public AutoSmelt() {
-        super(config.getString("Auto-Smelt.name"),
+        super(ModifierType.AUTO_SMELT, ChatColor.YELLOW, new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL)), Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Auto-Smelt.name"),
                 "[" + config.getString("Auto-Smelt.name_modifier") + "] " + config.getString("Auto-Smelt.description"),
-                ModifierType.AUTO_SMELT,
-                ChatColor.YELLOW,
                 config.getInt("Auto-Smelt.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.FURNACE, ChatColor.YELLOW + config.getString("Auto-Smelt.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1),
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL)),
-                Main.getPlugin());
+                ItemGenerator.itemEnchanter(Material.FURNACE, ChatColor.YELLOW + config.getString("Auto-Smelt.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1));
+        
         this.percentagePerLevel = config.getInt("Auto-Smelt.PercentagePerLevel");
         this.hasSound = config.getBoolean("Auto-Smelt.Sound");
     }
@@ -54,6 +55,8 @@ public class AutoSmelt extends Modifier implements Craftable {
     }
 
     public void effect(Player p, ItemStack tool, Block b, BlockBreakEvent e) {
+    	FileConfiguration config = getConfig();
+    	
         if (!p.hasPermission("minetinker.modifiers.autosmelt.use")) { return; }//TODO: Think about more blocks for Auto-Smelt
         if (!modManager.hasMod(tool, this)) { return; }
 
@@ -174,6 +177,10 @@ public class AutoSmelt extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Auto-Smelt", "Modifier_Autosmelt");
+        _registerCraftingRecipe(getConfig(), this, "Auto-Smelt", "Modifier_Autosmelt");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Auto_Smelt);
     }
 }

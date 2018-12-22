@@ -18,20 +18,21 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
 
 public class Sweeping extends Modifier implements Enchantable, Craftable {
-
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Sweeping.yml");
-
     public Sweeping() {
-        super(config.getString("Sweeping.name"),
-                "[" + config.getString("Sweeping.name_modifier") + "] " + config.getString("Sweeping.description"),
-                ModifierType.SWEEPING,
+        super(ModifierType.SWEEPING,
                 ChatColor.RED,
-                config.getInt("Sweeping.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.IRON_INGOT, ChatColor.RED + config.getString("Sweeping.name_modifier"), 1, Enchantment.SWEEPING_EDGE, 1),
                 new ArrayList<>(Collections.singletonList(ToolType.SWORD)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Sweeping.name"),
+                "[" + config.getString("Sweeping.name_modifier") + "] " + config.getString("Sweeping.description"),
+                config.getInt("Sweeping.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.IRON_INGOT, ChatColor.RED + config.getString("Sweeping.name_modifier"), 1, Enchantment.SWEEPING_EDGE, 1));
     }
 
     @Override
@@ -57,11 +58,15 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.sweeping.craft")) { return; }
-        _createModifierItem(config, p, this, "Sweeping");
+        _createModifierItem(getConfig(), p, this, "Sweeping");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Sweeping", "Modifier_Sweeping");
+        _registerCraftingRecipe(getConfig(), this, "Sweeping", "Modifier_Sweeping");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Sweeping);
     }
 }

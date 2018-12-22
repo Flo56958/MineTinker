@@ -21,26 +21,28 @@ import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
 
 public class Poisonous extends Modifier implements Enchantable, Craftable {
-
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Poisonous.yml");
-
+	
     private final int duration;
     private final double durationMultiplier;
     private final int effectAmplifier;
 
-
     public Poisonous() {
-        super(config.getString("Poisonous.name"),
-                "[" + config.getString("Poisonous.name_modifier") + "] " + config.getString("Poisonous.description"),
-                ModifierType.POISONOUS,
+        super(ModifierType.POISONOUS,
                 ChatColor.DARK_GREEN,
-                config.getInt("Poisonous.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.ROTTEN_FLESH, ChatColor.DARK_GREEN + config.getString("Poisonous.name_modifier"), 1, Enchantment.DURABILITY, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Poisonous.name"),
+                "[" + config.getString("Poisonous.name_modifier") + "] " + config.getString("Poisonous.description"),
+                config.getInt("Poisonous.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.ROTTEN_FLESH, ChatColor.DARK_GREEN + config.getString("Poisonous.name_modifier"), 1, Enchantment.DURABILITY, 1));
+        
         this.duration = config.getInt("Poisonous.Duration");
         this.durationMultiplier = config.getDouble("Poisonous.DurationMultiplier");
         this.effectAmplifier = config.getInt("Poisonous.EffectAmplifier");
@@ -67,11 +69,15 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.poisonous.craft")) { return; }
-        _createModifierItem(config, p, this, "Poisonous");
+        _createModifierItem(getConfig(), p, this, "Poisonous");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Poisonous", "Modifier_Poisonous");
+        _registerCraftingRecipe(getConfig(), this, "Poisonous", "Modifier_Poisonous");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Poisonous);
     }
 }

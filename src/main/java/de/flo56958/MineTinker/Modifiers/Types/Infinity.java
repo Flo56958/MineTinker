@@ -8,6 +8,8 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,19 +24,21 @@ import java.util.Collections;
 
 public class Infinity extends Modifier implements Enchantable, Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Infinity.yml");
-
     private final boolean compatibleWithEnder;
 
     public Infinity() {
-        super(config.getString("Infinity.name"),
-                "[" + config.getString("Infinity.name_modifier") + "] " + config.getString("Infinity.description"),
-                ModifierType.INFINITY,
+        super(ModifierType.INFINITY,
                 ChatColor.WHITE,
-                1,
-                ItemGenerator.itemEnchanter(Material.ARROW, ChatColor.WHITE + config.getString("Infinity.name_modifier"), 1, Enchantment.ARROW_INFINITE, 1),
                 new ArrayList<>(Collections.singletonList(ToolType.BOW)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Infinity.name"),
+                "[" + config.getString("Infinity.name_modifier") + "] " + config.getString("Infinity.description"),
+                1,
+                ItemGenerator.itemEnchanter(Material.ARROW, ChatColor.WHITE + config.getString("Infinity.name_modifier"), 1, Enchantment.ARROW_INFINITE, 1));
+        
         this.compatibleWithEnder = Main.getConfigurations().getConfig("Ender.yml").getBoolean("Ender.CompatibleWithInfinity");
     }
 
@@ -69,11 +73,15 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.infinity.craft")) { return; }
-        _createModifierItem(config, p, this, "Infinity");
+        _createModifierItem(getConfig(), p, this, "Infinity");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Infinity", "Modifier_Infinity");
+        _registerCraftingRecipe(getConfig(), this, "Infinity", "Modifier_Infinity");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Infinity);
     }
 }

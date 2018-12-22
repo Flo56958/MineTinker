@@ -7,6 +7,8 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,17 +23,18 @@ import java.util.Arrays;
 
 public class Luck extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Luck.yml");
-
     public Luck() {
-        super(config.getString("Luck.name"),
-                "[" + config.getString("Luck.name_modifier") + "] " + config.getString("Luck.description"),
-                ModifierType.LUCK,
+        super(ModifierType.LUCK,
                 ChatColor.BLUE,
-                config.getInt("Luck.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.LAPIS_BLOCK, ChatColor.BLUE + config.getString("Luck.name_modifier"), 1, Enchantment.LOOT_BONUS_BLOCKS, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Luck.name"),
+                "[" + config.getString("Luck.name_modifier") + "] " + config.getString("Luck.description"),
+                config.getInt("Luck.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.LAPIS_BLOCK, ChatColor.BLUE + config.getString("Luck.name_modifier"), 1, Enchantment.LOOT_BONUS_BLOCKS, 1));
     }
 
     @Override
@@ -75,6 +78,10 @@ public class Luck extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Luck", "Modifier_Luck");
+        _registerCraftingRecipe(getConfig(), this, "Luck", "Modifier_Luck");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Luck);
     }
 }

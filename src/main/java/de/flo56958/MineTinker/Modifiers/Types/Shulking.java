@@ -20,24 +20,27 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
 
 public class Shulking extends Modifier implements Craftable {
-
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Shulking.yml");
 
     private final int duration;
     private final int effectAmplifier;
 
     public Shulking() {
-        super(config.getString("Shulking.name"),
-                "[" + config.getString("Shulking.name_modifier") + "] " + config.getString("Shulking.description"),
-                ModifierType.SHULKING,
+        super(ModifierType.SHULKING,
                 ChatColor.LIGHT_PURPLE,
-                config.getInt("Shulking.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.SHULKER_SHELL, ChatColor.LIGHT_PURPLE + config.getString("Shulking.name_modifier"), 1, Enchantment.DURABILITY, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
+        
+        FileConfiguration config = getConfig();
+        
+        init(config.getString("Shulking.name"),
+                "[" + config.getString("Shulking.name_modifier") + "] " + config.getString("Shulking.description"),
+                config.getInt("Shulking.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.SHULKER_SHELL, ChatColor.LIGHT_PURPLE + config.getString("Shulking.name_modifier"), 1, Enchantment.DURABILITY, 1));
+    
         this.duration = config.getInt("Shulking.Duration");
         this.effectAmplifier = config.getInt("Shulking.EffectAmplifier");
     }
@@ -62,6 +65,10 @@ public class Shulking extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Shulking", "Modifier_Shulking");
+        _registerCraftingRecipe(getConfig(), this, "Shulking", "Modifier_Shulking");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return Main.getConfigurations().getConfig(modifiers_Config.Shulking);
     }
 }
