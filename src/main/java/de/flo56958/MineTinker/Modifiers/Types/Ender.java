@@ -38,6 +38,20 @@ public class Ender extends Modifier implements Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Auto-Smelt";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Special Endereye");
+    	config.addDefault(key + ".description", "Teleports you while sneaking to the arrow location!");
+    	config.addDefault(key + ".Sound", true); //#Enderman-Teleport-Sound
+    	config.addDefault(key + ".Recipe.Enabled", true);
+    	config.addDefault(key + ".Recipe.Top", "PPP");
+    	config.addDefault(key + ".Recipe.Middle", "PEP");
+    	config.addDefault(key + ".Recipe.Bottom", "PPP");
+    	config.addDefault(key + ".Recipe.Materials.P", "ENDER_PEARL");
+    	config.addDefault(key + ".Recipe.Materials.E", "ENDER_EYE");
         
         init(config.getString("Ender.name"),
                 "[" + config.getString("Ender.name_modifier") + "] " + config.getString("Ender.description"),

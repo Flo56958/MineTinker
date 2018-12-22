@@ -30,7 +30,21 @@ public class Directing extends Modifier implements Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
-        
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Directing";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enhanced Compass");
+    	config.addDefault(key + ".description", "Loot goes directly into Inventory!");
+    	config.addDefault(key + ".Directing.Enabled", true);
+    	config.addDefault(key + ".Directing.Top", "ECE");
+    	config.addDefault(key + ".Directing.Middle", "CIC");
+    	config.addDefault(key + ".Directing.Bottom", "ECE");
+    	config.addDefault(key + ".Directing.Materials.C", "COMPASS");
+    	config.addDefault(key + ".Directing.Materials.E", "ENDER_PEARL");
+    	config.addDefault(key + ".Directing.Materials.I", "IRON_BLOCK");
+    	
         init(config.getString("Directing.name"),
                 "[" + config.getString("Directing.name_modifier") + "] " + config.getString("Directing.description"),
                 1,

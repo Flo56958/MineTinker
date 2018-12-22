@@ -65,8 +65,8 @@ public class ConfigurationManager {
             main.saveResource(folder + file, false);
         }
 
-        FileConfiguration fileConfiguration = new YamlConfiguration();
-
+        YamlConfiguration fileConfiguration = new YamlConfiguration();
+        
         try {
             fileConfiguration.load(customConfigFile);
             configs.put(file, fileConfiguration);
