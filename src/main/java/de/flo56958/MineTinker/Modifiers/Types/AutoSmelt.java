@@ -33,6 +33,25 @@ public class AutoSmelt extends Modifier implements Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Auto-Smelt";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enhanced Furnace");
+    	config.addDefault(key + ".description", "Chance to smelt ore when mined!");
+    	config.addDefault(key + ".MaxLevel", 5);
+    	config.addDefault(key + ".PercentagePerLevel", 20);
+    	config.addDefault(key + ".Sound", true);
+    	config.addDefault(key + ".smelt_stone", false);
+    	config.addDefault(key + ".burn_coal", true);
+    	config.addDefault(key + ".works_under_water", true);
+    	config.addDefault(key + ".Recipe.Enabled", true);
+    	config.addDefault(key + ".Recipe.Top", "CCC");
+    	config.addDefault(key + ".Recipe.Middle", "CFC");
+    	config.addDefault(key + ".Recipe.Bottom", "CCC");
+    	config.addDefault(key + ".Recipe.Materials.C", "FURNACE");
+    	config.addDefault(key + ".Recipe.Materials.F", "BLAZE_ROD");
     	
     	init(config.getString("Auto-Smelt.name"),
                 "[" + config.getString("Auto-Smelt.name_modifier") + "] " + config.getString("Auto-Smelt.description"),

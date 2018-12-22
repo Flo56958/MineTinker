@@ -37,6 +37,17 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Beheading";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enchanted Wither-Skull");
+    	config.addDefault(key + ".description", "Chance to drop the head of the mob!");
+    	config.addDefault(key + ".MaxLevel", 10);
+    	config.addDefault(key + ".PercentagePerLevel", "10 #= 100% at Level 10");
+    	config.addDefault(key + ".EnchantCost", 10);
+    	config.addDefault(key + ".Recipe.Enabled", false);
     	
     	init(config.getString("Beheading.name"),
                 "[" + config.getString("Beheading.name_modifier") + "] " + config.getString("Beheading.description"),
