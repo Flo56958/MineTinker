@@ -73,4 +73,8 @@ public class Shulking extends Modifier implements Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Shulking);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Shulking.allowed");
+    }
 }

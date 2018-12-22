@@ -82,4 +82,8 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Poisonous);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Poisonous.allowed");
+    }
 }

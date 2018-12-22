@@ -75,4 +75,8 @@ public class Directing extends Modifier implements Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Directing);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Directing.allowed");
+    }
 }

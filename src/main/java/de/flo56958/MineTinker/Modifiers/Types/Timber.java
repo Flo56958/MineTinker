@@ -125,4 +125,8 @@ public class Timber extends Modifier implements Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Timber);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Timber.allowed");
+    }
 }

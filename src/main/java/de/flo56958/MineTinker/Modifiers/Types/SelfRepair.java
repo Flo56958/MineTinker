@@ -85,4 +85,8 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Self_Repair);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Self-Repair.allowed");
+    }
 }

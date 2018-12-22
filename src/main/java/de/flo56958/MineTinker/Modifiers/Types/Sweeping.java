@@ -71,4 +71,8 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Sweeping);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Sweeping.allowed");
+    }
 }

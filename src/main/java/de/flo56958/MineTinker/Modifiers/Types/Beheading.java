@@ -98,4 +98,8 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Beheading);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Beheading.allowed");
+    }
 }

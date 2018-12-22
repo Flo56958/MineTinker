@@ -71,4 +71,8 @@ public class Glowing extends Modifier implements Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Glowing);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Glowing.allowed");
+    }
 }

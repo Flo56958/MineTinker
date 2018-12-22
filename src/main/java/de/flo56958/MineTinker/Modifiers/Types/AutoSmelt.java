@@ -42,7 +42,7 @@ public class AutoSmelt extends Modifier implements Craftable {
         this.percentagePerLevel = config.getInt("Auto-Smelt.PercentagePerLevel");
         this.hasSound = config.getBoolean("Auto-Smelt.Sound");
     }
-
+    
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
 
@@ -184,5 +184,9 @@ public class AutoSmelt extends Modifier implements Craftable {
     
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Auto_Smelt);
+    }
+
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Auto-Smelt.allowed");
     }
 }

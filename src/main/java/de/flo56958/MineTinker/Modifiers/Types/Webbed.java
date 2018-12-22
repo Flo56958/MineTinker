@@ -78,4 +78,8 @@ public class Webbed extends Modifier implements Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Webbed);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Webbed.allowed");
+    }
 }

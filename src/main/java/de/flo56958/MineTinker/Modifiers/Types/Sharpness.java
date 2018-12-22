@@ -71,4 +71,8 @@ public class Sharpness extends Modifier implements Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Sharpness);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Sharpness.allowed");
+    }
 }

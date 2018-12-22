@@ -101,4 +101,8 @@ public class Ender extends Modifier implements Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Ender);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Ender.allowed");
+    }
 }

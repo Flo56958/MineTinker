@@ -64,4 +64,8 @@ public class ExtraModifier extends Modifier {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Extra_Modifier);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Extra-Modifier.allowed");
+    }
 }

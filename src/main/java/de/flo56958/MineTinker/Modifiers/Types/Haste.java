@@ -64,4 +64,8 @@ public class Haste extends Modifier implements Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Haste);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Haste.allowed");
+    }
 }

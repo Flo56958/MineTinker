@@ -65,4 +65,8 @@ public class Protecting extends Modifier implements Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Protecting);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Protecting.allowed");
+    }
 }

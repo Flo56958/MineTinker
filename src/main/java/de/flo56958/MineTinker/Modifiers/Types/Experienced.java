@@ -72,4 +72,8 @@ public class Experienced extends Modifier implements Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Experienced);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Experienced.allowed");
+    }
 }

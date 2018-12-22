@@ -87,4 +87,8 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Silk_Touch);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Silk-Touch.allowed");
+    }
 }

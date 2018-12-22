@@ -71,4 +71,8 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Light_Weight);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Light-Weight.allowed");
+    }
 }

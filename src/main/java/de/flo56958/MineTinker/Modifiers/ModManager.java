@@ -24,6 +24,10 @@ public class ModManager {
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
 
     /**
+     * stores the list of all modifiers
+     */
+    private final List<Modifier> allMods = new ArrayList<>();
+    /**
      * stores the list of allowed modifiers
      */
     private final List<Modifier> mods = new ArrayList<>();
@@ -75,93 +79,53 @@ public class ModManager {
     }
 
     public void reload() {
-        this.mods.clear();
+    	modsReload();
         this.craftableMods.clear();
         this.enchantableMods.clear();
 
         init();
+    }
+    
+    private void modsReload() {
+    	for(Modifier m : allMods) {
+    		if(m.isAllowed())
+    			register(m);
+    		else
+    			unregister(m);
+    	}
     }
 
     /**
      * checks and loads all modifiers with configurations settings into memory
      */
     private void init() {
-        ConfigurationManager configs = Main.getConfigurations();
-        if (configs.getConfig(modifiers_Config.Auto_Smelt).getBoolean("Auto-Smelt.allowed")) {
-            register(new AutoSmelt());
-        }
-        if (configs.getConfig(modifiers_Config.Beheading).getBoolean("Beheading.allowed")) {
-            register(new Beheading());
-        }
-        if (configs.getConfig(modifiers_Config.Directing).getBoolean("Directing.allowed")) {
-            register(new Directing());
-        }
-        if (configs.getConfig(modifiers_Config.Ender).getBoolean("Ender.allowed")) {
-            register(new Ender());
-        }
-        if (configs.getConfig(modifiers_Config.Experienced).getBoolean("Experienced.allowed")) {
-            register(new Experienced());
-        }
-        if (configs.getConfig(modifiers_Config.Extra_Modifier).getBoolean("Extra-Modifier.allowed")) {
-            register(new ExtraModifier());
-        }
-        if (configs.getConfig(modifiers_Config.Fiery).getBoolean("Fiery.allowed")) {
-            register(new Fiery());
-        }
-        if (configs.getConfig(modifiers_Config.Glowing).getBoolean("Glowing.allowed")) {
-            register(new Glowing());
-        }
-        if (configs.getConfig(modifiers_Config.Haste).getBoolean("Haste.allowed")) {
-            register(new Haste());
-        }
-        if (configs.getConfig(modifiers_Config.Infinity).getBoolean("Infinity.allowed")) {
-            register(new Infinity());
-        }
-        if (configs.getConfig(modifiers_Config.Knockback).getBoolean("Knockback.allowed")) {
-            register(new Knockback());
-        }
-        if (configs.getConfig(modifiers_Config.Light_Weight).getBoolean("Light-Weight.allowed")) {
-            register(new LightWeight());
-        }
-        if (configs.getConfig(modifiers_Config.Luck).getBoolean("Luck.allowed")) {
-            register(new Luck());
-        }
-        if (configs.getConfig(modifiers_Config.Melting).getBoolean("Melting.allowed")) {
-            register(new Melting());
-        }
-        if (configs.getConfig(modifiers_Config.Poisonous).getBoolean("Poisonous.allowed")) {
-            register(new Poisonous());
-        }
-        if (configs.getConfig(modifiers_Config.Power).getBoolean("Power.allowed")) {
-            register(new Power());
-        }
-        if (configs.getConfig(modifiers_Config.Protecting).getBoolean("Protecting.allowed")) {
-            register(new Protecting());
-        }
-        if (configs.getConfig(modifiers_Config.Reinforced).getBoolean("Reinforced.allowed")) {
-            register(new Reinforced());
-        }
-        if (configs.getConfig(modifiers_Config.Self_Repair).getBoolean("Self-Repair.allowed")) {
-            register(new SelfRepair());
-        }
-        if (configs.getConfig(modifiers_Config.Sharpness).getBoolean("Sharpness.allowed")) {
-            register(new Sharpness());
-        }
-        if (configs.getConfig(modifiers_Config.Shulking).getBoolean("Shulking.allowed")) {
-            register(new Shulking());
-        }
-        if (configs.getConfig(modifiers_Config.Silk_Touch).getBoolean("Silk-Touch.allowed")) {
-            register(new SilkTouch());
-        }
-        if (configs.getConfig(modifiers_Config.Sweeping).getBoolean("Sweeping.allowed")) {
-            register(new Sweeping());
-        }
-        if (configs.getConfig(modifiers_Config.Timber).getBoolean("Timber.allowed")) {
-            register(new Timber());
-        }
-        if (configs.getConfig(modifiers_Config.Webbed).getBoolean("Webbed.allowed")) {
-            register(new Webbed());
-        }
+    	allMods.add(new AutoSmelt());
+    	allMods.add(new Beheading());
+    	allMods.add(new Directing());
+    	allMods.add(new Ender());
+    	allMods.add(new Experienced());
+    	allMods.add(new ExtraModifier());
+    	allMods.add(new Fiery());
+    	allMods.add(new Glowing());
+    	allMods.add(new Haste());
+    	allMods.add(new Infinity());
+    	allMods.add(new Knockback());
+    	allMods.add(new LightWeight());
+        allMods.add(new Luck());
+        allMods.add(new Melting());
+        allMods.add(new Poisonous());
+        allMods.add(new Power());
+        allMods.add(new Protecting());
+        allMods.add(new Reinforced());
+        allMods.add(new SelfRepair());
+        allMods.add(new Sharpness());
+        allMods.add(new Shulking());
+        allMods.add(new SilkTouch());
+        allMods.add(new Sweeping());
+        allMods.add(new Timber());
+        allMods.add(new Webbed());
+        
+        modsReload();
 
         for (Modifier m : this.mods) {
             if (m instanceof Craftable) {
@@ -183,8 +147,15 @@ public class ModManager {
      * @param mod the modifier instance
      */
     private void register(Modifier mod) {
-        mods.add(mod);
-        ChatWriter.logColor(ChatColor.GREEN + "Registered the " + mod.getColor() + mod.getName() + ChatColor.GREEN + " modifier from " + mod.getSource().getName() + ".");
+    	if(!mods.contains(mod)) {
+	        mods.add(mod);
+	        ChatWriter.logColor(ChatColor.GREEN + "Registered the " + mod.getColor() + mod.getName() + ChatColor.GREEN + " modifier from " + mod.getSource().getName() + ".");
+    	}
+    }
+    
+    private void unregister(Modifier mod) {
+    	 mods.remove(mod);
+         ChatWriter.logColor(ChatColor.GREEN + "Unregistered the " + mod.getColor() + mod.getName() + ChatColor.GREEN + " modifier from " + mod.getSource().getName() + ".");
     }
 
     /**

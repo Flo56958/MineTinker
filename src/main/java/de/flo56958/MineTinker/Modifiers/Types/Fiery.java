@@ -76,4 +76,8 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Fiery);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Fiery.allowed");
+    }
 }

@@ -86,4 +86,8 @@ public class Luck extends Modifier implements Craftable {
     private static FileConfiguration getConfig() {
     	return Main.getConfigurations().getConfig(modifiers_Config.Luck);
     }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Luck.allowed");
+    }
 }
