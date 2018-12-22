@@ -39,7 +39,6 @@ public class Experienced extends Modifier implements Craftable {
     	String key = "Experienced";
     	config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Enhanced Furnace");
     	config.addDefault(key + ".description", "Tool has the chance to drop XP while using it!");
     	config.addDefault(key + ".MaxLevel", 10);
     	config.addDefault(key + ".PercentagePerLevel", "2"); //#= 20% at Level 10 -> every 5th hit / block will trigger Experienced

@@ -40,7 +40,7 @@ public class Ender extends Modifier implements Craftable {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
     	
-    	String key = "Auto-Smelt";
+    	String key = "Ender";
     	config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Special Endereye");

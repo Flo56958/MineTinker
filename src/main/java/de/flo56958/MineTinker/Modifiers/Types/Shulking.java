@@ -39,23 +39,20 @@ public class Shulking extends Modifier implements Craftable {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
     	
-    	String key = "Auto-Smelt";
+    	String key = "Shulking";
     	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Enhanced Furnace");
-    	config.addDefault(key + ".description", "Chance to smelt ore when mined!");
-    	config.addDefault(key + ".MaxLevel", 5);
-    	config.addDefault(key + ".PercentagePerLevel", 20);
-    	config.addDefault(key + ".Sound", true);
-    	config.addDefault(key + ".smelt_stone", false);
-    	config.addDefault(key + ".burn_coal", true);
-    	config.addDefault(key + ".works_under_water", true);
+    	config.addDefault(key + ".name", key); //#wingardium leviosa
+    	config.addDefault(key + ".name_modifier", "Enhanced Shulkershell");
+    	config.addDefault(key + ".description", "Makes enemies levitate!");
+    	config.addDefault(key + ".MaxLevel", 10);
+    	config.addDefault(key + ".Duration", 20); //#ticks (20 ticks ~ 1 sec)
+    	config.addDefault(key + ".EffectAmplifier", 2); //#per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
     	config.addDefault(key + ".Recipe.Enabled", true);
-    	config.addDefault(key + ".Recipe.Top", "CCC");
-    	config.addDefault(key + ".Recipe.Middle", "CFC");
-    	config.addDefault(key + ".Recipe.Bottom", "CCC");
-    	config.addDefault(key + ".Recipe.Materials.C", "FURNACE");
-    	config.addDefault(key + ".Recipe.Materials.F", "BLAZE_ROD");
+    	config.addDefault(key + ".Recipe.Top", "S");
+    	config.addDefault(key + ".Recipe.Middle", "C");
+    	config.addDefault(key + ".Recipe.Bottom", "S");
+    	config.addDefault(key + ".Recipe.Materials.S", "SHULKER_SHELL");
+    	config.addDefault(key + ".Recipe.Materials.C", "CHORUS_FRUIT");
         
         init(config.getString("Shulking.name"),
                 "[" + config.getString("Shulking.name_modifier") + "] " + config.getString("Shulking.description"),
