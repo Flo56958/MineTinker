@@ -38,6 +38,23 @@ public class Webbed extends Modifier implements Craftable {
     
     public void reload() {
         FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Webbed";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Compressed Cobweb");
+    	config.addDefault(key + ".description", "Slowes down enemies!");
+    	config.addDefault(key + ".MaxLevel", 3);
+    	config.addDefault(key + ".Duration", 60); //#ticks (20 ticks ~ 1 sec)
+    	config.addDefault(key + ".Sound", true);
+    	config.addDefault(key + ".DurationMultiplier", 1.2);//#Duration * (Multiplier^Level)
+    	config.addDefault(key + ".EffectAmplifier", 2); //#per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
+    	config.addDefault(key + ".Recipe.Enabled", true);
+    	config.addDefault(key + ".Recipe.Top", "WWW");
+    	config.addDefault(key + ".Recipe.Middle", "WWW");
+    	config.addDefault(key + ".Recipe.Bottom", "WWW");
+    	config.addDefault(key + ".Recipe.Materials.W", "COBWEB");
         
         init(getConfig().getString("Webbed.name"),
                 "[" + getConfig().getString("Webbed.name_modifier") + "] " + getConfig().getString("Webbed.description"),

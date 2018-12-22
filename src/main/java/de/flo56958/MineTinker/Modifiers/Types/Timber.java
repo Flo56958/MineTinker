@@ -38,6 +38,19 @@ public class Timber extends Modifier implements Craftable {
     
     public void reload() {
         FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Timber";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Wooden Emerald");
+    	config.addDefault(key + ".description", "Chop down trees in an instant!");
+    	config.addDefault(key + ".Recipe.Enabled", true);
+    	config.addDefault(key + ".Recipe.Top", "LLL");
+    	config.addDefault(key + ".Recipe.Middle", "LEL");
+    	config.addDefault(key + ".Recipe.Bottom", "LLL");
+    	config.addDefault(key + ".Recipe.Materials.L", "OAK_WOOD");
+    	config.addDefault(key + ".Recipe.Materials.E", "EMERALD");
         
         init(config.getString("Timber.name"),
                 "[" + config.getString("Timber.name_modifier") + "] " + config.getString("Timber.description"),

@@ -30,6 +30,16 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Sweeping";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enchanted Iron Ingot");
+    	config.addDefault(key + ".description", "More damage over a greater area!");
+    	config.addDefault(key + ".MaxLevel", 5);
+    	config.addDefault(key + ".EnchantCost", 10);
+    	config.addDefault(key + ".Recipe.Enabled", false);
         
         init(config.getString("Sweeping.name"),
                 "[" + config.getString("Sweeping.name_modifier") + "] " + config.getString("Sweeping.description"),
