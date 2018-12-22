@@ -29,9 +29,24 @@ public class Protecting extends Modifier implements Craftable {
     }
     
     public void reload() {
-    	 FileConfiguration config = getConfig();
+    	FileConfiguration config = getConfig();
+     	config.options().copyDefaults(true);
+    	
+     	String key = "Protecting";
+     	config.addDefault(key + ".allowed", true);
+     	config.addDefault(key + ".name", key);
+     	config.addDefault(key + ".name_modifier", "Enriched Obsidian");
+     	config.addDefault(key + ".description", "Your armor protects you better against all damage!");
+     	config.addDefault(key + ".MaxLevel", 5);
+     	config.addDefault(key + ".Recipe.Enabled", true);
+     	config.addDefault(key + ".Recipe.Top", "DID");
+     	config.addDefault(key + ".Recipe.Middle", "IOO");
+     	config.addDefault(key + ".Recipe.Bottom", "DID");
+     	config.addDefault(key + ".Recipe.Materials.D", "DIAMOND");
+     	config.addDefault(key + ".Recipe.Materials.I", "IRON_INGOT");
+     	config.addDefault(key + ".Recipe.Materials.O", "OBSIDIAN");
          
-         init(config.getString("Protecting.name"),
+        init(config.getString("Protecting.name"),
                  "[" + config.getString("Protecting.name_modifier") + "] " + config.getString("Protecting.description"),
                  config.getInt("Protecting.MaxLevel"),
                  ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.GRAY + config.getString("Protecting.name_modifier"), 1, Enchantment.PROTECTION_ENVIRONMENTAL, 1));

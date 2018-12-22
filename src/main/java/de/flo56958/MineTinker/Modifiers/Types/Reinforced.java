@@ -31,6 +31,19 @@ public class Reinforced extends Modifier implements Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Auto-Smelt";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Compressed Obsidian");
+    	config.addDefault(key + ".description", "Chance to not use durability when using the tool/armor!");
+    	config.addDefault(key + ".MaxLevel", 3);
+    	config.addDefault(key + ".Recipe.Enabled", true);
+    	config.addDefault(key + ".Recipe.Top", "OOO");
+    	config.addDefault(key + ".Recipe.Middle", "OOO");
+    	config.addDefault(key + ".Recipe.Bottom", "OOO");
+    	config.addDefault(key + ".Recipe.Materials.O", "OBSIDIAN");
         
         init(config.getString("Reinforced.name"),
                 "[" + config.getString("Reinforced.name_modifier") + "] " + config.getString("Reinforced.description"),
