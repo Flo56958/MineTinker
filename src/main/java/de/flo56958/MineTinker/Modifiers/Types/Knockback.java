@@ -92,6 +92,6 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
     }
     
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Knockback.allowed");
+    	return getConfig().getBoolean("Knockback.allowed");
     }
 }

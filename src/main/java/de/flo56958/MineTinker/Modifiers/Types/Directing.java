@@ -94,6 +94,6 @@ public class Directing extends Modifier implements Craftable {
     }
     
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Directing.allowed");
+    	return getConfig().getBoolean("Directing.allowed");
     }
 }

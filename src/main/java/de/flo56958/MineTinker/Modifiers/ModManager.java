@@ -103,6 +103,8 @@ public class ModManager {
 
     public void reload() {
     	for(Modifier m : allMods) {
+    		m.reload();
+    		
     		if(m.isAllowed())
     			register(m);
     		else
@@ -166,7 +168,6 @@ public class ModManager {
      */
     private void register(Modifier mod) {
     	if(!mods.contains(mod)) {
-    		mod.reload();
 	        mods.add(mod);
 	        ChatWriter.logColor(ChatColor.GREEN + "Registered the " + mod.getColor() + mod.getName() + ChatColor.GREEN + " modifier from " + mod.getSource().getName() + ".");
     	}

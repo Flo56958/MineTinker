@@ -82,6 +82,6 @@ public class Haste extends Modifier implements Craftable {
     }
     
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Haste.allowed");
+    	return getConfig().getBoolean("Haste.allowed");
     }
 }

@@ -87,6 +87,6 @@ public class Experienced extends Modifier implements Craftable {
     }
     
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Experienced.allowed");
+    	return getConfig().getBoolean("Experienced.allowed");
     }
 }

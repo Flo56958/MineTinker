@@ -85,6 +85,6 @@ public class Protecting extends Modifier implements Craftable {
     }
     
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Protecting.allowed");
+    	return getConfig().getBoolean("Protecting.allowed");
     }
 }

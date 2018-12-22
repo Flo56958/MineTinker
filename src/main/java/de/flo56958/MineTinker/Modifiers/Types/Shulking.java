@@ -94,6 +94,6 @@ public class Shulking extends Modifier implements Craftable {
     }
     
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Shulking.allowed");
+    	return getConfig().getBoolean("Shulking.allowed");
     }
 }

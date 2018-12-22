@@ -266,6 +266,6 @@ public class Power extends Modifier implements Enchantable, Craftable {
     }
     
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Power.allowed");
+    	return getConfig().getBoolean("Power.allowed");
     }
 }

@@ -100,6 +100,6 @@ public class Webbed extends Modifier implements Craftable {
     }
     
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Webbed.allowed");
+    	return getConfig().getBoolean("Webbed.allowed");
     }
 }
