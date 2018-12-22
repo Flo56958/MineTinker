@@ -30,6 +30,19 @@ public class Sharpness extends Modifier implements Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Sharpness";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Compressed Quartzblock");
+    	config.addDefault(key + ".description", "Weapon does additional damage!");
+    	config.addDefault(key + ".MaxLevel", 5);
+    	config.addDefault(key + ".Recipe.Enabled", true);
+    	config.addDefault(key + ".Recipe.Top", "QQQ");
+    	config.addDefault(key + ".Recipe.Middle", "QQQ");
+    	config.addDefault(key + ".Recipe.Bottom", "QQQ");
+    	config.addDefault(key + ".Recipe.Materials.Q", "QUARTZ_BLOCK");
         
         init(config.getString("Sharpness.name"),
                 "[" + config.getString("Sharpness.name_modifier") + "] " + config.getString("Sharpness.description"),

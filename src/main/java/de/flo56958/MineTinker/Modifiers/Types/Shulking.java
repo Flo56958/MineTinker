@@ -37,6 +37,15 @@ public class Shulking extends Modifier implements Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Silk-Touch";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enhanced Cobweb");
+    	config.addDefault(key + ".description", "Applies Silk-Touch!");
+    	config.addDefault(key + ".EnchantCost", 10);
+    	config.addDefault(key + ".Recipe.Enabled", false);
         
         init(config.getString("Shulking.name"),
                 "[" + config.getString("Shulking.name_modifier") + "] " + config.getString("Shulking.description"),

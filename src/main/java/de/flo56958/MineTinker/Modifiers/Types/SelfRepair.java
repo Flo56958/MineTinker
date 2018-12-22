@@ -37,7 +37,7 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
     	
-    	String key = "Auto-Smelt";
+    	String key = "Self-Repair";
     	config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted mossy Cobblestone");
