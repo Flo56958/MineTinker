@@ -150,6 +150,8 @@ public class BlockListener implements Listener {
                         ((Enchantable) m).enchantItem(p, item);
                     }
                 }
+                
+                e.setCancelled(true);
             }
         }
     }
