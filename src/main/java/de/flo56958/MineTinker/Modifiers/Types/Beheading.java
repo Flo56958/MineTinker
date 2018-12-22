@@ -6,6 +6,7 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
@@ -48,6 +49,8 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".PercentagePerLevel", "10 #= 100% at Level 10");
     	config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".Recipe.Enabled", false);
+    	
+    	ConfigurationManager.saveConfig(config);
     	
     	init(config.getString("Beheading.name"),
                 "[" + config.getString("Beheading.name_modifier") + "] " + config.getString("Beheading.description"),
@@ -107,7 +110,7 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
     }
     
     private static FileConfiguration getConfig() {
-    	return Main.getConfigurations().getConfig(Modifiers_Config.Beheading);
+    	return ConfigurationManager.getConfig(Modifiers_Config.Beheading);
     }
     
     public boolean isAllowed() {

@@ -7,6 +7,7 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
@@ -52,6 +53,8 @@ public class AutoSmelt extends Modifier implements Craftable {
     	config.addDefault(key + ".Recipe.Bottom", "CCC");
     	config.addDefault(key + ".Recipe.Materials.C", "FURNACE");
     	config.addDefault(key + ".Recipe.Materials.F", "BLAZE_ROD");
+    	
+    	ConfigurationManager.saveConfig(config);
     	
     	init(config.getString("Auto-Smelt.name"),
                 "[" + config.getString("Auto-Smelt.name_modifier") + "] " + config.getString("Auto-Smelt.description"),
@@ -201,8 +204,8 @@ public class AutoSmelt extends Modifier implements Craftable {
         _registerCraftingRecipe(getConfig(), this, "Auto-Smelt", "Modifier_Autosmelt");
     }
     
-    private static FileConfiguration getConfig() {
-    	return Main.getConfigurations().getConfig(Modifiers_Config.Auto_Smelt);
+    public static FileConfiguration getConfig() {
+		return ConfigurationManager.getConfig(Modifiers_Config.Auto_Smelt);
     }
 
     public boolean isAllowed() {

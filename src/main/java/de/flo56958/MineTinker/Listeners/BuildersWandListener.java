@@ -1,10 +1,5 @@
 package de.flo56958.MineTinker.Listeners;
 
-//import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.ModManager;
-import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,11 +14,17 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+//import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.PlayerInfo;
+
 public class BuildersWandListener implements Listener {
 
     private static final ModManager modManager = ModManager.instance();
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("BuildersWand.yml");
-
+    private static final FileConfiguration config = ConfigurationManager.getConfig("BuildersWand.yml");
+    
     @EventHandler
     public void onBlockBreak (BlockBreakEvent e) {
         if (e.isCancelled()) { return; }

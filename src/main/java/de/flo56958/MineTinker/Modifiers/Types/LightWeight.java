@@ -1,12 +1,7 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,8 +12,14 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Enchantable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 public class LightWeight extends Modifier implements Enchantable, Craftable {
 
@@ -79,7 +80,7 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
     }
     
     private static FileConfiguration getConfig() {
-    	return Main.getConfigurations().getConfig(Modifiers_Config.Light_Weight);
+    	return ConfigurationManager.getConfig(Modifiers_Config.Light_Weight);
     }
     
     public boolean isAllowed() {

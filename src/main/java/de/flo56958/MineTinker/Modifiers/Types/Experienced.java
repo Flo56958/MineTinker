@@ -1,12 +1,8 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,9 +11,14 @@ import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 public class Experienced extends Modifier implements Craftable {
 
@@ -80,7 +81,7 @@ public class Experienced extends Modifier implements Craftable {
     }
     
     private static FileConfiguration getConfig() {
-    	return Main.getConfigurations().getConfig(Modifiers_Config.Experienced);
+    	return ConfigurationManager.getConfig(Modifiers_Config.Experienced);
     }
     
     public boolean isAllowed() {

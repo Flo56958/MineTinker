@@ -1,9 +1,0 @@
-Fiery:
-  allowed: true
-  name: Fiery
-  name_modifier: Enchanted Blaze-Rod
-  decription: Inflames enemies!
-  MaxLevel: 2
-  EnchantCost: 10
-  Recipe:
-    Enabled: false

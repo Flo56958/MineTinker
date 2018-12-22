@@ -1,10 +1,7 @@
 package de.flo56958.MineTinker.Modifiers;
 
-import de.flo56958.MineTinker.Data.ModifierFailCause;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Events.ModifierApplyEvent;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
-import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
+import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -13,7 +10,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
-import java.util.ArrayList;
+import de.flo56958.MineTinker.Data.ModifierFailCause;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.ModifierApplyEvent;
+import de.flo56958.MineTinker.Events.ModifierFailEvent;
+import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
 
 public abstract class Modifier {
 
@@ -104,6 +105,8 @@ public abstract class Modifier {
 	public abstract void reload();
 
 	public abstract boolean isAllowed();
+	
+//	public abstract FileConfiguration getConfig();
 	
 	public static ItemStack checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand) {
 		if (modManager.getFreeSlots(tool) < 1 && !mod.getType().equals(ModifierType.EXTRA_MODIFIER)) {

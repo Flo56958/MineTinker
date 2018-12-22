@@ -17,6 +17,7 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
@@ -79,7 +80,7 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
     }
     
     private static FileConfiguration getConfig() {
-    	return Main.getConfigurations().getConfig(Modifiers_Config.Sweeping);
+    	return ConfigurationManager.getConfig(Modifiers_Config.Sweeping);
     }
     
     public boolean isAllowed() {

@@ -18,13 +18,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class Main extends JavaPlugin {
 
-    private static ConfigurationManager configurations;
-
     private static Updater updater;
+    
+    private static Main main;
 
     @Override
     public void onEnable() {
-        configurations = new ConfigurationManager(this);
+    	main = this;
+        ConfigurationManager.reload();
         loadConfig();
 
         ModManager.instance();
@@ -48,12 +49,12 @@ public class Main extends JavaPlugin {
         if (!getConfig().getBoolean("AllowEnchanting")) {
             Bukkit.getPluginManager().registerEvents(new EnchantingTableListener(), this);
         }
-        if (configurations.getConfig("Elevator.yml").getBoolean("Elevator.enabled")) {
+        if (ConfigurationManager.getConfig("Elevator.yml").getBoolean("Elevator.enabled")) {
             Bukkit.getPluginManager().registerEvents(new ElevatorListener(), this);
             CraftingRecipes.registerElevatorMotor();
             ChatWriter.log(false, "Enabled Elevators!");
         }
-        if (configurations.getConfig("BuildersWand.yml").getBoolean("BuildersWand.enabled")) {
+        if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("BuildersWand.enabled")) {
             Bukkit.getPluginManager().registerEvents(new BuildersWandListener(),this);
             CraftingRecipes.registerBuildersWands();
             ChatWriter.log(false, "Enabled BuildersWands!");
@@ -108,9 +109,7 @@ public class Main extends JavaPlugin {
 
     public static Updater getUpdater() { return updater; }
 
-    /**
-     * @return The ConfigurationManager of MineTinker
-     */
-    public static ConfigurationManager getConfigurations() { return configurations; }
-
+	public static Main getMain() {
+		return main;
+	}
 }
