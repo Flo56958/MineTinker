@@ -1,10 +1,9 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,23 +12,46 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 public class Directing extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Directing.yml");
-
     public Directing() {
-        super(config.getString("Directing.name"),
-                "[" + config.getString("Directing.name_modifier") + "] " + config.getString("Directing.description"),
-                ModifierType.DIRECTING,
+        super(ModifierType.DIRECTING,
                 ChatColor.GRAY,
-                1,
-                ItemGenerator.itemEnchanter(Material.COMPASS, ChatColor.GRAY + config.getString("Directing.name_modifier"), 1, Enchantment.BINDING_CURSE, 1),
                 new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Directing";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enhanced Compass");
+    	config.addDefault(key + ".description", "Loot goes directly into Inventory!");
+    	config.addDefault(key + ".Recipe.Enabled", true);
+    	config.addDefault(key + ".Recipe.Top", "ECE");
+    	config.addDefault(key + ".Recipe.Middle", "CIC");
+    	config.addDefault(key + ".Recipe.Bottom", "ECE");
+    	config.addDefault(key + ".Recipe.Materials.C", "COMPASS");
+    	config.addDefault(key + ".Recipe.Materials.E", "ENDER_PEARL");
+    	config.addDefault(key + ".Recipe.Materials.I", "IRON_BLOCK");
+    	
+    	ConfigurationManager.saveConfig(config);
+    	
+        init(config.getString("Directing.name"),
+                "[" + config.getString("Directing.name_modifier") + "] " + config.getString("Directing.description"),
+                1,
+                ItemGenerator.itemEnchanter(Material.COMPASS, ChatColor.GRAY + config.getString("Directing.name_modifier"), 1, Enchantment.BINDING_CURSE, 1));
     }
 
     @Override
@@ -64,6 +86,14 @@ public class Directing extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Directing", "Modifier_Directing");
+        _registerCraftingRecipe(getConfig(), this, "Directing", "Modifier_Directing");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return ConfigurationManager.getConfig(Modifiers_Config.Directing);
+    }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Directing.allowed");
     }
 }

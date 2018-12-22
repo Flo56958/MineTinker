@@ -1,11 +1,8 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,26 +14,54 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 public class Glowing extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Glowing.yml");
-
-    private final int duration;
-    private final double durationMultiplier;
+    private int duration;
+    private double durationMultiplier;
 
 
     public Glowing() {
-        super(config.getString("Glowing.name"),
-                "[" + config.getString("Glowing.name_modifier") + "] " + config.getString("Glowing.description"),
-                ModifierType.GLOWING,
+        super(ModifierType.GLOWING,
                 ChatColor.YELLOW,
-                config.getInt("Glowing.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.GLOWSTONE, ChatColor.YELLOW + config.getString("Glowing.name_modifier"), 1, Enchantment.DURABILITY, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Glowing";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Ender-Glowstone");
+    	config.addDefault(key + ".description", "Makes Enemies glow!");
+    	config.addDefault(key + ".MaxLevel", 3);
+    	config.addDefault(key + ".Duration", 200); //#ticks INTEGER (20 ticks ~ 1 sec)
+    	config.addDefault(key + ".DurationMultiplier", 1.1); //#Duration * (Multiplier^Level) DOUBLE
+    	config.addDefault(key + ".Recipe.Enabled", true);
+    	config.addDefault(key + ".Recipe.Top", "GGG");
+    	config.addDefault(key + ".Recipe.Middle", "GEG");
+    	config.addDefault(key + ".Recipe.Bottom", "GGG");
+    	config.addDefault(key + ".Recipe.Materials.G", "GLOWSTONE_DUST");
+    	config.addDefault(key + ".Recipe.Materials.E", "ENDER_EYE");
+        
+    	ConfigurationManager.saveConfig(config);
+    	
+        init(config.getString("Glowing.name"),
+                "[" + config.getString("Glowing.name_modifier") + "] " + config.getString("Glowing.description"),
+                config.getInt("Glowing.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.GLOWSTONE, ChatColor.YELLOW + config.getString("Glowing.name_modifier"), 1, Enchantment.DURABILITY, 1));
+        
         this.duration = config.getInt("Glowing.Duration");
         this.durationMultiplier = config.getDouble("Glowing.DurationMultiplier");
     }
@@ -59,6 +84,14 @@ public class Glowing extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Glowing", "Modifier_Glowing");
+        _registerCraftingRecipe(getConfig(), this, "Glowing", "Modifier_Glowing");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return ConfigurationManager.getConfig(Modifiers_Config.Glowing);
+    }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Glowing.allowed");
     }
 }

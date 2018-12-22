@@ -1,7 +1,8 @@
 package de.flo56958.MineTinker.Listeners;
 
-import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Main;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -14,10 +15,37 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
+import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+
 public class ElevatorListener implements Listener {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Elevator.yml");
+    private static final FileConfiguration config;
 
+    static {
+    	config = ConfigurationManager.getConfig("Elevator.yml");
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Elevator";
+    	config.addDefault(key + ".enabled", true);
+    	config.addDefault(key + ".name", "Elevator-Motor");
+    	config.addDefault(key + ".Sound", true); //#(Chest opening and closing)
+    	
+    	List<String> list = new ArrayList<String>();
+    	list.add("bannedExample1");
+    	list.add("bannedExample2");
+    	config.addDefault(key + ".BannedWorlds", list); //#Worlds where Elevator can't be used
+    	
+    	String recipe = key + ".Recipe";
+    	config.addDefault(recipe + ".Top", "RRR");
+    	config.addDefault(recipe + ".Middle", "RHR");
+    	config.addDefault(recipe + ".Bottom", "RRR");
+    	config.addDefault(recipe + ".Materials.H", "HOPPER");
+    	config.addDefault(recipe + ".Materials.R", "REDSTONE");
+    	
+    	ConfigurationManager.saveConfig(config);
+    }
+    
     @EventHandler
     public void onSneak (PlayerToggleSneakEvent e) {
         if (e.isCancelled()) { return; }

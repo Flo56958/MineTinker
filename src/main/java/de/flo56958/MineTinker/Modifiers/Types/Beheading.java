@@ -6,7 +6,10 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -24,19 +27,36 @@ import java.util.Random;
 
 public class Beheading extends Modifier implements Enchantable, Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Beheading.yml");
-
-    private final int percentagePerLevel;
+    private int percentagePerLevel;
 
     public Beheading() {
-        super(config.getString("Beheading.name"),
-                "[" + config.getString("Beheading.name_modifier") + "] " + config.getString("Beheading.description"),
-                ModifierType.BEHEADING,
+        super(ModifierType.BEHEADING,
                 ChatColor.DARK_GRAY,
-                config.getInt("Beheading.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.WITHER_SKELETON_SKULL, ChatColor.DARK_GRAY + config.getString("Beheading.name_modifier"), 1, Enchantment.LOOT_BONUS_MOBS, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Beheading";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enchanted Wither-Skull");
+    	config.addDefault(key + ".description", "Chance to drop the head of the mob!");
+    	config.addDefault(key + ".MaxLevel", 10);
+    	config.addDefault(key + ".PercentagePerLevel", "10 #= 100% at Level 10");
+    	config.addDefault(key + ".EnchantCost", 10);
+    	config.addDefault(key + ".Recipe.Enabled", false);
+    	
+    	ConfigurationManager.saveConfig(config);
+    	
+    	init(config.getString("Beheading.name"),
+                "[" + config.getString("Beheading.name_modifier") + "] " + config.getString("Beheading.description"),
+                config.getInt("Beheading.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.WITHER_SKELETON_SKULL, ChatColor.DARK_GRAY + config.getString("Beheading.name_modifier"), 1, Enchantment.LOOT_BONUS_MOBS, 1));
+        
         this.percentagePerLevel = config.getInt("Beheading.PercentagePerLevel");
     }
 
@@ -81,11 +101,19 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.Beheading.craft")) { return; }
-        _createModifierItem(config, p, this, "Beheading");
+        _createModifierItem(getConfig(), p, this, "Beheading");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Beheading", "Modifier_Beheading");
+        _registerCraftingRecipe(getConfig(), this, "Beheading", "Modifier_Beheading");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return ConfigurationManager.getConfig(Modifiers_Config.Beheading);
+    }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Beheading.allowed");
     }
 }

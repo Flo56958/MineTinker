@@ -21,24 +21,44 @@ import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import net.minecraft.server.v1_13_R2.BlockPosition;
 
 public class Timber extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Timber.yml");
-
     private static final ArrayList<Location> locs = new ArrayList<>();
 
     public Timber() {
-        super(config.getString("Timber.name"),
-                "[" + config.getString("Timber.name_modifier") + "] " + config.getString("Timber.description"),
-                ModifierType.TIMBER,
+        super(ModifierType.TIMBER,
                 ChatColor.GREEN,
-                1,
-                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Timber.name_modifier"), 1, Enchantment.DIG_SPEED, 1),
                 new ArrayList<>(Collections.singletonList(ToolType.AXE)),
                 Main.getPlugin());
+    }
+    
+    public void reload() {
+        FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Timber";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Wooden Emerald");
+    	config.addDefault(key + ".description", "Chop down trees in an instant!");
+    	config.addDefault(key + ".Recipe.Enabled", true);
+    	config.addDefault(key + ".Recipe.Top", "LLL");
+    	config.addDefault(key + ".Recipe.Middle", "LEL");
+    	config.addDefault(key + ".Recipe.Bottom", "LLL");
+    	config.addDefault(key + ".Recipe.Materials.L", "OAK_WOOD");
+    	config.addDefault(key + ".Recipe.Materials.E", "EMERALD");
+    	
+    	ConfigurationManager.saveConfig(config);
+        
+        init(config.getString("Timber.name"),
+                "[" + config.getString("Timber.name_modifier") + "] " + config.getString("Timber.description"),
+                1,
+                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Timber.name_modifier"), 1, Enchantment.DIG_SPEED, 1));    	
     }
 
     @Override
@@ -115,6 +135,14 @@ public class Timber extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Timber", "Modifier_Timber");
+        _registerCraftingRecipe(getConfig(), this, "Timber", "Modifier_Timber");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return ConfigurationManager.getConfig(Modifiers_Config.Timber);
+    }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Timber.allowed");
     }
 }

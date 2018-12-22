@@ -1,17 +1,9 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Data.ModifierFailCause;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.PlayerInfo;
-import net.minecraft.server.v1_13_R2.BlockPosition;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,27 +17,55 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Data.ModifierFailCause;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.ModifierFailEvent;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Enchantable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import de.flo56958.MineTinker.Utilities.PlayerInfo;
+import net.minecraft.server.v1_13_R2.BlockPosition;
 
 public class Power extends Modifier implements Enchantable, Craftable {
-	
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Power.yml");
 
     public static final HashMap<Player, Boolean> HASPOWER = new HashMap<>();
 
-    private final boolean lv1_vertical;
+    private boolean lv1_vertical;
 
     public Power() {
-        super(config.getString("Power.name"),
-                "[" + config.getString("Power.name_modifier") + "] " + config.getString("Power.description"),
-                ModifierType.POWER,
+        super(ModifierType.POWER,
                 ChatColor.GREEN,
-                config.getInt("Power.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Power.name_modifier"), 1, Enchantment.ARROW_DAMAGE, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL)),
                 Main.getPlugin());
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Power";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enchanted Emerald");
+    	config.addDefault(key + ".description", "Tool can destroy more blocks per swing!");
+    	config.addDefault(key + ".lv1_vertical", false); //#Should the 3x1 at level 1 be horizontal (false) or vertical (true)
+    	config.addDefault(key + ".MaxLevel", 3); //#Algorithm for area of effect (except for level 1): (level * 2) - 1 x (level * 2) - 1
+    	config.addDefault(key + ".EnchantCost", 10);
+    	config.addDefault(key + ".Recipe.Enabled", false);
+        
+    	ConfigurationManager.saveConfig(config);
+    	
+        init(config.getString("Power.name"),
+                "[" + config.getString("Power.name_modifier") + "] " + config.getString("Power.description"),
+                config.getInt("Power.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Power.name_modifier"), 1, Enchantment.ARROW_DAMAGE, 1));
+        
         this.lv1_vertical = config.getBoolean("Power.lv1_vertical");
     }
 
@@ -171,6 +191,9 @@ public class Power extends Modifier implements Enchantable, Craftable {
             if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
                 Block b1;
                 Block b2;
+                
+                FileConfiguration config = getConfig();
+                
                 if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
                     if (config.getBoolean("Power.lv1_vertical")) {
                         b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
@@ -230,11 +253,19 @@ public class Power extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.power.craft")) { return; }
-        _createModifierItem(config, p, this, "Power");
+        _createModifierItem(getConfig(), p, this, "Power");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Power", "Modifier_Power");
+        _registerCraftingRecipe(getConfig(), this, "Power", "Modifier_Power");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return ConfigurationManager.getConfig(Modifiers_Config.Power);
+    }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Power.allowed");
     }
 }

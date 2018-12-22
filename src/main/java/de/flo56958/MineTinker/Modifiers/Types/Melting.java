@@ -1,12 +1,8 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,25 +12,49 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Enchantable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 public class Melting extends Modifier implements Enchantable, Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Melting.yml");
-
-    private final double bonusMultiplier;
+    private double bonusMultiplier;
 
     public Melting() {
-        super(config.getString("Melting.name"),
-                "[" + config.getString("Melting.name_modifier") + "] " + config.getString("Melting.description"),
-                ModifierType.MELTING,
+        super(ModifierType.MELTING,
                 ChatColor.GOLD,
-                config.getInt("Melting.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.MAGMA_BLOCK, ChatColor.GOLD + config.getString("Melting.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.CHESTPLATE, ToolType.LEGGINGS)),
                 Main.getPlugin());
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Melting";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enchanted Magma block");
+    	config.addDefault(key + ".description", "Extra damage against burning enemies and less damage taken while on fire!");
+    	config.addDefault(key + ".MaxLevel", 3);
+    	config.addDefault(key + ".EnchantCost", 10);
+    	config.addDefault(key + ".BonusMultiplier", 0.1); //#Percent of Bonus-damage per Level or Damage-reduction on Armor
+    	config.addDefault(key + ".Recipe.Enabled", false);
+        
+    	ConfigurationManager.saveConfig(config);
+    	
+        init(config.getString("Melting.name"),
+                "[" + config.getString("Melting.name_modifier") + "] " + config.getString("Melting.description"),
+                config.getInt("Melting.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.MAGMA_BLOCK, ChatColor.GOLD + config.getString("Melting.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1));
+        
         this.bonusMultiplier = config.getDouble("Melting.BonusMultiplier");
     }
 
@@ -64,7 +84,7 @@ public class Melting extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.melting.craft")) { return; }
-        _createModifierItem(config, p, this, "Melting");
+        _createModifierItem(getConfig(), p, this, "Melting");
     }
 
     public void effect_armor(Player p, ItemStack piece, EntityDamageByEntityEvent e) {
@@ -95,6 +115,14 @@ public class Melting extends Modifier implements Enchantable, Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Melting", "Modifier_Melting");
+        _registerCraftingRecipe(getConfig(), this, "Melting", "Modifier_Melting");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return ConfigurationManager.getConfig(Modifiers_Config.Melting);
+    }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Melting.allowed");
     }
 }

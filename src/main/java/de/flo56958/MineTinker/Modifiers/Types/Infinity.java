@@ -1,13 +1,8 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ModifierFailCause;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import java.util.ArrayList;
+import java.util.Collections;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,25 +12,49 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Data.ModifierFailCause;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.ModifierFailEvent;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Enchantable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 public class Infinity extends Modifier implements Enchantable, Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Infinity.yml");
-
-    private final boolean compatibleWithEnder;
+    private boolean compatibleWithEnder;
 
     public Infinity() {
-        super(config.getString("Infinity.name"),
-                "[" + config.getString("Infinity.name_modifier") + "] " + config.getString("Infinity.description"),
-                ModifierType.INFINITY,
+        super(ModifierType.INFINITY,
                 ChatColor.WHITE,
-                1,
-                ItemGenerator.itemEnchanter(Material.ARROW, ChatColor.WHITE + config.getString("Infinity.name_modifier"), 1, Enchantment.ARROW_INFINITE, 1),
                 new ArrayList<>(Collections.singletonList(ToolType.BOW)),
                 Main.getPlugin());
-        this.compatibleWithEnder = Main.getConfigurations().getConfig("Ender.yml").getBoolean("Ender.CompatibleWithInfinity");
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Infinity";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enchanted Arrow");
+    	config.addDefault(key + ".description", "You only need one Arrow to shoot a bow!");
+    	config.addDefault(key + ".EnchantCost", 10);
+    	config.addDefault(key + ".Recipe.Enabled", false);
+    	//#Check Ender.yml for Compatibility-option for Ender and Infinity
+    	
+    	ConfigurationManager.saveConfig(config);
+    	
+        init(config.getString("Infinity.name"),
+                "[" + config.getString("Infinity.name_modifier") + "] " + config.getString("Infinity.description"),
+                1,
+                ItemGenerator.itemEnchanter(Material.ARROW, ChatColor.WHITE + config.getString("Infinity.name_modifier"), 1, Enchantment.ARROW_INFINITE, 1));
+        
+        this.compatibleWithEnder = ConfigurationManager.getConfig("Ender.yml").getBoolean("Ender.CompatibleWithInfinity");
     }
 
     @Override
@@ -69,11 +88,19 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.infinity.craft")) { return; }
-        _createModifierItem(config, p, this, "Infinity");
+        _createModifierItem(getConfig(), p, this, "Infinity");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Infinity", "Modifier_Infinity");
+        _registerCraftingRecipe(getConfig(), this, "Infinity", "Modifier_Infinity");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return ConfigurationManager.getConfig(Modifiers_Config.Infinity);
+    }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Infinity.allowed");
     }
 }

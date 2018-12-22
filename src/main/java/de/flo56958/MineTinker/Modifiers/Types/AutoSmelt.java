@@ -7,7 +7,10 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,24 +25,46 @@ import java.util.Random;
 
 public class AutoSmelt extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Auto-Smelt.yml");
-
-    private final int percentagePerLevel;
-    private final boolean hasSound;
+    private int percentagePerLevel;
+    private boolean hasSound;
 
     public AutoSmelt() {
-        super(config.getString("Auto-Smelt.name"),
+        super(ModifierType.AUTO_SMELT, ChatColor.YELLOW, new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL)), Main.getPlugin());
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Auto-Smelt";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enhanced Furnace");
+    	config.addDefault(key + ".description", "Chance to smelt ore when mined!");
+    	config.addDefault(key + ".MaxLevel", 5);
+    	config.addDefault(key + ".PercentagePerLevel", 20);
+    	config.addDefault(key + ".Sound", true);
+    	config.addDefault(key + ".smelt_stone", false);
+    	config.addDefault(key + ".burn_coal", true);
+    	config.addDefault(key + ".works_under_water", true);
+    	config.addDefault(key + ".Recipe.Enabled", true);
+    	config.addDefault(key + ".Recipe.Top", "CCC");
+    	config.addDefault(key + ".Recipe.Middle", "CFC");
+    	config.addDefault(key + ".Recipe.Bottom", "CCC");
+    	config.addDefault(key + ".Recipe.Materials.C", "FURNACE");
+    	config.addDefault(key + ".Recipe.Materials.F", "BLAZE_ROD");
+    	
+    	ConfigurationManager.saveConfig(config);
+    	
+    	init(config.getString("Auto-Smelt.name"),
                 "[" + config.getString("Auto-Smelt.name_modifier") + "] " + config.getString("Auto-Smelt.description"),
-                ModifierType.AUTO_SMELT,
-                ChatColor.YELLOW,
                 config.getInt("Auto-Smelt.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.FURNACE, ChatColor.YELLOW + config.getString("Auto-Smelt.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1),
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL)),
-                Main.getPlugin());
+                ItemGenerator.itemEnchanter(Material.FURNACE, ChatColor.YELLOW + config.getString("Auto-Smelt.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1));
+        
         this.percentagePerLevel = config.getInt("Auto-Smelt.PercentagePerLevel");
         this.hasSound = config.getBoolean("Auto-Smelt.Sound");
     }
-
+    
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
 
@@ -54,6 +79,8 @@ public class AutoSmelt extends Modifier implements Craftable {
     }
 
     public void effect(Player p, ItemStack tool, Block b, BlockBreakEvent e) {
+    	FileConfiguration config = getConfig();
+    	
         if (!p.hasPermission("minetinker.modifiers.autosmelt.use")) { return; }//TODO: Think about more blocks for Auto-Smelt
         if (!modManager.hasMod(tool, this)) { return; }
 
@@ -174,6 +201,14 @@ public class AutoSmelt extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Auto-Smelt", "Modifier_Autosmelt");
+        _registerCraftingRecipe(getConfig(), this, "Auto-Smelt", "Modifier_Autosmelt");
+    }
+    
+    public static FileConfiguration getConfig() {
+		return ConfigurationManager.getConfig(Modifiers_Config.Auto_Smelt);
+    }
+
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Auto-Smelt.allowed");
     }
 }

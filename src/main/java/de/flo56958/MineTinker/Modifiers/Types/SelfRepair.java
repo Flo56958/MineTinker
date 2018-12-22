@@ -1,12 +1,9 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,27 +11,51 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Enchantable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 public class SelfRepair extends Modifier implements Enchantable, Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Self-Repair.yml");
-
-    private final int percentagePerLevel;
-    private final int healthRepair;
+    private int percentagePerLevel;
+    private int healthRepair;
 
     public SelfRepair() {
-        super(config.getString("Self-Repair.name"),
-                "[" + config.getString("Self-Repair.name_modifier") + "] " + config.getString("Self-Repair.description"),
-                ModifierType.SELF_REPAIR,
+        super(ModifierType.SELF_REPAIR,
                 ChatColor.GREEN,
-                config.getInt("Self-Repair.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.MOSSY_COBBLESTONE, ChatColor.GREEN + config.getString("Self-Repair.name_modifier"), 1, Enchantment.MENDING, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Self-Repair";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enchanted mossy Cobblestone");
+    	config.addDefault(key + ".description", "Chance to repair the tool / armor while using it!");
+    	config.addDefault(key + ".MaxLevel", 10);
+    	config.addDefault(key + ".EnchantCost", 10);
+    	config.addDefault(key + ".PercentagePerLevel", 10); //#100% at Level 10 (not necessary for unbreakable tool in most cases)
+    	config.addDefault(key + ".HealthRepair", 2); //#How much durability should be repaired per trigger
+    	config.addDefault(key + ".Recipe.Enabled", false);
+    	
+    	ConfigurationManager.saveConfig(config);
+        
+        init(config.getString("Self-Repair.name"),
+                "[" + config.getString("Self-Repair.name_modifier") + "] " + config.getString("Self-Repair.description"),
+                config.getInt("Self-Repair.MaxLevel"),
+                ItemGenerator.itemEnchanter(Material.MOSSY_COBBLESTONE, ChatColor.GREEN + config.getString("Self-Repair.name_modifier"), 1, Enchantment.MENDING, 1));
+        
         this.percentagePerLevel = config.getInt("Self-Repair.PercentagePerLevel");
         this.healthRepair = config.getInt("Self-Repair.HealthRepair");
     }
@@ -68,11 +89,19 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.selfrepair.craft")) { return; }
-        _createModifierItem(config, p, this, "Self-Repair");
+        _createModifierItem(getConfig(), p, this, "Self-Repair");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Self-Repair", "Modifier_SelfRepair");
+        _registerCraftingRecipe(getConfig(), this, "Self-Repair", "Modifier_SelfRepair");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return ConfigurationManager.getConfig(Modifiers_Config.Self_Repair);
+    }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Self-Repair.allowed");
     }
 }

@@ -1,10 +1,8 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,22 +12,47 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 public class Protecting extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Protecting.yml");
-
     public Protecting() {
-        super(config.getString("Protecting.name"),
-                "[" + config.getString("Protecting.name_modifier") + "] " + config.getString("Protecting.description"),
-                ModifierType.PROTECTING,
+        super(ModifierType.PROTECTING,
                 ChatColor.GRAY,
-                config.getInt("Protecting.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.GRAY + config.getString("Protecting.name_modifier"), 1, Enchantment.PROTECTION_ENVIRONMENTAL, 1),
                 new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS)),
                 Main.getPlugin());
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
+     	config.options().copyDefaults(true);
+    	
+     	String key = "Protecting";
+     	config.addDefault(key + ".allowed", true);
+     	config.addDefault(key + ".name", key);
+     	config.addDefault(key + ".name_modifier", "Enriched Obsidian");
+     	config.addDefault(key + ".description", "Your armor protects you better against all damage!");
+     	config.addDefault(key + ".MaxLevel", 5);
+     	config.addDefault(key + ".Recipe.Enabled", true);
+     	config.addDefault(key + ".Recipe.Top", "DID");
+     	config.addDefault(key + ".Recipe.Middle", "IOO");
+     	config.addDefault(key + ".Recipe.Bottom", "DID");
+     	config.addDefault(key + ".Recipe.Materials.D", "DIAMOND");
+     	config.addDefault(key + ".Recipe.Materials.I", "IRON_INGOT");
+     	config.addDefault(key + ".Recipe.Materials.O", "OBSIDIAN");
+         
+     	ConfigurationManager.saveConfig(config);
+     	
+        init(config.getString("Protecting.name"),
+                 "[" + config.getString("Protecting.name_modifier") + "] " + config.getString("Protecting.description"),
+                 config.getInt("Protecting.MaxLevel"),
+                 ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.GRAY + config.getString("Protecting.name_modifier"), 1, Enchantment.PROTECTION_ENVIRONMENTAL, 1));
     }
 
     @Override
@@ -54,6 +77,14 @@ public class Protecting extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Protecting", "Modifier_Protecting");
+        _registerCraftingRecipe(getConfig(), this, "Protecting", "Modifier_Protecting");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return ConfigurationManager.getConfig(Modifiers_Config.Protecting);
+    }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Protecting.allowed");
     }
 }

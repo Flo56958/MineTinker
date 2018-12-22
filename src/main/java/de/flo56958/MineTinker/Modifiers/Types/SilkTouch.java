@@ -19,21 +19,37 @@ import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 public class SilkTouch extends Modifier implements Enchantable, Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Silk-Touch.yml");
-
     public SilkTouch() {
-        super(config.getString("Silk-Touch.name"),
-                "[" + config.getString("Silk-Touch.name_modifier") + "] " + config.getString("Silk-Touch.description"),
-                ModifierType.SILK_TOUCH,
+        super(ModifierType.SILK_TOUCH,
                 ChatColor.WHITE,
-                1,
-                ItemGenerator.itemEnchanter(Material.COBWEB, ChatColor.WHITE + config.getString("Silk-Touch.name_modifier"), 1, Enchantment.SILK_TOUCH, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL)),
                 Main.getPlugin());
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Silk-Touch";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enhanced Cobweb");
+    	config.addDefault(key + ".description", "Applies Silk-Touch!");
+    	config.addDefault(key + ".EnchantCost", 10);
+    	config.addDefault(key + ".Recipe.Enabled", false);
+    	
+    	ConfigurationManager.saveConfig(config);
+    	
+        init(config.getString("Silk-Touch.name"),
+                "[" + config.getString("Silk-Touch.name_modifier") + "] " + config.getString("Silk-Touch.description"),
+                1,
+                ItemGenerator.itemEnchanter(Material.COBWEB, ChatColor.WHITE + config.getString("Silk-Touch.name_modifier"), 1, Enchantment.SILK_TOUCH, 1));
     }
 
     @Override
@@ -72,11 +88,19 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.silktouch.craft")) { return; }
-        _createModifierItem(config, p, this, "Silk-Touch");
+        _createModifierItem(getConfig(), p, this, "Silk-Touch");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Silk-Touch", "Modifier_SilkTouch");
+        _registerCraftingRecipe(getConfig(), this, "Silk-Touch", "Modifier_SilkTouch");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return ConfigurationManager.getConfig(Modifiers_Config.Silk_Touch);
+    }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Silk-Touch.allowed");
     }
 }

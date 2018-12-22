@@ -1,10 +1,8 @@
 package de.flo56958.MineTinker.Listeners;
 
-//import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.ModManager;
-import de.flo56958.MineTinker.Utilities.PlayerInfo;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,11 +17,74 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+//import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.PlayerInfo;
+
 public class BuildersWandListener implements Listener {
 
-    private static final ModManager modManager = ModManager.instance();
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("BuildersWand.yml");
+    private static final ModManager modManager;
+    private static final FileConfiguration config;
+    
+    static {
+    	modManager = ModManager.instance();
+    	config = ConfigurationManager.getConfig("BuildersWand.yml");
+    	config.options().copyDefaults(true);
+    	
+    	String key = "BuildersWand";
+    	config.addDefault(key + ".enabled", true);
+    	config.addDefault(key + ".useDurability", true);
+    	config.addDefault(key + ".name_wood", "Wooden Builderswand");
+    	config.addDefault(key + ".name_stone", "Stone Builderswand");
+    	config.addDefault(key + ".name_iron", "Iron Builderswand");
+    	config.addDefault(key + ".name_gold", "Golden Builderswand");
+    	config.addDefault(key + ".name_diamond", "Diamond Builderswand");
+    	
+    	List<String> list = new ArrayList<String>();
+    	list.add("bannedExample1");
+    	list.add("bannedExample2");
+    	config.addDefault(key + ".BannedWorlds", list); //#Worlds where MineTinker-Builderswands can't be used
+    	
+    	String recipe = key + ".Recipe.Wood";
+    	config.addDefault(recipe + ".Top", "  W");
+    	config.addDefault(recipe + ".Middle", " S ");
+    	config.addDefault(recipe + ".Bottom", "S  ");
+    	config.addDefault(recipe + ".Materials.S", "STICK");
+    	config.addDefault(recipe + ".Materials.W", "LEGACY_WOOD");
+    	
+    	recipe = key + ".Recipe.Stone";
+    	config.addDefault(recipe + ".Top", "  C");
+    	config.addDefault(recipe + ".Middle", " S ");
+    	config.addDefault(recipe + ".Bottom", "S  ");
+    	config.addDefault(recipe + ".Materials.C", "COBBLESTONE");
+    	config.addDefault(recipe + ".Materials.S", "STICK");
 
+    	recipe = key + ".Recipe.Iron";
+    	config.addDefault(recipe + ".Top", "  I");
+    	config.addDefault(recipe + ".Middle", " S ");
+    	config.addDefault(recipe + ".Bottom", "S  ");
+    	config.addDefault(recipe + ".Materials.I", "IRON_INGOT");
+    	config.addDefault(recipe + ".Materials.S", "STICK");
+    	
+    	recipe = key + ".Recipe.Gold";
+    	config.addDefault(recipe + ".Top", "  G");
+    	config.addDefault(recipe + ".Middle", " S ");
+    	config.addDefault(recipe + ".Bottom", "S  ");
+    	config.addDefault(recipe + ".Materials.G", "GOLD_INGOT");
+    	config.addDefault(recipe + ".Materials.S", "STICK");
+    	
+    	recipe = key + ".Recipe.Diamond";
+    	config.addDefault(recipe + ".Top", "  D");
+    	config.addDefault(recipe + ".Middle", " S ");
+    	config.addDefault(recipe + ".Bottom", "S  ");
+    	config.addDefault(recipe + ".Materials.D", "DIAMOND");
+    	config.addDefault(recipe + ".Materials.S", "STICK");
+    	
+    	ConfigurationManager.saveConfig(config);
+    }
+    
     @EventHandler
     public void onBlockBreak (BlockBreakEvent e) {
         if (e.isCancelled()) { return; }

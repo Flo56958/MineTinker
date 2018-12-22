@@ -1,8 +1,0 @@
-Silk-Touch:
-  allowed: true
-  name: Silk-Touch
-  name_modifier: Enchanted Cobweb
-  description: Applies Silk-Touch!
-  EnchantCost: 10
-  Recipe:
-    Enabled: false

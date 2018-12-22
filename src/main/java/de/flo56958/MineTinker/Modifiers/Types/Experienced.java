@@ -1,11 +1,9 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,27 +11,48 @@ import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 public class Experienced extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Experienced.yml");
-
-    private final int percentagePerLevel;
-    private final int amount;
+    private int percentagePerLevel;
+    private int amount;
 
     public Experienced() {
-        super(config.getString("Experienced.name"),
-                "[Bottle o' Experience] " + config.getString("Experienced.description"),
-                ModifierType.EXPERIENCED,
+        super(ModifierType.EXPERIENCED,
                 ChatColor.GREEN,
-                config.getInt("Experienced.MaxLevel"),
-                new ItemStack(Material.EXPERIENCE_BOTTLE, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Experienced";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".description", "Tool has the chance to drop XP while using it!");
+    	config.addDefault(key + ".MaxLevel", 10);
+    	config.addDefault(key + ".PercentagePerLevel", "2"); //#= 20% at Level 10 -> every 5th hit / block will trigger Experienced
+    	config.addDefault(key + ".Amount", 1); //#How much XP should be dropped when triggered
+    	config.addDefault(key + ".Recipe.Enabled", false);
+    	
+    	ConfigurationManager.saveConfig(config);
+    	
+        init(config.getString("Experienced.name"),
+                "[Bottle o' Experience] " + config.getString("Experienced.description"),
+                config.getInt("Experienced.MaxLevel"),
+                new ItemStack(Material.EXPERIENCE_BOTTLE, 1));
+        
         this.percentagePerLevel = config.getInt("Experienced.PercentagePerLevel");
         this.amount = config.getInt("Experienced.Amount");
     }
@@ -60,6 +79,14 @@ public class Experienced extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Experienced", "Modifier_Experienced");
+        _registerCraftingRecipe(getConfig(), this, "Experienced", "Modifier_Experienced");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return ConfigurationManager.getConfig(Modifiers_Config.Experienced);
+    }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Experienced.allowed");
     }
 }

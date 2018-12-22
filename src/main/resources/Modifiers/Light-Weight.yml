@@ -1,9 +1,0 @@
-Light-Weight:
-  allowed: true
-  name: Light-Weight
-  name_modifier: Enchanted Feather
-  description: You fall like a feather - sort of...
-  MaxLevel: 3
-  EnchantCost: 10
-  Recipe:
-    Enabled: false

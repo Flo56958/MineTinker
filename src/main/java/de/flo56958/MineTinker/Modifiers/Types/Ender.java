@@ -1,13 +1,8 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ModifierFailCause;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import java.util.ArrayList;
+import java.util.Collections;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,25 +14,53 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Data.ModifierFailCause;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.ModifierFailEvent;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 public class Ender extends Modifier implements Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Ender.yml");
-
-    private final boolean compatibleWithInfinity;
-    private final boolean hasSound;
+    private boolean compatibleWithInfinity;
+    private boolean hasSound;
 
     public Ender() {
-        super(config.getString("Ender.name"),
-                "[" + config.getString("Ender.name_modifier") + "] " + config.getString("Ender.description"),
-                ModifierType.ENDER,
+        super(ModifierType.ENDER,
                 ChatColor.DARK_GREEN,
-                1,
-                ItemGenerator.itemEnchanter(Material.ENDER_EYE, ChatColor.DARK_GREEN + config.getString("Ender.name_modifier"), 1, Enchantment.DURABILITY, 1),
                 new ArrayList<>(Collections.singletonList(ToolType.BOW)),
                 Main.getPlugin());
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Ender";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Special Endereye");
+    	config.addDefault(key + ".description", "Teleports you while sneaking to the arrow location!");
+    	config.addDefault(key + ".Sound", true); //#Enderman-Teleport-Sound
+    	config.addDefault(key + ".Recipe.Enabled", true);
+    	config.addDefault(key + ".Recipe.Top", "PPP");
+    	config.addDefault(key + ".Recipe.Middle", "PEP");
+    	config.addDefault(key + ".Recipe.Bottom", "PPP");
+    	config.addDefault(key + ".Recipe.Materials.P", "ENDER_PEARL");
+    	config.addDefault(key + ".Recipe.Materials.E", "ENDER_EYE");
+    	
+    	ConfigurationManager.saveConfig(config);
+        
+        init(config.getString("Ender.name"),
+                "[" + config.getString("Ender.name_modifier") + "] " + config.getString("Ender.description"),
+                1,
+                ItemGenerator.itemEnchanter(Material.ENDER_EYE, ChatColor.DARK_GREEN + config.getString("Ender.name_modifier"), 1, Enchantment.DURABILITY, 1));
+        
         this.hasSound = config.getBoolean("Ender.Sound");
         this.compatibleWithInfinity = config.getBoolean("Ender.CompatibleWithInfinity");
     }
@@ -89,6 +112,14 @@ public class Ender extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Ender", "Modifier_Ender");
+        _registerCraftingRecipe(getConfig(), this, "Ender", "Modifier_Ender");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return ConfigurationManager.getConfig(Modifiers_Config.Ender);
+    }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Ender.allowed");
     }
 }

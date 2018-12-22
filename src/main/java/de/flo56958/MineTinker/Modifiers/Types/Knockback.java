@@ -17,21 +17,38 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 public class Knockback extends Modifier implements Enchantable, Craftable {
 
-    private static final FileConfiguration config = Main.getConfigurations().getConfig("Knockback.yml");
-
     public Knockback() {
-        super(config.getString("Knockback.name"),
-                "[" + config.getString("Knockback.name_modifier") + "] " + config.getString("Knockback.description"),
-                ModifierType.KNOCKBACK,
+        super(ModifierType.KNOCKBACK,
                 ChatColor.GRAY,
-                config.getInt("Knockback.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.TNT, ChatColor.GRAY + config.getString("Knockback.name_modifier"), 1, Enchantment.KNOCKBACK, 1),
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
+     	config.options().copyDefaults(true);
+    	
+     	String key = "Knockback";
+     	config.addDefault(key + ".allowed", true);
+     	config.addDefault(key + ".name", key);
+     	config.addDefault(key + ".name_modifier", "Enhanced TNT");
+     	config.addDefault(key + ".description", "Knockbacks Enemies further!");
+     	config.addDefault(key + ".MaxLevel", 5);
+     	config.addDefault(key + ".EnchantCost", 10);
+     	config.addDefault(key + ".Recipe.Enabled", false);
+        
+     	ConfigurationManager.saveConfig(config);
+     	
+     	init(config.getString("Knockback.name"),
+                 "[" + config.getString("Knockback.name_modifier") + "] " + config.getString("Knockback.description"),
+                 config.getInt("Knockback.MaxLevel"),
+                 ItemGenerator.itemEnchanter(Material.TNT, ChatColor.GRAY + config.getString("Knockback.name_modifier"), 1, Enchantment.KNOCKBACK, 1));
     }
 
     @Override
@@ -62,11 +79,19 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.knockback.craft")) { return; }
-        _createModifierItem(config, p, this, "Knockback");
+        _createModifierItem(getConfig(), p, this, "Knockback");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(config, this, "Knockback", "Modifier_Knockback");
+        _registerCraftingRecipe(getConfig(), this, "Knockback", "Modifier_Knockback");
+    }
+    
+    private static FileConfiguration getConfig() {
+    	return ConfigurationManager.getConfig(Modifiers_Config.Knockback);
+    }
+    
+    public boolean isAllowed() {
+    	return getConfig().isBoolean("Knockback.allowed");
     }
 }
