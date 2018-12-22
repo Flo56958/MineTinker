@@ -1,11 +1,7 @@
 package de.flo56958.MineTinker.Modifiers;
 
-import de.flo56958.MineTinker.Events.ToolLevelUpEvent;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Types.*;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.modifiers_Config;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,8 +11,35 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 
-import java.util.ArrayList;
-import java.util.List;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Events.ToolLevelUpEvent;
+import de.flo56958.MineTinker.Modifiers.Types.AutoSmelt;
+import de.flo56958.MineTinker.Modifiers.Types.Beheading;
+import de.flo56958.MineTinker.Modifiers.Types.Directing;
+import de.flo56958.MineTinker.Modifiers.Types.Ender;
+import de.flo56958.MineTinker.Modifiers.Types.Experienced;
+import de.flo56958.MineTinker.Modifiers.Types.ExtraModifier;
+import de.flo56958.MineTinker.Modifiers.Types.Fiery;
+import de.flo56958.MineTinker.Modifiers.Types.Glowing;
+import de.flo56958.MineTinker.Modifiers.Types.Haste;
+import de.flo56958.MineTinker.Modifiers.Types.Infinity;
+import de.flo56958.MineTinker.Modifiers.Types.Knockback;
+import de.flo56958.MineTinker.Modifiers.Types.LightWeight;
+import de.flo56958.MineTinker.Modifiers.Types.Luck;
+import de.flo56958.MineTinker.Modifiers.Types.Melting;
+import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
+import de.flo56958.MineTinker.Modifiers.Types.Poisonous;
+import de.flo56958.MineTinker.Modifiers.Types.Power;
+import de.flo56958.MineTinker.Modifiers.Types.Protecting;
+import de.flo56958.MineTinker.Modifiers.Types.Reinforced;
+import de.flo56958.MineTinker.Modifiers.Types.SelfRepair;
+import de.flo56958.MineTinker.Modifiers.Types.Sharpness;
+import de.flo56958.MineTinker.Modifiers.Types.Shulking;
+import de.flo56958.MineTinker.Modifiers.Types.SilkTouch;
+import de.flo56958.MineTinker.Modifiers.Types.Sweeping;
+import de.flo56958.MineTinker.Modifiers.Types.Timber;
+import de.flo56958.MineTinker.Modifiers.Types.Webbed;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 
 public class ModManager {
 
@@ -79,20 +102,28 @@ public class ModManager {
     }
 
     public void reload() {
-    	modsReload();
-        this.craftableMods.clear();
-        this.enchantableMods.clear();
-
-        init();
-    }
-    
-    private void modsReload() {
     	for(Modifier m : allMods) {
     		if(m.isAllowed())
     			register(m);
     		else
     			unregister(m);
     	}
+    	
+    	this.craftableMods.clear();
+        this.enchantableMods.clear();
+    	
+    	for (Modifier m : this.mods) {
+            if (m instanceof Craftable) {
+                this.craftableMods.add(m);
+            }
+            if (m instanceof Enchantable) {
+                this.enchantableMods.add(m);
+            }
+        }
+
+        for (Modifier m : this.craftableMods) {
+            ((Craftable) m).registerCraftingRecipe();
+        }
     }
 
     /**
@@ -125,20 +156,7 @@ public class ModManager {
         allMods.add(new Timber());
         allMods.add(new Webbed());
         
-        modsReload();
-
-        for (Modifier m : this.mods) {
-            if (m instanceof Craftable) {
-                this.craftableMods.add(m);
-            }
-            if (m instanceof Enchantable) {
-                this.enchantableMods.add(m);
-            }
-        }
-
-        for (Modifier m : this.craftableMods) {
-            ((Craftable) m).registerCraftingRecipe();
-        }
+        reload();
     }
 
     /**
