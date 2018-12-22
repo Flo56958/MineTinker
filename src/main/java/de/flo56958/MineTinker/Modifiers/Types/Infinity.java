@@ -35,7 +35,17 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
-        
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Infinity";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enchanted Arrow");
+    	config.addDefault(key + ".description", "You only need one Arrow to shoot a bow!");
+    	config.addDefault(key + ".EnchantCost", 10);
+    	config.addDefault(key + ".Recipe.Enabled", false);
+    	//#Check Ender.yml for Compatibility-option for Ender and Infinity
+    	
         init(config.getString("Infinity.name"),
                 "[" + config.getString("Infinity.name_modifier") + "] " + config.getString("Infinity.description"),
                 1,

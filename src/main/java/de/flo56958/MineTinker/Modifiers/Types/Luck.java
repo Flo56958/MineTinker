@@ -32,7 +32,20 @@ public class Luck extends Modifier implements Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
-        
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Luck";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Compressed Lapis-Block");
+    	config.addDefault(key + ".description", "Get more loot from enemies and blocks!");
+    	config.addDefault(key + ".MaxLevel", 5);
+    	config.addDefault(key + ".Recipe.Enabled", true);
+    	config.addDefault(key + ".Recipe.Top", "LLL");
+    	config.addDefault(key + ".Recipe.Middle", "LLL");
+    	config.addDefault(key + ".Recipe.Bottom", "LLL");
+    	config.addDefault(key + ".Recipe.Materials.L", "LAPIS_BLOCK");
+    	
         init(config.getString("Luck.name"),
                 "[" + config.getString("Luck.name_modifier") + "] " + config.getString("Luck.description"),
                 config.getInt("Luck.MaxLevel"),

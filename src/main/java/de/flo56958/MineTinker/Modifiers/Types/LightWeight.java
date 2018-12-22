@@ -31,7 +31,17 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
-        
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Light-Weight";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enhanced Feather");
+    	config.addDefault(key + ".description", "You fall like a feather - sort of...");
+    	config.addDefault(key + ".MaxLevel", 3);
+    	config.addDefault(key + ".EnchantCost", 10);
+    	config.addDefault(key + ".Recipe.Enabled", false);
+    	
         init(config.getString("Light-Weight.name"),
                 "[" + config.getString("Light-Weight.name_modifier") + "] " + config.getString("Light-Weight.description"),
                 config.getInt("Light-Weight.MaxLevel"),

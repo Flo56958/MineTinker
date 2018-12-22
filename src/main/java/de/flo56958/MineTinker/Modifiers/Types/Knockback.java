@@ -30,9 +30,19 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
     }
     
     public void reload() {
-    	 FileConfiguration config = getConfig();
-         
-         init(config.getString("Knockback.name"),
+    	FileConfiguration config = getConfig();
+     	config.options().copyDefaults(true);
+    	
+     	String key = "Knockback";
+     	config.addDefault(key + ".allowed", true);
+     	config.addDefault(key + ".name", key);
+     	config.addDefault(key + ".name_modifier", "Enhanced TNT");
+     	config.addDefault(key + ".description", "Knockbacks Enemies further!");
+     	config.addDefault(key + ".MaxLevel", 5);
+     	config.addDefault(key + ".EnchantCost", 10);
+     	config.addDefault(key + ".Recipe.Enabled", false);
+        
+     	init(config.getString("Knockback.name"),
                  "[" + config.getString("Knockback.name_modifier") + "] " + config.getString("Knockback.description"),
                  config.getInt("Knockback.MaxLevel"),
                  ItemGenerator.itemEnchanter(Material.TNT, ChatColor.GRAY + config.getString("Knockback.name_modifier"), 1, Enchantment.KNOCKBACK, 1));
