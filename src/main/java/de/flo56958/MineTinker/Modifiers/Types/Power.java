@@ -45,6 +45,17 @@ public class Power extends Modifier implements Enchantable, Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Power";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enchanted Emerald");
+    	config.addDefault(key + ".description", "Tool can destroy more blocks per swing!");
+    	config.addDefault(key + ".lv1_vertical", false); //#Should the 3x1 at level 1 be horizontal (false) or vertical (true)
+    	config.addDefault(key + ".MaxLevel", 3); //#Algorithm for area of effect (except for level 1): (level * 2) - 1 x (level * 2) - 1
+    	config.addDefault(key + ".EnchantCost", 10);
+    	config.addDefault(key + ".Recipe.Enabled", false);
         
         init(config.getString("Power.name"),
                 "[" + config.getString("Power.name_modifier") + "] " + config.getString("Power.description"),

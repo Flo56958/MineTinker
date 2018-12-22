@@ -39,6 +39,19 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Poisonous";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enhanced Rotten Flesh");
+    	config.addDefault(key + ".description", "Poisons enemies!");
+    	config.addDefault(key + ".MaxLevel", 5);
+    	config.addDefault(key + ".EnchantCost", 10);
+    	config.addDefault(key + ".Duration", 120); //#ticks INTEGER (20 ticks ~ 1 sec)
+    	config.addDefault(key + ".DurationMultiplier", 1.1); //#Duration * (Multiplier^Level) DOUBLE
+    	config.addDefault(key + ".EffectAmplifier", 2); //#per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...) INTEGER
+    	config.addDefault(key + ".Recipe.Enabled", false);
         
         init(config.getString("Poisonous.name"),
                 "[" + config.getString("Poisonous.name_modifier") + "] " + config.getString("Poisonous.description"),
