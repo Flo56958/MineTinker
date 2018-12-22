@@ -151,8 +151,6 @@ public class BlockListener implements Listener {
                         e.setCancelled(true);
                     }
                 }
-                
-                e.setCancelled(true);
             }
         }
     }
