@@ -46,6 +46,8 @@ public class ElevatorListener implements Listener {
     	ConfigurationManager.saveConfig(config);
     }
     
+    public static void init() {/*class must be called once a time*/}
+    
     @EventHandler
     public void onSneak (PlayerToggleSneakEvent e) {
         if (e.isCancelled()) { return; }

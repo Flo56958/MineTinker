@@ -47,35 +47,35 @@ public class BuildersWandListener implements Listener {
     	list.add("bannedExample2");
     	config.addDefault(key + ".BannedWorlds", list); //#Worlds where MineTinker-Builderswands can't be used
     	
-    	String recipe = key + ".Recipe.Wood";
+    	String recipe = key + ".Recipes.Wood";
     	config.addDefault(recipe + ".Top", "  W");
     	config.addDefault(recipe + ".Middle", " S ");
     	config.addDefault(recipe + ".Bottom", "S  ");
     	config.addDefault(recipe + ".Materials.S", "STICK");
     	config.addDefault(recipe + ".Materials.W", "LEGACY_WOOD");
     	
-    	recipe = key + ".Recipe.Stone";
+    	recipe = key + ".Recipes.Stone";
     	config.addDefault(recipe + ".Top", "  C");
     	config.addDefault(recipe + ".Middle", " S ");
     	config.addDefault(recipe + ".Bottom", "S  ");
     	config.addDefault(recipe + ".Materials.C", "COBBLESTONE");
     	config.addDefault(recipe + ".Materials.S", "STICK");
 
-    	recipe = key + ".Recipe.Iron";
+    	recipe = key + ".Recipes.Iron";
     	config.addDefault(recipe + ".Top", "  I");
     	config.addDefault(recipe + ".Middle", " S ");
     	config.addDefault(recipe + ".Bottom", "S  ");
     	config.addDefault(recipe + ".Materials.I", "IRON_INGOT");
     	config.addDefault(recipe + ".Materials.S", "STICK");
     	
-    	recipe = key + ".Recipe.Gold";
+    	recipe = key + ".Recipes.Gold";
     	config.addDefault(recipe + ".Top", "  G");
     	config.addDefault(recipe + ".Middle", " S ");
     	config.addDefault(recipe + ".Bottom", "S  ");
     	config.addDefault(recipe + ".Materials.G", "GOLD_INGOT");
     	config.addDefault(recipe + ".Materials.S", "STICK");
     	
-    	recipe = key + ".Recipe.Diamond";
+    	recipe = key + ".Recipes.Diamond";
     	config.addDefault(recipe + ".Top", "  D");
     	config.addDefault(recipe + ".Middle", " S ");
     	config.addDefault(recipe + ".Bottom", "S  ");
@@ -84,6 +84,8 @@ public class BuildersWandListener implements Listener {
     	
     	ConfigurationManager.saveConfig(config);
     }
+    
+    public static void init() {/*class must be called once a time*/}
     
     @EventHandler
     public void onBlockBreak (BlockBreakEvent e) {

@@ -16,7 +16,11 @@ import java.util.logging.Level;
 
 public class ChatWriter {
 
-    public static final String CHAT_PREFIX = Main.getPlugin().getConfig().getString("chat-prefix");
+    public static final String CHAT_PREFIX;
+    
+    static {
+    	CHAT_PREFIX = Main.getPlugin().getConfig().getString("chat-prefix");
+    }
 
     /**
      * Sends a chat message
