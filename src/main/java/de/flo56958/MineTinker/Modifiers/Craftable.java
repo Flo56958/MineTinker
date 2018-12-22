@@ -1,13 +1,12 @@
 package de.flo56958.MineTinker.Modifiers;
 
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ShapedRecipe;
-
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 
 public interface Craftable {
     void registerCraftingRecipe();
@@ -25,6 +24,7 @@ public interface Craftable {
                     newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
                 }
                 Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+                ChatWriter.log(false, "Registered recipe for the " + name + "-Modifier!");
             } catch (Exception e) {
                 ChatWriter.logError("Could not register recipe for the " + name + "-Modifier!"); //executes if the recipe could not initialize
             }

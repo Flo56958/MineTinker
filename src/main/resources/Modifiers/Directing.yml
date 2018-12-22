@@ -3,7 +3,7 @@ Directing:
   name: Directing
   name_modifier: Enhanced Compass
   description: Loot goes directly into Inventory!
-  Directing:
+  Recipe:
     Enabled: true
     Top: "ECE"
     Middle: "CIC"
