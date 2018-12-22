@@ -1,20 +1,31 @@
 package de.flo56958.MineTinker;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import de.flo56958.MineTinker.Commands.Commands;
 import de.flo56958.MineTinker.Data.CraftingRecipes;
 import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Listeners.*;
+import de.flo56958.MineTinker.Listeners.AnvilListener;
+import de.flo56958.MineTinker.Listeners.ArmorListener;
+import de.flo56958.MineTinker.Listeners.BlockListener;
+import de.flo56958.MineTinker.Listeners.BuildersWandListener;
+import de.flo56958.MineTinker.Listeners.CraftingListener;
+import de.flo56958.MineTinker.Listeners.EasyHarvestListener;
+import de.flo56958.MineTinker.Listeners.ElevatorListener;
+import de.flo56958.MineTinker.Listeners.EnchantingTableListener;
+import de.flo56958.MineTinker.Listeners.EntityListener;
+import de.flo56958.MineTinker.Listeners.PlayerListener;
+import de.flo56958.MineTinker.Listeners.TinkerListener;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.Updater;
 import de.flo56958.MineTinker.bStats.Metrics;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class Main extends JavaPlugin {
 
@@ -26,6 +37,8 @@ public class Main extends JavaPlugin {
     public void onEnable() {
     	main = this;
         ConfigurationManager.reload();
+        BuildersWandListener.init();
+        ElevatorListener.init();
         loadConfig();
 
         ModManager.instance();

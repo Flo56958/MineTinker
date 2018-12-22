@@ -56,11 +56,11 @@ public class ConfigurationManager {
         File customConfigFile = new File(Main.getMain().getDataFolder(), folder + file);
         YamlConfiguration fileConfiguration = new YamlConfiguration();
         configsFolder.put(fileConfiguration, customConfigFile);
+        configs.put(file, fileConfiguration);
         
         if(customConfigFile.exists()) {
         	try {
 	            fileConfiguration.load(customConfigFile);
-	            configs.put(file, fileConfiguration);
 	        } catch (IOException | InvalidConfigurationException e) { e.printStackTrace(); }
         }
     }

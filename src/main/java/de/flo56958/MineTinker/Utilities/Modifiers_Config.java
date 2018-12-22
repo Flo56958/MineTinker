@@ -28,7 +28,7 @@ public enum Modifiers_Config {
 	Extra_Modifier("Extra-Modifier.yml");
 	
 	private final String value;
-	private Modifiers_Config(String value) {
+	Modifiers_Config(String value) {
 		this.value = value;
 	}
 	
