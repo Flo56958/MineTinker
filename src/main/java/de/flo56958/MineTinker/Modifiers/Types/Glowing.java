@@ -37,6 +37,22 @@ public class Glowing extends Modifier implements Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Glowing";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Ender-Glowstone");
+    	config.addDefault(key + ".description", "Makes Enemies glow!");
+    	config.addDefault(key + ".MaxLevel", 3);
+    	config.addDefault(key + ".Duration", 200); //#ticks INTEGER (20 ticks ~ 1 sec)
+    	config.addDefault(key + ".DurationMultiplier", 1.1); //#Duration * (Multiplier^Level) DOUBLE
+    	config.addDefault(key + ".Recipe.Enabled", true);
+    	config.addDefault(key + ".Recipe.Top", "GGG");
+    	config.addDefault(key + ".Recipe.Middle", "GEG");
+    	config.addDefault(key + ".Recipe.Bottom", "GGG");
+    	config.addDefault(key + ".Recipe.Materials.G", "GLOWSTONE_DUST");
+    	config.addDefault(key + ".Recipe.Materials.E", "ENDER_EYE");
         
         init(config.getString("Glowing.name"),
                 "[" + config.getString("Glowing.name_modifier") + "] " + config.getString("Glowing.description"),

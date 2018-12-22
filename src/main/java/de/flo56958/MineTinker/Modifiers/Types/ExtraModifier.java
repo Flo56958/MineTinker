@@ -30,6 +30,15 @@ public class ExtraModifier extends Modifier {
     
     public void reload() {
     	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "ExtraModifier";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enhanced Furnace");
+    	config.addDefault(key + ".description", "Adds a additional Modifiers-Slot to the tool!");
+    	config.addDefault(key + ".ExtraModifierGain", 1); //#How much Slots should be added per Nether-Star
+    	config.addDefault(key + ".modifier_item", "NETHER_STAR"); //#Needs to be a viable Material-Type
         
         init(config.getString("Extra-Modifier.name"),
                 "[" + config.getString("Extra-Modifier.modifier_item")+ "] " + config.getString("Extra-Modifier.description"),

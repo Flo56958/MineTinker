@@ -31,7 +31,17 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
-        
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Fiery";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enchanted Blaze-Rod");
+    	config.addDefault(key + ".description", "Inflames enemies!");
+    	config.addDefault(key + ".MaxLevel", 2);
+    	config.addDefault(key + ".EnchantCost", 10);
+    	config.addDefault(key + ".Recipe.Enabled", false);
+    	
         init(config.getString("Fiery.name"),
                 "[" + config.getString("Fiery.name_modifier") + "] " + config.getString("Fiery.description"),
                 config.getInt("Fiery.MaxLevel"),

@@ -30,6 +30,19 @@ public class Haste extends Modifier implements Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Haste";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Compressed Redstoneblock");
+    	config.addDefault(key + ".description", "Tool can destroy blocks faster!");
+    	config.addDefault(key + ".MaxLevel", 5);
+    	config.addDefault(key + ".Recipe.Enabled", true);
+    	config.addDefault(key + ".Recipe.Top", "RRR");
+    	config.addDefault(key + ".Recipe.Middle", "RRR");
+    	config.addDefault(key + ".Recipe.Bottom", "RRR");
+    	config.addDefault(key + ".Recipe.Materials.R", "REDSTONE_BLOCK");
         
         init(config.getString("Haste.name"),
                 "[" + config.getString("Haste.name_modifier") + "] " + config.getString("Haste.description"),
