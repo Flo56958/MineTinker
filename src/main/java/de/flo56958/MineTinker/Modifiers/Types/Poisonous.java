@@ -21,7 +21,7 @@ import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.modifiers_Config;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 public class Poisonous extends Modifier implements Enchantable, Craftable {
 	
@@ -93,7 +93,7 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
     }
     
     private static FileConfiguration getConfig() {
-    	return Main.getConfigurations().getConfig(modifiers_Config.Poisonous);
+    	return Main.getConfigurations().getConfig(Modifiers_Config.Poisonous);
     }
     
     public boolean isAllowed() {

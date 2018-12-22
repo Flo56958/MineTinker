@@ -30,7 +30,7 @@ public class ConfigurationManager {
      * @param file The Name of the file (Enum modifiers_Config)
      * @return The FileConfiguration with the given name
      */
-    public FileConfiguration getConfig(modifiers_Config modifier) {
+    public FileConfiguration getConfig(Modifiers_Config modifier) {
         return configs.get(modifier.toString());
     }
 
@@ -44,7 +44,7 @@ public class ConfigurationManager {
     }
 
     public void reload() {
-        for (modifiers_Config modifier : modifiers_Config.values()) {
+        for (Modifiers_Config modifier : Modifiers_Config.values()) {
             createConfig("Modifiers" + File.separator, modifier.toString());
         }
 

@@ -7,7 +7,7 @@ import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.modifiers_Config;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -107,7 +107,7 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
     }
     
     private static FileConfiguration getConfig() {
-    	return Main.getConfigurations().getConfig(modifiers_Config.Beheading);
+    	return Main.getConfigurations().getConfig(Modifiers_Config.Beheading);
     }
     
     public boolean isAllowed() {

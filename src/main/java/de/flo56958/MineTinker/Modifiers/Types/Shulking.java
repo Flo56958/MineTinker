@@ -20,7 +20,7 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.modifiers_Config;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 public class Shulking extends Modifier implements Craftable {
 
@@ -39,13 +39,23 @@ public class Shulking extends Modifier implements Craftable {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
     	
-    	String key = "Silk-Touch";
+    	String key = "Auto-Smelt";
     	config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Enhanced Cobweb");
-    	config.addDefault(key + ".description", "Applies Silk-Touch!");
-    	config.addDefault(key + ".EnchantCost", 10);
-    	config.addDefault(key + ".Recipe.Enabled", false);
+    	config.addDefault(key + ".name_modifier", "Enhanced Furnace");
+    	config.addDefault(key + ".description", "Chance to smelt ore when mined!");
+    	config.addDefault(key + ".MaxLevel", 5);
+    	config.addDefault(key + ".PercentagePerLevel", 20);
+    	config.addDefault(key + ".Sound", true);
+    	config.addDefault(key + ".smelt_stone", false);
+    	config.addDefault(key + ".burn_coal", true);
+    	config.addDefault(key + ".works_under_water", true);
+    	config.addDefault(key + ".Recipe.Enabled", true);
+    	config.addDefault(key + ".Recipe.Top", "CCC");
+    	config.addDefault(key + ".Recipe.Middle", "CFC");
+    	config.addDefault(key + ".Recipe.Bottom", "CCC");
+    	config.addDefault(key + ".Recipe.Materials.C", "FURNACE");
+    	config.addDefault(key + ".Recipe.Materials.F", "BLAZE_ROD");
         
         init(config.getString("Shulking.name"),
                 "[" + config.getString("Shulking.name_modifier") + "] " + config.getString("Shulking.description"),
@@ -80,7 +90,7 @@ public class Shulking extends Modifier implements Craftable {
     }
     
     private static FileConfiguration getConfig() {
-    	return Main.getConfigurations().getConfig(modifiers_Config.Shulking);
+    	return Main.getConfigurations().getConfig(Modifiers_Config.Shulking);
     }
     
     public boolean isAllowed() {

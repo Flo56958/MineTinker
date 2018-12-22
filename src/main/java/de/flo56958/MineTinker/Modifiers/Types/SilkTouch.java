@@ -20,7 +20,7 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.modifiers_Config;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 public class SilkTouch extends Modifier implements Enchantable, Craftable {
 
@@ -33,7 +33,16 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
     
     public void reload() {
     	FileConfiguration config = getConfig();
-        
+    	config.options().copyDefaults(true);
+    	
+    	String key = "Silk-Touch";
+    	config.addDefault(key + ".allowed", true);
+    	config.addDefault(key + ".name", key);
+    	config.addDefault(key + ".name_modifier", "Enhanced Cobweb");
+    	config.addDefault(key + ".description", "Applies Silk-Touch!");
+    	config.addDefault(key + ".EnchantCost", 10);
+    	config.addDefault(key + ".Recipe.Enabled", false);
+    	
         init(config.getString("Silk-Touch.name"),
                 "[" + config.getString("Silk-Touch.name_modifier") + "] " + config.getString("Silk-Touch.description"),
                 1,
@@ -85,7 +94,7 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
     }
     
     private static FileConfiguration getConfig() {
-    	return Main.getConfigurations().getConfig(modifiers_Config.Silk_Touch);
+    	return Main.getConfigurations().getConfig(Modifiers_Config.Silk_Touch);
     }
     
     public boolean isAllowed() {

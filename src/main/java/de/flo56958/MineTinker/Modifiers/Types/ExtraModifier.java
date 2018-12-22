@@ -14,7 +14,7 @@ import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.modifiers_Config;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 public class ExtraModifier extends Modifier {
 
@@ -71,7 +71,7 @@ public class ExtraModifier extends Modifier {
     }
     
     private static FileConfiguration getConfig() {
-    	return Main.getConfigurations().getConfig(modifiers_Config.Extra_Modifier);
+    	return Main.getConfigurations().getConfig(Modifiers_Config.Extra_Modifier);
     }
     
     public boolean isAllowed() {

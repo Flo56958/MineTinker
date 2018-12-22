@@ -5,7 +5,7 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.modifiers_Config;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -75,7 +75,7 @@ public class Haste extends Modifier implements Craftable {
     }
     
     private static FileConfiguration getConfig() {
-    	return Main.getConfigurations().getConfig(modifiers_Config.Haste);
+    	return Main.getConfigurations().getConfig(Modifiers_Config.Haste);
     }
     
     public boolean isAllowed() {

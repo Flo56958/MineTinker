@@ -1,6 +1,6 @@
 package de.flo56958.MineTinker.Utilities;
 
-public enum modifiers_Config {
+public enum Modifiers_Config {
 	Auto_Smelt("Auto-Smelt.yml"),
 	Beheading("Beheading.yml"),
 	Directing("Directing.yml"),
@@ -28,7 +28,7 @@ public enum modifiers_Config {
 	Extra_Modifier("Extra-Modifier.yml");
 	
 	private final String value;
-	private modifiers_Config(String value) {
+	private Modifiers_Config(String value) {
 		this.value = value;
 	}
 	
