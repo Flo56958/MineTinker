@@ -13,7 +13,7 @@ import de.flo56958.MineTinker.Listeners.AnvilListener;
 import de.flo56958.MineTinker.Listeners.ArmorListener;
 import de.flo56958.MineTinker.Listeners.BlockListener;
 import de.flo56958.MineTinker.Listeners.BuildersWandListener;
-import de.flo56958.MineTinker.Listeners.CraftingListener;
+import de.flo56958.MineTinker.Listeners.ConvertListener;
 import de.flo56958.MineTinker.Listeners.EasyHarvestListener;
 import de.flo56958.MineTinker.Listeners.ElevatorListener;
 import de.flo56958.MineTinker.Listeners.EnchantingTableListener;
@@ -51,7 +51,9 @@ public class Main extends JavaPlugin {
         ChatWriter.log(false, "Registered commands!");
 
         if (getConfig().getBoolean("AllowCrafting")) {
-            Bukkit.getPluginManager().registerEvents(new CraftingListener(), this);
+        	ConvertListener convertListener = new ConvertListener();
+        	convertListener.register();
+            Bukkit.getPluginManager().registerEvents(convertListener, this);
         }
         Bukkit.getPluginManager().registerEvents(new BlockListener(), this);
         Bukkit.getPluginManager().registerEvents(new AnvilListener(), this);
