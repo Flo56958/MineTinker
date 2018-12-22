@@ -5,6 +5,8 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Types.*;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.modifiers_Config;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -85,79 +87,79 @@ public class ModManager {
      */
     private void init() {
         ConfigurationManager configs = Main.getConfigurations();
-        if (configs.getConfig("Auto-Smelt.yml").getBoolean("Auto-Smelt.allowed")) {
+        if (configs.getConfig(modifiers_Config.Auto_Smelt).getBoolean("Auto-Smelt.allowed")) {
             register(new AutoSmelt());
         }
-        if (configs.getConfig("Beheading.yml").getBoolean("Beheading.allowed")) {
+        if (configs.getConfig(modifiers_Config.Beheading).getBoolean("Beheading.allowed")) {
             register(new Beheading());
         }
-        if (configs.getConfig("Directing.yml").getBoolean("Directing.allowed")) {
+        if (configs.getConfig(modifiers_Config.Directing).getBoolean("Directing.allowed")) {
             register(new Directing());
         }
-        if (configs.getConfig("Ender.yml").getBoolean("Ender.allowed")) {
+        if (configs.getConfig(modifiers_Config.Ender).getBoolean("Ender.allowed")) {
             register(new Ender());
         }
-        if (configs.getConfig("Experienced.yml").getBoolean("Experienced.allowed")) {
+        if (configs.getConfig(modifiers_Config.Experienced).getBoolean("Experienced.allowed")) {
             register(new Experienced());
         }
-        if (configs.getConfig("Extra-Modifier.yml").getBoolean("Extra-Modifier.allowed")) {
+        if (configs.getConfig(modifiers_Config.Extra_Modifier).getBoolean("Extra-Modifier.allowed")) {
             register(new ExtraModifier());
         }
-        if (configs.getConfig("Fiery.yml").getBoolean("Fiery.allowed")) {
+        if (configs.getConfig(modifiers_Config.Fiery).getBoolean("Fiery.allowed")) {
             register(new Fiery());
         }
-        if (configs.getConfig("Glowing.yml").getBoolean("Glowing.allowed")) {
+        if (configs.getConfig(modifiers_Config.Glowing).getBoolean("Glowing.allowed")) {
             register(new Glowing());
         }
-        if (configs.getConfig("Haste.yml").getBoolean("Haste.allowed")) {
+        if (configs.getConfig(modifiers_Config.Haste).getBoolean("Haste.allowed")) {
             register(new Haste());
         }
-        if (configs.getConfig("Infinity.yml").getBoolean("Infinity.allowed")) {
+        if (configs.getConfig(modifiers_Config.Infinity).getBoolean("Infinity.allowed")) {
             register(new Infinity());
         }
-        if (configs.getConfig("Knockback.yml").getBoolean("Knockback.allowed")) {
+        if (configs.getConfig(modifiers_Config.Knockback).getBoolean("Knockback.allowed")) {
             register(new Knockback());
         }
-        if (configs.getConfig("Light-Weight.yml").getBoolean("Light-Weight.allowed")) {
+        if (configs.getConfig(modifiers_Config.Light_Weight).getBoolean("Light-Weight.allowed")) {
             register(new LightWeight());
         }
-        if (configs.getConfig("Luck.yml").getBoolean("Luck.allowed")) {
+        if (configs.getConfig(modifiers_Config.Luck).getBoolean("Luck.allowed")) {
             register(new Luck());
         }
-        if (configs.getConfig("Melting.yml").getBoolean("Melting.allowed")) {
+        if (configs.getConfig(modifiers_Config.Melting).getBoolean("Melting.allowed")) {
             register(new Melting());
         }
-        if (configs.getConfig("Poisonous.yml").getBoolean("Poisonous.allowed")) {
+        if (configs.getConfig(modifiers_Config.Poisonous).getBoolean("Poisonous.allowed")) {
             register(new Poisonous());
         }
-        if (configs.getConfig("Power.yml").getBoolean("Power.allowed")) {
+        if (configs.getConfig(modifiers_Config.Power).getBoolean("Power.allowed")) {
             register(new Power());
         }
-        if (configs.getConfig("Protecting.yml").getBoolean("Protecting.allowed")) {
+        if (configs.getConfig(modifiers_Config.Protecting).getBoolean("Protecting.allowed")) {
             register(new Protecting());
         }
-        if (configs.getConfig("Reinforced.yml").getBoolean("Reinforced.allowed")) {
+        if (configs.getConfig(modifiers_Config.Reinforced).getBoolean("Reinforced.allowed")) {
             register(new Reinforced());
         }
-        if (configs.getConfig("Self-Repair.yml").getBoolean("Self-Repair.allowed")) {
+        if (configs.getConfig(modifiers_Config.Self_Repair).getBoolean("Self-Repair.allowed")) {
             register(new SelfRepair());
         }
-        if (configs.getConfig("Sharpness.yml").getBoolean("Sharpness.allowed")) {
+        if (configs.getConfig(modifiers_Config.Sharpness).getBoolean("Sharpness.allowed")) {
             register(new Sharpness());
         }
-        if (configs.getConfig("Shulking.yml").getBoolean("Shulking.allowed")) {
+        if (configs.getConfig(modifiers_Config.Shulking).getBoolean("Shulking.allowed")) {
             register(new Shulking());
         }
-        if (configs.getConfig("Silk-Touch.yml").getBoolean("Silk-Touch.allowed")) {
+        if (configs.getConfig(modifiers_Config.Silk_Touch).getBoolean("Silk-Touch.allowed")) {
             register(new SilkTouch());
         }
-        if (configs.getConfig("Sweeping.yml").getBoolean("Sweeping.allowed")) {
+        if (configs.getConfig(modifiers_Config.Sweeping).getBoolean("Sweeping.allowed")) {
             register(new Sweeping());
         }
-        if (configs.getConfig("Timber.yml").getBoolean("Timber.allowed")) {
+        if (configs.getConfig(modifiers_Config.Timber).getBoolean("Timber.allowed")) {
             register(new Timber());
         }
-        if (configs.getConfig("Webbed.yml").getBoolean("Webbed.allowed")) {
+        if (configs.getConfig(modifiers_Config.Webbed).getBoolean("Webbed.allowed")) {
             register(new Webbed());
         }
 

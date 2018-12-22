@@ -34,6 +34,10 @@ public class Sharpness extends Modifier implements Craftable {
                 config.getInt("Sharpness.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.QUARTZ_BLOCK, ChatColor.WHITE + config.getString("Sharpness.name_modifier"), 1 , Enchantment.DAMAGE_ALL, 1));
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

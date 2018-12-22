@@ -47,6 +47,10 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
         this.durationMultiplier = config.getDouble("Poisonous.DurationMultiplier");
         this.effectAmplifier = config.getInt("Poisonous.EffectAmplifier");
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

@@ -44,6 +44,10 @@ public class Shulking extends Modifier implements Craftable {
         this.duration = config.getInt("Shulking.Duration");
         this.effectAmplifier = config.getInt("Shulking.EffectAmplifier");
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

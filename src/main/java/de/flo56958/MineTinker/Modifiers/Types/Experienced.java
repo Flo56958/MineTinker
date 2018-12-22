@@ -21,8 +21,8 @@ import java.util.Random;
 
 public class Experienced extends Modifier implements Craftable {
 
-    private final int percentagePerLevel;
-    private final int amount;
+    private int percentagePerLevel;
+    private int amount;
 
     public Experienced() {
         super(ModifierType.EXPERIENCED,
@@ -30,8 +30,10 @@ public class Experienced extends Modifier implements Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Experienced.name"),
                 "[Bottle o' Experience] " + config.getString("Experienced.description"),

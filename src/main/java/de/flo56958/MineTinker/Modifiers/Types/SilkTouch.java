@@ -37,6 +37,10 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
                 1,
                 ItemGenerator.itemEnchanter(Material.COBWEB, ChatColor.WHITE + config.getString("Silk-Touch.name_modifier"), 1, Enchantment.SILK_TOUCH, 1));
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

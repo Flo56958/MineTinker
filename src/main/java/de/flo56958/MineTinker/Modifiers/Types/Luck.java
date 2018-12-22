@@ -36,6 +36,10 @@ public class Luck extends Modifier implements Craftable {
                 config.getInt("Luck.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.LAPIS_BLOCK, ChatColor.BLUE + config.getString("Luck.name_modifier"), 1, Enchantment.LOOT_BONUS_BLOCKS, 1));
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

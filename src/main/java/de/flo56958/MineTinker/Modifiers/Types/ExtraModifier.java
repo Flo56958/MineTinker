@@ -36,6 +36,10 @@ public class ExtraModifier extends Modifier {
         
         this.gain = config.getInt("Extra-Modifier.ExtraModifierGain");
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

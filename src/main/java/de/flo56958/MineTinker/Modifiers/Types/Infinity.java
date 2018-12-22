@@ -41,6 +41,10 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
         
         this.compatibleWithEnder = Main.getConfigurations().getConfig("Ender.yml").getBoolean("Ender.CompatibleWithInfinity");
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

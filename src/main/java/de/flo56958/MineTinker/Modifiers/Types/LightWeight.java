@@ -35,6 +35,10 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
                 config.getInt("Light-Weight.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.FEATHER, ChatColor.GRAY + config.getString("Light-Weight.name_modifier"), 1, Enchantment.DURABILITY, 1));
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

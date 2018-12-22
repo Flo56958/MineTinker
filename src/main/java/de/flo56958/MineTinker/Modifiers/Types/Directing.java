@@ -22,14 +22,18 @@ import java.util.List;
 public class Directing extends Modifier implements Craftable {
 
     public Directing() {
-        super(	ModifierType.DIRECTING,
+        super(ModifierType.DIRECTING,
                 ChatColor.GRAY,
                 new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
         
-        FileConfiguration config = getConfig();
+        reload();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
-        init(	config.getString("Directing.name"),
+        init(config.getString("Directing.name"),
                 "[" + config.getString("Directing.name_modifier") + "] " + config.getString("Directing.description"),
                 1,
                 ItemGenerator.itemEnchanter(Material.COMPASS, ChatColor.GRAY + config.getString("Directing.name_modifier"), 1, Enchantment.BINDING_CURSE, 1));

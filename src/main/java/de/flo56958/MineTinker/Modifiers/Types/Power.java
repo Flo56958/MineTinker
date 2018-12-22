@@ -51,6 +51,10 @@ public class Power extends Modifier implements Enchantable, Craftable {
         
         this.lv1_vertical = config.getBoolean("Power.lv1_vertical");
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

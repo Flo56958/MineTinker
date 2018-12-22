@@ -44,6 +44,10 @@ public class Glowing extends Modifier implements Craftable {
         this.duration = config.getInt("Glowing.Duration");
         this.durationMultiplier = config.getDouble("Glowing.DurationMultiplier");
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

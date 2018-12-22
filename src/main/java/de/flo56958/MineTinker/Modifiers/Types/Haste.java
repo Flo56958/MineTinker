@@ -34,6 +34,10 @@ public class Haste extends Modifier implements Craftable {
                 config.getInt("Haste.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.REDSTONE_BLOCK, ChatColor.DARK_RED + config.getString("Haste.name_modifier"), 1, Enchantment.DIG_SPEED, 1));
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

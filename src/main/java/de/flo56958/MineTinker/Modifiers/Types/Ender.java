@@ -26,8 +26,8 @@ import java.util.Collections;
 
 public class Ender extends Modifier implements Craftable {
 
-    private final boolean compatibleWithInfinity;
-    private final boolean hasSound;
+    private boolean compatibleWithInfinity;
+    private boolean hasSound;
 
     public Ender() {
         super(ModifierType.ENDER,
@@ -35,7 +35,11 @@ public class Ender extends Modifier implements Craftable {
                 new ArrayList<>(Collections.singletonList(ToolType.BOW)),
                 Main.getPlugin());
         
-        FileConfiguration config = getConfig();
+        reload();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
         
         init(config.getString("Ender.name"),
                 "[" + config.getString("Ender.name_modifier") + "] " + config.getString("Ender.description"),

@@ -26,7 +26,7 @@ import java.util.Random;
 
 public class Beheading extends Modifier implements Enchantable, Craftable {
 
-    private final int percentagePerLevel;
+    private int percentagePerLevel;
 
     public Beheading() {
         super(ModifierType.BEHEADING,
@@ -34,9 +34,13 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
         
-        FileConfiguration config = getConfig();
-        
-        init(config.getString("Beheading.name"),
+        reload();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
+    	
+    	init(config.getString("Beheading.name"),
                 "[" + config.getString("Beheading.name_modifier") + "] " + config.getString("Beheading.description"),
                 config.getInt("Beheading.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.WITHER_SKELETON_SKULL, ChatColor.DARK_GRAY + config.getString("Beheading.name_modifier"), 1, Enchantment.LOOT_BONUS_MOBS, 1));

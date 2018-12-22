@@ -35,6 +35,10 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
                 config.getInt("Knockback.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.TNT, ChatColor.GRAY + config.getString("Knockback.name_modifier"), 1, Enchantment.KNOCKBACK, 1));
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

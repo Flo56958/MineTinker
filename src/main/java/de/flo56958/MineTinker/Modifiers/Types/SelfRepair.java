@@ -42,6 +42,10 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
         this.percentagePerLevel = config.getInt("Self-Repair.PercentagePerLevel");
         this.healthRepair = config.getInt("Self-Repair.HealthRepair");
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

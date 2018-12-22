@@ -41,6 +41,10 @@ public class Melting extends Modifier implements Enchantable, Craftable {
         
         this.bonusMultiplier = config.getDouble("Melting.BonusMultiplier");
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

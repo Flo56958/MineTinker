@@ -34,6 +34,10 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
                 config.getInt("Sweeping.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.IRON_INGOT, ChatColor.RED + config.getString("Sweeping.name_modifier"), 1, Enchantment.SWEEPING_EDGE, 1));
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

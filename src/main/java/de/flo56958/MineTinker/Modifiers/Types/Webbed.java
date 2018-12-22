@@ -46,6 +46,10 @@ public class Webbed extends Modifier implements Craftable {
         this.durationMultiplier = config.getDouble("Webbed.DurationMultiplier");
         this.effectAmplifier = config.getInt("Webbed.EffectAmplifier");
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

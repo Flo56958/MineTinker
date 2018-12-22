@@ -35,6 +35,10 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
                 config.getInt("Fiery.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.BLAZE_ROD, ChatColor.YELLOW + config.getString("Fiery.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1));
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

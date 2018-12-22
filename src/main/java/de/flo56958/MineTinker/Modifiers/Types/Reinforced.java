@@ -35,6 +35,10 @@ public class Reinforced extends Modifier implements Craftable {
                 config.getInt("Reinforced.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.DARK_GRAY + config.getString("Reinforced.name_modifier"), 1, Enchantment.DURABILITY, 1));
     }
+    
+    public void reload() {
+    	
+    }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {

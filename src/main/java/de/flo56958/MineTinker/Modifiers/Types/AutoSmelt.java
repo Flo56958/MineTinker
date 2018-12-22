@@ -24,15 +24,18 @@ import java.util.Random;
 
 public class AutoSmelt extends Modifier implements Craftable {
 
-    private final int percentagePerLevel;
-    private final boolean hasSound;
+    private int percentagePerLevel;
+    private boolean hasSound;
 
     public AutoSmelt() {
         super(ModifierType.AUTO_SMELT, ChatColor.YELLOW, new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL)), Main.getPlugin());
-        
-        FileConfiguration config = getConfig();
-        
-        init(config.getString("Auto-Smelt.name"),
+        reload();
+    }
+    
+    public void reload() {
+    	FileConfiguration config = getConfig();
+    	
+    	init(config.getString("Auto-Smelt.name"),
                 "[" + config.getString("Auto-Smelt.name_modifier") + "] " + config.getString("Auto-Smelt.description"),
                 config.getInt("Auto-Smelt.MaxLevel"),
                 ItemGenerator.itemEnchanter(Material.FURNACE, ChatColor.YELLOW + config.getString("Auto-Smelt.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1));

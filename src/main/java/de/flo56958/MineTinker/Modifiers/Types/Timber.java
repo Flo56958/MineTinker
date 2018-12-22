@@ -37,10 +37,14 @@ public class Timber extends Modifier implements Craftable {
         
         FileConfiguration config = getConfig();
         
-        init(getConfig().getString("Timber.name"),
-                "[" + getConfig().getString("Timber.name_modifier") + "] " + getConfig().getString("Timber.description"),
+        init(config.getString("Timber.name"),
+                "[" + config.getString("Timber.name_modifier") + "] " + config.getString("Timber.description"),
                 1,
-                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + getConfig().getString("Timber.name_modifier"), 1, Enchantment.DIG_SPEED, 1));
+                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Timber.name_modifier"), 1, Enchantment.DIG_SPEED, 1));
+    }
+    
+    public void reload() {
+    	
     }
 
     @Override
