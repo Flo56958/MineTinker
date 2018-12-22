@@ -84,6 +84,6 @@ public class Reinforced extends Modifier implements Craftable {
     }
     
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Reinforced.allowed");
+    	return getConfig().getBoolean("Reinforced.allowed");
     }
 }

@@ -77,6 +77,6 @@ public class ExtraModifier extends Modifier {
     }
     
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Extra-Modifier.allowed");
+    	return getConfig().getBoolean("Extra-Modifier.allowed");
     }
 }

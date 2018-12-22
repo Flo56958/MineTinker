@@ -104,6 +104,6 @@ public class Luck extends Modifier implements Craftable {
     }
     
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Luck.allowed");
+    	return getConfig().getBoolean("Luck.allowed");
     }
 }

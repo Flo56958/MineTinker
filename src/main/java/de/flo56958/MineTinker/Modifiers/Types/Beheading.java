@@ -114,6 +114,6 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
     }
     
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Beheading.allowed");
+    	return getConfig().getBoolean("Beheading.allowed");
     }
 }

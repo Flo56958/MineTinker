@@ -100,6 +100,6 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
     }
     
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Poisonous.allowed");
+    	return getConfig().getBoolean("Poisonous.allowed");
     }
 }

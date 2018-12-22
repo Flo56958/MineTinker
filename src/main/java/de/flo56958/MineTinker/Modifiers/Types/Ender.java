@@ -120,6 +120,6 @@ public class Ender extends Modifier implements Craftable {
     }
     
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Ender.allowed");
+    	return getConfig().getBoolean("Ender.allowed");
     }
 }

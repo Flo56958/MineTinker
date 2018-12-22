@@ -123,6 +123,6 @@ public class Melting extends Modifier implements Enchantable, Craftable {
     }
     
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Melting.allowed");
+    	return getConfig().getBoolean("Melting.allowed");
     }
 }

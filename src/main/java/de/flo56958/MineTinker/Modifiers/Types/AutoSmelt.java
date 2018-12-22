@@ -209,6 +209,6 @@ public class AutoSmelt extends Modifier implements Craftable {
     }
 
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Auto-Smelt.allowed");
+    	return getConfig().getBoolean("Auto-Smelt.allowed");
     }
 }

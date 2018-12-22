@@ -101,6 +101,6 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     }
     
     public boolean isAllowed() {
-    	return getConfig().isBoolean("Infinity.allowed");
+    	return getConfig().getBoolean("Infinity.allowed");
     }
 }
