@@ -101,8 +101,6 @@ public class ConvertListener implements Listener{
 	@EventHandler
 	public void PrepareCraft(PrepareItemCraftEvent e) {
 		if(e.getRecipe() != null) {
-			System.out.println(e.getInventory().getResult().getItemMeta().getDisplayName());
-			
 			Player player = null;
 			for(HumanEntity humans : e.getViewers()) {
 				if(humans instanceof Player)
