@@ -16,6 +16,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Data.Lists;
@@ -100,6 +101,8 @@ public class ConvertListener implements Listener{
 	@EventHandler
 	public void PrepareCraft(PrepareItemCraftEvent e) {
 		if(e.getRecipe() != null) {
+			System.out.println(e.getInventory().getResult().getItemMeta().getDisplayName());
+			
 			Player player = null;
 			for(HumanEntity humans : e.getViewers()) {
 				if(humans instanceof Player)
@@ -112,15 +115,24 @@ public class ConvertListener implements Listener{
 
 	        ItemStack currentItem = e.getInventory().getResult();
 	        
-	        ArrayList<String> lore = new ArrayList<>();
-	        if (tools.contains(ToolType.get(currentItem.getType()))) {
-	            lore.add(modManager.IDENTIFIER_TOOL);
-	        } else if (armor.contains(ToolType.get(currentItem.getType()))) {
-	            lore.add(modManager.IDENTIFIER_ARMOR);
-	        } else { return; }
-
-	        lore.addAll(ItemGenerator.createLore());
-	        ItemGenerator.changeLore(currentItem, lore);
+	        if(currentItem != null) {
+	        	ItemMeta m = currentItem.getItemMeta();
+	        	if(m != null) {
+	        		if(m.getDisplayName() != null && m.getDisplayName().contains("Builderswand")) {
+	        			return;
+	        		}
+	        	}
+	        	
+		        ArrayList<String> lore = new ArrayList<>();
+		        if (tools.contains(ToolType.get(currentItem.getType()))) {
+		            lore.add(modManager.IDENTIFIER_TOOL);
+		        } else if (armor.contains(ToolType.get(currentItem.getType()))) {
+		            lore.add(modManager.IDENTIFIER_ARMOR);
+		        } else { return; }
+	
+		        lore.addAll(ItemGenerator.createLore());
+		        ItemGenerator.changeLore(currentItem, lore);
+	        }
 		}
 	}
 	
