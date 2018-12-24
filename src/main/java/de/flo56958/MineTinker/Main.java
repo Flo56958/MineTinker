@@ -1,6 +1,12 @@
 package de.flo56958.MineTinker;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -44,7 +50,7 @@ public class Main extends JavaPlugin {
         ModManager.instance();
         
         ChatWriter.log(false, "Set up internals.");
-
+        
         Commands cmd = new Commands();
         this.getCommand("minetinker").setExecutor(cmd); //must be after internals as it would throw a NullPointerException
         this.getCommand("minetinker").setTabCompleter(cmd);
