@@ -84,7 +84,6 @@ class Functions {
      * @param player
      * @param args command input of the player - parsed down from onCommand()
      */
-    @SuppressWarnings("IfCanBeSwitch")
     static void removeMod(Player player, String[] args) {
         if (args.length >= 2) {
             ItemStack tool = player.getInventory().getItemInMainHand();

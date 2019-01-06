@@ -30,7 +30,7 @@ public class ElevatorListener implements Listener {
     	config.addDefault(key + ".name", "Elevator-Motor");
     	config.addDefault(key + ".Sound", true); //#(Chest opening and closing)
     	
-    	List<String> list = new ArrayList<String>();
+    	List<String> list = new ArrayList<>();
     	list.add("bannedExample1");
     	list.add("bannedExample2");
     	config.addDefault(key + ".BannedWorlds", list); //#Worlds where Elevator can't be used
@@ -45,6 +45,7 @@ public class ElevatorListener implements Listener {
     	ConfigurationManager.saveConfig(config);
     }
     
+    @SuppressWarnings("EmptyMethod")
     public static void init() {/*class must be called once*/}
     
     @EventHandler

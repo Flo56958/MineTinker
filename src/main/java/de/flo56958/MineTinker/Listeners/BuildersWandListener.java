@@ -36,7 +36,7 @@ public class BuildersWandListener implements Listener {
 
     private static final ModManager modManager;
     private static FileConfiguration config;
-    private static ArrayList<ItemStack> wands = new ArrayList<>();
+    private static final ArrayList<ItemStack> wands = new ArrayList<>();
     
     static {
     	modManager = ModManager.instance();
@@ -53,7 +53,7 @@ public class BuildersWandListener implements Listener {
     	config.addDefault(key + ".name_gold", "Golden Builderswand");
     	config.addDefault(key + ".name_diamond", "Diamond Builderswand");
     	
-    	List<String> list = new ArrayList<String>();
+    	List<String> list = new ArrayList<>();
     	list.add("bannedExample1");
     	list.add("bannedExample2");
     	config.addDefault(key + ".BannedWorlds", list); //#Worlds where MineTinker-Builderswands can't be used
@@ -96,6 +96,7 @@ public class BuildersWandListener implements Listener {
     	ConfigurationManager.saveConfig(config);
     }
 
+    @SuppressWarnings("EmptyMethod")
     public static void init() {/*class must be called once*/}
 
     public static void reload() {

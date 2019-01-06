@@ -30,8 +30,7 @@ public class Main extends JavaPlugin {
 
         ModManager.instance();
         Commands cmd = new Commands();
-        this.getCommand("minetinker").setExecutor(cmd); // must be after internals as it would throw a
-                                                        // NullPointerException
+        this.getCommand("minetinker").setExecutor(cmd); // must be after internals as it would throw a NullPointerException
         this.getCommand("minetinker").setTabCompleter(cmd);
         ChatWriter.log(false, "Registered commands!");
 

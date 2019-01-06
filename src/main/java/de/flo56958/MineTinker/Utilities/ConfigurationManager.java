@@ -51,7 +51,6 @@ public class ConfigurationManager {
      * @param folder The name of the folder
      * @param file The name of the file
      */
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     private static void loadConfig(String folder, String file) {
         File customConfigFile = new File(Main.getPlugin().getDataFolder(), folder + file);
         YamlConfiguration fileConfiguration = new YamlConfiguration();

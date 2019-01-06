@@ -328,7 +328,7 @@ public class ModManager {
      * @param level
      * @return long value of the exp required
      */
-    public long getNextLevelReq(int level) {
+    private long getNextLevelReq(int level) {
         return (long) (Main.getPlugin().getConfig().getInt("LevelStep") * Math.pow(Main.getPlugin().getConfig().getDouble("LevelFactor"), (double) (level - 1)));
     }
 

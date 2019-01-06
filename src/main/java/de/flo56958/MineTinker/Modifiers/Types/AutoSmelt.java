@@ -212,7 +212,7 @@ public class AutoSmelt extends Modifier implements Craftable {
         _registerCraftingRecipe(getConfig(), this, "Auto-Smelt", "Modifier_Autosmelt");
     }
     
-    public static FileConfiguration getConfig() {
+    private static FileConfiguration getConfig() {
 		return ConfigurationManager.getConfig(Modifiers_Config.Auto_Smelt);
     }
 

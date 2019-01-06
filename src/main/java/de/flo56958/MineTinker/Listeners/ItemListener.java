@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class ItemListener implements Listener {
 
-    private ModManager modManager = ModManager.instance();
+    private final ModManager modManager = ModManager.instance();
 
     @EventHandler
     public void onDespawn(ItemDespawnEvent e) {

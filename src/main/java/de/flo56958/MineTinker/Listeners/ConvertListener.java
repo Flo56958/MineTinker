@@ -22,19 +22,10 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ConvertListener implements Listener{
 	private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = ModManager.instance();
-
-    private static final ArrayList<ToolType> tools;
-    private static final ArrayList<ToolType> armor;
-
-    static {
-        tools = new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD));
-        armor = new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA));
-    }
 	
 	public void register() {
 	    ArrayList<Material> converting = new ArrayList<>();
@@ -94,7 +85,7 @@ public class ConvertListener implements Listener{
         
         ItemStack tool = e.getInventory().getResult();
         
-        if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) { return; }
+        if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool) || modManager.isWandViable(tool))) { return; }
 
         if (config.getBoolean("Sound.OnCrafting"))
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
