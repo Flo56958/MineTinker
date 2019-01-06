@@ -1,9 +1,31 @@
 package de.flo56958.MineTinker;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import de.flo56958.MineTinker.Commands.Commands;
 import de.flo56958.MineTinker.Data.CraftingRecipes;
 import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Listeners.*;
+import de.flo56958.MineTinker.Listeners.AnvilListener;
+import de.flo56958.MineTinker.Listeners.ArmorListener;
+import de.flo56958.MineTinker.Listeners.BlockListener;
+import de.flo56958.MineTinker.Listeners.BuildersWandListener;
+import de.flo56958.MineTinker.Listeners.ConvertListener;
+import de.flo56958.MineTinker.Listeners.EasyHarvestListener;
+import de.flo56958.MineTinker.Listeners.ElevatorListener;
+import de.flo56958.MineTinker.Listeners.EnchantingTableListener;
+import de.flo56958.MineTinker.Listeners.EntityListener;
+import de.flo56958.MineTinker.Listeners.PlayerListener;
+import de.flo56958.MineTinker.Listeners.TinkerListener;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -29,14 +51,16 @@ public class Main extends JavaPlugin {
         loadConfig();
 
         ModManager.instance();
-
         Commands cmd = new Commands();
-        this.getCommand("minetinker").setExecutor(cmd); //must be after internals as it would throw a NullPointerException
+        this.getCommand("minetinker").setExecutor(cmd); // must be after internals as it would throw a
+                                                        // NullPointerException
         this.getCommand("minetinker").setTabCompleter(cmd);
         ChatWriter.log(false, "Registered commands!");
 
         if (getConfig().getBoolean("AllowCrafting")) {
-            Bukkit.getPluginManager().registerEvents(new CraftingListener(), this);
+            ConvertListener convertListener = new ConvertListener();
+            convertListener.register();
+            Bukkit.getPluginManager().registerEvents(convertListener, this);
         }
         Bukkit.getPluginManager().registerEvents(new BlockListener(), this);
         Bukkit.getPluginManager().registerEvents(new AnvilListener(), this);
@@ -54,12 +78,12 @@ public class Main extends JavaPlugin {
             ChatWriter.log(false, "Enabled Elevators!");
         }
         if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("BuildersWand.enabled")) {
-            Bukkit.getPluginManager().registerEvents(new BuildersWandListener(),this);
+            Bukkit.getPluginManager().registerEvents(new BuildersWandListener(), this);
             BuildersWandListener.reload();
             ChatWriter.log(false, "Enabled BuildersWands!");
         }
         if (getConfig().getBoolean("EasyHarvest.enabled")) {
-            Bukkit.getPluginManager().registerEvents(new EasyHarvestListener(),this);
+            Bukkit.getPluginManager().registerEvents(new EasyHarvestListener(), this);
             ChatWriter.log(false, "Enabled EasyHarvest!");
         }
         ChatWriter.log(false, "Registered events!");
@@ -100,9 +124,11 @@ public class Main extends JavaPlugin {
         ChatWriter.log(false, "Config loaded!");
     }
 
-    public static Plugin getPlugin() { //necessary to do getConfig() in other classes
+    public static Plugin getPlugin() { // necessary to do getConfig() in other classes
         return Bukkit.getPluginManager().getPlugin("MineTinker");
     }
 
-    public static Updater getUpdater() { return updater; }
+    public static Updater getUpdater() {
+        return updater;
+    }
 }
