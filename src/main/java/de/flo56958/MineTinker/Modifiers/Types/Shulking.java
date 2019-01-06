@@ -1,12 +1,16 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -14,14 +18,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Shulking extends Modifier implements Craftable {
 
@@ -30,7 +28,6 @@ public class Shulking extends Modifier implements Craftable {
 
     public Shulking() {
         super(ModifierType.SHULKING,
-                ChatColor.LIGHT_PURPLE,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
@@ -42,12 +39,14 @@ public class Shulking extends Modifier implements Craftable {
     	
     	String key = "Shulking";
     	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key); //#wingardium leviosa
+    	config.addDefault(key + ".name", key); //wingardium leviosa
     	config.addDefault(key + ".name_modifier", "Enhanced Shulkershell");
     	config.addDefault(key + ".description", "Makes enemies levitate!");
-    	config.addDefault(key + ".MaxLevel", 10);
-    	config.addDefault(key + ".Duration", 20); //#ticks (20 ticks ~ 1 sec)
-    	config.addDefault(key + ".EffectAmplifier", 2); //#per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Shulking-Modifier");
+        config.addDefault(key + ".Color", "%LIGHT_PURPLE%");
+        config.addDefault(key + ".MaxLevel", 10);
+    	config.addDefault(key + ".Duration", 20); //ticks (20 ticks ~ 1 sec)
+    	config.addDefault(key + ".EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "S");
     	config.addDefault(key + ".Recipe.Middle", "C");
@@ -59,8 +58,9 @@ public class Shulking extends Modifier implements Craftable {
         
         init(config.getString("Shulking.name"),
                 "[" + config.getString("Shulking.name_modifier") + "] " + config.getString("Shulking.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt("Shulking.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.SHULKER_SHELL, ChatColor.LIGHT_PURPLE + config.getString("Shulking.name_modifier"), 1, Enchantment.DURABILITY, 1));
+                modManager.createModifierItem(Material.SHULKER_SHELL, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     
         this.duration = config.getInt("Shulking.Duration");
         this.effectAmplifier = config.getInt("Shulking.EffectAmplifier");
@@ -70,6 +70,9 @@ public class Shulking extends Modifier implements Craftable {
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
         return Modifier.checkAndAdd(p, tool, this, "shulking", isCommand);
     }
+
+    @Override
+    public void removeMod(ItemStack tool) { }
 
     public void effect(Player p, ItemStack tool, Entity e) {
         if (!p.hasPermission("minetinker.modifiers.shulking.use")) { return; }

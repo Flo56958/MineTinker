@@ -1,12 +1,16 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -14,14 +18,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Webbed extends Modifier implements Craftable {
 
@@ -31,7 +29,6 @@ public class Webbed extends Modifier implements Craftable {
 
     public Webbed() {
         super(ModifierType.WEBBED,
-                ChatColor.WHITE,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
@@ -46,11 +43,13 @@ public class Webbed extends Modifier implements Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Compressed Cobweb");
     	config.addDefault(key + ".description", "Slowes down enemies!");
-    	config.addDefault(key + ".MaxLevel", 3);
-    	config.addDefault(key + ".Duration", 60); //#ticks (20 ticks ~ 1 sec)
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Webbed-Modifier");
+        config.addDefault(key + ".Color", "%WHITE%");
+        config.addDefault(key + ".MaxLevel", 3);
+    	config.addDefault(key + ".Duration", 60); //ticks (20 ticks ~ 1 sec)
     	config.addDefault(key + ".Sound", true);
-    	config.addDefault(key + ".DurationMultiplier", 1.2);//#Duration * (Multiplier^Level)
-    	config.addDefault(key + ".EffectAmplifier", 2); //#per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
+    	config.addDefault(key + ".DurationMultiplier", 1.2);//Duration * (Multiplier^Level)
+    	config.addDefault(key + ".EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "WWW");
     	config.addDefault(key + ".Recipe.Middle", "WWW");
@@ -61,8 +60,9 @@ public class Webbed extends Modifier implements Craftable {
         
         init(getConfig().getString("Webbed.name"),
                 "[" + getConfig().getString("Webbed.name_modifier") + "] " + getConfig().getString("Webbed.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 getConfig().getInt("Webbed.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.COBWEB, ChatColor.WHITE + getConfig().getString("Webbed.name_modifier"), 1, Enchantment.DAMAGE_ALL, 1));
+                modManager.createModifierItem(Material.COBWEB, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.duration = config.getInt("Webbed.Duration");
         this.durationMultiplier = config.getDouble("Webbed.DurationMultiplier");
@@ -73,6 +73,9 @@ public class Webbed extends Modifier implements Craftable {
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
         return Modifier.checkAndAdd(p, tool, this, "webbed", isCommand);
     }
+
+    @Override
+    public void removeMod(ItemStack tool) { }
 
     public void effect(Player p, ItemStack tool, Entity e) {
         if (!p.hasPermission("minetinker.modifiers.webbed.use")) { return; }

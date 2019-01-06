@@ -1,9 +1,12 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.bukkit.ChatColor;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -12,19 +15,13 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Sharpness extends Modifier implements Craftable {
 
     public Sharpness() {
         super(ModifierType.SHARPNESS,
-                ChatColor.WHITE,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
     }
@@ -38,7 +35,9 @@ public class Sharpness extends Modifier implements Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Compressed Quartzblock");
     	config.addDefault(key + ".description", "Weapon does additional damage!");
-    	config.addDefault(key + ".MaxLevel", 5);
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Sharpness-Modifier");
+        config.addDefault(key + ".Color", "%WHITE%");
+        config.addDefault(key + ".MaxLevel", 5);
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "QQQ");
     	config.addDefault(key + ".Recipe.Middle", "QQQ");
@@ -49,8 +48,9 @@ public class Sharpness extends Modifier implements Craftable {
     	
         init(config.getString("Sharpness.name"),
                 "[" + config.getString("Sharpness.name_modifier") + "] " + config.getString("Sharpness.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt("Sharpness.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.QUARTZ_BLOCK, ChatColor.WHITE + config.getString("Sharpness.name_modifier"), 1 , Enchantment.DAMAGE_ALL, 1));
+                modManager.createModifierItem(Material.QUARTZ_BLOCK, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     }
 
     @Override
@@ -77,6 +77,14 @@ public class Sharpness extends Modifier implements Craftable {
         tool.setItemMeta(meta);
 
         return tool;
+    }
+
+    @Override
+    public void removeMod(ItemStack tool) {
+        ItemMeta meta = tool.getItemMeta();
+        meta.removeEnchant(Enchantment.DAMAGE_ALL);
+        meta.removeEnchant(Enchantment.ARROW_DAMAGE);
+        tool.setItemMeta(meta);
     }
 
     @Override

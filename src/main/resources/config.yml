@@ -75,7 +75,7 @@ BannedWorlds: #Worlds where MineTinker-Tools can't be used
   - bannedExample2
 
 Spawners:
-  enabled: true #Should be disabled when using a different Spawner plugin
+  enabled: false #Should be disabled when using a different Spawner plugin
   onlyWithSilkTouch: true
   BannedWorlds: #Worlds where Spawners can't be mined and placed
     - bannedExample1
@@ -88,18 +88,3 @@ EasyHarvest:
   BannedWorlds: #Worlds where EasyHarvest can't be used
     - bannedExample1
     - bannedExample2
-
-Language:
-  #Tool
-  Identifier_Armor: MineTinker-Armor
-  Identifier_Builderswand: MineTinker-Builderswand
-  Identifier_Tool: MineTinker-Tool
-  LevelLine: Level
-  ExpLine: Exp
-  FreeModifierSlotsLine: Free Modifiers Slots
-  ModifiersLine: Modifiers
-  #Commands
-  Commands:
-    InvalidArguments: Invalid arguments!
-    InvalidTool: Invalid tool!
-    NoPermission: You do not have permission to use this command!

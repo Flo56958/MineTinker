@@ -1,9 +1,12 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.bukkit.ChatColor;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -12,19 +15,13 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Reinforced extends Modifier implements Craftable {
 
     public Reinforced() {
         super(ModifierType.REINFORCED,
-                ChatColor.DARK_GRAY,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
@@ -39,7 +36,9 @@ public class Reinforced extends Modifier implements Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Compressed Obsidian");
     	config.addDefault(key + ".description", "Chance to not use durability when using the tool/armor!");
-    	config.addDefault(key + ".MaxLevel", 3);
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Reinforced-Modifier");
+        config.addDefault(key + ".Color", "%DARK_GRAY%");
+        config.addDefault(key + ".MaxLevel", 3);
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "OOO");
     	config.addDefault(key + ".Recipe.Middle", "OOO");
@@ -50,8 +49,9 @@ public class Reinforced extends Modifier implements Craftable {
     	
         init(config.getString("Reinforced.name"),
                 "[" + config.getString("Reinforced.name_modifier") + "] " + config.getString("Reinforced.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt("Reinforced.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.OBSIDIAN, ChatColor.DARK_GRAY + config.getString("Reinforced.name_modifier"), 1, Enchantment.DURABILITY, 1));
+                modManager.createModifierItem(Material.OBSIDIAN, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     }
 
     @Override
@@ -72,6 +72,13 @@ public class Reinforced extends Modifier implements Craftable {
         tool.setItemMeta(meta);
 
         return tool;
+    }
+
+    @Override
+    public void removeMod(ItemStack tool) {
+        ItemMeta meta = tool.getItemMeta();
+        meta.removeEnchant(Enchantment.DURABILITY);
+        tool.setItemMeta(meta);
     }
 
     @Override

@@ -45,7 +45,7 @@ public class ItemListener implements Listener {
             ItemStack modifierTester = is.clone();
             modifierTester.setAmount(1);
 
-            for (Modifier m : modManager.getAllMods()) {
+            for (Modifier m : modManager.getAllowedMods()) {
                 if (m.getModItem().equals(modifierTester)) {
                     isMineTinker = true;
                     break;
@@ -83,7 +83,7 @@ public class ItemListener implements Listener {
                 ItemStack modifierTester = is.clone();
                 modifierTester.setAmount(1);
 
-                for (Modifier m : modManager.getAllMods()) {
+                for (Modifier m : modManager.getAllowedMods()) {
                     if (m.getModItem().equals(modifierTester)) {
                         isMineTinker = true;
                         break;

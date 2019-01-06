@@ -1,23 +1,17 @@
 package de.flo56958.MineTinker.Commands;
 
-import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.LinkedList;
-import java.util.List;
 
 class Functions {
 
@@ -31,7 +25,7 @@ class Functions {
     static void modList(CommandSender sender) {
         ChatWriter.sendMessage(sender, ChatColor.GOLD, "Possible Modifiers:");
         int index = 1;
-        for (Modifier m : modManager.getAllMods()) {
+        for (Modifier m : modManager.getAllowedMods()) {
             ChatWriter.sendMessage(sender, ChatColor.WHITE, index + ". " + m.getColor() + m.getName() + ChatColor.WHITE + ": " + m.getDescription());
             index++;
         }
@@ -92,54 +86,16 @@ class Functions {
      */
     @SuppressWarnings("IfCanBeSwitch")
     static void removeMod(Player player, String[] args) {
-        if (args.length == 2) {
-            try {
-                int index = Integer.parseInt(args[1]);
-                ItemStack tool = player.getInventory().getItemInMainHand();
-                if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
-                    ItemMeta meta = tool.getItemMeta();
-                    List<String> lore = meta.getLore();
-                    index = index + 4; //To start when modifier start
-                    if (!(index >= lore.size())) {
-                        String remove = lore.get(index);
-                        String[] mod = remove.split(": ");
-                        mod[0] = mod[0].substring(2); //Skips the ChatColor-Code at the Beginning TODO: Dual Chatcolorcodes need to be implemented
-                        if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Fiery.name"))) {
-                            meta.removeEnchant(Enchantment.FIRE_ASPECT);
-                            meta.removeEnchant(Enchantment.ARROW_FIRE);
-                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Haste.name"))) {
-                            meta.removeEnchant(Enchantment.DIG_SPEED);
-                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Luck.name"))) {
-                            meta.removeEnchant(Enchantment.LOOT_BONUS_BLOCKS);
-                            meta.removeEnchant(Enchantment.LOOT_BONUS_MOBS);
-                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Reinforced.name"))) {
-                            meta.removeEnchant(Enchantment.DURABILITY);
-                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Sweeping.name"))) {
-                            meta.removeEnchant(Enchantment.SWEEPING_EDGE);
-                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Knockback.name"))) {
-                            meta.removeEnchant(Enchantment.KNOCKBACK);
-                            meta.removeEnchant(Enchantment.ARROW_KNOCKBACK);
-                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Self-Repair.name"))) {
-                            meta.removeEnchant(Enchantment.MENDING);
-                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Sharpness.name"))) {
-                            meta.removeEnchant(Enchantment.ARROW_DAMAGE);
-                            meta.removeEnchant(Enchantment.DAMAGE_ALL);
-                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Silk-Touch.name"))) {
-                            meta.removeEnchant(Enchantment.SILK_TOUCH);
-                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Infinity.name"))) {
-                            meta.removeEnchant(Enchantment.ARROW_INFINITE);
-                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Protecting.name"))) {
-                            meta.removeEnchant(Enchantment.PROTECTION_ENVIRONMENTAL);
-                        } else if (mod[0].equals(Main.getPlugin().getConfig().getString("Modifiers.Light-Weight.name"))) {
-                            meta.removeEnchant(Enchantment.PROTECTION_FALL);
-                        }
-                        lore.remove(index);
-                        player.getInventory().setItemInMainHand(ItemGenerator.changeItem(tool, meta, lore));
-                    }
+        if (args.length >= 2) {
+            ItemStack tool = player.getInventory().getItemInMainHand();
+            if (!modManager.isToolViable(tool) && !modManager.isArmorViable(tool)) { Commands.invalidArgs(player); return; }
+            for (Modifier m : modManager.getAllMods()) {
+                if (args[1].equals(m.getName())) {
+                    modManager.removeMod(player.getInventory().getItemInMainHand(), m);
+                    return;
                 }
-            } catch (Exception e) {
-                Commands.invalidArgs(player);
             }
+            Commands.invalidArgs(player);
         } else {
             Commands.invalidArgs(player);
         }
@@ -152,7 +108,7 @@ class Functions {
      */
     static void addMod(Player player, String[] args) {
         if (args.length == 2) {
-            for (Modifier m : modManager.getAllMods()) {
+            for (Modifier m : modManager.getAllowedMods()) {
                 if (m.getName().equalsIgnoreCase(args[1])) {
                     ItemStack tool = player.getInventory().getItemInMainHand().clone();
                     if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
@@ -208,7 +164,6 @@ class Functions {
      */
     static void give(Player player, String[] args) {
         Material material;
-        List<String> lore = new LinkedList<>();
 
         if (args.length >= 2) {
             try {
@@ -217,49 +172,17 @@ class Functions {
                 Commands.invalidArgs(player);
                 return;
             }
-
-            if (ToolType.AXE.getMaterials().contains(material) ||
-                    ToolType.BOW.getMaterials().contains(material) ||
-                    ToolType.HOE.getMaterials().contains(material) ||
-                    ToolType.PICKAXE.getMaterials().contains(material) ||
-                    ToolType.SHOVEL.getMaterials().contains(material) ||
-                    ToolType.SWORD.getMaterials().contains(material)) {
-                lore.add(modManager.IDENTIFIER_TOOL);
-            } else if (ToolType.HELMET.getMaterials().contains(material) ||
-                    ToolType.CHESTPLATE.getMaterials().contains(material) ||
-                    ToolType.LEGGINGS.getMaterials().contains(material) ||
-                    ToolType.BOOTS.getMaterials().contains(material)) {
-                lore.add(modManager.IDENTIFIER_ARMOR);
-            } else {
-                Commands.invalidArgs(player);
-                return;
-            }
         } else {
             Commands.invalidArgs(player);
             return;
         }
 
-        if (args.length == 2) {
-            lore.addAll(ItemGenerator.createLore());
-            if (player.getInventory().addItem(ItemGenerator.changeLore(new ItemStack(material, 1), lore)).size() != 0) { //adds items to (full) inventory
-                player.getWorld().dropItem(player.getLocation(), ItemGenerator.changeLore(new ItemStack(material, 1), lore));
-            } // no else as it gets added in if
-        } else if (args.length == 3) {
-            int level;
-            try {
-                level = Integer.parseInt(args[2]);
-            } catch (Exception ignored) {
-                Commands.invalidArgs(player);
-                return;
-            }
+        ItemStack tool = new ItemStack(material, 1);
+        modManager.convertItemStack(tool);
 
-            lore.addAll(ItemGenerator.createLore(level));
-            if (player.getInventory().addItem(ItemGenerator.changeLore(new ItemStack(material, 1), lore)).size() != 0) { //adds items to (full) inventory
-                player.getWorld().dropItem(player.getLocation(), ItemGenerator.changeLore(new ItemStack(material, 1), lore));
-            } // no else as it gets added in if
-        } else {
-            Commands.invalidArgs(player);
-        }
+        if (player.getInventory().addItem(tool).size() != 0) { //adds items to (full) inventory
+            player.getWorld().dropItem(player.getLocation(), tool);
+        } // no else as it gets added in if
     }
 
     /**
@@ -269,38 +192,7 @@ class Functions {
      */
     static void convert(Player player, String[] args) {
         ItemStack tool = player.getInventory().getItemInMainHand();
-        List<String> lore = new LinkedList<>();
-        if (ToolType.AXE.getMaterials().contains(tool.getType()) ||
-                ToolType.BOW.getMaterials().contains(tool.getType()) ||
-                ToolType.HOE.getMaterials().contains(tool.getType()) ||
-                ToolType.PICKAXE.getMaterials().contains(tool.getType()) ||
-                ToolType.SHOVEL.getMaterials().contains(tool.getType()) ||
-                ToolType.SWORD.getMaterials().contains(tool.getType())) {
-            lore.add(modManager.IDENTIFIER_TOOL);
-        } else if (ToolType.HELMET.getMaterials().contains(tool.getType()) ||
-                ToolType.CHESTPLATE.getMaterials().contains(tool.getType()) ||
-                ToolType.LEGGINGS.getMaterials().contains(tool.getType()) ||
-                ToolType.BOOTS.getMaterials().contains(tool.getType())) {
-            lore.add(modManager.IDENTIFIER_ARMOR);
-        } else {
-            ChatWriter.sendMessage(player, ChatColor.RED, "Item can't be converted!");
-            return;
-        }
-
-        if (args.length < 2) {
-            tool.setItemMeta(null);
-            lore.addAll(ItemGenerator.createLore());
-            ItemGenerator.changeLore(tool, lore);
-        } else if (args.length < 3) {
-            try {
-                int level = Integer.parseInt(args[1]);
-                tool.setItemMeta(null);
-                lore.addAll(ItemGenerator.createLore(level));
-                ItemGenerator.changeLore(tool, lore);
-            } catch (Exception ignored) {
-                Commands.invalidArgs(player);
-            }
-        }
+        modManager.convertItemStack(tool);
     }
 
     /**
@@ -310,7 +202,7 @@ class Functions {
      */
     public static void giveModifierItem(Player player, String[] args) {
         if (args.length >= 2) {
-            for (Modifier mod : modManager.getAllMods()) {
+            for (Modifier mod : modManager.getAllowedMods()) {
                 if (mod.getName().equalsIgnoreCase(args[1])) {
                     int amount = 1;
                     if (args.length >= 3) {

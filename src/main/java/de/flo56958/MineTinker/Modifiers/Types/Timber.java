@@ -1,23 +1,10 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
-import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
+import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -25,6 +12,17 @@ import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import net.minecraft.server.v1_13_R2.BlockPosition;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Timber extends Modifier implements Craftable {
 
@@ -32,7 +30,6 @@ public class Timber extends Modifier implements Craftable {
 
     public Timber() {
         super(ModifierType.TIMBER,
-                ChatColor.GREEN,
                 new ArrayList<>(Collections.singletonList(ToolType.AXE)),
                 Main.getPlugin());
     }
@@ -46,6 +43,9 @@ public class Timber extends Modifier implements Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Wooden Emerald");
     	config.addDefault(key + ".description", "Chop down trees in an instant!");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Timber-Modifier");
+        config.addDefault(key + ".Color", "%GREEN%");
+        config.addDefault(key + ".MaximumBlocksPerSwing", -1);
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "LLL");
     	config.addDefault(key + ".Recipe.Middle", "LEL");
@@ -57,8 +57,9 @@ public class Timber extends Modifier implements Craftable {
         
         init(config.getString("Timber.name"),
                 "[" + config.getString("Timber.name_modifier") + "] " + config.getString("Timber.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 1,
-                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Timber.name_modifier"), 1, Enchantment.DIG_SPEED, 1));    	
+                modManager.createModifierItem(Material.EMERALD, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     }
 
     @Override
@@ -72,6 +73,9 @@ public class Timber extends Modifier implements Craftable {
 
         return Modifier.checkAndAdd(p, tool, this, "timber", isCommand);
     }
+
+    @Override
+    public void removeMod(ItemStack tool) { }
 
     public void effect(Player p, ItemStack tool, Block b) {
         if (!modManager.hasMod(tool, this)) { return; }
@@ -123,6 +127,7 @@ public class Timber extends Modifier implements Craftable {
                     Location loc = b.getLocation().clone();
                     loc.add(dx, dy, dz);
                     if (locs.contains(loc)) { continue; }
+                    if (getConfig().getInt("Timber.MaximumBlocksPerSwing") > 0 && locs.size() >= getConfig().getInt("Timber.MaximumBlocksPerSwing")) { return; }
                     locs.add(loc);
                     if (allowed.contains(p.getWorld().getBlockAt(loc).getType())) {
                         breakTree(p, p.getWorld().getBlockAt(loc), allowed);

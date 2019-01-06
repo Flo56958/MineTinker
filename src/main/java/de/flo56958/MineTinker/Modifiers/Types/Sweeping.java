@@ -1,9 +1,13 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
-import org.bukkit.ChatColor;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Enchantable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -12,19 +16,12 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Sweeping extends Modifier implements Enchantable, Craftable {
     public Sweeping() {
         super(ModifierType.SWEEPING,
-                ChatColor.RED,
                 new ArrayList<>(Collections.singletonList(ToolType.SWORD)),
                 Main.getPlugin());
     }
@@ -38,7 +35,9 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted Iron Ingot");
     	config.addDefault(key + ".description", "More damage over a greater area!");
-    	config.addDefault(key + ".MaxLevel", 5);
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Sweeping-Modifier");
+        config.addDefault(key + ".Color", "%RED%");
+        config.addDefault(key + ".MaxLevel", 5);
     	config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".Recipe.Enabled", false);
     	
@@ -46,8 +45,9 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
         
         init(config.getString("Sweeping.name"),
                 "[" + config.getString("Sweeping.name_modifier") + "] " + config.getString("Sweeping.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt("Sweeping.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.IRON_INGOT, ChatColor.RED + config.getString("Sweeping.name_modifier"), 1, Enchantment.SWEEPING_EDGE, 1));
+                modManager.createModifierItem(Material.IRON_INGOT, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     }
 
     @Override
@@ -69,6 +69,9 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
 
         return tool;
     }
+
+    @Override
+    public void removeMod(ItemStack tool) { }
 
     @Override
     public void enchantItem(Player p, ItemStack item) {

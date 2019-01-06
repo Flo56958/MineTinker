@@ -9,12 +9,10 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -31,7 +29,6 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
 
     public Beheading() {
         super(ModifierType.BEHEADING,
-                ChatColor.DARK_GRAY,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
     }
@@ -45,8 +42,10 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted Wither-Skull");
     	config.addDefault(key + ".description", "Chance to drop the head of the mob!");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Beheading-Modifier");
+    	config.addDefault(key + ".Color", "%DARK_GRAY%");
     	config.addDefault(key + ".MaxLevel", 10);
-    	config.addDefault(key + ".PercentagePerLevel", "10 #= 100% at Level 10");
+    	config.addDefault(key + ".PercentagePerLevel", 10);  //= 100% at Level 10
     	config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".Recipe.Enabled", false);
     	
@@ -54,8 +53,9 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
     	
     	init(config.getString("Beheading.name"),
                 "[" + config.getString("Beheading.name_modifier") + "] " + config.getString("Beheading.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt("Beheading.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.WITHER_SKELETON_SKULL, ChatColor.DARK_GRAY + config.getString("Beheading.name_modifier"), 1, Enchantment.LOOT_BONUS_MOBS, 1));
+                modManager.createModifierItem(Material.WITHER_SKELETON_SKULL, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.percentagePerLevel = config.getInt("Beheading.PercentagePerLevel");
     }
@@ -64,6 +64,9 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
         return checkAndAdd(p, tool, this, "beheading", isCommand);
     }
+
+    @Override
+    public void removeMod(ItemStack tool) { }
 
     public ItemStack effect(Player p, ItemStack tool, Entity mob) {
         ItemStack loot = new ItemStack(Material.AIR, 1);

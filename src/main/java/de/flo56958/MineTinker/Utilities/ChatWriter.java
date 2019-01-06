@@ -114,4 +114,80 @@ public class ChatWriter {
             }.runTaskLater(Main.getPlugin(), (long) duration);
         }
     }
+
+    public static String addColors(String input) {
+        input = input.replaceAll("%BLACK%", ChatColor.BLACK.toString());
+        input = input.replaceAll("%DARK_BLUE%", ChatColor.DARK_BLUE.toString());
+        input = input.replaceAll("%DARK_GREEN%", ChatColor.DARK_GREEN.toString());
+        input = input.replaceAll("%DARK_AQUA%", ChatColor.DARK_AQUA.toString());
+        input = input.replaceAll("%DARK_RED%", ChatColor.DARK_RED.toString());
+        input = input.replaceAll("%DARK_PURPLE%", ChatColor.DARK_PURPLE.toString());
+        input = input.replaceAll("%GOLD%", ChatColor.GOLD.toString());
+        input = input.replaceAll("%GRAY%", ChatColor.GRAY.toString());
+        input = input.replaceAll("%DARK_GRAY%", ChatColor.DARK_GRAY.toString());
+        input = input.replaceAll("%BLUE%", ChatColor.BLUE.toString());
+        input = input.replaceAll("%GREEN%", ChatColor.GREEN.toString());
+        input = input.replaceAll("%AQUA%", ChatColor.AQUA.toString());
+        input = input.replaceAll("%RED%", ChatColor.RED.toString());
+        input = input.replaceAll("%LIGHT_PURPLE%", ChatColor.LIGHT_PURPLE.toString());
+        input = input.replaceAll("%YELLOW%", ChatColor.YELLOW.toString());
+        input = input.replaceAll("%WHITE%", ChatColor.WHITE.toString());
+        input = input.replaceAll("%BOLD%", ChatColor.BOLD.toString());
+        input = input.replaceAll("%UNDERLINE%", ChatColor.UNDERLINE.toString());
+        input = input.replaceAll("%ITALIC%", ChatColor.ITALIC.toString());
+        input = input.replaceAll("%STRIKE%", ChatColor.STRIKETHROUGH.toString());
+        input = input.replaceAll("%MAGIC%", ChatColor.MAGIC.toString());
+        input = input.replaceAll("%RESET%", ChatColor.RESET.toString());
+
+        return input;
+    }
+
+    public static ChatColor getColor(String input) {
+        switch (input) {
+            case "%BLACK%":
+                return ChatColor.BLACK;
+            case "%DARK_BLUE%":
+                return ChatColor.DARK_BLUE;
+            case "%DARK_GREEN%":
+                return ChatColor.DARK_GREEN;
+            case "%DARK_AQUA%":
+                return ChatColor.DARK_AQUA;
+            case "%DARK_RED%":
+                return ChatColor.DARK_RED;
+            case "%DARK_PURPLE%":
+                return ChatColor.DARK_PURPLE;
+            case "%GOLD%":
+                return ChatColor.GOLD;
+            case "%GRAY%":
+                return ChatColor.GRAY;
+            case "%DARK_GRAY%":
+                return ChatColor.DARK_GRAY;
+            case "%BLUE%":
+                return ChatColor.BLUE;
+            case "%GREEN%":
+                return ChatColor.GREEN;
+            case "%AQUA%":
+                return ChatColor.AQUA;
+            case "%RED%":
+                return ChatColor.RED;
+            case "%LIGHT_PURPLE%":
+                return ChatColor.LIGHT_PURPLE;
+            case "%YELLOW%":
+                return ChatColor.YELLOW;
+            case "%BOLD%":
+                return ChatColor.BOLD;
+            case "%UNDERLINE%":
+                return ChatColor.UNDERLINE;
+            case "%ITALIC%":
+                return ChatColor.ITALIC;
+            case "%STRIKE%":
+                return ChatColor.STRIKETHROUGH;
+            case "%MAGIC%":
+                return ChatColor.MAGIC;
+            case "%RESET%":
+                return ChatColor.RESET;
+            default:
+                return ChatColor.WHITE;
+        }
+    }
 }

@@ -69,8 +69,8 @@ public class TinkerListener implements Listener {
             p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
         }
 
-        ChatWriter.sendActionBar(p, "Failed to apply " + mod.getColor() + mod.getName() + ChatColor.WHITE + " on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + e.getFailCause().toString() + ")");
         if (!e.isCommand()) {
+            ChatWriter.sendActionBar(p, "Failed to apply " + mod.getColor() + mod.getName() + ChatColor.WHITE + " on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + e.getFailCause().toString() + ")");
             ChatWriter.log(false, p.getDisplayName() + " failed to apply " + mod.getColor() + mod.getName() + ChatColor.GRAY + " " + (modManager.getModLevel(tool, mod) + 1) + " on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") (" + e.getFailCause().toString() + ")");
         }
     }
@@ -129,7 +129,7 @@ public class TinkerListener implements Listener {
                         if (p.getInventory().getItem(i) != null && p.getInventory().getItem(i).equals(tool)) {  //Can be NULL!
                             ItemStack newTool = null;
                             ItemStack safety = tool.clone();
-                            List<Modifier> mods = new ArrayList<>(modManager.getAllMods()); //necessary as the failed modifiers get removed from the list (so a copy is in order)
+                            List<Modifier> mods = new ArrayList<>(modManager.getAllowedMods()); //necessary as the failed modifiers get removed from the list (so a copy is in order)
                             while (newTool == null) {
                                 int index = new Random().nextInt(mods.size());
                                 newTool = mods.get(index).applyMod(p, safety, true);

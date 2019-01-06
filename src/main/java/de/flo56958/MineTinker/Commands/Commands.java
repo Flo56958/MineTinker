@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker.Commands;
 
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Listeners.BuildersWandListener;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -265,11 +266,14 @@ public class Commands implements TabExecutor {
         Iterator<Recipe> it = Main.getPlugin().getServer().recipeIterator(); //TODO: Better algorithm for removing recipes from modifiers
         while (it.hasNext()) {
             Recipe rec = it.next();
-            for (Modifier mod : modManager.getAllMods()) {
+            for (Modifier mod : modManager.getAllowedMods()) {
                 if (mod.getModItem().equals(rec.getResult())) {
                     it.remove();
                     break;
                 }
+            }
+            if (BuildersWandListener.getWands().contains(rec.getResult())) {
+                it.remove();
             }
         }
 
@@ -279,6 +283,9 @@ public class Commands implements TabExecutor {
 
         ChatWriter.sendMessage(sender, ChatColor.WHITE, "Reloading ModManager!");
         modManager.reload();
+
+        ChatWriter.sendMessage(sender, ChatColor.WHITE, "Reloading Builderswands!");
+        BuildersWandListener.reload();
 
         ChatWriter.sendMessage(sender, ChatColor.WHITE, "Done reloading!");
 
@@ -317,7 +324,9 @@ public class Commands implements TabExecutor {
                     case "am":
                     case "givemodifieritem":
                     case "gm":
-                        for (Modifier mod : modManager.getAllMods()) {
+                    case "removemod":
+                    case "rm":
+                        for (Modifier mod : modManager.getAllowedMods()) {
                             result.add(mod.getName());
                         }
 

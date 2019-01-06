@@ -1,21 +1,20 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.bukkit.ChatColor;
+import de.flo56958.MineTinker.Data.ModifierFailCause;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.ModifierFailEvent;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Data.ModifierFailCause;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ExtraModifier extends Modifier {
 
@@ -23,7 +22,6 @@ public class ExtraModifier extends Modifier {
 
     public ExtraModifier() {
         super(ModifierType.EXTRA_MODIFIER,
-                ChatColor.WHITE,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
@@ -37,13 +35,15 @@ public class ExtraModifier extends Modifier {
     	config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".description", "Adds a additional Modifiers-Slot to the tool!");
-    	config.addDefault(key + ".ExtraModifierGain", 1); //#How much Slots should be added per Nether-Star
-    	config.addDefault(key + ".modifier_item", "NETHER_STAR"); //#Needs to be a viable Material-Type
+        config.addDefault(key + ".Color", "%WHITE%");
+        config.addDefault(key + ".ExtraModifierGain", 1); //How much Slots should be added per Nether-Star
+    	config.addDefault(key + ".modifier_item", "NETHER_STAR"); //Needs to be a viable Material-Type
         
     	ConfigurationManager.saveConfig(config);
     	
         init(config.getString("Extra-Modifier.name"),
                 "[" + config.getString("Extra-Modifier.modifier_item")+ "] " + config.getString("Extra-Modifier.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 -1,
                 new ItemStack(Material.getMaterial(config.getString("Extra-Modifier.modifier_item")), 1));
         
@@ -71,7 +71,10 @@ public class ExtraModifier extends Modifier {
         modManager.setFreeSlots(tool, amount);
         return tool;
     }
-    
+
+    @Override
+    public void removeMod(ItemStack tool) { }
+
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Extra_Modifier);
     }

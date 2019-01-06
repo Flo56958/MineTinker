@@ -45,15 +45,9 @@ public class AnvilListener implements Listener {
             if (Lists.WORLDS.contains(player.getWorld().getName())) { return; }
             if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) { return; }
 
-            Modifier mod = null;
-            ItemStack modifierTester = modifier.clone();
-            modifierTester.setAmount(1);
+            if (!modManager.isModifierItem(modifier)) { return; }
 
-            for (Modifier m : modManager.getAllMods()) {
-                if (m.getModItem().equals(modifierTester)) {
-                    mod = m;
-                }
-            }
+            Modifier mod = modManager.getModifierFromItem(modifier);
 
             if (mod == null && tool.getType().equals(newTool.getType())) { return; } //Vanilla anvil use
 
@@ -117,18 +111,9 @@ public class AnvilListener implements Listener {
             return;
         }
 
-        Modifier mod = null;
+        if (!modManager.isModifierItem(modifier)) { return; }
 
-        {
-            ItemStack modifierTester = modifier.clone();
-            modifierTester.setAmount(1);
-
-            for (Modifier m : modManager.getAllMods()) {
-                if (m.getModItem().equals(modifierTester)) {
-                    mod = m;
-                }
-            }
-        }
+        Modifier mod = modManager.getModifierFromItem(modifier);
 
         ItemStack newTool = null;
 

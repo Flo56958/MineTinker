@@ -1,32 +1,42 @@
 package de.flo56958.MineTinker.Listeners;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.PlayerInfo;
+import net.minecraft.server.v1_13_R2.NBTTagInt;
+import net.minecraft.server.v1_13_R2.NBTTagList;
+import net.minecraft.server.v1_13_R2.NBTTagString;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+import java.util.List;
+
 //import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Modifiers.ModManager;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.PlayerInfo;
 
 public class BuildersWandListener implements Listener {
 
     private static final ModManager modManager;
-    private static final FileConfiguration config;
+    private static FileConfiguration config;
+    private static ArrayList<ItemStack> wands = new ArrayList<>();
     
     static {
     	modManager = ModManager.instance();
@@ -35,6 +45,7 @@ public class BuildersWandListener implements Listener {
     	
     	String key = "BuildersWand";
     	config.addDefault(key + ".enabled", true);
+    	config.addDefault(key + ".description", "%WHITE%MineTinker-Builderswand");
     	config.addDefault(key + ".useDurability", true);
     	config.addDefault(key + ".name_wood", "Wooden Builderswand");
     	config.addDefault(key + ".name_stone", "Stone Builderswand");
@@ -84,19 +95,111 @@ public class BuildersWandListener implements Listener {
     	
     	ConfigurationManager.saveConfig(config);
     }
-    
-    public static void init() {/*class must be called once a time*/}
-    
-    @EventHandler
-    public void onBlockBreak (BlockBreakEvent e) {
-        if (e.isCancelled()) { return; }
-        if (Lists.WORLDS_BUILDERSWANDS.contains(e.getPlayer().getWorld().getName())) { return; }
 
-        ItemStack wand = e.getPlayer().getInventory().getItemInMainHand();
+    public static void init() {/*class must be called once*/}
 
-        if (!modManager.isWandViable(wand)) { return; }
+    public static void reload() {
+        config = ConfigurationManager.getConfig("BuildersWand.yml");
+        wands.clear();
+        wands.add(buildersWandCreator(Material.WOODEN_SHOVEL, config.getString("BuildersWand.name_wood")));
+        wands.add(buildersWandCreator(Material.STONE_SHOVEL, config.getString("BuildersWand.name_stone")));
+        wands.add(buildersWandCreator(Material.IRON_SHOVEL, config.getString("BuildersWand.name_iron")));
+        wands.add(buildersWandCreator(Material.GOLDEN_SHOVEL, config.getString("BuildersWand.name_gold")));
+        wands.add(buildersWandCreator(Material.DIAMOND_SHOVEL, config.getString("BuildersWand.name_diamond")));
+        registerBuildersWands();
+    }
 
-        e.setCancelled(true);
+    private static ItemStack buildersWandCreator(Material m, String name) { //TODO: Modify to implement Modifiers
+        ItemStack wand = new ItemStack(m, 1);
+        ItemMeta meta = wand.getItemMeta();
+        ArrayList<String> lore = new ArrayList<>();
+        meta.setDisplayName(ChatWriter.addColors(name));
+        lore.add(ChatWriter.addColors(config.getString("BuildersWand.description")));
+        meta.setLore(lore);
+        meta.addItemFlags(ItemFlag.HIDE_DESTROYS);
+        wand.setItemMeta(meta);
+
+        NBTTagList list = new NBTTagList();
+        list.add(new NBTTagString("minecraft:air"));
+        modManager.setNBTTag(wand, "CanDestroy", list);
+        modManager.setNBTTag(wand, "IdentifierBuilderswand", new NBTTagInt(0));
+        return wand;
+    }
+
+    /**
+     * tries to register the Builderswand recipes
+     */
+    private static void registerBuildersWands() {
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Builderswand_Wood"), wands.get(0)); //init recipe
+            String top = config.getString("BuildersWand.Recipes.Wood.Top");
+            String middle = config.getString("BuildersWand.Recipes.Wood.Middle");
+            String bottom = config.getString("BuildersWand.Recipes.Wood.Bottom");
+            ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Wood.Materials");
+            newRecipe.shape(top, middle, bottom); //makes recipe
+            for (String key : materials.getKeys(false)) {
+                newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
+            }
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.logError("Could not register recipe for the Wooden Builderswand!"); //executes if the recipe could not initialize
+        }
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Builderswand_Stone"), wands.get(1)); //init recipe
+            String top = config.getString("BuildersWand.Recipes.Stone.Top");
+            String middle = config.getString("BuildersWand.Recipes.Stone.Middle");
+            String bottom = config.getString("BuildersWand.Recipes.Stone.Bottom");
+            ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Stone.Materials");
+            newRecipe.shape(top, middle, bottom); //makes recipe
+            for (String key : materials.getKeys(false)) {
+                newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
+            }
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.logError("Could not register recipe for the Stone Builderswand!"); //executes if the recipe could not initialize
+        }
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Builderswand_Iron"), wands.get(2)); //init recipe
+            String top = config.getString("BuildersWand.Recipes.Iron.Top");
+            String middle = config.getString("BuildersWand.Recipes.Iron.Middle");
+            String bottom = config.getString("BuildersWand.Recipes.Iron.Bottom");
+            ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Iron.Materials");
+            newRecipe.shape(top, middle, bottom); //makes recipe
+            for (String key : materials.getKeys(false)) {
+                newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
+            }
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.logError("Could not register recipe for the Iron Builderswand!"); //executes if the recipe could not initialize
+        }
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Builderswand_Gold"), wands.get(3)); //init recipe
+            String top = config.getString("BuildersWand.Recipes.Gold.Top");
+            String middle = config.getString("BuildersWand.Recipes.Gold.Middle");
+            String bottom = config.getString("BuildersWand.Recipes.Gold.Bottom");
+            ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Gold.Materials");
+            newRecipe.shape(top, middle, bottom); //makes recipe
+            for (String key : materials.getKeys(false)) {
+                newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
+            }
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.logError("Could not register recipe for the Golden Builderswand!"); //executes if the recipe could not initialize
+        }
+        try {
+            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Builderswand_Diamond"), wands.get(4)); //init recipe
+            String top = config.getString("BuildersWand.Recipes.Diamond.Top");
+            String middle = config.getString("BuildersWand.Recipes.Diamond.Middle");
+            String bottom = config.getString("BuildersWand.Recipes.Diamond.Bottom");
+            ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Diamond.Materials");
+            newRecipe.shape(top, middle, bottom); //makes recipe
+            for (String key : materials.getKeys(false)) {
+                newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
+            }
+            Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+        } catch (Exception e) {
+            ChatWriter.logError("Could not register recipe for the Diamond Builderswand!"); //executes if the recipe could not initialize
+        }
     }
 
     @SuppressWarnings("deprecation")
@@ -183,56 +286,55 @@ public class BuildersWandListener implements Listener {
             u = new Vector(0, -1, 0);
         }
         for (ItemStack current : inv) {
-            if (current != null) {
-                if (current.getType().equals(b.getType())) {
-                    if (!current.hasItemMeta()) {
-                        loop:
-                        for (int i = -_w; i <= _w; i++) {
-                            for (int j = -_u; j <= _u; j++) {
-                                Location l = b.getLocation().clone();
-                                l.subtract(w.clone().multiply(i));
-                                l.subtract(u.clone().multiply(j));
-                                Location loc = l.clone().subtract(v.clone().multiply(-1));
-                                if (b.getWorld().getBlockAt(l).getType().equals(b.getType())) {
-                                    if (b.getWorld().getBlockAt(loc).getType().equals(Material.AIR) ||
-                                            b.getWorld().getBlockAt(loc).getType().equals(Material.CAVE_AIR) ||
-                                            b.getWorld().getBlockAt(loc).getType().equals(Material.WATER) ||
-                                            b.getWorld().getBlockAt(loc).getType().equals(Material.BUBBLE_COLUMN) ||
-                                            b.getWorld().getBlockAt(loc).getType().equals(Material.LAVA) ||
-                                            b.getWorld().getBlockAt(loc).getType().equals(Material.GRASS)) {
-                                        if (wand.getType().getMaxDurability() - wand.getDurability() <= 1) {
-                                            break loop;
-                                        }
+            if (current == null) { continue; }
+            if (!current.getType().equals(b.getType())) { continue; }
+            if (current.hasItemMeta()) { continue; }
 
-                                        /*boolean canBuild = true;
-                                        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-                                        // WorldGuard may not be loaded
-                                        if (plugin instanceof WorldGuardPlugin) {
-                                            WorldGuardPlugin wg = (WorldGuardPlugin) plugin;
+            loop:
+            for (int i = -_w; i <= _w; i++) {
+                for (int j = -_u; j <= _u; j++) {
+                    Location l = b.getLocation().clone();
+                    l.subtract(w.clone().multiply(i));
+                    l.subtract(u.clone().multiply(j));
+                    Location loc = l.clone().subtract(v.clone().multiply(-1));
+                    if (b.getWorld().getBlockAt(l).getType().equals(b.getType())) {
+                        if (b.getWorld().getBlockAt(loc).getType().equals(Material.AIR) ||
+                                b.getWorld().getBlockAt(loc).getType().equals(Material.CAVE_AIR) ||
+                                b.getWorld().getBlockAt(loc).getType().equals(Material.WATER) ||
+                                b.getWorld().getBlockAt(loc).getType().equals(Material.BUBBLE_COLUMN) ||
+                                b.getWorld().getBlockAt(loc).getType().equals(Material.LAVA) ||
+                                b.getWorld().getBlockAt(loc).getType().equals(Material.GRASS)) {
+                            if (wand.getType().getMaxDurability() - wand.getDurability() <= 1) {
+                                break loop;
+                            }
 
-                                            canBuild = ((WorldGuardPlugin) plugin).canBuild(p, b.getWorld().getBlockAt(loc));
-                                        }
-                                        if (canBuild) { */
+                            /*boolean canBuild = true;
+                            Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+                            // WorldGuard may not be loaded
+                            if (plugin instanceof WorldGuardPlugin) {
+                                WorldGuardPlugin wg = (WorldGuardPlugin) plugin;
+                                canBuild = ((WorldGuardPlugin) plugin).canBuild(p, b.getWorld().getBlockAt(loc));
+                            }
+                            if (canBuild) { */
+                            b.getWorld().getBlockAt(loc).setType(current.getType());
+                            //} else { continue; }
 
-                                        b.getWorld().getBlockAt(loc).setType(current.getType());
-
-                                        //} else { continue; }
-
-                                        current.setAmount(current.getAmount() - 1);
-                                        if (config.getBoolean("BuildersWand.useDurability")) { //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
-                                            wand.setDurability((short) (wand.getDurability() + 1));
-                                        }
-                                        if (current.getAmount() == 0) { //TODO: Add Exp gain for Builderswands
-                                            break loop;
-                                        }
-                                    }
-                                }
+                            current.setAmount(current.getAmount() - 1);
+                            if (config.getBoolean("BuildersWand.useDurability")) { //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
+                                wand.setDurability((short) (wand.getDurability() + 1));
+                            }
+                            if (current.getAmount() == 0) { //TODO: Add Exp gain for Builderswands
+                                break loop;
                             }
                         }
-                        break;
                     }
                 }
             }
+            break;
         }
+    }
+
+    public static ArrayList<ItemStack> getWands() {
+        return wands;
     }
 }

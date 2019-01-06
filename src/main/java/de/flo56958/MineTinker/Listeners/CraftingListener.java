@@ -44,19 +44,8 @@ public class CraftingListener implements Listener {
         if (Lists.WORLDS.contains(player.getWorld().getName())) { return; }
 
         ArrayList<String> lore = new ArrayList<>();
-        if (tools.contains(ToolType.get(currentItem.getType())) && !modManager.isWandViable(currentItem)) {
-            lore.add(modManager.IDENTIFIER_TOOL);
-        } else if (armor.contains(ToolType.get(currentItem.getType()))) {
-            lore.add(modManager.IDENTIFIER_ARMOR);
-        } else {
-            if (config.getBoolean("Sound.OnEveryCrafting"))
-                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
-            return;
-        }
-
-        lore.addAll(ItemGenerator.createLore());
-
-        ItemGenerator.changeLore(currentItem, lore); //does not need 'currentItem = '
+        if (!(tools.contains(ToolType.get(currentItem.getType())) || armor.contains(ToolType.get(currentItem.getType())))) { return; }
+        modManager.convertItemStack(currentItem);
 
         //Shift Clicking -> Add All CraftItems (converted) + cancel event
         if(e.isShiftClick()) {

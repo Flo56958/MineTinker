@@ -1,8 +1,7 @@
 package de.flo56958.MineTinker.Listeners;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -15,8 +14,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ElevatorListener implements Listener {
 
@@ -46,7 +45,7 @@ public class ElevatorListener implements Listener {
     	ConfigurationManager.saveConfig(config);
     }
     
-    public static void init() {/*class must be called once a time*/}
+    public static void init() {/*class must be called once*/}
     
     @EventHandler
     public void onSneak (PlayerToggleSneakEvent e) {

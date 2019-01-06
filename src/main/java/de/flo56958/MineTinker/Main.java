@@ -19,20 +19,16 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class Main extends JavaPlugin {
 
     private static Updater updater;
-    
-    private static Main main;
 
     @Override
     public void onEnable() {
-    	main = this;
+        ChatWriter.log(false, "Setting up internals...");
         ConfigurationManager.reload();
-        BuildersWandListener.init();
         ElevatorListener.init();
+        BuildersWandListener.init();
         loadConfig();
 
         ModManager.instance();
-        
-        ChatWriter.log(false, "Set up internals.");
 
         Commands cmd = new Commands();
         this.getCommand("minetinker").setExecutor(cmd); //must be after internals as it would throw a NullPointerException
@@ -59,7 +55,7 @@ public class Main extends JavaPlugin {
         }
         if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("BuildersWand.enabled")) {
             Bukkit.getPluginManager().registerEvents(new BuildersWandListener(),this);
-            CraftingRecipes.registerBuildersWands();
+            BuildersWandListener.reload();
             ChatWriter.log(false, "Enabled BuildersWands!");
         }
         if (getConfig().getBoolean("EasyHarvest.enabled")) {
@@ -70,12 +66,10 @@ public class Main extends JavaPlugin {
 
         if (getConfig().getBoolean("logging.metrics")) {
             new Metrics(this);
-            Bukkit.getConsoleSender().sendMessage(ChatWriter.CHAT_PREFIX + " Started Metrics-service! Thank you for enabling it in the config! It helps to maintain the Plugin and fix bugs. (Data is send anonymously)");
-        } else {
-            Bukkit.getConsoleSender().sendMessage(ChatWriter.CHAT_PREFIX + " Metrics-service disabled! The service helps to maintain the Plugin and fix bugs. (Data is send anonymously)");
         }
-        ChatWriter.log(false, "Standard logging is enabled! You can disable it in the config!");
-        ChatWriter.log(true, "Debug logging is enabled! You should disable it in the config!");
+
+        ChatWriter.log(false, "Standard Logging is enabled. You can disable it in the config under Logging.Standard!");
+        ChatWriter.log(true, "Debug Logging is enabled. You should disable it in the config under Logging.Debug!");
 
         for (Player current : Bukkit.getServer().getOnlinePlayers()) {
             Power.HASPOWER.put(current, false);
@@ -111,8 +105,4 @@ public class Main extends JavaPlugin {
     }
 
     public static Updater getUpdater() { return updater; }
-
-	public static Main getMain() {
-		return main;
-	}
 }

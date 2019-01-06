@@ -1,18 +1,7 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
-import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -20,6 +9,15 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 public class SelfRepair extends Modifier implements Enchantable, Craftable {
 
@@ -28,7 +26,6 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
 
     public SelfRepair() {
         super(ModifierType.SELF_REPAIR,
-                ChatColor.GREEN,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
@@ -43,18 +40,21 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted mossy Cobblestone");
     	config.addDefault(key + ".description", "Chance to repair the tool / armor while using it!");
-    	config.addDefault(key + ".MaxLevel", 10);
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Self-Repair-Modifier");
+        config.addDefault(key + ".Color", "%GREEN%");
+        config.addDefault(key + ".MaxLevel", 10);
     	config.addDefault(key + ".EnchantCost", 10);
-    	config.addDefault(key + ".PercentagePerLevel", 10); //#100% at Level 10 (not necessary for unbreakable tool in most cases)
-    	config.addDefault(key + ".HealthRepair", 2); //#How much durability should be repaired per trigger
+    	config.addDefault(key + ".PercentagePerLevel", 10); //100% at Level 10 (not necessary for unbreakable tool in most cases)
+    	config.addDefault(key + ".HealthRepair", 2); //How much durability should be repaired per trigger
     	config.addDefault(key + ".Recipe.Enabled", false);
     	
     	ConfigurationManager.saveConfig(config);
         
         init(config.getString("Self-Repair.name"),
                 "[" + config.getString("Self-Repair.name_modifier") + "] " + config.getString("Self-Repair.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt("Self-Repair.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.MOSSY_COBBLESTONE, ChatColor.GREEN + config.getString("Self-Repair.name_modifier"), 1, Enchantment.MENDING, 1));
+                modManager.createModifierItem(Material.MOSSY_COBBLESTONE, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.percentagePerLevel = config.getInt("Self-Repair.PercentagePerLevel");
         this.healthRepair = config.getInt("Self-Repair.HealthRepair");
@@ -64,6 +64,9 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
         return Modifier.checkAndAdd(p, tool, this, "selfrepair", isCommand);
     }
+
+    @Override
+    public void removeMod(ItemStack tool) { }
 
     @SuppressWarnings("deprecation")
 	public void effect(Player p, ItemStack tool) {

@@ -1,9 +1,14 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.bukkit.ChatColor;
+import de.flo56958.MineTinker.Data.ModifierFailCause;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.ModifierFailEvent;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -12,21 +17,13 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Data.ModifierFailCause;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Luck extends Modifier implements Craftable {
 
     public Luck() {
         super(ModifierType.LUCK,
-                ChatColor.BLUE,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD)),
                 Main.getPlugin());
     }
@@ -40,7 +37,9 @@ public class Luck extends Modifier implements Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Compressed Lapis-Block");
     	config.addDefault(key + ".description", "Get more loot from enemies and blocks!");
-    	config.addDefault(key + ".MaxLevel", 5);
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Luck-Modifier");
+        config.addDefault(key + ".Color", "%BLUE%");
+        config.addDefault(key + ".MaxLevel", 5);
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "LLL");
     	config.addDefault(key + ".Recipe.Middle", "LLL");
@@ -51,8 +50,9 @@ public class Luck extends Modifier implements Craftable {
     	
         init(config.getString("Luck.name"),
                 "[" + config.getString("Luck.name_modifier") + "] " + config.getString("Luck.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt("Luck.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.LAPIS_BLOCK, ChatColor.BLUE + config.getString("Luck.name_modifier"), 1, Enchantment.LOOT_BONUS_BLOCKS, 1));
+                modManager.createModifierItem(Material.LAPIS_BLOCK, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     }
 
     @Override
@@ -92,6 +92,14 @@ public class Luck extends Modifier implements Craftable {
         tool.setItemMeta(meta);
 
         return tool;
+    }
+
+    @Override
+    public void removeMod(ItemStack tool) {
+        ItemMeta meta = tool.getItemMeta();
+        meta.removeEnchant(Enchantment.LOOT_BONUS_BLOCKS);
+        meta.removeEnchant(Enchantment.LOOT_BONUS_MOBS);
+        tool.setItemMeta(meta);
     }
 
     @Override

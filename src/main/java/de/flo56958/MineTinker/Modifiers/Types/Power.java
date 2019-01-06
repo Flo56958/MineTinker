@@ -1,9 +1,15 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-
+import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Data.ModifierFailCause;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.ModifierFailEvent;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Enchantable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.*;
+import net.minecraft.server.v1_13_R2.BlockPosition;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -11,26 +17,14 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Data.ModifierFailCause;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
-import de.flo56958.MineTinker.Utilities.PlayerInfo;
-import net.minecraft.server.v1_13_R2.BlockPosition;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class Power extends Modifier implements Enchantable, Craftable {
 
@@ -40,7 +34,6 @@ public class Power extends Modifier implements Enchantable, Craftable {
 
     public Power() {
         super(ModifierType.POWER,
-                ChatColor.GREEN,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL)),
                 Main.getPlugin());
     }
@@ -54,8 +47,10 @@ public class Power extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted Emerald");
     	config.addDefault(key + ".description", "Tool can destroy more blocks per swing!");
-    	config.addDefault(key + ".lv1_vertical", false); //#Should the 3x1 at level 1 be horizontal (false) or vertical (true)
-    	config.addDefault(key + ".MaxLevel", 3); //#Algorithm for area of effect (except for level 1): (level * 2) - 1 x (level * 2) - 1
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Power-Modifier");
+        config.addDefault(key + ".Color", "%GREEN%");
+        config.addDefault(key + ".lv1_vertical", false); //Should the 3x1 at level 1 be horizontal (false) or vertical (true)
+    	config.addDefault(key + ".MaxLevel", 3); //Algorithm for area of effect (except for level 1): (level * 2) - 1 x (level * 2) - 1
     	config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".Recipe.Enabled", false);
         
@@ -63,8 +58,9 @@ public class Power extends Modifier implements Enchantable, Craftable {
     	
         init(config.getString("Power.name"),
                 "[" + config.getString("Power.name_modifier") + "] " + config.getString("Power.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt("Power.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.EMERALD, ChatColor.GREEN + config.getString("Power.name_modifier"), 1, Enchantment.ARROW_DAMAGE, 1));
+                modManager.createModifierItem(Material.EMERALD, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.lv1_vertical = config.getBoolean("Power.lv1_vertical");
     }
@@ -80,6 +76,9 @@ public class Power extends Modifier implements Enchantable, Craftable {
 
         return Modifier.checkAndAdd(p, tool, this, "power", isCommand);
     }
+
+    @Override
+    public void removeMod(ItemStack tool) { }
 
     private boolean checkPower(Player p, ItemStack tool) {
         if (!p.hasPermission("minetinker.modifiers.power.use")) { return false; }

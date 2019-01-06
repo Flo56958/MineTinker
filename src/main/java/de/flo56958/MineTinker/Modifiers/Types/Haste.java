@@ -1,9 +1,12 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.bukkit.ChatColor;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -12,19 +15,13 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Haste extends Modifier implements Craftable {
 
     public Haste() {
         super(ModifierType.HASTE,
-                ChatColor.DARK_RED,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL)),
                 Main.getPlugin());
     }
@@ -38,7 +35,9 @@ public class Haste extends Modifier implements Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Compressed Redstoneblock");
     	config.addDefault(key + ".description", "Tool can destroy blocks faster!");
-    	config.addDefault(key + ".MaxLevel", 5);
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Haste-Modifier");
+        config.addDefault(key + ".Color", "%DARK_RED%");
+        config.addDefault(key + ".MaxLevel", 5);
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "RRR");
     	config.addDefault(key + ".Recipe.Middle", "RRR");
@@ -49,8 +48,9 @@ public class Haste extends Modifier implements Craftable {
     	
         init(config.getString("Haste.name"),
                 "[" + config.getString("Haste.name_modifier") + "] " + config.getString("Haste.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt("Haste.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.REDSTONE_BLOCK, ChatColor.DARK_RED + config.getString("Haste.name_modifier"), 1, Enchantment.DIG_SPEED, 1));
+                modManager.createModifierItem(Material.REDSTONE_BLOCK, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     }
 
     @Override
@@ -70,6 +70,13 @@ public class Haste extends Modifier implements Craftable {
         tool.setItemMeta(meta);
 
         return tool;
+    }
+
+    @Override
+    public void removeMod(ItemStack tool) {
+        ItemMeta meta = tool.getItemMeta();
+        meta.removeEnchant(Enchantment.DIG_SPEED);
+        tool.setItemMeta(meta);
     }
 
     @Override

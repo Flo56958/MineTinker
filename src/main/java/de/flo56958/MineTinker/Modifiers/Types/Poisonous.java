@@ -1,21 +1,7 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
-import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -23,6 +9,18 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Poisonous extends Modifier implements Enchantable, Craftable {
 	
@@ -32,7 +30,6 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
 
     public Poisonous() {
         super(ModifierType.POISONOUS,
-                ChatColor.DARK_GREEN,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
@@ -47,19 +44,22 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enhanced Rotten Flesh");
     	config.addDefault(key + ".description", "Poisons enemies!");
-    	config.addDefault(key + ".MaxLevel", 5);
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Poisonous-Modifier");
+        config.addDefault(key + ".Color", "%DARK_GREEN%");
+        config.addDefault(key + ".MaxLevel", 5);
     	config.addDefault(key + ".EnchantCost", 10);
-    	config.addDefault(key + ".Duration", 120); //#ticks INTEGER (20 ticks ~ 1 sec)
-    	config.addDefault(key + ".DurationMultiplier", 1.1); //#Duration * (Multiplier^Level) DOUBLE
-    	config.addDefault(key + ".EffectAmplifier", 2); //#per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...) INTEGER
+    	config.addDefault(key + ".Duration", 120); //ticks INTEGER (20 ticks ~ 1 sec)
+    	config.addDefault(key + ".DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
+    	config.addDefault(key + ".EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...) INTEGER
     	config.addDefault(key + ".Recipe.Enabled", false);
     	
     	ConfigurationManager.saveConfig(config);
         
         init(config.getString("Poisonous.name"),
                 "[" + config.getString("Poisonous.name_modifier") + "] " + config.getString("Poisonous.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt("Poisonous.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.ROTTEN_FLESH, ChatColor.DARK_GREEN + config.getString("Poisonous.name_modifier"), 1, Enchantment.DURABILITY, 1));
+                modManager.createModifierItem(Material.ROTTEN_FLESH, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.duration = config.getInt("Poisonous.Duration");
         this.durationMultiplier = config.getDouble("Poisonous.DurationMultiplier");
@@ -70,6 +70,9 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
         return checkAndAdd(p, tool, this, "poisonous", isCommand);
     }
+
+    @Override
+    public void removeMod(ItemStack tool) { }
 
     public void effect(Player p, ItemStack tool, Entity e) {
         if (!p.hasPermission("minetinker.modifiers.poisonous.use")) { return; }

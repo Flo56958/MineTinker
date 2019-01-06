@@ -10,11 +10,12 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
-
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -29,7 +30,9 @@ public class AutoSmelt extends Modifier implements Craftable {
     private boolean hasSound;
 
     public AutoSmelt() {
-        super(ModifierType.AUTO_SMELT, ChatColor.YELLOW, new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL)), Main.getPlugin());
+        super(ModifierType.AUTO_SMELT,
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL)),
+                Main.getPlugin());
     }
     
     public void reload() {
@@ -41,6 +44,8 @@ public class AutoSmelt extends Modifier implements Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enhanced Furnace");
     	config.addDefault(key + ".description", "Chance to smelt ore when mined!");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Auto-Smelt-Modifier");
+    	config.addDefault(key + ".Color", "%YELLOW%");
     	config.addDefault(key + ".MaxLevel", 5);
     	config.addDefault(key + ".PercentagePerLevel", 20);
     	config.addDefault(key + ".Sound", true);
@@ -58,8 +63,9 @@ public class AutoSmelt extends Modifier implements Craftable {
     	
     	init(config.getString("Auto-Smelt.name"),
                 "[" + config.getString("Auto-Smelt.name_modifier") + "] " + config.getString("Auto-Smelt.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt("Auto-Smelt.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.FURNACE, ChatColor.YELLOW + config.getString("Auto-Smelt.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1));
+                modManager.createModifierItem(Material.FURNACE, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.percentagePerLevel = config.getInt("Auto-Smelt.PercentagePerLevel");
         this.hasSound = config.getBoolean("Auto-Smelt.Sound");
@@ -67,7 +73,6 @@ public class AutoSmelt extends Modifier implements Craftable {
     
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-
         if (modManager.get(ModifierType.SILK_TOUCH) != null) {
             if (modManager.hasMod(tool, modManager.get(ModifierType.SILK_TOUCH))) {
                 pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
@@ -77,6 +82,9 @@ public class AutoSmelt extends Modifier implements Craftable {
 
         return Modifier.checkAndAdd(p, tool, this, "autosmelt", isCommand);
     }
+
+    @Override
+    public void removeMod(ItemStack tool) { }
 
     public void effect(Player p, ItemStack tool, Block b, BlockBreakEvent e) {
     	FileConfiguration config = getConfig();

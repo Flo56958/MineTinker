@@ -1,9 +1,15 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
-import org.bukkit.ChatColor;
+import de.flo56958.MineTinker.Data.ModifierFailCause;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.ModifierFailEvent;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Enchantable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -12,16 +18,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Data.ModifierFailCause;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Infinity extends Modifier implements Enchantable, Craftable {
 
@@ -29,7 +27,6 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
 
     public Infinity() {
         super(ModifierType.INFINITY,
-                ChatColor.WHITE,
                 new ArrayList<>(Collections.singletonList(ToolType.BOW)),
                 Main.getPlugin());
     }
@@ -43,16 +40,19 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted Arrow");
     	config.addDefault(key + ".description", "You only need one Arrow to shoot a bow!");
-    	config.addDefault(key + ".EnchantCost", 10);
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Infinity-Modifier");
+        config.addDefault(key + ".Color", "%WHITE%");
+        config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".Recipe.Enabled", false);
-    	//#Check Ender.yml for Compatibility-option for Ender and Infinity
+    	//Check Ender.yml for Compatibility-option for Ender and Infinity
     	
     	ConfigurationManager.saveConfig(config);
     	
         init(config.getString("Infinity.name"),
                 "[" + config.getString("Infinity.name_modifier") + "] " + config.getString("Infinity.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 1,
-                ItemGenerator.itemEnchanter(Material.ARROW, ChatColor.WHITE + config.getString("Infinity.name_modifier"), 1, Enchantment.ARROW_INFINITE, 1));
+                modManager.createModifierItem(Material.ARROW, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.compatibleWithEnder = ConfigurationManager.getConfig("Ender.yml").getBoolean("Ender.CompatibleWithInfinity");
     }
@@ -83,6 +83,13 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
         tool.setItemMeta(meta);
 
         return tool;
+    }
+
+    @Override
+    public void removeMod(ItemStack tool) {
+        ItemMeta meta = tool.getItemMeta();
+        meta.removeEnchant(Enchantment.ARROW_INFINITE);
+        tool.setItemMeta(meta);
     }
 
     @Override

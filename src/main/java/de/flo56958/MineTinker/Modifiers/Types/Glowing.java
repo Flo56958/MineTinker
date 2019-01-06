@@ -1,12 +1,16 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -14,14 +18,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Glowing extends Modifier implements Craftable {
 
@@ -31,7 +29,6 @@ public class Glowing extends Modifier implements Craftable {
 
     public Glowing() {
         super(ModifierType.GLOWING,
-                ChatColor.YELLOW,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
     }
@@ -45,9 +42,11 @@ public class Glowing extends Modifier implements Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Ender-Glowstone");
     	config.addDefault(key + ".description", "Makes Enemies glow!");
-    	config.addDefault(key + ".MaxLevel", 3);
-    	config.addDefault(key + ".Duration", 200); //#ticks INTEGER (20 ticks ~ 1 sec)
-    	config.addDefault(key + ".DurationMultiplier", 1.1); //#Duration * (Multiplier^Level) DOUBLE
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Glowing-Modifier");
+        config.addDefault(key + ".Color", "%YELLOW%");
+        config.addDefault(key + ".MaxLevel", 3);
+    	config.addDefault(key + ".Duration", 200); //ticks INTEGER (20 ticks ~ 1 sec)
+    	config.addDefault(key + ".DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "GGG");
     	config.addDefault(key + ".Recipe.Middle", "GEG");
@@ -59,8 +58,9 @@ public class Glowing extends Modifier implements Craftable {
     	
         init(config.getString("Glowing.name"),
                 "[" + config.getString("Glowing.name_modifier") + "] " + config.getString("Glowing.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt("Glowing.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.GLOWSTONE, ChatColor.YELLOW + config.getString("Glowing.name_modifier"), 1, Enchantment.DURABILITY, 1));
+                modManager.createModifierItem(Material.GLOWSTONE, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.duration = config.getInt("Glowing.Duration");
         this.durationMultiplier = config.getDouble("Glowing.DurationMultiplier");
@@ -70,6 +70,9 @@ public class Glowing extends Modifier implements Craftable {
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
         return Modifier.checkAndAdd(p, tool, this, "glowing", isCommand);
     }
+
+    @Override
+    public void removeMod(ItemStack tool) { }
 
     public void effect(Player p, ItemStack tool, EntityDamageByEntityEvent e) {
         if (!p.hasPermission("minetinker.modifiers.glowing.use")) { return; }

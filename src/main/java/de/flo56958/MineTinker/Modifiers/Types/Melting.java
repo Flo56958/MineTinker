@@ -1,19 +1,7 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
-
-import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -21,6 +9,16 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Melting extends Modifier implements Enchantable, Craftable {
 
@@ -28,7 +26,6 @@ public class Melting extends Modifier implements Enchantable, Craftable {
 
     public Melting() {
         super(ModifierType.MELTING,
-                ChatColor.GOLD,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.CHESTPLATE, ToolType.LEGGINGS)),
                 Main.getPlugin());
@@ -43,17 +40,20 @@ public class Melting extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted Magma block");
     	config.addDefault(key + ".description", "Extra damage against burning enemies and less damage taken while on fire!");
-    	config.addDefault(key + ".MaxLevel", 3);
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Melting-Modifier");
+        config.addDefault(key + ".Color", "%GOLD%");
+        config.addDefault(key + ".MaxLevel", 3);
     	config.addDefault(key + ".EnchantCost", 10);
-    	config.addDefault(key + ".BonusMultiplier", 0.1); //#Percent of Bonus-damage per Level or Damage-reduction on Armor
+    	config.addDefault(key + ".BonusMultiplier", 0.1); //Percent of Bonus-damage per Level or Damage-reduction on Armor
     	config.addDefault(key + ".Recipe.Enabled", false);
         
     	ConfigurationManager.saveConfig(config);
     	
         init(config.getString("Melting.name"),
                 "[" + config.getString("Melting.name_modifier") + "] " + config.getString("Melting.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt("Melting.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.MAGMA_BLOCK, ChatColor.GOLD + config.getString("Melting.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1));
+                modManager.createModifierItem(Material.MAGMA_BLOCK, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.bonusMultiplier = config.getDouble("Melting.BonusMultiplier");
     }
@@ -62,6 +62,9 @@ public class Melting extends Modifier implements Enchantable, Craftable {
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
         return checkAndAdd(p, tool, this, "melting", isCommand);
     }
+
+    @Override
+    public void removeMod(ItemStack tool) { }
 
     public void effect(Player p, ItemStack tool, EntityDamageByEntityEvent e) {
         if (!p.hasPermission("minetinker.modifiers.melting.use")) { return; }

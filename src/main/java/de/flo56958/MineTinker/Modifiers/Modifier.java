@@ -1,7 +1,11 @@
 package de.flo56958.MineTinker.Modifiers;
 
-import java.util.ArrayList;
-
+import de.flo56958.MineTinker.Data.ModifierFailCause;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.ModifierApplyEvent;
+import de.flo56958.MineTinker.Events.ModifierFailEvent;
+import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -10,11 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
-import de.flo56958.MineTinker.Data.ModifierFailCause;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Events.ModifierApplyEvent;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
-import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
+import java.util.ArrayList;
 
 public abstract class Modifier {
 
@@ -24,7 +24,7 @@ public abstract class Modifier {
 	private String name;
 	private final ModifierType type;
 	private String description;
-	private final ChatColor color;
+	private ChatColor color;
 	private int maxLvl;
 	private ItemStack modItem;
 	private final ArrayList<ToolType> allowedTools;
@@ -62,42 +62,36 @@ public abstract class Modifier {
 	 */
 	public abstract ItemStack applyMod(Player p, ItemStack tool, boolean isCommand);
 
+	public abstract void removeMod(ItemStack tool);
+
 	/**
 	 * Class constructor
-	 * @param name Name of the Modifier
-	 * @param description
 	 * @param type ModifierType of the Modifier
-	 * @param color Color of the Modifier
-	 * @param maxLvl Maximum Level cap of the Modifier
-	 * @param modItem ItemStack that is required to craft the Modifier
 	 * @param allowedTools Lists of ToolTypes where the Modifier is allowed on
 	 * @param source The Plugin that registered the Modifier
 	 */
-	protected Modifier(ModifierType type, ChatColor color, ArrayList<ToolType> allowedTools, Plugin source) {
+	protected Modifier(ModifierType type, ArrayList<ToolType> allowedTools, Plugin source) {
 		this.type = type;
-		this.color = color;
 		this.allowedTools = allowedTools;
 		this.source = source;
-		init("", "", 1, new ItemStack(Material.BEDROCK, 1)); //init, maybe someone forget it
+		init("", "", ChatColor.MAGIC, 1, new ItemStack(Material.BEDROCK, 1)); //init, maybe someone forget it
 		reload();
 	}
 	
 	/**
 	 * @param name Name of the Modifier
 	 * @param description
-	 * @param type ModifierType of the Modifier
 	 * @param color Color of the Modifier
 	 * @param maxLvl Maximum Level cap of the Modifier
 	 * @param modItem ItemStack that is required to craft the Modifier
-	 * @param allowedTools Lists of ToolTypes where the Modifier is allowed on
-	 * @param source The Plugin that registered the Modifier
 	 */
 	/*
 	 * can be changed at any time
 	 */
-	protected void init(String name, String description, int maxLvl, ItemStack modItem) {
+	protected void init(String name, String description, ChatColor color, int maxLvl, ItemStack modItem) {
 		this.name = name;
-		this.description = description;
+		this.description = ChatWriter.addColors(description);
+		this.color = color;
 		this.maxLvl = maxLvl;
 		this.modItem = modItem;
 	}
@@ -107,7 +101,7 @@ public abstract class Modifier {
 	public abstract boolean isAllowed();
 	
 	public static ItemStack checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand) {
-		if (modManager.getFreeSlots(tool) < 1 && !mod.getType().equals(ModifierType.EXTRA_MODIFIER)) {
+		if ((modManager.getFreeSlots(tool) < 1 && !mod.getType().equals(ModifierType.EXTRA_MODIFIER)) && !isCommand) {
 			pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_FREE_SLOTS, isCommand));
 			return null;
 		}

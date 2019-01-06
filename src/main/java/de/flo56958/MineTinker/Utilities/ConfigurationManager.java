@@ -20,7 +20,7 @@ public class ConfigurationManager {
     
     /**
      * Gets the specified config file
-     * @param file The Name of the file (Enum modifiers_Config)
+     * @param modifier The Name of the file (Enum modifiers_Config)
      * @return The FileConfiguration with the given name
      */
     public static FileConfiguration getConfig(Modifiers_Config modifier) {
@@ -40,6 +40,7 @@ public class ConfigurationManager {
         for (Modifiers_Config modifier : Modifiers_Config.values()) {
         	loadConfig("Modifiers" + File.separator, modifier.toString());
         }
+        loadConfig("", "layout.yml");
 
         loadConfig("", "BuildersWand.yml");
         loadConfig("", "Elevator.yml");
@@ -52,7 +53,7 @@ public class ConfigurationManager {
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private static void loadConfig(String folder, String file) {
-        File customConfigFile = new File(Main.getMain().getDataFolder(), folder + file);
+        File customConfigFile = new File(Main.getPlugin().getDataFolder(), folder + file);
         YamlConfiguration fileConfiguration = new YamlConfiguration();
         configsFolder.put(fileConfiguration, customConfigFile);
         configs.put(file, fileConfiguration);

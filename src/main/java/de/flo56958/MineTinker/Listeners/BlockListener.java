@@ -135,7 +135,7 @@ public class BlockListener implements Listener {
             }
             int temp = norm.getAmount();
             norm.setAmount(1);
-            for (Modifier m : modManager.getAllMods()) {
+            for (Modifier m : modManager.getAllowedMods()) {
                 if (m.getModItem().equals(norm)) {
                     norm.setAmount(temp);
                     e.setCancelled(true);

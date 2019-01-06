@@ -14,9 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ItemGenerator {
 
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
@@ -29,30 +26,6 @@ public class ItemGenerator {
             name = tool.getType().toString();
         }
         return name;
-    }
-
-    public static ItemStack changeLore(ItemStack tool, List<String> lore) {
-        ItemMeta meta = tool.getItemMeta();
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
-    }
-
-    public static ItemStack changeItem(ItemStack tool, ItemMeta meta, List<String> lore) {
-        meta.setLore(lore);
-        tool.setItemMeta(meta);
-        return tool;
-    }
-
-    public static ItemStack buildersWandCreator(Material m, String name, int amount) { //TODO: Modify to implement Modifiers
-        ItemStack wand = new ItemStack(m, amount);
-        ItemMeta meta = wand.getItemMeta();
-        ArrayList<String> lore = new ArrayList<>();
-        meta.setDisplayName(name);
-        lore.add(modManager.IDENTIFIER_BUILDERSWAND);
-        meta.setLore(lore);
-        wand.setItemMeta(meta);
-        return wand;
     }
 
     public static ItemStack itemEnchanter(Material m, String name, int amount, Enchantment ench, int level) {
@@ -312,25 +285,5 @@ public class ItemGenerator {
         tool.setDurability((short) 0);
         tool.setItemMeta(meta);
         return tool;
-    }
-
-    public static List<String> createLore() {
-        ArrayList<String> lore = new ArrayList<>();
-        //lore.add(modManager.IDENTIFIER_TOOL);
-        lore.add(modManager.LEVELLINE + "1");
-        lore.add(modManager.EXPLINE + "0 / " + modManager.getNextLevelReq(1));
-        lore.add(modManager.FREEMODIFIERSLOTS + config.getInt("StartingModifierSlots"));
-        lore.add(modManager.MODIFIERSTART);
-        return lore;
-    }
-
-    public static List<String> createLore(int level) {
-        ArrayList<String> lore = new ArrayList<>();
-        //lore.add(modManager.IDENTIFIER_TOOL);
-        lore.add(modManager.LEVELLINE + level);
-        lore.add(modManager.EXPLINE + modManager.getNextLevelReq(level - 1) + " / " + modManager.getNextLevelReq(level));
-        lore.add(modManager.FREEMODIFIERSLOTS + (config.getInt("StartingModifierSlots") + (config.getInt("AddModifierSlotsPerLevel") * (level - 1))));
-        lore.add(modManager.MODIFIERSTART);
-        return lore;
     }
 }

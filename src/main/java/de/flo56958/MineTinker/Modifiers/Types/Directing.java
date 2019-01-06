@@ -1,30 +1,26 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.bukkit.ChatColor;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Directing extends Modifier implements Craftable {
 
     public Directing() {
         super(ModifierType.DIRECTING,
-                ChatColor.GRAY,
                 new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
     }
@@ -38,7 +34,9 @@ public class Directing extends Modifier implements Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enhanced Compass");
     	config.addDefault(key + ".description", "Loot goes directly into Inventory!");
-    	config.addDefault(key + ".Recipe.Enabled", true);
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Directing-Modifier");
+        config.addDefault(key + ".Color", "%GRAY%");
+        config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "ECE");
     	config.addDefault(key + ".Recipe.Middle", "CIC");
     	config.addDefault(key + ".Recipe.Bottom", "ECE");
@@ -50,14 +48,18 @@ public class Directing extends Modifier implements Craftable {
     	
         init(config.getString("Directing.name"),
                 "[" + config.getString("Directing.name_modifier") + "] " + config.getString("Directing.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 1,
-                ItemGenerator.itemEnchanter(Material.COMPASS, ChatColor.GRAY + config.getString("Directing.name_modifier"), 1, Enchantment.BINDING_CURSE, 1));
+                modManager.createModifierItem(Material.COMPASS, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
         return Modifier.checkAndAdd(p, tool, this, "directing", isCommand);
     }
+
+    @Override
+    public void removeMod(ItemStack tool) { }
 
     public void effect(Player p, ItemStack tool, ItemStack loot, EntityDeathEvent e) {
         if (p.hasPermission("minetinker.modifiers.directing.use")) {

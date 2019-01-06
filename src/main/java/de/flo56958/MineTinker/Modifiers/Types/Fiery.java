@@ -1,9 +1,13 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.bukkit.ChatColor;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Craftable;
+import de.flo56958.MineTinker.Modifiers.Enchantable;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -12,20 +16,13 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Modifiers.Craftable;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
-import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Fiery extends Modifier implements Enchantable, Craftable {
 
     public Fiery() {
         super(ModifierType.FIERY,
-                ChatColor.YELLOW,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
     }
@@ -39,7 +36,9 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted Blaze-Rod");
     	config.addDefault(key + ".description", "Inflames enemies!");
-    	config.addDefault(key + ".MaxLevel", 2);
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Fiery-Modifier");
+        config.addDefault(key + ".Color", "%YELLOW%");
+        config.addDefault(key + ".MaxLevel", 2);
     	config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".Recipe.Enabled", false);
     	
@@ -47,8 +46,9 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
     	
         init(config.getString("Fiery.name"),
                 "[" + config.getString("Fiery.name_modifier") + "] " + config.getString("Fiery.description"),
+                ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt("Fiery.MaxLevel"),
-                ItemGenerator.itemEnchanter(Material.BLAZE_ROD, ChatColor.YELLOW + config.getString("Fiery.name_modifier"), 1, Enchantment.FIRE_ASPECT, 1));
+                modManager.createModifierItem(Material.BLAZE_ROD, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     }
 
     @Override
@@ -73,6 +73,14 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
         tool.setItemMeta(meta);
 
         return tool;
+    }
+
+    @Override
+    public void removeMod(ItemStack tool) {
+        ItemMeta meta = tool.getItemMeta();
+        meta.removeEnchant(Enchantment.FIRE_ASPECT);
+        meta.removeEnchant(Enchantment.ARROW_FIRE);
+        tool.setItemMeta(meta);
     }
 
     @Override
