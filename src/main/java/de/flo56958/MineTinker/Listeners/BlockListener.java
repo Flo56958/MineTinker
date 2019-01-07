@@ -143,7 +143,7 @@ public class BlockListener implements Listener {
                 }
             }
             norm.setAmount(temp);
-            if (b.getType().equals(Material.BOOKSHELF)) {
+            if (b.getType().equals(Material.getMaterial(config.getString("BlockToEnchantModifiers")))) {
                 ItemStack item = p.getInventory().getItemInMainHand();
                 for (Modifier m : modManager.getEnchantableMods()) {
                     if (m.getModItem().getType().equals(item.getType())) {

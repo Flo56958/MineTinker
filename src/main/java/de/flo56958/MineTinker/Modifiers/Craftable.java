@@ -27,6 +27,7 @@ public interface Craftable {
                 ChatWriter.log(false, "Registered recipe for the " + name + "-Modifier!");
             } catch (Exception e) {
                 ChatWriter.logError("Could not register recipe for the " + name + "-Modifier!"); //executes if the recipe could not initialize
+                e.printStackTrace();
             }
         }
     }

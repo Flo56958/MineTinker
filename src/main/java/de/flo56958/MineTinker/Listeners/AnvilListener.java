@@ -8,6 +8,7 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -111,7 +112,12 @@ public class AnvilListener implements Listener {
             return;
         }
 
-        if (!modManager.isModifierItem(modifier)) { return; }
+        //if (!modManager.isModifierItem(modifier) && !modifier.getType().equals(Material.ENCHANTED_BOOK)) { return; }
+
+        if (modifier.getType().equals(Material.ENCHANTED_BOOK) && !config.getBoolean("AllowEnchanting")) {
+            e.setResult(new ItemStack(Material.AIR, 0));
+            return;
+        }
 
         Modifier mod = modManager.getModifierFromItem(modifier);
 
@@ -163,7 +169,6 @@ public class AnvilListener implements Listener {
         
         if(newTool != null) {
         	e.setResult(newTool);
-        	
         	i.setRepairCost(0);
         }
     }

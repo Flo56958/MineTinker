@@ -276,6 +276,7 @@ public class ModManager {
      */
     public void setFreeSlots(ItemStack is, int freeSlots) {
         setNBTTag(is, "FreeSlots", new NBTTagInt(freeSlots));
+        rewriteLore(is);
     }
 
     /**
@@ -502,10 +503,12 @@ public class ModManager {
     }
 
     public boolean isModifierItem(ItemStack item) {
-        return hasNBTTag(item, "modifierItem");
+        return hasNBTTag(item, "modifierItem") || item.getType().equals(get(ModifierType.EXPERIENCED).getModItem().getType()) || item.getType().equals(get(ModifierType.EXTRA_MODIFIER).getModItem().getType());
     }
 
     public Modifier getModifierFromItem(ItemStack item) {
+        if (item.getType().equals(get(ModifierType.EXPERIENCED).getModItem().getType())) { return get(ModifierType.EXPERIENCED); }
+        if (item.getType().equals(get(ModifierType.EXTRA_MODIFIER).getModItem().getType())) { return get(ModifierType.EXTRA_MODIFIER); }
         if (!hasNBTTag(item, "modifierItem")) { return null; }
         String name = Objects.requireNonNull(getNBTTag(item, "modifierItem")).asString();
         for (Modifier m : mods) {
