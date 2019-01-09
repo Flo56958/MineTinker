@@ -153,6 +153,7 @@ public class ModManager {
         allMods.add(new Sharpness());
         allMods.add(new Shulking());
         allMods.add(new SilkTouch());
+        allMods.add(new Soulbound());
         allMods.add(new Sweeping());
         allMods.add(new Timber());
         allMods.add(new Webbed());

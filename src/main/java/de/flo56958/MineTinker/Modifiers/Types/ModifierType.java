@@ -26,6 +26,7 @@ public enum ModifierType {
     SHARPNESS,
     SHULKING,
     SILK_TOUCH,
+    SOULBOUND,
     SWEEPING,
     TIMBER,
     WEBBED;
@@ -82,6 +83,8 @@ public enum ModifierType {
                 return "Shulking";
             case SILK_TOUCH:
                 return "Silk-Touch";
+            case SOULBOUND:
+                return "Soulbound";
             case SWEEPING:
                 return "Sweeping";
             case TIMBER:
