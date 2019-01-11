@@ -70,7 +70,7 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
 
     public ItemStack effect(Player p, ItemStack tool, Entity mob) {
         ItemStack loot = new ItemStack(Material.AIR, 1);
-        if (p.hasPermission("minetinker.Beheading.use")) {
+        if (p.hasPermission("minetinker.beheading.use")) {
             if (modManager.hasMod(tool, this)) {
                 Random rand = new Random();
                 int n = rand.nextInt(100);
@@ -103,7 +103,7 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.Beheading.craft")) { return; }
+        if (!p.hasPermission("minetinker.beheading.craft")) { return; }
         _createModifierItem(getConfig(), p, this, "Beheading");
     }
 

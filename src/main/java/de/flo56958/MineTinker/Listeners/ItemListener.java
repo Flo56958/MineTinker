@@ -3,6 +3,8 @@ package de.flo56958.MineTinker.Listeners;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
+import de.flo56958.MineTinker.Modifiers.Types.Soulbound;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -56,6 +58,10 @@ public class ItemListener implements Listener {
 
         if (!isMineTinker) { return; }
 
+        if (modManager.get(ModifierType.SOULBOUND) != null) {
+            if (!(((Soulbound) modManager.get(ModifierType.SOULBOUND)).getDropable(is))) { e.setCancelled(true); return; }
+        }
+
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ShowName")) {
             item.setCustomName(is.getItemMeta().getDisplayName());
             item.setCustomNameVisible(true);
@@ -79,7 +85,7 @@ public class ItemListener implements Listener {
             if (is == null) { continue; }
 
             boolean isMineTinker = false;
-            if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) {
+            if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) { //Modifieritems
                 ItemStack modifierTester = is.clone();
                 modifierTester.setAmount(1);
 
@@ -94,6 +100,9 @@ public class ItemListener implements Listener {
 
             if (!isMineTinker) { continue; }
 
+            if (modManager.get(ModifierType.SOULBOUND) != null) {
+                if (((Soulbound) modManager.get(ModifierType.SOULBOUND)).effect(p, is)) { is.setAmount(0); continue; } //workaround as inv.remove(is) does not work insteads duplicates item
+            }
             Bukkit.getPluginManager().callEvent(new PlayerDropItemEvent(p, p.getWorld().dropItem(p.getLocation(), is))); //To trigger item behaviour
 
             is.setAmount(0);

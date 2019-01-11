@@ -6,7 +6,10 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import net.minecraft.server.v1_13_R2.NBTTagInt;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -15,11 +18,14 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Soulbound extends Modifier implements Craftable {
 
-    private HashMap<Player, ItemStack[]> storedItemStacks = new HashMap<>();
+    private HashMap<Player, ArrayList<ItemStack>> storedItemStacks = new HashMap<>(); //saves ItemStacks untill reload (if the player does not respawn instantly)
     private boolean toolDropable;
+    private boolean decrementModLevelOnUse;
+    private int percentagePerLevel;
 
     public Soulbound() {
         super(ModifierType.SOULBOUND,
@@ -53,8 +59,9 @@ public class Soulbound extends Modifier implements Craftable {
         config.addDefault(key + ".description", "Do not lose the tool when dying.");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Soulbound-Modifier");
         config.addDefault(key + ".Color", "%GRAY%");
-        config.addDefault(key + ".MaxLevel", 1);
+        config.addDefault(key + ".MaxLevel", 5);
         config.addDefault(key + ".PercentagePerLevel", 100);
+        config.addDefault(key + ".DecrementModLevelOnUse", false);
         config.addDefault(key + ".ToolDropable", true);
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "BLB");
@@ -70,17 +77,69 @@ public class Soulbound extends Modifier implements Craftable {
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 getConfig().getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.FURNACE, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                modManager.createModifierItem(Material.NETHER_STAR, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
 
         this.toolDropable = config.getBoolean(key + ".ToolDropable");
+        this.decrementModLevelOnUse = config.getBoolean(key + ".DecrementModLevelOnUse");
+        this.percentagePerLevel = config.getInt(key + ".PercentagePerLevel");
     }
 
-    public void effect(Player p) {
+    public boolean getDropable(ItemStack is) {
+        if (!modManager.hasMod(is, this)) { return true; }
+        return toolDropable;
+    }
 
+    /**
+     * Effect when a player dies
+     * @param p the Player
+     * @param is the ItemStack to keep
+     * @return true if soulbound has success
+     */
+    public boolean effect(Player p, ItemStack is) {
+        if (!p.hasPermission("minetinker.soulbound.use")) { return false; }
+        if (!modManager.hasMod(is, this)) { return false; }
+
+        Random rand = new Random();
+        if (rand.nextInt(100) > modManager.getModLevel(is, this) * percentagePerLevel) { return false; }
+
+        storedItemStacks.computeIfAbsent(p, k -> new ArrayList<>());
+
+        ArrayList<ItemStack> stored = storedItemStacks.get(p);
+
+        ChatWriter.log(false, p.getDisplayName() + " triggered Soulbound on " + ItemGenerator.getDisplayName(is) + ChatColor.GRAY + " (" + is.getType().toString() + ")!");
+        if (stored.contains(is)) { return true; }
+
+        if (decrementModLevelOnUse) {
+            int newLevel = modManager.getModLevel(is, this) - 1;
+            if (newLevel == 0) { modManager.removeMod(is, this); }
+            else { modManager.setNBTTag(is, this.getType().getNBTKey(), new NBTTagInt(modManager.getModLevel(is, this) - 1)); }
+        }
+
+        stored.add(is.clone());
+        return true;
+    }
+
+    /**
+     * Effect if a player respawns
+     * @param p the Player
+     */
+    public void effect(Player p) {
+        if (!p.hasPermission("minetinker.soulbound.use")) { return; }
+
+        if (!storedItemStacks.containsKey(p)) { return; }
+
+        ArrayList<ItemStack> stored = storedItemStacks.get(p);
+        for (ItemStack is : stored) {
+            if (p.getInventory().addItem(is).size() != 0) { //adds items to (full) inventory
+                p.getWorld().dropItem(p.getLocation(), is);
+            } // no else as it gets added in if
+        }
+
+        storedItemStacks.remove(p);
     }
 
     private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(Modifiers_Config.Auto_Smelt);
+        return ConfigurationManager.getConfig(Modifiers_Config.Soulbound);
     }
 
     @Override

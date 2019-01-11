@@ -28,6 +28,9 @@ public class AutoSmelt extends Modifier implements Craftable {
 
     private int percentagePerLevel;
     private boolean hasSound;
+    private boolean worksUnderWater;
+    private boolean smeltStone;
+    private boolean burnCoal;
 
     public AutoSmelt() {
         super(ModifierType.AUTO_SMELT,
@@ -61,14 +64,17 @@ public class AutoSmelt extends Modifier implements Craftable {
     	
     	ConfigurationManager.saveConfig(config);
     	
-    	init(config.getString("Auto-Smelt.name"),
-                "[" + config.getString("Auto-Smelt.name_modifier") + "] " + config.getString("Auto-Smelt.description"),
+    	init(config.getString(key + ".name"),
+                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt("Auto-Smelt.MaxLevel"),
+                config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.FURNACE, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
-        this.percentagePerLevel = config.getInt("Auto-Smelt.PercentagePerLevel");
-        this.hasSound = config.getBoolean("Auto-Smelt.Sound");
+        this.percentagePerLevel = config.getInt(key + ".PercentagePerLevel");
+        this.hasSound = config.getBoolean(key + ".Sound");
+        this.worksUnderWater = config.getBoolean(key + ".works_under_water");
+        this.smeltStone = config.getBoolean(key + ".smelt_stone");
+        this.burnCoal = config.getBoolean(key + ".burn_coal");
     }
     
     @Override
@@ -92,7 +98,7 @@ public class AutoSmelt extends Modifier implements Craftable {
         if (!p.hasPermission("minetinker.modifiers.autosmelt.use")) { return; }//TODO: Think about more blocks for Auto-Smelt
         if (!modManager.hasMod(tool, this)) { return; }
 
-        if (!config.getBoolean("Auto-Smelt.works_under_water")) {
+        if (!worksUnderWater) {
             if (p.isSwimming() || p.getWorld().getBlockAt(p.getLocation()).getType().equals(Material.WATER)) { return; }
         }
 
@@ -101,7 +107,7 @@ public class AutoSmelt extends Modifier implements Craftable {
         Material loot;
         switch (b.getType()) {
             case STONE:
-                if (!config.getBoolean("Auto-Smelt.smelt_stone")) { return; }
+                if (!smeltStone) { return; }
             case COBBLESTONE:
                 loot = Material.STONE;
                 break;
@@ -170,7 +176,7 @@ public class AutoSmelt extends Modifier implements Craftable {
 
             case COAL_ORE:
             case COAL_BLOCK:
-                if (!config.getBoolean("Auto-Smelt.burn_coal")) { return; }
+                if (!burnCoal) { return; }
                 loot = Material.AIR;
                 break;
 

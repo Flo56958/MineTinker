@@ -3,7 +3,9 @@ package de.flo56958.MineTinker.Listeners;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
+import de.flo56958.MineTinker.Modifiers.Types.Soulbound;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,6 +18,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -120,6 +123,13 @@ public class PlayerListener implements Listener {
         if (Lists.WORLDS.contains(e.getPlayer().getWorld().getName())) { return; }
         if (!e.getBlockFace().equals(BlockFace.SELF)) {
             Lists.BLOCKFACE.replace(e.getPlayer(), e.getBlockFace());
+        }
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent e) {
+        if (modManager.get(ModifierType.SOULBOUND) != null) {
+            ((Soulbound) modManager.get(ModifierType.SOULBOUND)).effect(e.getPlayer());
         }
     }
 }

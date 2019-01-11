@@ -129,7 +129,8 @@ public class BlockListener implements Listener {
                     || b.getType().equals(Material.HOPPER)
                     || b.getType().equals(Material.DISPENSER)
                     || b.getType().equals(Material.TRAPPED_CHEST)
-                    || b.getType().equals(Material.FURNACE)) {
+                    || b.getType().equals(Material.FURNACE)
+                    || b.getType().equals(Material.ENCHANTING_TABLE)) {
                     return;
                 }
             }

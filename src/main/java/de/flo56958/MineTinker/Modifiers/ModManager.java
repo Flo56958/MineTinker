@@ -509,7 +509,8 @@ public class ModManager {
 
     public Modifier getModifierFromItem(ItemStack item) {
         if (item.getType().equals(get(ModifierType.EXPERIENCED).getModItem().getType())) { return get(ModifierType.EXPERIENCED); }
-        if (item.getType().equals(get(ModifierType.EXTRA_MODIFIER).getModItem().getType())) { return get(ModifierType.EXTRA_MODIFIER); }
+        if (item.getType().equals(get(ModifierType.EXTRA_MODIFIER).getModItem().getType())
+                && !hasNBTTag(item, "modifierItem")) { return get(ModifierType.EXTRA_MODIFIER); }
         if (!hasNBTTag(item, "modifierItem")) { return null; }
         String name = Objects.requireNonNull(getNBTTag(item, "modifierItem")).asString();
         for (Modifier m : mods) {
