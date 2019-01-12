@@ -16,6 +16,10 @@ ResetAtVarOverflow: true #Resets Level and Exp at Integer.MAX_VALUE or Long.MAX_
 AddModifierSlotsPerLevel: 1
 StartingModifierSlots: 1
 ExpPerBlockBreak: 1 #How much XP will the tool get when you break a block
+ExtraExpPerBlock:
+  DIAMOND_ORE: 2
+  EMERALD_ORE: 5
+  GOLD_ORE: 1
 ExpPerEntityHit: 1 #How much XP will the tool get when you hit a Entity with Sword / Bow
 ExpPerArrowShot: 1 #How much XP will the tool get when you shoot with the bow
 BowExtraExp:

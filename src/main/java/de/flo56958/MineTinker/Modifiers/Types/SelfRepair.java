@@ -12,8 +12,11 @@ import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +26,8 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
 
     private int percentagePerLevel;
     private int healthRepair;
+
+    private boolean useMending;
 
     public SelfRepair() {
         super(ModifierType.SELF_REPAIR,
@@ -46,23 +51,39 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".PercentagePerLevel", 10); //100% at Level 10 (not necessary for unbreakable tool in most cases)
     	config.addDefault(key + ".HealthRepair", 2); //How much durability should be repaired per trigger
+        config.addDefault(key + ".UseMending", false); //Disables the plugins own system and instead uses the vanilla Mending enchantment
     	config.addDefault(key + ".Recipe.Enabled", false);
     	
     	ConfigurationManager.saveConfig(config);
         
-        init(config.getString("Self-Repair.name"),
-                "[" + config.getString("Self-Repair.name_modifier") + "] " + config.getString("Self-Repair.description"),
+        init(config.getString(key + ".name"),
+                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt("Self-Repair.MaxLevel"),
+                config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.MOSSY_COBBLESTONE, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
-        this.percentagePerLevel = config.getInt("Self-Repair.PercentagePerLevel");
-        this.healthRepair = config.getInt("Self-Repair.HealthRepair");
+        this.percentagePerLevel = config.getInt(key + ".PercentagePerLevel");
+        this.healthRepair = config.getInt(key + ".HealthRepair");
+        this.useMending = config.getBoolean(key + ".UseMending");
     }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        return Modifier.checkAndAdd(p, tool, this, "selfrepair", isCommand);
+        if (Modifier.checkAndAdd(p, tool, this, "selfrepair", isCommand) == null) {
+            return null;
+        }
+        if (useMending) {
+            ItemMeta meta = tool.getItemMeta();
+            meta.addEnchant(Enchantment.MENDING, modManager.getModLevel(tool, this), true);
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+
+            tool.setItemMeta(meta);
+        }
+        return tool;
     }
 
     @Override
@@ -70,6 +91,7 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
 
     @SuppressWarnings("deprecation")
 	public void effect(Player p, ItemStack tool) {
+        if (useMending) { return; }
         if (!p.hasPermission("minetinker.modifiers.selfrepair.use")) { return; }
         if (!modManager.hasMod(tool, this)) { return; }
 

@@ -63,7 +63,10 @@ public class BlockListener implements Listener {
             return;
         }
 
-        modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
+        int expAmount = config.getInt("ExpPerBlockBreak");
+        expAmount += config.getInt("ExtraExpPerBlock." + e.getBlock().getType().toString()); //adds 0 if not in found in config (negative values are also fine)
+
+        modManager.addExp(p, tool, expAmount);
 
         if (!Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
             if (config.getBoolean("Spawners.enabled")) {
