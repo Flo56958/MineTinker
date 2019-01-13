@@ -1,47 +1,56 @@
+#---------------MAIN-PLUGIN-SETTINGS--------------
 chat-prefix: [MineTinker]
 CheckForUpdates: true #Checks for updates on startup
 SendUpdateNotificationToOPs: true #If there is an update the server OP get a notification
-
+#--LOGGING--
 logging:
   standard: false #logs important player activities with MineTinker
   debug: false #even more information
   metrics: true
-
+#--MESSAGES--
 chat-messages: true #Will turn off command output
 actionbar-messages: true
 
-LevelStep: 100 #  *(LevelFactor^LevelOfTool)
+#---------------EXP-SETTINGS--------------
+LevelStep: 100 #  *(LevelFactor^LevelOfTool) [EXPONENTIAL]; *(LevelFactor*LevelOfTool) [LINEAR]
 LevelFactor: 2.0
+ProgressionIsLinear: false #false: exponential, true: linear
 ResetAtVarOverflow: true #Resets Level and Exp at Integer.MAX_VALUE or Long.MAX_VALUE with 1 and 0. false: no more Exp gain
-AddModifierSlotsPerLevel: 1
-StartingModifierSlots: 1
 ExpPerBlockBreak: 1 #How much XP will the tool get when you break a block
-ExtraExpPerBlock:
+ExpPerEntityHit: 1 #How much XP will the tool get when you hit a Entity with Sword / Bow
+ExpPerArrowShot: 1 #How much XP will the tool get when you shoot with the bow
+ExtraExpPerBlock: #Extra Exp for block break
   DIAMOND_ORE: 2
   EMERALD_ORE: 5
   GOLD_ORE: 1
-ExpPerEntityHit: 1 #How much XP will the tool get when you hit a Entity with Sword / Bow
-ExpPerArrowShot: 1 #How much XP will the tool get when you shoot with the bow
-BowExtraExp:
-  OnEnderDragonHit: 5 #How much XP will the bow get when you hit the ender dragon
-  OnEndCrystalHit: 10 #How much XP will the bow get when you hit a end crystal
-  OnWitherHit: 3 #How much XP will the bow get when you hit the wither boss
+ExtraExpPerEntityHit: #Extra Exp for entity hit
+  ENDER_DRAGON: 2
+ExtraExpPerEntityDeath: #Extra Exp for enitity death
+  ENDER_DRAGON: 20
+  WITHER: 10
 EnableDamageExp: false #When true: Sword/Bow will gain XP equal to the damage-value
+
+#---------------TOOL-SETTINGS--------------
+AddModifierSlotsPerLevel: 1 #Amount of new free Modifier-Slots for each Level-Up
+StartingModifierSlots: 1
 Upgradeable: true #Can you upgrade your tools with an anvil
 Repairable: true #Can you repair your tools in your inventory (instead of an anvil) just by dragging the ressource on the tool
+UnbreakableTools: true #Makes sure that tools can not break while using them (will make the tools not useable untill repaired)
 AllowEnchanting: false #When enabled you can enchant the tools with vanilla methods (not recommended!)
 AllowCrafting: true #Only recommended if used in combination with other Plugins that use the crafting grid for tools. If false: Tools are only aquired with give command
 BlockToEnchantModifiers: BOOKSHELF #Block that needs to be right-clicked
 HideEnchants: true #Should the vanilla enchantments be hidden on the tool
 DurabilityPercentageRepair: 0.34 #How much durability (relative to maximum durability) should the tool recover per item
 
+#---------------ITEMBEHAVIOUR--------------
 ItemBehaviour:
-  ShowName: true
-  SetGlowing: true
-  SetInvulnerable: true
-  SetPersistent: true
-  ForModItems: true
+  ShowName: true #Shows the name of the ItemStack (if has one) when on the ground
+  SetGlowing: true #Item glowes on the ground
+  SetInvulnerable: true #Item can not be damaged or destroyed
+  SetPersistent: true #Item will not despawn
+  ForModItems: true #Settings apply also for Modifier-Items
 
+#---------------LEVELUP-EVENTS--------------
 LevelUpEvents:
   enabled: true
   DurabilityRepair: #Repairs the tool
@@ -65,6 +74,7 @@ LevelUpEvents:
     percentage: 25
     amount: 100
 
+#---------------SOUND-SETTINGS--------------
 Sound:
   OnLevelUp: true
   OnCrafting: true
@@ -79,6 +89,7 @@ BannedWorlds: #Worlds where MineTinker-Tools can't be used
   - bannedExample1
   - bannedExample2
 
+#---------------SPAWNER-SETTINGS-------------- (deprecated)
 Spawners:
   enabled: false #Should be disabled when using a different Spawner plugin
   onlyWithSilkTouch: true
@@ -86,10 +97,11 @@ Spawners:
     - bannedExample1
     - bannedExample2
 
+#---------------EASYHARVEST-Settings--------------
 EasyHarvest:
   enabled: true
-  replant: true
-  Sound: true
+  replant: true #Should the crop be replanted (if item is in inventory)
+  Sound: true #Should there be sound when harvesting
   BannedWorlds: #Worlds where EasyHarvest can't be used
     - bannedExample1
     - bannedExample2

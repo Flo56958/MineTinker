@@ -47,10 +47,10 @@ public class Reinforced extends Modifier implements Craftable {
         
     	ConfigurationManager.saveConfig(config);
     	
-        init(config.getString("Reinforced.name"),
-                "[" + config.getString("Reinforced.name_modifier") + "] " + config.getString("Reinforced.description"),
+        init(config.getString(key + ".name"),
+                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt("Reinforced.MaxLevel"),
+                config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.OBSIDIAN, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     }
 

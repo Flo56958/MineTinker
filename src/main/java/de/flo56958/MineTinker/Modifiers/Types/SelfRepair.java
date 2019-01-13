@@ -89,6 +89,11 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
     @Override
     public void removeMod(ItemStack tool) { }
 
+    /**
+     * The Effect that is used if Mending is disabled
+     * @param p the Player
+     * @param tool the Tool
+     */
     @SuppressWarnings("deprecation")
 	public void effect(Player p, ItemStack tool) {
         if (useMending) { return; }

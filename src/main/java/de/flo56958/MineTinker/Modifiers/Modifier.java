@@ -52,17 +52,7 @@ public abstract class Modifier {
 		return allowedTools;
 	}
 
-	Plugin getSource() { return source; }
-
-	/**
-	 * register a new modifier to the list
-	 *
-	 * @param p the Player
-	 * @param tool the to modify Tool
-	 */
-	public abstract ItemStack applyMod(Player p, ItemStack tool, boolean isCommand);
-
-	public abstract void removeMod(ItemStack tool);
+	Plugin getSource() { return source; } //for other Plugins/Addons that register Modifiers
 
 	/**
 	 * Class constructor
@@ -79,14 +69,12 @@ public abstract class Modifier {
 	}
 	
 	/**
+	 * changes the core settings of the Modifier (like a secondary constructor)
 	 * @param name Name of the Modifier
 	 * @param description
 	 * @param color Color of the Modifier
 	 * @param maxLvl Maximum Level cap of the Modifier
 	 * @param modItem ItemStack that is required to craft the Modifier
-	 */
-	/*
-	 * can be changed at any time
 	 */
 	protected void init(String name, String description, ChatColor color, int maxLvl, ItemStack modItem) {
 		this.name = name;
@@ -95,9 +83,28 @@ public abstract class Modifier {
 		this.maxLvl = maxLvl;
 		this.modItem = modItem;
 	}
-	
+
+	/**
+	 * applies the Modifier to the tool
+	 * @param p the Player
+	 * @param tool the Tool to modify
+	 */
+	public abstract ItemStack applyMod(Player p, ItemStack tool, boolean isCommand);
+
+	/**
+	 * what should be done to the Tool if the Modifier gets removed
+	 * @param tool the Tool
+	 */
+	public abstract void removeMod(ItemStack tool);
+
+	/**
+	 * reloads the settings of the Modifier
+	 */
 	public abstract void reload();
 
+	/**
+	 * @return is the modifier allowed
+	 */
 	public abstract boolean isAllowed();
 
 	public static ItemStack checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand) {

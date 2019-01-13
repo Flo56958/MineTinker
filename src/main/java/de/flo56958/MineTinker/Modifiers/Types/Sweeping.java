@@ -43,10 +43,10 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
     	
     	ConfigurationManager.saveConfig(config);
         
-        init(config.getString("Sweeping.name"),
-                "[" + config.getString("Sweeping.name_modifier") + "] " + config.getString("Sweeping.description"),
+        init(config.getString(key + ".name"),
+                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt("Sweeping.MaxLevel"),
+                config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.IRON_INGOT, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     }
 

@@ -46,8 +46,8 @@ public class Directing extends Modifier implements Craftable {
     	
     	ConfigurationManager.saveConfig(config);
     	
-        init(config.getString("Directing.name"),
-                "[" + config.getString("Directing.name_modifier") + "] " + config.getString("Directing.description"),
+        init(config.getString(key + ".name"),
+                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 1,
                 modManager.createModifierItem(Material.COMPASS, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
@@ -61,6 +61,13 @@ public class Directing extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) { }
 
+    /**
+     * Effect on the EntityDeathEvent
+     * @param p the player
+     * @param tool the tool
+     * @param loot the loot from Beheading (default: AIR)
+     * @param e the Event
+     */
     public void effect(Player p, ItemStack tool, ItemStack loot, EntityDeathEvent e) {
         if (p.hasPermission("minetinker.modifiers.directing.use")) {
             if (modManager.hasMod(tool, this)) {

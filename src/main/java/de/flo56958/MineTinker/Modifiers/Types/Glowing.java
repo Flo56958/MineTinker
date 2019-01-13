@@ -56,10 +56,10 @@ public class Glowing extends Modifier implements Craftable {
         
     	ConfigurationManager.saveConfig(config);
     	
-        init(config.getString("Glowing.name"),
-                "[" + config.getString("Glowing.name_modifier") + "] " + config.getString("Glowing.description"),
+        init(config.getString(key + ".name"),
+                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt("Glowing.MaxLevel"),
+                config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.GLOWSTONE, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.duration = config.getInt("Glowing.Duration");

@@ -142,6 +142,7 @@ permissions:
       minetinker.modifiers.sharpness.*: true
       minetinker.modifiers.shulking.*: true
       minetinker.modifiers.silktouch.*: true
+      minetinker.modifiers.soulbound.*: true
       minetinker.modifiers.sweeping.*: true
       minetinker.modifiers.timber.*: true
       minetinker.modifiers.webbed.*: true
@@ -373,6 +374,17 @@ permissions:
     default: true
   minetinker.modifiers.silktouch.craft:
     description: Allows to craft a Silk-Touch-Modifiers
+    default: true
+
+  minetinker.modifiers.soulbound.*:
+    children:
+      minetinker.modifiers.soulbound.apply: true
+      minetinker.modifiers.soulbound.use: true
+  minetinker.modifiers.soulbound.apply:
+    description: Allows to apply Soulbound to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.soulbound.use:
+    description: Allows to use a Soulbound-Modifier
     default: true
 
   minetinker.modifiers.sweeping.*:

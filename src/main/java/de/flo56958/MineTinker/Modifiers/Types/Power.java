@@ -56,10 +56,10 @@ public class Power extends Modifier implements Enchantable, Craftable {
         
     	ConfigurationManager.saveConfig(config);
     	
-        init(config.getString("Power.name"),
-                "[" + config.getString("Power.name_modifier") + "] " + config.getString("Power.description"),
+        init(config.getString(key + ".name"),
+                "[" + config.getString("Power.name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt("Power.MaxLevel"),
+                config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.EMERALD, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.lv1_vertical = config.getBoolean("Power.lv1_vertical");
@@ -88,12 +88,18 @@ public class Power extends Modifier implements Enchantable, Craftable {
         return modManager.hasMod(tool, this);
     }
 
+    /**
+     * The effect when a Block was brocken
+     * @param p the Player
+     * @param tool the Tool
+     * @param b the Block that was brocken
+     */
     public void effect(Player p, ItemStack tool, Block b) {
         if (!checkPower(p, tool)) { return; }
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 
-        HASPOWER.replace(p, true);
+        HASPOWER.replace(p, true); //for the power-triggered BlockBreakEvents (prevents endless "recursion")
 
         int level = modManager.getModLevel(tool, this);
 
@@ -172,9 +178,15 @@ public class Power extends Modifier implements Enchantable, Craftable {
             }
         }
 
-        HASPOWER.replace(p, false);
+        HASPOWER.replace(p, false); //so the effect of power is not disabled for the Player
     }
 
+    /**
+     * Effect for the PlayerInteractEvent for the Hoe
+     * @param p the Player
+     * @param tool the Tool
+     * @param e the PlayerInteractEvent
+     */
     public void effect(Player p, ItemStack tool, PlayerInteractEvent e) {
         if (!checkPower(p, tool)) { return; }
 
@@ -194,7 +206,7 @@ public class Power extends Modifier implements Enchantable, Craftable {
                 FileConfiguration config = getConfig();
                 
                 if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
-                    if (config.getBoolean("Power.lv1_vertical")) {
+                    if (this.lv1_vertical) {
                         b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
                         b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
                     } else {
@@ -202,7 +214,7 @@ public class Power extends Modifier implements Enchantable, Craftable {
                         b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
                     }
                 } else if (PlayerInfo.getFacingDirection(p).equals("W") || PlayerInfo.getFacingDirection(p).equals("E")) {
-                    if (config.getBoolean("Power.lv1_vertical")) {
+                    if (this.lv1_vertical) {
                         b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
                         b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
                     } else {

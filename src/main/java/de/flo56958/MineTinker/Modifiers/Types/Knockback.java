@@ -44,10 +44,10 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
         
      	ConfigurationManager.saveConfig(config);
      	
-     	init(config.getString("Knockback.name"),
-                "[" + config.getString("Knockback.name_modifier") + "] " + config.getString("Knockback.description"),
+     	init(config.getString(key + ".name"),
+                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt("Knockback.MaxLevel"),
+                config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.TNT, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     }
 

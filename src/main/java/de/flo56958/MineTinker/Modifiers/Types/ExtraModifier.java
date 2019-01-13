@@ -41,13 +41,13 @@ public class ExtraModifier extends Modifier {
         
     	ConfigurationManager.saveConfig(config);
     	
-        init(config.getString("Extra-Modifier.name"),
-                "[" + config.getString("Extra-Modifier.modifier_item")+ "] " + config.getString("Extra-Modifier.description"),
+        init(config.getString(key + ".name"),
+                "[" + config.getString(key + ".modifier_item")+ "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 -1,
-                new ItemStack(Material.getMaterial(config.getString("Extra-Modifier.modifier_item")), 1));
+                new ItemStack(Material.getMaterial(config.getString(key + ".modifier_item")), 1));
         
-        this.gain = config.getInt("Extra-Modifier.ExtraModifierGain");
+        this.gain = config.getInt(key + ".ExtraModifierGain");
     }
 
     @Override

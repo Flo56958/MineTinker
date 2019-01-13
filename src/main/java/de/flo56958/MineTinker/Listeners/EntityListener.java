@@ -1,14 +1,16 @@
 package de.flo56958.MineTinker.Listeners;
 
+import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Modifiers.Types.*;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Arrow;
-import org.bukkit.entity.EnderCrystal;
-import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Wither;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -18,22 +20,6 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
-
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Modifiers.ModManager;
-import de.flo56958.MineTinker.Modifiers.Types.Beheading;
-import de.flo56958.MineTinker.Modifiers.Types.Directing;
-import de.flo56958.MineTinker.Modifiers.Types.Ender;
-import de.flo56958.MineTinker.Modifiers.Types.Experienced;
-import de.flo56958.MineTinker.Modifiers.Types.Glowing;
-import de.flo56958.MineTinker.Modifiers.Types.Melting;
-import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
-import de.flo56958.MineTinker.Modifiers.Types.Poisonous;
-import de.flo56958.MineTinker.Modifiers.Types.SelfRepair;
-import de.flo56958.MineTinker.Modifiers.Types.Shulking;
-import de.flo56958.MineTinker.Modifiers.Types.Webbed;
 
 public class EntityListener implements Listener {
 
@@ -61,7 +47,8 @@ public class EntityListener implements Listener {
         ItemStack tool = p.getInventory().getItemInMainHand();
         if (!modManager.isToolViable(tool)) { return; }
 
-        if (tool.getType().getMaxDurability() - tool.getDurability() <= 1) {
+        //-------------------------------------------DURABILITYCHECK---------------------------------------------
+        if (tool.getType().getMaxDurability() - tool.getDurability() <= 1 && config.getBoolean("UnbreakableTools")) {
             e.setCancelled(true);
             if (config.getBoolean("Sound.OnBreaking")) {
                 p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
@@ -70,6 +57,7 @@ public class EntityListener implements Listener {
         }
         int amount = config.getInt("ExpPerEntityHit"); //AddExp at bottom because of Melting
 
+        //-------------------------------------------MODIFIERS---------------------------------------------
         if (!ToolType.BOW.getMaterials().contains(tool.getType())) {
             if (modManager.get(ModifierType.SELF_REPAIR) != null) {
                 ((SelfRepair) modManager.get(ModifierType.SELF_REPAIR)).effect(p, tool);
@@ -102,11 +90,13 @@ public class EntityListener implements Listener {
         if (modManager.get(ModifierType.ENDER) != null) {
             ((Ender) modManager.get(ModifierType.ENDER)).effect(p, tool, e);
         }
+        //-------------------------------------------MODIFIERS---------------------------------------------
 
-        if (config.getBoolean("EnableDamageExp")) {
+        if (config.getBoolean("EnableDamageExp")) { //at bottom because of Melting
             amount = (int) e.getDamage();
         }
-        modManager.addExp(p, tool, amount); //at bottom because of Melting
+        amount += config.getInt("ExtraExpPerEntityHit." + e.getEntity().getType().toString()); //adds 0 if not in found in config (negative values are also fine)
+        modManager.addExp(p, tool, amount);
     }
 
     @EventHandler
@@ -120,6 +110,8 @@ public class EntityListener implements Listener {
         if (!modManager.isToolViable(tool)) { return; }
 
         ItemStack loot = new ItemStack(Material.AIR, 1);
+
+        //-------------------------------------------MODIFIERS---------------------------------------------
         if (modManager.get(ModifierType.BEHEADING) != null) {
             loot = ((Beheading) modManager.get(ModifierType.BEHEADING)).effect(p, tool, mob);
         }
@@ -131,6 +123,8 @@ public class EntityListener implements Listener {
                 p.getWorld().dropItemNaturally(e.getEntity().getLocation(), loot);
             }
         }
+
+        modManager.addExp(p, tool, config.getInt("ExtraExpPerEntityHit." + e.getEntity().getType().toString())); //adds 0 if not in found in config (negative values are also fine)
     }
 
     @EventHandler
@@ -138,25 +132,12 @@ public class EntityListener implements Listener {
         if (!(e.getEntity().getShooter() instanceof Player)) { return; }
         Player p = (Player) e.getEntity().getShooter();
         ItemStack tool = p.getInventory().getItemInMainHand();
-        if (e.getHitBlock() != null) {
-            if (!modManager.isToolViable(tool)) { return; }
+        if (e.getHitBlock() == null) { return; }
+        if (!modManager.isToolViable(tool)) { return; }
 
-            if (modManager.get(ModifierType.ENDER) != null) {
-                ((Ender) modManager.get(ModifierType.ENDER)).effect(p, tool, e);
-            }
-        }
-
-        int amount = 0;
-        if (e.getEntity() instanceof EnderDragon) {
-            amount = config.getInt("BowExtraExp.OnEnderDragonHit");
-        } else if (e.getEntity() instanceof EnderCrystal) {
-            amount = config.getInt("BowExtraExp.OnEndCrystalHit");
-        } else if (e.getEntity() instanceof Wither) {
-            amount = config.getInt("BowExtraExp.OnWitherHit");
-        }
-
-        if (amount != 0) {
-            modManager.addExp(p, tool, amount);
+        //-------------------------------------------MODIFIERS---------------------------------------------
+        if (modManager.get(ModifierType.ENDER) != null) {
+            ((Ender) modManager.get(ModifierType.ENDER)).effect(p, tool, e);
         }
     }
 
@@ -171,7 +152,8 @@ public class EntityListener implements Listener {
 
         if (!modManager.isToolViable(tool)) { return; }
 
-        if (tool.getType().getMaxDurability() - tool.getDurability() <= 1) {
+        //-------------------------------------------DURABILITYCHECK---------------------------------------------
+        if (tool.getType().getMaxDurability() - tool.getDurability() <= 1 && config.getBoolean("UnbreakableTools")) {
             e.setCancelled(true);
             if (config.getBoolean("Sound.OnBreaking")) {
                 p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
@@ -182,6 +164,7 @@ public class EntityListener implements Listener {
 
         modManager.addExp(p, tool, config.getInt("ExpPerArrowShot"));
 
+        //-------------------------------------------MODIFIERS---------------------------------------------
         if (modManager.get(ModifierType.SELF_REPAIR) != null) {
             ((SelfRepair) modManager.get(ModifierType.SELF_REPAIR)).effect(p, tool);
         }

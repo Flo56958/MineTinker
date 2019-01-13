@@ -42,39 +42,35 @@ public class AnvilListener implements Listener {
 
         if (tool == null || modifier == null) { return; }
 
-        if (e.getSlot() == 2) {
-            if (Lists.WORLDS.contains(player.getWorld().getName())) { return; }
-            if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) { return; }
+        if (e.getSlot() != 2) { return; }
+        if (Lists.WORLDS.contains(player.getWorld().getName())) { return; }
+        if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) { return; }
+        if (!modManager.isModifierItem(modifier)) { return; }
 
-            if (!modManager.isModifierItem(modifier)) { return; }
+        Modifier mod = modManager.getModifierFromItem(modifier);
 
-            Modifier mod = modManager.getModifierFromItem(modifier);
+        if (mod == null && tool.getType().equals(newTool.getType())) { return; } //Vanilla anvil use
 
-            if (mod == null && tool.getType().equals(newTool.getType())) { return; } //Vanilla anvil use
-
-            if (e.isShiftClick()) {
-                if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
-                    e.setCancelled(true);
-                    return;
-                } // no else as it gets added in if-clause
-            } else {
-                e.setCursor(newTool);
-            }
-
-            if (mod != null) {
-            	if(modifier.getAmount() > 1) {
-            		modifier.setAmount(modifier.getAmount() - 1);
-                    inv.setItem(1, modifier);
-            	} else {
-            		inv.setItem(1, null);
-            	}
-                Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
-            } else {
-                inv.setItem(1, null); //when item upgrading
-            }
-
-            inv.setItem(0, null);
+        if (e.isShiftClick()) {
+            if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
+                e.setCancelled(true);
+                return;
+            } // no else as it gets added in if-clause
+        } else {
+            e.setCursor(newTool);
         }
+
+        if (mod != null) {
+            if (modifier.getAmount() > 1) {
+                modifier.setAmount(modifier.getAmount() - 1);
+                inv.setItem(1, modifier);
+            } else { inv.setItem(1, null); }
+            Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
+        } else {
+            inv.setItem(1, null); //when item upgrading
+        }
+
+        inv.setItem(0, null);
 	}
     
     @EventHandler
@@ -112,10 +108,8 @@ public class AnvilListener implements Listener {
             return;
         }
 
-        //if (!modManager.isModifierItem(modifier) && !modifier.getType().equals(Material.ENCHANTED_BOOK)) { return; }
-
-        if (modifier.getType().equals(Material.ENCHANTED_BOOK) && !config.getBoolean("AllowEnchanting")) {
-            e.setResult(new ItemStack(Material.AIR, 0));
+        if (modifier.getType().equals(Material.ENCHANTED_BOOK) && !config.getBoolean("AllowEnchanting")) { //So no Tools can be enchanted via books, if enchanting is disabled
+            e.setResult(new ItemStack(Material.AIR, 0)); //sets ghostitem by client
             return;
         }
 

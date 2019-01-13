@@ -51,10 +51,10 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
     	
     	ConfigurationManager.saveConfig(config);
     	
-    	init(config.getString("Beheading.name"),
-                "[" + config.getString("Beheading.name_modifier") + "] " + config.getString("Beheading.description"),
+    	init(config.getString(key + ".name"),
+                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt("Beheading.MaxLevel"),
+                config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.WITHER_SKELETON_SKULL, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.percentagePerLevel = config.getInt("Beheading.PercentagePerLevel");
@@ -68,6 +68,13 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
     @Override
     public void removeMod(ItemStack tool) { }
 
+    /**
+     * Effect for getting the mob heads
+     * @param p the Player
+     * @param tool the Tool
+     * @param mob the Entity which is dieing
+     * @return the loot or AIR
+     */
     public ItemStack effect(Player p, ItemStack tool, Entity mob) {
         ItemStack loot = new ItemStack(Material.AIR, 1);
         if (p.hasPermission("minetinker.beheading.use")) {

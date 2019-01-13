@@ -55,8 +55,8 @@ public class Timber extends Modifier implements Craftable {
     	
     	ConfigurationManager.saveConfig(config);
         
-        init(config.getString("Timber.name"),
-                "[" + config.getString("Timber.name_modifier") + "] " + config.getString("Timber.description"),
+        init(config.getString(key + ".name"),
+                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 1,
                 modManager.createModifierItem(Material.EMERALD, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));

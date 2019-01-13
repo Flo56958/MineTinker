@@ -58,15 +58,15 @@ public class Webbed extends Modifier implements Craftable {
     	
     	ConfigurationManager.saveConfig(config);
         
-        init(getConfig().getString("Webbed.name"),
-                "[" + getConfig().getString("Webbed.name_modifier") + "] " + getConfig().getString("Webbed.description"),
+        init(getConfig().getString(key + ".name"),
+                "[" + getConfig().getString(key + ".name_modifier") + "] " + getConfig().getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                getConfig().getInt("Webbed.MaxLevel"),
+                getConfig().getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.COBWEB, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
-        this.duration = config.getInt("Webbed.Duration");
-        this.durationMultiplier = config.getDouble("Webbed.DurationMultiplier");
-        this.effectAmplifier = config.getInt("Webbed.EffectAmplifier");
+        this.duration = config.getInt(key + ".Duration");
+        this.durationMultiplier = config.getDouble(key + ".DurationMultiplier");
+        this.effectAmplifier = config.getInt(key + ".EffectAmplifier");
     }
 
     @Override
@@ -77,6 +77,12 @@ public class Webbed extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) { }
 
+    /**
+     * the Webbed-Effect
+     * @param p the Player
+     * @param tool the Tool
+     * @param e the Entity to apply the Effect on
+     */
     public void effect(Player p, ItemStack tool, Entity e) {
         if (!p.hasPermission("minetinker.modifiers.webbed.use")) { return; }
         if (e.isDead()) { return; }

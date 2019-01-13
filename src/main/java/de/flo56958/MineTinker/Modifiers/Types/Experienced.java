@@ -47,14 +47,14 @@ public class Experienced extends Modifier implements Craftable {
     	
     	ConfigurationManager.saveConfig(config);
     	
-        init(config.getString("Experienced.name"),
-                "[Bottle o' Experience] " + config.getString("Experienced.description"),
+        init(config.getString(key + ".name"),
+                "[Bottle o' Experience] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt("Experienced.MaxLevel"),
+                config.getInt(key + ".MaxLevel"),
                 new ItemStack(Material.EXPERIENCE_BOTTLE, 1));
         
-        this.percentagePerLevel = config.getInt("Experienced.PercentagePerLevel");
-        this.amount = config.getInt("Experienced.Amount");
+        this.percentagePerLevel = config.getInt(key + ".PercentagePerLevel");
+        this.amount = config.getInt(key + ".Amount");
     }
 
     @Override
@@ -65,6 +65,11 @@ public class Experienced extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) { }
 
+    /**
+     * The Effect of the modifier
+     * @param p the Player
+     * @param tool the Tool
+     */
     public void effect(Player p, ItemStack tool) {
         if (!p.hasPermission("minetinker.modifiers.experienced.use")) { return; }
         if (!modManager.hasMod(tool, this)) { return; }

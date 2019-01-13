@@ -55,15 +55,15 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
     	
     	ConfigurationManager.saveConfig(config);
         
-        init(config.getString("Poisonous.name"),
-                "[" + config.getString("Poisonous.name_modifier") + "] " + config.getString("Poisonous.description"),
+        init(config.getString(key + ".name"),
+                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt("Poisonous.MaxLevel"),
+                config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.ROTTEN_FLESH, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
-        this.duration = config.getInt("Poisonous.Duration");
-        this.durationMultiplier = config.getDouble("Poisonous.DurationMultiplier");
-        this.effectAmplifier = config.getInt("Poisonous.EffectAmplifier");
+        this.duration = config.getInt(key + ".Duration");
+        this.durationMultiplier = config.getDouble(key + ".DurationMultiplier");
+        this.effectAmplifier = config.getInt(key + ".EffectAmplifier");
     }
 
     @Override

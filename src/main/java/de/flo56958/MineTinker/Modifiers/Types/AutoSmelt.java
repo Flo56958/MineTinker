@@ -28,6 +28,7 @@ public class AutoSmelt extends Modifier implements Craftable {
 
     private int percentagePerLevel;
     private boolean hasSound;
+    private boolean hasParticles;
     private boolean worksUnderWater;
     private boolean smeltStone;
     private boolean burnCoal;
@@ -51,7 +52,8 @@ public class AutoSmelt extends Modifier implements Craftable {
     	config.addDefault(key + ".Color", "%YELLOW%");
     	config.addDefault(key + ".MaxLevel", 5);
     	config.addDefault(key + ".PercentagePerLevel", 20);
-    	config.addDefault(key + ".Sound", true);
+    	config.addDefault(key + ".Sound", true); //Auto-Smelt makes a sound
+    	config.addDefault(key + ".Particles", true); //Auto-Smelt will create a particle effect when triggered
     	config.addDefault(key + ".smelt_stone", false);
     	config.addDefault(key + ".burn_coal", true);
     	config.addDefault(key + ".works_under_water", true);
@@ -72,6 +74,7 @@ public class AutoSmelt extends Modifier implements Craftable {
         
         this.percentagePerLevel = config.getInt(key + ".PercentagePerLevel");
         this.hasSound = config.getBoolean(key + ".Sound");
+        this.hasParticles = config.getBoolean(key + ".Particles");
         this.worksUnderWater = config.getBoolean(key + ".works_under_water");
         this.smeltStone = config.getBoolean(key + ".smelt_stone");
         this.burnCoal = config.getBoolean(key + ".burn_coal");
@@ -92,6 +95,13 @@ public class AutoSmelt extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) { }
 
+    /**
+     * The Effect for the BlockBreak-Listener
+     * @param p the Player
+     * @param tool the Tool
+     * @param b the Block broken
+     * @param e the Event
+     */
     public void effect(Player p, ItemStack tool, Block b, BlockBreakEvent e) {
     	FileConfiguration config = getConfig();
     	
@@ -205,10 +215,8 @@ public class AutoSmelt extends Modifier implements Craftable {
             }
             e.setDropItems(false);
 
-            b.getLocation().getWorld().spawnParticle(Particle.FLAME, b.getLocation(), 5);
-            if (this.hasSound) {
-                b.getLocation().getWorld().playSound(b.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
-            }
+            if (this.hasParticles) { b.getLocation().getWorld().spawnParticle(Particle.FLAME, b.getLocation(), 5); }
+            if (this.hasSound) { b.getLocation().getWorld().playSound(b.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F); }
             ChatWriter.log(false, p.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") while mining " + e.getBlock().getType().toString() + "!");
         }
     }

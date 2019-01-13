@@ -48,8 +48,8 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     	
     	ConfigurationManager.saveConfig(config);
     	
-        init(config.getString("Infinity.name"),
-                "[" + config.getString("Infinity.name_modifier") + "] " + config.getString("Infinity.description"),
+        init(config.getString(key + ".name"),
+                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 1,
                 modManager.createModifierItem(Material.ARROW, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));

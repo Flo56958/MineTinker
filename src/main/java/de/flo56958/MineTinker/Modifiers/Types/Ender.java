@@ -57,10 +57,10 @@ public class Ender extends Modifier implements Craftable {
     	
     	ConfigurationManager.saveConfig(config);
         
-        init(config.getString("Ender.name"),
-                "[" + config.getString("Ender.name_modifier") + "] " + config.getString("Ender.description"),
+        init(config.getString(key + ".name"),
+                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt("Ender.MaxLevel"),
+                config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.ENDER_EYE, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.hasSound = config.getBoolean("Ender.Sound");
@@ -83,6 +83,12 @@ public class Ender extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) { }
 
+    /**
+     * The Effect for the ProjectileHitEvent
+     * @param p the Player
+     * @param tool the Tool
+     * @param e the Event
+     */
     public void effect(Player p, ItemStack tool, ProjectileHitEvent e) {
         if (!p.hasPermission("minetinker.modifiers.ender.use")) { return; }
         if (!modManager.hasMod(tool, this)) { return; }
@@ -98,6 +104,12 @@ public class Ender extends Modifier implements Craftable {
 
     }
 
+    /**
+     * The Effect for the EntityDamageByEntityEvent
+     * @param p the Player
+     * @param tool the Tool
+     * @param e the Event
+     */
     public void effect(Player p, ItemStack tool, EntityDamageByEntityEvent e) {
         if (!p.hasPermission("minetinker.modifiers.ender.use")) { return; }
         if (!modManager.hasMod(tool, this)) { return; }

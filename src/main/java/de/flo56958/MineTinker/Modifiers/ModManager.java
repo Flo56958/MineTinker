@@ -215,7 +215,7 @@ public class ModManager {
      * get a specific modifier instance
      *
      * @param type the modifiertype
-     * @return the modifier instance, null if invalid modifier name
+     * @return the modifier instance, null if modifier is not allowed or loaded
      */
     public Modifier get(ModifierType type) {
         for(Modifier m : mods) {
@@ -331,7 +331,11 @@ public class ModManager {
      * @return long value of the exp required
      */
     private long getNextLevelReq(int level) {
-        return (long) (Main.getPlugin().getConfig().getInt("LevelStep") * Math.pow(Main.getPlugin().getConfig().getDouble("LevelFactor"), (double) (level - 1)));
+        if (config.getBoolean("ProgressionIsLinear")) {
+            return (long) (Main.getPlugin().getConfig().getInt("LevelStep") * Main.getPlugin().getConfig().getDouble("LevelFactor") * (level - 1));
+        } else {
+            return (long) (Main.getPlugin().getConfig().getInt("LevelStep") * Math.pow(Main.getPlugin().getConfig().getDouble("LevelFactor"), (double) (level - 1)));
+        }
     }
 
     /**
@@ -349,7 +353,7 @@ public class ModManager {
         if (level == -1 || exp == -1) { return; }
 
         if (exp == Long.MAX_VALUE || exp + 1 < 0 || level + 1 < 0) {
-            if (Main.getPlugin().getConfig().getBoolean("ResetAtIntOverflow")) {
+            if (Main.getPlugin().getConfig().getBoolean("ResetAtIntOverflow")) { //secures a "good" exp-system if the Values get to big
                 level = 1;
                 setLevel(tool, level);
                 exp = 0;
@@ -360,7 +364,7 @@ public class ModManager {
         }
 
         exp = exp + amount;
-        if (exp >= getNextLevelReq(level)) {
+        if (exp >= getNextLevelReq(level)) { //tests for a level up
             level++;
             setLevel(tool, level);
             LevelUp = true;
@@ -375,18 +379,25 @@ public class ModManager {
     }
 
     /**
-     * checks if the ItemStack is viable is viable
-     * @param armor
-     * @return
+     * @param armor the ItemStack
+     * @return if the ItemStack is viable as MineTinker-Armor
      */
     public boolean isArmorViable(ItemStack armor) {
         return hasNBTTag(armor, "IdentifierArmor");
     }
 
+    /**
+     * @param tool the ItemStack
+     * @return if the ItemStack is viable as MineTinker-Tool
+     */
     public boolean isToolViable(ItemStack tool) {
         return hasNBTTag(tool, "IdentifierTool");
     }
 
+    /**
+     * @param wand the ItemStack
+     * @return if the ItemStack is viable as MineTinker-Builderswand
+     */
     public boolean isWandViable(ItemStack wand) { return hasNBTTag(wand, "IdentifierBuilderswand"); }
 
     public void setNBTTag(ItemStack is, String key, NBTBase value) {
@@ -425,6 +436,10 @@ public class ModManager {
         return getNBTTag(is, key) != null;
     }
 
+    /**
+     * Updates the lore of the Item as everything is stored in the NBT-Data
+     * @param is
+     */
     private void rewriteLore(ItemStack is) {
         ArrayList<String> lore = new ArrayList<>(this.loreScheme);
         for (int i = 0; i < lore.size(); i++) {
@@ -463,6 +478,10 @@ public class ModManager {
         is.setItemMeta(meta);
     }
 
+    /**
+     * converts a given ItemStack into its MineTinker equivalent
+     * @param is the MineTinker equivalent
+     */
     public void convertItemStack(ItemStack is) {
         Material m = is.getType();
         if ((ToolType.AXE.getMaterials().contains(m)
@@ -503,11 +522,20 @@ public class ModManager {
         return is;
     }
 
+    /**
+     * @param item the ItemStack
+     * @return if the ItemStack is viable as MineTinker-Modifier-Item
+     */
     public boolean isModifierItem(ItemStack item) {
         return hasNBTTag(item, "modifierItem") || item.getType().equals(get(ModifierType.EXPERIENCED).getModItem().getType()) || item.getType().equals(get(ModifierType.EXTRA_MODIFIER).getModItem().getType());
     }
 
+    /**
+     * @param item the ItemStack
+     * @return the Modifier of the Modifier-Item (NULL if not found)
+     */
     public Modifier getModifierFromItem(ItemStack item) {
+        if (!isModifierItem(item)) { return null; }
         if (item.getType().equals(get(ModifierType.EXPERIENCED).getModItem().getType())) { return get(ModifierType.EXPERIENCED); }
         if (item.getType().equals(get(ModifierType.EXTRA_MODIFIER).getModItem().getType())
                 && !hasNBTTag(item, "modifierItem")) { return get(ModifierType.EXTRA_MODIFIER); }

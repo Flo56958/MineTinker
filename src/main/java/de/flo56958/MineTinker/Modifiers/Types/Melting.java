@@ -23,6 +23,7 @@ import java.util.Arrays;
 public class Melting extends Modifier implements Enchantable, Craftable {
 
     private double bonusMultiplier;
+    private boolean cancelBurning;
 
     public Melting() {
         super(ModifierType.MELTING,
@@ -45,17 +46,19 @@ public class Melting extends Modifier implements Enchantable, Craftable {
         config.addDefault(key + ".MaxLevel", 3);
     	config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".BonusMultiplier", 0.1); //Percent of Bonus-damage per Level or Damage-reduction on Armor
+        config.addDefault(key + ".CancelBurningOnArmor", true);
     	config.addDefault(key + ".Recipe.Enabled", false);
         
     	ConfigurationManager.saveConfig(config);
     	
-        init(config.getString("Melting.name"),
-                "[" + config.getString("Melting.name_modifier") + "] " + config.getString("Melting.description"),
+        init(config.getString(key + ".name"),
+                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt("Melting.MaxLevel"),
+                config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.MAGMA_BLOCK, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
-        this.bonusMultiplier = config.getDouble("Melting.BonusMultiplier");
+        this.bonusMultiplier = config.getDouble(key + ".BonusMultiplier");
+        this.cancelBurning = config.getBoolean(key + ".CancelBurningOnArmor");
     }
 
     @Override
@@ -90,6 +93,12 @@ public class Melting extends Modifier implements Enchantable, Craftable {
         _createModifierItem(getConfig(), p, this, "Melting");
     }
 
+    /**
+     * Damage reduction if Armor has Melting and Player is on Fire
+     * @param p the Player
+     * @param piece the Armor-Piece
+     * @param e the EntityDamageByEntityEvent
+     */
     public void effect_armor(Player p, ItemStack piece, EntityDamageByEntityEvent e) {
         if (!p.hasPermission("minetinker.modifiers.melting.use")) { return; }
         if (!modManager.hasMod(piece, this)) { return; }
@@ -107,7 +116,13 @@ public class Melting extends Modifier implements Enchantable, Craftable {
         ChatWriter.log(false, p.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(piece) + ChatColor.GRAY + " (" + piece.getType().toString() + ")!");
     }
 
+    /**
+     * Removes the fireticks of a player if the armor has Melting
+     * @param p the Player
+     * @param piece the Armor-Piece
+     */
     public void effect_armor(Player p, ItemStack piece) {
+        if (!this.cancelBurning) { return; }
         if (!p.hasPermission("minetinker.modifiers.melting.use")) { return; }
         if (!modManager.hasMod(piece, this)) { return; }
         if (p.getFireTicks() > 0) {

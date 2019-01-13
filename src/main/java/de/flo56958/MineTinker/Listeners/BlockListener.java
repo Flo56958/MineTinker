@@ -49,7 +49,8 @@ public class BlockListener implements Listener {
 
         ItemMeta meta = tool.getItemMeta();
 
-        if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2) {
+        //-------------------------------------------DURABILITYCHECK---------------------------------------------
+        if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2 && config.getBoolean("UnbreakableTools")) {
             e.setCancelled(true);
             if (config.getBoolean("Sound.OnBreaking")) {
                 p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
@@ -57,6 +58,7 @@ public class BlockListener implements Listener {
             return;
         }
 
+        //-------------------------------------------POWERCHECK---------------------------------------------
         if (Power.HASPOWER.get(p) && !ToolType.PICKAXE.getMaterials().contains(tool.getType())
                 && e.getBlock().getDrops(tool).isEmpty() && !e.getBlock().getType().equals(Material.NETHER_WART)) { //Necessary for EasyHarvest NetherWard-Break
             e.setCancelled(true);
@@ -68,6 +70,7 @@ public class BlockListener implements Listener {
 
         modManager.addExp(p, tool, expAmount);
 
+        //-------------------------------------------SPAWNERS---------------------------------------------
         if (!Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
             if (config.getBoolean("Spawners.enabled")) {
                 if (e.getBlock().getState() instanceof CreatureSpawner && p.hasPermission("minetinker.spawners.mine")) {
@@ -86,6 +89,7 @@ public class BlockListener implements Listener {
             }
         }
 
+        //-------------------------------------------MODIFIERS---------------------------------------------
         if (modManager.get(ModifierType.EXPERIENCED) != null) {
             ((Experienced) modManager.get(ModifierType.EXPERIENCED)).effect(p, tool);
         }
@@ -167,6 +171,8 @@ public class BlockListener implements Listener {
         Player p = e.getPlayer();
         Block b = e.getBlockPlaced();
         BlockState bs = b.getState();
+
+        //-------------------------------------------SPAWNERS---------------------------------------------
         if (config.getBoolean("Spawners.enabled") && !Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
             if (!p.hasPermission("minetinker.spawners.place") && b.getState() instanceof CreatureSpawner) {
                 e.setCancelled(true);
@@ -208,7 +214,7 @@ public class BlockListener implements Listener {
 
         if (!apply) { return; }
 
-        if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 1) {
+        if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 1 && config.getBoolean("UnbreakableTools")) {
             e.setCancelled(true);
             if (config.getBoolean("Sound.OnBreaking")) {
                 p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
@@ -218,6 +224,7 @@ public class BlockListener implements Listener {
 
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 
+        //-------------------------------------------MODIFIERS---------------------------------------------
         if (modManager.get(ModifierType.SELF_REPAIR) != null) {
             ((SelfRepair) modManager.get(ModifierType.SELF_REPAIR)).effect(p, tool);
         }
@@ -265,7 +272,8 @@ public class BlockListener implements Listener {
 
         if (!apply) { return; }
 
-        if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 1) {
+        //-------------------------------------------DURABILITYCHECK---------------------------------------------
+        if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 1 && config.getBoolean("UnbreakableTools")) {
             e.setCancelled(true);
             if (config.getBoolean("Sound.OnBreaking")) {
                 p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
@@ -275,6 +283,7 @@ public class BlockListener implements Listener {
 
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 
+        //-------------------------------------------MODIFIERS---------------------------------------------
         if (modManager.get(ModifierType.SELF_REPAIR) != null) {
             ((SelfRepair) modManager.get(ModifierType.SELF_REPAIR)).effect(p, tool);
         }
@@ -306,7 +315,8 @@ public class BlockListener implements Listener {
 
         if (!apply) { return; }
 
-        if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 1) {
+        //-------------------------------------------DURABILITYCHECK---------------------------------------------
+        if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 1 && config.getBoolean("UnbreakableTools")) {
             e.setCancelled(true);
             if (config.getBoolean("Sound.OnBreaking")) {
                 p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
@@ -316,6 +326,7 @@ public class BlockListener implements Listener {
 
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 
+        //-------------------------------------------MODIFIERS---------------------------------------------
         if (modManager.get(ModifierType.SELF_REPAIR) != null) {
             ((SelfRepair) modManager.get(ModifierType.SELF_REPAIR)).effect(p, tool);
         }

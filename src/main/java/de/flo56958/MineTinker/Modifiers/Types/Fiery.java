@@ -44,10 +44,10 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
     	
     	ConfigurationManager.saveConfig(config);
     	
-        init(config.getString("Fiery.name"),
-                "[" + config.getString("Fiery.name_modifier") + "] " + config.getString("Fiery.description"),
+        init(config.getString(key + ".name"),
+                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt("Fiery.MaxLevel"),
+                config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.BLAZE_ROD, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     }
 

@@ -46,10 +46,10 @@ public class Sharpness extends Modifier implements Craftable {
         
     	ConfigurationManager.saveConfig(config);
     	
-        init(config.getString("Sharpness.name"),
-                "[" + config.getString("Sharpness.name_modifier") + "] " + config.getString("Sharpness.description"),
+        init(config.getString(key + ".name"),
+                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt("Sharpness.MaxLevel"),
+                config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.QUARTZ_BLOCK, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     }
 
