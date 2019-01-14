@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -11,9 +12,9 @@ import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -77,25 +78,31 @@ public class Webbed extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) { }
 
+    @EventHandler
+    public void effect(MTEntityDamageByEntityEvent event) {
+        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.getEvent().getEntity() instanceof LivingEntity) {
+            effect(event.getPlayer(), event.getTool(), (LivingEntity) event.getEvent().getEntity());
+        }
+    }
+
     /**
      * the Webbed-Effect
      * @param p the Player
      * @param tool the Tool
      * @param e the Entity to apply the Effect on
      */
-    public void effect(Player p, ItemStack tool, Entity e) {
+    private void effect(Player p, ItemStack tool, LivingEntity e) {
         if (!p.hasPermission("minetinker.modifiers.webbed.use")) { return; }
         if (e.isDead()) { return; }
         if (!modManager.hasMod(tool, this)) { return; }
-        if (!(e instanceof LivingEntity)) { return; }
 
         int level = modManager.getModLevel(tool, this);
 
-        LivingEntity ent = (LivingEntity) e;
         int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (level - 1)));
         int amplifier = this.effectAmplifier * (level - 1) / 2;
 
-        ent.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration, amplifier, false, false));
+        e.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration, amplifier, false, false));
         ChatWriter.log(false, p.getDisplayName() + " triggered Webbed on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 

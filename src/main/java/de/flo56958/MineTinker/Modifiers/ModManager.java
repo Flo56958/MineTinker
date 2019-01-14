@@ -145,6 +145,7 @@ public class ModManager {
     	allMods.add(new Haste());
     	allMods.add(new Infinity());
     	allMods.add(new Knockback());
+    	allMods.add(new Lifesteal());
     	allMods.add(new LightWeight());
         allMods.add(new Luck());
         allMods.add(new Melting());

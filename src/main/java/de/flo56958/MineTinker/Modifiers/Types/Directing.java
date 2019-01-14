@@ -1,28 +1,32 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.MTEntityDeathEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Directing extends Modifier implements Craftable {
+public class Directing extends Modifier implements Craftable, Listener {
 
     public Directing() {
         super(ModifierType.DIRECTING,
                 new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
     
     public void reload() {
@@ -61,36 +65,22 @@ public class Directing extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) { }
 
-    /**
-     * Effect on the EntityDeathEvent
-     * @param p the player
-     * @param tool the tool
-     * @param loot the loot from Beheading (default: AIR)
-     * @param e the Event
-     */
-    public void effect(Player p, ItemStack tool, ItemStack loot, EntityDeathEvent e) {
-        if (p.hasPermission("minetinker.modifiers.directing.use")) {
-            if (modManager.hasMod(tool, this)) {
-                List<ItemStack> drops = e.getDrops();
-                if (!loot.equals(new ItemStack(Material.AIR, 1))) {
-                    drops.add(loot);
-                }
-                for (ItemStack current : drops) {
-                    if(p.getInventory().addItem(current).size() != 0) { //adds items to (full) inventory
-                        p.getWorld().dropItem(p.getLocation(), current);
-                    } // no else as it gets added in if-clause
-                }
-                drops.clear();
-            } else {
-                if (!loot.equals(new ItemStack(Material.AIR, 1))) {
-                    p.getWorld().dropItemNaturally(e.getEntity().getLocation(), loot);
-                }
-            }
-        } else {
-            if (!loot.equals(new ItemStack(Material.AIR, 1))) {
-                p.getWorld().dropItemNaturally(e.getEntity().getLocation(), loot);
-            }
+    @EventHandler
+    public void effect(MTEntityDeathEvent event) {
+        if (!this.isAllowed()) { return; }
+
+        Player p = event.getPlayer();
+        ItemStack tool = event.getTool();
+        if (!p.hasPermission("minetinker.modifiers.directing.use")) { return; }
+        if (!modManager.hasMod(tool, this)) { return; }
+
+        List<ItemStack> drops = event.getEvent().getDrops();
+        for (ItemStack current : drops) {
+            if (p.getInventory().addItem(current).size() != 0) { //adds items to (full) inventory
+                p.getWorld().dropItem(p.getLocation(), current);
+            } // no else as it gets added in if-clause
         }
+        drops.clear();
     }
 
     @Override

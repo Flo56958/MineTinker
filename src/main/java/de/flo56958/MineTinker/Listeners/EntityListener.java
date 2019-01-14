@@ -1,11 +1,12 @@
 package de.flo56958.MineTinker.Listeners;
 
 import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
+import de.flo56958.MineTinker.Events.MTEntityDeathEvent;
+import de.flo56958.MineTinker.Events.MTProjectileHitEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
-import de.flo56958.MineTinker.Modifiers.Types.*;
-import org.bukkit.Material;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
@@ -49,40 +50,7 @@ public class EntityListener implements Listener {
 
         int amount = config.getInt("ExpPerEntityHit");
 
-        //-------------------------------------------MODIFIERS---------------------------------------------
-        if (!ToolType.BOW.getMaterials().contains(tool.getType())) {
-            if (modManager.get(ModifierType.SELF_REPAIR) != null) {
-                ((SelfRepair) modManager.get(ModifierType.SELF_REPAIR)).effect(p, tool);
-            }
-            if (modManager.get(ModifierType.EXPERIENCED) != null) {
-                ((Experienced) modManager.get(ModifierType.EXPERIENCED)).effect(p, tool);
-            }
-        }
-
-        if (modManager.get(ModifierType.GLOWING) != null) {
-            ((Glowing) modManager.get(ModifierType.GLOWING)).effect(p, tool, e);
-        }
-
-        if (modManager.get(ModifierType.POISONOUS) != null) {
-            ((Poisonous) modManager.get(ModifierType.POISONOUS)).effect(p, tool, e.getEntity());
-        }
-
-        if (modManager.get(ModifierType.SHULKING) != null) {
-            ((Shulking) modManager.get(ModifierType.SHULKING)).effect(p, tool, e.getEntity());
-        }
-
-        if (modManager.get(ModifierType.WEBBED) != null) {
-            ((Webbed) modManager.get(ModifierType.WEBBED)).effect(p, tool, e.getEntity());
-        }
-
-        if (modManager.get(ModifierType.MELTING) != null) {
-            ((Melting) modManager.get(ModifierType.MELTING)).effect(p, tool, e);
-        }
-
-        if (modManager.get(ModifierType.ENDER) != null) {
-            ((Ender) modManager.get(ModifierType.ENDER)).effect(p, tool, e);
-        }
-        //-------------------------------------------MODIFIERS---------------------------------------------
+        Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(p, tool, e));
 
         if (config.getBoolean("EnableDamageExp")) { //at bottom because of Melting
             amount = (int) e.getDamage();
@@ -101,22 +69,9 @@ public class EntityListener implements Listener {
 
         if (!modManager.isToolViable(tool)) { return; }
 
-        ItemStack loot = new ItemStack(Material.AIR, 1);
+        Bukkit.getPluginManager().callEvent(new MTEntityDeathEvent(p, tool, e));
 
-        //-------------------------------------------MODIFIERS---------------------------------------------
-        if (modManager.get(ModifierType.BEHEADING) != null) {
-            loot = ((Beheading) modManager.get(ModifierType.BEHEADING)).effect(p, tool, mob);
-        }
-
-        if (modManager.get(ModifierType.DIRECTING) != null) {
-            ((Directing) modManager.get(ModifierType.DIRECTING)).effect(p, tool, loot, e);
-        } else {
-            if (!loot.equals(new ItemStack(Material.AIR, 1))) {
-                p.getWorld().dropItemNaturally(e.getEntity().getLocation(), loot);
-            }
-        }
-
-        modManager.addExp(p, tool, config.getInt("ExtraExpPerEntityHit." + e.getEntity().getType().toString())); //adds 0 if not in found in config (negative values are also fine)
+        modManager.addExp(p, tool, config.getInt("ExtraExpPerEntityDeath." + e.getEntity().getType().toString())); //adds 0 if not in found in config (negative values are also fine)
     }
 
     @EventHandler
@@ -127,13 +82,9 @@ public class EntityListener implements Listener {
         if (e.getHitBlock() == null) { return; }
         if (!modManager.isToolViable(tool)) { return; }
 
-        //-------------------------------------------MODIFIERS---------------------------------------------
-        if (modManager.get(ModifierType.ENDER) != null) {
-            ((Ender) modManager.get(ModifierType.ENDER)).effect(p, tool, e);
-        }
+        Bukkit.getPluginManager().callEvent(new MTProjectileHitEvent(p, tool, e));
     }
 
-    @SuppressWarnings("deprecation")
 	@EventHandler
     public void onBowFire(ProjectileLaunchEvent e) {
         if (e.isCancelled()) { return; }
@@ -148,14 +99,8 @@ public class EntityListener implements Listener {
 
         modManager.addExp(p, tool, config.getInt("ExpPerArrowShot"));
 
-        //-------------------------------------------MODIFIERS---------------------------------------------
-        if (modManager.get(ModifierType.SELF_REPAIR) != null) {
-            ((SelfRepair) modManager.get(ModifierType.SELF_REPAIR)).effect(p, tool);
-        }
-
-        if (modManager.get(ModifierType.EXPERIENCED) != null) {
-            ((Experienced) modManager.get(ModifierType.EXPERIENCED)).effect(p, tool);
-        }
-
+        /*
+        Self-Repair and Experienced will no longer trigger on bowfire
+         */
     }
 }

@@ -12,6 +12,7 @@ public enum Modifiers_Config {
 	Infinity("Infinity.yml"),
 	Knockback("Knockback.yml"),
 	Light_Weight("Light-Weight.yml"),
+	Lifesteal("Lifesteal.yml"),
 	Luck("Luck.yml"),
 	Melting("Melting.yml"),
 	Poisonous("Poisonous.yml"),

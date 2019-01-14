@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class ModifierApplyEvent extends Event {
 
@@ -25,7 +26,7 @@ public class ModifierApplyEvent extends Event {
      * @param slotsRemaining How many Slots are remaining on the Tool/Armor
      * @param isCommand Was the Event triggered as a result of a command input?
      */
-    public ModifierApplyEvent(Player player, ItemStack tool, Modifier mod, int slotsRemaining, boolean isCommand) {
+    public ModifierApplyEvent(Player player, ItemStack tool, @NotNull Modifier mod, int slotsRemaining, boolean isCommand) {
         this.player = player;
         this.tool = tool;
         this.mod = mod;

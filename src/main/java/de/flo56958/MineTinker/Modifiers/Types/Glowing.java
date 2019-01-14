@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -8,12 +9,14 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -21,7 +24,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Glowing extends Modifier implements Craftable {
+public class Glowing extends Modifier implements Craftable, Listener {
 
     private int duration;
     private double durationMultiplier;
@@ -31,6 +34,7 @@ public class Glowing extends Modifier implements Craftable {
         super(ModifierType.GLOWING,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
     
     public void reload() {
@@ -62,8 +66,8 @@ public class Glowing extends Modifier implements Craftable {
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.GLOWSTONE, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
-        this.duration = config.getInt("Glowing.Duration");
-        this.durationMultiplier = config.getDouble("Glowing.DurationMultiplier");
+        this.duration = config.getInt(key + ".Duration");
+        this.durationMultiplier = config.getDouble(key + ".DurationMultiplier");
     }
 
     @Override
@@ -74,15 +78,26 @@ public class Glowing extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) { }
 
-    public void effect(Player p, ItemStack tool, EntityDamageByEntityEvent e) {
+    @EventHandler
+    public void effect(MTEntityDamageByEntityEvent event) {
+        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.getEvent().getEntity() instanceof LivingEntity) { return; }
+
+        Player p = event.getPlayer();
+        ItemStack tool = event.getTool();
+
+        LivingEntity e = (LivingEntity) event.getEvent().getEntity();
+
         if (!p.hasPermission("minetinker.modifiers.glowing.use")) { return; }
         if (!modManager.hasMod(tool, this)) { return; }
-        if (!(e.getEntity() instanceof LivingEntity)) { return; }
 
-        LivingEntity ent = (LivingEntity) e.getEntity();
         int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (modManager.getModLevel(tool, this) - 1)));
-        ent.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, duration, 0, false, false));
+        e.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, duration, 0, false, false));
         ChatWriter.log(false, p.getDisplayName() + " triggered Glowing on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+    }
+
+    private void effect(Player p, ItemStack tool, LivingEntity e) {
+
     }
 
     @Override

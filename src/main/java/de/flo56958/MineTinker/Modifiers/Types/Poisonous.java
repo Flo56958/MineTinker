@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
@@ -9,12 +10,14 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -22,7 +25,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Poisonous extends Modifier implements Enchantable, Craftable {
+public class Poisonous extends Modifier implements Enchantable, Craftable, Listener {
 	
     private int duration;
     private double durationMultiplier;
@@ -33,6 +36,7 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
     
     public void reload() {
@@ -74,16 +78,23 @@ public class Poisonous extends Modifier implements Enchantable, Craftable {
     @Override
     public void removeMod(ItemStack tool) { }
 
-    public void effect(Player p, ItemStack tool, Entity e) {
+    @EventHandler
+    public void effect(MTEntityDamageByEntityEvent event) {
+        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.getEvent().getEntity() instanceof LivingEntity) {
+            effect(event.getPlayer(), event.getTool(), (LivingEntity) event.getEvent().getEntity());
+        }
+    }
+
+    private void effect(Player p, ItemStack tool, LivingEntity e) {
         if (!p.hasPermission("minetinker.modifiers.poisonous.use")) { return; }
         if (!modManager.hasMod(tool, this)) { return; }
-        if (!(e instanceof LivingEntity)) { return; }
 
         int level = modManager.getModLevel(tool, this);
-        LivingEntity ent = (LivingEntity) e;
+
         int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (level - 1)));
         int amplifier = this.effectAmplifier * (level - 1);
-        ent.addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration, amplifier, false, false));
+        e.addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration, amplifier, false, false));
         ChatWriter.log(false, p.getDisplayName() + " triggered Poisonous on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 

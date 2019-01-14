@@ -9,10 +9,16 @@ import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import net.minecraft.server.v1_13_R2.NBTTagInt;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -20,7 +26,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
-public class Soulbound extends Modifier implements Craftable {
+public class Soulbound extends Modifier implements Craftable, Listener {
 
     private HashMap<Player, ArrayList<ItemStack>> storedItemStacks = new HashMap<>(); //saves ItemStacks untill reload (if the player does not respawn instantly)
     private boolean toolDropable;
@@ -32,6 +38,7 @@ public class Soulbound extends Modifier implements Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
                         ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
 
     @Override
@@ -121,9 +128,10 @@ public class Soulbound extends Modifier implements Craftable {
 
     /**
      * Effect if a player respawns
-     * @param p the Player
      */
-    public void effect(Player p) {
+    @EventHandler
+    public void effect(PlayerRespawnEvent e) {
+        Player p = e.getPlayer();
         if (!p.hasPermission("minetinker.soulbound.use")) { return; }
 
         if (!storedItemStacks.containsKey(p)) { return; }
@@ -136,6 +144,23 @@ public class Soulbound extends Modifier implements Craftable {
         }
 
         storedItemStacks.remove(p);
+    }
+
+    /**
+     * Effect if a player drops an item
+     * @param e
+     */
+    @EventHandler
+    public void effect(PlayerDropItemEvent e) {
+        if (e.isCancelled()) { return; }
+
+        Item item = e.getItemDrop();
+        ItemStack is = item.getItemStack();
+        if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) { return; }
+
+        if (!modManager.hasMod(is, this) && !toolDropable) { return; }
+
+        e.setCancelled(true);
     }
 
     private static FileConfiguration getConfig() {

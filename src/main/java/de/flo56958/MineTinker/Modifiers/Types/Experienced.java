@@ -2,6 +2,9 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTBlockBreakEvent;
+import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
+import de.flo56958.MineTinker.Events.MTEntityDamageEvent;
+import de.flo56958.MineTinker.Events.MTPlayerInteractEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -70,8 +73,32 @@ public class Experienced extends Modifier implements Craftable, Listener {
     @Override
     public void removeMod(ItemStack tool) { }
 
+    //----------------------------------------------------------
+
     @EventHandler
     public void effect(MTBlockBreakEvent event) {
+        if (event.isCancelled() || !this.isAllowed()) { return; }
+        effect(event.getPlayer(), event.getTool());
+    }
+
+    @EventHandler
+    public void effect(MTEntityDamageByEntityEvent event) {
+        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (ToolType.BOOTS.getMaterials().contains(event.getTool().getType())
+            || ToolType.LEGGINGS.getMaterials().contains(event.getTool().getType())
+            || ToolType.CHESTPLATE.getMaterials().contains(event.getTool().getType())
+            || ToolType.HELMET.getMaterials().contains(event.getTool().getType())) { return; } //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
+        effect(event.getPlayer(), event.getTool());
+    }
+
+    @EventHandler
+    public void effect(MTEntityDamageEvent event) {
+        if (event.isCancelled() || !this.isAllowed()) { return; }
+        effect(event.getPlayer(), event.getTool());
+    }
+
+    @EventHandler
+    public void effect(MTPlayerInteractEvent event) {
         if (event.isCancelled() || !this.isAllowed()) { return; }
         effect(event.getPlayer(), event.getTool());
     }
@@ -95,6 +122,8 @@ public class Experienced extends Modifier implements Craftable, Listener {
             ChatWriter.log(false, p.getDisplayName() + " triggered Experienced on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
         }
     }
+
+    //-------------------------------------------------------------
 
     @Override
     public void registerCraftingRecipe() {

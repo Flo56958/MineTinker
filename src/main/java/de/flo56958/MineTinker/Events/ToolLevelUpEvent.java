@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class ToolLevelUpEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
@@ -16,7 +17,7 @@ public class ToolLevelUpEvent extends Event {
      * @param player The Player that was involved in the Event
      * @param tool The Tool that got a Level-up
      */
-    public ToolLevelUpEvent(Player player, ItemStack tool) {
+    public ToolLevelUpEvent(@NotNull Player player, @NotNull ItemStack tool) {
         this.player = player;
         this.tool = tool;
     }

@@ -58,10 +58,6 @@ public class ItemListener implements Listener {
 
         if (!isMineTinker) { return; }
 
-        if (modManager.get(ModifierType.SOULBOUND) != null) {
-            if (!(((Soulbound) modManager.get(ModifierType.SOULBOUND)).getDropable(is))) { e.setCancelled(true); return; }
-        }
-
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ShowName")) {
             item.setCustomName(is.getItemMeta().getDisplayName());
             item.setCustomNameVisible(true);
@@ -103,6 +99,7 @@ public class ItemListener implements Listener {
             if (modManager.get(ModifierType.SOULBOUND) != null) {
                 if (((Soulbound) modManager.get(ModifierType.SOULBOUND)).effect(p, is)) { is.setAmount(0); continue; } //workaround as inv.remove(is) does not work insteads duplicates item
             }
+
             Bukkit.getPluginManager().callEvent(new PlayerDropItemEvent(p, p.getWorld().dropItem(p.getLocation(), is))); //To trigger item behaviour
 
             is.setAmount(0);

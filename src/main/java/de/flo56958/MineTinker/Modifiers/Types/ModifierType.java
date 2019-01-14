@@ -16,6 +16,7 @@ public enum ModifierType {
     INFINITY,
     KNOCKBACK,
     LIGHT_WEIGHT,
+    LIFESTEAL,
     LUCK,
     MELTING,
     POISONOUS,
@@ -63,6 +64,8 @@ public enum ModifierType {
                 return "Knockback";
             case LIGHT_WEIGHT:
                 return "Light-Weight";
+            case LIFESTEAL:
+                return "Lifesteal";
             case LUCK:
                 return "Luck";
             case MELTING:

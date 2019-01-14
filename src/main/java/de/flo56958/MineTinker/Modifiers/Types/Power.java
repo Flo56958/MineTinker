@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTBlockBreakEvent;
+import de.flo56958.MineTinker.Events.MTPlayerInteractEvent;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
@@ -103,7 +104,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
         ItemStack tool = event.getTool();
         Block b = event.getBlock();
         if (!checkPower(p, tool)) { return; }
-        if (!ToolType.HOE.getMaterials().contains(tool.getType())) { return; }
+        if (ToolType.HOE.getMaterials().contains(tool.getType())) { return; }
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 
@@ -191,11 +192,17 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
 
     /**
      * Effect for the PlayerInteractEvent for the Hoe
-     * @param p the Player
-     * @param tool the Tool
-     * @param e the PlayerInteractEvent
      */
-    public void effect(Player p, ItemStack tool, PlayerInteractEvent e) {
+    @EventHandler
+    public void effect(MTPlayerInteractEvent event) {
+        if (!event.isCancelled() || !this.isAllowed()) { return; }
+
+        Player p = event.getPlayer();
+        ItemStack tool = event.getTool();
+
+        if (!ToolType.HOE.getMaterials().contains(tool.getType())) { return; }
+
+        PlayerInteractEvent e = event.getEvent();
         if (!checkPower(p, tool)) { return; }
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");

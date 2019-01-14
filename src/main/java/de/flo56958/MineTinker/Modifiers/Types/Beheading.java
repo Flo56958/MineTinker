@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.MTEntityDeathEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
@@ -9,13 +10,17 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -23,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Beheading extends Modifier implements Enchantable, Craftable {
+public class Beheading extends Modifier implements Enchantable, Craftable, Listener {
 
     private int percentagePerLevel;
 
@@ -31,6 +36,7 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
         super(ModifierType.BEHEADING,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
     
     public void reload() {
@@ -70,12 +76,13 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
 
     /**
      * Effect for getting the mob heads
-     * @param p the Player
-     * @param tool the Tool
-     * @param mob the Entity which is dieing
-     * @return the loot or AIR
      */
-    public ItemStack effect(Player p, ItemStack tool, Entity mob) {
+    @EventHandler(priority = EventPriority.LOW) //For Directing
+    public void effect(MTEntityDeathEvent event) {
+        if (!this.isAllowed()) { return; }
+        Player p = event.getPlayer();
+        ItemStack tool = event.getTool();
+        LivingEntity mob = event.getEvent().getEntity();
         ItemStack loot = new ItemStack(Material.AIR, 1);
         if (p.hasPermission("minetinker.beheading.use")) {
             if (modManager.hasMod(tool, this)) {
@@ -100,12 +107,12 @@ public class Beheading extends Modifier implements Enchantable, Craftable {
                         loot = head;
                     }
                     if (loot.getType() != Material.AIR) {
+                        event.getEvent().getDrops().add(loot);
                         ChatWriter.log(false, p.getDisplayName() + " triggered Beheading on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
                     }
                 }
             }
         }
-        return loot;
     }
 
     @Override

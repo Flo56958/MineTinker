@@ -3,14 +3,13 @@ package de.flo56958.MineTinker.Listeners;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTBlockBreakEvent;
+import de.flo56958.MineTinker.Events.MTPlayerInteractEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Modifiers.Types.Experienced;
 import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
-import de.flo56958.MineTinker.Modifiers.Types.SelfRepair;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -63,7 +62,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        Bukkit.getPluginManager().callEvent(new MTBlockBreakEvent(p, tool, e)); //Event-Trigger for Modifiers
+        Bukkit.getPluginManager().callEvent(new MTBlockBreakEvent(tool, e)); //Event-Trigger for Modifiers
 
         //-------------------------------------------SPAWNERS---------------------------------------------
         if (!Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
@@ -190,18 +189,7 @@ public class BlockListener implements Listener {
 
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 
-        //-------------------------------------------MODIFIERS---------------------------------------------
-        if (modManager.get(ModifierType.SELF_REPAIR) != null) {
-            ((SelfRepair) modManager.get(ModifierType.SELF_REPAIR)).effect(p, tool);
-        }
-
-        if (modManager.get(ModifierType.EXPERIENCED) != null) {
-            ((Experienced) modManager.get(ModifierType.EXPERIENCED)).effect(p, tool);
-        }
-
-        if (modManager.get(ModifierType.POWER) != null) {
-            ((Power) modManager.get(ModifierType.POWER)).effect(p, tool, e);
-        }
+        Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, e));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -240,14 +228,7 @@ public class BlockListener implements Listener {
         if (!modManager.durabilityCheck(e, p, tool)) { return; }
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 
-        //-------------------------------------------MODIFIERS---------------------------------------------
-        if (modManager.get(ModifierType.SELF_REPAIR) != null) {
-            ((SelfRepair) modManager.get(ModifierType.SELF_REPAIR)).effect(p, tool);
-        }
-
-        if (modManager.get(ModifierType.EXPERIENCED) != null) {
-            ((Experienced) modManager.get(ModifierType.EXPERIENCED)).effect(p, tool);
-        }
+        Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, e));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -275,13 +256,6 @@ public class BlockListener implements Listener {
 
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 
-        //-------------------------------------------MODIFIERS---------------------------------------------
-        if (modManager.get(ModifierType.SELF_REPAIR) != null) {
-            ((SelfRepair) modManager.get(ModifierType.SELF_REPAIR)).effect(p, tool);
-        }
-
-        if (modManager.get(ModifierType.EXPERIENCED) != null) {
-            ((Experienced) modManager.get(ModifierType.EXPERIENCED)).effect(p, tool);
-        }
+        Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, e));
     }
 }
