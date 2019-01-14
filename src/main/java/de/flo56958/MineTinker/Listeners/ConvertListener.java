@@ -87,8 +87,9 @@ public class ConvertListener implements Listener{
         
         if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool) || modManager.isWandViable(tool))) { return; }
 
-        if (config.getBoolean("Sound.OnCrafting"))
-            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
+        if (config.getBoolean("Sound.OnCrafting")) {
+			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
+		}
 
         ChatWriter.log(false, player.getName() + " crafted " + ItemGenerator.getDisplayName(tool) + "! It is now a MineTinker-Item!");
     }

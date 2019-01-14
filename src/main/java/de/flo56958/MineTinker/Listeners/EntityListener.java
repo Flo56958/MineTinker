@@ -6,7 +6,6 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Types.*;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
@@ -46,16 +45,9 @@ public class EntityListener implements Listener {
 
         ItemStack tool = p.getInventory().getItemInMainHand();
         if (!modManager.isToolViable(tool)) { return; }
+        if (!modManager.durabilityCheck(e, p, tool)) { return; }
 
-        //-------------------------------------------DURABILITYCHECK---------------------------------------------
-        if (tool.getType().getMaxDurability() - tool.getDurability() <= 1 && config.getBoolean("UnbreakableTools")) {
-            e.setCancelled(true);
-            if (config.getBoolean("Sound.OnBreaking")) {
-                p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
-            }
-            return;
-        }
-        int amount = config.getInt("ExpPerEntityHit"); //AddExp at bottom because of Melting
+        int amount = config.getInt("ExpPerEntityHit");
 
         //-------------------------------------------MODIFIERS---------------------------------------------
         if (!ToolType.BOW.getMaterials().contains(tool.getType())) {
@@ -151,16 +143,8 @@ public class EntityListener implements Listener {
         ItemStack tool = p.getInventory().getItemInMainHand();
 
         if (!modManager.isToolViable(tool)) { return; }
+        if (!modManager.durabilityCheck(e, p, tool)) { return; }
 
-        //-------------------------------------------DURABILITYCHECK---------------------------------------------
-        if (tool.getType().getMaxDurability() - tool.getDurability() <= 1 && config.getBoolean("UnbreakableTools")) {
-            e.setCancelled(true);
-            if (config.getBoolean("Sound.OnBreaking")) {
-                p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
-            }
-            tool.setDurability((short) (tool.getDurability() - 1));
-            return;
-        }
 
         modManager.addExp(p, tool, config.getInt("ExpPerArrowShot"));
 

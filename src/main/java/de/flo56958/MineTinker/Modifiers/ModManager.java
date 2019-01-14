@@ -9,11 +9,14 @@ import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -547,5 +550,25 @@ public class ModManager {
             }
         }
         return null;
+    }
+
+    /**
+     * Checks the durability of the Tool
+     * @param e the Event (implements Cancelable)
+     * @param p the Player
+     * @param tool the Tool
+     * @return false: if broken; true: if enough durability
+     */
+    public boolean durabilityCheck(Cancellable e, Player p, ItemStack tool) {
+        ItemMeta meta = tool.getItemMeta();
+        if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2 && config.getBoolean("UnbreakableTools")) {
+            e.setCancelled(true);
+            if (config.getBoolean("Sound.OnBreaking")) {
+                p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
+            }
+            return false;
+        }
+
+        return true;
     }
 }

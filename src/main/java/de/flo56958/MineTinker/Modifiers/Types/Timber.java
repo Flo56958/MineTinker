@@ -3,6 +3,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.MTBlockBreakEvent;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
@@ -12,6 +13,7 @@ import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import net.minecraft.server.v1_13_R2.BlockPosition;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,12 +21,14 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Timber extends Modifier implements Craftable {
+public class Timber extends Modifier implements Craftable, Listener {
 
     private static final ArrayList<Location> locs = new ArrayList<>();
 
@@ -32,6 +36,7 @@ public class Timber extends Modifier implements Craftable {
         super(ModifierType.TIMBER,
                 new ArrayList<>(Collections.singletonList(ToolType.AXE)),
                 Main.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
     
     public void reload() {
@@ -77,7 +82,14 @@ public class Timber extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) { }
 
-    public void effect(Player p, ItemStack tool, Block b) {
+    @EventHandler
+    public void effect(MTBlockBreakEvent event) {
+        if (event.isCancelled() || !this.isAllowed()) { return; }
+        Player p = event.getPlayer();
+        ItemStack tool = event.getTool();
+        Block b = event.getBlock();
+
+        if (Power.HASPOWER.get(p) || p.isSneaking()) { return; }
         if (!modManager.hasMod(tool, this)) { return; }
 
         ArrayList<Material> allowed = new ArrayList<>();

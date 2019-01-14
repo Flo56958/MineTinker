@@ -3,6 +3,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.MTBlockBreakEvent;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
@@ -18,6 +19,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -26,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class Power extends Modifier implements Enchantable, Craftable {
+public class Power extends Modifier implements Enchantable, Craftable, Listener {
 
     public static final HashMap<Player, Boolean> HASPOWER = new HashMap<>();
 
@@ -36,6 +39,7 @@ public class Power extends Modifier implements Enchantable, Craftable {
         super(ModifierType.POWER,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL)),
                 Main.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
     
     public void reload() {
@@ -90,12 +94,16 @@ public class Power extends Modifier implements Enchantable, Craftable {
 
     /**
      * The effect when a Block was brocken
-     * @param p the Player
-     * @param tool the Tool
-     * @param b the Block that was brocken
+     * @param event The Event
      */
-    public void effect(Player p, ItemStack tool, Block b) {
+    @EventHandler
+    public void effect(MTBlockBreakEvent event) {
+        if (event.isCancelled() || !this.isAllowed()) { return; }
+        Player p = event.getPlayer();
+        ItemStack tool = event.getTool();
+        Block b = event.getBlock();
         if (!checkPower(p, tool)) { return; }
+        if (!ToolType.HOE.getMaterials().contains(tool.getType())) { return; }
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 

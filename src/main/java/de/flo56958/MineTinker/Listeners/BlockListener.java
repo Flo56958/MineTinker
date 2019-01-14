@@ -2,15 +2,19 @@ package de.flo56958.MineTinker.Listeners;
 
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.MTBlockBreakEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Modifiers.Types.*;
+import de.flo56958.MineTinker.Modifiers.Types.Experienced;
+import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
+import de.flo56958.MineTinker.Modifiers.Types.Power;
+import de.flo56958.MineTinker.Modifiers.Types.SelfRepair;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
@@ -25,7 +29,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class BlockListener implements Listener {
@@ -46,17 +49,12 @@ public class BlockListener implements Listener {
 
 
         if (!modManager.isToolViable(tool)) { return; }
+        if (!modManager.durabilityCheck(e, p, tool)) { return; }
 
-        ItemMeta meta = tool.getItemMeta();
+        int expAmount = config.getInt("ExpPerBlockBreak");
+        expAmount += config.getInt("ExtraExpPerBlock." + e.getBlock().getType().toString()); //adds 0 if not in found in config (negative values are also fine)
 
-        //-------------------------------------------DURABILITYCHECK---------------------------------------------
-        if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2 && config.getBoolean("UnbreakableTools")) {
-            e.setCancelled(true);
-            if (config.getBoolean("Sound.OnBreaking")) {
-                p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
-            }
-            return;
-        }
+        modManager.addExp(p, tool, expAmount);
 
         //-------------------------------------------POWERCHECK---------------------------------------------
         if (Power.HASPOWER.get(p) && !ToolType.PICKAXE.getMaterials().contains(tool.getType())
@@ -65,10 +63,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        int expAmount = config.getInt("ExpPerBlockBreak");
-        expAmount += config.getInt("ExtraExpPerBlock." + e.getBlock().getType().toString()); //adds 0 if not in found in config (negative values are also fine)
-
-        modManager.addExp(p, tool, expAmount);
+        Bukkit.getPluginManager().callEvent(new MTBlockBreakEvent(p, tool, e)); //Event-Trigger for Modifiers
 
         //-------------------------------------------SPAWNERS---------------------------------------------
         if (!Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
@@ -86,29 +81,6 @@ public class BlockListener implements Listener {
                         ChatWriter.log(false, p.getDisplayName() + " successfully mined a Spawner!");
                     }
                 }
-            }
-        }
-
-        //-------------------------------------------MODIFIERS---------------------------------------------
-        if (modManager.get(ModifierType.EXPERIENCED) != null) {
-            ((Experienced) modManager.get(ModifierType.EXPERIENCED)).effect(p, tool);
-        }
-
-        if (modManager.get(ModifierType.AUTO_SMELT) != null) {
-            ((AutoSmelt) modManager.get(ModifierType.AUTO_SMELT)).effect(p, tool, e.getBlock(), e);
-        }
-
-        if (modManager.get(ModifierType.POWER) != null && !ToolType.HOE.getMaterials().contains(tool.getType())) { //So Hoe does not trigger Power while breaking something (Hoe can only use special Hoe-Power)
-            ((Power) modManager.get(ModifierType.POWER)).effect(p, tool, e.getBlock());
-        }
-
-        if (modManager.get(ModifierType.SELF_REPAIR) != null) {
-            ((SelfRepair) modManager.get(ModifierType.SELF_REPAIR)).effect(p, tool);
-        }
-
-        if (modManager.get(ModifierType.TIMBER) != null) {
-            if (!Power.HASPOWER.get(p) && !p.isSneaking()) {
-                ((Timber) modManager.get(ModifierType.TIMBER)).effect(p, tool, e.getBlock());
             }
         }
     }
@@ -197,7 +169,6 @@ public class BlockListener implements Listener {
 
         if (!modManager.isToolViable(tool)) { return; }
 
-        ItemMeta meta = tool.getItemMeta();
         Block b = e.getClickedBlock();
 
         boolean apply = false;
@@ -214,13 +185,8 @@ public class BlockListener implements Listener {
 
         if (!apply) { return; }
 
-        if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 1 && config.getBoolean("UnbreakableTools")) {
-            e.setCancelled(true);
-            if (config.getBoolean("Sound.OnBreaking")) {
-                p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
-            }
-            return;
-        }
+        if (!modManager.durabilityCheck(e, p, tool)) { return; }
+
 
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 
@@ -249,7 +215,6 @@ public class BlockListener implements Listener {
 
         if (!modManager.isToolViable(tool)) { return; }
 
-        ItemMeta meta = tool.getItemMeta();
         boolean apply = false;
 
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
@@ -272,15 +237,7 @@ public class BlockListener implements Listener {
 
         if (!apply) { return; }
 
-        //-------------------------------------------DURABILITYCHECK---------------------------------------------
-        if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 1 && config.getBoolean("UnbreakableTools")) {
-            e.setCancelled(true);
-            if (config.getBoolean("Sound.OnBreaking")) {
-                p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
-            }
-            return;
-        }
-
+        if (!modManager.durabilityCheck(e, p, tool)) { return; }
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 
         //-------------------------------------------MODIFIERS---------------------------------------------
@@ -304,7 +261,6 @@ public class BlockListener implements Listener {
 
         if (!modManager.isToolViable(tool)) { return; }
 
-        ItemMeta meta = tool.getItemMeta();
         boolean apply = false;
 
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
@@ -314,15 +270,8 @@ public class BlockListener implements Listener {
         }
 
         if (!apply) { return; }
+        if (!modManager.durabilityCheck(e, p, tool)) { return; }
 
-        //-------------------------------------------DURABILITYCHECK---------------------------------------------
-        if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 1 && config.getBoolean("UnbreakableTools")) {
-            e.setCancelled(true);
-            if (config.getBoolean("Sound.OnBreaking")) {
-                p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
-            }
-            return;
-        }
 
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 

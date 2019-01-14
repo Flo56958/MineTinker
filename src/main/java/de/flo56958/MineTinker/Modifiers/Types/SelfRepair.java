@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.MTBlockBreakEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
@@ -9,11 +10,14 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -22,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class SelfRepair extends Modifier implements Enchantable, Craftable {
+public class SelfRepair extends Modifier implements Enchantable, Craftable, Listener {
 
     private int percentagePerLevel;
     private int healthRepair;
@@ -34,6 +38,7 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
     
     public void reload() {
@@ -89,13 +94,19 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable {
     @Override
     public void removeMod(ItemStack tool) { }
 
+    @EventHandler
+    public void effect(MTBlockBreakEvent event) {
+        if (event.isCancelled() || !this.isAllowed()) { return; }
+        effect(event.getPlayer(), event.getTool());
+    }
+
     /**
      * The Effect that is used if Mending is disabled
      * @param p the Player
      * @param tool the Tool
      */
     @SuppressWarnings("deprecation")
-	public void effect(Player p, ItemStack tool) {
+	private void effect(Player p, ItemStack tool) {
         if (useMending) { return; }
         if (!p.hasPermission("minetinker.modifiers.selfrepair.use")) { return; }
         if (!modManager.hasMod(tool, this)) { return; }
