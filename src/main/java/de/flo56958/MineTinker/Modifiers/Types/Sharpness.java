@@ -25,7 +25,8 @@ public class Sharpness extends Modifier implements Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -95,7 +96,8 @@ public class Sharpness extends Modifier implements Craftable {
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Sharpness);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Sharpness.allowed");
     }

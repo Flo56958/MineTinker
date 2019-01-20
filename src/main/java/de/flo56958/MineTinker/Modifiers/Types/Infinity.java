@@ -30,7 +30,8 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
                 new ArrayList<>(Collections.singletonList(ToolType.BOW)),
                 Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -106,7 +107,8 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Infinity);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Infinity.allowed");
     }

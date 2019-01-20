@@ -26,7 +26,8 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
                 new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
                 Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -91,7 +92,8 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Light_Weight);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Light-Weight.allowed");
     }

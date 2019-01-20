@@ -28,7 +28,8 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL)),
                 Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -107,7 +108,8 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Silk_Touch);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Silk-Touch.allowed");
     }

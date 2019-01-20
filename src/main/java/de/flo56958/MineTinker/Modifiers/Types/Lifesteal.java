@@ -34,6 +34,7 @@ public class Lifesteal extends Modifier implements Craftable, Listener {
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
 
+    @Override
     public void reload() {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);

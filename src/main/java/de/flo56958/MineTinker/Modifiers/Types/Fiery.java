@@ -26,7 +26,8 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -71,7 +72,6 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
         }
 
         tool.setItemMeta(meta);
-
         return tool;
     }
 
@@ -97,7 +97,8 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Fiery);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Fiery.allowed");
     }

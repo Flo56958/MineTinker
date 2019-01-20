@@ -26,7 +26,8 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
      	config.options().copyDefaults(true);
@@ -98,7 +99,8 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Knockback);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Knockback.allowed");
     }

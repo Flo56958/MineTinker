@@ -33,7 +33,8 @@ public class Ender extends Modifier implements Craftable, Listener {
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -137,7 +138,8 @@ public class Ender extends Modifier implements Craftable, Listener {
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Ender);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Ender.allowed");
     }

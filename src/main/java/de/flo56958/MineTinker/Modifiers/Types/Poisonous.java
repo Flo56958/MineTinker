@@ -38,7 +38,8 @@ public class Poisonous extends Modifier implements Enchantable, Craftable, Liste
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -112,7 +113,8 @@ public class Poisonous extends Modifier implements Enchantable, Craftable, Liste
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Poisonous);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Poisonous.allowed");
     }

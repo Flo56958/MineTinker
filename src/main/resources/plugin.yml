@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: a13.1
+version: a14
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -133,6 +133,7 @@ permissions:
       minetinker.modifiers.infinity.*: true
       minetinker.modifiers.melting.*: true
       minetinker.modifiers.lightweight.*: true
+      minetinker.modifiers.lifesteal.*: true
       minetinker.modifiers.luck.*: true
       minetinker.modifiers.poisonous.*: true
       minetinker.modifiers.power.*: true
@@ -267,6 +268,17 @@ permissions:
     default: true
   minetinker.modifiers.melting.use:
     description: Allows to use the Melting-Modifier on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.lifesteal.*:
+    children:
+      minetinker.modifiers.lifesteal.apply: true
+      minetinker.modifiers.lifesteal.use: true
+  minetinker.modifiers.lifesteal.apply:
+    description: Allows to apply Lifesteal to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.lifesteal.use:
+    description: Allows to use the Lifesteal-Modifier on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.lightweight.*:

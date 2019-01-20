@@ -25,7 +25,8 @@ public class Haste extends Modifier implements Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL)),
                 Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -87,7 +88,8 @@ public class Haste extends Modifier implements Craftable {
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Haste);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Haste.allowed");
     }

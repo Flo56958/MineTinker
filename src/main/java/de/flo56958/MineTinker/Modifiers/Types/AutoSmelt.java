@@ -39,7 +39,8 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -235,6 +236,7 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
 		return ConfigurationManager.getConfig(Modifiers_Config.Auto_Smelt);
     }
 
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Auto-Smelt.allowed");
     }

@@ -33,7 +33,8 @@ public class Melting extends Modifier implements Enchantable, Craftable {
                                                 ToolType.CHESTPLATE, ToolType.LEGGINGS)),
                 Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -144,7 +145,8 @@ public class Melting extends Modifier implements Enchantable, Craftable {
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Melting);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Melting.allowed");
     }

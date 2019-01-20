@@ -42,7 +42,8 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -290,7 +291,8 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Power);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Power.allowed");
     }

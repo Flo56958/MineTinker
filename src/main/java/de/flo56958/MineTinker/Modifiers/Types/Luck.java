@@ -27,7 +27,8 @@ public class Luck extends Modifier implements Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD)),
                 Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -110,7 +111,8 @@ public class Luck extends Modifier implements Craftable {
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Luck);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Luck.allowed");
     }

@@ -26,7 +26,8 @@ public class ExtraModifier extends Modifier {
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -78,7 +79,8 @@ public class ExtraModifier extends Modifier {
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Extra_Modifier);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Extra-Modifier.allowed");
     }

@@ -34,7 +34,8 @@ public class Webbed extends Modifier implements Craftable {
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
         FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -114,7 +115,8 @@ public class Webbed extends Modifier implements Craftable {
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Webbed);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Webbed.allowed");
     }

@@ -38,7 +38,8 @@ public class Beheading extends Modifier implements Enchantable, Craftable, Liste
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -129,7 +130,8 @@ public class Beheading extends Modifier implements Enchantable, Craftable, Liste
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Beheading);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Beheading.allowed");
     }

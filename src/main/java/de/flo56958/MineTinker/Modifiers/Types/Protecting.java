@@ -25,7 +25,8 @@ public class Protecting extends Modifier implements Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS)),
                 Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
      	config.options().copyDefaults(true);
@@ -90,7 +91,8 @@ public class Protecting extends Modifier implements Craftable {
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Protecting);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Protecting.allowed");
     }

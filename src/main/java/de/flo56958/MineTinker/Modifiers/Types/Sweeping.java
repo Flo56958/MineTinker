@@ -20,12 +20,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Sweeping extends Modifier implements Enchantable, Craftable {
+
     public Sweeping() {
         super(ModifierType.SWEEPING,
                 new ArrayList<>(Collections.singletonList(ToolType.SWORD)),
                 Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -87,7 +89,8 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Sweeping);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Sweeping.allowed");
     }

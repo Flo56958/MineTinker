@@ -36,7 +36,8 @@ public class Glowing extends Modifier implements Craftable, Listener {
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -96,10 +97,6 @@ public class Glowing extends Modifier implements Craftable, Listener {
         ChatWriter.log(false, p.getDisplayName() + " triggered Glowing on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 
-    private void effect(Player p, ItemStack tool, LivingEntity e) {
-
-    }
-
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Glowing", "Modifier_Glowing");
@@ -108,7 +105,8 @@ public class Glowing extends Modifier implements Craftable, Listener {
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Glowing);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Glowing.allowed");
     }

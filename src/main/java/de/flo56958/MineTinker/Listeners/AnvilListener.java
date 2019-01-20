@@ -45,32 +45,40 @@ public class AnvilListener implements Listener {
         if (e.getSlot() != 2) { return; }
         if (Lists.WORLDS.contains(player.getWorld().getName())) { return; }
         if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) { return; }
-        if (!modManager.isModifierItem(modifier)) { return; }
 
-        Modifier mod = modManager.getModifierFromItem(modifier);
+        boolean deleteAllItems = false;
+        if (!modManager.isModifierItem(modifier)) { //something else
+            if (tool.getType().equals(newTool.getType())) { return; } //Not an upgrade
+            deleteAllItems = true;
+        } else { //Modifier-apply
+            Modifier mod = modManager.getModifierFromItem(modifier);
 
-        if (mod == null && tool.getType().equals(newTool.getType())) { return; } //Vanilla anvil use
+            if (mod == null && tool.getType().equals(newTool.getType())) { return; } //Vanilla anvil use
+            if (mod != null) {
+                if (modifier.getAmount() > 1) {
+                    modifier.setAmount(modifier.getAmount() - 1);
+                    inv.setItem(1, modifier);
+                } else { inv.setItem(1, null); }
+                Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
+            } else {
+                inv.setItem(1, null); //when item upgrading
+            }
+        }
 
         if (e.isShiftClick()) {
             if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
-                e.setCancelled(true);
+                e.setCancelled(true); //cancels the event if the player has a full inventory
                 return;
             } // no else as it gets added in if-clause
         } else {
             e.setCursor(newTool);
         }
 
-        if (mod != null) {
-            if (modifier.getAmount() > 1) {
-                modifier.setAmount(modifier.getAmount() - 1);
-                inv.setItem(1, modifier);
-            } else { inv.setItem(1, null); }
-            Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
-        } else {
-            inv.setItem(1, null); //when item upgrading
-        }
-
         inv.setItem(0, null);
+
+        if(deleteAllItems) {
+            inv.setItem(1, null);
+        }
 	}
     
     @EventHandler

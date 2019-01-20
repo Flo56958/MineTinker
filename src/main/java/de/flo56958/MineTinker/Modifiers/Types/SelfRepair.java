@@ -43,7 +43,8 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
-    
+
+    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -170,7 +171,8 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
     private static FileConfiguration getConfig() {
     	return ConfigurationManager.getConfig(Modifiers_Config.Self_Repair);
     }
-    
+
+    @Override
     public boolean isAllowed() {
     	return getConfig().getBoolean("Self-Repair.allowed");
     }
