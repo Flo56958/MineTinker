@@ -41,7 +41,7 @@ public class Protecting extends Modifier implements Craftable {
         config.addDefault(key + ".MaxLevel", 5);
      	config.addDefault(key + ".Recipe.Enabled", true);
      	config.addDefault(key + ".Recipe.Top", "DID");
-     	config.addDefault(key + ".Recipe.Middle", "IOO");
+     	config.addDefault(key + ".Recipe.Middle", "IOI");
      	config.addDefault(key + ".Recipe.Bottom", "DID");
      	config.addDefault(key + ".Recipe.Materials.D", "DIAMOND");
      	config.addDefault(key + ".Recipe.Materials.I", "IRON_INGOT");

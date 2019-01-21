@@ -62,11 +62,11 @@ public class Soulbound extends Modifier implements Craftable, Listener {
         String key = "Soulbound";
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Powerinfused Netherstar");
+        config.addDefault(key + ".name_modifier", "Powerinfused Beacon");
         config.addDefault(key + ".description", "Do not lose the tool when dying.");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Soulbound-Modifier");
         config.addDefault(key + ".Color", "%GRAY%");
-        config.addDefault(key + ".MaxLevel", 5);
+        config.addDefault(key + ".MaxLevel", 1);
         config.addDefault(key + ".PercentagePerLevel", 100);
         config.addDefault(key + ".DecrementModLevelOnUse", false);
         config.addDefault(key + ".ToolDropable", true);
@@ -84,7 +84,7 @@ public class Soulbound extends Modifier implements Craftable, Listener {
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 getConfig().getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.NETHER_STAR, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                modManager.createModifierItem(Material.BEACON, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
 
         this.toolDropable = config.getBoolean(key + ".ToolDropable");
         this.decrementModLevelOnUse = config.getBoolean(key + ".DecrementModLevelOnUse");

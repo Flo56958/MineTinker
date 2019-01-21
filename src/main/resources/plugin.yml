@@ -285,10 +285,10 @@ permissions:
     children:
       minetinker.modifiers.lightweight.apply: true
       minetinker.modifiers.lightweight.craft: true
-    minetinker.modifiers.lightweight.apply:
+  minetinker.modifiers.lightweight.apply:
       description: Allows to apply Light-Weight to MineTinker-Armor
       default: true
-    minetinker.modifiers.lightweight.craft:
+  minetinker.modifiers.lightweight.craft:
       description: Allows to craft the Light-Weight-Modifier
       default: true
 
