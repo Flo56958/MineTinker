@@ -82,18 +82,12 @@ public class Webbed extends Modifier implements Craftable {
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) { return; }
-        if (event.getEvent().getEntity() instanceof LivingEntity) {
-            effect(event.getPlayer(), event.getTool(), (LivingEntity) event.getEvent().getEntity());
-        }
-    }
+        if (!(event.getEvent().getEntity() instanceof LivingEntity)) { return; }
 
-    /**
-     * the Webbed-Effect
-     * @param p the Player
-     * @param tool the Tool
-     * @param e the Entity to apply the Effect on
-     */
-    private void effect(Player p, ItemStack tool, LivingEntity e) {
+        Player p = event.getPlayer();
+        ItemStack tool = event.getTool();
+        LivingEntity e = (LivingEntity) event.getEvent().getEntity();
+
         if (!p.hasPermission("minetinker.modifiers.webbed.use")) { return; }
         if (e.isDead()) { return; }
         if (!modManager.hasMod(tool, this)) { return; }

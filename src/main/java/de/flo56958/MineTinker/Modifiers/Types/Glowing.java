@@ -82,7 +82,7 @@ public class Glowing extends Modifier implements Craftable, Listener {
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) { return; }
-        if (event.getEvent().getEntity() instanceof LivingEntity) { return; }
+        if (!(event.getEvent().getEntity() instanceof LivingEntity)) { return; }
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();

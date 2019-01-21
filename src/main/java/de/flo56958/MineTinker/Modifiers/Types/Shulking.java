@@ -82,25 +82,18 @@ public class Shulking extends Modifier implements Craftable, Listener {
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) { return; }
-        if (event.getEvent().getEntity() instanceof LivingEntity) {
-            effect(event.getPlayer(), event.getTool(), (LivingEntity) event.getEvent().getEntity());
-        }
-    }
+        if (!(event.getEvent().getEntity() instanceof LivingEntity)) { return; }
 
-    /**
-     * the Shulking-Effect
-     * @param p the Player
-     * @param tool the Tool
-     * @param e the Entity to apply the Effect on
-     */
-    private void effect(Player p, ItemStack tool, LivingEntity e) {
+        Player p = event.getPlayer();
+        ItemStack tool = event.getTool();
+
         if (!p.hasPermission("minetinker.modifiers.shulking.use")) { return; }
         if (!modManager.hasMod(tool, this)) { return; }
 
         int level = modManager.getModLevel(tool, this);
         int amplifier = this.effectAmplifier * (level - 1);
 
-        e.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, this.duration, amplifier, false, false));
+        ((LivingEntity) event.getEvent().getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, this.duration, amplifier, false, false));
         ChatWriter.log(false, p.getDisplayName() + " triggered Shulking on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 

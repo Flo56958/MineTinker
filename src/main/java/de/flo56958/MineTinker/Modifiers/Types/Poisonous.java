@@ -82,12 +82,11 @@ public class Poisonous extends Modifier implements Enchantable, Craftable, Liste
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) { return; }
-        if (event.getEvent().getEntity() instanceof LivingEntity) {
-            effect(event.getPlayer(), event.getTool(), (LivingEntity) event.getEvent().getEntity());
-        }
-    }
+        if (!(event.getEvent().getEntity() instanceof LivingEntity)) { return; }
 
-    private void effect(Player p, ItemStack tool, LivingEntity e) {
+        Player p = event.getPlayer();
+        ItemStack tool = event.getTool();
+
         if (!p.hasPermission("minetinker.modifiers.poisonous.use")) { return; }
         if (!modManager.hasMod(tool, this)) { return; }
 
@@ -95,7 +94,7 @@ public class Poisonous extends Modifier implements Enchantable, Craftable, Liste
 
         int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (level - 1)));
         int amplifier = this.effectAmplifier * (level - 1);
-        e.addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration, amplifier, false, false));
+        ((LivingEntity) event.getEvent().getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration, amplifier, false, false));
         ChatWriter.log(false, p.getDisplayName() + " triggered Poisonous on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 
