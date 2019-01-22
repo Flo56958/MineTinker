@@ -158,7 +158,8 @@ public class Soulbound extends Modifier implements Craftable, Listener {
         ItemStack is = item.getItemStack();
         if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) { return; }
 
-        if (!modManager.hasMod(is, this) && !toolDropable) { return; }
+        if (!modManager.hasMod(is, this)) { return; }
+        if (toolDropable) { return; }
 
         e.setCancelled(true);
     }
