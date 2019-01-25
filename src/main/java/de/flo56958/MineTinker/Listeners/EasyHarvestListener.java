@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Crops;
@@ -38,6 +39,13 @@ public class EasyHarvestListener implements Listener {
         if (!ToolType.HOE.getMaterials().contains(tool.getType())) { return; }
 
         if (!modManager.isToolViable(tool)) { return; }
+
+        //triggers a pseudoevent to find out if the Player can build
+        BlockPlaceEvent placeEvent = new BlockPlaceEvent(e.getClickedBlock(), e.getClickedBlock().getState(), e.getClickedBlock(), e.getItem(), p, true);
+        Bukkit.getPluginManager().callEvent(placeEvent);
+
+        //check the pseudoevent
+        if (!placeEvent.canBuild() || placeEvent.isCancelled()) { return; }
 
         Block b = e.getClickedBlock();
         if (b.getState().getData() instanceof Crops) { harvestCrops(p, tool, b); }

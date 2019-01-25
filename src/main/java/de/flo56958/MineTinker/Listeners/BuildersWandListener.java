@@ -9,17 +9,20 @@ import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import net.minecraft.server.v1_13_R2.NBTTagInt;
 import net.minecraft.server.v1_13_R2.NBTTagList;
 import net.minecraft.server.v1_13_R2.NBTTagString;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -29,8 +32,6 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
-
-//import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class BuildersWandListener implements Listener {
 
@@ -309,16 +310,25 @@ public class BuildersWandListener implements Listener {
                                 break loop;
                             }
 
-                            /*boolean canBuild = true;
-                            Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-                            // WorldGuard may not be loaded
-                            if (plugin instanceof WorldGuardPlugin) {
-                                WorldGuardPlugin wg = (WorldGuardPlugin) plugin;
-                                canBuild = ((WorldGuardPlugin) plugin).canBuild(p, b.getWorld().getBlockAt(loc));
-                            }
-                            if (canBuild) { */
+                            /*
+                            //triggers a pseudoevent to find out if the Player can build
+                            BlockPlaceEvent placeEvent = new BlockPlaceEvent(b.getWorld().getBlockAt(loc), b.getWorld().getBlockAt(loc).getState(), b, current, p, true);
+                            Bukkit.getPluginManager().callEvent(placeEvent);
+
+                            //check the pseudoevent, does not work with WorldGuard
+                            if (!placeEvent.canBuild() || placeEvent.isCancelled()) { continue; }
+                            */
+
+                            //triggers a pseudoevent to find out if the Player can build
+                            BlockState bs = b.getWorld().getBlockAt(loc).getState();
+
+                            BlockPlaceEvent placeEvent = new BlockPlaceEvent(b.getWorld().getBlockAt(loc), b.getWorld().getBlockAt(loc).getState(), b, current, p, true);
+                            Bukkit.getPluginManager().callEvent(placeEvent);
+
+                            //check the pseudoevent, does not work with WorldGuard
+                            if (!placeEvent.canBuild() || placeEvent.isCancelled()) { continue; }
+
                             b.getWorld().getBlockAt(loc).setType(current.getType());
-                            //} else { continue; }
 
                             current.setAmount(current.getAmount() - 1);
                             if (config.getBoolean("BuildersWand.useDurability")) { //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
@@ -327,6 +337,8 @@ public class BuildersWandListener implements Listener {
                             if (current.getAmount() == 0) { //TODO: Add Exp gain for Builderswands
                                 break loop;
                             }
+
+                            e.setCancelled(true);
                         }
                     }
                 }
