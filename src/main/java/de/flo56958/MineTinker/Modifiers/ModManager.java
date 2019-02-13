@@ -9,6 +9,7 @@ import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
@@ -24,6 +25,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class ModManager {
+
+    public ArrayList<NamespacedKey> recipe_Namespaces = new ArrayList<>();
 
     private static FileConfiguration config;
     private static FileConfiguration layout;
@@ -387,7 +390,7 @@ public class ModManager {
      * @return if the ItemStack is viable as MineTinker-Armor
      */
     public boolean isArmorViable(ItemStack armor) {
-        return hasNBTTag(armor, "IdentifierArmor");
+        return armor != null && hasNBTTag(armor, "IdentifierArmor");
     }
 
     /**
@@ -395,14 +398,14 @@ public class ModManager {
      * @return if the ItemStack is viable as MineTinker-Tool
      */
     public boolean isToolViable(ItemStack tool) {
-        return hasNBTTag(tool, "IdentifierTool");
+        return tool != null && hasNBTTag(tool, "IdentifierTool");
     }
 
     /**
      * @param wand the ItemStack
      * @return if the ItemStack is viable as MineTinker-Builderswand
      */
-    public boolean isWandViable(ItemStack wand) { return hasNBTTag(wand, "IdentifierBuilderswand"); }
+    public boolean isWandViable(ItemStack wand) { return wand != null && hasNBTTag(wand, "IdentifierBuilderswand"); }
 
     public void setNBTTag(ItemStack is, String key, NBTBase value) {
         net.minecraft.server.v1_13_R2.ItemStack nmsItem = CraftItemStack.asNMSCopy(is);
@@ -427,13 +430,10 @@ public class ModManager {
     }
 
     private NBTBase getNBTTag(ItemStack is, String key) {
-        try {
-            net.minecraft.server.v1_13_R2.ItemStack nmsItem = CraftItemStack.asNMSCopy(is);
-            NBTTagCompound comp = nmsItem.getTag();
-            return comp.get(key);
-        } catch (Exception e) {
-            return null;
-        }
+        net.minecraft.server.v1_13_R2.ItemStack nmsItem = CraftItemStack.asNMSCopy(is);
+        NBTTagCompound comp = nmsItem.getTag();
+        if (comp == null) { return null; }
+        return comp.get(key);
     }
 
     private boolean hasNBTTag(ItemStack is, String key) {

@@ -86,7 +86,7 @@ public class Webbed extends Modifier implements Craftable {
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
-        LivingEntity e = (LivingEntity) event.getEvent().getEntity();
+        LivingEntity e = (LivingEntity) event.getEntity();
 
         if (!p.hasPermission("minetinker.modifiers.webbed.use")) { return; }
         if (e.isDead()) { return; }

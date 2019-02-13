@@ -133,7 +133,8 @@ public class BuildersWandListener implements Listener {
      */
     private static void registerBuildersWands() {
         try {
-            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Builderswand_Wood"), wands.get(0)); //init recipe
+            NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Wood");
+            ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(0)); //init recipe
             String top = config.getString("BuildersWand.Recipes.Wood.Top");
             String middle = config.getString("BuildersWand.Recipes.Wood.Middle");
             String bottom = config.getString("BuildersWand.Recipes.Wood.Bottom");
@@ -143,11 +144,13 @@ public class BuildersWandListener implements Listener {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+            ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
             ChatWriter.logError("Could not register recipe for the Wooden Builderswand!"); //executes if the recipe could not initialize
         }
         try {
-            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Builderswand_Stone"), wands.get(1)); //init recipe
+            NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Stone");
+            ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(1)); //init recipe
             String top = config.getString("BuildersWand.Recipes.Stone.Top");
             String middle = config.getString("BuildersWand.Recipes.Stone.Middle");
             String bottom = config.getString("BuildersWand.Recipes.Stone.Bottom");
@@ -157,11 +160,13 @@ public class BuildersWandListener implements Listener {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+            ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
             ChatWriter.logError("Could not register recipe for the Stone Builderswand!"); //executes if the recipe could not initialize
         }
         try {
-            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Builderswand_Iron"), wands.get(2)); //init recipe
+            NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Iron");
+            ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(2)); //init recipe
             String top = config.getString("BuildersWand.Recipes.Iron.Top");
             String middle = config.getString("BuildersWand.Recipes.Iron.Middle");
             String bottom = config.getString("BuildersWand.Recipes.Iron.Bottom");
@@ -171,11 +176,13 @@ public class BuildersWandListener implements Listener {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+            ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
             ChatWriter.logError("Could not register recipe for the Iron Builderswand!"); //executes if the recipe could not initialize
         }
         try {
-            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Builderswand_Gold"), wands.get(3)); //init recipe
+            NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Gold");
+            ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(3)); //init recipe
             String top = config.getString("BuildersWand.Recipes.Gold.Top");
             String middle = config.getString("BuildersWand.Recipes.Gold.Middle");
             String bottom = config.getString("BuildersWand.Recipes.Gold.Bottom");
@@ -185,11 +192,13 @@ public class BuildersWandListener implements Listener {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+            ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
             ChatWriter.logError("Could not register recipe for the Golden Builderswand!"); //executes if the recipe could not initialize
         }
         try {
-            ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), "Builderswand_Diamond"), wands.get(4)); //init recipe
+            NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Diamond");
+            ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(4)); //init recipe
             String top = config.getString("BuildersWand.Recipes.Diamond.Top");
             String middle = config.getString("BuildersWand.Recipes.Diamond.Middle");
             String bottom = config.getString("BuildersWand.Recipes.Diamond.Bottom");

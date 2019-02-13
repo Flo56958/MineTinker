@@ -29,6 +29,7 @@ public class PlayerListener implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.isCancelled()) { return; }
         if (Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }
+        if (e.getSlot() < 0) { return; }
         if (!(e.getClickedInventory() instanceof PlayerInventory || e.getClickedInventory() instanceof DoubleChestInventory || e.getClickedInventory() instanceof CraftInventory)) { return; }
 
         ItemStack tool = e.getClickedInventory().getItem(e.getSlot());

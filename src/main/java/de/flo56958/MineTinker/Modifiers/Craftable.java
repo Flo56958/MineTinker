@@ -14,7 +14,8 @@ public interface Craftable {
     default void _registerCraftingRecipe(FileConfiguration config, Modifier mod, String name, String keyName) {
         if (config.getBoolean(name + ".Recipe.Enabled")) {
             try {
-                ShapedRecipe newRecipe = new ShapedRecipe(new NamespacedKey(Main.getPlugin(), keyName), mod.getModItem()); //init recipe
+                NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), keyName);
+                ShapedRecipe newRecipe = new ShapedRecipe(nkey, mod.getModItem()); //init recipe
                 String top = config.getString(name + ".Recipe.Top");
                 String middle = config.getString(name + ".Recipe.Middle");
                 String bottom = config.getString(name + ".Recipe.Bottom");
@@ -25,6 +26,7 @@ public interface Craftable {
                 }
                 Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
                 ChatWriter.log(false, "Registered recipe for the " + name + "-Modifier!");
+                ModManager.instance().recipe_Namespaces.add(nkey);
             } catch (Exception e) {
                 ChatWriter.logError("Could not register recipe for the " + name + "-Modifier!"); //executes if the recipe could not initialize
                 e.printStackTrace();

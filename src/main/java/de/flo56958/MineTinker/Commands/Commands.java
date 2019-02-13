@@ -7,6 +7,7 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -277,6 +278,8 @@ public class Commands implements TabExecutor {
             }
         }
 
+        ModManager.instance().recipe_Namespaces.clear();
+
         ChatWriter.sendMessage(sender, ChatColor.WHITE, "Reloading Config!");
         Main.getPlugin().reloadConfig();
         ConfigurationManager.reload();
@@ -302,6 +305,10 @@ public class Commands implements TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         ArrayList<String> result = new ArrayList<>();
+        ArrayList<String> numbers = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            numbers.add(Integer.toString(i));
+        }
 
         switch (args.length) {
             case 0:
@@ -326,10 +333,13 @@ public class Commands implements TabExecutor {
                     case "gm":
                     case "removemod":
                     case "rm":
-                        for (Modifier mod : modManager.getAllowedMods()) {
-                            result.add(mod.getName());
+                        if (sender instanceof Player) {
+                            for (Modifier mod : modManager.getAllowedMods()) {
+                                if (modManager.hasMod(((Player) sender).getInventory().getItemInMainHand(), mod)) {
+                                    result.add(mod.getName());
+                                }
+                            }
                         }
-
                         break;
                     case "give":
                     case "g":
@@ -340,6 +350,21 @@ public class Commands implements TabExecutor {
                         }
                 }
                 break;
+            case 3:
+                switch (args[0]) {
+                    case "givemodifieritem":
+                    case "gm":
+                        result.addAll(numbers);
+                }
+            case 4:
+                switch (args[0]) {
+                    case "givemodifieritem":
+                    case "gm":
+                        for(Player p : Bukkit.getOnlinePlayers()) {
+                            result.add(p.getName());
+                        }
+                        break;
+                }
         }
 
         result.removeIf(s -> !s.toLowerCase().startsWith(args[args.length - 1].toLowerCase()));

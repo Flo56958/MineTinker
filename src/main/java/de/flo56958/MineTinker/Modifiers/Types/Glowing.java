@@ -82,12 +82,12 @@ public class Glowing extends Modifier implements Craftable, Listener {
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) { return; }
-        if (!(event.getEvent().getEntity() instanceof LivingEntity)) { return; }
+        if (!(event.getEntity() instanceof LivingEntity)) { return; }
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
 
-        LivingEntity e = (LivingEntity) event.getEvent().getEntity();
+        LivingEntity e = (LivingEntity) event.getEntity();
 
         if (!p.hasPermission("minetinker.modifiers.glowing.use")) { return; }
         if (!modManager.hasMod(tool, this)) { return; }

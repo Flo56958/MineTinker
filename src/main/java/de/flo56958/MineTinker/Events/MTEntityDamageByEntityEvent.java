@@ -1,5 +1,6 @@
 package de.flo56958.MineTinker.Events;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -19,17 +20,34 @@ public class MTEntityDamageByEntityEvent extends Event implements Cancellable {
     private final Player player;
     private final ItemStack tool;
 
+    private final Entity entity;
+
     private final EntityDamageByEntityEvent event;
 
     /**
      * Event constructor (used for the Armor-Effects as the Player and the Entity are the same)
-     * @param p The Player
-     * @param tool The ItemStack (MUST be a MineTinker-Tool)
-     * @param e    The BlockBreakEvent from which it was called
+     * @param p         The Player
+     * @param tool      The ItemStack (MUST be a MineTinker-Tool)
+     * @param entity    The Entity to apply effects on
+     * @param e         The BlockBreakEvent from which it was called
+     */
+    public MTEntityDamageByEntityEvent(@NotNull Player p, @NotNull ItemStack tool, Entity entity, @NotNull EntityDamageByEntityEvent e) {
+        this.player = p;
+        this.tool = tool;
+        this.entity = entity;
+        this.event = e;
+    }
+
+    /**
+     * Event constructor (used for the Armor-Effects as the Player and the Entity are the same)
+     * @param p         The Player
+     * @param tool      The ItemStack (MUST be a MineTinker-Tool)
+     * @param e         The BlockBreakEvent from which it was called
      */
     public MTEntityDamageByEntityEvent(@NotNull Player p, @NotNull ItemStack tool, @NotNull EntityDamageByEntityEvent e) {
         this.player = p;
         this.tool = tool;
+        this.entity = e.getEntity();
         this.event = e;
     }
 
@@ -39,6 +57,10 @@ public class MTEntityDamageByEntityEvent extends Event implements Cancellable {
 
     public ItemStack getTool() {
         return tool;
+    }
+
+    public Entity getEntity() {
+        return entity;
     }
 
     /**

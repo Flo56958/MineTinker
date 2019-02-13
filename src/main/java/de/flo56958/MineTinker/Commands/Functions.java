@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -211,6 +212,14 @@ class Functions {
                             Commands.invalidArgs(player);
                             return;
                         }
+                    }
+                    if (args.length >= 4) {
+                        Player temp = Bukkit.getServer().getPlayer(args[3]);
+                        if (temp == null) {
+                            ChatWriter.sendMessage(player, ChatColor.RED, "Player " + args[3] + " not found or not online!");
+                            return;
+                        }
+                        player = temp;
                     }
                     for (int i = 0; i < amount; i++) {
                         if (player.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory

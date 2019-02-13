@@ -7,6 +7,8 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,6 +16,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.projectiles.ProjectileSource;
 
 public class ArmorListener implements Listener {
 
@@ -29,12 +32,24 @@ public class ArmorListener implements Listener {
 
         Player p = (Player) e.getEntity();
 
+        Entity ent = e.getDamager();
+
+        if (ent instanceof Arrow) {
+            Arrow arrow = (Arrow) ent;
+            ProjectileSource source = arrow.getShooter();
+            if (source instanceof Entity) {
+                ent = (Entity) source;
+            } else {
+                return;
+            }
+        }
+
         ItemStack[] armor = p.getInventory().getArmorContents();
 
         for (ItemStack piece : armor) {
             if (!modManager.isArmorViable(piece)) { continue; }
 
-            Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(p, piece, e));
+            Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(p, piece, ent, e));
 
             int amount = config.getInt("ExpPerEntityHit");
             if (config.getBoolean("EnableDamageExp")) {

@@ -50,7 +50,7 @@ public class EntityListener implements Listener {
 
         int amount = config.getInt("ExpPerEntityHit");
 
-        Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(p, tool, e));
+        Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(p, tool, e.getEntity(), e));
 
         if (config.getBoolean("EnableDamageExp")) { //at bottom because of Melting
             amount = (int) e.getDamage();

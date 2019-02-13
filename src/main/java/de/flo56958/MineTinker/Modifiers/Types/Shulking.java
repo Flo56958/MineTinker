@@ -82,7 +82,7 @@ public class Shulking extends Modifier implements Craftable, Listener {
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) { return; }
-        if (!(event.getEvent().getEntity() instanceof LivingEntity)) { return; }
+        if (!(event.getEntity() instanceof LivingEntity)) { return; }
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
@@ -93,7 +93,7 @@ public class Shulking extends Modifier implements Craftable, Listener {
         int level = modManager.getModLevel(tool, this);
         int amplifier = this.effectAmplifier * (level - 1);
 
-        ((LivingEntity) event.getEvent().getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, this.duration, amplifier, false, false));
+        ((LivingEntity) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, this.duration, amplifier, false, false));
         ChatWriter.log(false, p.getDisplayName() + " triggered Shulking on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 

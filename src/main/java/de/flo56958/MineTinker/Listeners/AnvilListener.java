@@ -48,7 +48,7 @@ public class AnvilListener implements Listener {
 
         boolean deleteAllItems = false;
         if (!modManager.isModifierItem(modifier)) { //something else
-            if (tool.getType().equals(newTool.getType())) { return; } //Not an upgrade
+            if (newTool != null && tool.getType().equals(newTool.getType())) { return; } //Not an upgrade
             deleteAllItems = true;
         } else { //Modifier-apply
             Modifier mod = modManager.getModifierFromItem(modifier);
