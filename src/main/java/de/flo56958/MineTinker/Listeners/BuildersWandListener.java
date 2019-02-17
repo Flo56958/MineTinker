@@ -9,10 +9,7 @@ import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import net.minecraft.server.v1_13_R2.NBTTagInt;
 import net.minecraft.server.v1_13_R2.NBTTagList;
 import net.minecraft.server.v1_13_R2.NBTTagString;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -296,12 +293,56 @@ public class BuildersWandListener implements Listener {
             w = new Vector(0, 0, 1);
             u = new Vector(0, -1, 0);
         }
-        for (ItemStack current : inv) {
-            if (current == null) { continue; }
-            if (!current.getType().equals(b.getType())) { continue; }
-            if (current.hasItemMeta()) { continue; }
+        if (p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE)) {
+            for (ItemStack current : inv) {
+                if (current == null) { continue; }
+                if (!current.getType().equals(b.getType())) { continue; }
+                if (current.hasItemMeta()) { continue; }
 
-            loop:
+                loop:
+                for (int i = -_w; i <= _w; i++) {
+                    for (int j = -_u; j <= _u; j++) {
+                        Location l = b.getLocation().clone();
+                        l.subtract(w.clone().multiply(i));
+                        l.subtract(u.clone().multiply(j));
+                        Location loc = l.clone().subtract(v.clone().multiply(-1));
+                        if (b.getWorld().getBlockAt(l).getType().equals(b.getType())) {
+                            if (b.getWorld().getBlockAt(loc).getType().equals(Material.AIR) ||
+                                    b.getWorld().getBlockAt(loc).getType().equals(Material.CAVE_AIR) ||
+                                    b.getWorld().getBlockAt(loc).getType().equals(Material.WATER) ||
+                                    b.getWorld().getBlockAt(loc).getType().equals(Material.BUBBLE_COLUMN) ||
+                                    b.getWorld().getBlockAt(loc).getType().equals(Material.LAVA) ||
+                                    b.getWorld().getBlockAt(loc).getType().equals(Material.GRASS)) {
+                                if (wand.getType().getMaxDurability() - wand.getDurability() <= 1) {
+                                    break loop;
+                                }
+                                //triggers a pseudoevent to find out if the Player can build
+                                BlockState bs = b.getWorld().getBlockAt(loc).getState();
+
+                                BlockPlaceEvent placeEvent = new BlockPlaceEvent(b.getWorld().getBlockAt(loc), b.getWorld().getBlockAt(loc).getState(), b, current, p, true);
+                                Bukkit.getPluginManager().callEvent(placeEvent);
+
+                                //check the pseudoevent, does not work with WorldGuard
+                                if (!placeEvent.canBuild() || placeEvent.isCancelled()) { continue; }
+
+                                b.getWorld().getBlockAt(loc).setType(current.getType());
+
+                                current.setAmount(current.getAmount() - 1);
+                                if (config.getBoolean("BuildersWand.useDurability")) { //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
+                                    wand.setDurability((short) (wand.getDurability() + 1));
+                                }
+                                if (current.getAmount() == 0) { //TODO: Add Exp gain for Builderswands
+                                    break loop;
+                                }
+
+                                e.setCancelled(true);
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+        } else if (p.getGameMode().equals(GameMode.CREATIVE)) {
             for (int i = -_w; i <= _w; i++) {
                 for (int j = -_u; j <= _u; j++) {
                     Location l = b.getLocation().clone();
@@ -315,45 +356,23 @@ public class BuildersWandListener implements Listener {
                                 b.getWorld().getBlockAt(loc).getType().equals(Material.BUBBLE_COLUMN) ||
                                 b.getWorld().getBlockAt(loc).getType().equals(Material.LAVA) ||
                                 b.getWorld().getBlockAt(loc).getType().equals(Material.GRASS)) {
-                            if (wand.getType().getMaxDurability() - wand.getDurability() <= 1) {
-                                break loop;
-                            }
-
-                            /*
-                            //triggers a pseudoevent to find out if the Player can build
-                            BlockPlaceEvent placeEvent = new BlockPlaceEvent(b.getWorld().getBlockAt(loc), b.getWorld().getBlockAt(loc).getState(), b, current, p, true);
-                            Bukkit.getPluginManager().callEvent(placeEvent);
-
-                            //check the pseudoevent, does not work with WorldGuard
-                            if (!placeEvent.canBuild() || placeEvent.isCancelled()) { continue; }
-                            */
-
                             //triggers a pseudoevent to find out if the Player can build
                             BlockState bs = b.getWorld().getBlockAt(loc).getState();
 
-                            BlockPlaceEvent placeEvent = new BlockPlaceEvent(b.getWorld().getBlockAt(loc), b.getWorld().getBlockAt(loc).getState(), b, current, p, true);
+                            BlockPlaceEvent placeEvent = new BlockPlaceEvent(b.getWorld().getBlockAt(loc), b.getWorld().getBlockAt(loc).getState(), b, new ItemStack(b.getType(), 1), p, true);
                             Bukkit.getPluginManager().callEvent(placeEvent);
 
                             //check the pseudoevent, does not work with WorldGuard
                             if (!placeEvent.canBuild() || placeEvent.isCancelled()) { continue; }
 
-                            b.getWorld().getBlockAt(loc).setType(current.getType());
-
-                            current.setAmount(current.getAmount() - 1);
-                            if (config.getBoolean("BuildersWand.useDurability")) { //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
-                                wand.setDurability((short) (wand.getDurability() + 1));
-                            }
-                            if (current.getAmount() == 0) { //TODO: Add Exp gain for Builderswands
-                                break loop;
-                            }
-
+                            b.getWorld().getBlockAt(loc).setType(b.getType());
                             e.setCancelled(true);
                         }
                     }
                 }
             }
-            break;
         }
+
     }
 
     public static ArrayList<ItemStack> getWands() {
