@@ -85,7 +85,7 @@ public class BlockListener implements Listener {
     }
 
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onClick(PlayerInteractEvent e) {
         if (e.isCancelled()) { return; }
         Player p = e.getPlayer();

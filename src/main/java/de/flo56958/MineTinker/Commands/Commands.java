@@ -331,6 +331,12 @@ public class Commands implements TabExecutor {
                     case "am":
                     case "givemodifieritem":
                     case "gm":
+                        if (sender instanceof Player) {
+                            for (Modifier mod : modManager.getAllowedMods()) {
+                                result.add(mod.getName());
+                            }
+                        }
+                        break;
                     case "removemod":
                     case "rm":
                         if (sender instanceof Player) {

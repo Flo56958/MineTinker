@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker.Utilities;
 
 public enum Modifiers_Config {
+	Aquaphilic("Aquaphilic.yml"),
 	Auto_Smelt("Auto-Smelt.yml"),
 	Beheading("Beheading.yml"),
 	Directing("Directing.yml"),

@@ -137,6 +137,7 @@ public class ModManager {
      * checks and loads all modifiers with configurations settings into memory
      */
     private void init() {
+        allMods.add(new Aquaphilic());
     	allMods.add(new AutoSmelt());
     	allMods.add(new Beheading());
     	allMods.add(new Directing());
