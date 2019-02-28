@@ -41,6 +41,7 @@ public class BlockListener implements Listener {
         if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
         ItemStack tool = p.getInventory().getItemInMainHand();
+
         if (Lists.WORLDS.contains(p.getWorld().getName())) { return; }
         if (e.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS || ToolType.HOE.getMaterials().contains(tool.getType()))) { return; }
 

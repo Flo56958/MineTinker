@@ -480,6 +480,15 @@ public class ModManager {
         }
 
         ItemMeta meta = is.getItemMeta();
+
+        /**
+         * For mcMMO-Superbreaker and other Skills
+         */
+        ArrayList<String> oldLore = (ArrayList<String>) meta.getLore();
+        if (oldLore != null && oldLore.size() > 0 && oldLore.get(oldLore.size() - 1).equals("mcMMO Ability Tool")) {
+            lore.add("mcMMO Ability Tool");
+        }
+
         meta.setLore(lore);
         is.setItemMeta(meta);
     }
