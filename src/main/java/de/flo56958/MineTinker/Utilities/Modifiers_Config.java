@@ -8,6 +8,7 @@ public enum Modifiers_Config {
 	Ender("Ender.yml"),
 	Experienced("Experienced.yml"),
 	Fiery("Fiery.yml"),
+	Freezing("Freezing.yml"),
 	Glowing("Glowing.yml"),
 	Haste("Haste.yml"),
 	Infinity("Infinity.yml"),

@@ -145,6 +145,7 @@ public class ModManager {
     	allMods.add(new Experienced());
     	allMods.add(new ExtraModifier());
     	allMods.add(new Fiery());
+    	allMods.add(new Freezing());
     	allMods.add(new Glowing());
     	allMods.add(new Haste());
     	allMods.add(new Infinity());

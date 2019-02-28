@@ -47,6 +47,7 @@ public class AnvilListener implements Listener {
         if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) { return; }
 
         boolean deleteAllItems = false;
+        if (e.getCursor() != null && !e.getCursor().getType().equals(Material.AIR)) { return; }
         if (!modManager.isModifierItem(modifier)) { //something else
             if (newTool != null && tool.getType().equals(newTool.getType())) { return; } //Not an upgrade
             deleteAllItems = true;

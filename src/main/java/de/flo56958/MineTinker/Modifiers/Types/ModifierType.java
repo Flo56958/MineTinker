@@ -11,6 +11,7 @@ public enum ModifierType {
     EXPERIENCED("Experienced"),
     EXTRA_MODIFIER("Extra-Modifier"),
     FIERY("Fiery"),
+    FREEZING("Freezing"),
     GLOWING("Glowing"),
     HASTE("Haste"),
     INFINITY("Infinity"),

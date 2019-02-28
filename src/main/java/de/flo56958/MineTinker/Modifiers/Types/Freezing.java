@@ -18,13 +18,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
-public class Aquaphilic extends Modifier implements Craftable {
+public class Freezing extends Modifier implements Craftable {
 
-    public Aquaphilic() {
-        super(ModifierType.AQUAPHILIC,
-                new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.HELMET)),
+    public Freezing() {
+        super(ModifierType.FREEZING,
+                new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
                 Main.getPlugin());
     }
 
@@ -33,21 +33,20 @@ public class Aquaphilic extends Modifier implements Craftable {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Aquaphilic";
+        String key = "Freezing";
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Pearl of the ocean");
-        config.addDefault(key + ".description", "Make the water your friend");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Aquaphilic-Modifier");
+        config.addDefault(key + ".name_modifier", "Icy Crystal");
+        config.addDefault(key + ".description", "It is freezing around you.");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Freezing-Modifier");
         config.addDefault(key + ".Color", "%AQUA%");
-        config.addDefault(key + ".MaxLevel", 3); //higher will have no effect on depth strider
+        config.addDefault(key + ".MaxLevel", 3);
         config.addDefault(key + ".Recipe.Enabled", true);
-        config.addDefault(key + ".Recipe.Top", "PNP");
-        config.addDefault(key + ".Recipe.Middle", "NHN");
-        config.addDefault(key + ".Recipe.Bottom", "PNP");
-        config.addDefault(key + ".Recipe.Materials.H", "HEART_OF_THE_SEA");
-        config.addDefault(key + ".Recipe.Materials.N", "NAUTILUS_SHELL");
-        config.addDefault(key + ".Recipe.Materials.P", "PRISMARINE_SHARD");
+        config.addDefault(key + ".Recipe.Top", "BBB");
+        config.addDefault(key + ".Recipe.Middle", "BDB");
+        config.addDefault(key + ".Recipe.Bottom", "BBB");
+        config.addDefault(key + ".Recipe.Materials.B", "BLUE_ICE");
+        config.addDefault(key + ".Recipe.Materials.D", "DIAMOND");
 
         ConfigurationManager.saveConfig(config);
 
@@ -55,31 +54,25 @@ public class Aquaphilic extends Modifier implements Craftable {
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.HEART_OF_THE_SEA, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                modManager.createModifierItem(Material.BLUE_ICE, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
 
     }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.get(ModifierType.FREEZING) != null) {
-            if (modManager.hasMod(tool, modManager.get(ModifierType.FREEZING))) {
+        if (modManager.get(ModifierType.AQUAPHILIC) != null) {
+            if (modManager.hasMod(tool, modManager.get(ModifierType.AQUAPHILIC))) {
                 pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
                 return null;
             }
         }
 
-        if (Modifier.checkAndAdd(p, tool, this, "aquaphilic", isCommand) == null) {
+        if (Modifier.checkAndAdd(p, tool, this, "freezing", isCommand) == null) {
             return null;
         }
 
         ItemMeta meta = tool.getItemMeta();
-
-        if (ToolType.BOOTS.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.DEPTH_STRIDER, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.HELMET.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.OXYGEN, modManager.getModLevel(tool, this), true);
-            meta.addEnchant(Enchantment.WATER_WORKER, modManager.getModLevel(tool, this), true);
-        }
+        meta.addEnchant(Enchantment.FROST_WALKER, modManager.getModLevel(tool, this), true);
 
         if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -88,30 +81,27 @@ public class Aquaphilic extends Modifier implements Craftable {
         }
 
         tool.setItemMeta(meta);
-
         return tool;
     }
 
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.DEPTH_STRIDER);
-        meta.removeEnchant(Enchantment.OXYGEN);
-        meta.removeEnchant(Enchantment.WATER_WORKER);
+        meta.removeEnchant(Enchantment.FROST_WALKER);
         tool.setItemMeta(meta);
     }
 
     private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(Modifiers_Config.Aquaphilic);
+        return ConfigurationManager.getConfig(Modifiers_Config.Freezing);
     }
 
     @Override
     public boolean isAllowed() {
-        return getConfig().getBoolean("Aquaphilic.allowed");
+        return getConfig().getBoolean("Freezing.allowed");
     }
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Aquaphilic", "Modifier_Aquaphilic");
+        _registerCraftingRecipe(getConfig(), this, "Freezing", "Modifier_Freezing");
     }
 }

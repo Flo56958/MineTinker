@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: a14.2
+version: a15
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -122,12 +122,14 @@ permissions:
   #Modifiers:
   minetinker.modifiers.*:
     children:
+      minetinker.modifiers.aquaphilic.*: true
       minetinker.modifiers.autosmelt.*: true
       minetinker.modifiers.beheading.*: true
       minetinker.modifiers.directing.*: true
       minetinker.modifiers.ender.*: true
       minetinker.modifiers.extramodifier.*: true
       minetinker.modifiers.fiery.*: true
+      minetinker.modifiers.freezing.*: true
       minetinker.modifiers.glowing.*: true
       minetinker.modifiers.haste.*: true
       minetinker.modifiers.infinity.*: true
@@ -148,6 +150,13 @@ permissions:
       minetinker.modifiers.timber.*: true
       minetinker.modifiers.webbed.*: true
       minetinker.modifiers.experienced.*: true
+
+  minetinker.modifiers.aquaphilic.*:
+    children:
+      minetinker.modifiers.aphaphilic.apply: true
+  minetinker.modifiers.aquaphilic.apply:
+    description: Allows to apply Aquaphilic to a MineTinker-Tool
+    default: true
 
   minetinker.modifiers.autosmelt.*:
     children:
@@ -213,6 +222,13 @@ permissions:
     default: true
   minetinker.modifiers.fiery.craft:
     description: Allows to craft a Fiery-Modifiers
+    default: true
+
+  minetinker.modifiers.freezing.*:
+    children:
+      minetinker.modifiers.freezing.apply: true
+  minetinker.modifiers.freezing.apply:
+    description: Allows to apply Freezing to a MineTinker-Tool
     default: true
 
   minetinker.modifiers.glowing.*:
