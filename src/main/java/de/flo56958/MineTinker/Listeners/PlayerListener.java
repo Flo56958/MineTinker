@@ -61,6 +61,8 @@ public class PlayerListener implements Listener {
             eligible = true;
         } else if (name[0].toLowerCase().equals("chainmail") && repair.getType().equals(Material.IRON_BARS)) {
             eligible = true;
+        } else if (name[0].toLowerCase().equals("elytra") && repair.getType().equals(Material.PHANTOM_MEMBRANE)) {
+            eligible = true;
         }
         if (eligible) {
             double dura = tool.getDurability();

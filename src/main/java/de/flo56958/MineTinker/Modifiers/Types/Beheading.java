@@ -85,7 +85,7 @@ public class Beheading extends Modifier implements Enchantable, Craftable, Liste
         ItemStack tool = event.getTool();
         LivingEntity mob = event.getEvent().getEntity();
         ItemStack loot = new ItemStack(Material.AIR, 1);
-        if (p.hasPermission("minetinker.beheading.use")) {
+        if (p.hasPermission("minetinker.modifiers.beheading.use")) {
             if (modManager.hasMod(tool, this)) {
                 Random rand = new Random();
                 int n = rand.nextInt(100);
@@ -118,7 +118,7 @@ public class Beheading extends Modifier implements Enchantable, Craftable, Liste
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.beheading.craft")) { return; }
+        if (!p.hasPermission("minetinker.modifiers.beheading.craft")) { return; }
         _createModifierItem(getConfig(), p, this, "Beheading");
     }
 

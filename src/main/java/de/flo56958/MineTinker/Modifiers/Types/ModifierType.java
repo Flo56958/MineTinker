@@ -22,6 +22,7 @@ public enum ModifierType {
     MELTING("Melting"),
     POISONOUS("Poisonous"),
     POWER("Power"),
+    PROPELLING("Propelling"),
     PROTECTING("Protecting"),
     REINFORCED("Reinforced"),
     SELF_REPAIR("Self-Repair"),

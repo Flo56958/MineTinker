@@ -156,6 +156,7 @@ public class ModManager {
         allMods.add(new Melting());
         allMods.add(new Poisonous());
         allMods.add(new Power());
+        allMods.add(new Propelling());
         allMods.add(new Protecting());
         allMods.add(new Reinforced());
         allMods.add(new SelfRepair());

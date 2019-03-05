@@ -19,6 +19,7 @@ public enum Modifiers_Config {
 	Melting("Melting.yml"),
 	Poisonous("Poisonous.yml"),
 	Power("Power.yml"),
+	Propelling("Propelling.yml"),
 	Protecting("Protecting.yml"),
 	Reinforced("Reinforced.yml"),
 	Self_Repair("Self-Repair.yml"),
