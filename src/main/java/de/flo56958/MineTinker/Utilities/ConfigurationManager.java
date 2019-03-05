@@ -44,6 +44,9 @@ public class ConfigurationManager {
 
         loadConfig("", "BuildersWand.yml");
         loadConfig("", "Elevator.yml");
+
+        loadConfig("", "Elytra.yml");
+        loadConfig("", "Trident.yml");
     }
 
     /**

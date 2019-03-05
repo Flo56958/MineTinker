@@ -5,7 +5,10 @@ import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Events.MTEntityDamageEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
+import de.flo56958.MineTinker.Modifiers.Types.SelfRepair;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -15,8 +18,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
+
+import java.util.Random;
 
 public class ArmorListener implements Listener {
 
@@ -81,5 +87,20 @@ public class ArmorListener implements Listener {
             }
             modManager.addExp(p, piece, amount);
         }
+    }
+
+    @EventHandler
+    public void onElytraDamage(PlayerItemDamageEvent e) {
+        if (e.isCancelled()) { return; }
+
+        if (!e.getItem().getType().equals(Material.ELYTRA)) { return; }
+        if (!modManager.isArmorViable(e.getItem())) { return; }
+
+        Random rand = new Random();
+        int chance = rand.nextInt(100);
+        if (chance < 25) {
+            modManager.addExp(e.getPlayer(), e.getItem(), config.getInt("ExpPerEntityHit"));
+        }
+        ((SelfRepair) modManager.getAdmin(ModifierType.SELF_REPAIR)).effectElytra(e.getPlayer(), e.getItem());
     }
 }

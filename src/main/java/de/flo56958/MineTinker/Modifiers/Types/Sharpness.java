@@ -22,7 +22,7 @@ public class Sharpness extends Modifier implements Craftable {
 
     public Sharpness() {
         super(ModifierType.SHARPNESS,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
     }
 

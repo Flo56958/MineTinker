@@ -2,23 +2,20 @@ package de.flo56958.MineTinker.Data;
 
 public enum ModifierFailCause {
 
-    INCOMPATIBLE_MODIFIERS,
-    INVALID_TOOLTYPE,
-    MAXIMUM_SLOTS_REACHED,
-    MOD_MAXLEVEL,
-    NO_PERMISSION,
-    NO_FREE_SLOTS;
+    INCOMPATIBLE_MODIFIERS("Incompatible Modifiers!"),
+    INVALID_TOOLTYPE("Invalid Tool-Type!"),
+    MAXIMUM_SLOTS_REACHED("Maximum Slots reached!"),
+    MOD_MAXLEVEL("Modifier is already max Level!"),
+    NO_PERMISSION("No Permission!"),
+    NO_FREE_SLOTS("No free Slots!");
+
+    private final String value;
+    ModifierFailCause(String value) {
+        this.value = value;
+    }
 
     @Override
     public String toString() { //TODO: relocate to Lang-config
-        switch(this) {
-            case INCOMPATIBLE_MODIFIERS: return "Incompatible Modifiers!";
-            case INVALID_TOOLTYPE: return "Invalid Tool-Type!";
-            case MAXIMUM_SLOTS_REACHED: return "Maximum Slots reached!";
-            case MOD_MAXLEVEL: return "Modifier is already max Level!";
-            case NO_PERMISSION: return "No Permission!";
-            case NO_FREE_SLOTS: return "No free Slots!";
-            default: return "";
-        }
+        return value;
     }
 }

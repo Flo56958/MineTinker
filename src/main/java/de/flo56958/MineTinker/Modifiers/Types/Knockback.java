@@ -23,7 +23,7 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
 
     public Knockback() {
         super(ModifierType.KNOCKBACK,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
     }
 

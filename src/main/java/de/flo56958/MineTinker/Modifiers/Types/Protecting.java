@@ -22,7 +22,7 @@ public class Protecting extends Modifier implements Craftable {
 
     public Protecting() {
         super(ModifierType.PROTECTING,
-                new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS)),
+                new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
     }
 

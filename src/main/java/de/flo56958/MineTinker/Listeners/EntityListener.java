@@ -11,6 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Trident;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -34,17 +35,32 @@ public class EntityListener implements Listener {
 
         Player p;
 
-        if (e.getDamager() instanceof Arrow) {
+        if (e.getDamager() instanceof Arrow && !(e.getDamager() instanceof Trident)) {
             Arrow arrow = (Arrow) e.getDamager();
             ProjectileSource source = arrow.getShooter();
             if (source instanceof Player) {
                 p = (Player) source;
-            } else { return; }
+            } else {
+                return;
+            }
+        } else if (e.getDamager() instanceof Trident) {
+            Trident trident = (Trident) e.getDamager();
+            ProjectileSource source = trident.getShooter();
+            if (source instanceof Player) {
+                p = (Player) source;
+            } else {
+                return;
+            }
         } else if (e.getDamager() instanceof Player) {
             p = (Player) e.getDamager();
         } else { return; }
 
         ItemStack tool = p.getInventory().getItemInMainHand();
+        if (e.getDamager() instanceof Trident) {
+            tool = TridentListener.TridentToItemStack.get(e.getDamager());
+            TridentListener.TridentToItemStack.remove(e.getDamager());
+            if (tool == null) { return; }
+        }
         if (!modManager.isToolViable(tool)) { return; }
         if (!modManager.durabilityCheck(e, p, tool)) { return; }
 
@@ -79,7 +95,13 @@ public class EntityListener implements Listener {
         if (!(e.getEntity().getShooter() instanceof Player)) { return; }
         Player p = (Player) e.getEntity().getShooter();
         ItemStack tool = p.getInventory().getItemInMainHand();
+
         if (e.getHitBlock() == null) { return; }
+        if (e.getEntity() instanceof Trident) {
+            tool = TridentListener.TridentToItemStack.get(e.getEntity());
+            TridentListener.TridentToItemStack.remove(e.getEntity());
+            if (tool == null) { return; }
+        }
         if (!modManager.isToolViable(tool)) { return; }
 
         Bukkit.getPluginManager().callEvent(new MTProjectileHitEvent(p, tool, e));

@@ -20,7 +20,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 
 public class Ender extends Modifier implements Craftable, Listener {
 
@@ -29,7 +29,7 @@ public class Ender extends Modifier implements Craftable, Listener {
 
     public Ender() {
         super(ModifierType.ENDER,
-                new ArrayList<>(Collections.singletonList(ToolType.BOW)),
+                new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }

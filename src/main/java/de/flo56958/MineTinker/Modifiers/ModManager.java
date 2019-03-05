@@ -236,6 +236,21 @@ public class ModManager {
     }
 
     /**
+     * get a specific modifier instance even the not allowed ones
+     *
+     * @param type the modifiertype
+     * @return the modifier instance, null if modifier is not allowed or loaded
+     */
+    public Modifier getAdmin(ModifierType type) {
+        for(Modifier m : allMods) {
+            if(m.getType().equals(type)) {
+                return m;
+            }
+        }
+        return null;
+    }
+
+    /**
      * add a specified modifier to a tool
      *
      * @param is the item to add the modifier to
@@ -504,12 +519,14 @@ public class ModManager {
                 || ToolType.HOE.getMaterials().contains(m)
                 || ToolType.PICKAXE.getMaterials().contains(m)
                 || ToolType.SHOVEL.getMaterials().contains(m)
-                || ToolType.SWORD.getMaterials().contains(m)) && !isWandViable(is)) {
+                || ToolType.SWORD.getMaterials().contains(m)
+                || ToolType.TRIDENT.getMaterials().contains(m)) && !isWandViable(is)) {
             setNBTTag(is, "IdentifierTool", new NBTTagInt(0));
         } else if (ToolType.BOOTS.getMaterials().contains(m)
                 || ToolType.CHESTPLATE.getMaterials().contains(m)
                 || ToolType.HELMET.getMaterials().contains(m)
-                || ToolType.LEGGINGS.getMaterials().contains(m)) {
+                || ToolType.LEGGINGS.getMaterials().contains(m)
+                || ToolType.ELYTRA.getMaterials().contains(m)) {
             setNBTTag(is, "IdentifierArmor", new NBTTagInt(0));
         } else { return; }
         setExp(is, 0);

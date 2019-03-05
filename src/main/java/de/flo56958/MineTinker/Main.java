@@ -46,6 +46,11 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityListener(), this);
         Bukkit.getPluginManager().registerEvents(new TinkerListener(), this);
+        Bukkit.getPluginManager().registerEvents(new TridentListener(), this);
+
+        CraftingRecipes.registerMTElytra();
+        CraftingRecipes.registerMTTrident();
+
         if (!getConfig().getBoolean("AllowEnchanting")) {
             Bukkit.getPluginManager().registerEvents(new EnchantingTableListener(), this);
         }

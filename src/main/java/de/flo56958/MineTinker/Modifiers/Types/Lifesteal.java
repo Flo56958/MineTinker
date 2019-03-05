@@ -29,7 +29,7 @@ public class Lifesteal extends Modifier implements Craftable, Listener {
     private int percentToTrigger;
     public Lifesteal() {
         super(ModifierType.LIFESTEAL,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }

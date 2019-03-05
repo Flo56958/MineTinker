@@ -38,7 +38,7 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
 
     public SelfRepair() {
         super(ModifierType.SELF_REPAIR,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD,
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
@@ -126,6 +126,11 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
     public void effect(MTPlayerInteractEvent event) {
         if (event.isCancelled() || !this.isAllowed()) { return; }
         effect(event.getPlayer(), event.getTool());
+    }
+
+    public void effectElytra(Player p, ItemStack elytra) {
+        if (!this.isAllowed()) { return; }
+        effect(p, elytra);
     }
 
     /**
