@@ -16,9 +16,9 @@ public class TridentListener implements Listener {
 
     @EventHandler
     public void onTridentLaunch(ProjectileLaunchEvent e) {
-        System.out.println(TridentToItemStack.size());
         if (e.isCancelled()) { return; }
         if (!(e.getEntity().getShooter() instanceof Player)) { return; }
+        if (!(e.getEntity() instanceof Trident)) { return; }
 
         Player p = (Player) e.getEntity().getShooter();
         ItemStack trident = p.getInventory().getItemInMainHand().clone();

@@ -39,6 +39,8 @@ public class ArmorListener implements Listener {
 
         Player p = (Player) e.getEntity();
 
+        //if (p.isBlocking()) { return; }
+
         Entity ent = e.getDamager();
 
         if (ent instanceof Arrow) {
@@ -93,6 +95,8 @@ public class ArmorListener implements Listener {
     @EventHandler
     public void onElytraDamage(PlayerItemDamageEvent e) {
         if (e.isCancelled()) { return; }
+
+        if (!e.getPlayer().isGliding()) { return; }
 
         if (!e.getItem().getType().equals(Material.ELYTRA)) { return; }
         if (!modManager.isArmorViable(e.getItem())) { return; }

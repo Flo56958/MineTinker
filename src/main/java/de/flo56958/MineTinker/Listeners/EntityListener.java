@@ -55,6 +55,11 @@ public class EntityListener implements Listener {
             p = (Player) e.getDamager();
         } else { return; }
 
+        /*
+        if (e.getEntity() instanceof Player) {
+            if (((Player) e.getEntity()).isBlocking()) { return; }
+        } */
+
         ItemStack tool = p.getInventory().getItemInMainHand();
         if (e.getDamager() instanceof Trident) {
             tool = TridentListener.TridentToItemStack.get(e.getDamager());

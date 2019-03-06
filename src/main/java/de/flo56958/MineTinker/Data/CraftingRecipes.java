@@ -24,7 +24,7 @@ public class CraftingRecipes {
 
         String key = "Elytra";
         elytraConf.addDefault(key + ".craftable", true);
-        elytraConf.addDefault(key + ".ExpChanceWhileFlying", 5);
+        elytraConf.addDefault(key + ".ExpChanceWhileFlying", 10);
 
         String recipe = key + ".Recipe";
         elytraConf.addDefault(recipe + ".Top", "M M");

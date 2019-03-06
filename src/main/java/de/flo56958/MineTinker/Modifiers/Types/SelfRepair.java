@@ -96,7 +96,11 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
     }
 
     @Override
-    public void removeMod(ItemStack tool) { }
+    public void removeMod(ItemStack tool) {
+        ItemMeta meta = tool.getItemMeta();
+        meta.removeEnchant(Enchantment.MENDING);
+        tool.setItemMeta(meta);
+    }
 
     //------------------------------------------------------
 
