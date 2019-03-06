@@ -1,6 +1,6 @@
 name: MineTinker
 author: Flo56958
-version: pre-a15
+version: a15
 main: de.flo56958.MineTinker.Main
 prefix: MineTinker
 
@@ -139,6 +139,7 @@ permissions:
       minetinker.modifiers.luck.*: true
       minetinker.modifiers.poisonous.*: true
       minetinker.modifiers.power.*: true
+      minetinker.modifiers.propelling.*: true
       minetinker.modifiers.protecting.*: true
       minetinker.modifiers.reinforced.*: true
       minetinker.modifiers.selfrepair.*: true
@@ -343,6 +344,21 @@ permissions:
     default: true
   minetinker.modifiers.power.use:
     description: Allows to use Power on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.propelling.*:
+    children:
+      minetinker.modifiers.propelling.apply: true
+      minetinker.modifiers.propelling.craft: true
+      minetinker.modifiers.propelling.use: true
+  minetinker.modifiers.propelling.apply:
+    description: Allows to apply Propelling to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.propelling.craft:
+    description: Allows to craft a Propelling-Modifiers
+    default: true
+  minetinker.modifiers.propelling.use:
+    description: Allows to use Propelling on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.protecting.*:

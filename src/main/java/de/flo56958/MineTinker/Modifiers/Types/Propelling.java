@@ -29,6 +29,9 @@ public class Propelling extends Modifier implements Craftable, Enchantable, List
     int durabilityLoss;
     double speedPerLevel;
 
+    boolean sound;
+    boolean particles;
+
     public Propelling() {
         super(ModifierType.PROPELLING,
                 new ArrayList<>(Arrays.asList(ToolType.ELYTRA, ToolType.TRIDENT)),
@@ -45,13 +48,15 @@ public class Propelling extends Modifier implements Craftable, Enchantable, List
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Enchanted Fireworkstar");
-        config.addDefault(key + ".description", "Propell yourself through the air.");
+        config.addDefault(key + ".description", "Propel yourself through the air.");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Propelling-Modifier");
         config.addDefault(key + ".Color", "%GOLD%");
         config.addDefault(key + ".MaxLevel", 3);
         config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".Elytra.DurabilityLoss", 10);
         config.addDefault(key + ".Elytra.SpeedPerLevel", 0.05);
+        config.addDefault(key + ".Elytra.Sound", true);
+        config.addDefault(key + ".Elytra.Particles", true);
         config.addDefault(key + ".Recipe.Enabled", false);
 
         ConfigurationManager.saveConfig(config);
@@ -64,6 +69,9 @@ public class Propelling extends Modifier implements Craftable, Enchantable, List
 
         durabilityLoss = config.getInt(key + ".Elytra.DurabilityLoss");
         speedPerLevel = config.getDouble(key + ".Elytra.SpeedPerLevel");
+
+        sound = config.getBoolean(key + ".Elytra.Sound");
+        particles = config.getBoolean(key + ".Elytra.Particles");
     }
 
     @Override
@@ -134,8 +142,8 @@ public class Propelling extends Modifier implements Craftable, Enchantable, List
         Vector dir = loc.getDirection().normalize();
 
         p.setVelocity(p.getVelocity().add(dir.multiply(1 + speedPerLevel * level)));
-        loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
-        p.playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
+        if (sound) loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
+        if (particles) p.playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
     }
 
     private static FileConfiguration getConfig() {
