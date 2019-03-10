@@ -24,7 +24,7 @@ public class Luck extends Modifier implements Craftable {
 
     public Luck() {
         super(ModifierType.LUCK,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
     }
 

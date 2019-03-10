@@ -19,7 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 
 public class Infinity extends Modifier implements Enchantable, Craftable {
 
@@ -27,7 +27,7 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
 
     public Infinity() {
         super(ModifierType.INFINITY,
-                new ArrayList<>(Collections.singletonList(ToolType.BOW)),
+                new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.TRIDENT)),
                 Main.getPlugin());
     }
 
@@ -40,7 +40,7 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted Arrow");
-    	config.addDefault(key + ".description", "You only need one Arrow to shoot a bow!");
+    	config.addDefault(key + ".description", "You only need one Arrow to shoot a bowand the Trident comes back!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Infinity-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");
         config.addDefault(key + ".EnchantCost", 10);
@@ -61,20 +61,28 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
         if (!this.compatibleWithEnder) {
-            if (modManager.get(ModifierType.ENDER) != null) {
-                if (modManager.hasMod(tool, modManager.get(ModifierType.ENDER))) {
-                    pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                    return null;
-                }
+            if (modManager.hasMod(tool, modManager.getAdmin(ModifierType.ENDER))) {
+                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                return null;
             }
         }
+
+        if (modManager.hasMod(tool, modManager.getAdmin(ModifierType.PROPELLING))) {
+            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+            return null;
+        }
+
         if (Modifier.checkAndAdd(p, tool, this, "infinity", isCommand) == null) {
             return null;
         }
 
         ItemMeta meta = tool.getItemMeta();
 
-        meta.addEnchant(Enchantment.ARROW_INFINITE, modManager.getModLevel(tool, this), true);
+        if (ToolType.BOW.getMaterials().contains(tool.getType())) {
+            meta.addEnchant(Enchantment.ARROW_INFINITE, modManager.getModLevel(tool, this), true);
+        } else if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
+            meta.addEnchant(Enchantment.LOYALTY, modManager.getModLevel(tool, this), true);
+        }
         if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         } else {
@@ -90,6 +98,7 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
         meta.removeEnchant(Enchantment.ARROW_INFINITE);
+        meta.removeEnchant(Enchantment.LOYALTY);
         tool.setItemMeta(meta);
     }
 

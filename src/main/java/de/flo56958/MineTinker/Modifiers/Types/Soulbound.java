@@ -103,7 +103,7 @@ public class Soulbound extends Modifier implements Craftable, Listener {
      * @return true if soulbound has success
      */
     public boolean effect(Player p, ItemStack is) {
-        if (!p.hasPermission("minetinker.soulbound.use")) { return false; }
+        if (!p.hasPermission("minetinker.modifiers.soulbound.use")) { return false; }
         if (!modManager.hasMod(is, this)) { return false; }
 
         Random rand = new Random();
@@ -132,7 +132,7 @@ public class Soulbound extends Modifier implements Craftable, Listener {
     @EventHandler
     public void effect(PlayerRespawnEvent e) {
         Player p = e.getPlayer();
-        if (!p.hasPermission("minetinker.soulbound.use")) { return; }
+        if (!p.hasPermission("minetinker.modifiers.soulbound.use")) { return; }
 
         if (!storedItemStacks.containsKey(p)) { return; }
 

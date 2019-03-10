@@ -65,6 +65,8 @@ public class PlayerListener implements Listener {
             eligible = true;
         } else if (name[0].toLowerCase().equals("trident") && repair.getType().equals(Material.PRISMARINE_SHARD)) {
             eligible = true;
+        } else if (name[0].toLowerCase().equals("turtle") && repair.getType().equals(Material.SCUTE)) {
+            eligible = true;
         }
         if (eligible) {
             double dura = tool.getDurability();
