@@ -3148,8 +3148,8 @@ body {
 .cid-rkYq5zVBQh {
   padding-top: 90px;
   padding-bottom: 90px;
-  background-color: #ffffff;
-  background: linear-gradient(45deg, #ffffff, #cccccc);
+  background-color: #c1c1c1;
+  background: linear-gradient(45deg, #c1c1c1, #cccccc);
 }
 @media (min-width: 992px) {
   .cid-rkYq5zVBQh .mbr-figure {
@@ -3379,6 +3379,41 @@ body {
 @media (max-width: 767px) {
   .cid-rkXW8sj5EM .mbr-text {
     text-align: center;
+  }
+}
+.cid-rkYFsJfwPC {
+  padding-top: 90px;
+  padding-bottom: 90px;
+  background-color: #ffffff;
+}
+.cid-rkYFsJfwPC h4 {
+  font-weight: 500;
+  margin-bottom: 0;
+  text-align: left;
+  padding-top: 2rem;
+}
+.cid-rkYFsJfwPC p {
+  margin-bottom: 0;
+  text-align: left;
+  padding-top: 1.5rem;
+  padding-top: 2rem;
+}
+.cid-rkYFsJfwPC .mbr-section-btn {
+  padding-top: 2.5rem;
+}
+.cid-rkYFsJfwPC .mbr-section-btn a {
+  margin: 0;
+}
+.cid-rkYFsJfwPC .mbr-text {
+  color: #767676;
+}
+.cid-rkYFsJfwPC .card-wrapper {
+  height: 100%;
+  background: #ffffff;
+}
+@media (max-width: 767px) {
+  .cid-rkYFsJfwPC .card:not(.last-child) {
+    padding-bottom: 2rem;
   }
 }
 .cid-rkYBb2Amzi {
