@@ -27,7 +27,6 @@ public class AnvilListener implements Listener {
     private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = ModManager.instance();
     
-	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onInventoryClick(InventoryClickEvent e) {
 		HumanEntity he = e.getWhoClicked();
@@ -40,7 +39,7 @@ public class AnvilListener implements Listener {
         ItemStack modifier = inv.getItem(1);
         ItemStack newTool = inv.getItem(2);
 
-        if (tool == null || modifier == null) { return; }
+        if (tool == null || modifier == null || newTool == null) { return; }
 
         if (e.getSlot() != 2) { return; }
         if (Lists.WORLDS.contains(player.getWorld().getName())) { return; }
@@ -48,37 +47,40 @@ public class AnvilListener implements Listener {
 
         boolean deleteAllItems = false;
         if (e.getCursor() != null && !e.getCursor().getType().equals(Material.AIR)) { return; }
-        if (!modManager.isModifierItem(modifier)) { //something else
+
+        if (!modManager.isModifierItem(modifier)) { //upgrade
             if (newTool != null && tool.getType().equals(newTool.getType())) { return; } //Not an upgrade
-            deleteAllItems = true;
-        } else { //Modifier-apply
-            Modifier mod = modManager.getModifierFromItem(modifier);
-
-            if (mod == null && tool.getType().equals(newTool.getType())) { return; } //Vanilla anvil use
-            if (mod != null) {
-                if (modifier.getAmount() > 1) {
-                    modifier.setAmount(modifier.getAmount() - 1);
-                    inv.setItem(1, modifier);
-                } else { inv.setItem(1, null); }
-                Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
-            } else {
-                inv.setItem(1, null); //when item upgrading
-            }
-        }
-
-        if (e.isShiftClick()) {
-            if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
-                e.setCancelled(true); //cancels the event if the player has a full inventory
+            // ------ upgrade
+            if (e.isShiftClick()) {
+                if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
+                    e.setCancelled(true); //cancels the event if the player has a full inventory
+                    return;
+                } // no else as it gets added in if-clause
+                inv.clear();
                 return;
-            } // no else as it gets added in if-clause
+            }
+            player.setItemOnCursor(newTool);
+            inv.clear();
+            return;
         } else {
-            e.setCursor(newTool);
-        }
+            Modifier mod = modManager.getModifierFromItem(modifier);
+            if (mod == null) return; //vanilla anvil use
+            else {
+                modifier.setAmount(modifier.getAmount() - 1);
+                Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
 
-        inv.setItem(0, null);
-
-        if(deleteAllItems) {
-            inv.setItem(1, null);
+                if (e.isShiftClick()) {
+                    if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
+                        e.setCancelled(true); //cancels the event if the player has a full inventory
+                        return;
+                    } // no else as it gets added in if-clause
+                    inv.clear();
+                    return;
+                }
+                player.setItemOnCursor(newTool);
+                inv.clear();
+                return;
+            }
         }
 	}
     

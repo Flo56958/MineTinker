@@ -22,6 +22,8 @@ public class TridentListener implements Listener {
 
         Player p = (Player) e.getEntity().getShooter();
         ItemStack trident = p.getInventory().getItemInMainHand().clone();
+        if (!ModManager.instance().isToolViable(trident)) { return; }
+
         ModManager.instance().addExp(p, trident, -20000);
         TridentToItemStack.put((Trident) e.getEntity(), trident);
     }
