@@ -1,6 +1,8 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
+import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
@@ -82,6 +84,11 @@ public class Propelling extends Modifier implements Craftable, Enchantable, List
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (modManager.hasMod(tool, modManager.getAdmin(ModifierType.INFINITY))) {
+            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+            return null;
+        }
+
         if (Modifier.checkAndAdd(p, tool, this, "propelling", isCommand) == null) {
             return null;
         }
