@@ -135,7 +135,6 @@ public class BlockListener implements Listener {
         }
     }
 
-    @SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.HIGHEST)
     public static void onBlockPlace(BlockPlaceEvent e) {
         if (e.isCancelled()) { return; }
@@ -186,7 +185,6 @@ public class BlockListener implements Listener {
         if (!apply) { return; }
 
         if (!modManager.durabilityCheck(e, p, tool)) { return; }
-
 
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 

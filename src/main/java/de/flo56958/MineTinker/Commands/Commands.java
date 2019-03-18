@@ -44,9 +44,6 @@ public class Commands implements TabExecutor {
         if (sender instanceof Player) {
             Player p = (Player) sender;
             if (sender.hasPermission("minetinker.commands.main")) {
-                if (args.length == 0) {
-                    invalidArgs(p);
-                }
                 if (args.length > 0) {
                     switch (args[0].toLowerCase()) { //first argument is the specifier for the command
                         case "addexp":
@@ -134,6 +131,8 @@ public class Commands implements TabExecutor {
                             ChatWriter.sendMessage(p, ChatColor.WHITE, "Possible arguments are:");
                             onHelp(p);
                     }
+                } else {
+                    onHelp(p);
                 }
             }
         } else {
@@ -239,6 +238,11 @@ public class Commands implements TabExecutor {
         if (player.hasPermission("minetinker.commands.setdurability")) {
             ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". SetDurability (sd)");
         }
+
+        ChatWriter.sendMessage(player, ChatColor.WHITE, "For more indepth help visit: ");
+        ChatWriter.sendMessage(player, ChatColor.GOLD, "https://flo56958.github.io/MineTinker");
+        ChatWriter.sendMessage(player, ChatColor.WHITE, "Or ask on the official MineTinker-Discordserver: ");
+        ChatWriter.sendMessage(player, ChatColor.GOLD, "http://discord.gg/ZEVNKhN");
     }
 
     /**
@@ -248,10 +252,15 @@ public class Commands implements TabExecutor {
      */
     private void onHelpConsole(CommandSender sender) {
         int index = 1;
-        sender.sendMessage(ChatWriter.CHAT_PREFIX + index++ + ". CheckUpdate (cu)");
-        sender.sendMessage(ChatWriter.CHAT_PREFIX + index++ + ". Info (i)");
-        sender.sendMessage(ChatWriter.CHAT_PREFIX + index++ + ". Modifiers (mods)");
-        sender.sendMessage(ChatWriter.CHAT_PREFIX + index + ". reload (r)");
+        sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + index++ + ". CheckUpdate (cu)");
+        sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + index++ + ". Info (i)");
+        sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + index++ + ". Modifiers (mods)");
+        sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + index + ". reload (r)");
+
+        ChatWriter.sendMessage(sender, ChatColor.GRAY, "For more indepth help visit: ");
+        ChatWriter.sendMessage(sender, ChatColor.GOLD, "https://flo56958.github.io/MineTinker");
+        ChatWriter.sendMessage(sender, ChatColor.GRAY, "Or ask on the official MineTinker-Discordserver: ");
+        ChatWriter.sendMessage(sender, ChatColor.GOLD, "http://discord.gg/ZEVNKhN");
     }
 
     /**

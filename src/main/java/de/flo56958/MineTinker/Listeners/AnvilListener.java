@@ -49,7 +49,7 @@ public class AnvilListener implements Listener {
         if (e.getCursor() != null && !e.getCursor().getType().equals(Material.AIR)) { return; }
 
         if (!modManager.isModifierItem(modifier)) { //upgrade
-            if (newTool != null && tool.getType().equals(newTool.getType())) { return; } //Not an upgrade
+            if (tool.getType().equals(newTool.getType())) { return; } //Not an upgrade
             // ------ upgrade
             if (e.isShiftClick()) {
                 if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
@@ -61,11 +61,9 @@ public class AnvilListener implements Listener {
             }
             player.setItemOnCursor(newTool);
             inv.clear();
-            return;
         } else {
             Modifier mod = modManager.getModifierFromItem(modifier);
-            if (mod == null) return; //vanilla anvil use
-            else {
+            if (mod != null) {
                 modifier.setAmount(modifier.getAmount() - 1);
                 Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
 
@@ -79,7 +77,6 @@ public class AnvilListener implements Listener {
                 }
                 player.setItemOnCursor(newTool);
                 inv.clear();
-                return;
             }
         }
 	}
@@ -90,9 +87,7 @@ public class AnvilListener implements Listener {
         ItemStack tool = i.getItem(0);
         ItemStack modifier = i.getItem(1);
 
-        if (tool == null || modifier == null) {
-            return;
-        }
+        if (tool == null || modifier == null) return;
 
         //-----
         Player player = null;
@@ -106,18 +101,12 @@ public class AnvilListener implements Listener {
             }
         }
 
-        if (player == null) {
-            return;
-        }
+        if (player == null) return;
 
         //-----
 
-        if (Lists.WORLDS.contains(player.getWorld().getName())) {
-            return;
-        }
-        if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) {
-            return;
-        }
+        if (Lists.WORLDS.contains(player.getWorld().getName())) return;
+        if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) return;
 
         if (modifier.getType().equals(Material.ENCHANTED_BOOK) && !config.getBoolean("AllowEnchanting")) { //So no Tools can be enchanted via books, if enchanting is disabled
             e.setResult(new ItemStack(Material.AIR, 0)); //sets ghostitem by client
