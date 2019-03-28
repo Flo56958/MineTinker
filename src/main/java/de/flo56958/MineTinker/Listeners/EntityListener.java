@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker.Listeners;
 
 import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Events.MTEntityDeathEvent;
 import de.flo56958.MineTinker.Events.MTProjectileHitEvent;
@@ -101,7 +102,7 @@ public class EntityListener implements Listener {
         Player p = (Player) e.getEntity().getShooter();
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (e.getHitBlock() == null) { return; }
+        if (e.getHitBlock() == null && !ToolType.FISHINGROD.getMaterials().contains(tool.getType())) { return; }
         if (e.getEntity() instanceof Trident) {
             tool = TridentListener.TridentToItemStack.get(e.getEntity());
             TridentListener.TridentToItemStack.remove(e.getEntity());

@@ -25,7 +25,7 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
 
     public SilkTouch() {
         super(ModifierType.SILK_TOUCH,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
                 Main.getPlugin());
     }
 
@@ -41,7 +41,7 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".description", "Applies Silk-Touch!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Silk-Touch-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");
-        config.addDefault(key + ".MaxLevel", 1);
+        config.addDefault(key + ".MaxLevel", 1); //IF 2 Epic Spawners work with MT-SilkTouch
     	config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".Recipe.Enabled", false);
     	

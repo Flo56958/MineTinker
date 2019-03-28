@@ -17,6 +17,7 @@ import org.bukkit.plugin.PluginManager;
 import java.util.ArrayList;
 
 public abstract class Modifier {
+	//TODO: Convert to Singleton with mod.instance()
 
 	protected static final ModManager modManager = ModManager.instance();
 	protected static final PluginManager pluginManager = Bukkit.getPluginManager();

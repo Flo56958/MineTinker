@@ -8,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ShapedRecipe;
 
+//TODO: REMOVE INTERFACE AS ALL MODIFIERS HAVE IT
 public interface Craftable {
     void registerCraftingRecipe();
 

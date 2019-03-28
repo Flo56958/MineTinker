@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class ConfigurationManager {
 	private ConfigurationManager() {}
 	
-    /**
+    /*
      * Stores all config-files with their name
      */
     private static final HashMap<String, FileConfiguration> configs = new HashMap<>();
@@ -54,7 +54,7 @@ public class ConfigurationManager {
      * @param folder The name of the folder
      * @param file The name of the file
      */
-    private static void loadConfig(String folder, String file) {
+    public static void loadConfig(String folder, String file) {
         File customConfigFile = new File(Main.getPlugin().getDataFolder(), folder + file);
         YamlConfiguration fileConfiguration = new YamlConfiguration();
         configsFolder.put(fileConfiguration, customConfigFile);

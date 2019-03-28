@@ -22,7 +22,7 @@ public class Haste extends Modifier implements Craftable {
 
     public Haste() {
         super(ModifierType.HASTE,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS, ToolType.FISHINGROD)),
                 Main.getPlugin());
     }
 
@@ -62,7 +62,11 @@ public class Haste extends Modifier implements Craftable {
 
         ItemMeta meta = tool.getItemMeta();
 
-        meta.addEnchant(Enchantment.DIG_SPEED, modManager.getModLevel(tool, this), true);
+        if (ToolType.FISHINGROD.getMaterials().contains(tool.getType())) {
+            meta.addEnchant(Enchantment.LURE, modManager.getModLevel(tool, this), true);
+        } else {
+            meta.addEnchant(Enchantment.DIG_SPEED, modManager.getModLevel(tool, this), true);
+        }
         if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         } else {
@@ -77,6 +81,7 @@ public class Haste extends Modifier implements Craftable {
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
         meta.removeEnchant(Enchantment.DIG_SPEED);
+        meta.removeEnchant(Enchantment.LURE);
         tool.setItemMeta(meta);
     }
 

@@ -59,6 +59,7 @@ public class AnvilListener implements Listener {
                 inv.clear();
                 return;
             }
+            //TODO: TRIGGER TOOL UPGRADE EVENT HERE INSTEAD IN UPGRADE METHOD
             player.setItemOnCursor(newTool);
             inv.clear();
         } else {
@@ -122,7 +123,7 @@ public class AnvilListener implements Listener {
         } else {
             if (config.getBoolean("Upgradeable") && player.hasPermission("minetinker.tool.upgrade")) {
                 switch (i.getItem(1).getAmount()) {
-                    case 1:
+                    case 1: //TODO: BUG-REPORT: CAN'T CONVERT SHOVELS
                         if (ToolType.SHOVEL.getMaterials().contains(tool.getType())) {
                             newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
                         }

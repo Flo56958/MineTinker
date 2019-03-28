@@ -50,21 +50,21 @@ public class ModManager {
         ConfigurationManager.saveConfig(layout);
     }
     /**
-     * stores the list of all modifiers
+     * stores the list of all MineTinker modifiers
      */
-    private final List<Modifier> allMods = new ArrayList<>();
+    private final ArrayList<Modifier> allMods = new ArrayList<>();
     /**
      * stores the list of allowed modifiers
      */
-    private final List<Modifier> mods = new ArrayList<>();
+    private final ArrayList<Modifier> mods = new ArrayList<>();
     /**
      * sublist of mods which contains all modifiers that can be crafted (if enabled)
      */
-    private final List<Modifier> craftableMods = new ArrayList<>();
+    private final ArrayList<Modifier> craftableMods = new ArrayList<>();
     /**
      * sublist of mods which contains all modifiers that are crafted through the bookshelf
      */
-    private final List<Modifier> enchantableMods = new ArrayList<>();
+    private final ArrayList<Modifier> enchantableMods = new ArrayList<>();
 
     private static ModManager instance;
 
@@ -176,7 +176,7 @@ public class ModManager {
      *
      * @param mod the modifier instance
      */
-    private void register(Modifier mod) {
+    public void register(Modifier mod) {
     	if(!mods.contains(mod)) {
 	        mods.add(mod);
 	        String mes = "%GREEN%Registered the %MOD% %GREEN%modifier from %PLUGIN%.";
@@ -186,8 +186,12 @@ public class ModManager {
 	        ChatWriter.logColor(mes);
     	}
     }
-    
-    private void unregister(Modifier mod) {
+
+    /**
+     * unregisters the Modifier from the list
+     * @param mod the modifier instance
+     */
+    public void unregister(Modifier mod) {
     	 mods.remove(mod);
          String mes = "%GREEN%Unregistered the %MOD% %GREEN%modifier from %PLUGIN%.";
          mes = ChatWriter.addColors(mes);
@@ -462,6 +466,7 @@ public class ModManager {
      * Updates the lore of the Item as everything is stored in the NBT-Data
      * @param is
      */
+    //TODO: Add option for roman numerals instead of arabic
     private void rewriteLore(ItemStack is) {
         ArrayList<String> lore = new ArrayList<>(this.loreScheme);
         for (int i = 0; i < lore.size(); i++) {
@@ -497,7 +502,7 @@ public class ModManager {
 
         ItemMeta meta = is.getItemMeta();
 
-        /**
+        /*
          * For mcMMO-Superbreaker and other Skills
          */
         ArrayList<String> oldLore = (ArrayList<String>) meta.getLore();
@@ -521,7 +526,9 @@ public class ModManager {
                 || ToolType.PICKAXE.getMaterials().contains(m)
                 || ToolType.SHOVEL.getMaterials().contains(m)
                 || ToolType.SWORD.getMaterials().contains(m)
-                || ToolType.TRIDENT.getMaterials().contains(m)) && !isWandViable(is)) {
+                || ToolType.TRIDENT.getMaterials().contains(m)
+                || ToolType.SHEARS.getMaterials().contains(m)
+                || ToolType.FISHINGROD.getMaterials().contains(m)) && !isWandViable(is)) {
             setNBTTag(is, "IdentifierTool", new NBTTagInt(0));
         } else if (ToolType.BOOTS.getMaterials().contains(m)
                 || ToolType.CHESTPLATE.getMaterials().contains(m)

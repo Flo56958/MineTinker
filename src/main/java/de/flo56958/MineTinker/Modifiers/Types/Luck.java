@@ -24,7 +24,8 @@ public class Luck extends Modifier implements Craftable {
 
     public Luck() {
         super(ModifierType.LUCK,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS,
+                        ToolType.FISHINGROD, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
     }
 
@@ -83,6 +84,10 @@ public class Luck extends Modifier implements Craftable {
             meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
         } else if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
             meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, modManager.getModLevel(tool, this), true);
+        } else if (ToolType.SHEARS.getMaterials().contains(tool.getType())) {
+            meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
+        } else if (ToolType.FISHINGROD.getMaterials().contains(tool.getType())) {
+            meta.addEnchant(Enchantment.LUCK, modManager.getModLevel(tool, this), true);
         }
         if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -100,6 +105,7 @@ public class Luck extends Modifier implements Craftable {
         ItemMeta meta = tool.getItemMeta();
         meta.removeEnchant(Enchantment.LOOT_BONUS_BLOCKS);
         meta.removeEnchant(Enchantment.LOOT_BONUS_MOBS);
+        meta.removeEnchant(Enchantment.LUCK);
         tool.setItemMeta(meta);
     }
 

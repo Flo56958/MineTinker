@@ -102,6 +102,9 @@ public class CraftingRecipes {
         }
     }
 
+    //TODO: BUG-REPORT: MT-TRIDENTS CAN BE RECONVERTED TO MT-TRIDENTS
+    //TODO: TWEAK: MT-TRIDENTS LOSE ALL ENCHANTMENTS WHEN CRAFTED
+    //TODO: -> Make Crafting-Output alter from the input
     /**
      * tries to register the recipe for the MineTinker-Elytra
      */

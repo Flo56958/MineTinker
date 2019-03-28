@@ -35,7 +35,8 @@ public class BuildersWandListener implements Listener {
     private static final ModManager modManager;
     private static FileConfiguration config;
     private static final ArrayList<ItemStack> wands = new ArrayList<>();
-    
+
+    //TODO: MAKE CONFIG-RELOADABLE
     static {
     	modManager = ModManager.instance();
     	config = ConfigurationManager.getConfig("BuildersWand.yml");
@@ -322,10 +323,10 @@ public class BuildersWandListener implements Listener {
                                 BlockPlaceEvent placeEvent = new BlockPlaceEvent(b.getWorld().getBlockAt(loc), b.getWorld().getBlockAt(loc).getState(), b, current, p, true);
                                 Bukkit.getPluginManager().callEvent(placeEvent);
 
-                                //check the pseudoevent, does not work with WorldGuard
+                                //check the pseudoevent
                                 if (!placeEvent.canBuild() || placeEvent.isCancelled()) { continue; }
 
-                                b.getWorld().getBlockAt(loc).setType(current.getType());
+                                b.getWorld().getBlockAt(loc).setType(current.getType()); //TODO: COPY THE ROTATION OF THE BLOCK
 
                                 current.setAmount(current.getAmount() - 1);
                                 if (config.getBoolean("BuildersWand.useDurability")) { //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
@@ -362,7 +363,7 @@ public class BuildersWandListener implements Listener {
                             BlockPlaceEvent placeEvent = new BlockPlaceEvent(b.getWorld().getBlockAt(loc), b.getWorld().getBlockAt(loc).getState(), b, new ItemStack(b.getType(), 1), p, true);
                             Bukkit.getPluginManager().callEvent(placeEvent);
 
-                            //check the pseudoevent, does not work with WorldGuard
+                            //check the pseudoevent
                             if (!placeEvent.canBuild() || placeEvent.isCancelled()) { continue; }
 
                             b.getWorld().getBlockAt(loc).setType(b.getType());

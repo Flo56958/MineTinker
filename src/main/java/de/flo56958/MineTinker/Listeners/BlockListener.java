@@ -66,6 +66,7 @@ public class BlockListener implements Listener {
         Bukkit.getPluginManager().callEvent(new MTBlockBreakEvent(tool, e)); //Event-Trigger for Modifiers
 
         //-------------------------------------------SPAWNERS---------------------------------------------
+        //TODO: CHANGE TO NBT
         if (!Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
             if (config.getBoolean("Spawners.enabled")) {
                 if (e.getBlock().getState() instanceof CreatureSpawner && p.hasPermission("minetinker.spawners.mine")) {
@@ -144,6 +145,7 @@ public class BlockListener implements Listener {
         BlockState bs = b.getState();
 
         //-------------------------------------------SPAWNERS---------------------------------------------
+        //TODO: CHANGE TO NBT
         if (config.getBoolean("Spawners.enabled") && !Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
             if (!p.hasPermission("minetinker.spawners.place") && b.getState() instanceof CreatureSpawner) {
                 e.setCancelled(true);

@@ -21,6 +21,7 @@ public class ElevatorListener implements Listener {
 
     private static final FileConfiguration config;
 
+    //TODO: MAKE CONFIG-RELOADABLE
     static {
     	config = ConfigurationManager.getConfig("Elevator.yml");
     	config.options().copyDefaults(true);

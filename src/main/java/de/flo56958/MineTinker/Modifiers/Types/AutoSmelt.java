@@ -35,7 +35,7 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
 
     public AutoSmelt() {
         super(ModifierType.AUTO_SMELT,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
@@ -121,6 +121,7 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
         boolean allowLuck = false;
         int amount = 1;
         Material loot;
+        //TODO: CHANGE TO CHECK CONFIG FOR WHAT OUTPUT A BLOCK HAS INSTEAD OF SWITCH CASE
         switch (b.getType()) {
             case STONE:
                 if (!smeltStone) { return; }
@@ -165,6 +166,15 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
             case STRIPPED_SPRUCE_WOOD:
                 allowLuck = true;
                 loot = Material.CHARCOAL;
+                break;
+
+            case ACACIA_LEAVES:
+            case BIRCH_LEAVES:
+            case DARK_OAK_LEAVES:
+            case JUNGLE_LEAVES:
+            case OAK_LEAVES:
+            case SPRUCE_LEAVES:
+                loot = Material.STICK;
                 break;
 
             case IRON_ORE:

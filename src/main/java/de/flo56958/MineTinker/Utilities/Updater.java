@@ -19,6 +19,7 @@ public class Updater {
 
     public boolean getHasUpdate() { return this.hasUpdate; }
 
+    //TODO: CHANGE TO SPIGOTMC-API FOR BETTER FUTURE PROOFING
     /**
      * tries to get the newest MineTinker-Version number from spigotmc.org
      * @return the online version number OR ""

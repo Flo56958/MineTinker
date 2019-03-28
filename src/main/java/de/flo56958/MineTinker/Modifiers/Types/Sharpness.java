@@ -88,6 +88,7 @@ public class Sharpness extends Modifier implements Craftable {
         ItemMeta meta = tool.getItemMeta();
         meta.removeEnchant(Enchantment.DAMAGE_ALL);
         meta.removeEnchant(Enchantment.ARROW_DAMAGE);
+        meta.removeEnchant(Enchantment.IMPALING);
         tool.setItemMeta(meta);
     }
 

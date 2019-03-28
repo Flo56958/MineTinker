@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
+import de.flo56958.MineTinker.Events.MTProjectileHitEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -13,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,7 +33,7 @@ public class Shulking extends Modifier implements Craftable, Listener {
 
     public Shulking() {
         super(ModifierType.SHULKING,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT,
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
@@ -87,14 +89,32 @@ public class Shulking extends Modifier implements Craftable, Listener {
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
 
+        effect(p, tool, event.getEntity());
+    }
+
+    @EventHandler
+    public void effect(MTProjectileHitEvent event) {
+        if (!this.isAllowed()) { return; }
+        if (!(event.getEvent().getHitEntity() instanceof LivingEntity)) { return; }
+
+        Player p = event.getPlayer();
+        ItemStack tool = event.getTool();
+
+        if (!ToolType.FISHINGROD.getMaterials().contains(tool.getType())) { return; }
+
+        effect(p, tool, event.getEvent().getHitEntity());
+    }
+
+    private void effect(Player p, ItemStack tool, Entity ent) {
         if (!p.hasPermission("minetinker.modifiers.shulking.use")) { return; }
         if (!modManager.hasMod(tool, this)) { return; }
 
         int level = modManager.getModLevel(tool, this);
         int amplifier = this.effectAmplifier * (level - 1);
 
-        ((LivingEntity) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, this.duration, amplifier, false, false));
+        ((LivingEntity) ent).addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, this.duration, amplifier, false, false));
         ChatWriter.log(false, p.getDisplayName() + " triggered Shulking on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+
     }
 
     @Override
