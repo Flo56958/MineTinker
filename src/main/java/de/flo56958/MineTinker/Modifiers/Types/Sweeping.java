@@ -21,6 +21,8 @@ import java.util.Collections;
 
 public class Sweeping extends Modifier implements Enchantable, Craftable {
 
+    //TODO: Make active right-click ability to push entities away
+    //has cooldown
     public Sweeping() {
         super(ModifierType.SWEEPING,
                 new ArrayList<>(Collections.singletonList(ToolType.SWORD)),

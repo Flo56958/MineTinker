@@ -26,6 +26,7 @@ import java.util.Objects;
 
 public class ModManager {
 
+    //TODO: AUTO-DISCOVER RECIPES
     public ArrayList<NamespacedKey> recipe_Namespaces = new ArrayList<>();
 
     private static FileConfiguration config;
