@@ -13,6 +13,8 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -326,7 +328,13 @@ public class BuildersWandListener implements Listener {
                                 //check the pseudoevent
                                 if (!placeEvent.canBuild() || placeEvent.isCancelled()) { continue; }
 
-                                b.getWorld().getBlockAt(loc).setType(current.getType()); //TODO: COPY THE ROTATION OF THE BLOCK with the Interface Directional
+                                Block nb = b.getWorld().getBlockAt(loc);
+                                nb.setType(current.getType());
+                                BlockData bd = nb.getBlockData();
+                                if (bd instanceof Directional) {
+                                    ((Directional) bd).setFacing(((Directional) nb.getWorld().getBlockAt(loc.subtract(v)).getBlockData()).getFacing());
+                                }
+                                nb.setBlockData(bd);
 
                                 current.setAmount(current.getAmount() - 1);
                                 if (config.getBoolean("BuildersWand.useDurability")) { //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
@@ -366,7 +374,13 @@ public class BuildersWandListener implements Listener {
                             //check the pseudoevent
                             if (!placeEvent.canBuild() || placeEvent.isCancelled()) { continue; }
 
-                            b.getWorld().getBlockAt(loc).setType(b.getType());
+                            Block nb = b.getWorld().getBlockAt(loc);
+                            nb.setType(b.getType());
+                            BlockData bd = nb.getBlockData();
+                            if (bd instanceof Directional) {
+                                ((Directional) bd).setFacing(((Directional) nb.getWorld().getBlockAt(loc.subtract(v)).getBlockData()).getFacing());
+                            }
+                            nb.setBlockData(bd);
                             e.setCancelled(true);
                         }
                     }
