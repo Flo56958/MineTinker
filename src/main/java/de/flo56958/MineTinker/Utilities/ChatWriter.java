@@ -190,4 +190,21 @@ public class ChatWriter {
                 return ChatColor.WHITE;
         }
     }
+
+    public static String toRomanNumerals(int num) {
+        String[] romanCharacters = { "%BOLD%M%RESET%", "%BOLD%CM%RESET%", "%BOLD%D%RESET%", "%BOLD%C%RESET%", "%BOLD%XC%RESET%", "%BOLD%L%RESET%", "%BOLD%X%RESET%", "%BOLD%IX%RESET%", "%BOLD%V%RESET%",
+                                    "M", "CM", "D", "C", "XC", "L", "X", "IX", "V", "I" };
+        int[] romanValues = { 1000000, 900000, 500000, 100000, 90000, 50000, 10000, 9000, 5000,
+                                    1000, 900, 500, 100, 90, 50, 10, 9, 5, 1 };
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < romanValues.length; i++) {
+            int numberInPlace = num / romanValues[i];
+            if (numberInPlace == 0) continue;
+            result.append(numberInPlace == 4 && i > 0 ? romanCharacters[i] + romanCharacters[i - 1] :
+                    new String(new char[numberInPlace]).replace("\0", romanCharacters[i]));
+            num = num % romanValues[i];
+        }
+        return addColors(result.toString());
+    }
 }

@@ -38,8 +38,12 @@ public class ModManager {
         layout = ConfigurationManager.getConfig("layout.yml");
         layout.options().copyDefaults(true);
 
+        layout.addDefault("UseRomans.Level", true);
+        layout.addDefault("UseRomans.Exp", false);
+        layout.addDefault("UseRomans.FreeSlots", false);
+        layout.addDefault("UseRomans.ModifierLevels", true);
         ArrayList<String> loreLayout = new ArrayList<>();
-        loreLayout.add("%GOLD%Level: %WHITE%%LEVEL%");
+        loreLayout.add("%GOLD%Level %WHITE%%LEVEL%");
         loreLayout.add("%GOLD%Exp: %WHITE%%EXP% / %NEXT_LEVEL_EXP%");
         loreLayout.add("%WHITE%Free Modifier Slots: %FREE_SLOTS%");
         loreLayout.add("%WHITE%Modifiers:");
@@ -467,15 +471,26 @@ public class ModManager {
      * Updates the lore of the Item as everything is stored in the NBT-Data
      * @param is
      */
-    //TODO: Add option for roman numerals instead of arabic
     private void rewriteLore(ItemStack is) {
         ArrayList<String> lore = new ArrayList<>(this.loreScheme);
+
+        long exp = getExp(is);
+        int level = getLevel(is);
+        long nextLevelReq = getNextLevelReq(level);
+        int freeSlots = getFreeSlots(is);
+
+        String exp_ = layout.getBoolean("UseRomans.Exp") ? ChatWriter.toRomanNumerals((int) exp) : String.valueOf(exp);
+        String level_ = layout.getBoolean("UseRomans.Level") ? ChatWriter.toRomanNumerals(level) : String.valueOf(level);
+        String nextLevelReq_ = layout.getBoolean("UseRomans.Exp") ? ChatWriter.toRomanNumerals((int) nextLevelReq) : String.valueOf(nextLevelReq);
+        String freeSlots_ = layout.getBoolean("UseRomans.FreeSlots") ? ChatWriter.toRomanNumerals(freeSlots) : String.valueOf(freeSlots);
+
+
         for (int i = 0; i < lore.size(); i++) {
             String s = lore.get(i);
-            s = s.replaceAll("%EXP%", "" + getExp(is));
-            s = s.replaceAll("%LEVEL%", "" + getLevel(is));
-            s = s.replaceAll("%NEXT_LEVEL_EXP%", "" + getNextLevelReq(getLevel(is)));
-            s = s.replaceAll("%FREE_SLOTS%", "" + getFreeSlots(is));
+            s = s.replaceAll("%EXP%", "" + exp_);
+            s = s.replaceAll("%LEVEL%", "" + level_);
+            s = s.replaceAll("%NEXT_LEVEL_EXP%", "" + nextLevelReq_);
+            s = s.replaceAll("%FREE_SLOTS%", "" + freeSlots_);
             lore.set(i, s);
         }
 
@@ -494,9 +509,11 @@ public class ModManager {
 
         for (Modifier m : this.mods) {
             if (hasNBTTag(is, m.getType().getNBTKey())) {
+                int modLevel = getModLevel(is, m);
+                String modLevel_ = layout.getBoolean("UseRomans.ModifierLevels") ? ChatWriter.toRomanNumerals(modLevel) : String.valueOf(modLevel);
                 String s = this.modifierLayout;
                 s = s.replaceAll("%MODIFIER%", m.getColor() + m.getName());
-                s = s.replaceAll("%MODLEVEL%", "" + getModLevel(is, m));
+                s = s.replaceAll("%MODLEVEL%", modLevel_);
                 lore.add(index++, s);
             }
         }

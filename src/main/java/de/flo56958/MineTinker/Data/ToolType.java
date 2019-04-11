@@ -100,7 +100,7 @@ public enum ToolType {
 			case TRIDENT:
 				materials.add(Material.TRIDENT);
 				break;
-			case OTHER: //TODO: REQUEST: ADD SHEARS
+			case OTHER:
 				materials.addAll(Arrays.asList(Material.FLINT_AND_STEEL, Material.CARROT_ON_A_STICK));
 				break;
 			case SHEARS:
