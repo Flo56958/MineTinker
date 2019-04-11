@@ -62,23 +62,25 @@ public class AnvilListener implements Listener {
             //TODO: TRIGGER TOOL UPGRADE EVENT HERE INSTEAD IN UPGRADE METHOD
             player.setItemOnCursor(newTool);
             inv.clear();
-        } else {
+        } else { //is modifier
             Modifier mod = modManager.getModifierFromItem(modifier);
-            if (mod != null) {
-                modifier.setAmount(modifier.getAmount() - 1);
-                Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
+            if (mod == null) return;
 
-                if (e.isShiftClick()) {
-                    if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
-                        e.setCancelled(true); //cancels the event if the player has a full inventory
-                        return;
-                    } // no else as it gets added in if-clause
-                    inv.clear();
+            modifier.setAmount(modifier.getAmount() - 1);
+            Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
+
+            if (e.isShiftClick()) {
+                if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
+                    e.setCancelled(true); //cancels the event if the player has a full inventory
                     return;
-                }
-                player.setItemOnCursor(newTool);
+                } // no else as it gets added in if-clause
                 inv.clear();
+                inv.setItem(1, modifier);
+                return;
             }
+            player.setItemOnCursor(newTool);
+            inv.clear();
+            inv.setItem(1, modifier);
         }
 	}
     

@@ -28,8 +28,7 @@ public class EntityListener implements Listener {
     private static final ModManager modManager = ModManager.instance();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
-    @SuppressWarnings("deprecation")
-	@EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamage(EntityDamageByEntityEvent e) {
         if (e.isCancelled()) { return; }
         if (Lists.WORLDS.contains(e.getDamager().getWorld().getName())) { return; }

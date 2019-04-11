@@ -32,7 +32,14 @@ public class Timber extends Modifier implements Craftable, Listener {
 
     private static final ArrayList<Location> locs = new ArrayList<>();
 
-    public Timber() {
+    private static Timber instance;
+
+    public static Timber instance() {
+        if (instance == null) instance = new Timber();
+        return instance;
+    }
+
+    private Timber() {
         super(ModifierType.TIMBER,
                 new ArrayList<>(Collections.singletonList(ToolType.AXE)),
                 Main.getPlugin());

@@ -27,7 +27,7 @@ import java.util.Objects;
 public class ModManager {
 
     //TODO: AUTO-DISCOVER RECIPES
-    public ArrayList<NamespacedKey> recipe_Namespaces = new ArrayList<>();
+    public final ArrayList<NamespacedKey> recipe_Namespaces = new ArrayList<>();
 
     private static FileConfiguration config;
     private static FileConfiguration layout;
@@ -138,36 +138,36 @@ public class ModManager {
      * checks and loads all modifiers with configurations settings into memory
      */
     private void init() {
-        allMods.add(new Aquaphilic());
-    	allMods.add(new AutoSmelt());
-    	allMods.add(new Beheading());
-    	allMods.add(new Directing());
-    	allMods.add(new Ender());
-    	allMods.add(new Experienced());
-    	allMods.add(new ExtraModifier());
-    	allMods.add(new Fiery());
-    	allMods.add(new Freezing());
-    	allMods.add(new Glowing());
-    	allMods.add(new Haste());
-    	allMods.add(new Infinity());
-    	allMods.add(new Knockback());
-    	allMods.add(new Lifesteal());
-    	allMods.add(new LightWeight());
-        allMods.add(new Luck());
-        allMods.add(new Melting());
-        allMods.add(new Poisonous());
-        allMods.add(new Power());
-        allMods.add(new Propelling());
-        allMods.add(new Protecting());
-        allMods.add(new Reinforced());
-        allMods.add(new SelfRepair());
-        allMods.add(new Sharpness());
-        allMods.add(new Shulking());
-        allMods.add(new SilkTouch());
-        allMods.add(new Soulbound());
-        allMods.add(new Sweeping());
-        allMods.add(new Timber());
-        allMods.add(new Webbed());
+        allMods.add(Aquaphilic.instance());
+    	allMods.add(AutoSmelt.instance());
+    	allMods.add(Beheading.instance());
+    	allMods.add(Directing.instance());
+    	allMods.add(Ender.instance());
+    	allMods.add(Experienced.instance());
+    	allMods.add(ExtraModifier.instance());
+    	allMods.add(Fiery.instance());
+    	allMods.add(Freezing.instance());
+    	allMods.add(Glowing.instance());
+    	allMods.add(Haste.instance());
+    	allMods.add(Infinity.instance());
+    	allMods.add(Knockback.instance());
+    	allMods.add(Lifesteal.instance());
+    	allMods.add(LightWeight.instance());
+        allMods.add(Luck.instance());
+        allMods.add(Melting.instance());
+        allMods.add(Poisonous.instance());
+        allMods.add(Power.instance());
+        allMods.add(Propelling.instance());
+        allMods.add(Protecting.instance());
+        allMods.add(Reinforced.instance());
+        allMods.add(SelfRepair.instance());
+        allMods.add(Sharpness.instance());
+        allMods.add(Shulking.instance());
+        allMods.add(SilkTouch.instance());
+        allMods.add(Soulbound.instance());
+        allMods.add(Sweeping.instance());
+        allMods.add(Timber.instance());
+        allMods.add(Webbed.instance());
         
         reload();
     }
@@ -382,7 +382,7 @@ public class ModManager {
 
         if (level == -1 || exp == -1) { return; }
 
-        if (exp == Long.MAX_VALUE || exp + 1 < 0 || level + 1 < 0) {
+        if (exp + 1 < 0 || level + 1 < 0) {
             if (Main.getPlugin().getConfig().getBoolean("ResetAtIntOverflow")) { //secures a "good" exp-system if the Values get to big
                 level = 1;
                 setLevel(tool, level);

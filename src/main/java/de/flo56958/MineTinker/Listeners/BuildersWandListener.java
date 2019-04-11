@@ -326,7 +326,7 @@ public class BuildersWandListener implements Listener {
                                 //check the pseudoevent
                                 if (!placeEvent.canBuild() || placeEvent.isCancelled()) { continue; }
 
-                                b.getWorld().getBlockAt(loc).setType(current.getType()); //TODO: COPY THE ROTATION OF THE BLOCK
+                                b.getWorld().getBlockAt(loc).setType(current.getType()); //TODO: COPY THE ROTATION OF THE BLOCK with the Interface Directional
 
                                 current.setAmount(current.getAmount() - 1);
                                 if (config.getBoolean("BuildersWand.useDurability")) { //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)

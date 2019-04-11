@@ -34,7 +34,7 @@ public enum ModifierType {
     TIMBER("Timber"),
     WEBBED("Webbed");
 
-    private String nbtTag;
+    private final String nbtTag;
     ModifierType(String nbtTag) { this.nbtTag = nbtTag; }
 
     private final ModManager modManager = ModManager.instance();

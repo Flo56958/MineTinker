@@ -210,6 +210,7 @@ public class EasyHarvestListener implements Listener {
                 } else if (m.equals(Material.NETHER_WART) && is.getType().equals(Material.NETHER_WART)) {
                     is.setAmount(is.getAmount() - 1);
                     b.setType(m);
+                    break;
                 }
             }
         }

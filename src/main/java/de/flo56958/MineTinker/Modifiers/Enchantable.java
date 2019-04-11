@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+//TODO: Remove Interface and integrate into the Modifier-Class, so every modifier can be enchanted
 public interface Enchantable {
     void enchantItem(Player p, ItemStack item);
 

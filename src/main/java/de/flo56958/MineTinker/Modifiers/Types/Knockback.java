@@ -21,7 +21,14 @@ import java.util.Arrays;
 
 public class Knockback extends Modifier implements Enchantable, Craftable {
 
-    public Knockback() {
+    private static Knockback instance;
+
+    public static Knockback instance() {
+        if (instance == null) instance = new Knockback();
+        return instance;
+    }
+
+    private Knockback() {
         super(ModifierType.KNOCKBACK,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());

@@ -27,7 +27,15 @@ public class Lifesteal extends Modifier implements Craftable, Listener {
 
     private int percentPerLevel;
     private int percentToTrigger;
-    public Lifesteal() {
+
+    private static Lifesteal instance;
+
+    public static Lifesteal instance() {
+        if (instance == null) instance = new Lifesteal();
+        return instance;
+    }
+
+    private Lifesteal() {
         super(ModifierType.LIFESTEAL,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());

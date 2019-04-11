@@ -22,7 +22,14 @@ import java.util.Collections;
 
 public class Freezing extends Modifier implements Craftable {
 
-    public Freezing() {
+    private static Freezing instance;
+
+    public static Freezing instance() {
+        if (instance == null) instance = new Freezing();
+        return instance;
+    }
+
+    private Freezing() {
         super(ModifierType.FREEZING,
                 new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
                 Main.getPlugin());

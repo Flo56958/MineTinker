@@ -32,7 +32,14 @@ public class Beheading extends Modifier implements Enchantable, Craftable, Liste
 
     private int percentagePerLevel;
 
-    public Beheading() {
+    private static Beheading instance;
+
+    public static Beheading instance() {
+        if (instance == null) instance = new Beheading();
+        return instance;
+    }
+
+    private Beheading() {
         super(ModifierType.BEHEADING,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());

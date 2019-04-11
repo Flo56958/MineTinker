@@ -36,9 +36,17 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
 
     private boolean useMending;
 
-    public SelfRepair() {
+    private static SelfRepair instance;
+
+    public static SelfRepair instance() {
+        if (instance == null) instance = new SelfRepair();
+        return instance;
+    }
+
+    private SelfRepair() {
         super(ModifierType.SELF_REPAIR,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL, ToolType.SWORD,
+                                                ToolType.TRIDENT, ToolType.FISHINGROD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());

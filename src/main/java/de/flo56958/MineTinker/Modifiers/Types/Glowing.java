@@ -29,8 +29,14 @@ public class Glowing extends Modifier implements Craftable, Listener {
     private int duration;
     private double durationMultiplier;
 
+    private static Glowing instance;
 
-    public Glowing() {
+    public static Glowing instance() {
+        if (instance == null) instance = new Glowing();
+        return instance;
+    }
+
+    private Glowing() {
         super(ModifierType.GLOWING,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());

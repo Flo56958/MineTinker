@@ -28,13 +28,20 @@ import java.util.Arrays;
 
 public class Propelling extends Modifier implements Craftable, Enchantable, Listener {
 
-    int durabilityLoss;
-    double speedPerLevel;
+    private int durabilityLoss;
+    private double speedPerLevel;
 
-    boolean sound;
-    boolean particles;
+    private boolean sound;
+    private boolean particles;
 
-    public Propelling() {
+    private static Propelling instance;
+
+    public static Propelling instance() {
+        if (instance == null) instance = new Propelling();
+        return instance;
+    }
+
+    private Propelling() {
         super(ModifierType.PROPELLING,
                 new ArrayList<>(Arrays.asList(ToolType.ELYTRA, ToolType.TRIDENT)),
                 Main.getPlugin());

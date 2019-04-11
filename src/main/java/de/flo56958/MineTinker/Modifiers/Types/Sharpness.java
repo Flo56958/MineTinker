@@ -20,7 +20,14 @@ import java.util.Arrays;
 
 public class Sharpness extends Modifier implements Craftable {
 
-    public Sharpness() {
+    private static Sharpness instance;
+
+    public static Sharpness instance() {
+        if (instance == null) instance = new Sharpness();
+        return instance;
+    }
+
+    private Sharpness() {
         super(ModifierType.SHARPNESS,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());

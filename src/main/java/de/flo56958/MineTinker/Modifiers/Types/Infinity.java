@@ -25,7 +25,14 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
 
     private boolean compatibleWithEnder;
 
-    public Infinity() {
+    private static Infinity instance;
+
+    public static Infinity instance() {
+        if (instance == null) instance = new Infinity();
+        return instance;
+    }
+
+    private Infinity() {
         super(ModifierType.INFINITY,
                 new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.TRIDENT)),
                 Main.getPlugin());

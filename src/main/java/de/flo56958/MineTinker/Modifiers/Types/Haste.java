@@ -20,7 +20,14 @@ import java.util.Arrays;
 
 public class Haste extends Modifier implements Craftable {
 
-    public Haste() {
+    private static Haste instance;
+
+    public static Haste instance() {
+        if (instance == null) instance = new Haste();
+        return instance;
+    }
+
+    private Haste() {
         super(ModifierType.HASTE,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS, ToolType.FISHINGROD)),
                 Main.getPlugin());

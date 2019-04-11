@@ -20,9 +20,17 @@ public class ExtraModifier extends Modifier {
 
     private int gain;
 
-    public ExtraModifier() {
+    private static ExtraModifier instance;
+
+    public static ExtraModifier instance() {
+        if (instance == null) instance = new ExtraModifier();
+        return instance;
+    }
+
+    private ExtraModifier() {
         super(ModifierType.EXTRA_MODIFIER,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.FISHINGROD, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT,
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.FISHINGROD,
+                                                ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
     }

@@ -20,7 +20,14 @@ import java.util.Arrays;
 
 public class Reinforced extends Modifier implements Craftable {
 
-    public Reinforced() {
+    private static Reinforced instance;
+
+    public static Reinforced instance() {
+        if (instance == null) instance = new Reinforced();
+        return instance;
+    }
+
+    private Reinforced() {
         super(ModifierType.REINFORCED,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),

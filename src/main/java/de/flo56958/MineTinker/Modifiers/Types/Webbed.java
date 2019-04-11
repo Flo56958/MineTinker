@@ -32,7 +32,14 @@ public class Webbed extends Modifier implements Craftable, Listener {
     private double durationMultiplier;
     private int effectAmplifier;
 
-    public Webbed() {
+    private static Webbed instance;
+
+    public static Webbed instance() {
+        if (instance == null) instance = new Webbed();
+        return instance;
+    }
+
+    private Webbed() {
         super(ModifierType.WEBBED,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),

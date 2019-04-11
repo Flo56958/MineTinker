@@ -36,7 +36,14 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
 
     private boolean lv1_vertical;
 
-    public Power() {
+    private static Power instance;
+
+    public static Power instance() {
+        if (instance == null) instance = new Power();
+        return instance;
+    }
+
+    private Power() {
         super(ModifierType.POWER,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
                 Main.getPlugin());
@@ -261,7 +268,10 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
     }
 
     private void powerBlockBreak(Block b, CraftPlayer p) {
-        if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.BUBBLE_COLUMN) && !b.getType().equals(Material.LAVA)) {
+        if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK)
+                && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.BUBBLE_COLUMN) && !b.getType().equals(Material.LAVA)
+                && !b.getType().equals(Material.END_PORTAL) && !b.getType().equals(Material.END_CRYSTAL) && !b.getType().equals(Material.END_PORTAL_FRAME)
+                && !b.getType().equals(Material.NETHER_PORTAL)) {
             p.getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
         }
     }

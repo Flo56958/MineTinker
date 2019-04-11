@@ -31,9 +31,17 @@ public class Experienced extends Modifier implements Craftable, Listener {
     private int percentagePerLevel;
     private int amount;
 
-    public Experienced() {
+    private static Experienced instance;
+
+    public static Experienced instance() {
+        if (instance == null) instance = new Experienced();
+        return instance;
+    }
+
+    private Experienced() {
         super(ModifierType.EXPERIENCED,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL,
+                                                ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());

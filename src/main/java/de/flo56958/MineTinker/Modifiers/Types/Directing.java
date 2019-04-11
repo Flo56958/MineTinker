@@ -22,7 +22,14 @@ import java.util.List;
 
 public class Directing extends Modifier implements Craftable, Listener {
 
-    public Directing() {
+    private static Directing instance;
+
+    public static Directing instance() {
+        if (instance == null) instance = new Directing();
+        return instance;
+    }
+
+    private Directing() {
         super(ModifierType.DIRECTING,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());

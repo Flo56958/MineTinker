@@ -16,7 +16,7 @@ import org.bukkit.inventory.ShapedRecipe;
 
 public class CraftingRecipes {
 
-    private static ModManager modManager = ModManager.instance();
+    private static final ModManager modManager = ModManager.instance();
 
     static {
         FileConfiguration elytraConf = ConfigurationManager.getConfig("Elytra.yml");

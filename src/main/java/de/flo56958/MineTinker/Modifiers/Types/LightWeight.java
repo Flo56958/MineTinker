@@ -21,7 +21,14 @@ import java.util.Collections;
 
 public class LightWeight extends Modifier implements Enchantable, Craftable {
 
-    public LightWeight() {
+    private static LightWeight instance;
+
+    public static LightWeight instance() {
+        if (instance == null) instance = new LightWeight();
+        return instance;
+    }
+
+    private LightWeight() {
         super(ModifierType.LIGHT_WEIGHT,
                 new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
                 Main.getPlugin());

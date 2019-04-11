@@ -21,7 +21,15 @@ import java.util.Arrays;
 
 public class Fiery extends Modifier implements Enchantable, Craftable {
 
-    public Fiery() {
+    //TODO: Add Particle effect
+    private static Fiery instance;
+
+    public static Fiery instance() {
+        if (instance == null) instance = new Fiery();
+        return instance;
+    }
+
+    private Fiery() {
         super(ModifierType.FIERY,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());

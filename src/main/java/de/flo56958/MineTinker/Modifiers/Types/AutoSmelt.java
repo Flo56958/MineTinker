@@ -33,7 +33,14 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
     private boolean smeltStone;
     private boolean burnCoal;
 
-    public AutoSmelt() {
+    private static AutoSmelt instance;
+
+    public static AutoSmelt instance() {
+        if (instance == null) instance = new AutoSmelt();
+        return instance;
+    }
+
+    private AutoSmelt() {
         super(ModifierType.AUTO_SMELT,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
                 Main.getPlugin());
@@ -131,6 +138,11 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
 
             case SAND:
                 loot = Material.GLASS;
+                break;
+
+            case SNOW:
+            case SNOW_BLOCK:
+                loot = Material.AIR;
                 break;
 
             case RED_SAND:

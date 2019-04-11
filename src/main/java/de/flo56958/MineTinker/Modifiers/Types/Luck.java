@@ -22,7 +22,14 @@ import java.util.Arrays;
 
 public class Luck extends Modifier implements Craftable {
 
-    public Luck() {
+    private static Luck instance;
+
+    public static Luck instance() {
+        if (instance == null) instance = new Luck();
+        return instance;
+    }
+
+    private Luck() {
         super(ModifierType.LUCK,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS,
                         ToolType.FISHINGROD, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT)),

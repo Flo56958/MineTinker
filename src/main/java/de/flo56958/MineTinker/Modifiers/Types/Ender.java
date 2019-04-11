@@ -27,7 +27,14 @@ public class Ender extends Modifier implements Craftable, Listener {
     private boolean compatibleWithInfinity;
     private boolean hasSound;
 
-    public Ender() {
+    private static Ender instance;
+
+    public static Ender instance() {
+        if (instance == null) instance = new Ender();
+        return instance;
+    }
+
+    private Ender() {
         super(ModifierType.ENDER,
                 new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.TRIDENT)),
                 Main.getPlugin());

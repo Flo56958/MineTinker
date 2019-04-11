@@ -20,7 +20,14 @@ import java.util.Arrays;
 
 public class Protecting extends Modifier implements Craftable {
 
-    public Protecting() {
+    private static Protecting instance;
+
+    public static Protecting instance() {
+        if (instance == null) instance = new Protecting();
+        return instance;
+    }
+
+    private Protecting() {
         super(ModifierType.PROTECTING,
                 new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());

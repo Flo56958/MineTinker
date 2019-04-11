@@ -22,7 +22,14 @@ import java.util.Arrays;
 
 public class Aquaphilic extends Modifier implements Craftable {
 
-    public Aquaphilic() {
+    private static Aquaphilic instance;
+
+    public static Aquaphilic instance() {
+        if (instance == null) instance = new Aquaphilic();
+        return instance;
+    }
+
+    private Aquaphilic() {
         super(ModifierType.AQUAPHILIC,
                 new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.HELMET)),
                 Main.getPlugin());

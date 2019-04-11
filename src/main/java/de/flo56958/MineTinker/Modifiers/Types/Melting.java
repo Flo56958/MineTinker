@@ -11,27 +11,37 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Melting extends Modifier implements Enchantable, Craftable {
+public class Melting extends Modifier implements Enchantable, Craftable, Listener {
 
     private double bonusMultiplier;
     private boolean cancelBurning;
 
-    public Melting() {
+    private static Melting instance;
+
+    public static Melting instance() {
+        if (instance == null) instance = new Melting();
+        return instance;
+    }
+
+    private Melting() {
         super(ModifierType.MELTING,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
                                                 ToolType.CHESTPLATE, ToolType.LEGGINGS)),
                 Main.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
 
     @Override

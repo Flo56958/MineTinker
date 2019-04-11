@@ -16,6 +16,10 @@ import org.bukkit.plugin.Plugin;
  * MineTinker-Methods, but it is recommended to do everything
  * with this class.
  *
+ * This API is in a very unfinished state.
+ *
+ * @see de.flo56958.MineTinker.Modifiers.Modifier
+ *
  * MineTinker-Events:
  * @see de.flo56958.MineTinker.Events.ModifierApplyEvent
  * @see de.flo56958.MineTinker.Events.ModifierFailEvent
@@ -35,7 +39,7 @@ import org.bukkit.plugin.Plugin;
 public class MineTinkerAPI {
 
     private static MineTinkerAPI api;
-    private static ModManager modManager = ModManager.instance();
+    private static final ModManager modManager = ModManager.instance();
 
     public static MineTinkerAPI instance() {
         if (api == null) {

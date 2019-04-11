@@ -23,7 +23,14 @@ import java.util.Arrays;
 
 public class SilkTouch extends Modifier implements Enchantable, Craftable {
 
-    public SilkTouch() {
+    private static SilkTouch instance;
+
+    public static SilkTouch instance() {
+        if (instance == null) instance = new SilkTouch();
+        return instance;
+    }
+
+    private SilkTouch() {
         super(ModifierType.SILK_TOUCH,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
                 Main.getPlugin());
