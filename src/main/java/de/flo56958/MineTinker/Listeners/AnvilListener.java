@@ -3,6 +3,7 @@ package de.flo56958.MineTinker.Listeners;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierApplyEvent;
+import de.flo56958.MineTinker.Events.ToolUpgradeEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -59,7 +60,7 @@ public class AnvilListener implements Listener {
                 inv.clear();
                 return;
             }
-            //TODO: TRIGGER TOOL UPGRADE EVENT HERE INSTEAD IN UPGRADE METHOD
+            Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, true));
             player.setItemOnCursor(newTool);
             inv.clear();
         } else { //is modifier
