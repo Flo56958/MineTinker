@@ -61,7 +61,8 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
     	config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted mossy Cobblestone");
-    	config.addDefault(key + ".description", "Chance to repair the tool / armor while using it!");
+        config.addDefault(key + ".modifier_item", "MOSSY_COBBLESTONE"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".description", "Chance to repair the tool / armor while using it!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Self-Repair-Modifier");
         config.addDefault(key + ".Color", "%GREEN%");
         config.addDefault(key + ".MaxLevel", 10);
@@ -77,7 +78,7 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.MOSSY_COBBLESTONE, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.percentagePerLevel = config.getInt(key + ".PercentagePerLevel");
         this.healthRepair = config.getInt(key + ".HealthRepair");

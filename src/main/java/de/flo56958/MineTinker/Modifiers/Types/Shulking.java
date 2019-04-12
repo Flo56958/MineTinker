@@ -55,7 +55,8 @@ public class Shulking extends Modifier implements Craftable, Listener {
     	config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key); //wingardium leviosa
     	config.addDefault(key + ".name_modifier", "Enhanced Shulkershell");
-    	config.addDefault(key + ".description", "Makes enemies levitate!");
+        config.addDefault(key + ".modifier_item", "SHULKER_SHELL"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".description", "Makes enemies levitate!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Shulking-Modifier");
         config.addDefault(key + ".Color", "%LIGHT_PURPLE%");
         config.addDefault(key + ".MaxLevel", 10);
@@ -74,7 +75,7 @@ public class Shulking extends Modifier implements Craftable, Listener {
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.SHULKER_SHELL, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     
         this.duration = config.getInt("Shulking.Duration");
         this.effectAmplifier = config.getInt("Shulking.EffectAmplifier");

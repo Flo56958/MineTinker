@@ -71,6 +71,7 @@ public class Soulbound extends Modifier implements Craftable, Listener {
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Powerinfused Beacon");
+        config.addDefault(key + ".modifier_item", "BEACON"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Do not lose the tool when dying.");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Soulbound-Modifier");
         config.addDefault(key + ".Color", "%GRAY%");
@@ -92,7 +93,7 @@ public class Soulbound extends Modifier implements Craftable, Listener {
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 getConfig().getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.BEACON, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
 
         this.toolDropable = config.getBoolean(key + ".ToolDropable");
         this.decrementModLevelOnUse = config.getBoolean(key + ".DecrementModLevelOnUse");

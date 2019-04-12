@@ -55,7 +55,8 @@ public class Poisonous extends Modifier implements Enchantable, Craftable, Liste
     	config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enhanced Rotten Flesh");
-    	config.addDefault(key + ".description", "Poisons enemies!");
+        config.addDefault(key + ".modifier_item", "ROTTEN_FLESH"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".description", "Poisons enemies!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Poisonous-Modifier");
         config.addDefault(key + ".Color", "%DARK_GREEN%");
         config.addDefault(key + ".MaxLevel", 5);
@@ -71,7 +72,7 @@ public class Poisonous extends Modifier implements Enchantable, Craftable, Liste
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.ROTTEN_FLESH, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.duration = config.getInt(key + ".Duration");
         this.durationMultiplier = config.getDouble(key + ".DurationMultiplier");

@@ -56,7 +56,8 @@ public class Webbed extends Modifier implements Craftable, Listener {
     	config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Compressed Cobweb");
-    	config.addDefault(key + ".description", "Slowes down enemies!");
+        config.addDefault(key + ".modifier_item", "COBWEB"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".description", "Slowes down enemies!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Webbed-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");
         config.addDefault(key + ".MaxLevel", 3);
@@ -76,7 +77,7 @@ public class Webbed extends Modifier implements Craftable, Listener {
                 "[" + getConfig().getString(key + ".name_modifier") + "] " + getConfig().getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 getConfig().getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.COBWEB, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.duration = config.getInt(key + ".Duration");
         this.durationMultiplier = config.getDouble(key + ".DurationMultiplier");

@@ -55,7 +55,8 @@ public class Beheading extends Modifier implements Enchantable, Craftable, Liste
     	config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted Wither-Skull");
-    	config.addDefault(key + ".description", "Chance to drop the head of the mob!");
+        config.addDefault(key + ".modifier_item", "WITHER_SKELETON_SKULL"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".description", "Chance to drop the head of the mob!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Beheading-Modifier");
     	config.addDefault(key + ".Color", "%DARK_GRAY%");
     	config.addDefault(key + ".MaxLevel", 10);
@@ -69,7 +70,7 @@ public class Beheading extends Modifier implements Enchantable, Craftable, Liste
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.WITHER_SKELETON_SKULL, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.percentagePerLevel = config.getInt("Beheading.PercentagePerLevel");
     }

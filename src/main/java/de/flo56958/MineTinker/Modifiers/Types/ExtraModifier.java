@@ -43,11 +43,11 @@ public class ExtraModifier extends Modifier {
     	String key = "Extra-Modifier";
     	config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".description", "Adds a additional Modifiers-Slot to the tool!");
+        config.addDefault(key + ".modifier_item", "NETHER_STAR"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".description", "Adds a additional Modifiers-Slot to the tool!");
         config.addDefault(key + ".Color", "%WHITE%");
         config.addDefault(key + ".ExtraModifierGain", 1); //How much Slots should be added per Nether-Star
-    	config.addDefault(key + ".modifier_item", "NETHER_STAR"); //Needs to be a viable Material-Type
-        
+
     	ConfigurationManager.saveConfig(config);
     	
         init(config.getString(key + ".name"),

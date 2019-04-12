@@ -51,6 +51,7 @@ public class Lifesteal extends Modifier implements Craftable, Listener {
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Bloodinfused Netherrack");
+        config.addDefault(key + ".modifier_item", "NETHERRACK"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Get HP when hitting enemies!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Lifesteal-Modifier");
         config.addDefault(key + ".Color", "%DARK_RED%");
@@ -71,7 +72,7 @@ public class Lifesteal extends Modifier implements Craftable, Listener {
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.NETHERRACK, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
 
         this.percentPerLevel = config.getInt(key + ".PercentOfDamagePerLevel");
         this.percentToTrigger = config.getInt(key + ".PercentToTrigger");

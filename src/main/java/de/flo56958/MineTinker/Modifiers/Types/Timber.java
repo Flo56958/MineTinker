@@ -55,7 +55,8 @@ public class Timber extends Modifier implements Craftable, Listener {
     	config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Wooden Emerald");
-    	config.addDefault(key + ".description", "Chop down trees in an instant!");
+        config.addDefault(key + ".modifier_item", "EMERALD"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".description", "Chop down trees in an instant!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Timber-Modifier");
         config.addDefault(key + ".Color", "%GREEN%");
         config.addDefault(key + ".MaximumBlocksPerSwing", -1);
@@ -72,7 +73,7 @@ public class Timber extends Modifier implements Craftable, Listener {
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 1,
-                modManager.createModifierItem(Material.EMERALD, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     }
 
     @Override

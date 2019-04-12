@@ -66,7 +66,8 @@ public class ConfigurationManager {
 	        } catch (IOException | InvalidConfigurationException e) { e.printStackTrace(); }
         }
     }
-    
+
+    //TODO: Make Set first Time option
     public static void saveConfig(FileConfiguration config) {
     	try {
 			config.save(configsFolder.get(config));

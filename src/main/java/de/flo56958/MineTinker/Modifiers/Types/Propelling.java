@@ -57,6 +57,7 @@ public class Propelling extends Modifier implements Craftable, Enchantable, List
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Enchanted Fireworkstar");
+        config.addDefault(key + ".modifier_item", "FIREWORK_STAR"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Propel yourself through the air.");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Propelling-Modifier");
         config.addDefault(key + ".Color", "%GOLD%");
@@ -74,7 +75,7 @@ public class Propelling extends Modifier implements Craftable, Enchantable, List
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.FIREWORK_STAR, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
 
         durabilityLoss = config.getInt(key + ".Elytra.DurabilityLoss");
         speedPerLevel = config.getDouble(key + ".Elytra.SpeedPerLevel");

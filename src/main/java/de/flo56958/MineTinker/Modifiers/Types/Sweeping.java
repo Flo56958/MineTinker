@@ -45,7 +45,8 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted Iron Ingot");
-    	config.addDefault(key + ".description", "More damage over a greater area!");
+        config.addDefault(key + ".modifier_item", "IRON_INGOT"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".description", "More damage over a greater area!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Sweeping-Modifier");
         config.addDefault(key + ".Color", "%RED%");
         config.addDefault(key + ".MaxLevel", 5);
@@ -58,7 +59,7 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.IRON_INGOT, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
     }
 
     @Override

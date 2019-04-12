@@ -44,6 +44,7 @@ public class Freezing extends Modifier implements Craftable {
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Icy Crystal");
+        config.addDefault(key + ".modifier_item", "DIAMOND"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "It is freezing around you.");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Freezing-Modifier");
         config.addDefault(key + ".Color", "%AQUA%");
@@ -61,7 +62,7 @@ public class Freezing extends Modifier implements Craftable {
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.DIAMOND, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
 
     }
 

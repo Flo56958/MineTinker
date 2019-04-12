@@ -59,7 +59,8 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
     	config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted Emerald");
-    	config.addDefault(key + ".description", "Tool can destroy more blocks per swing!");
+        config.addDefault(key + ".modifier_item", "EMERALD"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".description", "Tool can destroy more blocks per swing!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Power-Modifier");
         config.addDefault(key + ".Color", "%GREEN%");
         config.addDefault(key + ".lv1_vertical", false); //Should the 3x1 at level 1 be horizontal (false) or vertical (true)
@@ -73,7 +74,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
                 "[" + config.getString("Power.name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.EMERALD, ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.lv1_vertical = config.getBoolean("Power.lv1_vertical");
     }
