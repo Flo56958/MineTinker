@@ -21,6 +21,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -121,28 +122,36 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
 
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
         if (ToolType.BOOTS.getMaterials().contains(event.getTool().getType())
                 || ToolType.LEGGINGS.getMaterials().contains(event.getTool().getType())
                 || ToolType.CHESTPLATE.getMaterials().contains(event.getTool().getType())
-                || ToolType.HELMET.getMaterials().contains(event.getTool().getType())) { return; } //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
+                || ToolType.HELMET.getMaterials().contains(event.getTool().getType())) return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
         effect(event.getPlayer(), event.getTool());
     }
 
     @EventHandler
     public void effect(MTEntityDamageEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
         effect(event.getPlayer(), event.getTool());
     }
 
     @EventHandler
     public void effect(MTPlayerInteractEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
         effect(event.getPlayer(), event.getTool());
     }
 
+    @EventHandler
+    public void onShear(PlayerShearEntityEvent event) {
+        if (event.isCancelled() || !this.isAllowed()) return;
+        ItemStack tool = event.getPlayer().getInventory().getItemInMainHand();
+        if (!(modManager.isToolViable(tool) && ToolType.SHEARS.getMaterials().contains(tool.getType()))) return;
+        effect(event.getPlayer(), tool);
+    }
+
     public void effectElytra(Player p, ItemStack elytra) {
-        if (!this.isAllowed()) { return; }
+        if (!this.isAllowed()) return;
         effect(p, elytra);
     }
 
