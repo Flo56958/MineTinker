@@ -114,6 +114,7 @@ public class BlockListener implements Listener {
                     return;
                 }
             }
+            if (norm.getType().equals(Material.EXPERIENCE_BOTTLE)) return;
             int temp = norm.getAmount();
             norm.setAmount(1);
             for (Modifier m : modManager.getAllowedMods()) {

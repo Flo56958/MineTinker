@@ -89,12 +89,8 @@ public class Lifesteal extends Modifier implements Craftable, Listener {
 
         if (!modManager.hasMod(tool, this)) { return; }
 
-        System.out.println("3.");
-
         Random rand = new Random();
         if (rand.nextInt(100) > this.percentToTrigger) { return; }
-
-        System.out.println("4.");
 
         int level = modManager.getModLevel(tool, this);
         double damage = event.getEvent().getDamage();

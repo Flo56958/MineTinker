@@ -21,6 +21,7 @@ public enum ModifierType {
     LUCK("Luck"),
     MELTING("Melting"),
     POISONOUS("Poisonous"),
+    PORTALIZED("Portalized"),
     POWER("Power"),
     PROPELLING("Propelling"),
     PROTECTING("Protecting"),

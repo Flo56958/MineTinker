@@ -14,10 +14,13 @@ import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.AreaEffectCloud;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +29,7 @@ public class Ender extends Modifier implements Craftable, Listener {
 
     private boolean compatibleWithInfinity;
     private boolean hasSound;
+    private boolean hasParticles;
 
     private static Ender instance;
 
@@ -56,6 +60,7 @@ public class Ender extends Modifier implements Craftable, Listener {
         config.addDefault(key + ".Color", "%DARK_GREEN%");
         config.addDefault(key + ".MaxLevel", 2);
         config.addDefault(key + ".Sound", true); //#Enderman-Teleport-Sound
+        config.addDefault(key + ".Particles", true);
         config.addDefault(key + ".CompatibleWithInfinity", true);
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "PPP");
@@ -72,8 +77,9 @@ public class Ender extends Modifier implements Craftable, Listener {
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
-        this.hasSound = config.getBoolean("Ender.Sound");
-        this.compatibleWithInfinity = config.getBoolean("Ender.CompatibleWithInfinity");
+        this.hasSound = config.getBoolean(key + ".Sound");
+        this.hasParticles = config.getBoolean(key + ".Particles");
+        this.compatibleWithInfinity = config.getBoolean(key + ".CompatibleWithInfinity");
     }
 
     @Override
@@ -106,9 +112,24 @@ public class Ender extends Modifier implements Craftable, Listener {
         if (!p.isSneaking()) { return; }
 
         Location loc = event.getEvent().getEntity().getLocation().clone(); //Location of the Arrow
+        Location oldLoc = p.getLocation();
         p.teleport(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(), p.getLocation().getYaw(), p.getLocation().getPitch()).add(0, 1, 0));
         if (this.hasSound) {
             p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F);
+        }
+        if (this.hasParticles) {
+            AreaEffectCloud cloud = (AreaEffectCloud) p.getWorld().spawnEntity(p.getLocation(), EntityType.AREA_EFFECT_CLOUD);
+            cloud.setVelocity(new Vector(0, 1, 0));
+            cloud.setRadius(0.5f);
+            cloud.setDuration(5);
+            cloud.setColor(Color.GREEN);
+            cloud.getLocation().setYaw(90);
+            AreaEffectCloud cloud2 = (AreaEffectCloud) p.getWorld().spawnEntity(oldLoc, EntityType.AREA_EFFECT_CLOUD);
+            cloud2.setVelocity(new Vector(0, 1, 0));
+            cloud2.setRadius(0.5f);
+            cloud2.setDuration(5);
+            cloud2.setColor(Color.GREEN);
+            cloud2.getLocation().setPitch(90);
         }
         ChatWriter.log(false, p.getDisplayName() + " triggered Ender on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }

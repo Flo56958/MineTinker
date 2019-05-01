@@ -24,6 +24,8 @@ public class Directing extends Modifier implements Craftable, Listener {
 
     private static Directing instance;
 
+    private boolean workInPVP;
+
     public static Directing instance() {
         if (instance == null) instance = new Directing();
         return instance;
@@ -48,6 +50,7 @@ public class Directing extends Modifier implements Craftable, Listener {
         config.addDefault(key + ".modifier_item", "COMPASS"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Loot goes directly into Inventory!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Directing-Modifier");
+        config.addDefault(key + ".workinpvp", true);
         config.addDefault(key + ".Color", "%GRAY%");
         config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "ECE");
@@ -64,6 +67,7 @@ public class Directing extends Modifier implements Craftable, Listener {
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 1,
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        this.workInPVP = config.getBoolean(key + ".workinpvp");
     }
 
     @Override
@@ -76,12 +80,13 @@ public class Directing extends Modifier implements Craftable, Listener {
 
     @EventHandler
     public void effect(MTEntityDeathEvent event) {
-        if (!this.isAllowed()) { return; }
+        if (!this.isAllowed()) return;
+        if (!this.workInPVP && event.getEvent().getEntity() instanceof Player) return;
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
-        if (!p.hasPermission("minetinker.modifiers.directing.use")) { return; }
-        if (!modManager.hasMod(tool, this)) { return; }
+        if (!p.hasPermission("minetinker.modifiers.directing.use")) return;
+        if (!modManager.hasMod(tool, this)) return;
 
         List<ItemStack> drops = event.getEvent().getDrops();
         for (ItemStack current : drops) {

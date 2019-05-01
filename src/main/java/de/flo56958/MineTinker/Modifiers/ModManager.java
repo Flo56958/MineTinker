@@ -50,7 +50,7 @@ public class ModManager {
         loreLayout.add("%MODIFIERS%");
         layout.addDefault("LoreLayout", loreLayout);
 
-        layout.addDefault("ModifierLayout", "%MODIFIER%: %WHITE%%MODLEVEL%");
+        layout.addDefault("ModifierLayout", "%MODIFIER% %WHITE%%MODLEVEL%");
 
         ConfigurationManager.saveConfig(layout);
     }
@@ -160,6 +160,7 @@ public class ModManager {
         allMods.add(Luck.instance());
         allMods.add(Melting.instance());
         allMods.add(Poisonous.instance());
+        allMods.add(Portalized.instance());
         allMods.add(Power.instance());
         allMods.add(Propelling.instance());
         allMods.add(Protecting.instance());
