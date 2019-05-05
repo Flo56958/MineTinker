@@ -11,10 +11,9 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.AreaEffectCloud;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,8 +21,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.AreaEffectCloudApplyEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,8 +43,10 @@ public class Portalized extends Modifier implements Craftable, Listener {
         return instance;
     }
 
-    private HashMap<AreaEffectCloud, AreaEffectCloud> portals = new HashMap<>();
-    private HashMap<Player, LinkedList<AreaEffectCloud>> playerPortals = new HashMap<>();
+    private HashMap<ArmorStand, ArmorStand> portals = new HashMap<>();
+    private HashMap<Player, LinkedList<ArmorStand>> playerPortals = new HashMap<>();
+
+    private ItemStack portalHead = new ItemStack(Material.NETHER_PORTAL);
 
     private Portalized() {
         super(ModifierType.PORTALIZED,
@@ -102,18 +102,22 @@ public class Portalized extends Modifier implements Craftable, Listener {
     public void onArrowLand(MTProjectileHitEvent e) {
         if (!this.isAllowed()) return;
         Player p = e.getPlayer();
-        LinkedList<AreaEffectCloud> portals = playerPortals.get(p);
+        LinkedList<ArmorStand> portals = playerPortals.get(p);
         if (portals == null) {
             portals = new LinkedList<>();
         }
 
-        AreaEffectCloud newPortal = (AreaEffectCloud) p.getWorld().spawnEntity(e.getEvent().getHitBlock().getLocation().add(0, 1, 0), EntityType.AREA_EFFECT_CLOUD);
-        newPortal.setRadius(1.0f);
-        newPortal.setColor(Color.BLACK);
-        newPortal.setDuration(60 * 5 * 20);
-        newPortal.setRadiusPerTick(0.0f);
+        ArmorStand newPortal = (ArmorStand) p.getWorld().spawnEntity(e.getEvent().getHitBlock().getLocation(), EntityType.ARMOR_STAND);
+        newPortal.setHelmet(portalHead);
+
+        newPortal.setInvulnerable(true);
+        newPortal.setGravity(false);
+        newPortal.setCanPickupItems(false);
+        newPortal.setSilent(true);
+        newPortal.setMetadata("MineTinker", new FixedMetadataValue(Main.getPlugin(), "Portal"));
+        newPortal.setVisible(false);
         newPortal.setCustomNameVisible(true);
-        newPortal.addCustomEffect(new PotionEffect(PotionEffectType.CONFUSION, 5 * 20, 0), true);
+
         switch (portals.size()) {
             case 0:
                 portals.add(newPortal);
@@ -123,24 +127,24 @@ public class Portalized extends Modifier implements Craftable, Listener {
                 portals.addLast(newPortal);
                 break;
             case 2:
-                AreaEffectCloud toRemove = portals.removeFirst();
+                ArmorStand toRemove = portals.removeFirst();
                 portals.addLast(newPortal);
-                toRemove.setDuration(0);
+                toRemove.remove();
                 this.portals.remove(toRemove);
                 this.portals.put(portals.getFirst(), newPortal);
                 this.portals.put(newPortal, portals.getFirst());
-
-                newPortal.setCustomName("2.");
-                portals.getFirst().setCustomName("1.");
                 break;
         }
+
+        newPortal.setCustomName(p.getDisplayName() + " : " + portals.getFirst().getLocation().toString());
+        portals.getFirst().setCustomName(p.getDisplayName() + " : " + newPortal.getLocation().toString());
     }
-    //TODO: Löschen aus der Hashmap durch Despawn-Event
+    //TODO: Löschen wenn neugeladen wird
 
     @EventHandler
     public void onPortalClick(EntityDamageByEntityEvent e) {
         if (!(e.getDamager() instanceof Player)) return;
-        if (!(e.getEntity() instanceof AreaEffectCloud)) return;
+        if (!(e.getEntity() instanceof ArmorStand)) return;
 
         System.out.println("hi!");
     }
