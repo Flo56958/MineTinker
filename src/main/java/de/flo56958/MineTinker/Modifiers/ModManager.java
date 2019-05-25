@@ -6,13 +6,13 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Types.*;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import net.minecraft.server.v1_13_R2.*;
+import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.ItemFlag;
@@ -436,7 +436,7 @@ public class ModManager {
     public boolean isWandViable(ItemStack wand) { return wand != null && hasNBTTag(wand, "IdentifierBuilderswand"); }
 
     public void setNBTTag(ItemStack is, String key, NBTBase value) {
-        net.minecraft.server.v1_13_R2.ItemStack nmsItem = CraftItemStack.asNMSCopy(is);
+        net.minecraft.server.v1_14_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(is);
         NBTTagCompound comp = nmsItem.getTag();
         if (comp == null) { comp = new NBTTagCompound(); }
         comp.set(key, value);
@@ -447,7 +447,7 @@ public class ModManager {
     }
 
     private void removeNBTTag(ItemStack is, String key) {
-        net.minecraft.server.v1_13_R2.ItemStack nmsItem = CraftItemStack.asNMSCopy(is);
+        net.minecraft.server.v1_14_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(is);
         NBTTagCompound comp = nmsItem.getTag();
         if (comp == null) { comp = new NBTTagCompound(); }
         comp.remove(key);
@@ -458,7 +458,7 @@ public class ModManager {
     }
 
     private NBTBase getNBTTag(ItemStack is, String key) {
-        net.minecraft.server.v1_13_R2.ItemStack nmsItem = CraftItemStack.asNMSCopy(is);
+        net.minecraft.server.v1_14_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(is);
         NBTTagCompound comp = nmsItem.getTag();
         if (comp == null) { return null; }
         return comp.get(key);

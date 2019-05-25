@@ -60,25 +60,25 @@ public class Commands implements TabExecutor {
                             break;
                         case "checkupdate":
                         case "cu":
-                            if (p.hasPermission("minetinker.command.checkupdate")) {
+                            if (p.hasPermission("minetinker.commands.checkupdate")) {
                                 Functions.checkUpdate(p);
                             } else noPerm(p);
                             break;
                         case "convert":
                         case "c":
-                            if (p.hasPermission("minetinker.command.convert")) {
+                            if (p.hasPermission("minetinker.commands.convert")) {
                                 Functions.convert(p, args);
                             } else noPerm(p);
                             break;
                         case "give":
                         case "g":
-                            if (p.hasPermission("minetinker.command.give")) {
+                            if (p.hasPermission("minetinker.commands.give")) {
                                 Functions.give(p, args);
                             } else noPerm(p);
                             break;
                         case "givemodifieritem":
                         case "gm":
-                            if (p.hasPermission("minetinker.command.givemodifieritem")) {
+                            if (p.hasPermission("minetinker.commands.givemodifieritem")) {
                                 Functions.giveModifierItem(p, args);
                             } else noPerm(p);
                             break;

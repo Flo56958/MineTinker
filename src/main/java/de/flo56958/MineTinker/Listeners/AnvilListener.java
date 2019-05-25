@@ -19,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.AnvilInventory;
+import org.bukkit.inventory.GrindstoneInventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -169,5 +170,15 @@ public class AnvilListener implements Listener {
         	e.setResult(newTool);
         	i.setRepairCost(0);
         }
+    }
+
+    @EventHandler
+    public void onGrind(InventoryClickEvent e) {
+	    if (!(e.getInventory() instanceof GrindstoneInventory)) return;
+	    if (e.getSlot() != 9) return;
+	    ItemStack results = e.getCurrentItem();
+	    if (modManager.isToolViable(results) || modManager.isArmorViable(results)) {
+	        e.setCancelled(true);
+	    }
     }
 }
