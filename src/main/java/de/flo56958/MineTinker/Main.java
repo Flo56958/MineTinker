@@ -83,12 +83,9 @@ public class Main extends JavaPlugin {
         }
 
         if (getConfig().getBoolean("CheckForUpdates")) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    updater.checkForUpdate();
-                }
-            }.runTaskLater(Main.getPlugin(), 20);
+            Bukkit.getScheduler().scheduleAsyncDelayedTask(this, () -> {
+                updater.checkForUpdate();
+            }, 20);
         }
     }
 
