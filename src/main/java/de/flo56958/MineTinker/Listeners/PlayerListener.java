@@ -27,18 +27,18 @@ public class PlayerListener implements Listener {
     @SuppressWarnings("deprecation")
 	@EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        if (e.isCancelled()) { return; }
-        if (Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) { return; }
-        if (e.getSlot() < 0) { return; }
-        if (!(e.getClickedInventory() instanceof PlayerInventory || e.getClickedInventory() instanceof DoubleChestInventory || e.getClickedInventory() instanceof CraftInventory)) { return; }
+        if (e.isCancelled()) return;
+        if (Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) return;
+        if (e.getSlot() < 0) return;
+        if (!(e.getClickedInventory() instanceof PlayerInventory || e.getClickedInventory() instanceof DoubleChestInventory || e.getClickedInventory() instanceof CraftInventory)) return;
 
         ItemStack tool = e.getClickedInventory().getItem(e.getSlot());
 
-        if (!(modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool))) { return; }
+        if (!(modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool))) return;
 
-        if (!(Main.getPlugin().getConfig().getBoolean("Repairable") && e.getWhoClicked().hasPermission("minetinker.tool.repair"))) { return; }
+        if (!(Main.getPlugin().getConfig().getBoolean("Repairable") && e.getWhoClicked().hasPermission("minetinker.tool.repair"))) return;
 
-        if (e.getWhoClicked().getItemOnCursor() == null) { return; }
+        if (tool == null) return;
 
         ItemStack repair = e.getWhoClicked().getItemOnCursor();
         String[] name = tool.getType().toString().split("_");
@@ -124,7 +124,7 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOW)
     public void onInteract(PlayerInteractEvent e) {
-        if (Lists.WORLDS.contains(e.getPlayer().getWorld().getName())) { return; }
+        if (Lists.WORLDS.contains(e.getPlayer().getWorld().getName())) return;
         if (!e.getBlockFace().equals(BlockFace.SELF)) {
             Lists.BLOCKFACE.replace(e.getPlayer(), e.getBlockFace());
         }

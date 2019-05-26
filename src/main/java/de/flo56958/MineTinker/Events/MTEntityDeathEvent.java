@@ -44,6 +44,7 @@ public class MTEntityDeathEvent extends Event {
      */
     public EntityDeathEvent getEvent() { return event; }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return handlers;

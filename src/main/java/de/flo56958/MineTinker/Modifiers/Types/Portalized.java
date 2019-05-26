@@ -101,11 +101,16 @@ public class Portalized extends Modifier implements Craftable, Listener {
     @EventHandler
     public void onArrowLand(MTProjectileHitEvent e) {
         if (!this.isAllowed()) return;
+
         Player p = e.getPlayer();
+
         LinkedList<ArmorStand> portals = playerPortals.get(p);
+
         if (portals == null) {
             portals = new LinkedList<>();
         }
+
+        if (e.getEvent().getHitBlock() == null) return;
 
         ArmorStand newPortal = (ArmorStand) p.getWorld().spawnEntity(e.getEvent().getHitBlock().getLocation(), EntityType.ARMOR_STAND);
         newPortal.setHelmet(portalHead);
@@ -143,8 +148,8 @@ public class Portalized extends Modifier implements Craftable, Listener {
 
     @EventHandler
     public void onPortalClick(EntityDamageByEntityEvent e) {
-        if (!(e.getDamager() instanceof Player)) return;
-        if (!(e.getEntity() instanceof ArmorStand)) return;
+        //if (!(e.getDamager() instanceof Player)) return;
+        //if (!(e.getEntity() instanceof ArmorStand)) return;
 
         //System.out.println("hi!");
     }

@@ -80,10 +80,12 @@ public class ModManager {
      * Class constructor (no parameters)
      */
     private ModManager() {
-        this.loreScheme = (List<String>) layout.getList("LoreLayout");
+        this.loreScheme = layout.getStringList("LoreLayout");
+
         for (int i = 0; i < loreScheme.size(); i++) {
             loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
         }
+
         this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
     }
 
@@ -93,7 +95,7 @@ public class ModManager {
      * @return the instance
      */
     public synchronized static ModManager instance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new ModManager();
             instance.init();
         }
@@ -104,10 +106,10 @@ public class ModManager {
         config = Main.getPlugin().getConfig();
         layout = ConfigurationManager.getConfig("layout.yml");
 
-    	for(Modifier m : allMods) {
+    	for (Modifier m : allMods) {
     		m.reload();
     		
-    		if(m.isAllowed()) {
+    		if (m.isAllowed()) {
                 register(m);
 
             } else {
@@ -131,10 +133,12 @@ public class ModManager {
             ((Craftable) m).registerCraftingRecipe();
         }
 
-        this.loreScheme = (List<String>) layout.getList("LoreLayout");
+        this.loreScheme = layout.getStringList("LoreLayout");
+
         for (int i = 0; i < loreScheme.size(); i++) {
             loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
         }
+
         this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
     }
 
@@ -183,7 +187,7 @@ public class ModManager {
      * @param mod the modifier instance
      */
     public void register(Modifier mod) {
-    	if(!mods.contains(mod)) {
+    	if (!mods.contains(mod)) {
 	        mods.add(mod);
 	        String mes = "%GREEN%Registered the %MOD% %GREEN%modifier from %PLUGIN%.";
 	        mes = ChatWriter.addColors(mes);
@@ -238,8 +242,8 @@ public class ModManager {
      * @return the modifier instance, null if modifier is not allowed or loaded
      */
     public Modifier get(ModifierType type) {
-        for(Modifier m : mods) {
-            if(m.getType().equals(type)) {
+        for (Modifier m : mods) {
+            if (m.getType().equals(type)) {
                 return m;
             }
         }
@@ -253,8 +257,8 @@ public class ModManager {
      * @return the modifier instance, null if modifier is not allowed or loaded
      */
     public Modifier getAdmin(ModifierType type) {
-        for(Modifier m : allMods) {
-            if(m.getType().equals(type)) {
+        for (Modifier m : allMods) {
+            if (m.getType().equals(type)) {
                 return m;
             }
         }
@@ -385,7 +389,7 @@ public class ModManager {
         int level = this.getLevel(tool);
         long exp = this.getExp(tool);
 
-        if (level == -1 || exp == -1) { return; }
+        if (level == -1 || exp == -1) return;
 
         if (exp + 1 < 0 || level + 1 < 0) {
             if (Main.getPlugin().getConfig().getBoolean("ResetAtIntOverflow")) { //secures a "good" exp-system if the Values get to big
@@ -504,7 +508,7 @@ public class ModManager {
             }
         }
 
-        if (index == -1) { return; }
+        if (index == -1) return;
 
         lore.remove(index);
 
@@ -524,13 +528,16 @@ public class ModManager {
         /*
          * For mcMMO-Superbreaker and other Skills
          */
-        ArrayList<String> oldLore = (ArrayList<String>) meta.getLore();
-        if (oldLore != null && oldLore.size() > 0 && oldLore.get(oldLore.size() - 1).equals("mcMMO Ability Tool")) {
-            lore.add("mcMMO Ability Tool");
-        }
 
-        meta.setLore(lore);
-        is.setItemMeta(meta);
+        if (meta != null) {
+            ArrayList<String> oldLore = (ArrayList<String>) meta.getLore();
+            if (oldLore != null && oldLore.size() > 0 && oldLore.get(oldLore.size() - 1).equals("mcMMO Ability Tool")) {
+                lore.add("mcMMO Ability Tool");
+            }
+
+            meta.setLore(lore);
+            is.setItemMeta(meta);
+        }
     }
 
     /**
@@ -555,7 +562,7 @@ public class ModManager {
                 || ToolType.LEGGINGS.getMaterials().contains(m)
                 || ToolType.ELYTRA.getMaterials().contains(m)) {
             setNBTTag(is, "IdentifierArmor", new NBTTagInt(0));
-        } else { return; }
+        } else return;
         setExp(is, 0);
         setLevel(is, 1);
         setFreeSlots(is, config.getInt("StartingModifierSlots"));
@@ -565,12 +572,18 @@ public class ModManager {
     public ItemStack createModifierItem(Material m, String name, String description, Modifier mod) {
         ItemStack is = new ItemStack(m, 1);
         ItemMeta meta = is.getItemMeta();
-        meta.setDisplayName(name);
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(description);
-        meta.setLore(lore);
-        meta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
-        is.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.setDisplayName(name);
+
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add(description);
+            meta.setLore(lore);
+
+            meta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
+
+            is.setItemMeta(meta);
+        }
 
         setNBTTag(is, "modifierItem", new NBTTagString(mod.getType().getNBTKey()));
 
@@ -617,12 +630,16 @@ public class ModManager {
      */
     public boolean durabilityCheck(Cancellable e, Player p, ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2 && config.getBoolean("UnbreakableTools")) {
-            e.setCancelled(true);
-            if (config.getBoolean("Sound.OnBreaking")) {
-                p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
+
+        // TODO: Check if damageable?
+        if (meta != null) {
+            if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2 && config.getBoolean("UnbreakableTools")) {
+                e.setCancelled(true);
+                if (config.getBoolean("Sound.OnBreaking")) {
+                    p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
+                }
+                return false;
             }
-            return false;
         }
 
         return true;

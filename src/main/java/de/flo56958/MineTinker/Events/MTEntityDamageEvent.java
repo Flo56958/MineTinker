@@ -63,6 +63,7 @@ public class MTEntityDamageEvent extends Event implements Cancellable {
         return event;
     }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return handlers;

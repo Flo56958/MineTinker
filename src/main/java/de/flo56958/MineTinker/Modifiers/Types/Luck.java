@@ -79,31 +79,33 @@ public class Luck extends Modifier implements Craftable {
 
         ItemMeta meta = tool.getItemMeta();
 
-        if (ToolType.AXE.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
-            meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.BOW.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.HOE.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.PICKAXE.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.SHOVEL.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.SHEARS.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.FISHINGROD.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.LUCK, modManager.getModLevel(tool, this), true);
-        }
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-        }
+        if (meta != null) {
+            if (ToolType.AXE.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
+                meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.BOW.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.HOE.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.PICKAXE.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.SHOVEL.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.SHEARS.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.FISHINGROD.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.LUCK, modManager.getModLevel(tool, this), true);
+            }
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
 
-        tool.setItemMeta(meta);
+            tool.setItemMeta(meta);
+        }
 
         return tool;
     }
@@ -111,10 +113,13 @@ public class Luck extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.LOOT_BONUS_BLOCKS);
-        meta.removeEnchant(Enchantment.LOOT_BONUS_MOBS);
-        meta.removeEnchant(Enchantment.LUCK);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.LOOT_BONUS_BLOCKS);
+            meta.removeEnchant(Enchantment.LOOT_BONUS_MOBS);
+            meta.removeEnchant(Enchantment.LUCK);
+            tool.setItemMeta(meta);
+        }
     }
 
     @Override

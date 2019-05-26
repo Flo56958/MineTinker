@@ -32,14 +32,14 @@ public class ArmorListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDamage(EntityDamageByEntityEvent e) {
-        if (e.isCancelled()) { return; }
-        if (Lists.WORLDS.contains(e.getEntity().getWorld().getName())) { return; }
+        if (e.isCancelled()) return;
+        if (Lists.WORLDS.contains(e.getEntity().getWorld().getName())) return;
 
-        if (!(e.getEntity() instanceof Player)) { return; }
+        if (!(e.getEntity() instanceof Player)) return;
 
         Player p = (Player) e.getEntity();
 
-        //if (p.isBlocking()) { return; } //does not really work
+        //if (p.isBlocking()) return; //does not really work
 
         Entity ent = e.getDamager();
 
@@ -70,10 +70,10 @@ public class ArmorListener implements Listener {
 
     @EventHandler
     public void onPlayerDamage(EntityDamageEvent e) {
-        if (e.isCancelled()) { return; }
-        if (Lists.WORLDS.contains(e.getEntity().getWorld().getName())) { return; }
+        if (e.isCancelled()) return;
+        if (Lists.WORLDS.contains(e.getEntity().getWorld().getName())) return;
 
-        if (!(e.getEntity() instanceof Player)) { return; }
+        if (!(e.getEntity() instanceof Player)) return;
 
         Player p = (Player) e.getEntity();
 
@@ -94,12 +94,12 @@ public class ArmorListener implements Listener {
 
     @EventHandler
     public void onElytraDamage(PlayerItemDamageEvent e) {
-        if (e.isCancelled()) { return; }
+        if (e.isCancelled()) return;
 
-        if (!e.getPlayer().isGliding()) { return; }
+        if (!e.getPlayer().isGliding()) return;
 
-        if (!e.getItem().getType().equals(Material.ELYTRA)) { return; }
-        if (!modManager.isArmorViable(e.getItem())) { return; }
+        if (!e.getItem().getType().equals(Material.ELYTRA)) return;
+        if (!modManager.isArmorViable(e.getItem())) return;
 
         Random rand = new Random();
         int chance = rand.nextInt(100);

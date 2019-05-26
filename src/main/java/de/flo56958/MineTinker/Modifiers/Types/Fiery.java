@@ -69,32 +69,38 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
 
         ItemMeta meta = tool.getItemMeta();
 
-        if (ToolType.BOW.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.ARROW_FIRE, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.FIRE_ASPECT, modManager.getModLevel(tool, this), true);
-        }
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+        if (meta != null) {
+            if (ToolType.BOW.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.ARROW_FIRE, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.FIRE_ASPECT, modManager.getModLevel(tool, this), true);
+            }
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+
+            tool.setItemMeta(meta);
         }
 
-        tool.setItemMeta(meta);
         return tool;
     }
 
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.FIRE_ASPECT);
-        meta.removeEnchant(Enchantment.ARROW_FIRE);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.FIRE_ASPECT);
+            meta.removeEnchant(Enchantment.ARROW_FIRE);
+            tool.setItemMeta(meta);
+        }
     }
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.fiery.craft")) { return; }
+        if (!p.hasPermission("minetinker.modifiers.fiery.craft")) return;
         _createModifierItem(getConfig(), p, this, "Fiery");
     }
 

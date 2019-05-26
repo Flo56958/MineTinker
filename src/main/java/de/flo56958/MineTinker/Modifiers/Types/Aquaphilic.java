@@ -82,17 +82,20 @@ public class Aquaphilic extends Modifier implements Craftable {
 
         ItemMeta meta = tool.getItemMeta();
 
-        if (ToolType.BOOTS.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.DEPTH_STRIDER, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.HELMET.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.OXYGEN, modManager.getModLevel(tool, this), true);
-            meta.addEnchant(Enchantment.WATER_WORKER, modManager.getModLevel(tool, this), true);
-        }
+        if (meta != null ) {
+            if (ToolType.BOOTS.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.DEPTH_STRIDER, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.HELMET.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.OXYGEN, modManager.getModLevel(tool, this), true);
+                meta.addEnchant(Enchantment.WATER_WORKER, modManager.getModLevel(tool, this), true);
+            }
 
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+
         }
 
         tool.setItemMeta(meta);
@@ -103,10 +106,14 @@ public class Aquaphilic extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.DEPTH_STRIDER);
-        meta.removeEnchant(Enchantment.OXYGEN);
-        meta.removeEnchant(Enchantment.WATER_WORKER);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.DEPTH_STRIDER);
+            meta.removeEnchant(Enchantment.OXYGEN);
+            meta.removeEnchant(Enchantment.WATER_WORKER);
+
+            tool.setItemMeta(meta);
+        }
     }
 
     private static FileConfiguration getConfig() {

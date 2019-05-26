@@ -108,12 +108,12 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
      */
     @EventHandler
     public void effect(MTBlockBreakEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
         Block b = event.getBlock();
-        if (!checkPower(p, tool)) { return; }
-        if (ToolType.HOE.getMaterials().contains(tool.getType())) { return; }
+        if (!checkPower(p, tool)) return;
+        if (ToolType.HOE.getMaterials().contains(tool.getType())) return;
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 
@@ -204,15 +204,15 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
      */
     @EventHandler
     public void effect(MTPlayerInteractEvent event) {
-        if (!event.isCancelled() || !this.isAllowed()) { return; }
+        if (!event.isCancelled() || !this.isAllowed()) return;
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
 
-        if (!ToolType.HOE.getMaterials().contains(tool.getType())) { return; }
+        if (!ToolType.HOE.getMaterials().contains(tool.getType())) return;
 
         PlayerInteractEvent e = event.getEvent();
-        if (!checkPower(p, tool)) { return; }
+        if (!checkPower(p, tool)) return;
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 
@@ -222,14 +222,16 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
 
         Block b = e.getClickedBlock();
 
+        if (b == null) return;
+
         if (level == 1) {
             if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
                 Block b1;
                 Block b2;
                 
-                FileConfiguration config = getConfig();
+                //FileConfiguration config = getConfig();
                 
-                if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
+                if ((PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S"))) {
                     if (this.lv1_vertical) {
                         b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
                         b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
@@ -290,7 +292,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.power.craft")) { return; }
+        if (!p.hasPermission("minetinker.modifiers.power.craft")) return;
         _createModifierItem(getConfig(), p, this, "Power");
     }
 

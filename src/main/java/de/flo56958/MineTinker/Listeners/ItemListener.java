@@ -27,11 +27,11 @@ public class ItemListener implements Listener {
 
     @EventHandler
     public void onDespawn(ItemDespawnEvent e) {
-        if (e.isCancelled()) { return; }
+        if (e.isCancelled()) return;
 
         Item item = e.getEntity();
         ItemStack is = item.getItemStack();
-        if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) { return; }
+        if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) return;
 
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetPersistent")) {
             e.setCancelled(true);
@@ -41,7 +41,7 @@ public class ItemListener implements Listener {
 
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent e) {
-        if (e.isCancelled()) { return; }
+        if (e.isCancelled()) return;
 
         Item item = e.getItemDrop();
         ItemStack is = item.getItemStack();
@@ -61,9 +61,9 @@ public class ItemListener implements Listener {
         }
         if (modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is)) { isMineTinker = true; }
 
-        if (!isMineTinker) { return; }
+        if (!isMineTinker) return;
 
-        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ShowName")) {
+        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ShowName") && is.getItemMeta() != null) {
             item.setCustomName(is.getItemMeta().getDisplayName());
             item.setCustomNameVisible(true);
         }
@@ -77,14 +77,12 @@ public class ItemListener implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
-        if (e.getKeepInventory()) { return; }
+        if (e.getKeepInventory()) return;
 
         Player p = e.getEntity();
         Inventory inv = p.getInventory();
 
         for (ItemStack is : inv.getContents()) {
-            if (is == null) { continue; }
-
             boolean isMineTinker = false;
             if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) { //Modifieritems
                 ItemStack modifierTester = is.clone();
@@ -117,10 +115,10 @@ public class ItemListener implements Listener {
         Player p = e.getPlayer();
         ItemStack item = e.getBrokenItem();
 
-        if (Lists.WORLDS.contains(p.getWorld().getName())) { return; }
-        if (!modManager.isToolViable(item)) { return; }
+        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
+        if (!modManager.isToolViable(item)) return;
 
-        if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.StopBreakEvent")) { return; }
+        if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.StopBreakEvent")) return;
 
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.AlertPlayerOnBreak")) {
             e.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&',

@@ -104,12 +104,12 @@ public class Ender extends Modifier implements Craftable, Listener {
      */
     @EventHandler
     public void effect(MTProjectileHitEvent event) {
-        if (!this.isAllowed()) { return; }
+        if (!this.isAllowed()) return;
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
-        if (!p.hasPermission("minetinker.modifiers.ender.use")) { return; }
-        if (!modManager.hasMod(tool, this)) { return; }
-        if (!p.isSneaking()) { return; }
+        if (!p.hasPermission("minetinker.modifiers.ender.use")) return;
+        if (!modManager.hasMod(tool, this)) return;
+        if (!p.isSneaking()) return;
 
         Location loc = event.getEvent().getEntity().getLocation().clone(); //Location of the Arrow
         Location oldLoc = p.getLocation();
@@ -140,14 +140,14 @@ public class Ender extends Modifier implements Craftable, Listener {
      */
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
         Player p = event.getPlayer();
-        if (p.equals(event.getEvent().getEntity())) { return; }
+        if (p.equals(event.getEvent().getEntity())) return;
         ItemStack tool = event.getTool();
-        if (!p.hasPermission("minetinker.modifiers.ender.use")) { return; }
-        if (!modManager.hasMod(tool, this)) { return; } //No check needed, as Ender can only be applied on the Bow
-        if (modManager.getModLevel(tool, this) < 2) { return; }
-        if (!p.isSneaking()) { return; }
+        if (!p.hasPermission("minetinker.modifiers.ender.use")) return;
+        if (!modManager.hasMod(tool, this)) return; //No check needed, as Ender can only be applied on the Bow
+        if (modManager.getModLevel(tool, this) < 2) return;
+        if (!p.isSneaking()) return;
 
         Location loc = event.getEvent().getEntity().getLocation().clone();
         event.getEvent().getEntity().teleport(p.getLocation());

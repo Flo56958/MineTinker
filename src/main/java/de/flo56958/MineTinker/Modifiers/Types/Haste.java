@@ -70,17 +70,19 @@ public class Haste extends Modifier implements Craftable {
 
         ItemMeta meta = tool.getItemMeta();
 
-        if (ToolType.FISHINGROD.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.LURE, modManager.getModLevel(tool, this), true);
-        } else {
-            meta.addEnchant(Enchantment.DIG_SPEED, modManager.getModLevel(tool, this), true);
+        if (meta != null) {
+            if (ToolType.FISHINGROD.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.LURE, modManager.getModLevel(tool, this), true);
+            } else {
+                meta.addEnchant(Enchantment.DIG_SPEED, modManager.getModLevel(tool, this), true);
+            }
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+            tool.setItemMeta(meta);
         }
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-        }
-        tool.setItemMeta(meta);
 
         return tool;
     }
@@ -88,9 +90,12 @@ public class Haste extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.DIG_SPEED);
-        meta.removeEnchant(Enchantment.LURE);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.DIG_SPEED);
+            meta.removeEnchant(Enchantment.LURE);
+            tool.setItemMeta(meta);
+        }
     }
 
     @Override

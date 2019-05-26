@@ -114,12 +114,15 @@ public class BuildersWandListener implements Listener {
     private static ItemStack buildersWandCreator(Material m, String name) { //TODO: Modify to implement Modifiers
         ItemStack wand = new ItemStack(m, 1);
         ItemMeta meta = wand.getItemMeta();
-        ArrayList<String> lore = new ArrayList<>();
-        meta.setDisplayName(ChatWriter.addColors(name));
-        lore.add(ChatWriter.addColors(config.getString("BuildersWand.description")));
-        meta.setLore(lore);
-        meta.addItemFlags(ItemFlag.HIDE_DESTROYS);
-        wand.setItemMeta(meta);
+
+        if (meta != null) {
+            ArrayList<String> lore = new ArrayList<>();
+            meta.setDisplayName(ChatWriter.addColors(name));
+            lore.add(ChatWriter.addColors(config.getString("BuildersWand.description")));
+            meta.setLore(lore);
+            meta.addItemFlags(ItemFlag.HIDE_DESTROYS);
+            wand.setItemMeta(meta);
+        }
 
         NBTTagList list = new NBTTagList();
         list.add(new NBTTagString("minecraft:air"));
@@ -139,10 +142,13 @@ public class BuildersWandListener implements Listener {
             String middle = config.getString("BuildersWand.Recipes.Wood.Middle");
             String bottom = config.getString("BuildersWand.Recipes.Wood.Bottom");
             ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Wood.Materials");
+
+            // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
             for (String key : materials.getKeys(false)) {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
+
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
             ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
@@ -155,10 +161,13 @@ public class BuildersWandListener implements Listener {
             String middle = config.getString("BuildersWand.Recipes.Stone.Middle");
             String bottom = config.getString("BuildersWand.Recipes.Stone.Bottom");
             ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Stone.Materials");
+
+            // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
             for (String key : materials.getKeys(false)) {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
+
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
             ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
@@ -171,10 +180,13 @@ public class BuildersWandListener implements Listener {
             String middle = config.getString("BuildersWand.Recipes.Iron.Middle");
             String bottom = config.getString("BuildersWand.Recipes.Iron.Bottom");
             ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Iron.Materials");
+
+            // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
             for (String key : materials.getKeys(false)) {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
+
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
             ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
@@ -187,10 +199,13 @@ public class BuildersWandListener implements Listener {
             String middle = config.getString("BuildersWand.Recipes.Gold.Middle");
             String bottom = config.getString("BuildersWand.Recipes.Gold.Bottom");
             ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Gold.Materials");
+
+            // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
             for (String key : materials.getKeys(false)) {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
+
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
             ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
@@ -203,10 +218,13 @@ public class BuildersWandListener implements Listener {
             String middle = config.getString("BuildersWand.Recipes.Diamond.Middle");
             String bottom = config.getString("BuildersWand.Recipes.Diamond.Bottom");
             ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Diamond.Materials");
+
+            // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
             for (String key : materials.getKeys(false)) {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
+
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
         } catch (Exception e) {
             ChatWriter.logError("Could not register recipe for the Diamond Builderswand!"); //executes if the recipe could not initialize
@@ -216,17 +234,17 @@ public class BuildersWandListener implements Listener {
     @SuppressWarnings("deprecation")
 	@EventHandler
     public void onClick (PlayerInteractEvent e) {
-        if (e.isCancelled()) { return; }
-        if (Lists.WORLDS_BUILDERSWANDS.contains(e.getPlayer().getWorld().getName())) { return; }
+        if (e.isCancelled()) return;
+        if (Lists.WORLDS_BUILDERSWANDS.contains(e.getPlayer().getWorld().getName())) return;
 
         ItemStack wand = e.getPlayer().getInventory().getItemInMainHand();
 
-        if (!modManager.isWandViable(wand)) { return; }
+        if (!modManager.isWandViable(wand)) return;
 
         e.setCancelled(true);
 
-        if (!e.getPlayer().hasPermission("minetinker.builderswands.use")) { return; }
-        if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) { return; }
+        if (!e.getPlayer().hasPermission("minetinker.builderswands.use")) return;
+        if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 
         int _u = 0;
         int _w = 0;
@@ -296,7 +314,7 @@ public class BuildersWandListener implements Listener {
             w = new Vector(0, 0, 1);
             u = new Vector(0, -1, 0);
         }
-        if (p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE)) {
+        if ((p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE)) && b != null) {
             for (ItemStack current : inv) {
                 if (current == null) { continue; }
                 if (!current.getType().equals(b.getType())) { continue; }
@@ -351,7 +369,7 @@ public class BuildersWandListener implements Listener {
                 }
                 break;
             }
-        } else if (p.getGameMode().equals(GameMode.CREATIVE)) {
+        } else if (p.getGameMode().equals(GameMode.CREATIVE) && b != null) {
             for (int i = -_w; i <= _w; i++) {
                 for (int j = -_u; j <= _u; j++) {
                     Location l = b.getLocation().clone();

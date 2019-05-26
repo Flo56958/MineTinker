@@ -46,6 +46,7 @@ public class MTProjectileHitEvent extends Event {
         return event;
     }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return handlers;

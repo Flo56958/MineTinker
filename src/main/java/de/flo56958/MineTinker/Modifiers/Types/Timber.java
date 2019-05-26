@@ -93,13 +93,13 @@ public class Timber extends Modifier implements Craftable, Listener {
 
     @EventHandler
     public void effect(MTBlockBreakEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
         Block b = event.getBlock();
 
-        if (Power.HASPOWER.get(p) || p.isSneaking()) { return; }
-        if (!modManager.hasMod(tool, this)) { return; }
+        if (Power.HASPOWER.get(p) || p.isSneaking()) return;
+        if (!modManager.hasMod(tool, this)) return;
 
         ArrayList<Material> allowed = new ArrayList<>();
         allowed.addAll(Lists.getWoodLogs());
@@ -128,7 +128,7 @@ public class Timber extends Modifier implements Craftable, Listener {
             }
         }
 
-        if (!isTreeBottom || !isTreeTop) { return; } //TODO: Improve tree check
+        if (!isTreeBottom || !isTreeTop) return; //TODO: Improve tree check
 
         Power.HASPOWER.replace(p, true);
         locs.add(b.getLocation());
@@ -148,7 +148,7 @@ public class Timber extends Modifier implements Craftable, Listener {
                     Location loc = b.getLocation().clone();
                     loc.add(dx, dy, dz);
                     if (locs.contains(loc)) { continue; }
-                    if (getConfig().getInt("Timber.MaximumBlocksPerSwing") > 0 && locs.size() >= getConfig().getInt("Timber.MaximumBlocksPerSwing")) { return; }
+                    if (getConfig().getInt("Timber.MaximumBlocksPerSwing") > 0 && locs.size() >= getConfig().getInt("Timber.MaximumBlocksPerSwing")) return;
                     locs.add(loc);
                     if (allowed.contains(p.getWorld().getBlockAt(loc).getType())) {
                         breakTree(p, p.getWorld().getBlockAt(loc), allowed);

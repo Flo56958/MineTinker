@@ -14,8 +14,8 @@ public interface Enchantable {
     void enchantItem(Player p, ItemStack item);
 
     default void _createModifierItem(FileConfiguration config, Player p, Modifier mod, String modifier) {
-        if (config.getBoolean(modifier + ".Recipe.Enabled")) { return; }
-        if (p.getGameMode().equals(GameMode.CREATIVE)) {
+        if (config.getBoolean(modifier + ".Recipe.Enabled")) return;
+        if (p.getGameMode().equals(GameMode.CREATIVE) && p.getLocation().getWorld() != null) {
             p.getLocation().getWorld().dropItemNaturally(p.getLocation(), mod.getModItem());
             if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
                 p.playSound(p.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);

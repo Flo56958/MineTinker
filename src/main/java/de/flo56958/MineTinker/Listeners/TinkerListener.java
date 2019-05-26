@@ -117,7 +117,7 @@ public class TinkerListener implements Listener {
                     int amount = rand.nextInt(config.getInt("LevelUpEvents.DropLoot.maximumDrop") - config.getInt("LevelUpEvents.DropLoot.minimumDrop"));
                     amount = amount + config.getInt("LevelUpEvents.DropLoot.minimumDrop");
                     ItemStack drop = new ItemStack(m, amount);
-                    if(p.getInventory().addItem(drop).size() != 0) { //adds items to (full) inventory
+                    if (p.getInventory().addItem(drop).size() != 0) { //adds items to (full) inventory
                         p.getWorld().dropItem(p.getLocation(), drop); //drops item when inventory is full
                     } // no else as it gets added in if
                 }

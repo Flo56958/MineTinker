@@ -94,24 +94,24 @@ public class Webbed extends Modifier implements Craftable, Listener {
 
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
-        if (!(event.getEntity() instanceof LivingEntity)) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
+        if (!(event.getEntity() instanceof LivingEntity)) return;
         effect(event.getPlayer(), event.getTool(), event.getEntity());
     }
 
     @EventHandler
     public void effect(MTProjectileHitEvent event) {
-        if (!this.isAllowed()) { return; }
-        if (!(event.getEvent().getHitEntity() instanceof LivingEntity)) { return; }
-        if (!ToolType.FISHINGROD.getMaterials().contains(event.getTool().getType())) { return; }
+        if (!this.isAllowed()) return;
+        if (!(event.getEvent().getHitEntity() instanceof LivingEntity)) return;
+        if (!ToolType.FISHINGROD.getMaterials().contains(event.getTool().getType())) return;
 
         effect(event.getPlayer(), event.getTool(), event.getEvent().getHitEntity());
     }
 
     private void effect(Player p, ItemStack tool, Entity ent) {
-        if (!p.hasPermission("minetinker.modifiers.webbed.use")) { return; }
-        if (ent.isDead()) { return; }
-        if (!modManager.hasMod(tool, this)) { return; }
+        if (!p.hasPermission("minetinker.modifiers.webbed.use")) return;
+        if (ent.isDead()) return;
+        if (!modManager.hasMod(tool, this)) return;
 
         int level = modManager.getModLevel(tool, this);
 

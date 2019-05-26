@@ -38,18 +38,18 @@ public class BlockListener implements Listener {
     @SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent e) {
-        if (e.isCancelled()) { return; }
+        if (e.isCancelled()) return;
         Player p = e.getPlayer();
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (Lists.WORLDS.contains(p.getWorld().getName())) { return; }
-        if (e.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS || ToolType.HOE.getMaterials().contains(tool.getType()))) { return; }
+        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
+        if (e.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS || ToolType.HOE.getMaterials().contains(tool.getType()))) return;
 
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) return;
 
 
-        if (!modManager.isToolViable(tool)) { return; }
-        if (!modManager.durabilityCheck(e, p, tool)) { return; }
+        if (!modManager.isToolViable(tool)) return;
+        if (!modManager.durabilityCheck(e, p, tool)) return;
 
         int expAmount = config.getInt("ExpPerBlockBreak");
         expAmount += config.getInt("ExtraExpPerBlock." + e.getBlock().getType().toString()); //adds 0 if not in found in config (negative values are also fine)
@@ -75,8 +75,12 @@ public class BlockListener implements Listener {
                         CreatureSpawner cs = (CreatureSpawner) e.getBlock().getState();
                         ItemStack s = new ItemStack(Material.SPAWNER, 1, e.getBlock().getData());
                         ItemMeta s_meta = s.getItemMeta();
-                        s_meta.setDisplayName(cs.getSpawnedType().toString());
-                        s.setItemMeta(s_meta);
+
+                        if (s_meta != null) {
+                            s_meta.setDisplayName(cs.getSpawnedType().toString());
+                            s.setItemMeta(s_meta);
+                        }
+
                         p.getWorld().dropItemNaturally(e.getBlock().getLocation(), s);
                         e.setExpToDrop(0);
                         ChatWriter.log(false, p.getDisplayName() + " successfully mined a Spawner!");
@@ -87,9 +91,8 @@ public class BlockListener implements Listener {
     }
 
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
-        if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
         Block b = e.getClickedBlock();
         ItemStack norm = p.getInventory().getItemInMainHand();
@@ -100,7 +103,7 @@ public class BlockListener implements Listener {
                 }
             }
         } else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            if (!p.isSneaking()) {
+            if (!p.isSneaking() && b != null) {
                 if (b.getType().equals(Material.ANVIL)
                     || b.getType().equals(Material.CRAFTING_TABLE)
                     || b.getType().equals(Material.CHEST)
@@ -139,7 +142,7 @@ public class BlockListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
     public static void onBlockPlace(BlockPlaceEvent e) {
-        if (e.isCancelled()) { return; }
+        if (e.isCancelled()) return;
 
         Player p = e.getPlayer();
         Block b = e.getBlockPlaced();
@@ -153,6 +156,7 @@ public class BlockListener implements Listener {
                 //return;
             } else if (p.hasPermission("minetinker.spawners.place") && b.getState() instanceof CreatureSpawner) {
                 CreatureSpawner cs = (CreatureSpawner) bs;
+                // TODO: Make safe
                 cs.setSpawnedType(EntityType.fromName(e.getItemInHand().getItemMeta().getDisplayName()));
                 bs.update(true);
                 ChatWriter.log(false,  p.getDisplayName() + " successfully placed a Spawner!");
@@ -160,22 +164,21 @@ public class BlockListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public static void onHoeUse(PlayerInteractEvent e) {
-        if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
-        if (Lists.WORLDS.contains(p.getWorld().getName())) { return; }
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
+        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) return;
         ItemStack tool = p.getInventory().getItemInMainHand();
-        if (!ToolType.HOE.getMaterials().contains(tool.getType())) { return; }
+        if (!ToolType.HOE.getMaterials().contains(tool.getType())) return;
 
-        if (!modManager.isToolViable(tool)) { return; }
+        if (!modManager.isToolViable(tool)) return;
 
         Block b = e.getClickedBlock();
 
         boolean apply = false;
 
-        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && b != null) {
             if (b.getType().equals(Material.GRASS_BLOCK) ||
                 b.getType().equals(Material.DIRT)) {
                 apply = true;
@@ -185,29 +188,28 @@ public class BlockListener implements Listener {
             }
         }
 
-        if (!apply) { return; }
+        if (!apply) return;
 
-        if (!modManager.durabilityCheck(e, p, tool)) { return; }
+        if (!modManager.durabilityCheck(e, p, tool)) return;
 
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 
         Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, e));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public static void onAxeUse(PlayerInteractEvent e) {
-        if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
-        if (Lists.WORLDS.contains(p.getWorld().getName())) { return; }
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
+        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) return;
         ItemStack tool = p.getInventory().getItemInMainHand();
-        if (!ToolType.AXE.getMaterials().contains(tool.getType())) { return; }
+        if (!ToolType.AXE.getMaterials().contains(tool.getType())) return;
 
-        if (!modManager.isToolViable(tool)) { return; }
+        if (!modManager.isToolViable(tool)) return;
 
         boolean apply = false;
 
-        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null) {
             if (e.getClickedBlock().getType().equals(Material.ACACIA_LOG) ||
                 e.getClickedBlock().getType().equals(Material.BIRCH_LOG) ||
                 e.getClickedBlock().getType().equals(Material.OAK_LOG) ||
@@ -225,35 +227,34 @@ public class BlockListener implements Listener {
             }
         }
 
-        if (!apply) { return; }
+        if (!apply) return;
 
-        if (!modManager.durabilityCheck(e, p, tool)) { return; }
+        if (!modManager.durabilityCheck(e, p, tool)) return;
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 
         Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, e));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public static void onShovelUse(PlayerInteractEvent e) {
-        if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
-        if (Lists.WORLDS.contains(p.getWorld().getName())) { return; }
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
+        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) return;
         ItemStack tool = p.getInventory().getItemInMainHand();
-        if (!ToolType.SHOVEL.getMaterials().contains(tool.getType())) { return; }
+        if (!ToolType.SHOVEL.getMaterials().contains(tool.getType())) return;
 
-        if (!modManager.isToolViable(tool)) { return; }
+        if (!modManager.isToolViable(tool)) return;
 
         boolean apply = false;
 
-        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null) {
             if (e.getClickedBlock().getType().equals(Material.GRASS_BLOCK)) {
                 apply = true;
             }
         }
 
-        if (!apply) { return; }
-        if (!modManager.durabilityCheck(e, p, tool)) { return; }
+        if (!apply) return;
+        if (!modManager.durabilityCheck(e, p, tool)) return;
 
 
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));

@@ -30,6 +30,7 @@ public class ToolLevelUpEvent extends Event {
         return tool;
     }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return handlers;

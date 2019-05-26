@@ -30,8 +30,8 @@ public class EntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamage(EntityDamageByEntityEvent e) {
-        if (e.isCancelled()) { return; }
-        if (Lists.WORLDS.contains(e.getDamager().getWorld().getName())) { return; }
+        if (e.isCancelled()) return;
+        if (Lists.WORLDS.contains(e.getDamager().getWorld().getName())) return;
 
         Player p;
 
@@ -53,21 +53,21 @@ public class EntityListener implements Listener {
             }
         } else if (e.getDamager() instanceof Player) {
             p = (Player) e.getDamager();
-        } else { return; }
+        } else return;
 
         /*
         if (e.getEntity() instanceof Player) {
-            if (((Player) e.getEntity()).isBlocking()) { return; }
+            if (((Player) e.getEntity()).isBlocking()) return;
         } */
 
         ItemStack tool = p.getInventory().getItemInMainHand();
         if (e.getDamager() instanceof Trident) {
             tool = TridentListener.TridentToItemStack.get(e.getDamager());
-            TridentListener.TridentToItemStack.remove(e.getDamager());
-            if (tool == null) { return; }
+            TridentListener.TridentToItemStack.remove((Trident)e.getDamager());
+            if (tool == null) return;
         }
-        if (!modManager.isToolViable(tool)) { return; }
-        if (!modManager.durabilityCheck(e, p, tool)) { return; }
+        if (!modManager.isToolViable(tool)) return;
+        if (!modManager.durabilityCheck(e, p, tool)) return;
 
         int amount = config.getInt("ExpPerEntityHit");
 
@@ -84,11 +84,11 @@ public class EntityListener implements Listener {
     public void onDeath(EntityDeathEvent e) {
         LivingEntity mob = e.getEntity();
         Player p = mob.getKiller();
-        if (p == null) { return; }
-        if (Lists.WORLDS.contains(p.getWorld().getName())) { return; }
+        if (p == null) return;
+        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (!modManager.isToolViable(tool)) { return; }
+        if (!modManager.isToolViable(tool)) return;
 
         Bukkit.getPluginManager().callEvent(new MTEntityDeathEvent(p, tool, e));
 
@@ -97,31 +97,31 @@ public class EntityListener implements Listener {
 
     @EventHandler
     public void onArrowHit(ProjectileHitEvent e) {
-        if (!(e.getEntity().getShooter() instanceof Player)) { return; }
+        if (!(e.getEntity().getShooter() instanceof Player)) return;
         Player p = (Player) e.getEntity().getShooter();
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (e.getHitBlock() == null && !ToolType.FISHINGROD.getMaterials().contains(tool.getType())) { return; }
+        if (e.getHitBlock() == null && !ToolType.FISHINGROD.getMaterials().contains(tool.getType())) return;
         if (e.getEntity() instanceof Trident) {
             tool = TridentListener.TridentToItemStack.get(e.getEntity());
-            TridentListener.TridentToItemStack.remove(e.getEntity());
-            if (tool == null) { return; }
+            TridentListener.TridentToItemStack.remove((Trident)e.getEntity());
+            if (tool == null) return;
         }
-        if (!modManager.isToolViable(tool)) { return; }
+        if (!modManager.isToolViable(tool)) return;
 
         Bukkit.getPluginManager().callEvent(new MTProjectileHitEvent(p, tool, e));
     }
 
 	@EventHandler
     public void onBowFire(ProjectileLaunchEvent e) {
-        if (e.isCancelled()) { return; }
-        if (!(e.getEntity().getShooter() instanceof Player)) { return; }
+        if (e.isCancelled()) return;
+        if (!(e.getEntity().getShooter() instanceof Player)) return;
 
         Player p = (Player) e.getEntity().getShooter();
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (!modManager.isToolViable(tool)) { return; }
-        if (!modManager.durabilityCheck(e, p, tool)) { return; }
+        if (!modManager.isToolViable(tool)) return;
+        if (!modManager.durabilityCheck(e, p, tool)) return;
 
 
         modManager.addExp(p, tool, config.getInt("ExpPerArrowShot"));

@@ -177,12 +177,14 @@ class Functions {
             return;
         }
 
-        ItemStack tool = new ItemStack(material, 1);
-        modManager.convertItemStack(tool);
+        if (material != null) {
+            ItemStack tool = new ItemStack(material, 1);
+            modManager.convertItemStack(tool);
 
-        if (player.getInventory().addItem(tool).size() != 0) { //adds items to (full) inventory
-            player.getWorld().dropItem(player.getLocation(), tool);
-        } // no else as it gets added in if
+            if (player.getInventory().addItem(tool).size() != 0) { //adds items to (full) inventory
+                player.getWorld().dropItem(player.getLocation(), tool);
+            } // no else as it gets added in if
+        }
     }
 
     /**

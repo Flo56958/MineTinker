@@ -45,6 +45,7 @@ public class MTPlayerInteractEvent extends Event implements Cancellable {
      */
     public PlayerInteractEvent getEvent() { return event; }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return handlers;

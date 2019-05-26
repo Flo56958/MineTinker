@@ -70,14 +70,16 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
 
         ItemMeta meta = tool.getItemMeta();
 
-        meta.addEnchant(Enchantment.SWEEPING_EDGE, modManager.getModLevel(tool, this), true);
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-        }
+        if (meta != null) {
+            meta.addEnchant(Enchantment.SWEEPING_EDGE, modManager.getModLevel(tool, this), true);
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
 
-        tool.setItemMeta(meta);
+            tool.setItemMeta(meta);
+        }
 
         return tool;
     }
@@ -87,7 +89,7 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.sweeping.craft")) { return; }
+        if (!p.hasPermission("minetinker.modifiers.sweeping.craft")) return;
         _createModifierItem(getConfig(), p, this, "Sweeping");
     }
 

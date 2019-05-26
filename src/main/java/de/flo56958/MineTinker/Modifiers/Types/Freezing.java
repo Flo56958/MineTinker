@@ -80,12 +80,15 @@ public class Freezing extends Modifier implements Craftable {
         }
 
         ItemMeta meta = tool.getItemMeta();
-        meta.addEnchant(Enchantment.FROST_WALKER, modManager.getModLevel(tool, this), true);
 
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+        if (meta != null) {
+            meta.addEnchant(Enchantment.FROST_WALKER, modManager.getModLevel(tool, this), true);
+
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
         }
 
         tool.setItemMeta(meta);
@@ -95,8 +98,11 @@ public class Freezing extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.FROST_WALKER);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.FROST_WALKER);
+            tool.setItemMeta(meta);
+        }
     }
 
     private static FileConfiguration getConfig() {

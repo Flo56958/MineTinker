@@ -29,23 +29,26 @@ public class EasyHarvestListener implements Listener {
 
     @EventHandler
     public void onHarvestTry(PlayerInteractEvent e) {
-        if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) { return; }
+        if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
         Player p = e.getPlayer();
 
-        if (Lists.WORLDS_EASYHARVEST.contains(p.getWorld().getName())) { return; }
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
+        if (Lists.WORLDS_EASYHARVEST.contains(p.getWorld().getName())) return;
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) return;
 
         ItemStack tool = p.getInventory().getItemInMainHand();
-        if (!ToolType.HOE.getMaterials().contains(tool.getType())) { return; }
+        if (!ToolType.HOE.getMaterials().contains(tool.getType())) return;
 
-        if (!modManager.isToolViable(tool)) { return; }
+        if (!modManager.isToolViable(tool)) return;
+
+        if (e.getClickedBlock() == null) return;
+        if (e.getItem() == null) return;
 
         //triggers a pseudoevent to find out if the Player can build
         BlockPlaceEvent placeEvent = new BlockPlaceEvent(e.getClickedBlock(), e.getClickedBlock().getState(), e.getClickedBlock(), e.getItem(), p, true);
         Bukkit.getPluginManager().callEvent(placeEvent);
 
         //check the pseudoevent
-        if (!placeEvent.canBuild() || placeEvent.isCancelled()) { return; }
+        if (!placeEvent.canBuild() || placeEvent.isCancelled()) return;
 
         Block b = e.getClickedBlock();
         if (b.getState().getData() instanceof Crops) { harvestCrops(p, tool, b); }
@@ -189,8 +192,6 @@ public class EasyHarvestListener implements Listener {
     private static void replantCrops(Player p, Block b, Material m) {
         if (config.getBoolean("EasyHarvest.replant")) {
             for (ItemStack is : p.getInventory().getContents()) {
-                if (is == null) { continue; }
-
                 if (m.equals(Material.BEETROOTS) && is.getType().equals(Material.BEETROOT_SEEDS)) {
                     is.setAmount(is.getAmount() - 1);
                     b.setType(m);

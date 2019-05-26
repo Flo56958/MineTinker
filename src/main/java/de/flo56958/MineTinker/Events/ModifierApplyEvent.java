@@ -54,6 +54,7 @@ public class ModifierApplyEvent extends Event {
         return isCommand;
     }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return handlers;

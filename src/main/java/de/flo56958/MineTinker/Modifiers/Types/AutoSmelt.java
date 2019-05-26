@@ -111,19 +111,19 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
      */
     @EventHandler
     public void effect(MTBlockBreakEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
         Block b = event.getBlock();
         BlockBreakEvent e = event.getEvent();
 
-    	FileConfiguration config = getConfig();
+    	//FileConfiguration config = getConfig();
     	
-        if (!p.hasPermission("minetinker.modifiers.autosmelt.use")) { return; }//TODO: Think about more blocks for Auto-Smelt
-        if (!modManager.hasMod(tool, this)) { return; }
+        if (!p.hasPermission("minetinker.modifiers.autosmelt.use")) return;//TODO: Think about more blocks for Auto-Smelt
+        if (!modManager.hasMod(tool, this)) return;
 
         if (!worksUnderWater) {
-            if (p.isSwimming() || p.getWorld().getBlockAt(p.getLocation()).getType().equals(Material.WATER)) { return; }
+            if (p.isSwimming() || p.getWorld().getBlockAt(p.getLocation()).getType().equals(Material.WATER)) return;
         }
 
         boolean allowLuck = false;
@@ -132,7 +132,7 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
         //TODO: CHANGE TO CHECK CONFIG FOR WHAT OUTPUT A BLOCK HAS INSTEAD OF SWITCH CASE
         switch (b.getType()) {
             case STONE:
-                if (!smeltStone) { return; }
+                if (!smeltStone) return;
             case COBBLESTONE:
                 loot = Material.STONE;
                 break;
@@ -215,7 +215,7 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
 
             case COAL_ORE:
             case COAL_BLOCK:
-                if (!burnCoal) { return; }
+                if (!burnCoal) return;
                 loot = Material.AIR;
                 break;
 
@@ -230,7 +230,7 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
 
         Random rand = new Random();
         int n = rand.nextInt(100);
-        if (n <= this.percentagePerLevel * modManager.getModLevel(tool, this)) {
+        if (n <= this.percentagePerLevel * modManager.getModLevel(tool, this) && b.getLocation().getWorld() != null) {
             if (allowLuck && modManager.get(ModifierType.LUCK) != null) {
                 int level = modManager.getModLevel(tool, modManager.get(ModifierType.LUCK));
                 if (level > 0) {

@@ -72,14 +72,16 @@ public class Protecting extends Modifier implements Craftable {
 
         ItemMeta meta = tool.getItemMeta();
 
-        meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, modManager.getModLevel(tool, this), true);
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-        }
+        if (meta != null) {
+            meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, modManager.getModLevel(tool, this), true);
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
 
-        tool.setItemMeta(meta);
+            tool.setItemMeta(meta);
+        }
 
         return tool;
     }
@@ -87,8 +89,11 @@ public class Protecting extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.PROTECTION_ENVIRONMENTAL);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.PROTECTION_ENVIRONMENTAL);
+            tool.setItemMeta(meta);
+        }
     }
 
     @Override

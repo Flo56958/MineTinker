@@ -70,23 +70,25 @@ public class Sharpness extends Modifier implements Craftable {
 
         ItemMeta meta = tool.getItemMeta();
 
-        if (ToolType.AXE.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.BOW.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.ARROW_DAMAGE, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
-            meta.addEnchant(Enchantment.IMPALING, modManager.getModLevel(tool, this), true);
-        }
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-        }
+        if (meta != null) {
+            if (ToolType.AXE.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.BOW.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.ARROW_DAMAGE, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
+                meta.addEnchant(Enchantment.IMPALING, modManager.getModLevel(tool, this), true);
+            }
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
 
-        tool.setItemMeta(meta);
+            tool.setItemMeta(meta);
+        }
 
         return tool;
     }
@@ -94,10 +96,14 @@ public class Sharpness extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.DAMAGE_ALL);
-        meta.removeEnchant(Enchantment.ARROW_DAMAGE);
-        meta.removeEnchant(Enchantment.IMPALING);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.DAMAGE_ALL);
+            meta.removeEnchant(Enchantment.ARROW_DAMAGE);
+            meta.removeEnchant(Enchantment.IMPALING);
+
+            tool.setItemMeta(meta);
+        }
     }
 
     @Override

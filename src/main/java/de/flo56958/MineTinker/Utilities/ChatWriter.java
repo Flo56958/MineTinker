@@ -75,8 +75,8 @@ public class ChatWriter {
      * @param message
      */
     public static void sendActionBar(Player player, String message) { //Extract from the source code of the Actionbar-API (altered)
-        if (!Main.getPlugin().getConfig().getBoolean("actionbar-messages")) { return; }
-        if (!player.isOnline()) { return; } // Player may have logged out
+        if (!Main.getPlugin().getConfig().getBoolean("actionbar-messages")) return;
+        if (!player.isOnline()) return; // Player may have logged out
         CraftPlayer cp = (CraftPlayer) player;
         ChatComponentText ccT = new ChatComponentText(message);
         PacketPlayOutChat ppOC = new PacketPlayOutChat(ccT, ChatMessageType.GAME_INFO);

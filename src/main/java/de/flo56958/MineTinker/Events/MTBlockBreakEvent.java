@@ -46,6 +46,7 @@ public class MTBlockBreakEvent extends Event implements Cancellable {
      */
     public BlockBreakEvent getEvent() { return event; }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return handlers;

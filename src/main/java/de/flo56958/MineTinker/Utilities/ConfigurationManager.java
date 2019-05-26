@@ -60,7 +60,7 @@ public class ConfigurationManager {
         configsFolder.put(fileConfiguration, customConfigFile);
         configs.put(file, fileConfiguration);
         
-        if(customConfigFile.exists()) {
+        if (customConfigFile.exists()) {
         	try {
 	            fileConfiguration.load(customConfigFile);
 	        } catch (IOException | InvalidConfigurationException e) { e.printStackTrace(); }

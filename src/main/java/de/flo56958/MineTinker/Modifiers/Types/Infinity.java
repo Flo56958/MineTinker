@@ -86,18 +86,21 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
 
         ItemMeta meta = tool.getItemMeta();
 
-        if (ToolType.BOW.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.ARROW_INFINITE, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.LOYALTY, modManager.getModLevel(tool, this), true);
-        }
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+        if (meta != null) {
+            if (ToolType.BOW.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.ARROW_INFINITE, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.LOYALTY, modManager.getModLevel(tool, this), true);
+            }
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+
+            tool.setItemMeta(meta);
         }
 
-        tool.setItemMeta(meta);
 
         return tool;
     }
@@ -105,14 +108,17 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.ARROW_INFINITE);
-        meta.removeEnchant(Enchantment.LOYALTY);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.ARROW_INFINITE);
+            meta.removeEnchant(Enchantment.LOYALTY);
+            tool.setItemMeta(meta);
+        }
     }
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.infinity.craft")) { return; }
+        if (!p.hasPermission("minetinker.modifiers.infinity.craft")) return;
         _createModifierItem(getConfig(), p, this, "Infinity");
     }
 

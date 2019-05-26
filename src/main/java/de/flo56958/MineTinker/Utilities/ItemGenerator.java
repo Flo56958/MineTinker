@@ -22,20 +22,29 @@ public class ItemGenerator {
     private static final ModManager modManager = ModManager.instance();
 
     public static String getDisplayName (ItemStack tool) {
-        String name = tool.getItemMeta().getDisplayName();
-        if (tool.getItemMeta().getDisplayName() == null || tool.getItemMeta().getDisplayName().equals("")) {
+        String name ;
+
+        if (tool.getItemMeta() == null || tool.getItemMeta().getDisplayName().equals("")) {
             name = tool.getType().toString();
+        } else {
+            name = tool.getItemMeta().getDisplayName();
         }
+
         return name;
     }
 
     public static ItemStack itemEnchanter(Material m, String name, int amount, Enchantment ench, int level) {
         ItemStack item = new ItemStack(m, amount);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(name);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        item.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.setDisplayName(name);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            item.setItemMeta(meta);
+        }
+
         item.addUnsafeEnchantment(ench, level);
+
         return item;
     }
 
@@ -291,8 +300,12 @@ public class ItemGenerator {
                     return null;
             }
         }
-        Damageable dam = (Damageable) meta;
-        dam.setDamage(0);
+
+        if (meta instanceof Damageable) {
+            Damageable dam = (Damageable) meta;
+            dam.setDamage(0);
+        }
+
         tool.setItemMeta(meta);
         return tool;
     }

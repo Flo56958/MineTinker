@@ -86,7 +86,7 @@ public class Propelling extends Modifier implements Craftable, Enchantable, List
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.propelling.craft")) { return; }
+        if (!p.hasPermission("minetinker.modifiers.propelling.craft")) return;
         _createModifierItem(getConfig(), p, this, "Propelling");
     }
 
@@ -103,17 +103,19 @@ public class Propelling extends Modifier implements Craftable, Enchantable, List
 
         ItemMeta meta = tool.getItemMeta();
 
-        if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.RIPTIDE, modManager.getModLevel(tool, this), true);
-        } //Elytra does not get an enchantment
+        if (meta != null) {
+            if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.RIPTIDE, modManager.getModLevel(tool, this), true);
+            } //Elytra does not get an enchantment
 
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+
+            tool.setItemMeta(meta);
         }
-
-        tool.setItemMeta(meta);
 
         return tool;
     }
@@ -121,25 +123,30 @@ public class Propelling extends Modifier implements Craftable, Enchantable, List
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.RIPTIDE);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.RIPTIDE);
+            tool.setItemMeta(meta);
+        }
     }
 
     @EventHandler
     public void onElytraSneak(PlayerToggleSneakEvent e) {
         Player p = e.getPlayer();
-        if (e.isCancelled()) { return; }
-        if (e.isSneaking()) { return; }
-        if (!p.isGliding()) { return; }
+        if (e.isCancelled()) return;
+        if (e.isSneaking()) return;
+        if (!p.isGliding()) return;
 
-        if (!p.hasPermission("minetinker.modifiers.propelling.use")) { return; }
+        if (!p.hasPermission("minetinker.modifiers.propelling.use")) return;
         ItemStack elytra = p.getInventory().getChestplate();
-        if (!(modManager.isArmorViable(elytra) && ToolType.ELYTRA.getMaterials().contains(elytra.getType()))) { return; }
-        if (!modManager.hasMod(elytra, this)) { return; }
+        if (!(modManager.isArmorViable(elytra) && ToolType.ELYTRA.getMaterials().contains(elytra.getType()))) return;
+        if (!modManager.hasMod(elytra, this)) return;
 
         int maxDamage = elytra.getType().getMaxDurability();
 
         ItemMeta meta = elytra.getItemMeta();
+
+        // TODO: Make safe
         Damageable dam = (Damageable) meta;
 
         if (maxDamage <= dam.getDamage() + durabilityLoss + 1) {
@@ -157,7 +164,7 @@ public class Propelling extends Modifier implements Craftable, Enchantable, List
         Vector dir = loc.getDirection().normalize();
 
         p.setVelocity(p.getVelocity().add(dir.multiply(1 + speedPerLevel * level)));
-        if (sound) loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
+        if (sound && loc.getWorld() != null) loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
         if (particles) p.playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
     }
 
