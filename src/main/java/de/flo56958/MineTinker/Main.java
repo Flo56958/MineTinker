@@ -18,7 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class Main extends JavaPlugin {
 
-    private static Updater updater;
+    private static Updater updater = new Updater();
 
     @Override
     public void onEnable() {
@@ -86,7 +86,6 @@ public class Main extends JavaPlugin {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    updater = new Updater();
                     updater.checkForUpdate();
                 }
             }.runTaskLater(Main.getPlugin(), 20);
