@@ -49,6 +49,8 @@ ItemBehaviour:
   SetInvulnerable: true #Item can not be damaged or destroyed
   SetPersistent: true #Item will not despawn
   ForModItems: true #Settings apply also for Modifier-Items
+  StopBreakEvent: false #If the item breaks due to a bug, give the item back to the player with 1 durability
+  AlertPlayerOnBreak: false #If the item breaks due to a bug, alert the player
 
 #---------------LEVELUP-EVENTS--------------
 LevelUpEvents:
