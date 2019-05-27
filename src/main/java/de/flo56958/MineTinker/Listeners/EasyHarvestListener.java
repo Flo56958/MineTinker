@@ -7,15 +7,14 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.PlayerInfo;
-import net.minecraft.server.v1_14_R1.BlockPosition;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -93,11 +92,11 @@ public class EasyHarvestListener implements Listener {
                         return;
                     }
                     if (b1.getType().equals(b.getType()) && ((NetherWarts) b1.getState().getData()).getState().equals(NetherWartsState.RIPE)) {
-                        ((CraftPlayer) p).getHandle().playerInteractManager.breakBlock(new BlockPosition(b1.getX(), b1.getY(), b1.getZ()));
+                        breakBlock(b1, p);
                         replantCrops(p, b1, m);
                     }
                     if (b2.getType().equals(b.getType()) && ((NetherWarts) b2.getState().getData()).getState().equals(NetherWartsState.RIPE)) {
-                        ((CraftPlayer) p).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
+                        breakBlock(b2, p);
                         replantCrops(p, b2, m);
                     }
                 } else {
@@ -106,7 +105,7 @@ public class EasyHarvestListener implements Listener {
                             if (!(x == 0 && z == 0)) {
                                 Block b1 = b.getWorld().getBlockAt(b.getLocation().add(x, 0, z));
                                 if (b1.getType().equals(b.getType()) && ((NetherWarts) b1.getState().getData()).getState().equals(NetherWartsState.RIPE)) {
-                                    ((CraftPlayer) p).getHandle().playerInteractManager.breakBlock(new BlockPosition(b1.getX(), b1.getY(), b1.getZ()));
+                                    breakBlock(b1, p);
                                     replantCrops(p, b1, m);
                                 }
                             }
@@ -116,7 +115,7 @@ public class EasyHarvestListener implements Listener {
             }
         }
 
-        ((CraftPlayer) p).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
+        breakBlock(b, p);
         replantCrops(p, b, m);
 
         Power.HASPOWER.put(p, false);
@@ -160,11 +159,11 @@ public class EasyHarvestListener implements Listener {
                         return;
                     }
                     if (b1.getType().equals(b.getType()) && ((Crops) b1.getState().getData()).getState().equals(CropState.RIPE)) {
-                        ((CraftPlayer) p).getHandle().playerInteractManager.breakBlock(new BlockPosition(b1.getX(), b1.getY(), b1.getZ()));
+                        breakBlock(b1, p);
                         replantCrops(p, b1, m);
                     }
                     if (b2.getType().equals(b.getType()) && ((Crops) b2.getState().getData()).getState().equals(CropState.RIPE)) {
-                        ((CraftPlayer) p).getHandle().playerInteractManager.breakBlock(new BlockPosition(b2.getX(), b2.getY(), b2.getZ()));
+                        breakBlock(b2, p);
                         replantCrops(p, b2, m);
                     }
                 } else {
@@ -173,7 +172,7 @@ public class EasyHarvestListener implements Listener {
                             if (!(x == 0 && z == 0)) {
                                 Block b1 = b.getWorld().getBlockAt(b.getLocation().add(x, 0, z));
                                 if (b1.getType().equals(b.getType()) && ((Crops) b1.getState().getData()).getState().equals(CropState.RIPE)) {
-                                    ((CraftPlayer) p).getHandle().playerInteractManager.breakBlock(new BlockPosition(b1.getX(), b1.getY(), b1.getZ()));
+                                    breakBlock(b1, p);
                                     replantCrops(p, b1, m);
                                 }
                             }
@@ -183,7 +182,7 @@ public class EasyHarvestListener implements Listener {
             }
         }
 
-        ((CraftPlayer) p).getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
+        breakBlock(b, p);
         replantCrops(p, b, m);
 
         Power.HASPOWER.put(p, false);
@@ -221,5 +220,12 @@ public class EasyHarvestListener implements Listener {
         if (config.getBoolean("EasyHarvest.Sound")) {
             b.getWorld().playSound(b.getLocation(), Sound.ITEM_HOE_TILL, 1.0F, 0.5F);
         }
+    }
+
+    private static void breakBlock(Block b, Player p) {
+        BlockBreakEvent event = new BlockBreakEvent(b, p);
+        Bukkit.getServer().getPluginManager().callEvent(event);
+
+        if (!event.isCancelled()) b.breakNaturally(p.getInventory().getItemInMainHand());
     }
 }
