@@ -11,7 +11,6 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.*;
-import net.minecraft.server.v1_14_R1.BlockPosition;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -23,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -275,7 +275,11 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
                 && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.BUBBLE_COLUMN) && !b.getType().equals(Material.LAVA)
                 && !b.getType().equals(Material.END_PORTAL) && !b.getType().equals(Material.END_CRYSTAL) && !b.getType().equals(Material.END_PORTAL_FRAME)
                 && !b.getType().equals(Material.NETHER_PORTAL)) {
-            p.getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
+
+            BlockBreakEvent event = new BlockBreakEvent(b, p);
+            Bukkit.getServer().getPluginManager().callEvent(event);
+
+            if (!event.isCancelled()) b.breakNaturally(p.getInventory().getItemInMainHand());
         }
     }
 
