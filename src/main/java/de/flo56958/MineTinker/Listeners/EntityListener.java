@@ -10,6 +10,7 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
@@ -148,6 +149,7 @@ public class EntityListener implements Listener {
             if (mod != null && mod.getModItem().getType() == Material.ARROW) {
                 e.setCancelled(true);
                 player.updateInventory();
+                player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
                 return;
             }
         }
@@ -161,6 +163,7 @@ public class EntityListener implements Listener {
                 if (mod != null && mod.getModItem().getType() == Material.ARROW) {
                     e.setCancelled(true);
                     player.updateInventory();
+                    player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
                     return;
                 }
 
