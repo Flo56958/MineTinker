@@ -176,6 +176,10 @@ class Functions {
             Commands.invalidArgs(player);
             return;
         }
+        if (material == null) {
+            Commands.invalidArgs(player);
+            return;
+        }
 
         ItemStack tool = new ItemStack(material, 1);
         modManager.convertItemStack(tool);
