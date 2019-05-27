@@ -17,7 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
 
-    private static Updater updater = new Updater();
+    private static Updater updater;
 
     @Override
     public void onEnable() {
@@ -81,10 +81,10 @@ public class Main extends JavaPlugin {
             Lists.BLOCKFACE.put(current, null);
         }
 
+        updater = new Updater();
+
         if (getConfig().getBoolean("CheckForUpdates")) {
-            Bukkit.getScheduler().scheduleAsyncDelayedTask(this, () -> {
-                updater.checkForUpdate();
-            }, 20);
+            Bukkit.getScheduler().scheduleAsyncDelayedTask(this, () -> updater.checkForUpdate(), 20);
         }
     }
 

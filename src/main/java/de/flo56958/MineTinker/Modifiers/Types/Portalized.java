@@ -148,15 +148,14 @@ public class Portalized extends Modifier implements Craftable, Listener {
 
     @EventHandler
     public void onPortalClick(EntityDamageByEntityEvent e) {
-        //if (!(e.getDamager() instanceof Player)) return;
-        //if (!(e.getEntity() instanceof ArmorStand)) return;
-
-        //System.out.println("hi!");
+        if (!this.isAllowed()) return;
+        if (!(e.getDamager() instanceof Player)) return;
+        if (!(e.getEntity() instanceof ArmorStand)) return;
     }
 
     @EventHandler
     public void PlayerInPortal(AreaEffectCloudApplyEvent e) {
-        //System.out.println("hiww");
+        if (!this.isAllowed()) return;
     }
 
     @Override
