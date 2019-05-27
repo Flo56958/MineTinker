@@ -7,17 +7,21 @@ import de.flo56958.MineTinker.Events.MTEntityDeathEvent;
 import de.flo56958.MineTinker.Events.MTProjectileHitEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Modifiers.Modifier;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Trident;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
@@ -129,5 +133,35 @@ public class EntityListener implements Listener {
         /*
         Self-Repair and Experienced will no longer trigger on bowfire
          */
+    }
+
+    @EventHandler
+    public void onBowShoot(EntityShootBowEvent e) {
+        if (!(e.getEntity() instanceof Player)) return;
+
+        Player player = (Player) e.getEntity();
+        ItemStack offHand = player.getInventory().getItemInOffHand();
+
+        if (offHand.getType() == Material.ARROW) {
+            Modifier mod = modManager.getModifierFromItem(offHand);
+
+            if (mod != null && mod.getModItem().getType() == Material.ARROW) {
+                e.setCancelled(true);
+                return;
+            }
+        }
+
+        for (ItemStack item : player.getInventory().getStorageContents()) {
+            if (item.getType() == Material.ARROW) {
+                Modifier mod = modManager.getModifierFromItem(offHand);
+
+                if (mod != null && mod.getModItem().getType() == Material.ARROW) {
+                    e.setCancelled(true);
+                    return;
+                }
+
+                return;
+            }
+        }
     }
 }
