@@ -135,7 +135,7 @@ public class EntityListener implements Listener {
          */
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBowShoot(EntityShootBowEvent e) {
         if (!(e.getEntity() instanceof Player)) return;
 
@@ -152,9 +152,11 @@ public class EntityListener implements Listener {
             }
         }
 
-        for (ItemStack item : player.getInventory().getStorageContents()) {
+        for (ItemStack item : player.getInventory().getContents()) {
+            if (item == null) continue;
+
             if (item.getType() == Material.ARROW) {
-                Modifier mod = modManager.getModifierFromItem(offHand);
+                Modifier mod = modManager.getModifierFromItem(item);
 
                 if (mod != null && mod.getModItem().getType() == Material.ARROW) {
                     e.setCancelled(true);
