@@ -147,6 +147,7 @@ public class EntityListener implements Listener {
 
             if (mod != null && mod.getModItem().getType() == Material.ARROW) {
                 e.setCancelled(true);
+                player.updateInventory();
                 return;
             }
         }
@@ -157,6 +158,7 @@ public class EntityListener implements Listener {
 
                 if (mod != null && mod.getModItem().getType() == Material.ARROW) {
                     e.setCancelled(true);
+                    player.updateInventory();
                     return;
                 }
 
