@@ -82,7 +82,10 @@ public class ItemListener implements Listener {
         Inventory inv = p.getInventory();
 
         for (ItemStack is : inv.getContents()) {
+            if (is == null) continue; // More consistent nullability in NotNull fields
+
             boolean isMineTinker = false;
+
             if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) { //Modifieritems
                 ItemStack modifierTester = is.clone();
                 modifierTester.setAmount(1);
