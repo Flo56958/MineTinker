@@ -40,6 +40,7 @@ public class ItemListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onItemDrop(PlayerDropItemEvent e) {
+        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) return;
         Item item = e.getItemDrop();
         ItemStack is = item.getItemStack();
 
@@ -102,11 +103,10 @@ public class ItemListener implements Listener {
 
             if (!isMineTinker) { continue; }
 
-            if (modManager.get(ModifierType.SOULBOUND) != null) {
-                if (((Soulbound) modManager.get(ModifierType.SOULBOUND)).effect(p, is)) { is.setAmount(0); continue; } //workaround as inv.remove(is) does not work insteads duplicates item
-            }
+            if (((Soulbound) modManager.getAdmin(ModifierType.SOULBOUND)).effect(p, is)) { is.setAmount(0); continue; } //workaround as inv.remove(is) does not work insteads duplicates item
 
-            Bukkit.getPluginManager().callEvent(new PlayerDropItemEvent(p, p.getWorld().dropItem(p.getLocation(), is))); //To trigger item behaviour
+            if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour"))
+                Bukkit.getPluginManager().callEvent(new PlayerDropItemEvent(p, p.getWorld().dropItem(p.getLocation(), is))); //To trigger item behaviour
 
             is.setAmount(0);
         }
