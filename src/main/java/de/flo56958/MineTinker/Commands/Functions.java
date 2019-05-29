@@ -221,6 +221,8 @@ class Functions {
      * @param args command input of the player - parsed down from onCommand()
      */
     public static void giveModifierItem(Player player, String[] args) {
+        boolean allOnline = false;
+
         if (args.length >= 2) {
             for (Modifier mod : modManager.getAllowedMods()) {
                 if (mod.getName().equalsIgnoreCase(args[1])) {
@@ -236,20 +238,36 @@ class Functions {
                     }
 
                     if (args.length >= 4) {
-                        Player temp = Bukkit.getServer().getPlayer(args[3]);
+                        if (args[3].equalsIgnoreCase("*")) {
+                            allOnline = true;
+                        } else {
+                            Player temp = Bukkit.getServer().getPlayer(args[3]);
 
-                        if (temp == null) {
-                            ChatWriter.sendMessage(player, ChatColor.RED, "Player " + args[3] + " not found or not online!");
-                            return;
+                            if (temp == null) {
+                                ChatWriter.sendMessage(player, ChatColor.RED, "Player " + args[3] + " not found or not online!");
+                                return;
+                            }
+                            player = temp;
                         }
-                        player = temp;
+
                     }
 
-                    for (int i = 0; i < amount; i++) {
-                        if (player.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
-                            player.getWorld().dropItem(player.getLocation(), mod.getModItem());
-                        } // no else as it gets added in if
+                    if (allOnline) {
+                        for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
+                            for (int i = 0; i < amount; i++) {
+                                if (onlinePlayer.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
+                                    onlinePlayer.getWorld().dropItem(onlinePlayer.getLocation(), mod.getModItem());
+                                } // no else as it gets added in if
+                            }
+                        }
+                    } else {
+                        for (int i = 0; i < amount; i++) {
+                            if (player.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
+                                player.getWorld().dropItem(player.getLocation(), mod.getModItem());
+                            } // no else as it gets added in if
+                        }
                     }
+
                     break;
                 }
             }
