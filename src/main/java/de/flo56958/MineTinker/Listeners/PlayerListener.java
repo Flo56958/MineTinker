@@ -6,6 +6,7 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.Updater;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -108,12 +109,10 @@ public class PlayerListener implements Listener {
 
         if (Main.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
             if (e.getPlayer().hasPermission("minetinker.update.notify")) {
-                if (Main.getUpdater() != null) {
-                    if (Main.getUpdater().getHasUpdate()) {
-                        ChatWriter.sendMessage(e.getPlayer(), ChatColor.GOLD, "There's is an update available on spigotmc.org!");
-                        ChatWriter.sendMessage(e.getPlayer(), ChatColor.WHITE, "Your version: " + Main.getPlugin().getDescription().getVersion());
-                        ChatWriter.sendMessage(e.getPlayer(), ChatColor.WHITE, "Online version: " + Main.getUpdater().getOnlineVersion());
-                    }
+                if (Updater.hasUpdate()) {
+                    ChatWriter.sendMessage(e.getPlayer(), ChatColor.GOLD, "There's is an update available on spigotmc.org!");
+                    ChatWriter.sendMessage(e.getPlayer(), ChatColor.WHITE, "Your version: " + Main.getPlugin().getDescription().getVersion());
+                    ChatWriter.sendMessage(e.getPlayer(), ChatColor.WHITE, "Online version: " + Updater.getOnlineVersion());
                 }
             }
         }

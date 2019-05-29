@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.Updater;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -281,7 +282,7 @@ class Functions {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    Main.getUpdater().checkForUpdate(sender);
+                    Updater.checkForUpdate(sender);
                 }
             }.runTaskLater(Main.getPlugin(), 20);
         } else {

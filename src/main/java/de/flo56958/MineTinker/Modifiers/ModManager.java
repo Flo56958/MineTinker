@@ -170,7 +170,7 @@ public class ModManager {
         allMods.add(Luck.instance());
         allMods.add(Melting.instance());
         allMods.add(Poisonous.instance());
-        allMods.add(Portalized.instance());
+        /*should be enabled when finished*/ //allMods.add(Portalized.instance());
         allMods.add(Power.instance());
         allMods.add(Propelling.instance());
         allMods.add(Protecting.instance());

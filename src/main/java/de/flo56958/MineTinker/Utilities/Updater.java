@@ -4,79 +4,49 @@ import de.flo56958.MineTinker.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.Scanner;
 
 public class Updater {
 
-    private String onlineVersion = "";
-    private final String version = Main.getPlugin().getDescription().getVersion();
-    private boolean hasUpdate = false;
+    private static String onlineVersion;
+    private static final String version = Main.getPlugin().getDescription().getVersion();
 
-    public String getOnlineVersion() { return onlineVersion; }
+    public static String getOnlineVersion() { return onlineVersion; }
 
-    public boolean getHasUpdate() { return this.hasUpdate; }
+    public static boolean hasUpdate() { return onlineVersion != null && !onlineVersion.equals(version); }
 
-    //TODO: CHANGE TO SPIGOTMC-API FOR BETTER FUTURE PROOFING
     /**
-     * tries to get the newest MineTinker-Version number from spigotmc.org
-     * @return the online version number OR ""
+     * tries to get the newest MineTinker-Version number from api.spigotmc.org
      */
-    private String checkOnline() {
-        String oVersion;
-
+    private static synchronized void checkOnline() {
+        if (hasUpdate()) return;
         try {
-            URL url = new URL("https://www.spigotmc.org/resources/minetinker.58940/");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-
-            StringBuilder content;
-
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
-                String line;
-                content = new StringBuilder();
-
-                while ((line = in.readLine()) != null) {
-                    content.append(line);
-                    content.append(System.lineSeparator());
-                }
+            URL url = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + 58940);
+            URLConnection connection = url.openConnection();
+            Scanner scan = new Scanner(connection.getInputStream());
+            if (scan.hasNextLine()) {
+                onlineVersion = scan.nextLine();
             }
-
-            String s = content.toString();
-            con.disconnect();
-
-            String search = " <span class=\"muted\">";
-            int start = s.indexOf(search) + search.length();
-            s = s.substring(start);
-
-            oVersion = s.split("<")[0];
-        } catch (Exception e) {
-            return "";
+            scan.close();
+        } catch (Exception ignored) {
         }
-        return oVersion;
     }
 
     /**
      * Compares the online version number with the plugin version
      */
-    public void checkForUpdate() {
-        if (!this.hasUpdate) {
-            this.onlineVersion = this.checkOnline();
-        }
-
-        if (this.onlineVersion.equals("")) {
+    public static void checkForUpdate() {
+        checkOnline();
+        if (onlineVersion == null) {
             ChatWriter.logInfo("MineTinker is unable to check for updates.");
-            this.hasUpdate = false;
-        } else if (!this.version.equals(this.onlineVersion)) {
+        } else if (!version.equals(onlineVersion)) {
             ChatWriter.logInfo("There is an update available on spigotmc.org!");
-            ChatWriter.logInfo("Your version: " + this.version);
-            ChatWriter.logInfo("Online Version: " + this.onlineVersion);
-            this.hasUpdate = true;
+            ChatWriter.logInfo("Your version: " + version);
+            ChatWriter.logInfo("Online Version: " + onlineVersion);
         } else {
             ChatWriter.log(false, "You have the newest version of MineTinker installed!");
-            this.hasUpdate = false;
         }
     }
 
@@ -84,22 +54,16 @@ public class Updater {
      * Compares the online version number with the plugin version (initiated by a players command)
      * @param sender That gets the information printed in his chat
      */
-    public void checkForUpdate(CommandSender sender) {
-        if (!this.hasUpdate) {
-            this.onlineVersion = this.checkOnline();
-        }
-
-        if (this.onlineVersion.equals("")) {
+    public static void checkForUpdate(CommandSender sender) {
+        checkOnline();
+        if (onlineVersion == null) {
             ChatWriter.sendMessage(sender, ChatColor.RED, "Unable to check for updates!");
-            this.hasUpdate = false;
-        } else if (!this.version.equals(this.onlineVersion)) {
+        } else if (!version.equals(onlineVersion)) {
             ChatWriter.sendMessage(sender, ChatColor.WHITE, "There is an update available on spigotmc.org!");
-            ChatWriter.sendMessage(sender, ChatColor.WHITE, "Your version: " + this.version);
-            ChatWriter.sendMessage(sender, ChatColor.WHITE, "Online Version: " + this.onlineVersion);
-            this.hasUpdate = true;
+            ChatWriter.sendMessage(sender, ChatColor.WHITE, "Your version: " + version);
+            ChatWriter.sendMessage(sender, ChatColor.WHITE, "Online Version: " + onlineVersion);
         } else {
             ChatWriter.sendMessage(sender, ChatColor.WHITE, "You have the newest version of MineTinker installed!");
-            this.hasUpdate = false;
         }
     }
 }

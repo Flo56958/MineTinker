@@ -7,6 +7,7 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.Updater;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -307,7 +308,7 @@ public class Commands implements TabExecutor {
 
         if (config.getBoolean("CheckForUpdates")) {
             Bukkit.getScheduler().scheduleAsyncDelayedTask(Main.getPlugin(),
-                    () -> Main.getUpdater().checkForUpdate(), 20);
+                    Updater::checkForUpdate, 20);
         }
     }
 

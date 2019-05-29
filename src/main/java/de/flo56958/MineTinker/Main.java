@@ -19,8 +19,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Main extends JavaPlugin {
 
-    private static Updater updater;
-
     @Override
     public void onEnable() {
         ChatWriter.log(false, "Setting up internals...");
@@ -90,10 +88,8 @@ public class Main extends JavaPlugin {
             Lists.BLOCKFACE.put(current, null);
         }
 
-        updater = new Updater();
-
         if (getConfig().getBoolean("CheckForUpdates")) {
-            Bukkit.getScheduler().scheduleAsyncDelayedTask(this, () -> updater.checkForUpdate(), 20);
+            Bukkit.getScheduler().scheduleAsyncDelayedTask(this, Updater::checkForUpdate, 20);
         }
     }
 
@@ -113,9 +109,5 @@ public class Main extends JavaPlugin {
 
     public static Plugin getPlugin() { // necessary to do getConfig() in other classes
         return Bukkit.getPluginManager().getPlugin("MineTinker");
-    }
-
-    public static Updater getUpdater() {
-        return updater;
     }
 }
