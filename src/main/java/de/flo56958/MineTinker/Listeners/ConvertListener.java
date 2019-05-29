@@ -50,31 +50,48 @@ public class ConvertListener implements Listener{
 	
 	@EventHandler
 	public void PrepareCraft(PrepareItemCraftEvent e) {
-		if (e.getRecipe() != null) {
-			Player player = null;
+		if (e.getRecipe() == null) return;
 
-			for (HumanEntity humans : e.getViewers()) {
-				if (humans instanceof Player) { player = (Player) humans; }
-			}
-			
-			if (player == null) return;
-	        if (!player.hasPermission("minetinker.tool.create")) return;
-	        if (Lists.WORLDS.contains(player.getWorld().getName())) return;
+		Player player = null;
 
-	        ItemStack currentItem = e.getInventory().getResult();
-	        
-	        if (currentItem != null) {
-	        	ItemMeta m = currentItem.getItemMeta();
-
-	        	if (m != null) {
-	        		if (modManager.isWandViable(currentItem)) {
-	        			return;
-	        		}
-	        	}
-
-	        	modManager.convertItemStack(currentItem);
-	        }
+		for (HumanEntity humans : e.getViewers()) {
+			if (humans instanceof Player) { player = (Player) humans; }
 		}
+
+		if (player == null) return;
+		if (!player.hasPermission("minetinker.tool.create")) return;
+		if (Lists.WORLDS.contains(player.getWorld().getName())) return;
+
+		ItemStack currentItem = e.getInventory().getResult();
+
+		if (currentItem == null) return;
+
+		int actualItems = 0;
+		ItemStack lastItem = null;
+
+		for (ItemStack item : e.getInventory().getMatrix()) {
+			if (item != null && item.getType() != Material.AIR) {
+				actualItems++;
+				lastItem = item;
+			}
+		}
+
+		if (lastItem != null && actualItems == 1 && currentItem.getType() == lastItem.getType()) {
+			if (modManager.isArmorViable(lastItem) || modManager.isToolViable(lastItem) || modManager.isWandViable(lastItem)) {
+				e.getInventory().setResult(new ItemStack(Material.AIR, 1));
+				return;
+			}
+		}
+
+		ItemMeta m = currentItem.getItemMeta();
+
+		if (m != null) {
+			if (modManager.isWandViable(currentItem)) {
+				return;
+			}
+		}
+
+		modManager.convertItemStack(currentItem);
 	}
 	
 	@EventHandler(ignoreCancelled = true)
