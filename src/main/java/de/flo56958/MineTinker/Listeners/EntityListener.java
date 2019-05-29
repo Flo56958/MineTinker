@@ -128,15 +128,24 @@ public class EntityListener implements Listener {
     }
 
 	@EventHandler(ignoreCancelled = true)
-    public void onBowFire(ProjectileLaunchEvent e) {
+    public void onProjectileLaunch(ProjectileLaunchEvent e) {
         if (!(e.getEntity().getShooter() instanceof Player)) return;
 
         Player p = (Player) e.getEntity().getShooter();
         ItemStack tool = p.getInventory().getItemInMainHand();
 
+        // This isn't the best detection, if the player has a non modifier in one hand and
+        // one in the other, this won't know which was actually thrown.
+        // Maybe improve this before release.
+        // It works as a safeguard in general though.
+        if (modManager.isModifierItem(tool) || modManager.isModifierItem(p.getInventory().getItemInOffHand())) {
+            e.setCancelled(true);
+            p.updateInventory();
+            p.setCooldown(Material.ENDER_PEARL, 10);
+        }
+
         if (!modManager.isToolViable(tool)) return;
         if (!modManager.durabilityCheck(e, p, tool)) return;
-
 
         modManager.addExp(p, tool, config.getInt("ExpPerArrowShot"));
 
