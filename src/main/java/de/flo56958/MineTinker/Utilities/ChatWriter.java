@@ -74,6 +74,7 @@ public class ChatWriter {
     public static void sendActionBar(Player player, String message) { //Extract from the source code of the Actionbar-API (altered)
         if (!Main.getPlugin().getConfig().getBoolean("actionbar-messages")) return;
         if (!player.isOnline()) return; // Player may have logged out
+
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
     }
 
@@ -99,6 +100,7 @@ public class ChatWriter {
         // Re-sends the messages every 3 seconds so it doesn't go away from the player's screen.
         while (duration > 40) {
             duration -= 40;
+
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -195,10 +197,13 @@ public class ChatWriter {
         for (int i = 0; i < romanValues.length; i++) {
             int numberInPlace = num / romanValues[i];
             if (numberInPlace == 0) continue;
+
             result.append(numberInPlace == 4 && i > 0 ? romanCharacters[i] + romanCharacters[i - 1] :
                     new String(new char[numberInPlace]).replace("\0", romanCharacters[i]));
+
             num = num % romanValues[i];
         }
+
         return addColors(result.toString());
     }
 }

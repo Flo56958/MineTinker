@@ -73,6 +73,7 @@ public class Reinforced extends Modifier implements Craftable {
 
         if (meta != null) {
             meta.addEnchant(Enchantment.DURABILITY, modManager.getModLevel(tool, this), true);
+
             if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             } else {

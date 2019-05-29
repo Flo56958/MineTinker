@@ -85,8 +85,8 @@ public class Lifesteal extends Modifier implements Craftable, Listener {
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
-        if (!p.hasPermission("minetinker.modifiers.lifesteal.use")) return;
 
+        if (!p.hasPermission("minetinker.modifiers.lifesteal.use")) return;
         if (!modManager.hasMod(tool, this)) return;
 
         Random rand = new Random();
@@ -94,15 +94,13 @@ public class Lifesteal extends Modifier implements Craftable, Listener {
 
         int level = modManager.getModLevel(tool, this);
         double damage = event.getEvent().getDamage();
-
         double recovery = damage * ((percentPerLevel * level) / 100.0);
-
         double health = p.getHealth() + recovery;
 
         // TODO: don't call getMaxHealth
         if (health > p.getMaxHealth()) { health = p.getMaxHealth(); } // for IllegalArgumentExeption if Health is biggen than MaxHealth
-
         p.setHealth(health);
+
         ChatWriter.log(false, p.getDisplayName() + " triggered Lifesteal on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") and got " + recovery + " health back!");
     }
 

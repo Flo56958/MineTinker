@@ -71,12 +71,14 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
                 return null;
             }
         }
+
         if (modManager.get(ModifierType.LUCK) != null) {
             if (modManager.hasMod(tool, modManager.get(ModifierType.LUCK))) {
                 pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
                 return null;
             }
         }
+
         if (Modifier.checkAndAdd(p, tool, this, "silktouch", isCommand) == null) {
             return null;
         }

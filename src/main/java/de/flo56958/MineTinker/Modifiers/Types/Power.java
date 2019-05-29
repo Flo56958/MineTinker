@@ -109,9 +109,11 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
     @EventHandler
     public void effect(MTBlockBreakEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;
+
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
         Block b = event.getBlock();
+
         if (!checkPower(p, tool)) return;
         if (ToolType.HOE.getMaterials().contains(tool.getType())) return;
 
@@ -166,6 +168,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
             }
         } else {
             HASPOWER.replace(p, true);
+
             if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
                 for (int x = -(level - 1); x <= (level - 1); x++) {
                     for (int z = -(level - 1); z <= (level - 1); z++) {
@@ -219,7 +222,6 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
         HASPOWER.replace(p, true);
 
         int level = modManager.getModLevel(tool, this);
-
         Block b = e.getClickedBlock();
 
         if (b == null) return;
@@ -228,9 +230,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
             if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
                 Block b1;
                 Block b2;
-                
-                //FileConfiguration config = getConfig();
-                
+
                 if ((PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S"))) {
                     if (this.lv1_vertical) {
                         b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
@@ -251,6 +251,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
                     b1 = b;
                     b2 = b;
                 }
+
                 powerCreateFarmland(p, tool, b1);
                 powerCreateFarmland(p, tool, b2);
             }
@@ -288,7 +289,9 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
         if (b.getType().equals(Material.GRASS_BLOCK) || b.getType().equals(Material.DIRT)) {
             if (b.getWorld().getBlockAt(b.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
                 tool.setDurability((short) (tool.getDurability() + 1));
+
                 Bukkit.getPluginManager().callEvent(new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, tool, b, BlockFace.UP));
+
                 b.setType(Material.FARMLAND); //Event only does Plugin event (no vanilla conversion to Farmland and Tool-Damage)
             }
         }

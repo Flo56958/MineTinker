@@ -74,6 +74,7 @@ public class Protecting extends Modifier implements Craftable {
 
         if (meta != null) {
             meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, modManager.getModLevel(tool, this), true);
+
             if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             } else {

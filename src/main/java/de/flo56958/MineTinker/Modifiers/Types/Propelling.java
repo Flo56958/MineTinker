@@ -136,34 +136,34 @@ public class Propelling extends Modifier implements Craftable, Enchantable, List
 
         if (e.isSneaking()) return;
         if (!p.isGliding()) return;
-
         if (!p.hasPermission("minetinker.modifiers.propelling.use")) return;
+
         ItemStack elytra = p.getInventory().getChestplate();
+
         if (!(modManager.isArmorViable(elytra) && ToolType.ELYTRA.getMaterials().contains(elytra.getType()))) return;
         if (!modManager.hasMod(elytra, this)) return;
 
         int maxDamage = elytra.getType().getMaxDurability();
-
         ItemMeta meta = elytra.getItemMeta();
 
-        // TODO: Make safe
-        Damageable dam = (Damageable) meta;
+        if (meta instanceof Damageable) {
+            Damageable dam = (Damageable) meta;
 
-        if (maxDamage <= dam.getDamage() + durabilityLoss + 1) {
-            p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
-            return;
+            if (maxDamage <= dam.getDamage() + durabilityLoss + 1) {
+                p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
+                return;
+            }
+
+            dam.setDamage(dam.getDamage() + durabilityLoss);
+            elytra.setItemMeta(meta);
         }
 
-        dam.setDamage(dam.getDamage() + durabilityLoss);
-        elytra.setItemMeta(meta);
-
         int level = modManager.getModLevel(elytra, this);
-
         Location loc = p.getLocation();
-
         Vector dir = loc.getDirection().normalize();
 
         p.setVelocity(p.getVelocity().add(dir.multiply(1 + speedPerLevel * level)));
+
         if (sound && loc.getWorld() != null) loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
         if (particles) p.playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
     }

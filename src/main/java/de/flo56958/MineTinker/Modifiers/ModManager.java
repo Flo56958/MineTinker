@@ -124,6 +124,7 @@ public class ModManager {
             if (m instanceof Craftable) {
                 this.craftableMods.add(m);
             }
+
             if (m instanceof Enchantable) {
                 this.enchantableMods.add(m);
             }
@@ -189,6 +190,7 @@ public class ModManager {
     public void register(Modifier mod) {
     	if (!mods.contains(mod)) {
 	        mods.add(mod);
+
 	        String mes = "%GREEN%Registered the %MOD% %GREEN%modifier from %PLUGIN%.";
 	        mes = ChatWriter.addColors(mes);
 	        mes = mes.replaceAll("%MOD%", mod.getColor() + mod.getName());
@@ -203,6 +205,7 @@ public class ModManager {
      */
     public void unregister(Modifier mod) {
     	 mods.remove(mod);
+
          String mes = "%GREEN%Unregistered the %MOD% %GREEN%modifier from %PLUGIN%.";
          mes = ChatWriter.addColors(mes);
          mes = mes.replaceAll("%MOD%", mod.getColor() + mod.getName());
@@ -247,6 +250,7 @@ public class ModManager {
                 return m;
             }
         }
+
         return null;
     }
 
@@ -262,6 +266,7 @@ public class ModManager {
                 return m;
             }
         }
+
         return null;
     }
 
@@ -546,6 +551,7 @@ public class ModManager {
      */
     public void convertItemStack(ItemStack is) {
         Material m = is.getType();
+
         if ((ToolType.AXE.getMaterials().contains(m)
                 || ToolType.BOW.getMaterials().contains(m)
                 || ToolType.HOE.getMaterials().contains(m)
@@ -563,6 +569,7 @@ public class ModManager {
                 || ToolType.ELYTRA.getMaterials().contains(m)) {
             setNBTTag(is, "IdentifierArmor", new NBTTagInt(0));
         } else return;
+
         setExp(is, 0);
         setLevel(is, 1);
         setFreeSlots(is, config.getInt("StartingModifierSlots"));
@@ -612,12 +619,15 @@ public class ModManager {
         if (item.getType().equals(get(ModifierType.EXTRA_MODIFIER).getModItem().getType())
                 && !hasNBTTag(item, "modifierItem")) { return get(ModifierType.EXTRA_MODIFIER); }
         if (!hasNBTTag(item, "modifierItem")) { return null; }
+
         String name = Objects.requireNonNull(getNBTTag(item, "modifierItem")).asString();
+
         for (Modifier m : mods) {
             if (m.getType().getNBTKey() != null && m.getType().getNBTKey().equals(name)) {
                 return m;
             }
         }
+
         return null;
     }
 
@@ -635,9 +645,11 @@ public class ModManager {
         if (meta != null) {
             if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2 && config.getBoolean("UnbreakableTools")) {
                 e.setCancelled(true);
+
                 if (config.getBoolean("Sound.OnBreaking")) {
                     p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
                 }
+
                 return false;
             }
         }

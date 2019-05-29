@@ -92,6 +92,7 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
             } else if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
                 meta.addEnchant(Enchantment.LOYALTY, modManager.getModLevel(tool, this), true);
             }
+
             if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             } else {

@@ -93,7 +93,6 @@ public class Glowing extends Modifier implements Craftable, Listener {
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
-
         LivingEntity e = (LivingEntity) event.getEntity();
 
         if (!p.hasPermission("minetinker.modifiers.glowing.use")) return;
@@ -101,6 +100,7 @@ public class Glowing extends Modifier implements Craftable, Listener {
 
         int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (modManager.getModLevel(tool, this) - 1)));
         e.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, duration, 0, false, false));
+
         ChatWriter.log(false, p.getDisplayName() + " triggered Glowing on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 

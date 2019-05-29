@@ -75,6 +75,7 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
             } else {
                 meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
+
             tool.setItemMeta(meta);
         }
 

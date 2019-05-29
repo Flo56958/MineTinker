@@ -87,10 +87,9 @@ public class Poisonous extends Modifier implements Enchantable, Craftable, Liste
     @Override
     public void removeMod(ItemStack tool) { }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
-
+        if (!this.isAllowed()) return;
         if (!(event.getEntity() instanceof LivingEntity)) return;
 
         Player p = event.getPlayer();

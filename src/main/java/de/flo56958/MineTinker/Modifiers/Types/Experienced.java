@@ -44,6 +44,7 @@ public class Experienced extends Modifier implements Craftable, Listener {
                                                 ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
+
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
 
@@ -93,22 +94,26 @@ public class Experienced extends Modifier implements Craftable, Listener {
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;
+
         if (ToolType.BOOTS.getMaterials().contains(event.getTool().getType())
             || ToolType.LEGGINGS.getMaterials().contains(event.getTool().getType())
             || ToolType.CHESTPLATE.getMaterials().contains(event.getTool().getType())
             || ToolType.HELMET.getMaterials().contains(event.getTool().getType())) return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
+
         effect(event.getPlayer(), event.getTool());
     }
 
     @EventHandler
     public void effect(MTEntityDamageEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;
+
         effect(event.getPlayer(), event.getTool());
     }
 
     @EventHandler
     public void effect(MTPlayerInteractEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;
+
         effect(event.getPlayer(), event.getTool());
     }
 
@@ -125,6 +130,7 @@ public class Experienced extends Modifier implements Craftable, Listener {
 
         Random rand = new Random();
         int n = rand.nextInt(100);
+
         if (n <= this.percentagePerLevel * level) {
             ExperienceOrb orb = p.getWorld().spawn(p.getLocation(), ExperienceOrb.class);
             orb.setExperience(this.amount);

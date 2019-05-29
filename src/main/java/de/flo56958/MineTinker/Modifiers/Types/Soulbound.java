@@ -141,11 +141,12 @@ public class Soulbound extends Modifier implements Craftable, Listener {
     @EventHandler
     public void effect(PlayerRespawnEvent e) {
         Player p = e.getPlayer();
-        if (!p.hasPermission("minetinker.modifiers.soulbound.use")) return;
 
+        if (!p.hasPermission("minetinker.modifiers.soulbound.use")) return;
         if (!storedItemStacks.containsKey(p)) return;
 
         ArrayList<ItemStack> stored = storedItemStacks.get(p);
+
         for (ItemStack is : stored) {
             if (p.getInventory().addItem(is).size() != 0) { //adds items to (full) inventory
                 p.getWorld().dropItem(p.getLocation(), is);
@@ -163,8 +164,8 @@ public class Soulbound extends Modifier implements Craftable, Listener {
     public void effect(PlayerDropItemEvent e) {
         Item item = e.getItemDrop();
         ItemStack is = item.getItemStack();
-        if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) return;
 
+        if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) return;
         if (!modManager.hasMod(is, this)) return;
         if (toolDropable) return;
 

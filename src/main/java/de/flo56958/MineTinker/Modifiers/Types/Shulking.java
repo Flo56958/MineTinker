@@ -121,6 +121,7 @@ public class Shulking extends Modifier implements Craftable, Listener {
         int amplifier = this.effectAmplifier * (level - 1);
 
         ((LivingEntity) ent).addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, this.duration, amplifier, false, false));
+
         ChatWriter.log(false, p.getDisplayName() + " triggered Shulking on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 
     }

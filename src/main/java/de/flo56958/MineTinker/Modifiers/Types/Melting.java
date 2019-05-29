@@ -89,6 +89,7 @@ public class Melting extends Modifier implements Enchantable, Craftable, Listene
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
+
         if (!p.hasPermission("minetinker.modifiers.melting.use")) return;
         if (!modManager.hasMod(tool, this)) return;
 
@@ -102,8 +103,10 @@ public class Melting extends Modifier implements Enchantable, Craftable, Listene
             if (p.getFireTicks() > 0 && cancelBurning) {
                 p.setFireTicks(0);
             }
+
             double damage = event.getEvent().getDamage();
             damage = damage * (1 - this.bonusMultiplier * level);
+
             event.getEvent().setDamage(damage);
 
             ChatWriter.log(false, p.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
@@ -113,13 +116,14 @@ public class Melting extends Modifier implements Enchantable, Craftable, Listene
              */
             if (event.getEvent().getEntity() instanceof LivingEntity) {
                 LivingEntity e = (LivingEntity) event.getEvent().getEntity();
+
                 if (e.isDead()) return;
                 int level = modManager.getModLevel(tool, this);
-
                 if (e.getFireTicks() == 0) return;
 
                 double damage = event.getEvent().getDamage();
                 damage = damage * (1 + this.bonusMultiplier * level);
+
                 event.getEvent().setDamage(damage);
 
                 ChatWriter.log(false, p.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
@@ -133,12 +137,14 @@ public class Melting extends Modifier implements Enchantable, Craftable, Listene
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
+
         if (!p.hasPermission("minetinker.modifiers.melting.use")) return;
         if (!modManager.hasMod(tool, this)) return;
 
         if (p.getFireTicks() > 0 && cancelBurning) {
             p.setFireTicks(0);
         }
+
         ChatWriter.log(false, p.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 

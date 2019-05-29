@@ -76,6 +76,7 @@ public class Haste extends Modifier implements Craftable {
             } else {
                 meta.addEnchant(Enchantment.DIG_SPEED, modManager.getModLevel(tool, this), true);
             }
+
             if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             } else {

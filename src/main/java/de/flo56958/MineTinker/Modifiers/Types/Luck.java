@@ -98,6 +98,7 @@ public class Luck extends Modifier implements Craftable {
             } else if (ToolType.FISHINGROD.getMaterials().contains(tool.getType())) {
                 meta.addEnchant(Enchantment.LUCK, modManager.getModLevel(tool, this), true);
             }
+
             if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             } else {

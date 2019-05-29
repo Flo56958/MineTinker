@@ -66,6 +66,7 @@ public class Portalized extends Modifier implements Craftable, Listener {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
             return null;
         }
+
         return Modifier.checkAndAdd(p, tool, this, "portalized", isCommand);
     }
 

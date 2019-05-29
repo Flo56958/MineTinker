@@ -113,14 +113,17 @@ public abstract class Modifier {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_FREE_SLOTS, isCommand));
             return null;
         }
+
         if (!p.hasPermission("minetinker.modifiers." + permission + ".apply")) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_PERMISSION, isCommand));
             return null;
         }
+
         if (!mod.getAllowedTools().contains(ToolType.get(tool.getType()))) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
             return null;
         }
+
         if (modManager.getModLevel(tool, mod) >= mod.getMaxLvl()) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.MOD_MAXLEVEL, isCommand));
             return null;

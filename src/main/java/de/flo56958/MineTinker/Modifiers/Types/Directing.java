@@ -67,6 +67,7 @@ public class Directing extends Modifier implements Craftable, Listener {
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 1,
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+
         this.workInPVP = config.getBoolean(key + ".workinpvp");
     }
 
@@ -85,15 +86,18 @@ public class Directing extends Modifier implements Craftable, Listener {
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
+
         if (!p.hasPermission("minetinker.modifiers.directing.use")) return;
         if (!modManager.hasMod(tool, this)) return;
 
         List<ItemStack> drops = event.getEvent().getDrops();
+
         for (ItemStack current : drops) {
             if (p.getInventory().addItem(current).size() != 0) { //adds items to (full) inventory
                 p.getWorld().dropItem(p.getLocation(), current);
             } // no else as it gets added in if-clause
         }
+
         drops.clear();
     }
 

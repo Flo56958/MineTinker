@@ -57,6 +57,7 @@ public class ConfigurationManager {
     public static void loadConfig(String folder, String file) {
         File customConfigFile = new File(Main.getPlugin().getDataFolder(), folder + file);
         YamlConfiguration fileConfiguration = new YamlConfiguration();
+
         configsFolder.put(fileConfiguration, customConfigFile);
         configs.put(file, fileConfiguration);
         

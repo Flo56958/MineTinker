@@ -93,6 +93,7 @@ public class Timber extends Modifier implements Craftable, Listener {
     @EventHandler
     public void effect(MTBlockBreakEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;
+
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
         Block b = event.getBlock();
@@ -103,14 +104,17 @@ public class Timber extends Modifier implements Craftable, Listener {
         ArrayList<Material> allowed = new ArrayList<>();
         allowed.addAll(Lists.getWoodLogs());
         allowed.addAll(Lists.getWoodWood());
+
         boolean isTreeBottom = false; //checks for Grass or Dirt under Log
         boolean isTreeTop = false; //checks for Leaves above Log
+
         for (int y = b.getY() - 1; y > 0; y--) {
             if (p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(Material.GRASS_BLOCK) //for freshly grown trees
                     || p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(Material.DIRT)
                     || p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(Material.PODZOL)) { //for the 2x2 spruce trees
                 isTreeBottom = true;
             }
+
             if (!p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(b.getType())) {
                 break;
             }
@@ -120,6 +124,7 @@ public class Timber extends Modifier implements Craftable, Listener {
             if (!allowed.contains(p.getWorld().getBlockAt(b.getX(), dy, b.getZ()).getType())) {
                 Location loc = b.getLocation().clone();
                 loc.setY(dy);
+
                 if (Lists.getWoodLeaves().contains(p.getWorld().getBlockAt(loc).getType())) {
                     isTreeTop = true;
                 }
@@ -146,9 +151,13 @@ public class Timber extends Modifier implements Craftable, Listener {
                 for (int dz = -1; dz <= 1; dz++) {
                     Location loc = b.getLocation().clone();
                     loc.add(dx, dy, dz);
+
                     if (locs.contains(loc)) { continue; }
+
                     if (getConfig().getInt("Timber.MaximumBlocksPerSwing") > 0 && locs.size() >= getConfig().getInt("Timber.MaximumBlocksPerSwing")) return;
+
                     locs.add(loc);
+
                     if (allowed.contains(p.getWorld().getBlockAt(loc).getType())) {
                         breakTree(p, p.getWorld().getBlockAt(loc), allowed);
 

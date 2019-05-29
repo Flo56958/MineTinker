@@ -81,6 +81,7 @@ public class Sharpness extends Modifier implements Craftable {
                 meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
                 meta.addEnchant(Enchantment.IMPALING, modManager.getModLevel(tool, this), true);
             }
+
             if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             } else {

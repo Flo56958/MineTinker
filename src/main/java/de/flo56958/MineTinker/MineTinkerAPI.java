@@ -45,6 +45,7 @@ public class MineTinkerAPI {
         if (api == null) {
             api = new MineTinkerAPI();
         }
+
         return api;
     }
 
@@ -66,6 +67,7 @@ public class MineTinkerAPI {
      */
     public FileConfiguration getConfig(String folder, String name) {
         ConfigurationManager.loadConfig(folder, name);
+
         return ConfigurationManager.getConfig(name);
     }
 

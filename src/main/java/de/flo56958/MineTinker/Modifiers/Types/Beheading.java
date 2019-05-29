@@ -89,14 +89,17 @@ public class Beheading extends Modifier implements Enchantable, Craftable, Liste
     @EventHandler(priority = EventPriority.LOW) //For Directing
     public void effect(MTEntityDeathEvent event) {
         if (!this.isAllowed()) return;
+
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
         LivingEntity mob = event.getEvent().getEntity();
         ItemStack loot = new ItemStack(Material.AIR, 1);
+
         if (p.hasPermission("minetinker.modifiers.beheading.use")) {
             if (modManager.hasMod(tool, this)) {
                 Random rand = new Random();
                 int n = rand.nextInt(100);
+
                 if (n <= this.percentagePerLevel * modManager.getModLevel(tool, this)) {
                     if (mob.getType().equals(EntityType.CREEPER)) {
                         loot = new ItemStack(Material.CREEPER_HEAD, 1);
@@ -119,6 +122,7 @@ public class Beheading extends Modifier implements Enchantable, Craftable, Liste
 
                         loot = head;
                     }
+
                     if (loot.getType() != Material.AIR) {
                         event.getEvent().getDrops().add(loot);
                         ChatWriter.log(false, p.getDisplayName() + " triggered Beheading on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");

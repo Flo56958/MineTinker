@@ -2,11 +2,8 @@ package de.flo56958.MineTinker.Utilities;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ToolUpgradeEvent;
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.ModManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -18,8 +15,8 @@ import org.bukkit.plugin.PluginManager;
 public class ItemGenerator {
 
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
-    private static final ModManager modManager = ModManager.instance();
+    //private static final FileConfiguration config = Main.getPlugin().getConfig();
+    //private static final ModManager modManager = ModManager.instance();
 
     public static String getDisplayName (ItemStack tool) {
         String name ;
@@ -51,6 +48,7 @@ public class ItemGenerator {
 	public static ItemStack itemUpgrader(ItemStack tool, ItemStack upgrade, Player p) {
         ItemMeta meta = tool.getItemMeta();
         String[] name = tool.getType().toString().split("_");
+
         if (name[0].toLowerCase().equals("wooden") && (
                 upgrade.getType().equals(Material.ACACIA_PLANKS) ||
                 upgrade.getType().equals(Material.BIRCH_PLANKS) ||
@@ -58,6 +56,7 @@ public class ItemGenerator {
                 upgrade.getType().equals(Material.JUNGLE_PLANKS) ||
                 upgrade.getType().equals(Material.OAK_PLANKS) ||
                 upgrade.getType().equals(Material.SPRUCE_PLANKS))) {
+
             pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
         } else if (name[0].toLowerCase().equals("stone") && upgrade.getType().equals(Material.COBBLESTONE)) {
@@ -82,6 +81,7 @@ public class ItemGenerator {
             pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
         }
+
         if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
             switch (upgrade.getType()) {
                 case ACACIA_PLANKS:

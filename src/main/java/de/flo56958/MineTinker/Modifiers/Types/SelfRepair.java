@@ -91,11 +91,13 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
         if (Modifier.checkAndAdd(p, tool, this, "selfrepair", isCommand) == null) {
             return null;
         }
+
         if (useMending) {
             ItemMeta meta = tool.getItemMeta();
 
             if (meta != null) {
                 meta.addEnchant(Enchantment.MENDING, modManager.getModLevel(tool, this), true);
+
                 if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
                     meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 } else {
@@ -129,10 +131,12 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;
+
         if (ToolType.BOOTS.getMaterials().contains(event.getTool().getType())
                 || ToolType.LEGGINGS.getMaterials().contains(event.getTool().getType())
                 || ToolType.CHESTPLATE.getMaterials().contains(event.getTool().getType())
                 || ToolType.HELMET.getMaterials().contains(event.getTool().getType())) return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
+
         effect(event.getPlayer(), event.getTool());
     }
 
@@ -151,8 +155,11 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
     @EventHandler
     public void onShear(PlayerShearEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;
+
         ItemStack tool = event.getPlayer().getInventory().getItemInMainHand();
+
         if (!(modManager.isToolViable(tool) && ToolType.SHEARS.getMaterials().contains(tool.getType()))) return;
+
         effect(event.getPlayer(), tool);
     }
 
@@ -173,9 +180,9 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
         if (!modManager.hasMod(tool, this)) return;
 
         int level = modManager.getModLevel(tool, this);
-
         Random rand = new Random();
         int n = rand.nextInt(100);
+
         if (n <= this.percentagePerLevel * level) {
             short dura = (short) (tool.getDurability() - this.healthRepair);
 
@@ -184,6 +191,7 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
             }
 
             tool.setDurability(dura);
+
             ChatWriter.log(false, p.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
         }
     }

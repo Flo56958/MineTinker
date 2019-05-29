@@ -24,6 +24,7 @@ public interface Craftable {
 
                 // TODO: Make this safer
                 newRecipe.shape(top, middle, bottom); //makes recipe
+
                 for (String key : materials.getKeys(false)) {
                     newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
                 }

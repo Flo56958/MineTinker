@@ -35,7 +35,6 @@ public class Updater {
             StringBuilder content;
 
             try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
-
                 String line;
                 content = new StringBuilder();
 
@@ -66,6 +65,7 @@ public class Updater {
         if (!this.hasUpdate) {
             this.onlineVersion = this.checkOnline();
         }
+
         if (this.onlineVersion.equals("")) {
             ChatWriter.logInfo("MineTinker is unable to check for updates.");
             this.hasUpdate = false;
@@ -88,6 +88,7 @@ public class Updater {
         if (!this.hasUpdate) {
             this.onlineVersion = this.checkOnline();
         }
+
         if (this.onlineVersion.equals("")) {
             ChatWriter.sendMessage(sender, ChatColor.RED, "Unable to check for updates!");
             this.hasUpdate = false;

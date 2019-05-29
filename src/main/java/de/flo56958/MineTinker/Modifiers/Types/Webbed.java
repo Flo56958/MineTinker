@@ -96,6 +96,7 @@ public class Webbed extends Modifier implements Craftable, Listener {
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;
         if (!(event.getEntity() instanceof LivingEntity)) return;
+
         effect(event.getPlayer(), event.getTool(), event.getEntity());
     }
 
@@ -119,6 +120,7 @@ public class Webbed extends Modifier implements Craftable, Listener {
         int amplifier = this.effectAmplifier * (level - 1) / 2;
 
         ((LivingEntity) ent).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration, amplifier, false, false));
+
         ChatWriter.log(false, p.getDisplayName() + " triggered Webbed on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 

@@ -28,9 +28,11 @@ public class Main extends JavaPlugin {
         loadConfig();
 
         ModManager.instance();
+
         Commands cmd = new Commands();
         this.getCommand("minetinker").setExecutor(cmd); // must be after internals as it would throw a NullPointerException
         this.getCommand("minetinker").setTabCompleter(cmd);
+
         ChatWriter.log(false, "Registered commands!");
 
         if (getConfig().getBoolean("AllowCrafting")) {
@@ -38,6 +40,7 @@ public class Main extends JavaPlugin {
             convertListener.register();
             Bukkit.getPluginManager().registerEvents(convertListener, this);
         }
+
         Bukkit.getPluginManager().registerEvents(new BlockListener(), this);
         Bukkit.getPluginManager().registerEvents(new AnvilListener(), this);
         Bukkit.getPluginManager().registerEvents(new ArmorListener(), this);
@@ -53,20 +56,24 @@ public class Main extends JavaPlugin {
         if (!getConfig().getBoolean("AllowEnchanting")) {
             Bukkit.getPluginManager().registerEvents(new EnchantingTableListener(), this);
         }
+
         if (ConfigurationManager.getConfig("Elevator.yml").getBoolean("Elevator.enabled")) {
             Bukkit.getPluginManager().registerEvents(new ElevatorListener(), this);
             CraftingRecipes.registerElevatorMotor();
             ChatWriter.log(false, "Enabled Elevators!");
         }
+
         if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("BuildersWand.enabled")) {
             Bukkit.getPluginManager().registerEvents(new BuildersWandListener(), this);
             BuildersWandListener.reload();
             ChatWriter.log(false, "Enabled BuildersWands!");
         }
+
         if (getConfig().getBoolean("EasyHarvest.enabled")) {
             Bukkit.getPluginManager().registerEvents(new EasyHarvestListener(), this);
             ChatWriter.log(false, "Enabled EasyHarvest!");
         }
+
         ChatWriter.log(false, "Registered events!");
 
         if (getConfig().getBoolean("logging.metrics")) {
@@ -98,6 +105,7 @@ public class Main extends JavaPlugin {
     private void loadConfig() {
         getConfig().options().copyDefaults(true);
         saveConfig();
+
         ChatWriter.log(false, "Config loaded!");
     }
 

@@ -92,6 +92,7 @@ public class Ender extends Modifier implements Craftable, Listener {
                 }
             }
         }
+
         return Modifier.checkAndAdd(p, tool, this, "ender", isCommand);
     }
 
@@ -105,18 +106,23 @@ public class Ender extends Modifier implements Craftable, Listener {
     @EventHandler
     public void effect(MTProjectileHitEvent event) {
         if (!this.isAllowed()) return;
+
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
+
         if (!p.hasPermission("minetinker.modifiers.ender.use")) return;
         if (!modManager.hasMod(tool, this)) return;
         if (!p.isSneaking()) return;
 
         Location loc = event.getEvent().getEntity().getLocation().clone(); //Location of the Arrow
         Location oldLoc = p.getLocation();
+
         p.teleport(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(), p.getLocation().getYaw(), p.getLocation().getPitch()).add(0, 1, 0));
+
         if (this.hasSound) {
             p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F);
         }
+
         if (this.hasParticles) {
             AreaEffectCloud cloud = (AreaEffectCloud) p.getWorld().spawnEntity(p.getLocation(), EntityType.AREA_EFFECT_CLOUD);
             cloud.setVelocity(new Vector(0, 1, 0));
@@ -124,6 +130,7 @@ public class Ender extends Modifier implements Craftable, Listener {
             cloud.setDuration(5);
             cloud.setColor(Color.GREEN);
             cloud.getLocation().setYaw(90);
+
             AreaEffectCloud cloud2 = (AreaEffectCloud) p.getWorld().spawnEntity(oldLoc, EntityType.AREA_EFFECT_CLOUD);
             cloud2.setVelocity(new Vector(0, 1, 0));
             cloud2.setRadius(0.5f);
@@ -141,21 +148,25 @@ public class Ender extends Modifier implements Craftable, Listener {
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;
+
         Player p = event.getPlayer();
+        if (!p.isSneaking()) return;
         if (p.equals(event.getEvent().getEntity())) return;
-        ItemStack tool = event.getTool();
         if (!p.hasPermission("minetinker.modifiers.ender.use")) return;
+
+        ItemStack tool = event.getTool();
         if (!modManager.hasMod(tool, this)) return; //No check needed, as Ender can only be applied on the Bow
         if (modManager.getModLevel(tool, this) < 2) return;
-        if (!p.isSneaking()) return;
 
         Location loc = event.getEvent().getEntity().getLocation().clone();
         event.getEvent().getEntity().teleport(p.getLocation());
         p.teleport(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ()));
+
         if (this.hasSound) {
             p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F); //Sound at Players position
             p.getWorld().playSound(event.getEvent().getEntity().getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F); //Sound at Entity's position
         }
+
         ChatWriter.log(false, p.getDisplayName() + " triggered Ender on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 
