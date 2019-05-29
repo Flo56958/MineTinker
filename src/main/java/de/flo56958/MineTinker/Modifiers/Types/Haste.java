@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Haste extends Modifier implements Craftable {
 
@@ -31,6 +32,15 @@ public class Haste extends Modifier implements Craftable {
         super(ModifierType.HASTE,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS, ToolType.FISHINGROD)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.LURE);
+        enchantments.add(Enchantment.DIG_SPEED);
+
+        return enchantments;
     }
 
     @Override

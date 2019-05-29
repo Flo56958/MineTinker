@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class SilkTouch extends Modifier implements Enchantable, Craftable {
 
@@ -34,6 +35,14 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
         super(ModifierType.SILK_TOUCH,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.SILK_TOUCH);
+
+        return enchantments;
     }
 
     @Override

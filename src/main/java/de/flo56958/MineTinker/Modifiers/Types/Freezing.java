@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Freezing extends Modifier implements Craftable {
 
@@ -33,6 +34,14 @@ public class Freezing extends Modifier implements Craftable {
         super(ModifierType.FREEZING,
                 new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.FROST_WALKER);
+
+        return enchantments;
     }
 
     @Override

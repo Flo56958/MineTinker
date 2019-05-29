@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Reinforced extends Modifier implements Craftable {
 
@@ -32,6 +33,14 @@ public class Reinforced extends Modifier implements Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.DURABILITY);
+
+        return enchantments;
     }
 
     @Override

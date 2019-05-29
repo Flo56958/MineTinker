@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Protecting extends Modifier implements Craftable {
 
@@ -31,6 +32,14 @@ public class Protecting extends Modifier implements Craftable {
         super(ModifierType.PROTECTING,
                 new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.PROTECTION_ENVIRONMENTAL);
+
+        return enchantments;
     }
 
     @Override

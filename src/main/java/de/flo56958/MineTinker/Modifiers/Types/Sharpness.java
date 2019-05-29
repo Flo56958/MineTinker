@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Sharpness extends Modifier implements Craftable {
 
@@ -31,6 +32,16 @@ public class Sharpness extends Modifier implements Craftable {
         super(ModifierType.SHARPNESS,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.DAMAGE_ALL);
+        enchantments.add(Enchantment.ARROW_DAMAGE);
+        enchantments.add(Enchantment.IMPALING);
+
+        return enchantments;
     }
 
     @Override

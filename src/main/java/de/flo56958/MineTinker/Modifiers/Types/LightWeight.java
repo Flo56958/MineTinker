@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class LightWeight extends Modifier implements Enchantable, Craftable {
 
@@ -32,6 +33,14 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
         super(ModifierType.LIGHT_WEIGHT,
                 new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.PROTECTION_FALL);
+
+        return enchantments;
     }
 
     @Override

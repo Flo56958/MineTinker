@@ -42,6 +42,7 @@ AllowCrafting: true #Only recommended if used in combination with other Plugins 
 BlockToEnchantModifiers: BOOKSHELF #Block that needs to be right-clicked
 HideEnchants: true #Should the vanilla enchantments be hidden on the tool
 DurabilityPercentageRepair: 0.34 #How much durability (relative to maximum durability) should the tool recover per item
+ConvertBookToModifier: false #Should right clicking a bookshelf with an enchanted book convert enchantments to modifier items
 
 #---------------ITEMBEHAVIOUR--------------
 ItemBehaviour:

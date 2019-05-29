@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Knockback extends Modifier implements Enchantable, Craftable {
 
@@ -32,6 +33,15 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
         super(ModifierType.KNOCKBACK,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.KNOCKBACK);
+        enchantments.add(Enchantment.ARROW_KNOCKBACK);
+
+        return enchantments;
     }
 
     @Override

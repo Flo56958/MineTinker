@@ -25,6 +25,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Propelling extends Modifier implements Craftable, Enchantable, Listener {
 
@@ -46,6 +47,14 @@ public class Propelling extends Modifier implements Craftable, Enchantable, List
                 new ArrayList<>(Arrays.asList(ToolType.ELYTRA, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.RIPTIDE);
+
+        return enchantments;
     }
 
     @Override

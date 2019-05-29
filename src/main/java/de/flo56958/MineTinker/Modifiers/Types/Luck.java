@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Luck extends Modifier implements Craftable {
 
@@ -34,6 +35,16 @@ public class Luck extends Modifier implements Craftable {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS,
                         ToolType.FISHINGROD, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.LOOT_BONUS_BLOCKS);
+        enchantments.add(Enchantment.LOOT_BONUS_MOBS);
+        enchantments.add(Enchantment.LUCK);
+
+        return enchantments;
     }
 
     @Override

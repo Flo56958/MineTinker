@@ -13,6 +13,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.ItemFlag;
@@ -37,11 +38,11 @@ public class ModManager {
 
         layout = ConfigurationManager.getConfig("layout.yml");
         layout.options().copyDefaults(true);
-
         layout.addDefault("UseRomans.Level", true);
         layout.addDefault("UseRomans.Exp", false);
         layout.addDefault("UseRomans.FreeSlots", false);
         layout.addDefault("UseRomans.ModifierLevels", true);
+
         ArrayList<String> loreLayout = new ArrayList<>();
         loreLayout.add("%GOLD%Level %WHITE%%LEVEL%");
         loreLayout.add("%GOLD%Exp: %WHITE%%EXP% / %NEXT_LEVEL_EXP%");
@@ -75,6 +76,8 @@ public class ModManager {
 
     private List<String> loreScheme;
     private String modifierLayout;
+
+    private boolean allowBookConvert = config.getBoolean("ConvertBookToModifier");
 
     /**
      * Class constructor (no parameters)
@@ -212,6 +215,12 @@ public class ModManager {
          mes = mes.replaceAll("%PLUGIN%", Main.getPlugin().getName());
          ChatWriter.logColor(mes);
     }
+
+    /**
+     * should we let the player convert enchanted books to modifier items
+     * @return
+     */
+    public boolean allowBookToModifier() { return this.allowBookConvert; }
 
     /**
      * get all the modifiers in the list
@@ -626,6 +635,20 @@ public class ModManager {
             if (m.getType().getNBTKey() != null && m.getType().getNBTKey().equals(name)) {
                 return m;
             }
+        }
+
+        return null;
+    }
+
+    /**
+     * Gets the first found modifier that applies the supplied enchantment.
+     *
+     * @param enchantment
+     * @return
+     */
+    public Modifier getModifierFromEnchantment(Enchantment enchantment) {
+        for (Modifier modifier : getAllMods()) {
+            if (modifier.getAppliedEnchantments().contains(enchantment)) return modifier;
         }
 
         return null;

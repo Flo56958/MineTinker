@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Fiery extends Modifier implements Enchantable, Craftable {
 
@@ -33,6 +34,15 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
         super(ModifierType.FIERY,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.ARROW_FIRE);
+        enchantments.add(Enchantment.FIRE_ASPECT);
+
+        return enchantments;
     }
 
     @Override

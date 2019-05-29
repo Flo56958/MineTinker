@@ -3,12 +3,14 @@ package de.flo56958.MineTinker.Listeners;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftInventory;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -19,6 +21,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+
+import java.util.Iterator;
+import java.util.Map;
 
 public class PlayerListener implements Listener {
 
@@ -133,6 +139,33 @@ public class PlayerListener implements Listener {
 
         if (!e.getBlockFace().equals(BlockFace.SELF)) {
             Lists.BLOCKFACE.replace(e.getPlayer(), e.getBlockFace());
+        }
+
+        if (!modManager.allowBookToModifier()) return;
+
+        if (e.getClickedBlock() == null || e.getClickedBlock().getType() != Material.BOOKSHELF) return;
+        if (e.getItem() == null || e.getItem().getType() != Material.ENCHANTED_BOOK) return;
+        if (e.getItem().getItemMeta() == null || !(e.getItem().getItemMeta() instanceof EnchantmentStorageMeta)) return;
+
+        EnchantmentStorageMeta meta = (EnchantmentStorageMeta)e.getItem().getItemMeta();
+
+        for (Map.Entry<Enchantment, Integer> entry : meta.getStoredEnchants().entrySet()) {
+            Modifier modifier = modManager.getModifierFromEnchantment(entry.getKey());
+
+            if (modifier == null) continue;
+
+            ItemStack modDrop = modifier.getModItem();
+            modDrop.setAmount(entry.getValue());
+
+            e.getClickedBlock().getWorld().dropItem(e.getClickedBlock().getLocation(), modDrop);
+
+            meta.removeStoredEnchant(entry.getKey());
+        }
+
+        if (meta.getStoredEnchants().isEmpty()) {
+            e.getPlayer().getInventory().removeItem(e.getItem());
+        } else {
+            e.getItem().setItemMeta(meta);
         }
     }
 }

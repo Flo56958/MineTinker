@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Aquaphilic extends Modifier implements Craftable {
 
@@ -33,6 +34,16 @@ public class Aquaphilic extends Modifier implements Craftable {
         super(ModifierType.AQUAPHILIC,
                 new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.HELMET)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.DEPTH_STRIDER);
+        enchantments.add(Enchantment.OXYGEN);
+        enchantments.add(Enchantment.WATER_WORKER);
+
+        return enchantments;
     }
 
     @Override

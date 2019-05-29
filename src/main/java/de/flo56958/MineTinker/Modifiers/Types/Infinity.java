@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Infinity extends Modifier implements Enchantable, Craftable {
 
@@ -36,6 +37,15 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
         super(ModifierType.INFINITY,
                 new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.TRIDENT)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.ARROW_INFINITE);
+        enchantments.add(Enchantment.LOYALTY);
+
+        return enchantments;
     }
 
     @Override

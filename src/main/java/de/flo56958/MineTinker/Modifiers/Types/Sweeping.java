@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Sweeping extends Modifier implements Enchantable, Craftable {
 
@@ -34,6 +35,14 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
         super(ModifierType.SWEEPING,
                 new ArrayList<>(Collections.singletonList(ToolType.SWORD)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.SWEEPING_EDGE);
+
+        return enchantments;
     }
 
     @Override
