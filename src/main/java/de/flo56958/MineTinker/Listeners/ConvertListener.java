@@ -52,6 +52,7 @@ public class ConvertListener implements Listener{
 	public void PrepareCraft(PrepareItemCraftEvent e) {
 		if (e.getRecipe() != null) {
 			Player player = null;
+
 			for (HumanEntity humans : e.getViewers()) {
 				if (humans instanceof Player) { player = (Player) humans; }
 			}
@@ -64,20 +65,22 @@ public class ConvertListener implements Listener{
 	        
 	        if (currentItem != null) {
 	        	ItemMeta m = currentItem.getItemMeta();
+
 	        	if (m != null) {
 	        		if (modManager.isWandViable(currentItem)) {
 	        			return;
 	        		}
 	        	}
+
 	        	modManager.convertItemStack(currentItem);
 	        }
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
     public void onCraft(CraftItemEvent e) {
-        if (e.isCancelled()) return;
         if (!(e.getWhoClicked() instanceof Player)) return;
+
         Player player = (Player) e.getWhoClicked();
         
         if (config.getBoolean("Sound.OnEveryCrafting")) {

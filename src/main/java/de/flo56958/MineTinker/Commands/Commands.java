@@ -16,7 +16,6 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Recipe;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -274,15 +273,19 @@ public class Commands implements TabExecutor {
         ChatWriter.sendMessage(sender, ChatColor.RED, "NOTE: Elevator and Builderswands need a complete restart to function correctly on the new configurations!");
 
         ChatWriter.sendMessage(sender, ChatColor.WHITE, "Clearing recipes!");
+
         Iterator<Recipe> it = Main.getPlugin().getServer().recipeIterator(); //TODO: Better algorithm for removing recipes from modifiers
+
         while (it.hasNext()) {
             Recipe rec = it.next();
+
             for (Modifier mod : modManager.getAllowedMods()) {
                 if (mod.getModItem().equals(rec.getResult())) {
                     it.remove();
                     break;
                 }
             }
+
             if (BuildersWandListener.getWands().contains(rec.getResult())) {
                 it.remove();
             }
@@ -312,6 +315,7 @@ public class Commands implements TabExecutor {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         ArrayList<String> result = new ArrayList<>();
         ArrayList<String> numbers = new ArrayList<>();
+
         for (int i = 0; i < 10; i++) {
             numbers.add(Integer.toString(i));
         }

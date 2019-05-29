@@ -35,10 +35,9 @@ public class EasyHarvestListener implements Listener {
         if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) return;
 
         ItemStack tool = p.getInventory().getItemInMainHand();
+
         if (!ToolType.HOE.getMaterials().contains(tool.getType())) return;
-
         if (!modManager.isToolViable(tool)) return;
-
         if (e.getClickedBlock() == null) return;
         if (e.getItem() == null) return;
 
@@ -50,12 +49,14 @@ public class EasyHarvestListener implements Listener {
         if (!placeEvent.canBuild() || placeEvent.isCancelled()) return;
 
         Block b = e.getClickedBlock();
+
         if (b.getState().getData() instanceof Crops) { harvestCrops(p, tool, b); }
         if (b.getState().getData() instanceof NetherWarts) { harvestWarts(p, tool, b); }
     }
 
     private static void harvestWarts(Player p, ItemStack tool, Block b) {
         NetherWarts w = (NetherWarts) b.getState().getData();
+
         if (w.getState().equals(NetherWartsState.RIPE)) {
             breakWarts(p, tool, b);
             playSound(b);
@@ -68,10 +69,13 @@ public class EasyHarvestListener implements Listener {
 
         if (modManager.get(ModifierType.POWER) != null) {
             if (modManager.hasMod(tool, modManager.get(ModifierType.POWER)) && !p.isSneaking()) {
+
                 int level = modManager.getModLevel(tool, modManager.get(ModifierType.POWER));
+
                 if (level == 1) {
                     Block b1;
                     Block b2;
+
                     if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
                         if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
                             b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
@@ -91,10 +95,12 @@ public class EasyHarvestListener implements Listener {
                     } else {
                         return;
                     }
+
                     if (b1.getType().equals(b.getType()) && ((NetherWarts) b1.getState().getData()).getState().equals(NetherWartsState.RIPE)) {
                         breakBlock(b1, p);
                         replantCrops(p, b1, m);
                     }
+
                     if (b2.getType().equals(b.getType()) && ((NetherWarts) b2.getState().getData()).getState().equals(NetherWartsState.RIPE)) {
                         breakBlock(b2, p);
                         replantCrops(p, b2, m);
@@ -104,6 +110,7 @@ public class EasyHarvestListener implements Listener {
                         for (int z = -(level - 1); z <= (level - 1); z++) {
                             if (!(x == 0 && z == 0)) {
                                 Block b1 = b.getWorld().getBlockAt(b.getLocation().add(x, 0, z));
+
                                 if (b1.getType().equals(b.getType()) && ((NetherWarts) b1.getState().getData()).getState().equals(NetherWartsState.RIPE)) {
                                     breakBlock(b1, p);
                                     replantCrops(p, b1, m);
@@ -133,12 +140,14 @@ public class EasyHarvestListener implements Listener {
     private static void breakCrops(Player p, ItemStack tool, Block b) {
         Power.HASPOWER.put(p, true);
         Material m = b.getType();
+
         if (modManager.get(ModifierType.POWER) != null) {
             if (modManager.hasMod(tool, modManager.get(ModifierType.POWER)) && !p.isSneaking()) {
                 int level = modManager.getModLevel(tool, modManager.get(ModifierType.POWER));
                 if (level == 1) {
                     Block b1;
                     Block b2;
+
                     if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
                         if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
                             b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
@@ -158,10 +167,12 @@ public class EasyHarvestListener implements Listener {
                     } else {
                         return;
                     }
+
                     if (b1.getType().equals(b.getType()) && ((Crops) b1.getState().getData()).getState().equals(CropState.RIPE)) {
                         breakBlock(b1, p);
                         replantCrops(p, b1, m);
                     }
+
                     if (b2.getType().equals(b.getType()) && ((Crops) b2.getState().getData()).getState().equals(CropState.RIPE)) {
                         breakBlock(b2, p);
                         replantCrops(p, b2, m);
@@ -171,6 +182,7 @@ public class EasyHarvestListener implements Listener {
                         for (int z = -(level - 1); z <= (level - 1); z++) {
                             if (!(x == 0 && z == 0)) {
                                 Block b1 = b.getWorld().getBlockAt(b.getLocation().add(x, 0, z));
+
                                 if (b1.getType().equals(b.getType()) && ((Crops) b1.getState().getData()).getState().equals(CropState.RIPE)) {
                                     breakBlock(b1, p);
                                     replantCrops(p, b1, m);

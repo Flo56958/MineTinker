@@ -25,9 +25,8 @@ public class PlayerListener implements Listener {
     private static final ModManager modManager = ModManager.instance();
 
     @SuppressWarnings("deprecation")
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent e) {
-        if (e.isCancelled()) return;
         if (Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) return;
         if (e.getSlot() < 0) return;
         if (!(e.getClickedInventory() instanceof PlayerInventory || e.getClickedInventory() instanceof DoubleChestInventory || e.getClickedInventory() instanceof CraftInventory)) return;
@@ -35,14 +34,14 @@ public class PlayerListener implements Listener {
         ItemStack tool = e.getClickedInventory().getItem(e.getSlot());
 
         if (!(modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool))) return;
-
         if (!(Main.getPlugin().getConfig().getBoolean("Repairable") && e.getWhoClicked().hasPermission("minetinker.tool.repair"))) return;
-
         if (tool == null) return;
 
         ItemStack repair = e.getWhoClicked().getItemOnCursor();
         String[] name = tool.getType().toString().split("_");
+
         boolean eligible = false;
+
         if (name[0].toLowerCase().equals("wooden") && Lists.getWoodPlanks().contains(repair.getType())) {
             eligible = true;
         } else if (name[0].toLowerCase().equals("stone") && (repair.getType().equals(Material.COBBLESTONE) || repair.getType().equals(Material.STONE))) {
@@ -68,19 +67,24 @@ public class PlayerListener implements Listener {
         } else if (name[0].toLowerCase().equals("turtle") && repair.getType().equals(Material.SCUTE)) {
             eligible = true;
         }
+
         if (eligible) {
             double dura = tool.getDurability();
             double maxDura = tool.getType().getMaxDurability();
             int amount = e.getWhoClicked().getItemOnCursor().getAmount();
             double percent = Main.getPlugin().getConfig().getDouble("DurabilityPercentageRepair");
+
             while (amount > 0 && dura > 0) {
                 dura = dura - (maxDura * percent);
                 amount--;
             }
+
             if (dura < 0) {
                 dura = 0;
             }
+
             tool.setDurability((short) dura);
+
             e.getWhoClicked().getItemOnCursor().setAmount(amount);
             e.setCancelled(true);
         }
@@ -95,6 +99,7 @@ public class PlayerListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Lists.BLOCKFACE.put(e.getPlayer(), null);
         Power.HASPOWER.put(e.getPlayer(), false);
+
         if (Main.getPlugin().getConfig().getBoolean("SendUpdateNotificationToOPs")) {
             if (e.getPlayer().isOp()) {
                 if (Main.getUpdater() != null) {
@@ -125,6 +130,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onInteract(PlayerInteractEvent e) {
         if (Lists.WORLDS.contains(e.getPlayer().getWorld().getName())) return;
+
         if (!e.getBlockFace().equals(BlockFace.SELF)) {
             Lists.BLOCKFACE.replace(e.getPlayer(), e.getBlockFace());
         }

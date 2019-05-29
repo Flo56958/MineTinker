@@ -25,12 +25,11 @@ public class ItemListener implements Listener {
 
     private final ModManager modManager = ModManager.instance();
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onDespawn(ItemDespawnEvent e) {
-        if (e.isCancelled()) return;
-
         Item item = e.getEntity();
         ItemStack is = item.getItemStack();
+
         if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) return;
 
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetPersistent")) {
@@ -39,10 +38,8 @@ public class ItemListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onItemDrop(PlayerDropItemEvent e) {
-        if (e.isCancelled()) return;
-
         Item item = e.getItemDrop();
         ItemStack is = item.getItemStack();
 
@@ -67,9 +64,11 @@ public class ItemListener implements Listener {
             item.setCustomName(is.getItemMeta().getDisplayName());
             item.setCustomNameVisible(true);
         }
+
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetGlowing")) {
             item.setGlowing(true);
         }
+
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetInvulnerable")) {
             item.setInvulnerable(true);
         }

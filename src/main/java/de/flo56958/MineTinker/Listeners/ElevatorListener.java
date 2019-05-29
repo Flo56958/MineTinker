@@ -49,15 +49,13 @@ public class ElevatorListener implements Listener {
     @SuppressWarnings("EmptyMethod")
     public static void init() {/*class must be called once*/}
     
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onSneak (PlayerToggleSneakEvent e) {
-        if (e.isCancelled()) return;
-
         if (Lists.WORLDS_ELEVATOR.contains(e.getPlayer().getWorld().getName())) return;
-
         if (!e.isSneaking()) return;
 
         Player p = e.getPlayer();
+
         if (!p.hasPermission("minetinker.elevator.use")) return;
 
         Location l = p.getLocation();
@@ -72,25 +70,29 @@ public class ElevatorListener implements Listener {
         for (int i = l.getBlockY() - 1; i >= 0; i--) {
             if (p.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ()).getState() instanceof Hopper) {
                 Hopper h2 = (Hopper) p.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ()).getState();
+
                 if (h2.getCustomName() == null) { continue; } //name could be NULL
+
                 if (h2.getCustomName().equals(ChatColor.GRAY + config.getString("Elevator.name"))) {
                     l.add(0, i - l.getBlockY() + 2, 0);
                     p.teleport(l);
+
                     if (config.getBoolean("Elevator.Sound")) {
                         p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 0.5F, 0.5F);
                     }
+
                     break;
                 }
             }
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onJump (PlayerMoveEvent e) {
-        if (e.isCancelled()) return;
         if (Lists.WORLDS_ELEVATOR.contains(e.getPlayer().getWorld().getName())) return;
 
         Player p = e.getPlayer();
+
         if (!p.hasPermission("minetinker.elevator.use")) return;
         if (e.getTo() == null) return;
 
@@ -103,17 +105,22 @@ public class ElevatorListener implements Listener {
 
         Hopper h1 = (Hopper) b.getState();
         if (h1.getCustomName() == null) return;
+
         if (h1.getCustomName().equals(ChatColor.GRAY + config.getString("Elevator.name"))) {
             for (int i = l.getBlockY() + 1; i <= 256; i++) {
                 if (p.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ()).getState() instanceof Hopper) {
                     Hopper h2 = (Hopper) p.getWorld().getBlockAt(l.getBlockX(), i, l.getBlockZ()).getState();
+
                     if (h2.getCustomName() == null) { continue; }
+
                     if (h2.getCustomName().equals(ChatColor.GRAY + config.getString("Elevator.name"))) {
                         l.add(0, i - l.getBlockY() + 2, 0);
                         p.teleport(l);
+
                         if (config.getBoolean("Elevator.Sound")) {
                             p.playSound(p.getLocation(), Sound.BLOCK_CHEST_OPEN, 0.5F, 0.5F);
                         }
+
                         break;
                     }
                 }

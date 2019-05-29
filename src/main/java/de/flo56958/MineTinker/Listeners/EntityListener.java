@@ -15,7 +15,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Trident;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -33,9 +32,8 @@ public class EntityListener implements Listener {
     private static final ModManager modManager = ModManager.instance();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent e) {
-        if (e.isCancelled()) return;
         if (Lists.WORLDS.contains(e.getDamager().getWorld().getName())) return;
 
         Player p;
@@ -43,6 +41,7 @@ public class EntityListener implements Listener {
         if (e.getDamager() instanceof Arrow && !(e.getDamager() instanceof Trident)) {
             Arrow arrow = (Arrow) e.getDamager();
             ProjectileSource source = arrow.getShooter();
+
             if (source instanceof Player) {
                 p = (Player) source;
             } else {
@@ -51,6 +50,7 @@ public class EntityListener implements Listener {
         } else if (e.getDamager() instanceof Trident) {
             Trident trident = (Trident) e.getDamager();
             ProjectileSource source = trident.getShooter();
+
             if (source instanceof Player) {
                 p = (Player) source;
             } else {
@@ -66,11 +66,13 @@ public class EntityListener implements Listener {
         } */
 
         ItemStack tool = p.getInventory().getItemInMainHand();
+
         if (e.getDamager() instanceof Trident) {
             tool = TridentListener.TridentToItemStack.get(e.getDamager());
             TridentListener.TridentToItemStack.remove((Trident)e.getDamager());
             if (tool == null) return;
         }
+
         if (!modManager.isToolViable(tool)) return;
         if (!modManager.durabilityCheck(e, p, tool)) return;
 
@@ -81,6 +83,7 @@ public class EntityListener implements Listener {
         if (config.getBoolean("EnableDamageExp")) { //at bottom because of Melting
             amount = (int) e.getDamage();
         }
+
         amount += config.getInt("ExtraExpPerEntityHit." + e.getEntity().getType().toString()); //adds 0 if not in found in config (negative values are also fine)
         modManager.addExp(p, tool, amount);
     }
@@ -89,8 +92,10 @@ public class EntityListener implements Listener {
     public void onDeath(EntityDeathEvent e) {
         LivingEntity mob = e.getEntity();
         Player p = mob.getKiller();
+
         if (p == null) return;
         if (Lists.WORLDS.contains(p.getWorld().getName())) return;
+
         ItemStack tool = p.getInventory().getItemInMainHand();
 
         if (!modManager.isToolViable(tool)) return;
@@ -107,19 +112,23 @@ public class EntityListener implements Listener {
         ItemStack tool = p.getInventory().getItemInMainHand();
 
         if (e.getHitBlock() == null && !ToolType.FISHINGROD.getMaterials().contains(tool.getType())) return;
+
         if (e.getEntity() instanceof Trident) {
-            tool = TridentListener.TridentToItemStack.get(e.getEntity());
-            TridentListener.TridentToItemStack.remove((Trident)e.getEntity());
+            Trident trident = (Trident)e.getEntity(); // Intellij gets confused if this isn't assigned to a variable
+
+            tool = TridentListener.TridentToItemStack.get(trident);
+            TridentListener.TridentToItemStack.remove(trident);
+
             if (tool == null) return;
         }
+
         if (!modManager.isToolViable(tool)) return;
 
         Bukkit.getPluginManager().callEvent(new MTProjectileHitEvent(p, tool, e));
     }
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
     public void onBowFire(ProjectileLaunchEvent e) {
-        if (e.isCancelled()) return;
         if (!(e.getEntity().getShooter() instanceof Player)) return;
 
         Player p = (Player) e.getEntity().getShooter();
@@ -148,22 +157,26 @@ public class EntityListener implements Listener {
 
             if (mod != null && mod.getModItem().getType() == Material.ARROW) {
                 e.setCancelled(true);
+
                 player.updateInventory();
                 player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
+
                 return;
             }
         }
 
         for (ItemStack item : player.getInventory().getContents()) {
-            if (item == null) continue;
+            if (item == null) continue; // Extremely consistently null
 
             if (item.getType() == Material.ARROW) {
                 Modifier mod = modManager.getModifierFromItem(item);
 
                 if (mod != null && mod.getModItem().getType() == Material.ARROW) {
                     e.setCancelled(true);
+
                     player.updateInventory();
                     player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
+
                     return;
                 }
 

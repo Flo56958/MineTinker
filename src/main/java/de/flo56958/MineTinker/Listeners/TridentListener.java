@@ -14,14 +14,14 @@ public class TridentListener implements Listener {
 
     public static final HashMap<Trident, ItemStack> TridentToItemStack = new HashMap<>();
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onTridentLaunch(ProjectileLaunchEvent e) {
-        if (e.isCancelled()) return;
         if (!(e.getEntity().getShooter() instanceof Player)) return;
         if (!(e.getEntity() instanceof Trident)) return;
 
         Player p = (Player) e.getEntity().getShooter();
         ItemStack trident = p.getInventory().getItemInMainHand().clone();
+
         if (!ModManager.instance().isToolViable(trident)) return;
 
         ModManager.instance().addExp(p, trident, -20000);

@@ -130,10 +130,10 @@ public class Propelling extends Modifier implements Craftable, Enchantable, List
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onElytraSneak(PlayerToggleSneakEvent e) {
         Player p = e.getPlayer();
-        if (e.isCancelled()) return;
+
         if (e.isSneaking()) return;
         if (!p.isGliding()) return;
 

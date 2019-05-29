@@ -33,10 +33,12 @@ public class TinkerListener implements Listener {
     public void onToolUpgrade(ToolUpgradeEvent e) {
         Player p = e.getPlayer();
         ItemStack tool = e.getTool();
+
         if (e.isSuccessful()) {
             if (config.getBoolean("Sound.OnUpgrade")) {
                 p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
             }
+
             ChatWriter.sendActionBar(p, ItemGenerator.getDisplayName(tool) + " is now " + tool.getType().toString().split("_")[0] + "!");
             ChatWriter.log(false, p.getDisplayName() + " upgraded " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ") to " + tool.getType().toString() + "!");
         } else {
@@ -55,6 +57,7 @@ public class TinkerListener implements Listener {
         if (config.getBoolean("Sound.OnModding")) {
             p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
         }
+
         ChatWriter.sendActionBar(p, ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " has now " + mod.getColor() + mod.getName() + ChatColor.WHITE + " and " + e.getSlotsRemaining() + " free Slots remaining!");
         ChatWriter.log(false, p.getDisplayName() + " modded " + ItemGenerator.getDisplayName(tool) +  ChatColor.GRAY + " (" + tool.getType().toString() + ") with " + mod.getColor() + mod.getName() + ChatColor.GRAY + " " + modManager.getModLevel(tool, mod) + "!");
     }
@@ -87,16 +90,17 @@ public class TinkerListener implements Listener {
 
         if (config.getInt("AddModifierSlotsPerLevel") > 0) {
             int slots = modManager.getFreeSlots(tool);
+
             if (!(slots == Integer.MAX_VALUE || slots < 0)) {
                 slots += config.getInt("AddModifierSlotsPerLevel");
             } else {
                 slots = Integer.MAX_VALUE;
             }
+
             modManager.setFreeSlots(tool, slots);
         }
 
         ChatWriter.sendActionBar(p, ItemGenerator.getDisplayName(tool) + ChatColor.GOLD + " just got a Level-Up!");
-
         ChatWriter.log(false, p.getDisplayName() + " leveled up " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
 
         //------------------------------------------------------------------------------------------------------------------------
@@ -105,18 +109,23 @@ public class TinkerListener implements Listener {
             Random rand = new Random();
             if (config.getBoolean("LevelUpEvents.DurabilityRepair.enabled")) {
                 int n = rand.nextInt(100);
+
                 if (n <= config.getInt("LevelUpEvents.DurabilityRepair.percentage")) {
                     tool.setDurability((short) -1);
                 }
             }
             if (config.getBoolean("LevelUpEvents.DropLoot.enabled")) {
                 int n = rand.nextInt(100);
+
                 if (n <= config.getInt("LevelUpEvents.DropLoot.percentage")) {
                     int index = rand.nextInt(Lists.DROPLOOT.size());
                     Material m = Material.getMaterial(Lists.DROPLOOT.get(index));
+
                     int amount = rand.nextInt(config.getInt("LevelUpEvents.DropLoot.maximumDrop") - config.getInt("LevelUpEvents.DropLoot.minimumDrop"));
                     amount = amount + config.getInt("LevelUpEvents.DropLoot.minimumDrop");
+
                     ItemStack drop = new ItemStack(m, amount);
+
                     if (p.getInventory().addItem(drop).size() != 0) { //adds items to (full) inventory
                         p.getWorld().dropItem(p.getLocation(), drop); //drops item when inventory is full
                     } // no else as it gets added in if
@@ -129,13 +138,17 @@ public class TinkerListener implements Listener {
                         if (p.getInventory().getItem(i) != null && p.getInventory().getItem(i).equals(tool)) {  //Can be NULL!
                             ItemStack newTool = null;
                             ItemStack safety = tool.clone();
+
                             List<Modifier> mods = new ArrayList<>(modManager.getAllowedMods()); //necessary as the failed modifiers get removed from the list (so a copy is in order)
+
                             while (newTool == null) {
                                 int index = new Random().nextInt(mods.size());
                                 newTool = mods.get(index).applyMod(p, safety, true);
+
                                 if (newTool == null) {
                                     mods.remove(index); //Remove the failed modifier from the the list of the possibles
                                 }
+
                                 if (mods.isEmpty()) { break; } //Secures that the while will terminate after some time (if all modifiers were removed)
                             }
                             if (newTool != null) { //while could have been broken out of -> newTool could still be null

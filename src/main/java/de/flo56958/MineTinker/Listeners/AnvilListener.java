@@ -52,16 +52,20 @@ public class AnvilListener implements Listener {
 
         if (!modManager.isModifierItem(modifier)) { //upgrade
             if (tool.getType().equals(newTool.getType())) return; //Not an upgrade
+
             // ------ upgrade
             if (e.isShiftClick()) {
                 if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
                     e.setCancelled(true); //cancels the event if the player has a full inventory
                     return;
                 } // no else as it gets added in if-clause
+
                 inv.clear();
                 return;
             }
+
             Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, true));
+
             player.setItemOnCursor(newTool);
             inv.clear();
         } else { //is modifier
@@ -76,11 +80,14 @@ public class AnvilListener implements Listener {
                     e.setCancelled(true); //cancels the event if the player has a full inventory
                     return;
                 } // no else as it gets added in if-clause
+
                 inv.clear();
                 inv.setItem(1, modifier);
                 return;
             }
+
             player.setItemOnCursor(newTool);
+
             inv.clear();
             inv.setItem(1, modifier);
         }
@@ -180,7 +187,9 @@ public class AnvilListener implements Listener {
     public void onGrind(InventoryClickEvent e) {
 	    if (!(e.getInventory() instanceof GrindstoneInventory)) return;
 	    if (e.getSlot() != 9) return;
+
 	    ItemStack results = e.getCurrentItem();
+
 	    if (modManager.isToolViable(results) || modManager.isArmorViable(results)) {
 	        e.setCancelled(true);
 	    }

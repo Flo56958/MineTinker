@@ -159,10 +159,8 @@ public class Soulbound extends Modifier implements Craftable, Listener {
      * Effect if a player drops an item
      * @param e
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void effect(PlayerDropItemEvent e) {
-        if (e.isCancelled()) return;
-
         Item item = e.getItemDrop();
         ItemStack is = item.getItemStack();
         if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) return;
