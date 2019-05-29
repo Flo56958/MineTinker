@@ -1,5 +1,6 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
+import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Main;
@@ -18,18 +19,21 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class Poisonous extends Modifier implements Enchantable, Craftable, Listener {
 	
     private int duration;
     private double durationMultiplier;
     private int effectAmplifier;
+    private boolean dropPoisonedMeat;
 
     private static Poisonous instance;
 
@@ -64,6 +68,7 @@ public class Poisonous extends Modifier implements Enchantable, Craftable, Liste
     	config.addDefault(key + ".Duration", 120); //ticks INTEGER (20 ticks ~ 1 sec)
     	config.addDefault(key + ".DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
     	config.addDefault(key + ".EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...) INTEGER
+        config.addDefault(key + ".DropRottenMeatIfPoisoned", false);
     	config.addDefault(key + ".Recipe.Enabled", false);
     	
     	ConfigurationManager.saveConfig(config);
@@ -77,6 +82,7 @@ public class Poisonous extends Modifier implements Enchantable, Craftable, Liste
         this.duration = config.getInt(key + ".Duration");
         this.durationMultiplier = config.getDouble(key + ".DurationMultiplier");
         this.effectAmplifier = config.getInt(key + ".EffectAmplifier");
+        this.dropPoisonedMeat = config.getBoolean(key + ".DropRottenMeatIfPoisoned");
     }
 
     @Override
@@ -104,6 +110,64 @@ public class Poisonous extends Modifier implements Enchantable, Craftable, Liste
         int amplifier = this.effectAmplifier * (level - 1);
         ((LivingEntity) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration, amplifier, false, false));
         ChatWriter.log(false, p.getDisplayName() + " triggered Poisonous on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+    }
+
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent event) {
+        if (!dropPoisonedMeat) return;
+
+        LivingEntity mob = event.getEntity();
+        Player p = mob.getKiller();
+
+        if (p == null) return;
+        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
+
+        boolean isPoisoned = false;
+
+        for (PotionEffect potionEffect : mob.getActivePotionEffects()) {
+            if (potionEffect.getType() == PotionEffectType.POISON) {
+                isPoisoned = true;
+                break;
+            }
+        }
+
+        if (!isPoisoned) return;
+
+        int numberOfMeat = 0;
+        int numberOfPotatoes = 0;
+
+        Iterator<ItemStack> iterator = event.getDrops().iterator();
+
+        while (iterator.hasNext()) {
+            ItemStack drop = iterator.next();
+            if (isMeat(drop)) {
+                iterator.remove();
+                numberOfMeat++;
+            } else if (drop.getType() == Material.POTATO) {
+                iterator.remove();
+                numberOfPotatoes++;
+            }
+        }
+
+        if (numberOfMeat > 0) event.getDrops().add(new ItemStack(Material.ROTTEN_FLESH, numberOfMeat));
+        if (numberOfPotatoes > 0) event.getDrops().add(new ItemStack(Material.POISONOUS_POTATO, numberOfPotatoes));
+    }
+
+    private boolean isMeat(ItemStack item) {
+        switch (item.getType()) {
+            case BEEF:
+            case PORKCHOP:
+            case COD:
+            case SALMON:
+            case TROPICAL_FISH:
+            case PUFFERFISH:
+            case CHICKEN:
+            case RABBIT:
+            case MUTTON:
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
