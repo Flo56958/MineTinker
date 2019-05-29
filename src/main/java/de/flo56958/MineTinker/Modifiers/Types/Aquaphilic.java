@@ -26,7 +26,9 @@ public class Aquaphilic extends Modifier implements Craftable {
     private static Aquaphilic instance;
 
     public static Aquaphilic instance() {
-        if (instance == null) instance = new Aquaphilic();
+        synchronized (Aquaphilic.class) {
+            if (instance == null) instance = new Aquaphilic();
+        }
         return instance;
     }
 

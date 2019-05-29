@@ -64,7 +64,7 @@ public class EasyHarvestListener implements Listener {
     }
 
     private static void breakWarts(Player p, ItemStack tool, Block b) {
-        Power.HASPOWER.put(p, true);
+        Power.HASPOWER.get(p).set(true);
         Material m = b.getType();
 
         if (modManager.get(ModifierType.POWER) != null) {
@@ -125,7 +125,7 @@ public class EasyHarvestListener implements Listener {
         breakBlock(b, p);
         replantCrops(p, b, m);
 
-        Power.HASPOWER.put(p, false);
+        Power.HASPOWER.get(p).set(false);
     }
 
     private static void harvestCrops(Player p, ItemStack tool, Block b) {
@@ -138,7 +138,7 @@ public class EasyHarvestListener implements Listener {
     }
 
     private static void breakCrops(Player p, ItemStack tool, Block b) {
-        Power.HASPOWER.put(p, true);
+        Power.HASPOWER.get(p).set(true);
         Material m = b.getType();
 
         if (modManager.get(ModifierType.POWER) != null) {
@@ -197,7 +197,7 @@ public class EasyHarvestListener implements Listener {
         breakBlock(b, p);
         replantCrops(p, b, m);
 
-        Power.HASPOWER.put(p, false);
+        Power.HASPOWER.get(p).set(false);
     }
 
     private static void replantCrops(Player p, Block b, Material m) {

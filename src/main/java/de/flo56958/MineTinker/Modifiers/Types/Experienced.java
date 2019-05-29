@@ -36,7 +36,9 @@ public class Experienced extends Modifier implements Craftable, Listener {
     private static Experienced instance;
 
     public static Experienced instance() {
-        if (instance == null) instance = new Experienced();
+        synchronized (Experienced.class) {
+            if (instance == null) instance = new Experienced();
+        }
         return instance;
     }
 

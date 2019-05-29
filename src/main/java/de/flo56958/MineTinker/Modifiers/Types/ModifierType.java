@@ -33,7 +33,9 @@ public enum ModifierType {
     SOULBOUND("Soulbound"),
     SWEEPING("Sweeping"),
     TIMBER("Timber"),
-    WEBBED("Webbed");
+    WEBBED("Webbed"),
+
+    UNSPECIFIED("Unspecified"); //Should be used for third party modifiers
 
     private final String nbtTag;
     ModifierType(String nbtTag) { this.nbtTag = nbtTag; }

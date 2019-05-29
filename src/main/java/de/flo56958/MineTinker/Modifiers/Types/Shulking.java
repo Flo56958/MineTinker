@@ -36,7 +36,9 @@ public class Shulking extends Modifier implements Craftable, Listener {
     private static Shulking instance;
 
     public static Shulking instance() {
-        if (instance == null) instance = new Shulking();
+        synchronized (Shulking.class) {
+            if (instance == null) instance = new Shulking();
+        }
         return instance;
     }
 

@@ -15,6 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Main extends JavaPlugin {
 
     private static Updater updater;
@@ -84,7 +86,7 @@ public class Main extends JavaPlugin {
         ChatWriter.log(true, "Debug Logging is enabled. You should disable it in the config under Logging.Debug!");
 
         for (Player current : Bukkit.getServer().getOnlinePlayers()) {
-            Power.HASPOWER.put(current, false);
+            Power.HASPOWER.computeIfAbsent(current, player -> new AtomicBoolean(false));
             Lists.BLOCKFACE.put(current, null);
         }
 

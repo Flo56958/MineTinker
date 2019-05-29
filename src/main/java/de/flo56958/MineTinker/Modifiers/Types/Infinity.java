@@ -29,7 +29,9 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     private static Infinity instance;
 
     public static Infinity instance() {
-        if (instance == null) instance = new Infinity();
+        synchronized (Infinity.class) {
+            if (instance == null) instance = new Infinity();
+        }
         return instance;
     }
 

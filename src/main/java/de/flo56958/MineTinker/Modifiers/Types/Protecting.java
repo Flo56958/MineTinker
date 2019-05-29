@@ -24,7 +24,9 @@ public class Protecting extends Modifier implements Craftable {
     private static Protecting instance;
 
     public static Protecting instance() {
-        if (instance == null) instance = new Protecting();
+        synchronized (Protecting.class) {
+            if (instance == null) instance = new Protecting();
+        }
         return instance;
     }
 

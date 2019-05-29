@@ -23,8 +23,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
-import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PlayerListener implements Listener {
 
@@ -104,7 +104,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Lists.BLOCKFACE.put(e.getPlayer(), null);
-        Power.HASPOWER.put(e.getPlayer(), false);
+        Power.HASPOWER.computeIfAbsent(e.getPlayer(), player -> new AtomicBoolean(false));
 
         if (Main.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
             if (e.getPlayer().hasPermission("minetinker.update.notify")) {

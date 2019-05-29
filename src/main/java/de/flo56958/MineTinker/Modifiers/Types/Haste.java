@@ -24,7 +24,9 @@ public class Haste extends Modifier implements Craftable {
     private static Haste instance;
 
     public static Haste instance() {
-        if (instance == null) instance = new Haste();
+        synchronized (Haste.class) {
+            if (instance == null) instance = new Haste();
+        }
         return instance;
     }
 

@@ -25,7 +25,9 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
     private static LightWeight instance;
 
     public static LightWeight instance() {
-        if (instance == null) instance = new LightWeight();
+        synchronized (LightWeight.class) {
+            if (instance == null) instance = new LightWeight();
+        }
         return instance;
     }
 

@@ -27,7 +27,9 @@ public class SilkTouch extends Modifier implements Enchantable, Craftable {
     private static SilkTouch instance;
 
     public static SilkTouch instance() {
-        if (instance == null) instance = new SilkTouch();
+        synchronized (SilkTouch.class) {
+            if (instance == null) instance = new SilkTouch();
+        }
         return instance;
     }
 

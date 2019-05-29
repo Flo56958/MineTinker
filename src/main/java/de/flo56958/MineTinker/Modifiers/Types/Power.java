@@ -29,19 +29,22 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Power extends Modifier implements Enchantable, Craftable, Listener {
 
-    public static final HashMap<Player, Boolean> HASPOWER = new HashMap<>();
+    public static final ConcurrentHashMap<Player, AtomicBoolean> HASPOWER = new ConcurrentHashMap<>();
 
     private boolean lv1_vertical;
 
     private static Power instance;
 
     public static Power instance() {
-        if (instance == null) instance = new Power();
+        synchronized (Power.class) {
+            if (instance == null) instance = new Power();
+        }
         return instance;
     }
 
@@ -105,7 +108,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
 
     private boolean checkPower(Player p, ItemStack tool) {
         if (!p.hasPermission("minetinker.modifiers.power.use")) { return false; }
-        if (HASPOWER.get(p)) { return false; }
+        if (HASPOWER.get(p).get()) { return false; }
         if (p.isSneaking()) { return false; }
 
         return modManager.hasMod(tool, this);
@@ -128,7 +131,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 
-        HASPOWER.replace(p, true); //for the power-triggered BlockBreakEvents (prevents endless "recursion")
+        HASPOWER.get(p).set(true); //for the power-triggered BlockBreakEvents (prevents endless "recursion")
 
         int level = modManager.getModLevel(tool, this);
 
@@ -176,7 +179,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
                 powerBlockBreak(b2, (CraftPlayer) p);
             }
         } else {
-            HASPOWER.replace(p, true);
+            HASPOWER.get(p).set(true);
 
             if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
                 for (int x = -(level - 1); x <= (level - 1); x++) {
@@ -208,7 +211,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
             }
         }
 
-        HASPOWER.replace(p, false); //so the effect of power is not disabled for the Player
+        HASPOWER.get(p).set(false); //so the effect of power is not disabled for the Player
     }
 
     /**
@@ -228,7 +231,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 
-        HASPOWER.replace(p, true);
+        HASPOWER.get(p).set(true);
 
         int level = modManager.getModLevel(tool, this);
         Block b = e.getClickedBlock();
@@ -277,7 +280,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
             }
         }
 
-        HASPOWER.replace(p, false);
+        HASPOWER.get(p).set(false);
     }
 
     private void powerBlockBreak(Block b, CraftPlayer p) {

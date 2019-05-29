@@ -26,7 +26,9 @@ public class Luck extends Modifier implements Craftable {
     private static Luck instance;
 
     public static Luck instance() {
-        if (instance == null) instance = new Luck();
+        synchronized (Luck.class) {
+            if (instance == null) instance = new Luck();
+        }
         return instance;
     }
 

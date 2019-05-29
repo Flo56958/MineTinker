@@ -34,7 +34,9 @@ public class Melting extends Modifier implements Enchantable, Craftable, Listene
     private static Melting instance;
 
     public static Melting instance() {
-        if (instance == null) instance = new Melting();
+        synchronized (Melting.class) {
+            if (instance == null) instance = new Melting();
+        }
         return instance;
     }
 

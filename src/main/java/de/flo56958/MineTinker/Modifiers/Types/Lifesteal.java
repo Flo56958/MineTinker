@@ -33,7 +33,9 @@ public class Lifesteal extends Modifier implements Craftable, Listener {
     private static Lifesteal instance;
 
     public static Lifesteal instance() {
-        if (instance == null) instance = new Lifesteal();
+        synchronized (Lifesteal.class) {
+            if (instance == null) instance = new Lifesteal();
+        }
         return instance;
     }
 

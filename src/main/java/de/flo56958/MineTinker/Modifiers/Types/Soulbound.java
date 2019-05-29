@@ -22,11 +22,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Soulbound extends Modifier implements Craftable, Listener {
 
@@ -38,7 +34,9 @@ public class Soulbound extends Modifier implements Craftable, Listener {
     private static Soulbound instance;
 
     public static Soulbound instance() {
-        if (instance == null) instance = new Soulbound();
+        synchronized (Soulbound.class) {
+            if (instance == null) instance = new Soulbound();
+        }
         return instance;
     }
 

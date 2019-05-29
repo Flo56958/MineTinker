@@ -37,7 +37,9 @@ public class Webbed extends Modifier implements Craftable, Listener {
     private static Webbed instance;
 
     public static Webbed instance() {
-        if (instance == null) instance = new Webbed();
+        synchronized (Webbed.class) {
+            if (instance == null) instance = new Webbed();
+        }
         return instance;
     }
 

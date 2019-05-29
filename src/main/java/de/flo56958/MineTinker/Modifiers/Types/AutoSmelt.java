@@ -39,7 +39,9 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
     private static AutoSmelt instance;
 
     public static AutoSmelt instance() {
-        if (instance == null) instance = new AutoSmelt();
+        synchronized (AutoSmelt.class) {
+            if (instance == null) instance = new AutoSmelt();
+        }
         return instance;
     }
 

@@ -25,7 +25,9 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
     private static Knockback instance;
 
     public static Knockback instance() {
-        if (instance == null) instance = new Knockback();
+        synchronized (Knockback.class) {
+            if (instance == null) instance = new Knockback();
+        }
         return instance;
     }
 

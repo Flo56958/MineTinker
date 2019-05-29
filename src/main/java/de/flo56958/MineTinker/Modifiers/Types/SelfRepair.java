@@ -41,7 +41,9 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
     private static SelfRepair instance;
 
     public static SelfRepair instance() {
-        if (instance == null) instance = new SelfRepair();
+        synchronized (SelfRepair.class) {
+            if (instance == null) instance = new SelfRepair();
+        }
         return instance;
     }
 
@@ -182,6 +184,7 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
      * @param p the Player
      * @param tool the Tool
      */
+    //TODO: Implement with Damagable
     @SuppressWarnings("deprecation")
 	private void effect(Player p, ItemStack tool) {
         if (useMending) return;
@@ -195,9 +198,7 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
         if (n <= this.percentagePerLevel * level) {
             short dura = (short) (tool.getDurability() - this.healthRepair);
 
-            if (dura < 0) {
-                dura = 0;
-            }
+            if (dura < 0) dura = 0;
 
             tool.setDurability(dura);
 

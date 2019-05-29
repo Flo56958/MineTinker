@@ -36,7 +36,9 @@ public class Ender extends Modifier implements Craftable, Listener {
     private static Ender instance;
 
     public static Ender instance() {
-        if (instance == null) instance = new Ender();
+        synchronized (Ender.class) {
+            if (instance == null) instance = new Ender();
+        }
         return instance;
     }
 

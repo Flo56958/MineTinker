@@ -34,7 +34,9 @@ public class Glowing extends Modifier implements Craftable, Listener {
     private static Glowing instance;
 
     public static Glowing instance() {
-        if (instance == null) instance = new Glowing();
+        synchronized (Glowing.class) {
+            if (instance == null) instance = new Glowing();
+        }
         return instance;
     }
 

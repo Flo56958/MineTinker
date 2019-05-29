@@ -28,7 +28,9 @@ public class Directing extends Modifier implements Craftable, Listener {
     private boolean workInPVP;
 
     public static Directing instance() {
-        if (instance == null) instance = new Directing();
+        synchronized (Directing.class) {
+            if (instance == null) instance = new Directing();
+        }
         return instance;
     }
 

@@ -27,7 +27,9 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
     private static Sweeping instance;
 
     public static Sweeping instance() {
-        if (instance == null) instance = new Sweeping();
+        synchronized (Sweeping.class) {
+            if (instance == null) instance = new Sweeping();
+        }
         return instance;
     }
 

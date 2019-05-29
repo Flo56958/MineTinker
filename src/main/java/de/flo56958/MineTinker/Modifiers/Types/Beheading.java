@@ -37,7 +37,9 @@ public class Beheading extends Modifier implements Enchantable, Craftable, Liste
     private static Beheading instance;
 
     public static Beheading instance() {
-        if (instance == null) instance = new Beheading();
+        synchronized (Beheading.class) {
+            if (instance == null) instance = new Beheading();
+        }
         return instance;
     }
 

@@ -36,7 +36,9 @@ public class Timber extends Modifier implements Craftable, Listener {
     private static Timber instance;
 
     public static Timber instance() {
-        if (instance == null) instance = new Timber();
+        synchronized (Timber.class) {
+            if (instance == null) instance = new Timber();
+        }
         return instance;
     }
 
@@ -107,7 +109,7 @@ public class Timber extends Modifier implements Craftable, Listener {
         ItemStack tool = event.getTool();
         Block b = event.getBlock();
 
-        if (Power.HASPOWER.get(p) || p.isSneaking()) return;
+        if (Power.HASPOWER.get(p).get() || p.isSneaking()) return;
         if (!modManager.hasMod(tool, this)) return;
 
         ArrayList<Material> allowed = new ArrayList<>();
@@ -143,18 +145,18 @@ public class Timber extends Modifier implements Craftable, Listener {
 
         if (!isTreeBottom || !isTreeTop) return; //TODO: Improve tree check
 
-        Power.HASPOWER.replace(p, true);
+        Power.HASPOWER.get(p).set(true);
         locs.add(b.getLocation());
 
         breakTree(p, b, allowed);
 
         locs.clear();
-        Power.HASPOWER.replace(p, false);
+        Power.HASPOWER.get(p).set(false);
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Timber on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 
-    private static void breakTree(Player p, Block b, ArrayList<Material> allowed) { //TODO: Improve algorythm
+    private static void breakTree(Player p, Block b, ArrayList<Material> allowed) { //TODO: Improve algorythm and performance -> async?
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
                 for (int dz = -1; dz <= 1; dz++) {

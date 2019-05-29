@@ -26,7 +26,9 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
     private static Fiery instance;
 
     public static Fiery instance() {
-        if (instance == null) instance = new Fiery();
+        synchronized (Fiery.class) {
+            if (instance == null) instance = new Fiery();
+        }
         return instance;
     }
 

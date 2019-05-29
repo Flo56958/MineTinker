@@ -38,7 +38,9 @@ public class Propelling extends Modifier implements Craftable, Enchantable, List
     private static Propelling instance;
 
     public static Propelling instance() {
-        if (instance == null) instance = new Propelling();
+        synchronized (Propelling.class) {
+            if (instance == null) instance = new Propelling();
+        }
         return instance;
     }
 

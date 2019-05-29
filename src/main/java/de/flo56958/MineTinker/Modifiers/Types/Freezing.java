@@ -26,7 +26,9 @@ public class Freezing extends Modifier implements Craftable {
     private static Freezing instance;
 
     public static Freezing instance() {
-        if (instance == null) instance = new Freezing();
+        synchronized (Freezing.class) {
+            if (instance == null) instance = new Freezing();
+        }
         return instance;
     }
 

@@ -24,7 +24,9 @@ public class Sharpness extends Modifier implements Craftable {
     private static Sharpness instance;
 
     public static Sharpness instance() {
-        if (instance == null) instance = new Sharpness();
+        synchronized (Sharpness.class) {
+            if (instance == null) instance = new Sharpness();
+        }
         return instance;
     }
 

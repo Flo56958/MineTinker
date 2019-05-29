@@ -53,7 +53,7 @@ public class BlockListener implements Listener {
         modManager.addExp(p, tool, expAmount);
 
         //-------------------------------------------POWERCHECK---------------------------------------------
-        if (Power.HASPOWER.get(p) && !ToolType.PICKAXE.getMaterials().contains(tool.getType())
+        if (Power.HASPOWER.get(p).get() && !ToolType.PICKAXE.getMaterials().contains(tool.getType())
                 && e.getBlock().getDrops(tool).isEmpty() && !e.getBlock().getType().equals(Material.NETHER_WART)) { //Necessary for EasyHarvest NetherWard-Break
             e.setCancelled(true);
             return;

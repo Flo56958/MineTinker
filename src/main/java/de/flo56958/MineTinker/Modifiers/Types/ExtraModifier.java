@@ -25,7 +25,9 @@ public class ExtraModifier extends Modifier {
     private static ExtraModifier instance;
 
     public static ExtraModifier instance() {
-        if (instance == null) instance = new ExtraModifier();
+        synchronized (ExtraModifier.class) {
+            if (instance == null) instance = new ExtraModifier();
+        }
         return instance;
     }
 

@@ -40,7 +40,9 @@ public class Poisonous extends Modifier implements Enchantable, Craftable, Liste
     private static Poisonous instance;
 
     public static Poisonous instance() {
-        if (instance == null) instance = new Poisonous();
+        synchronized (Poisonous.class) {
+            if (instance == null) instance = new Poisonous();
+        }
         return instance;
     }
 

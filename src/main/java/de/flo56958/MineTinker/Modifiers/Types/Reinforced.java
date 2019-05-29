@@ -24,7 +24,9 @@ public class Reinforced extends Modifier implements Craftable {
     private static Reinforced instance;
 
     public static Reinforced instance() {
-        if (instance == null) instance = new Reinforced();
+        synchronized (Reinforced.class) {
+            if (instance == null) instance = new Reinforced();
+        }
         return instance;
     }
 

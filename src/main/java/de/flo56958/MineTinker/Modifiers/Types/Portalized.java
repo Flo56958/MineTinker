@@ -24,14 +24,12 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * THIS MODIFIER IS FAR FROM FINISHED AND SHOULD NOT BE ENABLED!
+ * Intended effect:
+ *    - Bow should shoot portals that a player can pass through (compare to Portal [Videogame])
  */
 public class Portalized extends Modifier implements Craftable, Listener {
 
@@ -41,7 +39,9 @@ public class Portalized extends Modifier implements Craftable, Listener {
     private static Portalized instance;
 
     public static Portalized instance() {
-        if (instance == null) instance = new Portalized();
+        synchronized (Portalized.class) {
+            if (instance == null) instance = new Portalized();
+        }
         return instance;
     }
 
@@ -154,7 +154,7 @@ public class Portalized extends Modifier implements Craftable, Listener {
         newPortal.setCustomName(p.getDisplayName() + " : " + portals.getFirst().getLocation().toString());
         portals.getFirst().setCustomName(p.getDisplayName() + " : " + newPortal.getLocation().toString());
     }
-    //TODO: Löschen wenn neugeladen wird
+    //TODO: Delete Portals when server gets reloaded or closed
 
     @EventHandler
     public void onPortalClick(EntityDamageByEntityEvent e) {

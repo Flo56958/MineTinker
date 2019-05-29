@@ -98,9 +98,11 @@ public class ModManager {
      * @return the instance
      */
     public synchronized static ModManager instance() {
-        if (instance == null) {
-            instance = new ModManager();
-            instance.init();
+        synchronized (ModManager.class) {
+            if (instance == null) {
+                instance = new ModManager();
+                instance.init();
+            }
         }
         return instance;
     }
