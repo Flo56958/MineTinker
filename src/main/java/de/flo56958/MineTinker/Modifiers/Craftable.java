@@ -21,10 +21,14 @@ public interface Craftable {
                 String middle = config.getString(name + ".Recipe.Middle");
                 String bottom = config.getString(name + ".Recipe.Bottom");
                 ConfigurationSection materials = config.getConfigurationSection(name + ".Recipe.Materials");
+
+                // TODO: Make this safer
                 newRecipe.shape(top, middle, bottom); //makes recipe
+
                 for (String key : materials.getKeys(false)) {
                     newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
                 }
+
                 Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
                 ChatWriter.log(false, "Registered recipe for the " + name + "-Modifier!");
                 ModManager.instance().recipe_Namespaces.add(nkey);

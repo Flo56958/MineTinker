@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 public class Soulbound extends Modifier implements Craftable, Listener {
@@ -47,6 +49,13 @@ public class Soulbound extends Modifier implements Craftable, Listener {
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+
+        return enchantments;
     }
 
     @Override
@@ -141,11 +150,12 @@ public class Soulbound extends Modifier implements Craftable, Listener {
     @EventHandler
     public void effect(PlayerRespawnEvent e) {
         Player p = e.getPlayer();
-        if (!p.hasPermission("minetinker.modifiers.soulbound.use")) { return; }
 
-        if (!storedItemStacks.containsKey(p)) { return; }
+        if (!p.hasPermission("minetinker.modifiers.soulbound.use")) return;
+        if (!storedItemStacks.containsKey(p)) return;
 
         ArrayList<ItemStack> stored = storedItemStacks.get(p);
+
         for (ItemStack is : stored) {
             if (p.getInventory().addItem(is).size() != 0) { //adds items to (full) inventory
                 p.getWorld().dropItem(p.getLocation(), is);
@@ -159,16 +169,14 @@ public class Soulbound extends Modifier implements Craftable, Listener {
      * Effect if a player drops an item
      * @param e
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void effect(PlayerDropItemEvent e) {
-        if (e.isCancelled()) { return; }
-
         Item item = e.getItemDrop();
         ItemStack is = item.getItemStack();
-        if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) { return; }
 
-        if (!modManager.hasMod(is, this)) { return; }
-        if (toolDropable) { return; }
+        if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) return;
+        if (!modManager.hasMod(is, this)) return;
+        if (toolDropable) return;
 
         e.setCancelled(true);
     }

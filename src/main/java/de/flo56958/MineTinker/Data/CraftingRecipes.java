@@ -62,10 +62,14 @@ public class CraftingRecipes {
             String middle = config.getString("Elevator.Recipe.Middle");
             String bottom = config.getString("Elevator.Recipe.Bottom");
             ConfigurationSection materials = config.getConfigurationSection("Elevator.Recipe.Materials");
+
+            // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
+
             for (String key : materials.getKeys(false)) {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
+
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
             ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
@@ -80,7 +84,9 @@ public class CraftingRecipes {
     public static void registerMTElytra() {
         FileConfiguration config = ConfigurationManager.getConfig("Elytra.yml");
         String ckey = "Elytra";
-        if (!config.getBoolean(ckey + ".craftable")) { return; }
+
+        if (!config.getBoolean(ckey + ".craftable")) return;
+
         try {
             NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "MineTinker_Elytra");
             ItemStack elytra = new ItemStack(Material.ELYTRA, 1);
@@ -90,10 +96,14 @@ public class CraftingRecipes {
             String middle = config.getString(ckey + ".Recipe.Middle");
             String bottom = config.getString(ckey + ".Recipe.Bottom");
             ConfigurationSection materials = config.getConfigurationSection(ckey + ".Recipe.Materials");
+
+            // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
+
             for (String key : materials.getKeys(false)) {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
+
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
             ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
@@ -111,7 +121,7 @@ public class CraftingRecipes {
     public static void registerMTTrident() {
         FileConfiguration config = ConfigurationManager.getConfig("Trident.yml");
         String ckey = "Trident";
-        if (!config.getBoolean(ckey + ".craftable")) { return; }
+        if (!config.getBoolean(ckey + ".craftable")) return;
         try {
             NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "MineTinker_Trident");
             ItemStack trident = new ItemStack(Material.TRIDENT, 1);
@@ -121,10 +131,14 @@ public class CraftingRecipes {
             String middle = config.getString(ckey + ".Recipe.Middle");
             String bottom = config.getString(ckey + ".Recipe.Bottom");
             ConfigurationSection materials = config.getConfigurationSection(ckey + ".Recipe.Materials");
+
+            // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
+
             for (String key : materials.getKeys(false)) {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
+
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
             ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {

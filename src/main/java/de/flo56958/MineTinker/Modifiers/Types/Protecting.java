@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Protecting extends Modifier implements Craftable {
 
@@ -31,6 +32,14 @@ public class Protecting extends Modifier implements Craftable {
         super(ModifierType.PROTECTING,
                 new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.PROTECTION_ENVIRONMENTAL);
+
+        return enchantments;
     }
 
     @Override
@@ -72,14 +81,17 @@ public class Protecting extends Modifier implements Craftable {
 
         ItemMeta meta = tool.getItemMeta();
 
-        meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, modManager.getModLevel(tool, this), true);
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-        }
+        if (meta != null) {
+            meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, modManager.getModLevel(tool, this), true);
 
-        tool.setItemMeta(meta);
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+
+            tool.setItemMeta(meta);
+        }
 
         return tool;
     }
@@ -87,8 +99,11 @@ public class Protecting extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.PROTECTION_ENVIRONMENTAL);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.PROTECTION_ENVIRONMENTAL);
+            tool.setItemMeta(meta);
+        }
     }
 
     @Override

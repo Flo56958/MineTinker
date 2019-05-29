@@ -1,14 +1,11 @@
 package de.flo56958.MineTinker.Utilities;
 
 import de.flo56958.MineTinker.Main;
-import net.minecraft.server.v1_14_R1.ChatComponentText;
-import net.minecraft.server.v1_14_R1.ChatMessageType;
-import net.minecraft.server.v1_14_R1.PacketPlayOutChat;
-import net.minecraft.server.v1_14_R1.PlayerConnection;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -75,13 +72,10 @@ public class ChatWriter {
      * @param message
      */
     public static void sendActionBar(Player player, String message) { //Extract from the source code of the Actionbar-API (altered)
-        if (!Main.getPlugin().getConfig().getBoolean("actionbar-messages")) { return; }
-        if (!player.isOnline()) { return; } // Player may have logged out
-        CraftPlayer cp = (CraftPlayer) player;
-        ChatComponentText ccT = new ChatComponentText(message);
-        PacketPlayOutChat ppOC = new PacketPlayOutChat(ccT, ChatMessageType.GAME_INFO);
-        PlayerConnection pC = cp.getHandle().playerConnection;
-        pC.sendPacket(ppOC);
+        if (!Main.getPlugin().getConfig().getBoolean("actionbar-messages")) return;
+        if (!player.isOnline()) return; // Player may have logged out
+
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
     }
 
     /**
@@ -106,6 +100,7 @@ public class ChatWriter {
         // Re-sends the messages every 3 seconds so it doesn't go away from the player's screen.
         while (duration > 40) {
             duration -= 40;
+
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -202,10 +197,13 @@ public class ChatWriter {
         for (int i = 0; i < romanValues.length; i++) {
             int numberInPlace = num / romanValues[i];
             if (numberInPlace == 0) continue;
+
             result.append(numberInPlace == 4 && i > 0 ? romanCharacters[i] + romanCharacters[i - 1] :
                     new String(new char[numberInPlace]).replace("\0", romanCharacters[i]));
+
             num = num % romanValues[i];
         }
+
         return addColors(result.toString());
     }
 }

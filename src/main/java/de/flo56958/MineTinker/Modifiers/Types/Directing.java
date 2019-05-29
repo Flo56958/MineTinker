@@ -11,6 +11,7 @@ import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,6 +37,13 @@ public class Directing extends Modifier implements Craftable, Listener {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+
+        return enchantments;
     }
 
     @Override
@@ -67,6 +75,7 @@ public class Directing extends Modifier implements Craftable, Listener {
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 1,
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+
         this.workInPVP = config.getBoolean(key + ".workinpvp");
     }
 
@@ -85,15 +94,18 @@ public class Directing extends Modifier implements Craftable, Listener {
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
+
         if (!p.hasPermission("minetinker.modifiers.directing.use")) return;
         if (!modManager.hasMod(tool, this)) return;
 
         List<ItemStack> drops = event.getEvent().getDrops();
+
         for (ItemStack current : drops) {
             if (p.getInventory().addItem(current).size() != 0) { //adds items to (full) inventory
                 p.getWorld().dropItem(p.getLocation(), current);
             } // no else as it gets added in if-clause
         }
+
         drops.clear();
     }
 

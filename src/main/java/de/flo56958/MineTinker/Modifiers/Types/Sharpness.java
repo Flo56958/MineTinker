@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Sharpness extends Modifier implements Craftable {
 
@@ -31,6 +32,16 @@ public class Sharpness extends Modifier implements Craftable {
         super(ModifierType.SHARPNESS,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.DAMAGE_ALL);
+        enchantments.add(Enchantment.ARROW_DAMAGE);
+        enchantments.add(Enchantment.IMPALING);
+
+        return enchantments;
     }
 
     @Override
@@ -70,23 +81,26 @@ public class Sharpness extends Modifier implements Craftable {
 
         ItemMeta meta = tool.getItemMeta();
 
-        if (ToolType.AXE.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.BOW.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.ARROW_DAMAGE, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
-            meta.addEnchant(Enchantment.IMPALING, modManager.getModLevel(tool, this), true);
-        }
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-        }
+        if (meta != null) {
+            if (ToolType.AXE.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.BOW.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.ARROW_DAMAGE, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
+                meta.addEnchant(Enchantment.IMPALING, modManager.getModLevel(tool, this), true);
+            }
 
-        tool.setItemMeta(meta);
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+
+            tool.setItemMeta(meta);
+        }
 
         return tool;
     }
@@ -94,10 +108,14 @@ public class Sharpness extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.DAMAGE_ALL);
-        meta.removeEnchant(Enchantment.ARROW_DAMAGE);
-        meta.removeEnchant(Enchantment.IMPALING);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.DAMAGE_ALL);
+            meta.removeEnchant(Enchantment.ARROW_DAMAGE);
+            meta.removeEnchant(Enchantment.IMPALING);
+
+            tool.setItemMeta(meta);
+        }
     }
 
     @Override

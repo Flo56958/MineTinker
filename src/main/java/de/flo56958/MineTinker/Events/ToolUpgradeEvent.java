@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class ToolUpgradeEvent extends Event {
 
@@ -25,6 +26,7 @@ public class ToolUpgradeEvent extends Event {
         this.wasSuccessful = wasSuccessful;
     }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() { return handlers; }
 

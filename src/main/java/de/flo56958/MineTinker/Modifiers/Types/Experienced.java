@@ -16,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Experienced extends Modifier implements Craftable, Listener {
@@ -44,7 +46,15 @@ public class Experienced extends Modifier implements Craftable, Listener {
                                                 ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
+
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+
+        return enchantments;
     }
 
     @Override
@@ -86,29 +96,33 @@ public class Experienced extends Modifier implements Craftable, Listener {
 
     @EventHandler
     public void effect(MTBlockBreakEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
         effect(event.getPlayer(), event.getTool());
     }
 
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
+
         if (ToolType.BOOTS.getMaterials().contains(event.getTool().getType())
             || ToolType.LEGGINGS.getMaterials().contains(event.getTool().getType())
             || ToolType.CHESTPLATE.getMaterials().contains(event.getTool().getType())
-            || ToolType.HELMET.getMaterials().contains(event.getTool().getType())) { return; } //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
+            || ToolType.HELMET.getMaterials().contains(event.getTool().getType())) return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
+
         effect(event.getPlayer(), event.getTool());
     }
 
     @EventHandler
     public void effect(MTEntityDamageEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
+
         effect(event.getPlayer(), event.getTool());
     }
 
     @EventHandler
     public void effect(MTPlayerInteractEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
+
         effect(event.getPlayer(), event.getTool());
     }
 
@@ -118,13 +132,14 @@ public class Experienced extends Modifier implements Craftable, Listener {
      * @param tool the Tool
      */
     private void effect(Player p, ItemStack tool) {
-        if (!p.hasPermission("minetinker.modifiers.experienced.use")) { return; }
-        if (!modManager.hasMod(tool, this)) { return; }
+        if (!p.hasPermission("minetinker.modifiers.experienced.use")) return;
+        if (!modManager.hasMod(tool, this)) return;
 
         int level = modManager.getModLevel(tool, this);
 
         Random rand = new Random();
         int n = rand.nextInt(100);
+
         if (n <= this.percentagePerLevel * level) {
             ExperienceOrb orb = p.getWorld().spawn(p.getLocation(), ExperienceOrb.class);
             orb.setExperience(this.amount);

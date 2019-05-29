@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Sweeping extends Modifier implements Enchantable, Craftable {
 
@@ -34,6 +35,14 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
         super(ModifierType.SWEEPING,
                 new ArrayList<>(Collections.singletonList(ToolType.SWORD)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.SWEEPING_EDGE);
+
+        return enchantments;
     }
 
     @Override
@@ -70,14 +79,17 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
 
         ItemMeta meta = tool.getItemMeta();
 
-        meta.addEnchant(Enchantment.SWEEPING_EDGE, modManager.getModLevel(tool, this), true);
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-        }
+        if (meta != null) {
+            meta.addEnchant(Enchantment.SWEEPING_EDGE, modManager.getModLevel(tool, this), true);
 
-        tool.setItemMeta(meta);
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+
+            tool.setItemMeta(meta);
+        }
 
         return tool;
     }
@@ -87,7 +99,7 @@ public class Sweeping extends Modifier implements Enchantable, Craftable {
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.sweeping.craft")) { return; }
+        if (!p.hasPermission("minetinker.modifiers.sweeping.craft")) return;
         _createModifierItem(getConfig(), p, this, "Sweeping");
     }
 

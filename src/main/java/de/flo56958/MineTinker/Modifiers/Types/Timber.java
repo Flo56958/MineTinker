@@ -12,21 +12,22 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
-import net.minecraft.server.v1_14_R1.BlockPosition;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Timber extends Modifier implements Craftable, Listener {
 
@@ -44,6 +45,13 @@ public class Timber extends Modifier implements Craftable, Listener {
                 new ArrayList<>(Collections.singletonList(ToolType.AXE)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+
+        return enchantments;
     }
 
     @Override
@@ -93,25 +101,29 @@ public class Timber extends Modifier implements Craftable, Listener {
 
     @EventHandler
     public void effect(MTBlockBreakEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
+
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
         Block b = event.getBlock();
 
-        if (Power.HASPOWER.get(p) || p.isSneaking()) { return; }
-        if (!modManager.hasMod(tool, this)) { return; }
+        if (Power.HASPOWER.get(p) || p.isSneaking()) return;
+        if (!modManager.hasMod(tool, this)) return;
 
         ArrayList<Material> allowed = new ArrayList<>();
         allowed.addAll(Lists.getWoodLogs());
         allowed.addAll(Lists.getWoodWood());
+
         boolean isTreeBottom = false; //checks for Grass or Dirt under Log
         boolean isTreeTop = false; //checks for Leaves above Log
+
         for (int y = b.getY() - 1; y > 0; y--) {
             if (p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(Material.GRASS_BLOCK) //for freshly grown trees
                     || p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(Material.DIRT)
                     || p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(Material.PODZOL)) { //for the 2x2 spruce trees
                 isTreeBottom = true;
             }
+
             if (!p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(b.getType())) {
                 break;
             }
@@ -121,6 +133,7 @@ public class Timber extends Modifier implements Craftable, Listener {
             if (!allowed.contains(p.getWorld().getBlockAt(b.getX(), dy, b.getZ()).getType())) {
                 Location loc = b.getLocation().clone();
                 loc.setY(dy);
+
                 if (Lists.getWoodLeaves().contains(p.getWorld().getBlockAt(loc).getType())) {
                     isTreeTop = true;
                 }
@@ -128,7 +141,7 @@ public class Timber extends Modifier implements Craftable, Listener {
             }
         }
 
-        if (!isTreeBottom || !isTreeTop) { return; } //TODO: Improve tree check
+        if (!isTreeBottom || !isTreeTop) return; //TODO: Improve tree check
 
         Power.HASPOWER.replace(p, true);
         locs.add(b.getLocation());
@@ -147,12 +160,20 @@ public class Timber extends Modifier implements Craftable, Listener {
                 for (int dz = -1; dz <= 1; dz++) {
                     Location loc = b.getLocation().clone();
                     loc.add(dx, dy, dz);
+
                     if (locs.contains(loc)) { continue; }
-                    if (getConfig().getInt("Timber.MaximumBlocksPerSwing") > 0 && locs.size() >= getConfig().getInt("Timber.MaximumBlocksPerSwing")) { return; }
+
+                    if (getConfig().getInt("Timber.MaximumBlocksPerSwing") > 0 && locs.size() >= getConfig().getInt("Timber.MaximumBlocksPerSwing")) return;
+
                     locs.add(loc);
+
                     if (allowed.contains(p.getWorld().getBlockAt(loc).getType())) {
                         breakTree(p, p.getWorld().getBlockAt(loc), allowed);
-                        ((CraftPlayer) p).getHandle().playerInteractManager.breakBlock(new BlockPosition(loc.getX(), loc.getY(), loc.getZ()));
+
+                        BlockBreakEvent event = new BlockBreakEvent(b, p);
+                        Bukkit.getServer().getPluginManager().callEvent(event);
+
+                        if (!event.isCancelled()) b.breakNaturally(p.getInventory().getItemInMainHand());
                     }
                 }
             }

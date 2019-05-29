@@ -13,6 +13,7 @@ import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * THIS MODIFIER IS FAR FROM FINISHED AND SHOULD NOT BE ENABLED!
@@ -56,6 +58,13 @@ public class Portalized extends Modifier implements Craftable, Listener {
     }
 
     @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+
+        return enchantments;
+    }
+
+    @Override
     public void registerCraftingRecipe() {
 
     }
@@ -66,6 +75,7 @@ public class Portalized extends Modifier implements Craftable, Listener {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
             return null;
         }
+
         return Modifier.checkAndAdd(p, tool, this, "portalized", isCommand);
     }
 
@@ -101,11 +111,16 @@ public class Portalized extends Modifier implements Craftable, Listener {
     @EventHandler
     public void onArrowLand(MTProjectileHitEvent e) {
         if (!this.isAllowed()) return;
+
         Player p = e.getPlayer();
+
         LinkedList<ArmorStand> portals = playerPortals.get(p);
+
         if (portals == null) {
             portals = new LinkedList<>();
         }
+
+        if (e.getEvent().getHitBlock() == null) return;
 
         ArmorStand newPortal = (ArmorStand) p.getWorld().spawnEntity(e.getEvent().getHitBlock().getLocation(), EntityType.ARMOR_STAND);
         newPortal.setHelmet(portalHead);

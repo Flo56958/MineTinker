@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Lifesteal extends Modifier implements Craftable, Listener {
@@ -40,6 +42,13 @@ public class Lifesteal extends Modifier implements Craftable, Listener {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+
+        return enchantments;
     }
 
     @Override
@@ -80,28 +89,27 @@ public class Lifesteal extends Modifier implements Craftable, Listener {
 
     @EventHandler(priority = EventPriority.HIGH) //because of Melting
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
-        if (event.getPlayer().equals(event.getEvent().getEntity())) { return; } //when event was triggered by the armor
+        if (event.isCancelled() || !this.isAllowed()) return;
+        if (event.getPlayer().equals(event.getEvent().getEntity())) return; //when event was triggered by the armor
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
-        if (!p.hasPermission("minetinker.modifiers.lifesteal.use")) { return; }
 
-        if (!modManager.hasMod(tool, this)) { return; }
+        if (!p.hasPermission("minetinker.modifiers.lifesteal.use")) return;
+        if (!modManager.hasMod(tool, this)) return;
 
         Random rand = new Random();
-        if (rand.nextInt(100) > this.percentToTrigger) { return; }
+        if (rand.nextInt(100) > this.percentToTrigger) return;
 
         int level = modManager.getModLevel(tool, this);
         double damage = event.getEvent().getDamage();
-
         double recovery = damage * ((percentPerLevel * level) / 100.0);
-
         double health = p.getHealth() + recovery;
 
+        // TODO: don't call getMaxHealth
         if (health > p.getMaxHealth()) { health = p.getMaxHealth(); } // for IllegalArgumentExeption if Health is biggen than MaxHealth
-
         p.setHealth(health);
+
         ChatWriter.log(false, p.getDisplayName() + " triggered Lifesteal on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") and got " + recovery + " health back!");
     }
 

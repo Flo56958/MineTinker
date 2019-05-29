@@ -10,11 +10,13 @@ import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ExtraModifier extends Modifier {
 
@@ -33,6 +35,13 @@ public class ExtraModifier extends Modifier {
                                                 ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+
+        return enchantments;
     }
 
     @Override
@@ -65,12 +74,14 @@ public class ExtraModifier extends Modifier {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.NO_PERMISSION, isCommand));
             return null;
         }
+
         if (!getAllowedTools().contains(ToolType.get(tool.getType()))) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
             return null;
         }
 
         int slotsRemaining = modManager.getFreeSlots(tool);
+
         if (slotsRemaining + gain == Integer.MAX_VALUE || slotsRemaining + gain < 0) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.MAXIMUM_SLOTS_REACHED, isCommand));
             return null;
@@ -78,6 +89,7 @@ public class ExtraModifier extends Modifier {
         int amount = slotsRemaining + gain;
 
         modManager.setFreeSlots(tool, amount);
+
         return tool;
     }
 

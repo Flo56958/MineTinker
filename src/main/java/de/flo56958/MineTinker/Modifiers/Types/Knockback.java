@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Knockback extends Modifier implements Enchantable, Craftable {
 
@@ -32,6 +33,15 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
         super(ModifierType.KNOCKBACK,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.KNOCKBACK);
+        enchantments.add(Enchantment.ARROW_KNOCKBACK);
+
+        return enchantments;
     }
 
     @Override
@@ -68,19 +78,22 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
 
         ItemMeta meta = tool.getItemMeta();
 
-        if (ToolType.AXE.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.BOW.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.ARROW_KNOCKBACK, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);
+        if (meta != null) {
+            if (ToolType.AXE.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.BOW.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.ARROW_KNOCKBACK, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);
+            }
+
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+            tool.setItemMeta(meta);
         }
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-        }
-        tool.setItemMeta(meta);
 
         return tool;
     }
@@ -88,14 +101,17 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.KNOCKBACK);
-        meta.removeEnchant(Enchantment.ARROW_KNOCKBACK);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.KNOCKBACK);
+            meta.removeEnchant(Enchantment.ARROW_KNOCKBACK);
+            tool.setItemMeta(meta);
+        }
     }
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.knockback.craft")) { return; }
+        if (!p.hasPermission("minetinker.modifiers.knockback.craft")) return;
         _createModifierItem(getConfig(), p, this, "Knockback");
     }
 

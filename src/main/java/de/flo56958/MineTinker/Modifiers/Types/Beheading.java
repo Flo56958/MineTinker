@@ -15,6 +15,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -26,6 +27,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Beheading extends Modifier implements Enchantable, Craftable, Listener {
@@ -44,6 +46,13 @@ public class Beheading extends Modifier implements Enchantable, Craftable, Liste
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+
+        return enchantments;
     }
 
     @Override
@@ -88,15 +97,18 @@ public class Beheading extends Modifier implements Enchantable, Craftable, Liste
      */
     @EventHandler(priority = EventPriority.LOW) //For Directing
     public void effect(MTEntityDeathEvent event) {
-        if (!this.isAllowed()) { return; }
+        if (!this.isAllowed()) return;
+
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
         LivingEntity mob = event.getEvent().getEntity();
         ItemStack loot = new ItemStack(Material.AIR, 1);
+
         if (p.hasPermission("minetinker.modifiers.beheading.use")) {
             if (modManager.hasMod(tool, this)) {
                 Random rand = new Random();
                 int n = rand.nextInt(100);
+
                 if (n <= this.percentagePerLevel * modManager.getModLevel(tool, this)) {
                     if (mob.getType().equals(EntityType.CREEPER)) {
                         loot = new ItemStack(Material.CREEPER_HEAD, 1);
@@ -110,11 +122,16 @@ public class Beheading extends Modifier implements Enchantable, Craftable, Liste
                         loot = new ItemStack(Material.ZOMBIE_HEAD, 1);
                     } else if (mob.getType().equals(EntityType.PLAYER)) {
                         ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
-                        SkullMeta headMeta = (SkullMeta) head.getItemMeta();
-                        headMeta.setOwningPlayer((OfflinePlayer) mob);
-                        head.setItemMeta(headMeta);
+
+                        if (head.getItemMeta() != null) {
+                            SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+                            headMeta.setOwningPlayer((OfflinePlayer) mob);
+                            head.setItemMeta(headMeta);
+                        }
+
                         loot = head;
                     }
+
                     if (loot.getType() != Material.AIR) {
                         event.getEvent().getDrops().add(loot);
                         ChatWriter.log(false, p.getDisplayName() + " triggered Beheading on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
@@ -126,7 +143,7 @@ public class Beheading extends Modifier implements Enchantable, Craftable, Liste
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.beheading.craft")) { return; }
+        if (!p.hasPermission("minetinker.modifiers.beheading.craft")) return;
         _createModifierItem(getConfig(), p, this, "Beheading");
     }
 

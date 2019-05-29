@@ -36,20 +36,16 @@ public class BlockListener implements Listener {
     private static final ModManager modManager = ModManager.instance();
 
     @SuppressWarnings("deprecation")
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e) {
-        if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (Lists.WORLDS.contains(p.getWorld().getName())) { return; }
-        if (e.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS || ToolType.HOE.getMaterials().contains(tool.getType()))) { return; }
-
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
-
-
-        if (!modManager.isToolViable(tool)) { return; }
-        if (!modManager.durabilityCheck(e, p, tool)) { return; }
+        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
+        if (e.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS || ToolType.HOE.getMaterials().contains(tool.getType()))) return;
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) return;
+        if (!modManager.isToolViable(tool)) return;
+        if (!modManager.durabilityCheck(e, p, tool)) return;
 
         int expAmount = config.getInt("ExpPerBlockBreak");
         expAmount += config.getInt("ExtraExpPerBlock." + e.getBlock().getType().toString()); //adds 0 if not in found in config (negative values are also fine)
@@ -72,13 +68,19 @@ public class BlockListener implements Listener {
                 if (e.getBlock().getState() instanceof CreatureSpawner && p.hasPermission("minetinker.spawners.mine")) {
                     if ((config.getBoolean("Spawners.onlyWithSilkTouch") && modManager.hasMod(tool, modManager.get(ModifierType.SILK_TOUCH)))
                             || !config.getBoolean("Spawners.onlyWithSilkTouch")) {
+
                         CreatureSpawner cs = (CreatureSpawner) e.getBlock().getState();
                         ItemStack s = new ItemStack(Material.SPAWNER, 1, e.getBlock().getData());
-                        ItemMeta s_meta = s.getItemMeta();
-                        s_meta.setDisplayName(cs.getSpawnedType().toString());
-                        s.setItemMeta(s_meta);
+                        ItemMeta meta = s.getItemMeta();
+
+                        if (meta != null) {
+                            meta.setDisplayName(cs.getSpawnedType().toString());
+                            s.setItemMeta(meta);
+                        }
+
                         p.getWorld().dropItemNaturally(e.getBlock().getLocation(), s);
                         e.setExpToDrop(0);
+
                         ChatWriter.log(false, p.getDisplayName() + " successfully mined a Spawner!");
                     }
                 }
@@ -87,12 +89,15 @@ public class BlockListener implements Listener {
     }
 
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
-        if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
         Block b = e.getClickedBlock();
+
+        if (b == null) return;
+
         ItemStack norm = p.getInventory().getItemInMainHand();
+
         if (e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
             if (modManager.get(ModifierType.ENDER) != null) {
                 if (modManager.get(ModifierType.ENDER).getModItem().equals(norm)) {
@@ -114,9 +119,12 @@ public class BlockListener implements Listener {
                     return;
                 }
             }
+
             if (norm.getType().equals(Material.EXPERIENCE_BOTTLE)) return;
+
             int temp = norm.getAmount();
             norm.setAmount(1);
+
             for (Modifier m : modManager.getAllowedMods()) {
                 if (m.getModItem().equals(norm)) {
                     norm.setAmount(temp);
@@ -124,9 +132,12 @@ public class BlockListener implements Listener {
                     return;
                 }
             }
+
             norm.setAmount(temp);
+
             if (b.getType().equals(Material.getMaterial(config.getString("BlockToEnchantModifiers")))) {
                 ItemStack item = p.getInventory().getItemInMainHand();
+
                 for (Modifier m : modManager.getEnchantableMods()) {
                     if (m.getModItem().getType().equals(item.getType())) {
                         ((Enchantable) m).enchantItem(p, item);
@@ -137,10 +148,8 @@ public class BlockListener implements Listener {
         }
     }
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public static void onBlockPlace(BlockPlaceEvent e) {
-        if (e.isCancelled()) { return; }
-
         Player p = e.getPlayer();
         Block b = e.getBlockPlaced();
         BlockState bs = b.getState();
@@ -153,61 +162,66 @@ public class BlockListener implements Listener {
                 //return;
             } else if (p.hasPermission("minetinker.spawners.place") && b.getState() instanceof CreatureSpawner) {
                 CreatureSpawner cs = (CreatureSpawner) bs;
+
+                // TODO: Make safe
                 cs.setSpawnedType(EntityType.fromName(e.getItemInHand().getItemMeta().getDisplayName()));
                 bs.update(true);
+
                 ChatWriter.log(false,  p.getDisplayName() + " successfully placed a Spawner!");
             }
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public static void onHoeUse(PlayerInteractEvent e) {
-        if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
-        if (Lists.WORLDS.contains(p.getWorld().getName())) { return; }
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
-        ItemStack tool = p.getInventory().getItemInMainHand();
-        if (!ToolType.HOE.getMaterials().contains(tool.getType())) { return; }
 
-        if (!modManager.isToolViable(tool)) { return; }
+        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) return;
+
+        ItemStack tool = p.getInventory().getItemInMainHand();
+
+        if (!ToolType.HOE.getMaterials().contains(tool.getType())) return;
+        if (!modManager.isToolViable(tool)) return;
 
         Block b = e.getClickedBlock();
 
         boolean apply = false;
 
-        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && b != null) {
             if (b.getType().equals(Material.GRASS_BLOCK) ||
                 b.getType().equals(Material.DIRT)) {
                 apply = true;
             }
+
             if (!p.getWorld().getBlockAt(b.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) { //Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
                 apply = false;
             }
         }
 
-        if (!apply) { return; }
-
-        if (!modManager.durabilityCheck(e, p, tool)) { return; }
+        if (!apply) return;
+        if (!modManager.durabilityCheck(e, p, tool)) return;
 
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 
         Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, e));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public static void onAxeUse(PlayerInteractEvent e) {
-        if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
-        if (Lists.WORLDS.contains(p.getWorld().getName())) { return; }
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
-        ItemStack tool = p.getInventory().getItemInMainHand();
-        if (!ToolType.AXE.getMaterials().contains(tool.getType())) { return; }
 
-        if (!modManager.isToolViable(tool)) { return; }
+        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) return;
+
+        ItemStack tool = p.getInventory().getItemInMainHand();
+
+        if (!ToolType.AXE.getMaterials().contains(tool.getType())) return;
+        if (!modManager.isToolViable(tool)) return;
 
         boolean apply = false;
 
-        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null) {
             if (e.getClickedBlock().getType().equals(Material.ACACIA_LOG) ||
                 e.getClickedBlock().getType().equals(Material.BIRCH_LOG) ||
                 e.getClickedBlock().getType().equals(Material.OAK_LOG) ||
@@ -225,36 +239,36 @@ public class BlockListener implements Listener {
             }
         }
 
-        if (!apply) { return; }
+        if (!apply) return;
+        if (!modManager.durabilityCheck(e, p, tool)) return;
 
-        if (!modManager.durabilityCheck(e, p, tool)) { return; }
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 
         Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, e));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public static void onShovelUse(PlayerInteractEvent e) {
-        if (e.isCancelled()) { return; }
         Player p = e.getPlayer();
-        if (Lists.WORLDS.contains(p.getWorld().getName())) { return; }
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) { return; }
-        ItemStack tool = p.getInventory().getItemInMainHand();
-        if (!ToolType.SHOVEL.getMaterials().contains(tool.getType())) { return; }
 
-        if (!modManager.isToolViable(tool)) { return; }
+        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) return;
+
+        ItemStack tool = p.getInventory().getItemInMainHand();
+
+        if (!ToolType.SHOVEL.getMaterials().contains(tool.getType())) return;
+        if (!modManager.isToolViable(tool)) return;
 
         boolean apply = false;
 
-        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null) {
             if (e.getClickedBlock().getType().equals(Material.GRASS_BLOCK)) {
                 apply = true;
             }
         }
 
-        if (!apply) { return; }
-        if (!modManager.durabilityCheck(e, p, tool)) { return; }
-
+        if (!apply) return;
+        if (!modManager.durabilityCheck(e, p, tool)) return;
 
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 

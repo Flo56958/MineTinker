@@ -25,7 +25,9 @@ class Functions {
      */
     static void modList(CommandSender sender) {
         ChatWriter.sendMessage(sender, ChatColor.GOLD, "Possible Modifiers:");
+
         int index = 1;
+
         for (Modifier m : modManager.getAllowedMods()) {
             ChatWriter.sendMessage(sender, ChatColor.WHITE, index + ". " + m.getColor() + m.getName() + ChatColor.WHITE + ": " + m.getDescription());
             index++;
@@ -40,6 +42,7 @@ class Functions {
     static void addExp(Player player, String[] args) {
         if (args.length == 2) {
             ItemStack tool = player.getInventory().getItemInMainHand();
+
             if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
                 try {
                     int amount = Integer.parseInt(args[1]);
@@ -63,15 +66,22 @@ class Functions {
     static void name(Player player, String[] args) {
         if (args.length >= 2) {
             ItemStack tool = player.getInventory().getItemInMainHand();
+
             if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
                 StringBuilder name = new StringBuilder();
+
                 for (int i = 1; i < args.length; i++) {
                     name.append(" ").append(args[i].replace('^', '§'));
                 }
+
                 name = new StringBuilder(name.substring(1));
-                ItemMeta meta = tool.getItemMeta().clone();
-                meta.setDisplayName(name.toString());
-                tool.setItemMeta(meta);
+
+                ItemMeta meta = tool.getItemMeta();
+
+                if (meta != null) {
+                    meta.setDisplayName(name.toString());
+                    tool.setItemMeta(meta);
+                }
             } else {
                 Commands.invalidTool(player);
             }
@@ -88,7 +98,9 @@ class Functions {
     static void removeMod(Player player, String[] args) {
         if (args.length >= 2) {
             ItemStack tool = player.getInventory().getItemInMainHand();
+
             if (!modManager.isToolViable(tool) && !modManager.isArmorViable(tool)) { Commands.invalidArgs(player); return; }
+
             for (Modifier m : modManager.getAllMods()) {
                 if (args[1].equals(m.getName())) {
                     modManager.removeMod(player.getInventory().getItemInMainHand(), m);
@@ -111,8 +123,10 @@ class Functions {
             for (Modifier m : modManager.getAllowedMods()) {
                 if (m.getName().equalsIgnoreCase(args[1])) {
                     ItemStack tool = player.getInventory().getItemInMainHand().clone();
+
                     if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
                         tool = m.applyMod(player, tool, true);
+
                         if (tool != null) {
                             player.getInventory().setItemInMainHand(tool);
                         }
@@ -134,21 +148,23 @@ class Functions {
 	static void setDurability(Player player, String[] args) {
         if (args.length == 2) {
             ItemStack tool = player.getInventory().getItemInMainHand();
+
             if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
-                        try {
-                            int dura = Integer.parseInt(args[1]);
-                            if (dura <= tool.getType().getMaxDurability()) {
-                                tool.setDurability((short) (tool.getType().getMaxDurability() - dura));
-                            } else {
-                                ChatWriter.sendMessage(player, ChatColor.RED, "Please enter a valid number or 'full'!");
-                            }
-                        } catch (Exception e) {
-                            if (args[1].toLowerCase().equals("full") || args[1].toLowerCase().equals("f")) {
-                                tool.setDurability((short) 0);
-                            } else {
-                                ChatWriter.sendMessage(player, ChatColor.RED, "Please enter a valid number or 'full'!");
-                            }
-                        }
+                try {
+                    int dura = Integer.parseInt(args[1]);
+
+                    if (dura <= tool.getType().getMaxDurability()) {
+                        tool.setDurability((short) (tool.getType().getMaxDurability() - dura));
+                    } else {
+                        ChatWriter.sendMessage(player, ChatColor.RED, "Please enter a valid number or 'full'!");
+                    }
+                } catch (Exception e) {
+                    if (args[1].toLowerCase().equals("full") || args[1].toLowerCase().equals("f")) {
+                        tool.setDurability((short) 0);
+                    } else {
+                        ChatWriter.sendMessage(player, ChatColor.RED, "Please enter a valid number or 'full'!");
+                    }
+                }
             } else {
                 Commands.invalidTool(player);
             }
@@ -205,10 +221,13 @@ class Functions {
      * @param args command input of the player - parsed down from onCommand()
      */
     public static void giveModifierItem(Player player, String[] args) {
+        boolean allOnline = false;
+
         if (args.length >= 2) {
             for (Modifier mod : modManager.getAllowedMods()) {
                 if (mod.getName().equalsIgnoreCase(args[1])) {
                     int amount = 1;
+
                     if (args.length >= 3) {
                         try {
                             amount = Integer.parseInt(args[2]);
@@ -217,19 +236,38 @@ class Functions {
                             return;
                         }
                     }
+
                     if (args.length >= 4) {
-                        Player temp = Bukkit.getServer().getPlayer(args[3]);
-                        if (temp == null) {
-                            ChatWriter.sendMessage(player, ChatColor.RED, "Player " + args[3] + " not found or not online!");
-                            return;
+                        if (args[3].equalsIgnoreCase("*")) {
+                            allOnline = true;
+                        } else {
+                            Player temp = Bukkit.getServer().getPlayer(args[3]);
+
+                            if (temp == null) {
+                                ChatWriter.sendMessage(player, ChatColor.RED, "Player " + args[3] + " not found or not online!");
+                                return;
+                            }
+                            player = temp;
                         }
-                        player = temp;
+
                     }
-                    for (int i = 0; i < amount; i++) {
-                        if (player.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
-                            player.getWorld().dropItem(player.getLocation(), mod.getModItem());
-                        } // no else as it gets added in if
+
+                    if (allOnline) {
+                        for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
+                            for (int i = 0; i < amount; i++) {
+                                if (onlinePlayer.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
+                                    onlinePlayer.getWorld().dropItem(onlinePlayer.getLocation(), mod.getModItem());
+                                } // no else as it gets added in if
+                            }
+                        }
+                    } else {
+                        for (int i = 0; i < amount; i++) {
+                            if (player.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
+                                player.getWorld().dropItem(player.getLocation(), mod.getModItem());
+                            } // no else as it gets added in if
+                        }
                     }
+
                     break;
                 }
             }
@@ -239,12 +277,15 @@ class Functions {
     public static void checkUpdate(CommandSender sender) {
         if (config.getBoolean("CheckForUpdates")) {
             ChatWriter.sendMessage(sender, ChatColor.WHITE, "Checking for Updates...");
+
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     Main.getUpdater().checkForUpdate(sender);
                 }
             }.runTaskLater(Main.getPlugin(), 20);
-        } else ChatWriter.sendMessage(sender, ChatColor.RED, "Checking for updates is disabled by the server admin!");
+        } else {
+            ChatWriter.sendMessage(sender, ChatColor.RED, "Checking for updates is disabled by the server admin!");
+        }
     }
 }

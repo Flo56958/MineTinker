@@ -28,6 +28,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class SelfRepair extends Modifier implements Enchantable, Craftable, Listener {
@@ -51,6 +52,14 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.MENDING);
+
+        return enchantments;
     }
 
     @Override
@@ -91,16 +100,21 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
         if (Modifier.checkAndAdd(p, tool, this, "selfrepair", isCommand) == null) {
             return null;
         }
+
         if (useMending) {
             ItemMeta meta = tool.getItemMeta();
-            meta.addEnchant(Enchantment.MENDING, modManager.getModLevel(tool, this), true);
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
 
-            tool.setItemMeta(meta);
+            if (meta != null) {
+                meta.addEnchant(Enchantment.MENDING, modManager.getModLevel(tool, this), true);
+
+                if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                } else {
+                    meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+                }
+
+                tool.setItemMeta(meta);
+            }
         }
         return tool;
     }
@@ -108,25 +122,30 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.MENDING);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.MENDING);
+            tool.setItemMeta(meta);
+        }
     }
 
     //------------------------------------------------------
 
     @EventHandler
     public void effect(MTBlockBreakEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
         effect(event.getPlayer(), event.getTool());
     }
 
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;
+
         if (ToolType.BOOTS.getMaterials().contains(event.getTool().getType())
                 || ToolType.LEGGINGS.getMaterials().contains(event.getTool().getType())
                 || ToolType.CHESTPLATE.getMaterials().contains(event.getTool().getType())
                 || ToolType.HELMET.getMaterials().contains(event.getTool().getType())) return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
+
         effect(event.getPlayer(), event.getTool());
     }
 
@@ -145,8 +164,11 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
     @EventHandler
     public void onShear(PlayerShearEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;
+
         ItemStack tool = event.getPlayer().getInventory().getItemInMainHand();
+
         if (!(modManager.isToolViable(tool) && ToolType.SHEARS.getMaterials().contains(tool.getType()))) return;
+
         effect(event.getPlayer(), tool);
     }
 
@@ -162,14 +184,14 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
      */
     @SuppressWarnings("deprecation")
 	private void effect(Player p, ItemStack tool) {
-        if (useMending) { return; }
-        if (!p.hasPermission("minetinker.modifiers.selfrepair.use")) { return; }
-        if (!modManager.hasMod(tool, this)) { return; }
+        if (useMending) return;
+        if (!p.hasPermission("minetinker.modifiers.selfrepair.use")) return;
+        if (!modManager.hasMod(tool, this)) return;
 
         int level = modManager.getModLevel(tool, this);
-
         Random rand = new Random();
         int n = rand.nextInt(100);
+
         if (n <= this.percentagePerLevel * level) {
             short dura = (short) (tool.getDurability() - this.healthRepair);
 
@@ -178,6 +200,7 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
             }
 
             tool.setDurability(dura);
+
             ChatWriter.log(false, p.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
         }
     }
@@ -186,7 +209,7 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.selfrepair.craft")) { return; }
+        if (!p.hasPermission("minetinker.modifiers.selfrepair.craft")) return;
         _createModifierItem(getConfig(), p, this, "Self-Repair");
     }
 

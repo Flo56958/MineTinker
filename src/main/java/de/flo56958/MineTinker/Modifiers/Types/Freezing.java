@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Freezing extends Modifier implements Craftable {
 
@@ -33,6 +34,14 @@ public class Freezing extends Modifier implements Craftable {
         super(ModifierType.FREEZING,
                 new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.FROST_WALKER);
+
+        return enchantments;
     }
 
     @Override
@@ -80,12 +89,15 @@ public class Freezing extends Modifier implements Craftable {
         }
 
         ItemMeta meta = tool.getItemMeta();
-        meta.addEnchant(Enchantment.FROST_WALKER, modManager.getModLevel(tool, this), true);
 
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+        if (meta != null) {
+            meta.addEnchant(Enchantment.FROST_WALKER, modManager.getModLevel(tool, this), true);
+
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
         }
 
         tool.setItemMeta(meta);
@@ -95,8 +107,11 @@ public class Freezing extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.FROST_WALKER);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.FROST_WALKER);
+            tool.setItemMeta(meta);
+        }
     }
 
     private static FileConfiguration getConfig() {

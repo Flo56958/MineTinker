@@ -10,9 +10,11 @@ public class PlayerInfo {
      */
     public static String getFacingDirection(Player player) {
         double rot = (player.getLocation().getYaw() - 90) % 360;
+
         if (rot < 0) {
             rot += 360.0;
         }
+
         return getDirection(rot);
     }
 

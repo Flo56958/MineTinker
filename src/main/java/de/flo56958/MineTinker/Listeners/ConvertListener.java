@@ -41,7 +41,7 @@ public class ConvertListener implements Listener{
 		converting.addAll(ToolType.BOOTS.getMaterials());
 		converting.addAll(ToolType.BOW.getMaterials());
 	    
-	    for(Material m : converting) {
+	    for (Material m : converting) {
 	    	ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(Main.getPlugin(), m.toString() + "_Converter"), new ItemStack(m, 1));
 			recipe.addIngredient(m);
 			Bukkit.addRecipe(recipe);
@@ -50,34 +50,54 @@ public class ConvertListener implements Listener{
 	
 	@EventHandler
 	public void PrepareCraft(PrepareItemCraftEvent e) {
-		if (e.getRecipe() != null) {
-			Player player = null;
-			for (HumanEntity humans : e.getViewers()) {
-				if (humans instanceof Player) { player = (Player) humans; }
-			}
-			
-			if (player == null) { return; }
-	        if (!player.hasPermission("minetinker.tool.create")) { return; }
-	        if (Lists.WORLDS.contains(player.getWorld().getName())) { return; }
+		if (e.getRecipe() == null) return;
 
-	        ItemStack currentItem = e.getInventory().getResult();
-	        
-	        if(currentItem != null) {
-	        	ItemMeta m = currentItem.getItemMeta();
-	        	if(m != null) {
-	        		if(modManager.isWandViable(currentItem)) {
-	        			return;
-	        		}
-	        	}
-	        	modManager.convertItemStack(currentItem);
-	        }
+		Player player = null;
+
+		for (HumanEntity humans : e.getViewers()) {
+			if (humans instanceof Player) { player = (Player) humans; }
 		}
+
+		if (player == null) return;
+		if (!player.hasPermission("minetinker.tool.create")) return;
+		if (Lists.WORLDS.contains(player.getWorld().getName())) return;
+
+		ItemStack currentItem = e.getInventory().getResult();
+
+		if (currentItem == null) return;
+
+		int actualItems = 0;
+		ItemStack lastItem = null;
+
+		for (ItemStack item : e.getInventory().getMatrix()) {
+			if (item != null && item.getType() != Material.AIR) {
+				actualItems++;
+				lastItem = item;
+			}
+		}
+
+		if (lastItem != null && actualItems == 1 && currentItem.getType() == lastItem.getType()) {
+			if (modManager.isArmorViable(lastItem) || modManager.isToolViable(lastItem) || modManager.isWandViable(lastItem)) {
+				e.getInventory().setResult(new ItemStack(Material.AIR, 1));
+				return;
+			}
+		}
+
+		ItemMeta m = currentItem.getItemMeta();
+
+		if (m != null) {
+			if (modManager.isWandViable(currentItem)) {
+				return;
+			}
+		}
+
+		modManager.convertItemStack(currentItem);
 	}
 	
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
     public void onCraft(CraftItemEvent e) {
-        if (e.isCancelled()) { return; }
-        if (!(e.getWhoClicked() instanceof Player)) { return; }
+        if (!(e.getWhoClicked() instanceof Player)) return;
+
         Player player = (Player) e.getWhoClicked();
         
         if (config.getBoolean("Sound.OnEveryCrafting")) {
@@ -87,12 +107,14 @@ public class ConvertListener implements Listener{
         
         ItemStack tool = e.getInventory().getResult();
         
-        if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool) || modManager.isWandViable(tool))) { return; }
+        if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool) || modManager.isWandViable(tool))) return;
 
         if (config.getBoolean("Sound.OnCrafting")) {
 			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
 		}
 
-        ChatWriter.log(false, player.getName() + " crafted " + ItemGenerator.getDisplayName(tool) + "! It is now a MineTinker-Item!");
+        if (tool != null) {
+			ChatWriter.log(false, player.getName() + " crafted " + ItemGenerator.getDisplayName(tool) + "! It is now a MineTinker-Item!");
+		}
     }
 }

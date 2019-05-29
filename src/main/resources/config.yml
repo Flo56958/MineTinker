@@ -1,12 +1,13 @@
 #---------------MAIN-PLUGIN-SETTINGS--------------
 chat-prefix: [MineTinker]
 CheckForUpdates: true #Checks for updates on startup
-SendUpdateNotificationToOPs: true #If there is an update the server OP get a notification
+
 #--LOGGING--
 logging:
   standard: false #logs important player activities with MineTinker
   debug: false #even more information
   metrics: true
+
 #--MESSAGES--
 chat-messages: true #Will turn off command output
 actionbar-messages: true
@@ -41,6 +42,7 @@ AllowCrafting: true #Only recommended if used in combination with other Plugins 
 BlockToEnchantModifiers: BOOKSHELF #Block that needs to be right-clicked
 HideEnchants: true #Should the vanilla enchantments be hidden on the tool
 DurabilityPercentageRepair: 0.34 #How much durability (relative to maximum durability) should the tool recover per item
+ConvertBookToModifier: false #Should right clicking a bookshelf with an enchanted book convert enchantments to modifier items
 
 #---------------ITEMBEHAVIOUR--------------
 ItemBehaviour:
@@ -49,6 +51,8 @@ ItemBehaviour:
   SetInvulnerable: true #Item can not be damaged or destroyed
   SetPersistent: true #Item will not despawn
   ForModItems: true #Settings apply also for Modifier-Items
+  StopBreakEvent: false #If the item breaks due to a bug, give the item back to the player with 1 durability
+  AlertPlayerOnBreak: false #If the item breaks due to a bug, alert the player
 
 #---------------LEVELUP-EVENTS--------------
 LevelUpEvents:

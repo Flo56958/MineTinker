@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,6 +24,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Glowing extends Modifier implements Craftable, Listener {
 
@@ -41,6 +43,13 @@ public class Glowing extends Modifier implements Craftable, Listener {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+
+        return enchantments;
     }
 
     @Override
@@ -88,19 +97,19 @@ public class Glowing extends Modifier implements Craftable, Listener {
 
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
-        if (!(event.getEntity() instanceof LivingEntity)) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
+        if (!(event.getEntity() instanceof LivingEntity)) return;
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
-
         LivingEntity e = (LivingEntity) event.getEntity();
 
-        if (!p.hasPermission("minetinker.modifiers.glowing.use")) { return; }
-        if (!modManager.hasMod(tool, this)) { return; }
+        if (!p.hasPermission("minetinker.modifiers.glowing.use")) return;
+        if (!modManager.hasMod(tool, this)) return;
 
         int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (modManager.getModLevel(tool, this) - 1)));
         e.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, duration, 0, false, false));
+
         ChatWriter.log(false, p.getDisplayName() + " triggered Glowing on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 

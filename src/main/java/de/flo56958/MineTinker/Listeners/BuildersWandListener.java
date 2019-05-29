@@ -102,29 +102,38 @@ public class BuildersWandListener implements Listener {
 
     public static void reload() {
         config = ConfigurationManager.getConfig("BuildersWand.yml");
+
         wands.clear();
         wands.add(buildersWandCreator(Material.WOODEN_SHOVEL, config.getString("BuildersWand.name_wood")));
         wands.add(buildersWandCreator(Material.STONE_SHOVEL, config.getString("BuildersWand.name_stone")));
         wands.add(buildersWandCreator(Material.IRON_SHOVEL, config.getString("BuildersWand.name_iron")));
         wands.add(buildersWandCreator(Material.GOLDEN_SHOVEL, config.getString("BuildersWand.name_gold")));
         wands.add(buildersWandCreator(Material.DIAMOND_SHOVEL, config.getString("BuildersWand.name_diamond")));
+
         registerBuildersWands();
     }
 
     private static ItemStack buildersWandCreator(Material m, String name) { //TODO: Modify to implement Modifiers
         ItemStack wand = new ItemStack(m, 1);
         ItemMeta meta = wand.getItemMeta();
-        ArrayList<String> lore = new ArrayList<>();
-        meta.setDisplayName(ChatWriter.addColors(name));
-        lore.add(ChatWriter.addColors(config.getString("BuildersWand.description")));
-        meta.setLore(lore);
-        meta.addItemFlags(ItemFlag.HIDE_DESTROYS);
-        wand.setItemMeta(meta);
+
+        if (meta != null) {
+            ArrayList<String> lore = new ArrayList<>();
+
+            lore.add(ChatWriter.addColors(config.getString("BuildersWand.description")));
+            meta.setLore(lore);
+
+            meta.setDisplayName(ChatWriter.addColors(name));
+            meta.addItemFlags(ItemFlag.HIDE_DESTROYS);
+            wand.setItemMeta(meta);
+        }
 
         NBTTagList list = new NBTTagList();
         list.add(new NBTTagString("minecraft:air"));
+
         modManager.setNBTTag(wand, "CanDestroy", list);
         modManager.setNBTTag(wand, "IdentifierBuilderswand", new NBTTagInt(0));
+
         return wand;
     }
 
@@ -139,10 +148,14 @@ public class BuildersWandListener implements Listener {
             String middle = config.getString("BuildersWand.Recipes.Wood.Middle");
             String bottom = config.getString("BuildersWand.Recipes.Wood.Bottom");
             ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Wood.Materials");
+
+            // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
+
             for (String key : materials.getKeys(false)) {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
+
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
             ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
@@ -155,10 +168,14 @@ public class BuildersWandListener implements Listener {
             String middle = config.getString("BuildersWand.Recipes.Stone.Middle");
             String bottom = config.getString("BuildersWand.Recipes.Stone.Bottom");
             ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Stone.Materials");
+
+            // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
+
             for (String key : materials.getKeys(false)) {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
+
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
             ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
@@ -171,10 +188,14 @@ public class BuildersWandListener implements Listener {
             String middle = config.getString("BuildersWand.Recipes.Iron.Middle");
             String bottom = config.getString("BuildersWand.Recipes.Iron.Bottom");
             ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Iron.Materials");
+
+            // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
+
             for (String key : materials.getKeys(false)) {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
+
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
             ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
@@ -187,10 +208,14 @@ public class BuildersWandListener implements Listener {
             String middle = config.getString("BuildersWand.Recipes.Gold.Middle");
             String bottom = config.getString("BuildersWand.Recipes.Gold.Bottom");
             ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Gold.Materials");
+
+            // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
+
             for (String key : materials.getKeys(false)) {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
+
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
             ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
@@ -203,10 +228,14 @@ public class BuildersWandListener implements Listener {
             String middle = config.getString("BuildersWand.Recipes.Diamond.Middle");
             String bottom = config.getString("BuildersWand.Recipes.Diamond.Bottom");
             ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Diamond.Materials");
+
+            // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
+
             for (String key : materials.getKeys(false)) {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
             }
+
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
         } catch (Exception e) {
             ChatWriter.logError("Could not register recipe for the Diamond Builderswand!"); //executes if the recipe could not initialize
@@ -214,23 +243,24 @@ public class BuildersWandListener implements Listener {
     }
 
     @SuppressWarnings("deprecation")
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
     public void onClick (PlayerInteractEvent e) {
-        if (e.isCancelled()) { return; }
-        if (Lists.WORLDS_BUILDERSWANDS.contains(e.getPlayer().getWorld().getName())) { return; }
+        if (Lists.WORLDS_BUILDERSWANDS.contains(e.getPlayer().getWorld().getName())) return;
 
         ItemStack wand = e.getPlayer().getInventory().getItemInMainHand();
 
-        if (!modManager.isWandViable(wand)) { return; }
+        if (!modManager.isWandViable(wand)) return;
 
         e.setCancelled(true);
 
-        if (!e.getPlayer().hasPermission("minetinker.builderswands.use")) { return; }
-        if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) { return; }
+        if (!e.getPlayer().hasPermission("minetinker.builderswands.use")) return;
+        if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 
         int _u = 0;
         int _w = 0;
+
         Player p = e.getPlayer();
+
         if (!p.isSneaking()) {
             switch (wand.getType()) {  //TODO: custom Builderswand sizes
                 case STONE_SHOVEL:
@@ -255,15 +285,18 @@ public class BuildersWandListener implements Listener {
         Block b = e.getClickedBlock();
         BlockFace bf = e.getBlockFace();
         ItemStack[] inv = p.getInventory().getContents();
+
         Vector u = new Vector(0, 0, 0);
         Vector v = new Vector(0, 0, 0);
         Vector w = new Vector(0, 0, 0);
+
         if (bf.equals(BlockFace.UP) || bf.equals(BlockFace.DOWN)) {
             if (bf.equals(BlockFace.UP)) {
                 v = new Vector(0, 1, 0);
             } else {
                 v = new Vector(0, -1, 0);
             }
+
             switch (PlayerInfo.getFacingDirection(p)) {
                 case "N":
                     w = new Vector(-1, 0, 0);
@@ -278,6 +311,7 @@ public class BuildersWandListener implements Listener {
                     w = new Vector(0, 0, 1);
                     break;
             }
+
             u = v.getCrossProduct(w);
         } else if (bf.equals(BlockFace.NORTH)) {
             v = new Vector(0, 0, -1);
@@ -296,7 +330,7 @@ public class BuildersWandListener implements Listener {
             w = new Vector(0, 0, 1);
             u = new Vector(0, -1, 0);
         }
-        if (p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE)) {
+        if ((p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE)) && b != null) {
             for (ItemStack current : inv) {
                 if (current == null) { continue; }
                 if (!current.getType().equals(b.getType())) { continue; }
@@ -306,9 +340,12 @@ public class BuildersWandListener implements Listener {
                 for (int i = -_w; i <= _w; i++) {
                     for (int j = -_u; j <= _u; j++) {
                         Location l = b.getLocation().clone();
+
                         l.subtract(w.clone().multiply(i));
                         l.subtract(u.clone().multiply(j));
+
                         Location loc = l.clone().subtract(v.clone().multiply(-1));
+
                         if (b.getWorld().getBlockAt(l).getType().equals(b.getType())) {
                             if (b.getWorld().getBlockAt(loc).getType().equals(Material.AIR) ||
                                     b.getWorld().getBlockAt(loc).getType().equals(Material.CAVE_AIR) ||
@@ -331,15 +368,19 @@ public class BuildersWandListener implements Listener {
                                 Block nb = b.getWorld().getBlockAt(loc);
                                 nb.setType(current.getType());
                                 BlockData bd = nb.getBlockData();
+
                                 if (bd instanceof Directional) {
                                     ((Directional) bd).setFacing(((Directional) nb.getWorld().getBlockAt(loc.subtract(v)).getBlockData()).getFacing());
                                 }
+
                                 nb.setBlockData(bd);
 
                                 current.setAmount(current.getAmount() - 1);
+
                                 if (config.getBoolean("BuildersWand.useDurability")) { //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
                                     wand.setDurability((short) (wand.getDurability() + 1));
                                 }
+
                                 if (current.getAmount() == 0) { //TODO: Add Exp gain for Builderswands
                                     break loop;
                                 }
@@ -351,13 +392,16 @@ public class BuildersWandListener implements Listener {
                 }
                 break;
             }
-        } else if (p.getGameMode().equals(GameMode.CREATIVE)) {
+        } else if (p.getGameMode().equals(GameMode.CREATIVE) && b != null) {
             for (int i = -_w; i <= _w; i++) {
                 for (int j = -_u; j <= _u; j++) {
                     Location l = b.getLocation().clone();
+
                     l.subtract(w.clone().multiply(i));
                     l.subtract(u.clone().multiply(j));
+
                     Location loc = l.clone().subtract(v.clone().multiply(-1));
+
                     if (b.getWorld().getBlockAt(l).getType().equals(b.getType())) {
                         if (b.getWorld().getBlockAt(loc).getType().equals(Material.AIR) ||
                                 b.getWorld().getBlockAt(loc).getType().equals(Material.CAVE_AIR) ||
@@ -377,9 +421,11 @@ public class BuildersWandListener implements Listener {
                             Block nb = b.getWorld().getBlockAt(loc);
                             nb.setType(b.getType());
                             BlockData bd = nb.getBlockData();
+
                             if (bd instanceof Directional) {
                                 ((Directional) bd).setFacing(((Directional) nb.getWorld().getBlockAt(loc.subtract(v)).getBlockData()).getFacing());
                             }
+
                             nb.setBlockData(bd);
                             e.setCancelled(true);
                         }

@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,6 +24,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Melting extends Modifier implements Enchantable, Craftable, Listener {
 
@@ -42,6 +44,13 @@ public class Melting extends Modifier implements Enchantable, Craftable, Listene
                                                 ToolType.CHESTPLATE, ToolType.LEGGINGS)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+
+        return enchantments;
     }
 
     @Override
@@ -85,25 +94,28 @@ public class Melting extends Modifier implements Enchantable, Craftable, Listene
 
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
-        if (!p.hasPermission("minetinker.modifiers.melting.use")) { return; }
-        if (!modManager.hasMod(tool, this)) { return; }
+
+        if (!p.hasPermission("minetinker.modifiers.melting.use")) return;
+        if (!modManager.hasMod(tool, this)) return;
 
         if (event.getPlayer().equals(event.getEvent().getEntity())) {
             /*
             The melting effect if the Player gets damaged. getTool = Armor piece
              */
             int level = modManager.getModLevel(tool, this);
-            if (p.getFireTicks() <= 0) { return; }
+            if (p.getFireTicks() <= 0) return;
 
             if (p.getFireTicks() > 0 && cancelBurning) {
                 p.setFireTicks(0);
             }
+
             double damage = event.getEvent().getDamage();
             damage = damage * (1 - this.bonusMultiplier * level);
+
             event.getEvent().setDamage(damage);
 
             ChatWriter.log(false, p.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
@@ -113,13 +125,14 @@ public class Melting extends Modifier implements Enchantable, Craftable, Listene
              */
             if (event.getEvent().getEntity() instanceof LivingEntity) {
                 LivingEntity e = (LivingEntity) event.getEvent().getEntity();
-                if (e.isDead()) { return; }
-                int level = modManager.getModLevel(tool, this);
 
-                if (e.getFireTicks() == 0) { return; }
+                if (e.isDead()) return;
+                int level = modManager.getModLevel(tool, this);
+                if (e.getFireTicks() == 0) return;
 
                 double damage = event.getEvent().getDamage();
                 damage = damage * (1 + this.bonusMultiplier * level);
+
                 event.getEvent().setDamage(damage);
 
                 ChatWriter.log(false, p.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
@@ -129,22 +142,24 @@ public class Melting extends Modifier implements Enchantable, Craftable, Listene
 
     @EventHandler
     public void effect(MTEntityDamageEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) { return; }
+        if (event.isCancelled() || !this.isAllowed()) return;
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
-        if (!p.hasPermission("minetinker.modifiers.melting.use")) { return; }
-        if (!modManager.hasMod(tool, this)) { return; }
+
+        if (!p.hasPermission("minetinker.modifiers.melting.use")) return;
+        if (!modManager.hasMod(tool, this)) return;
 
         if (p.getFireTicks() > 0 && cancelBurning) {
             p.setFireTicks(0);
         }
+
         ChatWriter.log(false, p.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.melting.craft")) { return; }
+        if (!p.hasPermission("minetinker.modifiers.melting.craft")) return;
         _createModifierItem(getConfig(), p, this, "Melting");
     }
 

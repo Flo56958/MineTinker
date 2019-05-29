@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class LightWeight extends Modifier implements Enchantable, Craftable {
 
@@ -32,6 +33,14 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
         super(ModifierType.LIGHT_WEIGHT,
                 new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.PROTECTION_FALL);
+
+        return enchantments;
     }
 
     @Override
@@ -68,13 +77,16 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
 
         ItemMeta meta = tool.getItemMeta();
 
-        meta.addEnchant(Enchantment.PROTECTION_FALL, modManager.getModLevel(tool, this), true);
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+        if (meta != null) {
+            meta.addEnchant(Enchantment.PROTECTION_FALL, modManager.getModLevel(tool, this), true);
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+
+            tool.setItemMeta(meta);
         }
-        tool.setItemMeta(meta);
 
         return tool;
     }
@@ -82,13 +94,16 @@ public class LightWeight extends Modifier implements Enchantable, Craftable {
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.PROTECTION_FALL);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.PROTECTION_FALL);
+            tool.setItemMeta(meta);
+        }
     }
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.lightweight.craft")) { return; }
+        if (!p.hasPermission("minetinker.modifiers.lightweight.craft")) return;
         _createModifierItem(getConfig(), p, this, "Light-Weight");
     }
 

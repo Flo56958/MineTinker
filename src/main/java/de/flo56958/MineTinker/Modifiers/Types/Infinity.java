@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Infinity extends Modifier implements Enchantable, Craftable {
 
@@ -36,6 +37,15 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
         super(ModifierType.INFINITY,
                 new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.TRIDENT)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.ARROW_INFINITE);
+        enchantments.add(Enchantment.LOYALTY);
+
+        return enchantments;
     }
 
     @Override
@@ -86,18 +96,22 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
 
         ItemMeta meta = tool.getItemMeta();
 
-        if (ToolType.BOW.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.ARROW_INFINITE, modManager.getModLevel(tool, this), true);
-        } else if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.LOYALTY, modManager.getModLevel(tool, this), true);
-        }
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+        if (meta != null) {
+            if (ToolType.BOW.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.ARROW_INFINITE, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.LOYALTY, modManager.getModLevel(tool, this), true);
+            }
+
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+
+            tool.setItemMeta(meta);
         }
 
-        tool.setItemMeta(meta);
 
         return tool;
     }
@@ -105,14 +119,17 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.ARROW_INFINITE);
-        meta.removeEnchant(Enchantment.LOYALTY);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.ARROW_INFINITE);
+            meta.removeEnchant(Enchantment.LOYALTY);
+            tool.setItemMeta(meta);
+        }
     }
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.infinity.craft")) { return; }
+        if (!p.hasPermission("minetinker.modifiers.infinity.craft")) return;
         _createModifierItem(getConfig(), p, this, "Infinity");
     }
 

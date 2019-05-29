@@ -24,7 +24,6 @@ public enum ToolType {
 	SHIELD,
 	SHOVEL,
 	SWORD,
-
 	TRIDENT;
 
 	/**

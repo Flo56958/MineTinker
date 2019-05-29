@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Haste extends Modifier implements Craftable {
 
@@ -31,6 +32,15 @@ public class Haste extends Modifier implements Craftable {
         super(ModifierType.HASTE,
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS, ToolType.FISHINGROD)),
                 Main.getPlugin());
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        List<Enchantment> enchantments = new ArrayList<>();
+        enchantments.add(Enchantment.LURE);
+        enchantments.add(Enchantment.DIG_SPEED);
+
+        return enchantments;
     }
 
     @Override
@@ -70,17 +80,20 @@ public class Haste extends Modifier implements Craftable {
 
         ItemMeta meta = tool.getItemMeta();
 
-        if (ToolType.FISHINGROD.getMaterials().contains(tool.getType())) {
-            meta.addEnchant(Enchantment.LURE, modManager.getModLevel(tool, this), true);
-        } else {
-            meta.addEnchant(Enchantment.DIG_SPEED, modManager.getModLevel(tool, this), true);
+        if (meta != null) {
+            if (ToolType.FISHINGROD.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.LURE, modManager.getModLevel(tool, this), true);
+            } else {
+                meta.addEnchant(Enchantment.DIG_SPEED, modManager.getModLevel(tool, this), true);
+            }
+
+            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+            tool.setItemMeta(meta);
         }
-        if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-        }
-        tool.setItemMeta(meta);
 
         return tool;
     }
@@ -88,9 +101,12 @@ public class Haste extends Modifier implements Craftable {
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        meta.removeEnchant(Enchantment.DIG_SPEED);
-        meta.removeEnchant(Enchantment.LURE);
-        tool.setItemMeta(meta);
+
+        if (meta != null) {
+            meta.removeEnchant(Enchantment.DIG_SPEED);
+            meta.removeEnchant(Enchantment.LURE);
+            tool.setItemMeta(meta);
+        }
     }
 
     @Override

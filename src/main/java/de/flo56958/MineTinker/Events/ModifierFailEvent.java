@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class ModifierFailEvent extends Event {
 
@@ -67,6 +68,7 @@ public class ModifierFailEvent extends Event {
 
     public boolean isCommand() { return isCommand; }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return handlers;
