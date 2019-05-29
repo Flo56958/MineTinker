@@ -31,6 +31,7 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
     private boolean hasParticles;
     private boolean worksUnderWater;
     private boolean smeltStone;
+    private boolean smeltTerracotta;
     private boolean burnCoal;
 
     private static AutoSmelt instance;
@@ -65,6 +66,7 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
     	config.addDefault(key + ".Sound", true); //Auto-Smelt makes a sound
     	config.addDefault(key + ".Particles", true); //Auto-Smelt will create a particle effect when triggered
     	config.addDefault(key + ".smelt_stone", false);
+    	config.addDefault(key + ".smelt_terracotta", false);
     	config.addDefault(key + ".burn_coal", true);
     	config.addDefault(key + ".works_under_water", true);
     	config.addDefault(key + ".Recipe.Enabled", true);
@@ -88,6 +90,7 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
         this.worksUnderWater = config.getBoolean(key + ".works_under_water");
         this.smeltStone = config.getBoolean(key + ".smelt_stone");
         this.burnCoal = config.getBoolean(key + ".burn_coal");
+        this.smeltTerracotta = config.getBoolean(key + ".smelt_terracotta");
     }
     
     @Override
@@ -112,6 +115,7 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
     @EventHandler
     public void effect(MTBlockBreakEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;
+
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
         Block b = event.getBlock();
@@ -119,7 +123,7 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
 
     	//FileConfiguration config = getConfig();
     	
-        if (!p.hasPermission("minetinker.modifiers.autosmelt.use")) return;//TODO: Think about more blocks for Auto-Smelt
+        if (!p.hasPermission("minetinker.modifiers.autosmelt.use")) return; //TODO: Think about more blocks for Auto-Smelt
         if (!modManager.hasMod(tool, this)) return;
 
         if (!worksUnderWater) {
@@ -128,7 +132,9 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
 
         boolean allowLuck = false;
         int amount = 1;
+
         Material loot;
+
         //TODO: CHANGE TO CHECK CONFIG FOR WHAT OUTPUT A BLOCK HAS INSTEAD OF SWITCH CASE
         switch (b.getType()) {
             case STONE:
@@ -148,6 +154,71 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
 
             case RED_SAND:
                 loot = Material.RED_STAINED_GLASS;
+                break;
+
+            case WHITE_TERRACOTTA:
+                if (!smeltTerracotta) return;
+                loot = Material.WHITE_GLAZED_TERRACOTTA;
+                break;
+            case ORANGE_TERRACOTTA:
+                if (!smeltTerracotta) return;
+                loot = Material.ORANGE_GLAZED_TERRACOTTA;
+                break;
+            case MAGENTA_TERRACOTTA:
+                if (!smeltTerracotta) return;
+                loot = Material.MAGENTA_GLAZED_TERRACOTTA;
+                break;
+            case LIGHT_BLUE_TERRACOTTA:
+                if (!smeltTerracotta) return;
+                loot = Material.LIGHT_BLUE_GLAZED_TERRACOTTA;
+                break;
+            case YELLOW_TERRACOTTA:
+                if (!smeltTerracotta) return;
+                loot = Material.YELLOW_GLAZED_TERRACOTTA;
+                break;
+            case LIME_TERRACOTTA:
+                if (!smeltTerracotta) return;
+                loot = Material.LIME_GLAZED_TERRACOTTA;
+                break;
+            case PINK_TERRACOTTA:
+                if (!smeltTerracotta) return;
+                loot = Material.PINK_GLAZED_TERRACOTTA;
+                break;
+            case GRAY_TERRACOTTA:
+                if (!smeltTerracotta) return;
+                loot = Material.GRAY_GLAZED_TERRACOTTA;
+                break;
+            case LIGHT_GRAY_TERRACOTTA:
+                if (!smeltTerracotta) return;
+                loot = Material.LIGHT_GRAY_GLAZED_TERRACOTTA;
+                break;
+            case CYAN_TERRACOTTA:
+                if (!smeltTerracotta) return;
+                loot = Material.CYAN_GLAZED_TERRACOTTA;
+                break;
+            case PURPLE_TERRACOTTA:
+                if (!smeltTerracotta) return;
+                loot = Material.PURPLE_GLAZED_TERRACOTTA;
+                break;
+            case BLUE_TERRACOTTA:
+                if (!smeltTerracotta) return;
+                loot = Material.BLUE_GLAZED_TERRACOTTA;
+                break;
+            case BROWN_TERRACOTTA:
+                if (!smeltTerracotta) return;
+                loot = Material.BROWN_GLAZED_TERRACOTTA;
+                break;
+            case GREEN_TERRACOTTA:
+                if (!smeltTerracotta) return;
+                loot = Material.GREEN_GLAZED_TERRACOTTA;
+                break;
+            case RED_TERRACOTTA:
+                if (!smeltTerracotta) return;
+                loot = Material.RED_GLAZED_TERRACOTTA;
+                break;
+            case BLACK_TERRACOTTA:
+                if (!smeltTerracotta) return;
+                loot = Material.BLACK_GLAZED_TERRACOTTA;
                 break;
 
             case ACACIA_LOG:
