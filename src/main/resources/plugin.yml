@@ -26,6 +26,7 @@ permissions:
       minetinker.builderswands.*: true
       minetinker.tool.*: true
       minetinker.spawners.*: true
+      minetinker.update.*: true
 
   minetinker.tool.*:
     children:
@@ -117,6 +118,14 @@ permissions:
 
   minetinker.commands.reload:
     description: Allows to reload the configuration-files from MineTinker
+    default: op
+
+  minetinker.update.*:
+    children:
+      minetinker.update.notify: true
+
+  minetinker.update.notify:
+    description: Notifies player about updates when they login
     default: op
 
   #Modifiers:

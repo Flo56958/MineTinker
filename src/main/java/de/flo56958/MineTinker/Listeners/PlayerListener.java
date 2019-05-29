@@ -100,8 +100,8 @@ public class PlayerListener implements Listener {
         Lists.BLOCKFACE.put(e.getPlayer(), null);
         Power.HASPOWER.put(e.getPlayer(), false);
 
-        if (Main.getPlugin().getConfig().getBoolean("SendUpdateNotificationToOPs")) {
-            if (e.getPlayer().isOp()) {
+        if (Main.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
+            if (e.getPlayer().hasPermission("minetinker.update.notify")) {
                 if (Main.getUpdater() != null) {
                     if (Main.getUpdater().getHasUpdate()) {
                         ChatWriter.sendMessage(e.getPlayer(), ChatColor.GOLD, "There's is an update available on spigotmc.org!");

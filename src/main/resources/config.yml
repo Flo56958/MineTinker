@@ -1,12 +1,13 @@
 #---------------MAIN-PLUGIN-SETTINGS--------------
 chat-prefix: [MineTinker]
 CheckForUpdates: true #Checks for updates on startup
-SendUpdateNotificationToOPs: true #If there is an update the server OP get a notification
+
 #--LOGGING--
 logging:
   standard: false #logs important player activities with MineTinker
   debug: false #even more information
   metrics: true
+
 #--MESSAGES--
 chat-messages: true #Will turn off command output
 actionbar-messages: true
