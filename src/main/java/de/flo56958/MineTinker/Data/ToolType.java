@@ -12,6 +12,7 @@ public enum ToolType {
 	BOOTS,
 	BOW,
 	CHESTPLATE,
+	CROSSBOW,
 	ELYTRA,
 	FISHINGROD,
 	HELMET,
@@ -68,6 +69,9 @@ public enum ToolType {
 				break;
 			case CHESTPLATE:
 				materials.addAll(Arrays.asList(Material.LEATHER_CHESTPLATE, Material.CHAINMAIL_CHESTPLATE, Material.IRON_CHESTPLATE, Material.GOLDEN_CHESTPLATE, Material.DIAMOND_CHESTPLATE));
+				break;
+			case CROSSBOW:
+				materials.add(Material.CROSSBOW);
 				break;
 			case ELYTRA:
 				materials.add(Material.ELYTRA);

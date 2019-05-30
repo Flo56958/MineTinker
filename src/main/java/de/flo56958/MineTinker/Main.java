@@ -9,7 +9,7 @@ import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.Updater;
-import de.flo56958.MineTinker.bStats.Metrics;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -53,9 +53,8 @@ public class Main extends JavaPlugin {
         CraftingRecipes.registerMTElytra();
         CraftingRecipes.registerMTTrident();
 
-        if (!getConfig().getBoolean("AllowEnchanting")) {
+        if (!getConfig().getBoolean("AllowEnchanting"))
             Bukkit.getPluginManager().registerEvents(new EnchantingTableListener(), this);
-        }
 
         if (ConfigurationManager.getConfig("Elevator.yml").getBoolean("Elevator.enabled")) {
             Bukkit.getPluginManager().registerEvents(new ElevatorListener(), this);
@@ -76,9 +75,8 @@ public class Main extends JavaPlugin {
 
         ChatWriter.log(false, "Registered events!");
 
-        if (getConfig().getBoolean("logging.metrics")) {
+        if (getConfig().getBoolean("logging.metrics"))
             new Metrics(this);
-        }
 
         ChatWriter.log(false, "Standard Logging is enabled. You can disable it in the config under Logging.Standard!");
         ChatWriter.log(true, "Debug Logging is enabled. You should disable it in the config under Logging.Debug!");

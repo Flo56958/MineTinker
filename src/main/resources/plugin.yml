@@ -1,11 +1,11 @@
-name: MineTinker
+name: ${project.artifactId}
 author: Flo56958
-version: a16.1.2
-main: de.flo56958.MineTinker.Main
+version: ${project.version}
+main: ${project.groupId}.${project.artifactId}.Main
 prefix: MineTinker
 
-description: A TinkersConstruct (and other mods) inspired server plugin
-website: https://flo56958.github.io/MineTinker
+description: ${project.description}
+website: ${project.url}
 database: false
 api-version: 1.13
 

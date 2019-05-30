@@ -30,7 +30,7 @@ public class ItemListener implements Listener {
         Item item = e.getEntity();
         ItemStack is = item.getItemStack();
 
-        if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) return;
+        if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) return; //TODO: Consider Modifier-Items
 
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetPersistent")) {
             e.setCancelled(true);
@@ -66,13 +66,9 @@ public class ItemListener implements Listener {
             item.setCustomNameVisible(true);
         }
 
-        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetGlowing")) {
-            item.setGlowing(true);
-        }
+        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetGlowing")) item.setGlowing(true);
 
-        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetInvulnerable")) {
-            item.setInvulnerable(true);
-        }
+        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetInvulnerable")) item.setInvulnerable(true);
     }
 
     @EventHandler
@@ -105,10 +101,10 @@ public class ItemListener implements Listener {
 
             if (((Soulbound) modManager.getAdmin(ModifierType.SOULBOUND)).effect(p, is)) { is.setAmount(0); continue; } //workaround as inv.remove(is) does not work insteads duplicates item
 
-            if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour"))
+            if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
                 Bukkit.getPluginManager().callEvent(new PlayerDropItemEvent(p, p.getWorld().dropItem(p.getLocation(), is))); //To trigger item behaviour
-
-            is.setAmount(0);
+                is.setAmount(0);
+            }
         }
     }
 

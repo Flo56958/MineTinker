@@ -35,10 +35,6 @@ public class Updater {
         }
     }
 
-    public static void checkForUpdate() {
-        checkForUpdate(Bukkit.getConsoleSender());
-    }
-
     /**
      * Compares the online version number with the plugin version (initiated by a players command)
      * @param sender That gets the information printed in his chat
@@ -54,5 +50,9 @@ public class Updater {
         } else {
             ChatWriter.sendMessage(sender, ChatColor.WHITE, "You have the newest version of MineTinker installed!");
         }
+    }
+
+    public static void checkForUpdate() {
+        checkForUpdate(Bukkit.getConsoleSender());
     }
 }
