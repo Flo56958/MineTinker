@@ -10,7 +10,6 @@ import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -132,7 +131,7 @@ class NBTHandler_1_14_R0 extends NBTHandler {
 
     @Override
     public boolean hasTag(ItemStack item, String key) {
-        return false;
+        return CraftItemStack.asNMSCopy(item).getTag() != null;
     }
 
     @Override
