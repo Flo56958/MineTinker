@@ -20,7 +20,7 @@ class NBTHandler_1_14_R0 extends NBTHandler {
         net.minecraft.server.v1_14_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 
         NBTTagCompound comp = nmsItem.getTag();
-        if (comp == null) { return 0; }
+        if (comp == null) return 0;
 
         NBTBase base = comp.get(key);
         if (!(base instanceof NBTTagInt)) return 0;
@@ -33,7 +33,7 @@ class NBTHandler_1_14_R0 extends NBTHandler {
         net.minecraft.server.v1_14_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 
         NBTTagCompound comp = nmsItem.getTag();
-        if (comp == null) { return 0; }
+        if (comp == null) return 0;
 
         NBTBase base = comp.get(key);
         if (!(base instanceof NBTTagLong)) return 0;
@@ -46,7 +46,7 @@ class NBTHandler_1_14_R0 extends NBTHandler {
         net.minecraft.server.v1_14_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 
         NBTTagCompound comp = nmsItem.getTag();
-        if (comp == null) { return null; }
+        if (comp == null) return null;
 
         NBTBase base = comp.get(key);
         if (!(base instanceof NBTTagString)) return null;
@@ -59,7 +59,7 @@ class NBTHandler_1_14_R0 extends NBTHandler {
         net.minecraft.server.v1_14_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 
         NBTTagCompound comp = nmsItem.getTag();
-        if (comp == null) { return null; }
+        if (comp == null) return null;
 
         NBTBase base = comp.get(key);
         if (!(base instanceof NBTTagList)) return null;
@@ -74,7 +74,7 @@ class NBTHandler_1_14_R0 extends NBTHandler {
         net.minecraft.server.v1_14_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
         NBTTagCompound comp = nmsItem.getTag();
 
-        if (comp == null) { comp = new NBTTagCompound(); }
+        if (comp == null) comp = new NBTTagCompound();
 
         comp.setInt(key, value);
         nmsItem.setTag(comp);
@@ -88,7 +88,7 @@ class NBTHandler_1_14_R0 extends NBTHandler {
         net.minecraft.server.v1_14_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
         NBTTagCompound comp = nmsItem.getTag();
 
-        if (comp == null) { comp = new NBTTagCompound(); }
+        if (comp == null) comp = new NBTTagCompound();
 
         comp.setLong(key, value);
         nmsItem.setTag(comp);
@@ -102,7 +102,7 @@ class NBTHandler_1_14_R0 extends NBTHandler {
         net.minecraft.server.v1_14_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
         NBTTagCompound comp = nmsItem.getTag();
 
-        if (comp == null) { comp = new NBTTagCompound(); }
+        if (comp == null) comp = new NBTTagCompound();
 
         comp.setString(key, value);
         nmsItem.setTag(comp);
@@ -120,7 +120,7 @@ class NBTHandler_1_14_R0 extends NBTHandler {
         net.minecraft.server.v1_14_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
         NBTTagCompound comp = nmsItem.getTag();
 
-        if (comp == null) { comp = new NBTTagCompound(); }
+        if (comp == null) comp = new NBTTagCompound();
 
         comp.set(key, list);
         nmsItem.setTag(comp);

@@ -392,7 +392,7 @@ public class ModManager {
      * @param is the item to get the information from
      */
     private long getExp(ItemStack is) {
-        return nbt.getInt(is, "Exp");
+        return nbt.getLong(is, "Exp");
     }
 
     /**
