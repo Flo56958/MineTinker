@@ -4,7 +4,7 @@ CheckForUpdates: true                 #Checks for updates on startup
 
 #--LOGGING--
 logging:
-  standard: false                     #logs important player activities with minetinker
+  standard: false                     #logs important player activities with MineTinker
   debug: false                        #even more information
   metrics: true
 
@@ -91,7 +91,7 @@ Sound:
   OnUpgrade: true
   OnBreaking: true
 
-BannedWorlds:                         #Worlds where minetinker-Tools can't be used
+BannedWorlds:                         #Worlds where MineTinker-Tools can't be used
   - bannedExample1
   - bannedExample2
 

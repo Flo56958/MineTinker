@@ -77,7 +77,7 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats.bukkit</pattern>
-                            <shadedPattern>de.flo56958.minetinker.bStats</shadedPattern>
+                            <shadedPattern>de.flo56958.MineTinker.bStats</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
