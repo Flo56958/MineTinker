@@ -37,6 +37,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
 
     public static final ConcurrentHashMap<Player, AtomicBoolean> HASPOWER = new ConcurrentHashMap<>();
 
+    private ArrayList<Material> blacklist;
     private boolean lv1_vertical;
 
     private static Power instance;
@@ -57,9 +58,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-
-        return enchantments;
+        return new ArrayList<>();
     }
 
     @Override
@@ -79,8 +78,22 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
     	config.addDefault(key + ".MaxLevel", 3); //Algorithm for area of effect (except for level 1): (level * 2) - 1 x (level * 2) - 1
     	config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".Recipe.Enabled", false);
-        
-    	ConfigurationManager.saveConfig(config);
+
+    	List<String> blacklistTemp = new ArrayList<>();
+
+        blacklistTemp.add(Material.AIR.name());
+        blacklistTemp.add(Material.BEDROCK.name());
+        blacklistTemp.add(Material.WATER.name());
+        blacklistTemp.add(Material.BUBBLE_COLUMN.name());
+        blacklistTemp.add(Material.LAVA.name());
+        blacklistTemp.add(Material.END_PORTAL.name());
+        blacklistTemp.add(Material.END_CRYSTAL.name());
+        blacklistTemp.add(Material.END_PORTAL_FRAME.name());
+        blacklistTemp.add(Material.NETHER_PORTAL.name());
+
+        config.addDefault(key + ".Blacklist", blacklistTemp);
+
+        ConfigurationManager.saveConfig(config);
     	
         init(config.getString(key + ".name"),
                 "[" + config.getString("Power.name_modifier") + "] " + config.getString(key + ".description"),
@@ -89,6 +102,26 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.lv1_vertical = config.getBoolean("Power.lv1_vertical");
+
+        blacklist = new ArrayList<>();
+
+        List<String> blacklistConfig = config.getStringList(key + ".Blacklist");
+
+        for (String mat : blacklistConfig) {
+            try {
+                Material material = Material.valueOf(mat);
+
+                if (blacklist == null) {
+                    System.out.println("The blacklist is null?");
+                    continue;
+                }
+
+                blacklist.add(material);
+
+            } catch (IllegalArgumentException e) {
+                Main.getPlugin().getLogger().warning("Illegal material name found when loading Power blacklist: " + mat);
+            }
+        }
     }
 
     @Override
@@ -284,16 +317,12 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
     }
 
     private void powerBlockBreak(Block b, CraftPlayer p) {
-        if (!b.getType().equals(Material.AIR) && !b.getType().equals(Material.CAVE_AIR) && !b.getType().equals(Material.BEDROCK)
-                && !b.getType().equals(Material.WATER) && !b.getType().equals(Material.BUBBLE_COLUMN) && !b.getType().equals(Material.LAVA)
-                && !b.getType().equals(Material.END_PORTAL) && !b.getType().equals(Material.END_CRYSTAL) && !b.getType().equals(Material.END_PORTAL_FRAME)
-                && !b.getType().equals(Material.NETHER_PORTAL)) {
+        if (blacklist.contains(b.getType())) return;
 
-            BlockBreakEvent event = new BlockBreakEvent(b, p);
-            Bukkit.getServer().getPluginManager().callEvent(event);
+        BlockBreakEvent event = new BlockBreakEvent(b, p);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
-            if (!event.isCancelled()) b.breakNaturally(p.getInventory().getItemInMainHand());
-        }
+        if (!event.isCancelled()) b.breakNaturally(p.getInventory().getItemInMainHand());
     }
 
     @SuppressWarnings("deprecation")
