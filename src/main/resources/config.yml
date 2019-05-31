@@ -1,5 +1,5 @@
 #---------------MAIN-PLUGIN-SETTINGS--------------
-chat-prefix: [minetinker]
+chat-prefix: [MineTinker]
 CheckForUpdates: true                 #Checks for updates on startup
 
 #--LOGGING--
@@ -11,6 +11,7 @@ logging:
 #--MESSAGES--
 chat-messages: true                   #Will turn off command output
 actionbar-messages: true
+actionbar-on-exp-gain: false
 
 #---------------EXP-SETTINGS--------------
 LevelStep: 100                        #  *(LevelFactor^LevelOfTool) [EXPONENTIAL]; *(LevelFactor*LevelOfTool) [LINEAR]

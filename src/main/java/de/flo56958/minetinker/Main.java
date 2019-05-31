@@ -112,6 +112,6 @@ public class Main extends JavaPlugin {
     }
 
     public static Plugin getPlugin() { // necessary to do getConfig() in other classes
-        return Bukkit.getPluginManager().getPlugin("minetinker");
+        return Bukkit.getPluginManager().getPlugin("MineTinker");
     }
 }

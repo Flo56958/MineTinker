@@ -1,8 +1,8 @@
 name: ${project.artifactId}
 author: Flo56958
 version: ${project.version}
-main: ${project.groupId}.${project.artifactId}.Main
-prefix: MineTinker
+main: ${project.groupId}.minetinker.Main
+prefix: ${project.artifactId}
 
 description: ${project.description}
 website: ${project.url}

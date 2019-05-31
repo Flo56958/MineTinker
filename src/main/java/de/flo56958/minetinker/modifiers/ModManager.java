@@ -8,6 +8,7 @@ import de.flo56958.minetinker.utilities.ChatWriter;
 import de.flo56958.minetinker.utilities.ConfigurationManager;
 import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
@@ -371,7 +372,7 @@ public class ModManager {
      * @param is the item to get the information from
      */
     private long getExp(ItemStack is) {
-        NBTTagInt nbt = ((NBTTagInt) getNBTTag(is, "Exp"));
+        NBTTagLong nbt = ((NBTTagLong) getNBTTag(is, "Exp"));
 
         if (nbt != null) {
             return nbt.asLong();
