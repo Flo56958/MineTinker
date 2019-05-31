@@ -131,7 +131,12 @@ class NBTHandler_1_14_R0 extends NBTHandler {
 
     @Override
     public boolean hasTag(ItemStack item, String key) {
-        return CraftItemStack.asNMSCopy(item).getTag() != null;
+        net.minecraft.server.v1_14_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+        NBTTagCompound comp = nmsItem.getTag();
+
+        if (comp == null) return false;
+
+        return comp.get(key) != null;
     }
 
     @Override
