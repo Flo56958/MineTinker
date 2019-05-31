@@ -46,7 +46,7 @@ permissions:
     description: Allows to repair a MineTinker-Tool in the Inventory
     default: true
 
-  #Commands:
+  #commands:
   minetinker.commands.*:
     children:
       minetinker.commands.main: true
@@ -65,7 +65,7 @@ permissions:
       minetinker.commands.reload: true
 
   minetinker.commands.main:
-    description: Allows to access MineTinker
+    description: Allows to access minetinker
     default: true
 
   minetinker.commands.help:
@@ -77,27 +77,27 @@ permissions:
     default: true
 
   minetinker.commands.modifiers:
-    description: Allows to access the list of MineTinker-modifiers
+    description: Allows to access the list of MineTinker-Modifiers
     default: true
 
   minetinker.commands.addexp:
-    description: Allows to access the AddExp-command for MineTinker-Tools
+    description: Allows to access the AddExp-Command for MineTinker-Tools
     default: op
 
   minetinker.commands.name:
-    description: Allows to access the Name-command for MineTinker-Tools
+    description: Allows to access the Name-Command for MineTinker-Tools
     default: true
 
   minetinker.commands.addmod:
-    description: Allows to add Modifiers from a MineTinker-Tool
+    description: Allows to add modifiers from a MineTinker-Tool
     default: op
 
   minetinker.commands.removemod:
-    description: Allows to remove Modifiers from a MineTinker-Tool
+    description: Allows to remove modifiers from a MineTinker-Tool
     default: op
 
   minetinker.commands.setdurability:
-    description: Allows to set the Durability of a MineTinker-Tool
+    description: Allows to set the durability of a MineTinker-Tool
     default: op
 
   minetinker.commands.give:
@@ -128,7 +128,7 @@ permissions:
     description: Notifies player about updates when they login
     default: op
 
-  #Modifiers:
+  #modifiers:
   minetinker.modifiers.*:
     children:
       minetinker.modifiers.aquaphilic.*: true
@@ -188,7 +188,7 @@ permissions:
     description: Allows to apply Beheading to a MineTinker-Tool
     default: true
   minetinker.modifiers.beheading.craft:
-    description: Allows to craft a Beheading-Modifiers
+    description: Allows to craft a Beheading-modifiers
     default: true
   minetinker.modifiers.beheading.use:
     description: Allows to use Beheading on a MineTinker-Tool
@@ -220,7 +220,7 @@ permissions:
     children:
       minetinker.modifiers.extramodifier.apply: true
   minetinker.modifiers.extramodifier.apply:
-    description: Allows to apply an extra Modifiers to a MineTinker-Tool
+    description: Allows to apply an extra modifiers to a MineTinker-Tool
     default: true
 
   minetinker.modifiers.fiery.*:
@@ -231,7 +231,7 @@ permissions:
     description: Allows to apply Fiery to a MineTinker-Tool
     default: true
   minetinker.modifiers.fiery.craft:
-    description: Allows to craft a Fiery-Modifiers
+    description: Allows to craft a Fiery-modifiers
     default: true
 
   minetinker.modifiers.freezing.*:
@@ -349,7 +349,7 @@ permissions:
     description: Allows to apply Power to a MineTinker-Tool
     default: true
   minetinker.modifiers.power.craft:
-    description: Allows to craft a Power-Modifiers
+    description: Allows to craft a Power-modifiers
     default: true
   minetinker.modifiers.power.use:
     description: Allows to use Power on a MineTinker-Tool
@@ -364,7 +364,7 @@ permissions:
     description: Allows to apply Propelling to a MineTinker-Tool
     default: true
   minetinker.modifiers.propelling.craft:
-    description: Allows to craft a Propelling-Modifiers
+    description: Allows to craft a Propelling-modifiers
     default: true
   minetinker.modifiers.propelling.use:
     description: Allows to use Propelling on a MineTinker-Tool
@@ -394,7 +394,7 @@ permissions:
     description: Allows to apply Self-Repair to a MineTinker-Tool
     default: true
   minetinker.modifiers.selfrepair.craft:
-    description: Allows to craft a Self-Repair-Modifiers
+    description: Allows to craft a Self-Repair-modifiers
     default: true
   minetinker.modifiers.selfrepair.use:
     description: Allows to use Self-Repair on a MineTinker-Tool
@@ -448,7 +448,7 @@ permissions:
     description: Allows to apply Sweeping to a MineTinker-Tool
     default: true
   minetinker.modifiers.sweeping.craft:
-    description: Allows to craft a Sweeping-Modifiers
+    description: Allows to craft a Sweeping-Modifier
     default: true
 
   minetinker.modifiers.timber.*:
@@ -478,10 +478,10 @@ permissions:
       minetinker.modifiers.experienced.apply: true
       minetinker.modifiers.experienced.use: true
   minetinker.modifiers.experienced.apply:
-    description: Allows to apply XP to a MineTinker-Tool
+    description: Allows the application of the Experienced-Modifier on a MineTinker-Tool
     default: true
   minetinker.modifiers.experienced.use:
-    description: Allows to use XP on a MineTinker-Tool
+    description: Allows the use of the Experienced-Modifier on a MineTinker-Tool
     default: true
 
   #Spawners
@@ -490,10 +490,10 @@ permissions:
       minetinker.spawners.mine: true
       minetinker.spawners.place: true
   minetinker.spawners.mine:
-    description: Allows to mine a Spawner without breaking it.
+    description: Allows the dropping of spawners when mined with Silk-Touch.
     default: true
   minetinker.spawners.place:
-    description: Allows to place a mined Spawner.
+    description: Allows the placement of mined spawners.
     default: true
 
   #Elevator:
@@ -501,7 +501,7 @@ permissions:
     children:
       minetinker.elevator.use: true
   minetinker.elevator.use:
-    description: Allows to use the Elevator of MineTinker
+    description: Allows the use of MineTinker-Elevators
     default: true
 
   #Builderswands:
@@ -509,5 +509,5 @@ permissions:
     children:
       minetinker.builderswands.use: true
   minetinker.builderswands.use:
-    description: Allows to use the Builderswands of MineTinker
+    description: Allows the use of MineTinker-BuildersWands
     default: true

@@ -1,10 +1,10 @@
 #---------------MAIN-PLUGIN-SETTINGS--------------
-chat-prefix: [MineTinker]
+chat-prefix: [minetinker]
 CheckForUpdates: true                 #Checks for updates on startup
 
 #--LOGGING--
 logging:
-  standard: false                     #logs important player activities with MineTinker
+  standard: false                     #logs important player activities with minetinker
   debug: false                        #even more information
   metrics: true
 
@@ -90,7 +90,7 @@ Sound:
   OnUpgrade: true
   OnBreaking: true
 
-BannedWorlds:                         #Worlds where MineTinker-Tools can't be used
+BannedWorlds:                         #Worlds where minetinker-Tools can't be used
   - bannedExample1
   - bannedExample2
 
