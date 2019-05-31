@@ -444,6 +444,10 @@ public class ModManager {
             LevelUp = true;
         }
 
+        if (config.getBoolean("actionbar-on-exp-gain")) {
+            ChatWriter.sendActionBar(p, ChatColor.translateAlternateColorCodes('&', "&a+" + amount + " exp gained"));
+        }
+
         setExp(tool, exp);
         rewriteLore(tool);
 
