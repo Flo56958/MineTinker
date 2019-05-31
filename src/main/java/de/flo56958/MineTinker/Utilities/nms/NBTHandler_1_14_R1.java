@@ -13,7 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Arrays;
 import java.util.List;
 
-class NBTHandler_1_14_R0 extends NBTHandler {
+class NBTHandler_1_14_R1 extends NBTHandler {
 
     @Override
     public int getInt(ItemStack item, String key) {
@@ -76,7 +76,8 @@ class NBTHandler_1_14_R0 extends NBTHandler {
 
         if (comp == null) comp = new NBTTagCompound();
 
-        comp.setInt(key, value);
+        NBTTagInt tag = new NBTTagInt(value);
+        comp.set(key, tag);
         nmsItem.setTag(comp);
 
         ItemMeta meta = CraftItemStack.getItemMeta(nmsItem);
@@ -90,7 +91,8 @@ class NBTHandler_1_14_R0 extends NBTHandler {
 
         if (comp == null) comp = new NBTTagCompound();
 
-        comp.setLong(key, value);
+        NBTTagLong tag = new NBTTagLong(value);
+        comp.set(key, tag);
         nmsItem.setTag(comp);
 
         ItemMeta meta = CraftItemStack.getItemMeta(nmsItem);
@@ -104,7 +106,8 @@ class NBTHandler_1_14_R0 extends NBTHandler {
 
         if (comp == null) comp = new NBTTagCompound();
 
-        comp.setString(key, value);
+        NBTTagString tag = new NBTTagString(value);
+        comp.set(key, tag);
         nmsItem.setTag(comp);
 
         ItemMeta meta = CraftItemStack.getItemMeta(nmsItem);

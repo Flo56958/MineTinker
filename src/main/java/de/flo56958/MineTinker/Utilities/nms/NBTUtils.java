@@ -18,7 +18,7 @@ public class NBTUtils {
         }
 
         if (version.equals("v1_14_R1")) {
-            handler = new NBTHandler_1_14_R0();
+            handler = new NBTHandler_1_14_R1();
             oneThirteenCompatible = true;
             oneFourteenCompatible = true;
         } else {
