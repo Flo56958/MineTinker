@@ -78,7 +78,7 @@ public class EasyHarvestListener implements Listener {
                     Block b2;
 
                     if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
-                        if (config.getBoolean("modifiers.Power.lv1_vertical")) {
+                        if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
                             b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
                             b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
                         } else {
@@ -86,7 +86,7 @@ public class EasyHarvestListener implements Listener {
                             b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
                         }
                     } else if (PlayerInfo.getFacingDirection(p).equals("W") || PlayerInfo.getFacingDirection(p).equals("E")) {
-                        if (config.getBoolean("modifiers.Power.lv1_vertical")) {
+                        if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
                             b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
                             b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
                         } else {
@@ -150,7 +150,7 @@ public class EasyHarvestListener implements Listener {
                     Block b2;
 
                     if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
-                        if (config.getBoolean("modifiers.Power.lv1_vertical")) {
+                        if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
                             b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
                             b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
                         } else {
@@ -158,7 +158,7 @@ public class EasyHarvestListener implements Listener {
                             b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
                         }
                     } else if (PlayerInfo.getFacingDirection(p).equals("W") || PlayerInfo.getFacingDirection(p).equals("E")) {
-                        if (config.getBoolean("modifiers.Power.lv1_vertical")) {
+                        if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
                             b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
                             b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
                         } else {
