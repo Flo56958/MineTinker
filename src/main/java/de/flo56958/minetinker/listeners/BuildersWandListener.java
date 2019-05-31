@@ -6,9 +6,6 @@ import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.utilities.ChatWriter;
 import de.flo56958.minetinker.utilities.ConfigurationManager;
 import de.flo56958.minetinker.utilities.PlayerInfo;
-import net.minecraft.server.v1_14_R1.NBTTagInt;
-import net.minecraft.server.v1_14_R1.NBTTagList;
-import net.minecraft.server.v1_14_R1.NBTTagString;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -127,11 +124,8 @@ public class BuildersWandListener implements Listener {
             wand.setItemMeta(meta);
         }
 
-        NBTTagList list = new NBTTagList();
-        list.add(new NBTTagString("minecraft:air"));
-
-        modManager.setNBTTag(wand, "CanDestroy", list);
-        modManager.setNBTTag(wand, "IdentifierBuilderswand", new NBTTagInt(0));
+        modManager.getNBTHandler().setStringList(wand, "CanDestroy", "minecraft:air");
+        modManager.getNBTHandler().setInt(wand, "IdentifierBuilderswand", 0);
 
         return wand;
     }

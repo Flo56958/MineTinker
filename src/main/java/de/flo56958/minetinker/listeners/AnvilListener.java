@@ -8,6 +8,7 @@ import de.flo56958.minetinker.Main;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utilities.ItemGenerator;
+import de.flo56958.minetinker.utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -185,6 +186,7 @@ public class AnvilListener implements Listener {
 
     @EventHandler
     public void onGrind(InventoryClickEvent e) {
+	    if (!NBTUtils.isOneFourteenCompatible()) return;
 	    if (!(e.getInventory() instanceof GrindstoneInventory)) return;
 	    if (e.getSlot() != 9) return;
 

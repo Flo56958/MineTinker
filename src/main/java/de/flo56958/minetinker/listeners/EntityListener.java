@@ -8,6 +8,7 @@ import de.flo56958.minetinker.events.MTProjectileHitEvent;
 import de.flo56958.minetinker.Main;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
+import de.flo56958.minetinker.utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -169,7 +170,10 @@ public class EntityListener implements Listener {
                 e.setCancelled(true);
 
                 player.updateInventory();
-                player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
+
+                if (NBTUtils.isOneFourteenCompatible()) {
+                    player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
+                }
 
                 return;
             }
