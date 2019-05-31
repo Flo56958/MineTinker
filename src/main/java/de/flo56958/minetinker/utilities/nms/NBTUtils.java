@@ -17,10 +17,12 @@ public class NBTUtils {
             return;
         }
 
-        if (version.equals("v1_14_R0")) {
+        if (version.equals("v1_14_R1")) {
             handler = new NBTHandler_1_14_R0();
             oneThirteenCompatible = true;
             oneFourteenCompatible = true;
+        } else {
+            System.out.println("Unsupported version: " + version);
         }
     }
 

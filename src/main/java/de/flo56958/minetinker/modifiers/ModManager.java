@@ -33,9 +33,10 @@ public class ModManager {
 
     private static FileConfiguration config;
     private static FileConfiguration layout;
-    private static NBTHandler nbt = new NBTUtils().getHandler();
+    private static NBTHandler nbt;
 
     static {
+        nbt = new NBTUtils().getHandler();
         config = Main.getPlugin().getConfig();
 
         layout = ConfigurationManager.getConfig("layout.yml");
