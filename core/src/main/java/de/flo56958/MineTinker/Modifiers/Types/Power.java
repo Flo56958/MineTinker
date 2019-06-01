@@ -17,7 +17,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -174,42 +173,42 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
                     if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
                         Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
                         Block b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
-                        powerBlockBreak(b1, (CraftPlayer) p);
-                        powerBlockBreak(b2, (CraftPlayer) p);
+                        powerBlockBreak(b1, p);
+                        powerBlockBreak(b2, p);
                     } else if (PlayerInfo.getFacingDirection(p).equals("W") || PlayerInfo.getFacingDirection(p).equals("E")) {
                         Block b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
                         Block b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
-                        powerBlockBreak(b1, (CraftPlayer) p);
-                        powerBlockBreak(b2, (CraftPlayer) p);
+                        powerBlockBreak(b1, p);
+                        powerBlockBreak(b2, p);
                     }
                 } else {
                     Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 1, 0));
                     Block b2 = b.getWorld().getBlockAt(b.getLocation().add(0, -1, 0));
-                    powerBlockBreak(b1, (CraftPlayer) p);
-                    powerBlockBreak(b2, (CraftPlayer) p);
+                    powerBlockBreak(b1, p);
+                    powerBlockBreak(b2, p);
                 }
             } else if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
                 if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
                     Block b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
                     Block b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
-                    powerBlockBreak(b1, (CraftPlayer) p);
-                    powerBlockBreak(b2, (CraftPlayer) p);
+                    powerBlockBreak(b1, p);
+                    powerBlockBreak(b2, p);
                 } else if (PlayerInfo.getFacingDirection(p).equals("W") || PlayerInfo.getFacingDirection(p).equals("E")) {
                     Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
                     Block b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
-                    powerBlockBreak(b1, (CraftPlayer) p);
-                    powerBlockBreak(b2, (CraftPlayer) p);
+                    powerBlockBreak(b1, p);
+                    powerBlockBreak(b2, p);
                 }
             } else if (Lists.BLOCKFACE.get(p).equals(BlockFace.NORTH) || Lists.BLOCKFACE.get(p).equals(BlockFace.SOUTH)) {
                 Block b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
                 Block b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
-                powerBlockBreak(b1, (CraftPlayer) p);
-                powerBlockBreak(b2, (CraftPlayer) p);
+                powerBlockBreak(b1, p);
+                powerBlockBreak(b2, p);
             } else if (Lists.BLOCKFACE.get(p).equals(BlockFace.WEST) || Lists.BLOCKFACE.get(p).equals(BlockFace.EAST)) {
                 Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
                 Block b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
-                powerBlockBreak(b1, (CraftPlayer) p);
-                powerBlockBreak(b2, (CraftPlayer) p);
+                powerBlockBreak(b1, p);
+                powerBlockBreak(b2, p);
             }
         } else {
             HASPOWER.get(p).set(true);
@@ -219,7 +218,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
                     for (int z = -(level - 1); z <= (level - 1); z++) {
                         if (!(x == 0 && z == 0)) {
                             Block b1 = b.getWorld().getBlockAt(b.getLocation().add(x, 0, z));
-                            powerBlockBreak(b1, (CraftPlayer) p);
+                            powerBlockBreak(b1, p);
                         }
                     }
                 }
@@ -228,7 +227,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
                     for (int y = -(level - 1); y <= (level - 1); y++) {
                         if (!(x == 0 && y == 0)) {
                             Block b1 = b.getWorld().getBlockAt(b.getLocation().add(x, y, 0));
-                            powerBlockBreak(b1, (CraftPlayer) p);
+                            powerBlockBreak(b1, p);
                         }
                     }
                 }
@@ -237,7 +236,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
                     for (int y = -(level - 1); y <= (level - 1); y++) {
                         if (!(z == 0 && y == 0)) {
                             Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, y, z));
-                            powerBlockBreak(b1, (CraftPlayer) p);
+                            powerBlockBreak(b1, p);
                         }
                     }
                 }
@@ -316,7 +315,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
         HASPOWER.get(p).set(false);
     }
 
-    private void powerBlockBreak(Block b, CraftPlayer p) {
+    private void powerBlockBreak(Block b, Player p) {
         if (blacklist.contains(b.getType())) return;
 
         BlockBreakEvent event = new BlockBreakEvent(b, p);

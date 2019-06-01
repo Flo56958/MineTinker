@@ -62,6 +62,7 @@ hs_err_pid*
 
 # Maven generated files
 /target/
+*/target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup

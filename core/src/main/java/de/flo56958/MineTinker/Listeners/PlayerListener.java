@@ -10,7 +10,6 @@ import de.flo56958.MineTinker.Utilities.Updater;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftInventory;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -36,7 +35,7 @@ public class PlayerListener implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if (Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) return;
         if (e.getSlot() < 0) return;
-        if (!(e.getClickedInventory() instanceof PlayerInventory || e.getClickedInventory() instanceof DoubleChestInventory || e.getClickedInventory() instanceof CraftInventory)) return;
+        if (!(e.getClickedInventory() instanceof PlayerInventory || e.getClickedInventory() instanceof DoubleChestInventory)) return;
 
         ItemStack tool = e.getClickedInventory().getItem(e.getSlot());
 

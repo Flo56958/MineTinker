@@ -17,13 +17,17 @@ public class NBTUtils {
             return;
         }
 
-        if (version.equals("v1_14_R1")) {
-            handler = new NBTHandler_1_14_R1();
-            oneThirteenCompatible = true;
-            oneFourteenCompatible = true;
-        } else {
-            System.out.println("Unsupported version: " + version);
-        }
+//        if (version.equals("v1_14_R1")) {
+//            handler = new NBTHandler_1_14_R1();
+//            oneThirteenCompatible = true;
+//            oneFourteenCompatible = true;
+//        } else if (version.equals("v1_13_R2")) {
+//            handler = new NBTHandler_1_13_R2();
+//            oneThirteenCompatible = true;
+//            oneFourteenCompatible = false;
+//        } else {
+//            System.out.println("Unsupported version: " + version);
+//        }
     }
 
     public NBTHandler getHandler() {
