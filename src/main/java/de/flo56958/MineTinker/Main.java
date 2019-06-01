@@ -23,7 +23,6 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         ChatWriter.log(false, "Setting up internals...");
         ConfigurationManager.reload();
-        ElevatorListener.init();
         BuildersWandListener.init();
         loadConfig();
 
@@ -55,12 +54,6 @@ public class Main extends JavaPlugin {
 
         if (!getConfig().getBoolean("AllowEnchanting"))
             Bukkit.getPluginManager().registerEvents(new EnchantingTableListener(), this);
-
-        if (ConfigurationManager.getConfig("Elevator.yml").getBoolean("Elevator.enabled")) {
-            Bukkit.getPluginManager().registerEvents(new ElevatorListener(), this);
-            CraftingRecipes.registerElevatorMotor();
-            ChatWriter.log(false, "Enabled Elevators!");
-        }
 
         if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("BuildersWand.enabled")) {
             Bukkit.getPluginManager().registerEvents(new BuildersWandListener(), this);
