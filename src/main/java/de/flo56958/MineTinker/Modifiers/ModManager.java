@@ -3,16 +3,47 @@ package de.flo56958.MineTinker.Modifiers;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ToolLevelUpEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Types.*;
+import de.flo56958.MineTinker.Modifiers.Types.Aquaphilic;
+import de.flo56958.MineTinker.Modifiers.Types.AutoSmelt;
+import de.flo56958.MineTinker.Modifiers.Types.Beheading;
+import de.flo56958.MineTinker.Modifiers.Types.Directing;
+import de.flo56958.MineTinker.Modifiers.Types.Ender;
+import de.flo56958.MineTinker.Modifiers.Types.Experienced;
+import de.flo56958.MineTinker.Modifiers.Types.ExtraModifier;
+import de.flo56958.MineTinker.Modifiers.Types.Fiery;
+import de.flo56958.MineTinker.Modifiers.Types.Freezing;
+import de.flo56958.MineTinker.Modifiers.Types.Glowing;
+import de.flo56958.MineTinker.Modifiers.Types.Haste;
+import de.flo56958.MineTinker.Modifiers.Types.Infinity;
+import de.flo56958.MineTinker.Modifiers.Types.Knockback;
+import de.flo56958.MineTinker.Modifiers.Types.Lifesteal;
+import de.flo56958.MineTinker.Modifiers.Types.LightWeight;
+import de.flo56958.MineTinker.Modifiers.Types.Luck;
+import de.flo56958.MineTinker.Modifiers.Types.Melting;
+import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
+import de.flo56958.MineTinker.Modifiers.Types.Poisonous;
+import de.flo56958.MineTinker.Modifiers.Types.Power;
+import de.flo56958.MineTinker.Modifiers.Types.Propelling;
+import de.flo56958.MineTinker.Modifiers.Types.Protecting;
+import de.flo56958.MineTinker.Modifiers.Types.Reinforced;
+import de.flo56958.MineTinker.Modifiers.Types.SelfRepair;
+import de.flo56958.MineTinker.Modifiers.Types.Sharpness;
+import de.flo56958.MineTinker.Modifiers.Types.Shulking;
+import de.flo56958.MineTinker.Modifiers.Types.SilkTouch;
+import de.flo56958.MineTinker.Modifiers.Types.Soulbound;
+import de.flo56958.MineTinker.Modifiers.Types.Sweeping;
+import de.flo56958.MineTinker.Modifiers.Types.Timber;
+import de.flo56958.MineTinker.Modifiers.Types.Webbed;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import net.minecraft.server.v1_14_R1.*;
+import de.flo56958.MineTinker.Utilities.nms.NBTHandler;
+import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -32,8 +63,10 @@ public class ModManager {
 
     private static FileConfiguration config;
     private static FileConfiguration layout;
+    private static NBTHandler nbt;
 
     static {
+        nbt = new NBTUtils().getHandler();
         config = Main.getPlugin().getConfig();
 
         layout = ConfigurationManager.getConfig("layout.yml");
@@ -91,6 +124,8 @@ public class ModManager {
 
         this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
     }
+
+    public NBTHandler getNBTHandler() { return nbt; }
 
     /**
      * get the instance that contains the modifier list (VERY IMPORTANT)
@@ -288,7 +323,7 @@ public class ModManager {
      * @param mod the modifier to add
      */
     void addMod(ItemStack is, Modifier mod) {
-        setNBTTag(is, mod.getType().getNBTKey(), new NBTTagInt(getModLevel(is, mod) + 1));
+        nbt.setInt(is, mod.getType().getNBTKey(), getModLevel(is, mod) + 1);
         rewriteLore(is);
     }
 
@@ -299,9 +334,7 @@ public class ModManager {
      * @param mod the modifier
      */
     public int getModLevel(ItemStack is, Modifier mod) {
-        NBTTagInt tag = (NBTTagInt) getNBTTag(is, mod.getType().getNBTKey());
-        if (tag == null) { return 0; }
-        return tag.asInt();
+        return nbt.getInt(is, mod.getType().getNBTKey());
     }
 
     /**
@@ -311,7 +344,7 @@ public class ModManager {
      * @param mod the modifier to remove
      */
     public void removeMod(ItemStack is, Modifier mod) {
-        removeNBTTag(is, mod.getType().getNBTKey());
+        nbt.removeTag(is, mod.getType().getNBTKey());
         mod.removeMod(is);
         rewriteLore(is);
     }
@@ -322,7 +355,7 @@ public class ModManager {
      * @param is the item to get the information from
      */
     public int getFreeSlots(ItemStack is) {
-        return ((NBTTagInt) getNBTTag(is, "FreeSlots")).asInt();
+        return nbt.getInt(is, "FreeSlots");
     }
 
     /**
@@ -331,7 +364,7 @@ public class ModManager {
      * @param is the item to set the information to
      */
     public void setFreeSlots(ItemStack is, int freeSlots) {
-        setNBTTag(is, "FreeSlots", new NBTTagInt(freeSlots));
+        nbt.setInt(is, "FreeSlots", freeSlots);
         rewriteLore(is);
     }
 
@@ -341,7 +374,7 @@ public class ModManager {
      * @param is the item to get the information from
      */
     private int getLevel(ItemStack is) {
-        return ((NBTTagInt) getNBTTag(is, "Level")).asInt();
+        return nbt.getInt(is, "Level");
     }
 
     /**
@@ -350,7 +383,7 @@ public class ModManager {
      * @param is the item to get the information from
      */
     private void setLevel(ItemStack is, int level) {
-        setNBTTag(is, "Level", new NBTTagInt(level));
+        nbt.setInt(is, "Level", level);
     }
 
     /**
@@ -359,7 +392,7 @@ public class ModManager {
      * @param is the item to get the information from
      */
     private long getExp(ItemStack is) {
-        return ((NBTTagLong) getNBTTag(is, "Exp")).asLong();
+        return nbt.getLong(is, "Exp");
     }
 
     /**
@@ -368,7 +401,7 @@ public class ModManager {
      * @param is the item to get the information from
      */
     private void setExp(ItemStack is, long exp) {
-        setNBTTag(is, "Exp", new NBTTagLong(exp));
+        nbt.setLong(is, "Exp", exp);
     }
 
     /**
@@ -377,7 +410,7 @@ public class ModManager {
      * @return if the tool has the mod
      */
     public boolean hasMod(ItemStack tool, Modifier mod) {
-        return hasNBTTag(tool, mod.getType().getNBTKey());
+        return nbt.hasTag(tool, mod.getType().getNBTKey());
     }
 
     /**
@@ -425,6 +458,10 @@ public class ModManager {
             LevelUp = true;
         }
 
+        if (config.getBoolean("actionbar-on-exp-gain")) {
+            ChatWriter.sendActionBar(p, ChatColor.translateAlternateColorCodes('&', "&a+" + amount + " exp gained"));
+        }
+
         setExp(tool, exp);
         rewriteLore(tool);
 
@@ -438,7 +475,7 @@ public class ModManager {
      * @return if the ItemStack is viable as MineTinker-Armor
      */
     public boolean isArmorViable(ItemStack armor) {
-        return armor != null && hasNBTTag(armor, "IdentifierArmor");
+        return armor != null && nbt.hasTag(armor, "IdentifierArmor");
     }
 
     /**
@@ -446,46 +483,15 @@ public class ModManager {
      * @return if the ItemStack is viable as MineTinker-Tool
      */
     public boolean isToolViable(ItemStack tool) {
-        return tool != null && hasNBTTag(tool, "IdentifierTool");
+        return tool != null && nbt.hasTag(tool, "IdentifierTool");
     }
 
     /**
      * @param wand the ItemStack
      * @return if the ItemStack is viable as MineTinker-Builderswand
      */
-    public boolean isWandViable(ItemStack wand) { return wand != null && hasNBTTag(wand, "IdentifierBuilderswand"); }
-
-    public void setNBTTag(ItemStack is, String key, NBTBase value) {
-        net.minecraft.server.v1_14_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(is);
-        NBTTagCompound comp = nmsItem.getTag();
-        if (comp == null) { comp = new NBTTagCompound(); }
-        comp.set(key, value);
-        nmsItem.setTag(comp);
-
-        ItemMeta meta = CraftItemStack.getItemMeta(nmsItem);
-        is.setItemMeta(meta);
-    }
-
-    private void removeNBTTag(ItemStack is, String key) {
-        net.minecraft.server.v1_14_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(is);
-        NBTTagCompound comp = nmsItem.getTag();
-        if (comp == null) { comp = new NBTTagCompound(); }
-        comp.remove(key);
-        nmsItem.setTag(comp);
-
-        ItemMeta meta = CraftItemStack.getItemMeta(nmsItem);
-        is.setItemMeta(meta);
-    }
-
-    private NBTBase getNBTTag(ItemStack is, String key) {
-        net.minecraft.server.v1_14_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(is);
-        NBTTagCompound comp = nmsItem.getTag();
-        if (comp == null) { return null; }
-        return comp.get(key);
-    }
-
-    private boolean hasNBTTag(ItemStack is, String key) {
-        return getNBTTag(is, key) != null;
+    public boolean isWandViable(ItemStack wand) {
+        return wand != null && nbt.hasTag(wand, "IdentifierBuilderswand");
     }
 
     /**
@@ -529,7 +535,7 @@ public class ModManager {
         lore.remove(index);
 
         for (Modifier m : this.mods) {
-            if (hasNBTTag(is, m.getType().getNBTKey())) {
+            if (nbt.hasTag(is, m.getType().getNBTKey())) {
                 int modLevel = getModLevel(is, m);
                 String modLevel_ = layout.getBoolean("UseRomans.ModifierLevels") ? ChatWriter.toRomanNumerals(modLevel) : String.valueOf(modLevel);
                 String s = this.modifierLayout;
@@ -572,13 +578,13 @@ public class ModManager {
                 || ToolType.TRIDENT.getMaterials().contains(m)
                 || ToolType.SHEARS.getMaterials().contains(m)
                 || ToolType.FISHINGROD.getMaterials().contains(m)) && !isWandViable(is)) {
-            setNBTTag(is, "IdentifierTool", new NBTTagInt(0));
+            nbt.setInt(is, "IdentifierTool", 0);
         } else if (ToolType.BOOTS.getMaterials().contains(m)
                 || ToolType.CHESTPLATE.getMaterials().contains(m)
                 || ToolType.HELMET.getMaterials().contains(m)
                 || ToolType.LEGGINGS.getMaterials().contains(m)
                 || ToolType.ELYTRA.getMaterials().contains(m)) {
-            setNBTTag(is, "IdentifierArmor", new NBTTagInt(0));
+            nbt.setInt(is, "IdentifierArmor", 0);
         } else return;
 
         setExp(is, 0);
@@ -603,11 +609,8 @@ public class ModManager {
             is.setItemMeta(meta);
         }
 
-        setNBTTag(is, "modifierItem", new NBTTagString(mod.getType().getNBTKey()));
-
-        NBTTagList list = new NBTTagList();
-        list.add(new NBTTagString("minecraft:air"));
-        setNBTTag(is, "CanPlaceOn", list);
+        nbt.setString(is, "modifierItem", mod.getType().getNBTKey());
+        nbt.setStringList(is, "CanPlaceOn", "minecraft:air");
 
         return is;
     }
@@ -617,7 +620,7 @@ public class ModManager {
      * @return if the ItemStack is viable as MineTinker-Modifier-Item
      */
     public boolean isModifierItem(ItemStack item) {
-        return hasNBTTag(item, "modifierItem") || item.getType().equals(get(ModifierType.EXPERIENCED).getModItem().getType()) || item.getType().equals(get(ModifierType.EXTRA_MODIFIER).getModItem().getType());
+        return nbt.hasTag(item, "modifierItem") || item.getType().equals(get(ModifierType.EXPERIENCED).getModItem().getType()) || item.getType().equals(get(ModifierType.EXTRA_MODIFIER).getModItem().getType());
     }
 
     /**
@@ -628,10 +631,10 @@ public class ModManager {
         if (!isModifierItem(item)) { return null; }
         if (item.getType().equals(get(ModifierType.EXPERIENCED).getModItem().getType())) { return get(ModifierType.EXPERIENCED); }
         if (item.getType().equals(get(ModifierType.EXTRA_MODIFIER).getModItem().getType())
-                && !hasNBTTag(item, "modifierItem")) { return get(ModifierType.EXTRA_MODIFIER); }
-        if (!hasNBTTag(item, "modifierItem")) { return null; }
+                && !nbt.hasTag(item, "modifierItem")) { return get(ModifierType.EXTRA_MODIFIER); }
+        if (!nbt.hasTag(item, "modifierItem")) { return null; }
 
-        String name = Objects.requireNonNull(getNBTTag(item, "modifierItem")).asString();
+        String name = Objects.requireNonNull(nbt.getString(item, "modifierItem"));
 
         for (Modifier m : mods) {
             if (m.getType().getNBTKey() != null && m.getType().getNBTKey().equals(name)) {

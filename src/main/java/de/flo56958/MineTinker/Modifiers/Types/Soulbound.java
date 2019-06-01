@@ -8,7 +8,6 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
-import net.minecraft.server.v1_14_R1.NBTTagInt;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -135,7 +134,7 @@ public class Soulbound extends Modifier implements Craftable, Listener {
         if (decrementModLevelOnUse) {
             int newLevel = modManager.getModLevel(is, this) - 1;
             if (newLevel == 0) { modManager.removeMod(is, this); }
-            else { modManager.setNBTTag(is, this.getType().getNBTKey(), new NBTTagInt(modManager.getModLevel(is, this) - 1)); }
+            else { modManager.getNBTHandler().setInt(is, this.getType().getNBTKey(), modManager.getModLevel(is, this) - 1); }
         }
 
         stored.add(is.clone());
