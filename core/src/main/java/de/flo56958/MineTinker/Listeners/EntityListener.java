@@ -188,8 +188,10 @@ public class EntityListener implements Listener {
                     e.setCancelled(true);
 
                     player.updateInventory();
-                    player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
 
+                    if (NBTUtils.isOneFourteenCompatible()) {
+                        player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
+                    }
                     return;
                 }
 
