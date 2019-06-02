@@ -58,17 +58,6 @@ public enum ToolType {
 	 */
 	public List<Material> getMaterials() {
 		List<Material> materials = new ArrayList<>();
-
-		if (NBTUtils.isOneFourteenCompatible()) {
-			switch (this) {
-				case CROSSBOW:
-					materials.add(Material.CROSSBOW);
-					break;
-				default:
-					break;
-			}
-		}
-
 		switch (this) {
 			case AXE:
 				materials.addAll(Arrays.asList(Material.WOODEN_AXE, Material.STONE_AXE, Material.IRON_AXE, Material.GOLDEN_AXE, Material.DIAMOND_AXE));
@@ -81,6 +70,9 @@ public enum ToolType {
 				break;
 			case CHESTPLATE:
 				materials.addAll(Arrays.asList(Material.LEATHER_CHESTPLATE, Material.CHAINMAIL_CHESTPLATE, Material.IRON_CHESTPLATE, Material.GOLDEN_CHESTPLATE, Material.DIAMOND_CHESTPLATE));
+				break;
+			case CROSSBOW:
+				if (NBTUtils.isOneFourteenCompatible()) materials.add(Material.CROSSBOW);
 				break;
 			case ELYTRA:
 				materials.add(Material.ELYTRA);
