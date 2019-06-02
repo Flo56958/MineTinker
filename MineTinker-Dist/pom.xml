@@ -14,7 +14,7 @@
 
     <build>
         <directory>../target</directory>
-        <finalName>Minetinker-${project.version}</finalName>
+        <finalName>MineTinker-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -53,6 +53,11 @@
         <dependency>
             <groupId>de.flo56958</groupId>
             <artifactId>MineTinker-1.13</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.flo56958</groupId>
+            <artifactId>MineTinker-1.13.2</artifactId>
             <version>${parent.version}</version>
         </dependency>
     </dependencies>

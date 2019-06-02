@@ -1,19 +1,19 @@
 package de.flo56958.MineTinker.Utilities.nms;
 
-import net.minecraft.server.v1_13_R2.ItemStack;
-import net.minecraft.server.v1_13_R2.NBTBase;
-import net.minecraft.server.v1_13_R2.NBTTagCompound;
-import net.minecraft.server.v1_13_R2.NBTTagInt;
-import net.minecraft.server.v1_13_R2.NBTTagList;
-import net.minecraft.server.v1_13_R2.NBTTagLong;
-import net.minecraft.server.v1_13_R2.NBTTagString;
-import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
+import net.minecraft.server.v1_14_R1.ItemStack;
+import net.minecraft.server.v1_14_R1.NBTBase;
+import net.minecraft.server.v1_14_R1.NBTTagCompound;
+import net.minecraft.server.v1_14_R1.NBTTagInt;
+import net.minecraft.server.v1_14_R1.NBTTagList;
+import net.minecraft.server.v1_14_R1.NBTTagLong;
+import net.minecraft.server.v1_14_R1.NBTTagString;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 import java.util.List;
 
-class NBTHandler_1_13_R2 extends NBTHandler {
+class NBTHandler_v1_14_R1 extends NBTHandler {
 
     private NBTBase getBase(org.bukkit.inventory.ItemStack item, String key) {
         ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
