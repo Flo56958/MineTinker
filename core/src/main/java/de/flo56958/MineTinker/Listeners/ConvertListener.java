@@ -40,8 +40,10 @@ public class ConvertListener implements Listener{
 		converting.addAll(ToolType.LEGGINGS.getMaterials());
 		converting.addAll(ToolType.BOOTS.getMaterials());
 		converting.addAll(ToolType.BOW.getMaterials());
-	    
-	    for (Material m : converting) {
+		converting.addAll(ToolType.CROSSBOW.getMaterials());
+
+
+		for (Material m : converting) {
 	    	ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(Main.getPlugin(), m.toString() + "_Converter"), new ItemStack(m, 1));
 			recipe.addIngredient(m);
 			Bukkit.addRecipe(recipe);

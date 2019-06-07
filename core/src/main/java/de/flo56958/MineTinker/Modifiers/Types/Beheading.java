@@ -45,7 +45,7 @@ public class Beheading extends Modifier implements Enchantable, Craftable, Liste
 
     private Beheading() {
         super(ModifierType.BEHEADING,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }

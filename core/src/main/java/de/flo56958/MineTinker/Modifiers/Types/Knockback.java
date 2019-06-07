@@ -83,7 +83,7 @@ public class Knockback extends Modifier implements Enchantable, Craftable {
         if (meta != null) {
             if (ToolType.AXE.getMaterials().contains(tool.getType())) {
                 meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.BOW.getMaterials().contains(tool.getType())) {
+            } else if (ToolType.BOW.getMaterials().contains(tool.getType()) || ToolType.CROSSBOW.getMaterials().contains(tool.getType())) {
                 meta.addEnchant(Enchantment.ARROW_KNOCKBACK, modManager.getModLevel(tool, this), true);
             } else if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
                 meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);

@@ -12,14 +12,13 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
-import net.minecraft.server.v1_14_R1.BlockPosition;
+import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -117,6 +116,8 @@ public class Timber extends Modifier implements Craftable, Listener {
         allowed.addAll(Lists.getWoodLogs());
         allowed.addAll(Lists.getWoodWood());
 
+        if (!allowed.contains(b.getType())) return;
+
         boolean isTreeBottom = false; //checks for Grass or Dirt under Log
         boolean isTreeTop = false; //checks for Leaves above Log
 
@@ -132,7 +133,7 @@ public class Timber extends Modifier implements Craftable, Listener {
             }
         }
 
-        for (int dy = b.getY(); dy < 256; dy++) {
+        for (int dy = b.getY() + 1; dy < 256; dy++) {
             if (!allowed.contains(p.getWorld().getBlockAt(b.getX(), dy, b.getZ()).getType())) {
                 Location loc = b.getLocation().clone();
                 loc.setY(dy);
@@ -172,14 +173,7 @@ public class Timber extends Modifier implements Craftable, Listener {
 
                     if (allowed.contains(p.getWorld().getBlockAt(loc).getType())) {
                         breakTree(p, p.getWorld().getBlockAt(loc), allowed);
-
-                        /*
-                        BlockBreakEvent event = new BlockBreakEvent(b, p);
-                        Bukkit.getServer().getPluginManager().callEvent(event);
-
-                        if (!event.isCancelled()) b.breakNaturally(p.getInventory().getItemInMainHand());
-                        */
-                        ((CraftPlayer) p).getHandle().playerInteractManager.breakBlock(new BlockPosition(loc.getX(), loc.getY(), loc.getZ()));
+                        NBTUtils.getHandler().playerBreakBlock(p, b);
                     }
                 }
             }

@@ -32,7 +32,7 @@ public class Sharpness extends Modifier implements Craftable {
 
     private Sharpness() {
         super(ModifierType.SHARPNESS,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
     }
 
@@ -86,7 +86,7 @@ public class Sharpness extends Modifier implements Craftable {
         if (meta != null) {
             if (ToolType.AXE.getMaterials().contains(tool.getType())) {
                 meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.BOW.getMaterials().contains(tool.getType())) {
+            } else if (ToolType.BOW.getMaterials().contains(tool.getType()) || ToolType.CROSSBOW.getMaterials().contains(tool.getType())) {
                 meta.addEnchant(Enchantment.ARROW_DAMAGE, modManager.getModLevel(tool, this), true);
             } else if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
                 meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);

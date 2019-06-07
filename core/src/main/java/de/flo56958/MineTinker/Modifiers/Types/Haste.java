@@ -7,6 +7,7 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.Modifiers_Config;
+import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -32,7 +33,7 @@ public class Haste extends Modifier implements Craftable {
 
     private Haste() {
         super(ModifierType.HASTE,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS, ToolType.FISHINGROD)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.CROSSBOW, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS, ToolType.FISHINGROD)),
                 Main.getPlugin());
     }
 
@@ -41,6 +42,7 @@ public class Haste extends Modifier implements Craftable {
         List<Enchantment> enchantments = new ArrayList<>();
         enchantments.add(Enchantment.LURE);
         enchantments.add(Enchantment.DIG_SPEED);
+        if(NBTUtils.isOneFourteenCompatible()) enchantments.add(Enchantment.QUICK_CHARGE);
 
         return enchantments;
     }
@@ -85,6 +87,8 @@ public class Haste extends Modifier implements Craftable {
         if (meta != null) {
             if (ToolType.FISHINGROD.getMaterials().contains(tool.getType())) {
                 meta.addEnchant(Enchantment.LURE, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.CROSSBOW.getMaterials().contains(tool.getType())) {
+                if (NBTUtils.isOneFourteenCompatible()) meta.addEnchant(Enchantment.QUICK_CHARGE, modManager.getModLevel(tool, this), true);
             } else {
                 meta.addEnchant(Enchantment.DIG_SPEED, modManager.getModLevel(tool, this), true);
             }
@@ -104,11 +108,12 @@ public class Haste extends Modifier implements Craftable {
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
 
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.DIG_SPEED);
-            meta.removeEnchant(Enchantment.LURE);
-            tool.setItemMeta(meta);
-        }
+        if (meta == null) return;
+
+        meta.removeEnchant(Enchantment.DIG_SPEED);
+        meta.removeEnchant(Enchantment.LURE);
+        if (NBTUtils.isOneFourteenCompatible()) meta.removeEnchant(Enchantment.QUICK_CHARGE);
+        tool.setItemMeta(meta);
     }
 
     @Override

@@ -42,7 +42,7 @@ public class Melting extends Modifier implements Enchantable, Craftable, Listene
 
     private Melting() {
         super(ModifierType.MELTING,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD,
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD,
                                                 ToolType.CHESTPLATE, ToolType.LEGGINGS)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());

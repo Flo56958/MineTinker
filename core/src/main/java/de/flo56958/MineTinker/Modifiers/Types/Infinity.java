@@ -35,6 +35,7 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
         return instance;
     }
 
+    //Infinity does not work on crossbows
     private Infinity() {
         super(ModifierType.INFINITY,
                 new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.TRIDENT)),

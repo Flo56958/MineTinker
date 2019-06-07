@@ -11,7 +11,7 @@ import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.*;
-import net.minecraft.server.v1_14_R1.BlockPosition;
+import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -345,19 +345,11 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
         HASPOWER.get(p).set(false);
     }
 
-    private void powerBlockBreak(Block b, CraftPlayer p) {
-        if (blacklist.contains(b.getType()))
-            return;
+    private void powerBlockBreak(Block b, Player p) {
+        if (blacklist.contains(b.getType())) return;
 
-        /*
-         * BlockBreakEvent event = new BlockBreakEvent(b, p);
-         * Bukkit.getServer().getPluginManager().callEvent(event);
-         * 
-         * if (!event.isCancelled())
-         * b.breakNaturally(p.getInventory().getItemInMainHand());
-         */
-
-        p.getHandle().playerInteractManager.breakBlock(new BlockPosition(b.getX(), b.getY(), b.getZ()));
+        if (b.getDrops(p.getInventory().getItemInMainHand()).isEmpty()) return;
+        NBTUtils.getHandler().playerBreakBlock(p, b);
     }
 
     @SuppressWarnings("deprecation")

@@ -52,7 +52,7 @@ public class PlayerListener implements Listener {
             eligible = true;
         } else if (name[0].toLowerCase().equals("stone") && (repair.getType().equals(Material.COBBLESTONE) || repair.getType().equals(Material.STONE))) {
             eligible = true;
-        } else if (name[0].toLowerCase().equals("iron") && repair.getType().equals(Material.IRON_INGOT)) {
+        } else if ((name[0].toLowerCase().equals("shears") || name[0].toLowerCase().equals("iron")) && repair.getType().equals(Material.IRON_INGOT)) {
             eligible = true;
         } else if (name[0].toLowerCase().equals("golden") && repair.getType().equals(Material.GOLD_INGOT)) {
             eligible = true;

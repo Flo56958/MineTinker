@@ -9,6 +9,7 @@ import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.Updater;
+import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -22,6 +23,11 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         ChatWriter.log(false, "Setting up internals...");
+        if (!NBTUtils.init()) {
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
         ConfigurationManager.reload();
         BuildersWandListener.init();
         loadConfig();

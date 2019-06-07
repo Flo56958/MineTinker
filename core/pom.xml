@@ -58,6 +58,24 @@
             <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>de.flo56958</groupId>
+            <artifactId>MineTinker-1.14</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.flo56958</groupId>
+            <artifactId>MineTinker-1.13</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.flo56958</groupId>
+            <artifactId>MineTinker-1.13.2</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -67,6 +85,9 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+
+        <finalName>MineTinker</finalName>
+        <directory>D:\Minecraft\Servers\Test Server\plugins</directory>
 
         <plugins>
             <plugin>
@@ -78,6 +99,10 @@
                         <relocation>
                             <pattern>org.bstats.bukkit</pattern>
                             <shadedPattern>de.flo56958.MineTinker.bStats</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>de.flo56958.MineTinker.Utilities.nms</pattern>
+                            <shadedPattern>de.flo56958.MineTinker.Utilities.nms</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

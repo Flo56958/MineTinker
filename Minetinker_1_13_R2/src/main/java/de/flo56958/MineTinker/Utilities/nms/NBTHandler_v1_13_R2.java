@@ -1,13 +1,10 @@
 package de.flo56958.MineTinker.Utilities.nms;
 
-import net.minecraft.server.v1_13_R2.ItemStack;
-import net.minecraft.server.v1_13_R2.NBTBase;
-import net.minecraft.server.v1_13_R2.NBTTagCompound;
-import net.minecraft.server.v1_13_R2.NBTTagInt;
-import net.minecraft.server.v1_13_R2.NBTTagList;
-import net.minecraft.server.v1_13_R2.NBTTagLong;
-import net.minecraft.server.v1_13_R2.NBTTagString;
+import net.minecraft.server.v1_13_R2.*;
+import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
@@ -126,5 +123,10 @@ class NBTHandler_v1_13_R2 extends NBTHandler {
 
         ItemMeta meta = CraftItemStack.getItemMeta(nmsItem);
         item.setItemMeta(meta);
+    }
+
+    @Override
+    public void playerBreakBlock(Player p, Block block) {
+        ((CraftPlayer) p).getHandle().playerInteractManager.breakBlock(new BlockPosition(block.getX(), block.getY(), block.getZ()));
     }
 }

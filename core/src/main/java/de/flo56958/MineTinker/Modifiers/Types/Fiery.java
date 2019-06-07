@@ -34,7 +34,7 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
 
     private Fiery() {
         super(ModifierType.FIERY,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD)),
                 Main.getPlugin());
     }
 
@@ -82,7 +82,7 @@ public class Fiery extends Modifier implements Enchantable, Craftable {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (ToolType.BOW.getMaterials().contains(tool.getType())) {
+            if (ToolType.BOW.getMaterials().contains(tool.getType()) || ToolType.CROSSBOW.getMaterials().contains(tool.getType())) {
                 meta.addEnchant(Enchantment.ARROW_FIRE, modManager.getModLevel(tool, this), true);
             } else if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
                 meta.addEnchant(Enchantment.FIRE_ASPECT, modManager.getModLevel(tool, this), true);

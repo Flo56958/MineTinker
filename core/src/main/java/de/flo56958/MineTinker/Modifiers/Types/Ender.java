@@ -44,7 +44,7 @@ public class Ender extends Modifier implements Craftable, Listener {
 
     private Ender() {
         super(ModifierType.ENDER,
-                new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.TRIDENT)),
+                new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.CROSSBOW, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
