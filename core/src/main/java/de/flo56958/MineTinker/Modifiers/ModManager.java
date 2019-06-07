@@ -399,6 +399,7 @@ public class ModManager {
      * @param amount how much exp should the tool get
      */
     public void addExp(Player p, ItemStack tool, int amount) {
+        if (amount == 0) return;
         boolean LevelUp = false;
 
         int level = this.getLevel(tool);
@@ -537,6 +538,7 @@ public class ModManager {
 
         if ((ToolType.AXE.getMaterials().contains(m)
                 || ToolType.BOW.getMaterials().contains(m)
+                || ToolType.CROSSBOW.getMaterials().contains(m)
                 || ToolType.HOE.getMaterials().contains(m)
                 || ToolType.PICKAXE.getMaterials().contains(m)
                 || ToolType.SHOVEL.getMaterials().contains(m)

@@ -108,6 +108,7 @@ public class ItemListener implements Listener {
         }
     }
 
+    //TODO: Crossbow gets destroyed non the less
     @EventHandler
     public void onItemBreak(PlayerItemBreakEvent e) {
         Player p = e.getPlayer();
@@ -127,10 +128,10 @@ public class ItemListener implements Listener {
         ItemMeta meta = item.getItemMeta();
 
         if (meta instanceof Damageable) {
-            ((Damageable) meta).setDamage(1);
+            ((Damageable) meta).setDamage(item.getType().getMaxDurability() - 1);
             item.setItemMeta(meta);
         }
 
-        p.getInventory().addItem(item);
+        p.getInventory().setItem(p.getInventory().getHeldItemSlot(), item);
     }
 }
