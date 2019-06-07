@@ -24,7 +24,7 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         ChatWriter.log(false, "Setting up internals...");
         if (!NBTUtils.init()) {
-            Bukkit.getPluginManager().disablePlugin(this);
+            Bukkit.getPluginManager().disablePlugin(this); //Disable Plugin for safety
             return;
         }
 
@@ -38,7 +38,7 @@ public class Main extends JavaPlugin {
         this.getCommand("minetinker").setExecutor(cmd); // must be after internals as it would throw a NullPointerException
         this.getCommand("minetinker").setTabCompleter(cmd);
 
-        ChatWriter.log(false, "Registered commands!");
+        ChatWriter.logInfo("Registered commands!");
 
         if (getConfig().getBoolean("AllowCrafting")) {
             ConvertListener convertListener = new ConvertListener();
@@ -91,7 +91,7 @@ public class Main extends JavaPlugin {
     }
 
     public void onDisable() {
-        ChatWriter.log(false, "Shutting down!");
+        ChatWriter.logInfo("Shutting down!");
     }
 
     /**

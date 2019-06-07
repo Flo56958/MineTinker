@@ -87,7 +87,6 @@
         </resources>
 
         <finalName>MineTinker</finalName>
-        <directory>D:\Minecraft\Servers\Test Server\plugins</directory>
 
         <plugins>
             <plugin>

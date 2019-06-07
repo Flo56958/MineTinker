@@ -1,5 +1,6 @@
 package de.flo56958.MineTinker.Utilities.nms;
 
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.Bukkit;
 
 public class NBTUtils {
@@ -10,12 +11,17 @@ public class NBTUtils {
 
     private NBTUtils() {}
 
+    /**
+     * Initializes the NBTHandler for the server version.
+     * @return true, if MineTinker is compatible with the server version.
+     *         false, if MineTinker does not support the version
+     */
     public static boolean init() {
         String version;
         try {
             version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Invalid server version!");
+            ChatWriter.logError("Invalid server version!");
             return false;
         }
 
@@ -34,7 +40,7 @@ public class NBTUtils {
                 oneThirteenCompatible = true;
                 break;
             default:
-                System.out.println("Unsupported version: " + version);
+                ChatWriter.logError("Unsupported version: " + version);
                 return false;
         }
         return true;
