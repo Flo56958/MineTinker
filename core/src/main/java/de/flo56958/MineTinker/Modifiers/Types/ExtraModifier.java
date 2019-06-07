@@ -41,9 +41,7 @@ public class ExtraModifier extends Modifier {
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-
-        return enchantments;
+        return new ArrayList<>();
     }
 
     @Override

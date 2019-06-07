@@ -50,9 +50,7 @@ public class Soulbound extends Modifier implements Craftable, Listener {
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-
-        return enchantments;
+        return new ArrayList<>();
     }
 
     @Override

@@ -189,14 +189,11 @@ public class BlockListener implements Listener {
         boolean apply = false;
 
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && b != null) {
-            if (b.getType().equals(Material.GRASS_BLOCK) ||
-                b.getType().equals(Material.DIRT)) {
+            if (b.getType().equals(Material.GRASS_BLOCK) || b.getType().equals(Material.DIRT))
                 apply = true;
-            }
 
-            if (!p.getWorld().getBlockAt(b.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) { //Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
+            if (!p.getWorld().getBlockAt(b.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) //Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
                 apply = false;
-            }
         }
 
         if (!apply) return;
@@ -222,21 +219,10 @@ public class BlockListener implements Listener {
         boolean apply = false;
 
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null) {
-            if (e.getClickedBlock().getType().equals(Material.ACACIA_LOG) ||
-                e.getClickedBlock().getType().equals(Material.BIRCH_LOG) ||
-                e.getClickedBlock().getType().equals(Material.OAK_LOG) ||
-                e.getClickedBlock().getType().equals(Material.DARK_OAK_LOG) ||
-                e.getClickedBlock().getType().equals(Material.JUNGLE_LOG) ||
-                e.getClickedBlock().getType().equals(Material.SPRUCE_LOG)) {
+            if (Lists.getWoodLogs().contains(e.getClickedBlock().getType()))
                 apply = true;
-            } else if (e.getClickedBlock().getType().equals(Material.ACACIA_WOOD) ||
-                    e.getClickedBlock().getType().equals(Material.BIRCH_WOOD) ||
-                    e.getClickedBlock().getType().equals(Material.OAK_WOOD) ||
-                    e.getClickedBlock().getType().equals(Material.DARK_OAK_WOOD) ||
-                    e.getClickedBlock().getType().equals(Material.JUNGLE_WOOD) ||
-                    e.getClickedBlock().getType().equals(Material.SPRUCE_WOOD)) {
+            else if (Lists.getWoodWood().contains(e.getClickedBlock().getType()))
                 apply = true;
-            }
         }
 
         if (!apply) return;
@@ -262,9 +248,7 @@ public class BlockListener implements Listener {
         boolean apply = false;
 
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null) {
-            if (e.getClickedBlock().getType().equals(Material.GRASS_BLOCK)) {
-                apply = true;
-            }
+            if (e.getClickedBlock().getType().equals(Material.GRASS_BLOCK)) apply = true;
         }
 
         if (!apply) return;

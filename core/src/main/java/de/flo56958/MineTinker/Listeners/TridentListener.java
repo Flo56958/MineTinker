@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class TridentListener implements Listener {
 
-    public static final HashMap<Trident, ItemStack> TridentToItemStack = new HashMap<>();
+    static final HashMap<Trident, ItemStack> TridentToItemStack = new HashMap<>();
 
     @EventHandler(ignoreCancelled = true)
     public void onTridentLaunch(ProjectileLaunchEvent e) {

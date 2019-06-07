@@ -19,6 +19,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,16 +37,12 @@ public class TinkerListener implements Listener {
         ItemStack tool = e.getTool();
 
         if (e.isSuccessful()) {
-            if (config.getBoolean("Sound.OnUpgrade")) {
-                p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
-            }
+            if (config.getBoolean("Sound.OnUpgrade")) p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
 
             ChatWriter.sendActionBar(p, ItemGenerator.getDisplayName(tool) + " is now " + tool.getType().toString().split("_")[0] + "!");
             ChatWriter.log(false, p.getDisplayName() + " upgraded " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ") to " + tool.getType().toString() + "!");
         } else {
-            if (config.getBoolean("Sound.OnUpgrade")) {
-                p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
-            }
+            if (config.getBoolean("Sound.OnUpgrade")) p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
         }
     }
 
@@ -54,9 +52,8 @@ public class TinkerListener implements Listener {
         ItemStack tool = e.getTool();
         Modifier mod = e.getMod();
 
-        if (config.getBoolean("Sound.OnModding")) {
+        if (config.getBoolean("Sound.OnModding"))
             p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
-        }
 
         ChatWriter.sendActionBar(p, ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " has now " + mod.getColor() + mod.getName() + ChatColor.WHITE + " and " + e.getSlotsRemaining() + " free Slots remaining!");
         ChatWriter.log(false, p.getDisplayName() + " modded " + ItemGenerator.getDisplayName(tool) +  ChatColor.GRAY + " (" + tool.getType().toString() + ") with " + mod.getColor() + mod.getName() + ChatColor.GRAY + " " + modManager.getModLevel(tool, mod) + "!");
@@ -68,9 +65,7 @@ public class TinkerListener implements Listener {
         ItemStack tool = e.getTool();
         Modifier mod = e.getMod();
 
-        if (config.getBoolean("Sound.OnFail")) {
-            p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
-        }
+        if (config.getBoolean("Sound.OnFail")) p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
 
         if (!e.isCommand()) {
             ChatWriter.sendActionBar(p, "Failed to apply " + mod.getColor() + mod.getName() + ChatColor.WHITE + " on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + e.getFailCause().toString() + ")");
@@ -84,18 +79,15 @@ public class TinkerListener implements Listener {
         Player p = e.getPlayer();
         ItemStack tool = e.getTool();
 
-        if (config.getBoolean("Sound.OnLevelUp")) {
-            p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.5F);
-        }
+        if (config.getBoolean("Sound.OnLevelUp")) p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.5F);
 
         if (config.getInt("AddModifierSlotsPerLevel") > 0) {
             int slots = modManager.getFreeSlots(tool);
 
-            if (!(slots == Integer.MAX_VALUE || slots < 0)) {
+            if (!(slots == Integer.MAX_VALUE || slots < 0))
                 slots += config.getInt("AddModifierSlotsPerLevel");
-            } else {
+            else
                 slots = Integer.MAX_VALUE;
-            }
 
             modManager.setFreeSlots(tool, slots);
         }
@@ -111,7 +103,9 @@ public class TinkerListener implements Listener {
                 int n = rand.nextInt(100);
 
                 if (n <= config.getInt("LevelUpEvents.DurabilityRepair.percentage")) {
-                    tool.setDurability((short) -1);
+                    Damageable dam = (Damageable) tool.getItemMeta();
+                    dam.setDamage(0);
+                    tool.setItemMeta((ItemMeta) dam);
                 }
             }
             if (config.getBoolean("LevelUpEvents.DropLoot.enabled")) {
@@ -121,14 +115,16 @@ public class TinkerListener implements Listener {
                     int index = rand.nextInt(Lists.DROPLOOT.size());
                     Material m = Material.getMaterial(Lists.DROPLOOT.get(index));
 
-                    int amount = rand.nextInt(config.getInt("LevelUpEvents.DropLoot.maximumDrop") - config.getInt("LevelUpEvents.DropLoot.minimumDrop"));
-                    amount = amount + config.getInt("LevelUpEvents.DropLoot.minimumDrop");
+                    if (m != null) {
+                        int amount = rand.nextInt(config.getInt("LevelUpEvents.DropLoot.maximumDrop") - config.getInt("LevelUpEvents.DropLoot.minimumDrop"));
+                        amount = amount + config.getInt("LevelUpEvents.DropLoot.minimumDrop");
 
-                    ItemStack drop = new ItemStack(m, amount);
+                        ItemStack drop = new ItemStack(m, amount);
 
-                    if (p.getInventory().addItem(drop).size() != 0) { //adds items to (full) inventory
-                        p.getWorld().dropItem(p.getLocation(), drop); //drops item when inventory is full
-                    } // no else as it gets added in if
+                        if (p.getInventory().addItem(drop).size() != 0) { //adds items to (full) inventory
+                            p.getWorld().dropItem(p.getLocation(), drop); //drops item when inventory is full
+                        } // no else as it gets added in if
+                    }
                 }
             }
             if (config.getBoolean("LevelUpEvents.RandomModifier.enabled")) { //TODO: Simplify code

@@ -6,7 +6,7 @@ CheckForUpdates: true                 #Checks for updates on startup
 logging:
   standard: false                     #logs important player activities with MineTinker
   debug: false                        #even more information
-  metrics: true
+  metrics: true                       #bStats-Metrics for anonymous statistics about the use of MineTinker
 
 #--MESSAGES--
 chat-messages: true                   #Will turn off command output
@@ -14,7 +14,7 @@ actionbar-messages: true
 actionbar-on-exp-gain: false
 
 #---------------EXP-SETTINGS--------------
-LevelStep: 100                        #  *(LevelFactor^LevelOfTool) [EXPONENTIAL]; *(LevelFactor*LevelOfTool) [LINEAR]
+LevelStep: 100                        #*(LevelFactor^LevelOfTool) [EXPONENTIAL]; *(LevelFactor*LevelOfTool) [LINEAR]
 LevelFactor: 2.0
 ProgressionIsLinear: false            #false: exponential, true: linear
 ResetAtVarOverflow: true              #Resets Level and Exp at Integer.MAX_VALUE or Long.MAX_VALUE with 1 and 0. false: no more Exp gain
@@ -57,7 +57,7 @@ ItemBehaviour:
   AlertPlayerOnBreak: false           #If the item breaks due to a bug, alert the player
 
 #---------------LEVELUP-EVENTS--------------
-LevelUpEvents:
+LevelUpEvents:                        #Events that happen when a MT-Item gets a Level-Up (chancebased)
   enabled: true
   DurabilityRepair:                   #Repairs the tool
     enabled: true

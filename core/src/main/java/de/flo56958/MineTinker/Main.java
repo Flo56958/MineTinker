@@ -58,8 +58,7 @@ public class Main extends JavaPlugin {
         CraftingRecipes.registerMTElytra();
         CraftingRecipes.registerMTTrident();
 
-        if (!getConfig().getBoolean("AllowEnchanting"))
-            Bukkit.getPluginManager().registerEvents(new EnchantingTableListener(), this);
+        if (!getConfig().getBoolean("AllowEnchanting")) Bukkit.getPluginManager().registerEvents(new EnchantingTableListener(), this);
 
         if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("BuildersWand.enabled")) {
             Bukkit.getPluginManager().registerEvents(new BuildersWandListener(), this);
@@ -74,8 +73,7 @@ public class Main extends JavaPlugin {
 
         ChatWriter.log(false, "Registered events!");
 
-        if (getConfig().getBoolean("logging.metrics"))
-            new Metrics(this);
+        if (getConfig().getBoolean("logging.metrics")) new Metrics(this);
 
         ChatWriter.log(false, "Standard Logging is enabled. You can disable it in the config under Logging.Standard!");
         ChatWriter.log(true, "Debug Logging is enabled. You should disable it in the config under Logging.Debug!");
@@ -85,9 +83,7 @@ public class Main extends JavaPlugin {
             Lists.BLOCKFACE.put(current, null);
         }
 
-        if (getConfig().getBoolean("CheckForUpdates")) {
-            Bukkit.getScheduler().scheduleAsyncDelayedTask(this, Updater::checkForUpdate, 20);
-        }
+        if (getConfig().getBoolean("CheckForUpdates")) Bukkit.getScheduler().scheduleAsyncDelayedTask(this, Updater::checkForUpdate, 20);
     }
 
     public void onDisable() {

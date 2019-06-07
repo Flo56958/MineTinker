@@ -20,11 +20,7 @@ import org.bukkit.entity.Trident;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
@@ -43,23 +39,20 @@ public class EntityListener implements Listener {
             Arrow arrow = (Arrow) e.getDamager();
             ProjectileSource source = arrow.getShooter();
 
-            if (source instanceof Player) {
-                p = (Player) source;
-            } else {
-                return;
-            }
+            if (source instanceof Player) p = (Player) source;
+            else return;
+
         } else if (e.getDamager() instanceof Trident) {
             Trident trident = (Trident) e.getDamager();
             ProjectileSource source = trident.getShooter();
 
-            if (source instanceof Player) {
+            if (source instanceof Player)
                 p = (Player) source;
-            } else {
-                return;
-            }
-        } else if (e.getDamager() instanceof Player) {
+            else return;
+
+        } else if (e.getDamager() instanceof Player)
             p = (Player) e.getDamager();
-        } else return;
+        else return;
 
         /*
         if (e.getEntity() instanceof Player) {
@@ -81,9 +74,8 @@ public class EntityListener implements Listener {
 
         Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(p, tool, e.getEntity(), e));
 
-        if (config.getBoolean("EnableDamageExp")) { //at bottom because of Melting
+        if (config.getBoolean("EnableDamageExp")) //at bottom because of Melting
             amount = (int) e.getDamage();
-        }
 
         amount += config.getInt("ExtraExpPerEntityHit." + e.getEntity().getType().toString()); //adds 0 if not in found in config (negative values are also fine)
         modManager.addExp(p, tool, amount);
@@ -167,12 +159,9 @@ public class EntityListener implements Listener {
 
             if (mod != null && mod.getModItem().getType() == Material.ARROW) {
                 e.setCancelled(true);
-
                 player.updateInventory();
 
-                if (NBTUtils.isOneFourteenCompatible()) {
-                    player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
-                }
+                if (NBTUtils.isOneFourteenCompatible()) player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
 
                 return;
             }
@@ -189,9 +178,8 @@ public class EntityListener implements Listener {
 
                     player.updateInventory();
 
-                    if (NBTUtils.isOneFourteenCompatible()) {
-                        player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
-                    }
+                    if (NBTUtils.isOneFourteenCompatible()) player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
+
                     return;
                 }
 

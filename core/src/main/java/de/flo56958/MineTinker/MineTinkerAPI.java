@@ -3,6 +3,8 @@ package de.flo56958.MineTinker;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.nms.NBTHandler;
+import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -19,6 +21,7 @@ import org.bukkit.plugin.Plugin;
  * This API is in a very unfinished state.
  *
  * @see de.flo56958.MineTinker.Modifiers.Modifier
+ * @see de.flo56958.MineTinker.Utilities.nms.NBTUtils
  *
  * MineTinker-Events:
  * @see de.flo56958.MineTinker.Events.ModifierApplyEvent
@@ -33,7 +36,7 @@ import org.bukkit.plugin.Plugin;
  * @see de.flo56958.MineTinker.Events.ToolUpgradeEvent
  *
  * @author Flo56958
- * @version 2019/03/27
+ * @version 2019/06/08
  * @apiNote USE ON OWN RISK. MAY CHANGE WITH FUTURE UPDATES.
  */
 public class MineTinkerAPI {
@@ -82,4 +85,6 @@ public class MineTinkerAPI {
     public Plugin getMineTinker() {
         return Main.getPlugin();
     }
+
+    public NBTHandler getNBTHandler() { return NBTUtils.getHandler(); }
 }

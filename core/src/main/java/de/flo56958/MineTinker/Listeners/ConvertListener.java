@@ -56,9 +56,8 @@ public class ConvertListener implements Listener{
 
 		Player player = null;
 
-		for (HumanEntity humans : e.getViewers()) {
+		for (HumanEntity humans : e.getViewers())
 			if (humans instanceof Player) { player = (Player) humans; }
-		}
 
 		if (player == null) return;
 		if (!player.hasPermission("minetinker.tool.create")) return;
@@ -87,11 +86,8 @@ public class ConvertListener implements Listener{
 
 		ItemMeta m = currentItem.getItemMeta();
 
-		if (m != null) {
-			if (modManager.isWandViable(currentItem)) {
-				return;
-			}
-		}
+		if (m != null)
+			if (modManager.isWandViable(currentItem)) return;
 
 		modManager.convertItemStack(currentItem);
 	}
@@ -111,12 +107,8 @@ public class ConvertListener implements Listener{
         
         if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool) || modManager.isWandViable(tool))) return;
 
-        if (config.getBoolean("Sound.OnCrafting")) {
-			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
-		}
+        if (config.getBoolean("Sound.OnCrafting")) player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
 
-        if (tool != null) {
-			ChatWriter.log(false, player.getName() + " crafted " + ItemGenerator.getDisplayName(tool) + "! It is now a MineTinker-Item!");
-		}
+        if (tool != null) ChatWriter.log(false, player.getName() + " crafted " + ItemGenerator.getDisplayName(tool) + "! It is now a MineTinker-Item!");
     }
 }

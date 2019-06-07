@@ -29,7 +29,7 @@ public class ModManager {
 
     private static FileConfiguration config;
     private static FileConfiguration layout;
-    private static NBTHandler nbt;
+    private final static NBTHandler nbt;
 
     static {
         nbt = NBTUtils.getHandler();
@@ -76,7 +76,7 @@ public class ModManager {
     private List<String> loreScheme;
     private String modifierLayout;
 
-    private boolean allowBookConvert = config.getBoolean("ConvertBookToModifier");
+    private boolean allowBookConvert;
 
     /**
      * Class constructor (no parameters)
@@ -136,17 +136,16 @@ public class ModManager {
             }
         }
 
-        for (Modifier m : this.craftableMods) {
+        for (Modifier m : this.craftableMods)
             ((Craftable) m).registerCraftingRecipe();
-        }
 
         this.loreScheme = layout.getStringList("LoreLayout");
 
-        for (int i = 0; i < loreScheme.size(); i++) {
+        for (int i = 0; i < loreScheme.size(); i++)
             loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
-        }
 
         this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
+        this.allowBookConvert = config.getBoolean("ConvertBookToModifier");
     }
 
     /**
@@ -171,7 +170,6 @@ public class ModManager {
         allMods.add(Luck.instance());
         allMods.add(Melting.instance());
         allMods.add(Poisonous.instance());
-        /*should be enabled when finished*/ //allMods.add(Portalized.instance());
         allMods.add(Power.instance());
         allMods.add(Propelling.instance());
         allMods.add(Protecting.instance());
@@ -376,7 +374,7 @@ public class ModManager {
      * @return if the tool has the mod
      */
     public boolean hasMod(ItemStack tool, Modifier mod) {
-        return nbt.hasTag(tool, mod.getType().getNBTKey());
+        return mod.isAllowed() && nbt.hasTag(tool, mod.getType().getNBTKey());
     }
 
     /**

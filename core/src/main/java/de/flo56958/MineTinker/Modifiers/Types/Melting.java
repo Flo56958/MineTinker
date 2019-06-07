@@ -50,9 +50,7 @@ public class Melting extends Modifier implements Enchantable, Craftable, Listene
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-
-        return enchantments;
+        return new ArrayList<>();
     }
 
     @Override

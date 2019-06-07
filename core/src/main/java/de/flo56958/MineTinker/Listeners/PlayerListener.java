@@ -58,7 +58,7 @@ public class PlayerListener implements Listener {
             eligible = true;
         } else if (name[0].toLowerCase().equals("diamond") && repair.getType().equals(Material.DIAMOND)) {
             eligible = true;
-        } else if (name[0].toLowerCase().equals("bow") && (repair.getType().equals(Material.STICK) || repair.getType().equals(Material.STRING))) {
+        } else if ((name[0].toLowerCase().equals("bow") || name[0].toLowerCase().equals("crossbow") || name[0].toLowerCase().equals("fishing")) && (repair.getType().equals(Material.STICK) || repair.getType().equals(Material.STRING))) {
             eligible = true;
         } else if (name[0].toLowerCase().equals("shield") && Lists.getWoodPlanks().contains(repair.getType())) {
             eligible = true;

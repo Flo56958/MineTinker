@@ -56,9 +56,7 @@ public class Poisonous extends Modifier implements Enchantable, Craftable, Liste
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-
-        return enchantments;
+        return new ArrayList<>();
     }
 
     @Override

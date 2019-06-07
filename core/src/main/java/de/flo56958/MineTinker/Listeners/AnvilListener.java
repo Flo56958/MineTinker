@@ -192,8 +192,6 @@ public class AnvilListener implements Listener {
 
 	    ItemStack results = e.getCurrentItem();
 
-	    if (modManager.isToolViable(results) || modManager.isArmorViable(results)) {
-	        e.setCancelled(true);
-	    }
+	    if (modManager.isToolViable(results) || modManager.isArmorViable(results)) e.setCancelled(true);
     }
 }

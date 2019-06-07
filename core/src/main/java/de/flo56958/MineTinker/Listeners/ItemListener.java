@@ -95,9 +95,9 @@ public class ItemListener implements Listener {
                 }
             }
 
-            if (modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is)) { isMineTinker = true; }
+            if (modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is)) isMineTinker = true;
 
-            if (!isMineTinker) { continue; }
+            if (!isMineTinker) continue;
 
             if (((Soulbound) modManager.getAdmin(ModifierType.SOULBOUND)).effect(p, is)) { is.setAmount(0); continue; } //workaround as inv.remove(is) does not work insteads duplicates item
 

@@ -41,7 +41,7 @@ public class Commands implements TabExecutor {
     private static final String[] cmds_console = {"checkupdate", "info", "modifiers", "reload"};
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
             if (sender.hasPermission("minetinker.commands.main")) {

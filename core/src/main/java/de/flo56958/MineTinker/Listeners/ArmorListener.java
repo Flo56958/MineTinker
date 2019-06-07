@@ -45,25 +45,20 @@ public class ArmorListener implements Listener {
             Arrow arrow = (Arrow) ent;
             ProjectileSource source = arrow.getShooter();
 
-            if (source instanceof Entity) {
-                ent = (Entity) source;
-            } else {
-                return;
-            }
+            if (source instanceof Entity) ent = (Entity) source;
+            else return;
         }
 
         ItemStack[] armor = p.getInventory().getArmorContents();
 
         for (ItemStack piece : armor) {
-            if (!modManager.isArmorViable(piece)) { continue; }
+            if (!modManager.isArmorViable(piece)) continue;
 
             Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(p, piece, ent, e));
 
             int amount = config.getInt("ExpPerEntityHit");
 
-            if (config.getBoolean("EnableDamageExp")) {
-                amount = (int) e.getDamage();
-            }
+            if (config.getBoolean("EnableDamageExp")) amount = (int) e.getDamage();
 
             modManager.addExp(p, piece, amount);
         }
@@ -85,9 +80,7 @@ public class ArmorListener implements Listener {
 
             int amount = config.getInt("ExpPerEntityHit") / 2;
 
-            if (config.getBoolean("EnableDamageExp")) {
-                amount = (int) e.getDamage() / 2;
-            }
+            if (config.getBoolean("EnableDamageExp")) amount = (int) e.getDamage() / 2;
 
             modManager.addExp(p, piece, amount);
         }
@@ -102,9 +95,7 @@ public class ArmorListener implements Listener {
         Random rand = new Random();
         int chance = rand.nextInt(100);
 
-        if (chance < ConfigurationManager.getConfig("Elytra.yml").getInt("Elytra.ExpChanceWhileFlying")) {
-            modManager.addExp(e.getPlayer(), e.getItem(), config.getInt("ExpPerEntityHit"));
-        }
+        if (chance < ConfigurationManager.getConfig("Elytra.yml").getInt("Elytra.ExpChanceWhileFlying")) modManager.addExp(e.getPlayer(), e.getItem(), config.getInt("ExpPerEntityHit"));
 
         ((SelfRepair) modManager.getAdmin(ModifierType.SELF_REPAIR)).effectElytra(e.getPlayer(), e.getItem());
     }

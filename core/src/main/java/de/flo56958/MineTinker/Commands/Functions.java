@@ -29,10 +29,8 @@ class Functions {
 
         int index = 1;
 
-        for (Modifier m : modManager.getAllowedMods()) {
-            ChatWriter.sendMessage(sender, ChatColor.WHITE, index + ". " + m.getColor() + m.getName() + ChatColor.WHITE + ": " + m.getDescription());
-            index++;
-        }
+        for (Modifier m : modManager.getAllowedMods())
+            ChatWriter.sendMessage(sender, ChatColor.WHITE, index++ + ". " + m.getColor() + m.getName() + ChatColor.WHITE + ": " + m.getDescription());
     }
 
     /**
@@ -71,9 +69,8 @@ class Functions {
             if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
                 StringBuilder name = new StringBuilder();
 
-                for (int i = 1; i < args.length; i++) {
+                for (int i = 1; i < args.length; i++)
                     name.append(" ").append(args[i].replace('^', '§'));
-                }
 
                 name = new StringBuilder(name.substring(1));
 
@@ -160,11 +157,10 @@ class Functions {
                         ChatWriter.sendMessage(player, ChatColor.RED, "Please enter a valid number or 'full'!");
                     }
                 } catch (Exception e) {
-                    if (args[1].toLowerCase().equals("full") || args[1].toLowerCase().equals("f")) {
+                    if (args[1].toLowerCase().equals("full") || args[1].toLowerCase().equals("f"))
                         tool.setDurability((short) 0);
-                    } else {
+                    else
                         ChatWriter.sendMessage(player, ChatColor.RED, "Please enter a valid number or 'full'!");
-                    }
                 }
             } else {
                 Commands.invalidTool(player);
@@ -201,9 +197,9 @@ class Functions {
         ItemStack tool = new ItemStack(material, 1);
         modManager.convertItemStack(tool);
 
-        if (player.getInventory().addItem(tool).size() != 0) { //adds items to (full) inventory
+        if (player.getInventory().addItem(tool).size() != 0) //adds items to (full) inventory
             player.getWorld().dropItem(player.getLocation(), tool);
-        } // no else as it gets added in if
+        // no else as it gets added in if
     }
 
     /**
@@ -221,7 +217,7 @@ class Functions {
      * @param player
      * @param args command input of the player - parsed down from onCommand()
      */
-    public static void giveModifierItem(Player player, String[] args) {
+    static void giveModifierItem(Player player, String[] args) {
         boolean allOnline = false;
 
         if (args.length >= 2) {
@@ -275,7 +271,7 @@ class Functions {
         }
     }
 
-    public static void checkUpdate(CommandSender sender) {
+    static void checkUpdate(CommandSender sender) {
         if (config.getBoolean("CheckForUpdates")) {
             ChatWriter.sendMessage(sender, ChatColor.WHITE, "Checking for Updates...");
 

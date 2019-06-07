@@ -20,7 +20,6 @@ public enum Modifiers_Config {
 	Luck("Luck.yml"),
 	Melting("Melting.yml"),
 	Poisonous("Poisonous.yml"),
-	Portalized("Portalized.yml"),
 	Power("Power.yml"),
 	Propelling("Propelling.yml"),
 	Protecting("Protecting.yml"),

@@ -4,9 +4,7 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ToolUpgradeEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -15,8 +13,6 @@ import org.bukkit.plugin.PluginManager;
 public class ItemGenerator {
 
     private static final PluginManager pluginManager = Bukkit.getPluginManager();
-    //private static final FileConfiguration config = Main.getPlugin().getConfig();
-    //private static final ModManager modManager = ModManager.instance();
 
     public static String getDisplayName (ItemStack tool) {
         String name ;
@@ -28,21 +24,6 @@ public class ItemGenerator {
         }
 
         return name;
-    }
-
-    public static ItemStack itemEnchanter(Material m, String name, int amount, Enchantment ench, int level) {
-        ItemStack item = new ItemStack(m, amount);
-        ItemMeta meta = item.getItemMeta();
-
-        if (meta != null) {
-            meta.setDisplayName(name);
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            item.setItemMeta(meta);
-        }
-
-        item.addUnsafeEnchantment(ench, level);
-
-        return item;
     }
 
 	public static ItemStack itemUpgrader(ItemStack tool, ItemStack upgrade, Player p) {
