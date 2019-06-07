@@ -1,23 +1,21 @@
 package de.flo56958.MineTinker.Data;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Lists {
 
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     public static final List<String> WORLDS = config.getStringList("BannedWorlds");
-    public static final List<String> WORLDS_ELEVATOR = ConfigurationManager.getConfig("Elevator.yml").getStringList("Elevator.BannedWorlds");
     public static final List<String> WORLDS_BUILDERSWANDS = ConfigurationManager.getConfig("BuildersWand.yml").getStringList("BuildersWand.BannedWorlds");
     public static final List<String> WORLDS_SPAWNERS = config.getStringList("Spawners.BannedWorlds");
     public static final List<String> WORLDS_EASYHARVEST = config.getStringList("EasyHarvest.BannedWorlds");

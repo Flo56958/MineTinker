@@ -22,7 +22,6 @@ permissions:
     children:
       minetinker.commands.*: true
       minetinker.modifiers.*: true
-      minetinker.elevator.*: true
       minetinker.builderswands.*: true
       minetinker.tool.*: true
       minetinker.spawners.*: true
@@ -494,14 +493,6 @@ permissions:
     default: true
   minetinker.spawners.place:
     description: Allows to place a mined Spawner.
-    default: true
-
-  #Elevator:
-  minetinker.elevator.*:
-    children:
-      minetinker.elevator.use: true
-  minetinker.elevator.use:
-    description: Allows to use the Elevator of MineTinker
     default: true
 
   #Builderswands:

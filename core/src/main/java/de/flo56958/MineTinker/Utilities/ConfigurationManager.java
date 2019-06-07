@@ -43,7 +43,6 @@ public class ConfigurationManager {
         loadConfig("", "layout.yml");
 
         loadConfig("", "BuildersWand.yml");
-        loadConfig("", "Elevator.yml");
 
         loadConfig("", "Elytra.yml");
         loadConfig("", "Trident.yml");
@@ -68,7 +67,7 @@ public class ConfigurationManager {
         }
     }
 
-    //TODO: Make Set first Time option
+    //TODO: Make Set-first-Time option
     public static void saveConfig(FileConfiguration config) {
     	try {
 			config.save(configsFolder.get(config));

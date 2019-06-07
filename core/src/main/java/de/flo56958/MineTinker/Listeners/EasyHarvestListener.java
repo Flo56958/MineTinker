@@ -203,6 +203,7 @@ public class EasyHarvestListener implements Listener {
     private static void replantCrops(Player p, Block b, Material m) {
         if (config.getBoolean("EasyHarvest.replant")) {
             for (ItemStack is : p.getInventory().getContents()) {
+                if (is == null) continue;
                 if (m.equals(Material.BEETROOTS) && is.getType().equals(Material.BEETROOT_SEEDS)) {
                     is.setAmount(is.getAmount() - 1);
                     b.setType(m);
