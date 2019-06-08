@@ -73,3 +73,5 @@ buildNumber.properties
 
 # Dolphin browser keeps recreating this
 .directory
+*.mobirise_history
+screenshot.png

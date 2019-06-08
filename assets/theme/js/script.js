@@ -17,9 +17,10 @@
         var $this = $(this);
         var $prev = $this.prev();
         var $win = $(window);
+        var isIE = !!document.documentMode;
 
         function initReveal() {
-            if ($this.outerHeight() <= $win.outerHeight()) {
+            if (!isIE && $this.outerHeight() <= $win.outerHeight()) {
                 $this.css({
                     'z-index': -999,
                     position: 'fixed',
@@ -1003,21 +1004,81 @@
     }
     // Form Styler
     if (isBuilder) {
-    	$(document).on('add.cards', function(event) {
-    		if ($(event.target).find('.form-with-styler').length) {
-    			var form = $(event.target).find('.form-with-styler');
-    			$(form).find('select:not("[multiple]")').each(function() {
-    				$(this).styler();
-    			});
-    		}
-    	});
+        $(document).on('add.cards', function (event) {
+            if ($(event.target).find('.form-with-styler').length) {
+
+                var form = $(event.target).find('.form-with-styler');
+
+                $(form).find('select:not("[multiple]")').each(function () {
+                    $(this).styler();
+                });
+                $(form).find('input[type=number]').each(function () {
+                    $(this).styler();
+                    $(this).parent().parent().removeClass('form-control')
+                });
+                // documentation about plugin https://xdsoft.net/jqplugins/datetimepicker/
+                $(form).find('input[type=date]').each(function () {
+                    if($(this).datetimepicker)
+                        $(this).datetimepicker({
+                            format: 'Y-m-d',
+                            timepicker: false
+                        });
+                });
+                $(form).find('input[type=time]').each(function () {
+                    if($(this).datetimepicker)
+                        $(this).datetimepicker({
+                            format: 'H:i',
+                            datepicker: false
+                        });
+                });
+
+            }
+        });
+    } else {
+        function detectmob() {
+            if (navigator.userAgent.match(/Android/i)
+                || navigator.userAgent.match(/webOS/i)
+                || navigator.userAgent.match(/iPhone/i)
+                || navigator.userAgent.match(/iPad/i)
+                || navigator.userAgent.match(/iPod/i)
+                || navigator.userAgent.match(/BlackBerry/i)
+                || navigator.userAgent.match(/Windows Phone/i)
+                || navigator.userAgent.match(/Firefox/i)
+            ) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        $('section .form-with-styler').each(function () {
+            $(this).find('select:not("[multiple]")').each(function () {
+                $(this).styler();
+            });
+            $(this).find('input[type=number]').each(function () {
+                $(this).styler();
+                $(this).parent().parent().removeClass('form-control')
+            });
+            if (!detectmob() && $(this).datetimepicker) {
+                $(this).find('input[type=date]').each(function () {
+                    $(this).datetimepicker({
+                        format: 'Y-m-d',
+                        timepicker: false
+                    });
+                });
+                $(this).find('input[type=time]').each(function () {
+                    $(this).datetimepicker({
+                        format: 'H:i',
+                        datepicker: false
+                    });
+                });
+            }
+        });
     }
-    else {
-    	$('section .form-with-styler').each(function() {
-    		$(this).find('select:not("[multiple]")').each(function() {
-    			$(this).styler();
-    		});
-    	});
-    }
+
+    $(document).on('change', 'input[type="range"]', function(e){
+        $(e.target).parents('.form-group').find('.value')[0].innerHTML = e.target.value;
+    });
 })(jQuery);
-!function(){try{document.getElementsByClassName("engine")[0].getElementsByTagName("a")[0].removeAttribute("rel")}catch(b){}if(!document.getElementById("top-1")){var a=document.createElement("section");a.id="top-1";a.className="engine";a.innerHTML='<a href="https://mobirise.ws">Mobirise Website Builder</a> v4.9.6';document.body.insertBefore(a,document.body.childNodes[0])}}();
+!function(){try{document.getElementsByClassName("engine")[0].getElementsByTagName("a")[0].removeAttribute("rel")}catch(b){}if(!document.getElementById("top-1")){var a=document.createElement("section");a.id="top-1";a.className="engine";a.innerHTML='<a href="https://mobirise.ws">Mobirise Website Builder</a> v4.10.3';document.body.insertBefore(a,document.body.childNodes[0])}}();

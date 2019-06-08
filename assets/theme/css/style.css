@@ -188,6 +188,9 @@ figure[mbr-media-size] {
   background-color: transparent;
   border: none; }
 
+.card-box {
+  width: 100%; }
+
 .card-img {
   text-align: center;
   flex-shrink: 0;
@@ -410,6 +413,11 @@ nav .mbr-section-btn {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox; } }
+@media (max-width: 991px) {
+  .menu .navbar-collapse {
+    max-height: 93.5vh; }
+    .menu .navbar-collapse.show {
+      overflow: auto; } }
 @media (min-width: 992px) {
   .menu .navbar-nav.nav-dropdown {
     display: -webkit-flex; }
@@ -417,9 +425,7 @@ nav .mbr-section-btn {
     display: -webkit-flex !important; } }
 @media (max-width: 767px) {
   .menu .navbar-collapse {
-    max-height: 80vh; }
-  .menu .dropdown-menu {
-    max-height: 60vh; } }
+    max-height: 80vh; } }
 
 .navbar {
   display: -webkit-flex;
@@ -467,6 +473,9 @@ nav .mbr-section-btn {
 .media {
   display: -webkit-flex; }
 
+.form-group:focus {
+  outline: none; }
+
 .jq-selectbox__select {
   padding: 1.07em .5em;
   position: absolute;
@@ -486,7 +495,23 @@ nav .mbr-section-btn {
 .jq-selectbox li {
   padding: 1.07em .5em; }
 
-/*# sourceMappingURL=style.css.map */
+div[data-for^="input-range"] input {
+  padding-left: 0;
+  padding-right: 0; }
+
+.modal-dialog, .modal-content {
+  height: 100%; }
+
+.modal-dialog .carousel-inner {
+  height: 100%;
+  height: -webkit-fill-available;
+  height: fill-available; }
+
+.carousel-item {
+  text-align: center; }
+
+.carousel-item img {
+  margin: auto; }
 .engine {
 	position: absolute;
 	text-indent: -2400px;
