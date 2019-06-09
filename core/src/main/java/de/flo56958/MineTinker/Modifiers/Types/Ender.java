@@ -82,9 +82,10 @@ public class Ender extends Modifier implements Craftable, Listener {
         
         init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
+                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
+                ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
+                ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.hasSound = config.getBoolean(key + ".Sound");
         this.hasParticles = config.getBoolean(key + ".Particles");

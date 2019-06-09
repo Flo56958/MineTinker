@@ -178,6 +178,7 @@ public class ModManager {
         allMods.add(Sharpness.instance());
         allMods.add(Shulking.instance());
         allMods.add(SilkTouch.instance());
+        allMods.add(Smite.instance());
         allMods.add(Soulbound.instance());
         allMods.add(Sweeping.instance());
         allMods.add(Timber.instance());

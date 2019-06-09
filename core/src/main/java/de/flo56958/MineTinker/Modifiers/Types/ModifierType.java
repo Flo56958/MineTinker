@@ -29,6 +29,7 @@ public enum ModifierType {
     SHARPNESS("Sharpness"),
     SHULKING("Shulking"),
     SILK_TOUCH("Silk-Touch"),
+    SMITE("Smite"),
     SOULBOUND("Soulbound"),
     SWEEPING("Sweeping"),
     TIMBER("Timber"),

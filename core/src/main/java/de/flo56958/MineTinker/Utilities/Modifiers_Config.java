@@ -28,6 +28,7 @@ public enum Modifiers_Config {
 	Sharpness("Sharpness.yml"),
 	Shulking("Shulking.yml"),
 	Silk_Touch("Silk-Touch.yml"),
+	Smite("Smite.yml"),
 	Soulbound("Soulbound.yml"),
 	Sweeping("Sweeping.yml"),
 	Timber("Timber.yml"),
