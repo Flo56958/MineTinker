@@ -32,6 +32,7 @@ public enum Modifiers_Config {
 	Soulbound("Soulbound.yml"),
 	SpidersBane("Spiders-Bane.yml"),
 	Sweeping("Sweeping.yml"),
+	Thorned("Thorned.yml"),
 	Timber("Timber.yml"),
 	Webbed("Webbed.yml");
 

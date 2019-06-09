@@ -33,6 +33,7 @@ public enum ModifierType {
     SOULBOUND("Soulbound"),
     SPIDERSBANE("Spider's-Bane"),
     SWEEPING("Sweeping"),
+    THORNED("Thorned"),
     TIMBER("Timber"),
     WEBBED("Webbed"),
 

@@ -182,6 +182,7 @@ public class ModManager {
         allMods.add(Soulbound.instance());
         allMods.add(SpidersBane.instance());
         allMods.add(Sweeping.instance());
+        allMods.add(Thorned.instance());
         allMods.add(Timber.instance());
         allMods.add(Webbed.instance());
         
