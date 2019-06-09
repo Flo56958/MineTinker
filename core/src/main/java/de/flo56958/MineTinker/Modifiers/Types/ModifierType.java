@@ -31,6 +31,7 @@ public enum ModifierType {
     SILK_TOUCH("Silk-Touch"),
     SMITE("Smite"),
     SOULBOUND("Soulbound"),
+    SPIDERSBANE("Spider's-Bane"),
     SWEEPING("Sweeping"),
     TIMBER("Timber"),
     WEBBED("Webbed"),

@@ -103,6 +103,13 @@ public class Sharpness extends Modifier implements Craftable {
                             return null;
                         }
                     }
+                } else if (!this.compatibleWithArthropods) {
+                    if (modManager.get(ModifierType.SPIDERSBANE) != null) {
+                        if (modManager.hasMod(tool, modManager.get(ModifierType.SPIDERSBANE)) || meta.hasEnchant(Enchantment.DAMAGE_ARTHROPODS)) {
+                            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                            return null;
+                        }
+                    }
                 }
 
                 meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);

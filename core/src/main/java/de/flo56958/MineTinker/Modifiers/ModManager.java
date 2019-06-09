@@ -180,6 +180,7 @@ public class ModManager {
         allMods.add(SilkTouch.instance());
         allMods.add(Smite.instance());
         allMods.add(Soulbound.instance());
+        allMods.add(SpidersBane.instance());
         allMods.add(Sweeping.instance());
         allMods.add(Timber.instance());
         allMods.add(Webbed.instance());

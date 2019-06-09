@@ -30,6 +30,7 @@ public enum Modifiers_Config {
 	Silk_Touch("Silk-Touch.yml"),
 	Smite("Smite.yml"),
 	Soulbound("Soulbound.yml"),
+	SpidersBane("Spiders-Bane.yml"),
 	Sweeping("Sweeping.yml"),
 	Timber("Timber.yml"),
 	Webbed("Webbed.yml");

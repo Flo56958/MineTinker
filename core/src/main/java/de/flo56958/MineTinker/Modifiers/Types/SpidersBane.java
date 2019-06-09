@@ -21,30 +21,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Smite extends Modifier implements Craftable {
+public class SpidersBane extends Modifier implements Craftable {
 
+    private boolean compatibleWithSmite;
     private boolean compatibleWithSharpness;
-    private boolean compatibleWithArthropods;
 
-    private static Smite instance;
+    private static SpidersBane instance;
 
-    public static Smite instance() {
-        synchronized (Smite.class) {
-            if (instance == null) instance = new Smite();
+    public static SpidersBane instance() {
+        synchronized (SpidersBane.class) {
+            if (instance == null) instance = new SpidersBane();
         }
         return instance;
     }
 
-    private Smite() {
-        super(ModifierType.SMITE,
-                new ArrayList<>(Arrays.asList(ToolType.SWORD, ToolType.AXE)),
+    private SpidersBane() {
+        super(ModifierType.SPIDERSBANE,
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.SWORD)),
                 Main.getPlugin());
     }
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
         List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.DAMAGE_UNDEAD);
+        enchantments.add(Enchantment.DAMAGE_ARTHROPODS);
 
         return enchantments;
     }
@@ -54,24 +54,24 @@ public class Smite extends Modifier implements Craftable {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Smite";
+        String key = "SpidersBane";
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Holy Bone");
-        config.addDefault(key + ".modifier_item", "BONE"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Weapon does additional damage towards the Undead!");
-        config.addDefault(key + ".description_modifier", "%YELLOW%Modifier-Item for the Smite-Modifier");
-        config.addDefault(key + ".Color", "%YELLOW%");
+        config.addDefault(key + ".name_modifier", "Cleansed Spider Eye");
+        config.addDefault(key + ".modifier_item", "FERMENTED_SPIDER_EYE"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".description", "Weapon does additional damage to Spiders!");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Spider's-Bane-Modifier");
+        config.addDefault(key + ".Color", "%RED%");
         config.addDefault(key + ".MaxLevel", 5);
+        config.addDefault(key + ".CompatibleWithSmite", false);
         config.addDefault(key + ".CompatibleWithSharpness", false);
-        config.addDefault(key + ".CompatibleWithArthropods", false);
         config.addDefault(key + ".Recipe.Enabled", true);
-        config.addDefault(key + ".Recipe.Top", "BMB");
-        config.addDefault(key + ".Recipe.Middle", "MIM");
-        config.addDefault(key + ".Recipe.Bottom", "BMB");
-        config.addDefault(key + ".Recipe.Materials.B", "BONE");
-        config.addDefault(key + ".Recipe.Materials.M", "BONE_MEAL");
-        config.addDefault(key + ".Recipe.Materials.I", "IRON_INGOT");
+        config.addDefault(key + ".Recipe.Top", "ESE");
+        config.addDefault(key + ".Recipe.Middle", "SFS");
+        config.addDefault(key + ".Recipe.Bottom", "ESE");
+        config.addDefault(key + ".Recipe.Materials.E", "SPIDER_EYE");
+        config.addDefault(key + ".Recipe.Materials.S", "STRING");
+        config.addDefault(key + ".Recipe.Materials.F", "FERMENTED_SPIDER_EYE");
 
         ConfigurationManager.saveConfig(config);
 
@@ -79,40 +79,40 @@ public class Smite extends Modifier implements Craftable {
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
-                ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
-                ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                        ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
+                        ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
 
+        this.compatibleWithSmite = config.getBoolean(key + ".CompatibleWithSmite");
         this.compatibleWithSharpness = config.getBoolean(key + ".CompatibleWithSharpness");
-        this.compatibleWithArthropods = config.getBoolean(key + ".CompatibleWithArthropods");
     }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "smite", isCommand) == null) {
+        if (Modifier.checkAndAdd(p, tool, this, "sharpness", isCommand) == null) {
             return null;
         }
 
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (!ToolType.AXE.getMaterials().contains(tool.getType()) && !ToolType.SWORD.getMaterials().contains(tool.getType())) {
-                if (!this.compatibleWithSharpness) {
+            if (ToolType.AXE.getMaterials().contains(tool.getType()) || ToolType.SWORD.getMaterials().contains(tool.getType())) {
+                if (!this.compatibleWithSmite) {
+                    if (modManager.get(ModifierType.SMITE) != null) {
+                        if (modManager.hasMod(tool, modManager.get(ModifierType.SMITE)) || meta.hasEnchant(Enchantment.DAMAGE_UNDEAD)) {
+                            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                            return null;
+                        }
+                    }
+                } else if (!this.compatibleWithSharpness) {
                     if (modManager.get(ModifierType.SHARPNESS) != null) {
                         if (modManager.hasMod(tool, modManager.get(ModifierType.SHARPNESS)) || meta.hasEnchant(Enchantment.DAMAGE_ALL)) {
                             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
                             return null;
                         }
                     }
-                } else if (!this.compatibleWithArthropods) {
-                    if (modManager.get(ModifierType.SPIDERSBANE) != null) {
-                        if (modManager.hasMod(tool, modManager.get(ModifierType.SPIDERSBANE)) || meta.hasEnchant(Enchantment.DAMAGE_ARTHROPODS)) {
-                            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                            return null;
-                        }
-                    }
                 }
 
-                meta.addEnchant(Enchantment.DAMAGE_UNDEAD, modManager.getModLevel(tool, this), true);
+                meta.addEnchant(Enchantment.DAMAGE_ARTHROPODS, modManager.getModLevel(tool, this), true);
             }
 
             if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
@@ -132,7 +132,7 @@ public class Smite extends Modifier implements Craftable {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            meta.removeEnchant(Enchantment.DAMAGE_UNDEAD);
+            meta.removeEnchant(Enchantment.DAMAGE_ARTHROPODS);
 
             tool.setItemMeta(meta);
         }
@@ -140,15 +140,15 @@ public class Smite extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Smite", "Modifier_Smite");
+        _registerCraftingRecipe(getConfig(), this, "SpidersBane", "Modifier_SpidersBane");
     }
 
     private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(Modifiers_Config.Smite);
+        return ConfigurationManager.getConfig(Modifiers_Config.SpidersBane);
     }
 
     @Override
     public boolean isAllowed() {
-        return getConfig().getBoolean("Smite.allowed");
+        return getConfig().getBoolean("SpidersBane.allowed");
     }
 }
