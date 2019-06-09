@@ -7,6 +7,7 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.PlayerInfo;
+import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -233,9 +233,6 @@ public class EasyHarvestListener implements Listener {
     }
 
     private static void breakBlock(Block b, Player p) {
-        BlockBreakEvent event = new BlockBreakEvent(b, p);
-        Bukkit.getServer().getPluginManager().callEvent(event);
-
-        if (!event.isCancelled()) b.breakNaturally(p.getInventory().getItemInMainHand());
+        NBTUtils.getHandler().playerBreakBlock(p, b);
     }
 }
