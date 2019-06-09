@@ -89,9 +89,10 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
     	
     	init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
+                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
+                ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
+                ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.percentagePerLevel = config.getInt(key + ".PercentagePerLevel");
         this.hasSound = config.getBoolean(key + ".Sound");
@@ -326,7 +327,9 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
 
             if (this.hasParticles) { b.getLocation().getWorld().spawnParticle(Particle.FLAME, b.getLocation(), 5); }
             if (this.hasSound) { b.getLocation().getWorld().playSound(b.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F); }
-            ChatWriter.log(false, p.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") while mining " + e.getBlock().getType().toString() + "!");
+
+            ChatWriter.log(false, p.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY +
+                    " (" + tool.getType().toString() + ") while mining " + e.getBlock().getType().toString() + "!");
         }
     }
 
