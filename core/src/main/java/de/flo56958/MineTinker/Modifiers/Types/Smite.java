@@ -66,11 +66,11 @@ public class Smite extends Modifier implements Craftable {
         config.addDefault(key + ".CompatibleWithSharpness", false);
         config.addDefault(key + ".CompatibleWithArthropods", false);
         config.addDefault(key + ".Recipe.Enabled", true);
-        config.addDefault(key + ".Recipe.Top", "SWS");
-        config.addDefault(key + ".Recipe.Middle", "WIW");
-        config.addDefault(key + ".Recipe.Bottom", "SWS");
-        config.addDefault(key + ".Recipe.Materials.S", "SPIDER_EYE");
-        config.addDefault(key + ".Recipe.Materials.W", "COBWEB");
+        config.addDefault(key + ".Recipe.Top", "BMB");
+        config.addDefault(key + ".Recipe.Middle", "MIM");
+        config.addDefault(key + ".Recipe.Bottom", "BMB");
+        config.addDefault(key + ".Recipe.Materials.B", "BONE");
+        config.addDefault(key + ".Recipe.Materials.M", "BONE_MEAL");
         config.addDefault(key + ".Recipe.Materials.I", "IRON_INGOT");
 
         ConfigurationManager.saveConfig(config);
