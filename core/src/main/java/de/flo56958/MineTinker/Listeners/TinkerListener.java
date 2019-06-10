@@ -8,6 +8,7 @@ import de.flo56958.MineTinker.Events.ToolUpgradeEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Modifiers.Types.ExtraModifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.ChatColor;
@@ -73,30 +74,12 @@ public class TinkerListener implements Listener {
         }
     }
 
-    @SuppressWarnings("deprecation")
 	@EventHandler
     public void onToolLevelUp(ToolLevelUpEvent e) {
         Player p = e.getPlayer();
         ItemStack tool = e.getTool();
 
-        if (config.getBoolean("Sound.OnLevelUp")) p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.5F);
-
-        if (config.getInt("AddModifierSlotsPerLevel") > 0) {
-            int slots = modManager.getFreeSlots(tool);
-
-            if (!(slots == Integer.MAX_VALUE || slots < 0))
-                slots += config.getInt("AddModifierSlotsPerLevel");
-            else
-                slots = Integer.MAX_VALUE;
-
-            modManager.setFreeSlots(tool, slots);
-        }
-
-        ChatWriter.sendActionBar(p, ItemGenerator.getDisplayName(tool) + ChatColor.GOLD + " just got a Level-Up!");
-        ChatWriter.log(false, p.getDisplayName() + " leveled up " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
-
-        //------------------------------------------------------------------------------------------------------------------------
-
+        boolean appliedRandomMod = false;
         if (config.getBoolean("LevelUpEvents.enabled")) {
             Random rand = new Random();
             if (config.getBoolean("LevelUpEvents.DurabilityRepair.enabled")) {
@@ -104,8 +87,10 @@ public class TinkerListener implements Listener {
 
                 if (n <= config.getInt("LevelUpEvents.DurabilityRepair.percentage")) {
                     Damageable dam = (Damageable) tool.getItemMeta();
-                    dam.setDamage(0);
-                    tool.setItemMeta((ItemMeta) dam);
+                    if (dam != null) {
+                        dam.setDamage(0);
+                        tool.setItemMeta((ItemMeta) dam);
+                    }
                 }
             }
             if (config.getBoolean("LevelUpEvents.DropLoot.enabled")) {
@@ -127,29 +112,34 @@ public class TinkerListener implements Listener {
                     }
                 }
             }
-            if (config.getBoolean("LevelUpEvents.RandomModifier.enabled")) { //TODO: Simplify code
+            if (config.getBoolean("LevelUpEvents.RandomModifier.enabled")) {
                 int n = rand.nextInt(100);
                 if (n <= config.getInt("LevelUpEvents.RandomModifier.percentage")) {
-                    for (int i = 0; i < p.getInventory().getSize(); i++) { //Do not know why this is here
+                    for (int i = 0; i < p.getInventory().getSize(); i++) { //getting the inventory slot of the tool
                         if (p.getInventory().getItem(i) != null && p.getInventory().getItem(i).equals(tool)) {  //Can be NULL!
-                            ItemStack newTool = null;
-                            ItemStack safety = tool.clone();
+                            for (int j = 0; j < config.getInt("LevelUpEvents.RandomModifier.AmountOfModifiers"); j++) {
+                                ItemStack newTool = null;
+                                ItemStack safety = tool.clone();
 
-                            List<Modifier> mods = new ArrayList<>(modManager.getAllowedMods()); //necessary as the failed modifiers get removed from the list (so a copy is in order)
+                                List<Modifier> mods = new ArrayList<>(modManager.getAllowedMods()); //necessary as the failed modifiers get removed from the list (so a copy is in order)
 
-                            while (newTool == null) {
-                                int index = new Random().nextInt(mods.size());
-                                newTool = mods.get(index).applyMod(p, safety, true);
+                                if (!config.getBoolean("LevelUpEvents.RandomModifier.AllowExtraModifier")) mods.remove(ExtraModifier.instance());
 
-                                if (newTool == null) {
-                                    mods.remove(index); //Remove the failed modifier from the the list of the possibles
+                                while (newTool == null) {
+                                    int index = new Random().nextInt(mods.size());
+                                    newTool = mods.get(index).applyMod(p, safety, true);
+
+                                    if (newTool == null) {
+                                        mods.remove(index); //Remove the failed modifier from the the list of the possibles
+                                    }
+
+                                    if (mods.isEmpty()) { break; } //Secures that the while will terminate after some time (if all modifiers were removed)
                                 }
-
-                                if (mods.isEmpty()) { break; } //Secures that the while will terminate after some time (if all modifiers were removed)
-                            }
-                            if (newTool != null) { //while could have been broken out of -> newTool could still be null
-                                tool = newTool;
-                                p.getInventory().setItem(i, tool);
+                                if (newTool != null) { //while could have been broken out of -> newTool could still be null
+                                    tool = newTool;
+                                    p.getInventory().setItem(i, tool);
+                                    appliedRandomMod = true;
+                                } else break;
                             }
                             break;
                         }
@@ -164,5 +154,23 @@ public class TinkerListener implements Listener {
                 }
             }
         }
+
+        //------------------------------------------------------------------------------------------------------------------------
+
+        if (config.getBoolean("Sound.OnLevelUp")) p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.5F);
+
+        if (config.getInt("AddModifierSlotsPerLevel") > 0 && !(config.getBoolean("LevelUpEvents.RandomModifier.DisableAddingNewSlots") && appliedRandomMod)) {
+            int slots = modManager.getFreeSlots(tool);
+
+            if (!(slots == Integer.MAX_VALUE || slots < 0))
+                slots += config.getInt("AddModifierSlotsPerLevel");
+            else
+                slots = Integer.MAX_VALUE;
+
+            modManager.setFreeSlots(tool, slots);
+        }
+
+        ChatWriter.sendActionBar(p, ItemGenerator.getDisplayName(tool) + ChatColor.GOLD + " just got a Level-Up!");
+        ChatWriter.log(false, p.getDisplayName() + " leveled up " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
     }
 }

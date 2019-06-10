@@ -33,7 +33,7 @@ ExtraExpPerEntityDeath:               #Extra Exp for enitity death
 EnableDamageExp: false                #When true: Sword/Bow will gain XP equal to the damage-value
 
 #---------------TOOL-SETTINGS--------------
-AddModifierSlotsPerLevel: 1           #Amount of new free Modifier-Slots for each Level-Up
+AddModifierSlotsPerLevel: 1           #Amount of new free Modifier-Slots for each Level-Up (must be positive or zero)
 StartingModifierSlots: 1
 Upgradeable: true                     #Can you upgrade your tools with an anvil
 Repairable: true                      #Can you repair your tools in your inventory (instead of an anvil) just by dragging the ressource on the tool
@@ -58,13 +58,16 @@ ItemBehaviour:
 
 #---------------LEVELUP-EVENTS--------------
 LevelUpEvents:                        #Events that happen when a MT-Item gets a Level-Up (chancebased)
-  enabled: true
+  enabled: true                       #disable all events
   DurabilityRepair:                   #Repairs the tool
     enabled: true
     percentage: 50
   RandomModifier:                     #Applies a random modifier
     enabled: true
     percentage: 10
+    AmountOfModifiers: 1              #How many (different) Modifiers should be applied in this event
+    DisableAddingNewSlots: false      #Should the Event replace the normal free Slots on Level up
+    AllowExtraModifier: true          #Should the Extra Modifier be part of the random roll
   DropLoot:                           #Drops specific loot
     enabled: true
     percentage: 25

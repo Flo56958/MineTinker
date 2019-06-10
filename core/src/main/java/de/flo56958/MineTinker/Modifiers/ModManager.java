@@ -249,7 +249,7 @@ public class ModManager {
     public List<Modifier> getEnchantableMods() { return this.enchantableMods; }
 
     /**
-     * get a specific modifier instance
+     * get a specific modifier instance (can be replaced with .instance())
      *
      * @param type the modifiertype
      * @return the modifier instance, null if modifier is not allowed or loaded
@@ -265,7 +265,7 @@ public class ModManager {
     }
 
     /**
-     * get a specific modifier instance even the not allowed ones
+     * get a specific modifier instance even the not allowed ones (can be replaced with .instance())
      *
      * @param type the modifiertype
      * @return the modifier instance, null if modifier is not allowed or loaded
