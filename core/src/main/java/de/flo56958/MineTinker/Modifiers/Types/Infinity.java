@@ -82,13 +82,13 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
         if (!this.compatibleWithEnder) {
-            if (modManager.hasMod(tool, modManager.getAdmin(ModifierType.ENDER))) {
+            if (modManager.hasMod(tool, Ender.instance())) {
                 pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
                 return null;
             }
         }
 
-        if (modManager.hasMod(tool, modManager.getAdmin(ModifierType.PROPELLING))) {
+        if (modManager.hasMod(tool, Propelling.instance())) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
             return null;
         }
