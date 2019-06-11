@@ -58,10 +58,10 @@ public class AntiBlastPlating extends Modifier implements Craftable {
         String key = "Anti-Blast-Plating";
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Heat Resistant Metal");
+        config.addDefault(key + ".name_modifier", "Blast Resistant Metal");
         config.addDefault(key + ".modifier_item", "IRON_BLOCK"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Weapon does additional damage!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Sharpness-Modifier");
+        config.addDefault(key + ".description", "Armor mitigates explosion damage!");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Anti-Blast-Plating-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");
         config.addDefault(key + ".MaxLevel", 5);
         config.addDefault(key + ".CompatibleWithProtecting", false);

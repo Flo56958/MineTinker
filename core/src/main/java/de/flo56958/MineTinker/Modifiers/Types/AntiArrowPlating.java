@@ -60,8 +60,8 @@ public class AntiArrowPlating extends Modifier implements Craftable {
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Pierce Resistant Metal");
         config.addDefault(key + ".modifier_item", "IRON_BLOCK"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Weapon does additional damage!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Sharpness-Modifier");
+        config.addDefault(key + ".description", "Armor mitigates projectile damage!");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Anti-Arrow-Plating-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");
         config.addDefault(key + ".MaxLevel", 5);
         config.addDefault(key + ".CompatibleWithProtecting", false);
