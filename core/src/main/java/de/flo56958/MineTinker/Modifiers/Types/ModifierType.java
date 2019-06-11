@@ -55,12 +55,6 @@ public enum ModifierType {
         this.fileName = fileName;
     }
 
-    private final ModManager modManager = ModManager.instance();
-
-    public String getName() {
-        return modManager.get(this).getName();
-    }
-
     public String getNBTKey() {
         return nbtTag;
     }
