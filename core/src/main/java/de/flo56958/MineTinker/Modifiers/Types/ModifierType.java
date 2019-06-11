@@ -6,6 +6,7 @@ public enum ModifierType {
     AQUAPHILIC("Aquaphilic"),
     AUTO_SMELT("Auto-Smelt"),
     BEHEADING("Beheading"),
+    CHANNELING("Channeling"),
     DIRECTING("Directing"),
     ENDER("Ender"),
     EXPERIENCED("Experienced"),

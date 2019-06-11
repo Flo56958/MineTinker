@@ -5,6 +5,7 @@ public enum Modifiers_Config {
 	Aquaphilic("Aquaphilic.yml"),
 	Auto_Smelt("Auto-Smelt.yml"),
 	Beheading("Beheading.yml"),
+	Channeling("Channeling.yml"),
 	Directing("Directing.yml"),
 	Ender("Ender.yml"),
 	Experienced("Experienced.yml"),

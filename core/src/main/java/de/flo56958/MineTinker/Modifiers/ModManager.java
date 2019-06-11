@@ -155,6 +155,7 @@ public class ModManager {
         allMods.add(Aquaphilic.instance());
     	allMods.add(AutoSmelt.instance());
     	allMods.add(Beheading.instance());
+    	allMods.add(Channeling.instance());
     	allMods.add(Directing.instance());
     	allMods.add(Ender.instance());
     	allMods.add(Experienced.instance());
