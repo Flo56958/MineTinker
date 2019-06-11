@@ -97,18 +97,14 @@ public class Sharpness extends Modifier implements Craftable {
         if (meta != null) {
             if (ToolType.AXE.getMaterials().contains(tool.getType()) || ToolType.SWORD.getMaterials().contains(tool.getType())) {
                 if (!this.compatibleWithSmite) {
-                    if (modManager.get(ModifierType.SMITE) != null) {
-                        if (modManager.hasMod(tool, modManager.get(ModifierType.SMITE)) || meta.hasEnchant(Enchantment.DAMAGE_UNDEAD)) {
-                            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                            return null;
-                        }
+                    if (modManager.hasMod(tool, Smite.instance()) || meta.hasEnchant(Enchantment.DAMAGE_UNDEAD)) {
+                        pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                        return null;
                     }
                 } else if (!this.compatibleWithArthropods) {
-                    if (modManager.get(ModifierType.SPIDERSBANE) != null) {
-                        if (modManager.hasMod(tool, modManager.get(ModifierType.SPIDERSBANE)) || meta.hasEnchant(Enchantment.DAMAGE_ARTHROPODS)) {
-                            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                            return null;
-                        }
+                    if (modManager.hasMod(tool, SpidersBane.instance()) || meta.hasEnchant(Enchantment.DAMAGE_ARTHROPODS)) {
+                        pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                        return null;
                     }
                 }
 

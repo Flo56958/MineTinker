@@ -97,18 +97,14 @@ public class Smite extends Modifier implements Craftable {
         if (meta != null) {
             if (!ToolType.AXE.getMaterials().contains(tool.getType()) && !ToolType.SWORD.getMaterials().contains(tool.getType())) {
                 if (!this.compatibleWithSharpness) {
-                    if (modManager.get(ModifierType.SHARPNESS) != null) {
-                        if (modManager.hasMod(tool, modManager.get(ModifierType.SHARPNESS)) || meta.hasEnchant(Enchantment.DAMAGE_ALL)) {
-                            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                            return null;
-                        }
+                    if (modManager.hasMod(tool, Sharpness.instance()) || meta.hasEnchant(Enchantment.DAMAGE_ALL)) {
+                        pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                        return null;
                     }
                 } else if (!this.compatibleWithArthropods) {
-                    if (modManager.get(ModifierType.SPIDERSBANE) != null) {
-                        if (modManager.hasMod(tool, modManager.get(ModifierType.SPIDERSBANE)) || meta.hasEnchant(Enchantment.DAMAGE_ARTHROPODS)) {
-                            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                            return null;
-                        }
+                    if (modManager.hasMod(tool, SpidersBane.instance()) || meta.hasEnchant(Enchantment.DAMAGE_ARTHROPODS)) {
+                        pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                        return null;
                     }
                 }
 
