@@ -95,11 +95,9 @@ public class Ender extends Modifier implements Craftable, Listener {
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
         if (!this.compatibleWithInfinity) {
-            if (modManager.get(ModifierType.INFINITY) != null) {
-                if (modManager.hasMod(tool, modManager.get(ModifierType.INFINITY))) {
-                    pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                    return null;
-                }
+            if (modManager.hasMod(tool, Infinity.instance())) {
+                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                return null;
             }
         }
 
