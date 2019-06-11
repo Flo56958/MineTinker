@@ -152,6 +152,9 @@ public class ModManager {
      * checks and loads all modifiers with configurations settings into memory
      */
     private void init() {
+        allMods.add(AntiArrowPlating.instance());
+        allMods.add(AntiBlastPlating.instance());
+        allMods.add(AntiFirePlating.instance());
         allMods.add(Aquaphilic.instance());
     	allMods.add(AutoSmelt.instance());
     	allMods.add(Beheading.instance());
@@ -187,7 +190,7 @@ public class ModManager {
         allMods.add(Timber.instance());
         allMods.add(Webbed.instance());
 
-        if (NBTUtils.isOneThirteenCompatible()) {
+        if (NBTUtils.isOneFourteenCompatible()) {
             allMods.add(Piercing.instance());
             allMods.add(MultiShot.instance());
             allMods.add(QuickCharge.instance());
