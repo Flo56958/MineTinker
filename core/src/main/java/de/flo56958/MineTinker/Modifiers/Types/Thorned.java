@@ -49,7 +49,7 @@ public class Thorned extends Modifier implements Craftable {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Protecting";
+        String key = "Thorned";
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Spiked Plating");
