@@ -6,7 +6,6 @@ import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Events.MTEntityDamageEvent;
 import de.flo56958.MineTinker.Events.MTPlayerInteractEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -30,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class SelfRepair extends Modifier implements Enchantable, Craftable, Listener {
+public class SelfRepair extends Modifier implements Enchantable, Listener {
 
     private int percentagePerLevel;
     private int healthRepair;

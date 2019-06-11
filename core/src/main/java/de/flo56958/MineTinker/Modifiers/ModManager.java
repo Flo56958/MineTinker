@@ -127,22 +127,23 @@ public class ModManager {
         this.enchantableMods.clear();
     	
     	for (Modifier m : this.mods) {
-            if (m instanceof Craftable) {
-                this.craftableMods.add(m);
-            }
+    	    // TODO: Check if this list is necessary
+    	    this.craftableMods.add(m);
 
             if (m instanceof Enchantable) {
                 this.enchantableMods.add(m);
             }
         }
 
-        for (Modifier m : this.craftableMods)
-            ((Craftable) m).registerCraftingRecipe();
+        for (Modifier m : this.craftableMods) {
+            m.registerCraftingRecipe();
+        }
 
         this.loreScheme = layout.getStringList("LoreLayout");
 
-        for (int i = 0; i < loreScheme.size(); i++)
+        for (int i = 0; i < loreScheme.size(); i++) {
             loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
+        }
 
         this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
         this.allowBookConvert = config.getBoolean("ConvertBookToModifier");
@@ -648,8 +649,7 @@ public class ModManager {
     public boolean durabilityCheck(Cancellable e, Player p, ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
 
-        // TODO: Check if damageable?
-        if (meta != null) {
+        if (meta instanceof Damageable) {
             if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2 && config.getBoolean("UnbreakableTools")) {
                 e.setCancelled(true);
 

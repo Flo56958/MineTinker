@@ -95,6 +95,11 @@ public class ExtraModifier extends Modifier {
     @Override
     public void removeMod(ItemStack tool) { }
 
+    @Override
+    public void registerCraftingRecipe() {
+        // no recipe
+    }
+
     private static FileConfiguration getConfig() {
         return ConfigurationManager.getConfig(ModifierType.EXTRA_MODIFIER.getFileName());
     }
