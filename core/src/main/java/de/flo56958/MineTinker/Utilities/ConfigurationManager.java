@@ -39,6 +39,10 @@ public class ConfigurationManager {
 
     public static void reload() {
         for (ModifierType modifier : ModifierType.values()) {
+            if (modifier.getFileName().isEmpty()) {
+                continue;
+            }
+
         	loadConfig("Modifiers" + File.separator, modifier.getFileName());
         }
 
