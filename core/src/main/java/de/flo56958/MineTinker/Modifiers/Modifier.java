@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Modifier {
-    //TODO: Add option to change Modifier-Item
-
     protected static final ModManager modManager = ModManager.instance();
     protected static final PluginManager pluginManager = Bukkit.getPluginManager();
 
@@ -166,11 +164,21 @@ public abstract class Modifier {
                 String bottom = config.getString(name + ".Recipe.Bottom");
                 ConfigurationSection materials = config.getConfigurationSection(name + ".Recipe.Materials");
 
-                // TODO: Make this safer
                 newRecipe.shape(top, middle, bottom); //makes recipe
 
-                for (String key : materials.getKeys(false)) {
-                    newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
+                if (materials != null) {
+                    for (String key : materials.getKeys(false)) {
+                        String materialName = materials.getString(key);
+                        Material material = Material.getMaterial(materialName);
+
+                        if (material == null) {
+                            ChatWriter.log(false, "Material [" + materialName + "] is null for mod [" + mod.name + "]");
+
+                            return;
+                        } else {
+                            newRecipe.setIngredient(key.charAt(0), material);
+                        }
+                    }
                 }
 
                 Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
