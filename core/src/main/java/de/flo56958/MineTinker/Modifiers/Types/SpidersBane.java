@@ -54,7 +54,7 @@ public class SpidersBane extends Modifier implements Craftable {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "SpidersBane";
+        String key = "Spider's-Bane";
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Cleansed Spider Eye");
@@ -145,6 +145,6 @@ public class SpidersBane extends Modifier implements Craftable {
 
     @Override
     public boolean isAllowed() {
-        return getConfig().getBoolean("SpidersBane.allowed");
+        return getConfig().getBoolean("Spider's-Bane.allowed");
     }
 }
