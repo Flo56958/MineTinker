@@ -19,6 +19,8 @@ public enum Modifiers_Config {
 	Light_Weight("Light-Weight.yml"),
 	Luck("Luck.yml"),
 	Melting("Melting.yml"),
+	Multishot("Multishot.yml"),
+	Piercing("Piercing.yml"),
 	Poisonous("Poisonous.yml"),
 	Power("Power.yml"),
 	Propelling("Propelling.yml"),

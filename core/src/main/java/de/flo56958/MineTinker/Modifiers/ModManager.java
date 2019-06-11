@@ -185,6 +185,11 @@ public class ModManager {
         allMods.add(Thorned.instance());
         allMods.add(Timber.instance());
         allMods.add(Webbed.instance());
+
+        if (NBTUtils.isOneThirteenCompatible()) {
+            allMods.add(Piercing.instance());
+            allMods.add(MultiShot.instance());
+        }
         
         reload();
     }
