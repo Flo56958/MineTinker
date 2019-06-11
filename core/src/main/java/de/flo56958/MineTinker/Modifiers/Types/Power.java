@@ -380,7 +380,7 @@ public class Power extends Modifier implements Enchantable, Craftable, Listener 
     }
 
     private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(Modifiers_Config.Power);
+        return ConfigurationManager.getConfig(ModifierType.POWER.getFileName());
     }
 
     @Override

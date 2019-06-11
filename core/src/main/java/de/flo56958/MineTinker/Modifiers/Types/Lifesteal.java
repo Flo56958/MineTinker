@@ -8,7 +8,6 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -114,7 +113,7 @@ public class Lifesteal extends Modifier implements Craftable, Listener {
     }
 
     private FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(Modifiers_Config.Lifesteal);
+        return ConfigurationManager.getConfig(ModifierType.LIFESTEAL.getFileName());
     }
 
     @Override

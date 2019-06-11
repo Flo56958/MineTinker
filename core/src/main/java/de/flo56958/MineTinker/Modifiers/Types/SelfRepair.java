@@ -12,7 +12,6 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -220,7 +219,7 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
     }
     
     private static FileConfiguration getConfig() {
-    	return ConfigurationManager.getConfig(Modifiers_Config.Self_Repair);
+        return ConfigurationManager.getConfig(ModifierType.SELF_REPAIR.getFileName());
     }
 
     @Override
