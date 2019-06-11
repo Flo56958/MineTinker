@@ -2,6 +2,9 @@ package de.flo56958.MineTinker.Utilities;
 
 public enum Modifiers_Config {
 	//TODO: Merge with Modifier-Type
+	Anti_Arrow_Plating("Anti-Arrow-Plating.yml"),
+	Anti_Blast_Plating("Anti-Blast-Plating.yml"),
+	Anti_Fire_Plating("Anti-Fire-Plating.yml"),
 	Aquaphilic("Aquaphilic.yml"),
 	Auto_Smelt("Auto-Smelt.yml"),
 	Beheading("Beheading.yml"),

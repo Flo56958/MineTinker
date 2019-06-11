@@ -3,6 +3,9 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 
 public enum ModifierType {
+    ANTI_ARROW_PLATING("Anti-Arrow-Plating"),
+    ANTI_BLAST_PLATING("Anti-Blast-Plating"),
+    ANTI_FIRE_PLATING("Anti-Fire-Plating"),
     AQUAPHILIC("Aquaphilic"),
     AUTO_SMELT("Auto-Smelt"),
     BEHEADING("Beheading"),

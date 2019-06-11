@@ -101,7 +101,9 @@ public class Sharpness extends Modifier implements Craftable {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
                         return null;
                     }
-                } else if (!this.compatibleWithArthropods) {
+                }
+
+                if (!this.compatibleWithArthropods) {
                     if (modManager.hasMod(tool, SpidersBane.instance()) || meta.hasEnchant(Enchantment.DAMAGE_ARTHROPODS)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
                         return null;
