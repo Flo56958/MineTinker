@@ -17,7 +17,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Smite extends Modifier {
 
@@ -61,15 +63,21 @@ public class Smite extends Modifier {
         config.addDefault(key + ".description_modifier", "%YELLOW%Modifier-Item for the Smite-Modifier");
         config.addDefault(key + ".Color", "%YELLOW%");
         config.addDefault(key + ".MaxLevel", 5);
+
         config.addDefault(key + ".CompatibleWithSharpness", false);
         config.addDefault(key + ".CompatibleWithArthropods", false);
+
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "BMB");
         config.addDefault(key + ".Recipe.Middle", "MIM");
         config.addDefault(key + ".Recipe.Bottom", "BMB");
-        config.addDefault(key + ".Recipe.Materials.B", "BONE");
-        config.addDefault(key + ".Recipe.Materials.M", "BONE_MEAL");
-        config.addDefault(key + ".Recipe.Materials.I", "IRON_INGOT");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("B", "BONE");
+        recipeMaterials.put("M", "BONE_MEAL");
+        recipeMaterials.put("I", "IRON_INGOT");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
 

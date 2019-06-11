@@ -17,7 +17,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Piercing extends Modifier {
 
@@ -60,15 +62,21 @@ public class Piercing extends Modifier {
         config.addDefault(key + ".description_modifier", "%GRAY%Modifier-Item for the Piercing-Modifier");
         config.addDefault(key + ".Color", "%GRAY%");
         config.addDefault(key + ".MaxLevel", 4);
+
         config.addDefault(key + ".CompatibleWithMultishot", false);
+
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "FIF");
         config.addDefault(key + ".Recipe.Middle", "OAO");
         config.addDefault(key + ".Recipe.Bottom", "FIF");
-        config.addDefault(key + ".Recipe.Materials.F", "FLINT");
-        config.addDefault(key + ".Recipe.Materials.I", "IRON_INGOT");
-        config.addDefault(key + ".Recipe.Materials.O", "OAK_PLANKS");
-        config.addDefault(key + ".Recipe.Materials.A", "ARROW");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("F", "FLINT");
+        recipeMaterials.put("I", "IRON_INGOT");
+        recipeMaterials.put("O", "OAK_PLANKS");
+        recipeMaterials.put("A", "ARROW");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
 

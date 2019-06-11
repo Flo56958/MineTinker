@@ -17,7 +17,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AntiArrowPlating extends Modifier {
 
@@ -62,19 +64,27 @@ public class AntiArrowPlating extends Modifier {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Anti-Arrow-Plating-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");
         config.addDefault(key + ".MaxLevel", 5);
+
         config.addDefault(key + ".CompatibleWithProtecting", false);
         config.addDefault(key + ".CompatibleWithAntiFire", false);
         config.addDefault(key + ".CompatibleWithAntiBlast", false);
+
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "IMI");
         config.addDefault(key + ".Recipe.Middle", "MDM");
         config.addDefault(key + ".Recipe.Bottom", "IMI");
-        config.addDefault(key + ".Recipe.Materials.I", "IRON_BLOCK");
-        config.addDefault(key + ".Recipe.Materials.A", "ARROW");
-        config.addDefault(key + ".Recipe.Materials.D", "DIAMOND");
 
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("I", "IRON_BLOCK");
+        recipeMaterials.put("A", "ARROW");
+        recipeMaterials.put("D", "DIAMOND");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+
+        // Save Config
         ConfigurationManager.saveConfig(config);
 
+        // Initialize modifier
         init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),

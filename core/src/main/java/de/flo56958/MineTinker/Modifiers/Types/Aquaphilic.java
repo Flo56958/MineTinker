@@ -17,7 +17,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Aquaphilic extends Modifier {
 
@@ -60,13 +62,18 @@ public class Aquaphilic extends Modifier {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Aquaphilic-Modifier");
         config.addDefault(key + ".Color", "%AQUA%");
         config.addDefault(key + ".MaxLevel", 3); //higher will have no effect on depth strider
+
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "PNP");
         config.addDefault(key + ".Recipe.Middle", "NHN");
         config.addDefault(key + ".Recipe.Bottom", "PNP");
-        config.addDefault(key + ".Recipe.Materials.H", "HEART_OF_THE_SEA");
-        config.addDefault(key + ".Recipe.Materials.N", "NAUTILUS_SHELL");
-        config.addDefault(key + ".Recipe.Materials.P", "PRISMARINE_SHARD");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("H", "HEART_OF_THE_SEA");
+        recipeMaterials.put("N", "NAUTILUS_SHELL");
+        recipeMaterials.put("P", "PRISMARINE_SHARD");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
 

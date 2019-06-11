@@ -24,7 +24,9 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Shulking extends Modifier implements Listener {
 
@@ -69,12 +71,17 @@ public class Shulking extends Modifier implements Listener {
         config.addDefault(key + ".MaxLevel", 10);
     	config.addDefault(key + ".Duration", 20); //ticks (20 ticks ~ 1 sec)
     	config.addDefault(key + ".EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
-    	config.addDefault(key + ".Recipe.Enabled", true);
+
+        config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "S");
     	config.addDefault(key + ".Recipe.Middle", "C");
     	config.addDefault(key + ".Recipe.Bottom", "S");
-    	config.addDefault(key + ".Recipe.Materials.S", "SHULKER_SHELL");
-    	config.addDefault(key + ".Recipe.Materials.C", "CHORUS_FRUIT");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("S", "SHULKER_SHELL");
+        recipeMaterials.put("C", "CHORUS_FRUIT");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
     	
     	ConfigurationManager.saveConfig(config);
         

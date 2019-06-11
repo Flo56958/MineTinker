@@ -17,7 +17,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SpidersBane extends Modifier {
 
@@ -61,15 +63,21 @@ public class SpidersBane extends Modifier {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Spider's-Bane-Modifier");
         config.addDefault(key + ".Color", "%RED%");
         config.addDefault(key + ".MaxLevel", 5);
+
         config.addDefault(key + ".CompatibleWithSmite", false);
         config.addDefault(key + ".CompatibleWithSharpness", false);
         config.addDefault(key + ".Recipe.Enabled", true);
+
         config.addDefault(key + ".Recipe.Top", "ESE");
         config.addDefault(key + ".Recipe.Middle", "SFS");
         config.addDefault(key + ".Recipe.Bottom", "ESE");
-        config.addDefault(key + ".Recipe.Materials.E", "SPIDER_EYE");
-        config.addDefault(key + ".Recipe.Materials.S", "STRING");
-        config.addDefault(key + ".Recipe.Materials.F", "FERMENTED_SPIDER_EYE");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("E", "SPIDER_EYE");
+        recipeMaterials.put("S", "STRING");
+        recipeMaterials.put("F", "FERMENTED_SPIDER_EYE");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
 

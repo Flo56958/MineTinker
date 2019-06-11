@@ -17,7 +17,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Sharpness extends Modifier {
 
@@ -63,14 +65,20 @@ public class Sharpness extends Modifier {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Sharpness-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");
         config.addDefault(key + ".MaxLevel", 5);
+
         config.addDefault(key + ".CompatibleWithSmite", false);
         config.addDefault(key + ".CompatibleWithArthropods", false);
+
         config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "QQQ");
     	config.addDefault(key + ".Recipe.Middle", "QQQ");
     	config.addDefault(key + ".Recipe.Bottom", "QQQ");
-    	config.addDefault(key + ".Recipe.Materials.Q", "QUARTZ_BLOCK");
-        
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("Q", "QUARTZ_BLOCK");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+
     	ConfigurationManager.saveConfig(config);
     	
         init(config.getString(key + ".name"),

@@ -16,7 +16,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Haste extends Modifier {
 
@@ -59,12 +61,17 @@ public class Haste extends Modifier {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Haste-Modifier");
         config.addDefault(key + ".Color", "%DARK_RED%");
         config.addDefault(key + ".MaxLevel", 5);
+
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "RRR");
     	config.addDefault(key + ".Recipe.Middle", "RRR");
     	config.addDefault(key + ".Recipe.Bottom", "RRR");
-    	config.addDefault(key + ".Recipe.Materials.R", "REDSTONE_BLOCK");
-        
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("R", "REDSTONE_BLOCK");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+
     	ConfigurationManager.saveConfig(config);
     	
         init(config.getString(key + ".name"),

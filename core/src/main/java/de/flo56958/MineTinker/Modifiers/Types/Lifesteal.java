@@ -20,7 +20,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class Lifesteal extends Modifier implements Listener {
@@ -65,13 +67,18 @@ public class Lifesteal extends Modifier implements Listener {
         config.addDefault(key + ".MaxLevel", 3);
         config.addDefault(key + ".PercentToTrigger", 50);
         config.addDefault(key + ".PercentOfDamagePerLevel", 10);
+
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "SRS");
         config.addDefault(key + ".Recipe.Middle", "RNR");
         config.addDefault(key + ".Recipe.Bottom", "SRS");
-        config.addDefault(key + ".Recipe.Materials.N", "NETHERRACK");
-        config.addDefault(key + ".Recipe.Materials.R", "ROTTEN_FLESH");
-        config.addDefault(key + ".Recipe.Materials.S", "SOUL_SAND");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("N", "NETHERRACK");
+        recipeMaterials.put("R", "ROTTEN_FLESH");
+        recipeMaterials.put("S", "SOUL_SAND");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
 

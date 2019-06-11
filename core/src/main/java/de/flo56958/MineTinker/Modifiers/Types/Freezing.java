@@ -17,7 +17,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Freezing extends Modifier {
 
@@ -58,12 +60,17 @@ public class Freezing extends Modifier {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Freezing-Modifier");
         config.addDefault(key + ".Color", "%AQUA%");
         config.addDefault(key + ".MaxLevel", 3);
+
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "BBB");
         config.addDefault(key + ".Recipe.Middle", "BDB");
         config.addDefault(key + ".Recipe.Bottom", "BBB");
-        config.addDefault(key + ".Recipe.Materials.B", "BLUE_ICE");
-        config.addDefault(key + ".Recipe.Materials.D", "DIAMOND");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("B", "BLUE_ICE");
+        recipeMaterials.put("D", "DIAMOND");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
 

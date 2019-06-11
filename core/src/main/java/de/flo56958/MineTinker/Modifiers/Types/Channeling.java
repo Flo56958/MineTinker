@@ -15,7 +15,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Channeling extends Modifier {
 
@@ -56,13 +58,18 @@ public class Channeling extends Modifier {
         config.addDefault(key + ".description_modifier", "%GRAY%Modifier-Item for the Channeling-Modifier");
         config.addDefault(key + ".Color", "%GRAY%");
         config.addDefault(key + ".MaxLevel", 1);
+
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "SPS");
         config.addDefault(key + ".Recipe.Middle", "PCP");
         config.addDefault(key + ".Recipe.Bottom", "SPS");
-        config.addDefault(key + ".Recipe.Materials.S", "SEA_LANTERN");
-        config.addDefault(key + ".Recipe.Materials.P", "PRISMARINE_SHARDS");
-        config.addDefault(key + ".Recipe.Materials.C", "CREEPER_HEAD");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("S", "SEA_LANTERN");
+        recipeMaterials.put("P", "PRISMARINE_SHARDS");
+        recipeMaterials.put("C", "CREEPER_HEAD");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
 

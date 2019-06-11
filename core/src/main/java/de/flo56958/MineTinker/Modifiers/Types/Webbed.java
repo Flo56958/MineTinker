@@ -24,7 +24,9 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Webbed extends Modifier implements Listener {
 
@@ -72,12 +74,17 @@ public class Webbed extends Modifier implements Listener {
     	config.addDefault(key + ".Sound", true);
     	config.addDefault(key + ".DurationMultiplier", 1.2);//Duration * (Multiplier^Level)
     	config.addDefault(key + ".EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
-    	config.addDefault(key + ".Recipe.Enabled", true);
+
+        config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "WWW");
     	config.addDefault(key + ".Recipe.Middle", "WWW");
     	config.addDefault(key + ".Recipe.Bottom", "WWW");
-    	config.addDefault(key + ".Recipe.Materials.W", "COBWEB");
-    	
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("W", "COBWEB");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+
     	ConfigurationManager.saveConfig(config);
         
         init(getConfig().getString(key + ".name"),

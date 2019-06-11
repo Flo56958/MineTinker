@@ -81,13 +81,18 @@ public class Soulbound extends Modifier implements Listener {
         config.addDefault(key + ".PercentagePerLevel", 100);
         config.addDefault(key + ".DecrementModLevelOnUse", false);
         config.addDefault(key + ".ToolDropable", true);
+
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "BLB");
         config.addDefault(key + ".Recipe.Middle", "LNL");
         config.addDefault(key + ".Recipe.Bottom", "BLB");
-        config.addDefault(key + ".Recipe.Materials.B", "BLAZE_ROD");
-        config.addDefault(key + ".Recipe.Materials.L", "LAVA_BUCKET");
-        config.addDefault(key + ".Recipe.Materials.N", "NETHER_STAR");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("B", "BLAZE_ROD");
+        recipeMaterials.put("L", "LAVA_BUCKET");
+        recipeMaterials.put("N", "NETHER_STAR");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
 

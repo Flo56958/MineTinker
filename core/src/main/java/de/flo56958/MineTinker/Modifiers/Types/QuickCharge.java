@@ -15,7 +15,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class QuickCharge extends Modifier {
 
@@ -56,12 +58,17 @@ public class QuickCharge extends Modifier {
         config.addDefault(key + ".description_modifier", "%GRAY%Modifier-Item for the Quick-Charge-Modifier");
         config.addDefault(key + ".Color", "%GRAY%");
         config.addDefault(key + ".MaxLevel", 3);
+
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "OOO");
         config.addDefault(key + ".Recipe.Middle", "III");
         config.addDefault(key + ".Recipe.Bottom", "OOO");
-        config.addDefault(key + ".Recipe.Materials.I", "IRON_INGOT");
-        config.addDefault(key + ".Recipe.Materials.O", "OAK_PLANKS");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("I", "IRON_INGOT");
+        recipeMaterials.put("O", "OAK_PLANKS");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
 

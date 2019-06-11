@@ -17,7 +17,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Insulating extends Modifier {
 
@@ -62,16 +64,22 @@ public class Insulating extends Modifier {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Anti-Fire-Plating-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");
         config.addDefault(key + ".MaxLevel", 5);
+
         config.addDefault(key + ".CompatibleWithProtecting", false);
         config.addDefault(key + ".CompatibleWithAntiArrow", false);
         config.addDefault(key + ".CompatibleWithAntiBlast", false);
+
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "IMI");
         config.addDefault(key + ".Recipe.Middle", "MDM");
         config.addDefault(key + ".Recipe.Bottom", "IMI");
-        config.addDefault(key + ".Recipe.Materials.I", "IRON_BLOCK");
-        config.addDefault(key + ".Recipe.Materials.M", "MAGMA_BLOCK");
-        config.addDefault(key + ".Recipe.Materials.D", "DIAMOND");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("I", "IRON_BLOCK");
+        recipeMaterials.put("M", "MAGMA_BLOCK");
+        recipeMaterials.put("D", "DIAMOND");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
 

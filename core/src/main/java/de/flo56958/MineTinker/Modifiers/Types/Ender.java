@@ -23,7 +23,9 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Ender extends Modifier implements Listener {
 
@@ -68,14 +70,20 @@ public class Ender extends Modifier implements Listener {
         config.addDefault(key + ".MaxLevel", 2);
         config.addDefault(key + ".Sound", true); //#Enderman-Teleport-Sound
         config.addDefault(key + ".Particles", true);
+
         config.addDefault(key + ".CompatibleWithInfinity", true);
+
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "PPP");
     	config.addDefault(key + ".Recipe.Middle", "PEP");
     	config.addDefault(key + ".Recipe.Bottom", "PPP");
-    	config.addDefault(key + ".Recipe.Materials.P", "ENDER_PEARL");
-    	config.addDefault(key + ".Recipe.Materials.E", "ENDER_EYE");
-    	
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("P", "ENDER_PEARL");
+        recipeMaterials.put("E", "ENDER_EYE");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+
     	ConfigurationManager.saveConfig(config);
         
         init(config.getString(key + ".name"),

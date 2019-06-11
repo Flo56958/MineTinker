@@ -15,7 +15,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Protecting extends Modifier {
 
@@ -56,13 +58,18 @@ public class Protecting extends Modifier {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Protecting-Modifier");
         config.addDefault(key + ".Color", "%GRAY%");
         config.addDefault(key + ".MaxLevel", 5);
+
      	config.addDefault(key + ".Recipe.Enabled", true);
      	config.addDefault(key + ".Recipe.Top", "DID");
      	config.addDefault(key + ".Recipe.Middle", "IOI");
      	config.addDefault(key + ".Recipe.Bottom", "DID");
-     	config.addDefault(key + ".Recipe.Materials.D", "DIAMOND");
-     	config.addDefault(key + ".Recipe.Materials.I", "IRON_INGOT");
-     	config.addDefault(key + ".Recipe.Materials.O", "OBSIDIAN");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("D", "DIAMOND");
+        recipeMaterials.put("I", "IRON_INGOT");
+        recipeMaterials.put("O", "OBSIDIAN");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
          
      	ConfigurationManager.saveConfig(config);
      	

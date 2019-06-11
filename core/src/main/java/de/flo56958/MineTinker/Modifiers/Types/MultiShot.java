@@ -17,7 +17,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MultiShot extends Modifier {
 
@@ -60,13 +62,19 @@ public class MultiShot extends Modifier {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Multishot-Modifier");
         config.addDefault(key + ".Color", "%YELLOW%");
         config.addDefault(key + ".MaxLevel", 1);
+
         config.addDefault(key + ".CompatibleWithPiercing", false);
+
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "QQQ");
         config.addDefault(key + ".Recipe.Middle", "AAA");
         config.addDefault(key + ".Recipe.Bottom", "QQQ");
-        config.addDefault(key + ".Recipe.Materials.Q", "QUARTZ_BLOCK");
-        config.addDefault(key + ".Recipe.Materials.A", "ARROW");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("Q", "QUARTZ_BLOCK");
+        recipeMaterials.put("A", "ARROW");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
         // TODO: Better recipe
 
         ConfigurationManager.saveConfig(config);

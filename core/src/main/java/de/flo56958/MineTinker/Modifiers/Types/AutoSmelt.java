@@ -21,7 +21,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class AutoSmelt extends Modifier implements Listener {
@@ -76,12 +78,17 @@ public class AutoSmelt extends Modifier implements Listener {
     	config.addDefault(key + ".smelt_terracotta", false);
     	config.addDefault(key + ".burn_coal", true);
     	config.addDefault(key + ".works_under_water", true);
+
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "CCC");
     	config.addDefault(key + ".Recipe.Middle", "CFC");
     	config.addDefault(key + ".Recipe.Bottom", "CCC");
-    	config.addDefault(key + ".Recipe.Materials.C", "FURNACE");
-    	config.addDefault(key + ".Recipe.Materials.F", "BLAZE_ROD");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("C", "FURNACE");
+        recipeMaterials.put("F", "BLAZE_ROD");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
     	
     	ConfigurationManager.saveConfig(config);
     	

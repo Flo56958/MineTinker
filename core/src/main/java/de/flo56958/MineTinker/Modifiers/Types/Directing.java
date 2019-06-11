@@ -17,7 +17,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Directing extends Modifier implements Listener {
 
@@ -58,13 +60,18 @@ public class Directing extends Modifier implements Listener {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Directing-Modifier");
         config.addDefault(key + ".workinpvp", true);
         config.addDefault(key + ".Color", "%GRAY%");
+
         config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "ECE");
     	config.addDefault(key + ".Recipe.Middle", "CIC");
     	config.addDefault(key + ".Recipe.Bottom", "ECE");
-    	config.addDefault(key + ".Recipe.Materials.C", "COMPASS");
-    	config.addDefault(key + ".Recipe.Materials.E", "ENDER_PEARL");
-    	config.addDefault(key + ".Recipe.Materials.I", "IRON_BLOCK");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("C", "COMPASS");
+        recipeMaterials.put("E", "ENDER_PEARL");
+        recipeMaterials.put("I", "IRON_BLOCK");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
     	
     	ConfigurationManager.saveConfig(config);
     	

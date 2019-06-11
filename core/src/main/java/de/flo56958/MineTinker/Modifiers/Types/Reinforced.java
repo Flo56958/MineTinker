@@ -15,7 +15,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Reinforced extends Modifier {
 
@@ -57,12 +59,18 @@ public class Reinforced extends Modifier {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Reinforced-Modifier");
         config.addDefault(key + ".Color", "%DARK_GRAY%");
         config.addDefault(key + ".MaxLevel", 3);
+
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "OOO");
     	config.addDefault(key + ".Recipe.Middle", "OOO");
     	config.addDefault(key + ".Recipe.Bottom", "OOO");
-    	config.addDefault(key + ".Recipe.Materials.O", "OBSIDIAN");
-        
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("O", "OBSIDIAN");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+
+
     	ConfigurationManager.saveConfig(config);
     	
         init(config.getString(key + ".name"),

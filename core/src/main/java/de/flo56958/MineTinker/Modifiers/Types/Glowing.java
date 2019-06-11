@@ -22,7 +22,9 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Glowing extends Modifier implements Listener {
 
@@ -66,12 +68,17 @@ public class Glowing extends Modifier implements Listener {
         config.addDefault(key + ".MaxLevel", 3);
     	config.addDefault(key + ".Duration", 200); //ticks INTEGER (20 ticks ~ 1 sec)
     	config.addDefault(key + ".DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
+
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "GGG");
     	config.addDefault(key + ".Recipe.Middle", "GEG");
     	config.addDefault(key + ".Recipe.Bottom", "GGG");
-    	config.addDefault(key + ".Recipe.Materials.G", "GLOWSTONE_DUST");
-    	config.addDefault(key + ".Recipe.Materials.E", "ENDER_EYE");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("G", "GLOWSTONE_DUST");
+        recipeMaterials.put("E", "ENDER_EYE");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
         
     	ConfigurationManager.saveConfig(config);
     	

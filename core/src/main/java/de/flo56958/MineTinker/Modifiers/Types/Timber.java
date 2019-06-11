@@ -25,7 +25,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Timber extends Modifier implements Listener {
 
@@ -66,13 +68,18 @@ public class Timber extends Modifier implements Listener {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Timber-Modifier");
         config.addDefault(key + ".Color", "%GREEN%");
         config.addDefault(key + ".MaximumBlocksPerSwing", -1);
+
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "LLL");
     	config.addDefault(key + ".Recipe.Middle", "LEL");
     	config.addDefault(key + ".Recipe.Bottom", "LLL");
-    	config.addDefault(key + ".Recipe.Materials.L", "OAK_WOOD");
-    	config.addDefault(key + ".Recipe.Materials.E", "EMERALD");
-    	
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("L", "OAK_WOOD");
+        recipeMaterials.put("E", "EMERALD");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+
     	ConfigurationManager.saveConfig(config);
         
         init(config.getString(key + ".name"),
