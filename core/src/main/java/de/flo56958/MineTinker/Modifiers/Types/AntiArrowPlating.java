@@ -108,7 +108,7 @@ public class AntiArrowPlating extends Modifier implements Craftable {
                 }
 
                 if (!this.compatibleWithAntiFire) {
-                    if (modManager.hasMod(tool, AntiFirePlating.instance()) || meta.hasEnchant(Enchantment.PROTECTION_FIRE)) {
+                    if (modManager.hasMod(tool, Insulating.instance()) || meta.hasEnchant(Enchantment.PROTECTION_FIRE)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
                         return null;
                     }

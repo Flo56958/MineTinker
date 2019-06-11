@@ -23,7 +23,7 @@ import java.util.List;
 public class AntiBlastPlating extends Modifier implements Craftable {
 
     private boolean compatibleWithProtecting;
-    private boolean compatibleWithAntiFire;
+    private boolean compatibleWithInsulating;
     private boolean compatibleWithAntiArrow;
 
     private static AntiBlastPlating instance;
@@ -64,7 +64,7 @@ public class AntiBlastPlating extends Modifier implements Craftable {
         config.addDefault(key + ".Color", "%WHITE%");
         config.addDefault(key + ".MaxLevel", 5);
         config.addDefault(key + ".CompatibleWithProtecting", false);
-        config.addDefault(key + ".CompatibleWithAntiFire", false);
+        config.addDefault(key + ".CompatibleWithInsulating", false);
         config.addDefault(key + ".CompatibleWithAntiArrow", false);
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "IMI");
@@ -84,7 +84,7 @@ public class AntiBlastPlating extends Modifier implements Craftable {
                         ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
 
         this.compatibleWithProtecting = config.getBoolean(key + ".CompatibleWithProtecting");
-        this.compatibleWithAntiFire = config.getBoolean(key + ".CompatibleWithAntiFire");
+        this.compatibleWithInsulating = config.getBoolean(key + ".CompatibleWithInsulating");
         this.compatibleWithAntiArrow = config.getBoolean(key + ".CompatibleWithAntiArrow");
     }
 
@@ -107,8 +107,8 @@ public class AntiBlastPlating extends Modifier implements Craftable {
                     }
                 }
 
-                if (!this.compatibleWithAntiFire) {
-                    if (modManager.hasMod(tool, AntiFirePlating.instance()) || meta.hasEnchant(Enchantment.PROTECTION_FIRE)) {
+                if (!this.compatibleWithInsulating) {
+                    if (modManager.hasMod(tool, Insulating.instance()) || meta.hasEnchant(Enchantment.PROTECTION_FIRE)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
                         return null;
                     }

@@ -6,7 +6,6 @@ public enum ModifierType {
 
     ANTI_ARROW_PLATING("Anti-Arrow-Plating", "Anti-Arrow-Plating.yml"),
     ANTI_BLAST_PLATING("Anti-Blast-Plating", "Anti-Blast-Plating.yml"),
-    ANTI_FIRE_PLATING("Anti-Fire-Plating", "Anti-Fire-Plating.yml"),
     AQUAPHILIC("Aquaphilic", "Aquaphilic.yml"),
     AUTO_SMELT("Auto-Smelt", "Auto-Smelt.yml"),
     BEHEADING("Beheading", "Beheading.yml"),
@@ -20,6 +19,7 @@ public enum ModifierType {
     GLOWING("Glowing", "Glowing.yml"),
     HASTE("Haste", "Haste.yml"),
     INFINITY("Infinity", "Infinity.yml"),
+    INSULATING("Insulating", "Insulating.yml"),
     KNOCKBACK("Knockback", "Knockback.yml"),
     LIGHT_WEIGHT("Light-Weight", "Lifesteal.yml"),
     LIFESTEAL("Lifesteal", "Light-Weight.yml"),

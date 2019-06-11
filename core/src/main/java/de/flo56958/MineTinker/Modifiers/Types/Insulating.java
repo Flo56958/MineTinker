@@ -20,23 +20,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class AntiFirePlating extends Modifier implements Craftable {
+public class Insulating extends Modifier implements Craftable {
 
     private boolean compatibleWithProtecting;
     private boolean compatibleWithAntiArrow;
     private boolean compatibleWithAntiBlast;
 
-    private static AntiFirePlating instance;
+    private static Insulating instance;
 
-    public static AntiFirePlating instance() {
-        synchronized (AntiFirePlating.class) {
-            if (instance == null) instance = new AntiFirePlating();
+    public static Insulating instance() {
+        synchronized (Insulating.class) {
+            if (instance == null) instance = new Insulating();
         }
         return instance;
     }
 
-    private AntiFirePlating() {
-        super(ModifierType.ANTI_FIRE_PLATING,
+    private Insulating() {
+        super(ModifierType.INSULATING,
                 new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS, ToolType.CHESTPLATE, ToolType.HELMET)),
                 Main.getPlugin());
     }
@@ -54,7 +54,7 @@ public class AntiFirePlating extends Modifier implements Craftable {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Anti-Fire-Plating";
+        String key = "Insulating";
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Heat Resistant Metal");
@@ -90,7 +90,7 @@ public class AntiFirePlating extends Modifier implements Craftable {
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "antifireplating", isCommand) == null) {
+        if (Modifier.checkAndAdd(p, tool, this, "insulating", isCommand) == null) {
             return null;
         }
 
@@ -149,15 +149,15 @@ public class AntiFirePlating extends Modifier implements Craftable {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Anti-Fire-Plating", "Modifier_AntiFirePlating");
+        _registerCraftingRecipe(getConfig(), this, "Insulating", "Modifier_Insulating");
     }
 
     private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.ANTI_FIRE_PLATING.getFileName());
+        return ConfigurationManager.getConfig(ModifierType.INSULATING.getFileName());
     }
 
     @Override
     public boolean isAllowed() {
-        return getConfig().getBoolean("Anti-Fire-Plating.allowed");
+        return getConfig().getBoolean("Insulating.allowed");
     }
 }

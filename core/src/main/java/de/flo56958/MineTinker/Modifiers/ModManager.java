@@ -154,7 +154,7 @@ public class ModManager {
     private void init() {
         allMods.add(AntiArrowPlating.instance());
         allMods.add(AntiBlastPlating.instance());
-        allMods.add(AntiFirePlating.instance());
+        allMods.add(Insulating.instance());
         allMods.add(Aquaphilic.instance());
     	allMods.add(AutoSmelt.instance());
     	allMods.add(Beheading.instance());
