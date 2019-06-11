@@ -25,6 +25,7 @@ public enum Modifiers_Config {
 	Power("Power.yml"),
 	Propelling("Propelling.yml"),
 	Protecting("Protecting.yml"),
+	QuickCharge("QuickCharge.yml"),
 	Reinforced("Reinforced.yml"),
 	Self_Repair("Self-Repair.yml"),
 	Sharpness("Sharpness.yml"),

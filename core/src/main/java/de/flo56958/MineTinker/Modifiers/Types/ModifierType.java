@@ -26,6 +26,7 @@ public enum ModifierType {
     POWER("Power"),
     PROPELLING("Propelling"),
     PROTECTING("Protecting"),
+    QUICK_CHARGE("Quick-Charge"),
     REINFORCED("Reinforced"),
     SELF_REPAIR("Self-Repair"),
     SHARPNESS("Sharpness"),
