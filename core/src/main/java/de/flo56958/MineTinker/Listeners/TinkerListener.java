@@ -118,28 +118,18 @@ public class TinkerListener implements Listener {
                     for (int i = 0; i < p.getInventory().getSize(); i++) { //getting the inventory slot of the tool
                         if (p.getInventory().getItem(i) != null && p.getInventory().getItem(i).equals(tool)) {  //Can be NULL!
                             for (int j = 0; j < config.getInt("LevelUpEvents.RandomModifier.AmountOfModifiers"); j++) {
-                                ItemStack newTool = null;
-                                ItemStack safety = tool.clone();
 
                                 List<Modifier> mods = new ArrayList<>(modManager.getAllowedMods()); //necessary as the failed modifiers get removed from the list (so a copy is in order)
 
                                 if (!config.getBoolean("LevelUpEvents.RandomModifier.AllowExtraModifier")) mods.remove(ExtraModifier.instance());
 
-                                while (newTool == null) {
-                                    int index = new Random().nextInt(mods.size());
-                                    newTool = mods.get(index).applyMod(p, safety, true);
-
-                                    if (newTool == null) {
-                                        mods.remove(index); //Remove the failed modifier from the the list of the possibles
-                                    }
-
+                                int index;
+                                do {
+                                    index = new Random().nextInt(mods.size());
+                                    appliedRandomMod = mods.get(index).applyMod(p, tool, true) != null;
+                                    if (!appliedRandomMod) mods.remove(index); //Remove the failed modifier from the the list of the possibles
                                     if (mods.isEmpty()) { break; } //Secures that the while will terminate after some time (if all modifiers were removed)
-                                }
-                                if (newTool != null) { //while could have been broken out of -> newTool could still be null
-                                    tool = newTool;
-                                    p.getInventory().setItem(i, tool);
-                                    appliedRandomMod = true;
-                                } else break;
+                                } while (!appliedRandomMod);
                             }
                             break;
                         }

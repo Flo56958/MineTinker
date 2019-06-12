@@ -82,11 +82,9 @@ public class Aquaphilic extends Modifier implements Craftable {
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.get(ModifierType.FREEZING) != null) {
-            if (modManager.hasMod(tool, modManager.get(ModifierType.FREEZING))) {
-                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                return null;
-            }
+        if (modManager.hasMod(tool, Freezing.instance())) {
+            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+            return null;
         }
 
         if (Modifier.checkAndAdd(p, tool, this, "aquaphilic", isCommand) == null) {

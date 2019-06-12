@@ -92,6 +92,9 @@ public abstract class Modifier {
      * @param p the Player
      * @param tool the Tool to modify
      */
+    //TODO: Make return type boolean as the given tool gets modified and does not need to be returned (return null is not the best code style)
+    // -> true: Mod was applied
+    // -> false: Application has failed
     public abstract ItemStack applyMod(Player p, ItemStack tool, boolean isCommand);
 
     /**
