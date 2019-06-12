@@ -3,13 +3,11 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTEntityDeathEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -30,7 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Beheading extends Modifier implements Enchantable, Craftable, Listener {
+public class Beheading extends Modifier implements Enchantable, Listener {
 
     private int percentagePerLevel;
 
@@ -153,7 +151,7 @@ public class Beheading extends Modifier implements Enchantable, Craftable, Liste
     }
     
     private static FileConfiguration getConfig() {
-    	return ConfigurationManager.getConfig(Modifiers_Config.Beheading);
+    	return ConfigurationManager.getConfig(ModifierType.BEHEADING.getFileName());
     }
 
     @Override

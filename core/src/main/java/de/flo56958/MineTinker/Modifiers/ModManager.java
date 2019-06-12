@@ -127,22 +127,23 @@ public class ModManager {
         this.enchantableMods.clear();
     	
     	for (Modifier m : this.mods) {
-            if (m instanceof Craftable) {
-                this.craftableMods.add(m);
-            }
+    	    // TODO: Check if this list is necessary
+    	    this.craftableMods.add(m);
 
             if (m instanceof Enchantable) {
                 this.enchantableMods.add(m);
             }
         }
 
-        for (Modifier m : this.craftableMods)
-            ((Craftable) m).registerCraftingRecipe();
+        for (Modifier m : this.craftableMods) {
+            m.registerCraftingRecipe();
+        }
 
         this.loreScheme = layout.getStringList("LoreLayout");
 
-        for (int i = 0; i < loreScheme.size(); i++)
+        for (int i = 0; i < loreScheme.size(); i++) {
             loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
+        }
 
         this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
         this.allowBookConvert = config.getBoolean("ConvertBookToModifier");
@@ -152,9 +153,13 @@ public class ModManager {
      * checks and loads all modifiers with configurations settings into memory
      */
     private void init() {
+        allMods.add(AntiArrowPlating.instance());
+        allMods.add(AntiBlastPlating.instance());
+        allMods.add(Insulating.instance());
         allMods.add(Aquaphilic.instance());
     	allMods.add(AutoSmelt.instance());
     	allMods.add(Beheading.instance());
+    	allMods.add(Channeling.instance());
     	allMods.add(Directing.instance());
     	allMods.add(Ender.instance());
     	allMods.add(Experienced.instance());
@@ -178,10 +183,18 @@ public class ModManager {
         allMods.add(Sharpness.instance());
         allMods.add(Shulking.instance());
         allMods.add(SilkTouch.instance());
+        allMods.add(Smite.instance());
         allMods.add(Soulbound.instance());
+        allMods.add(SpidersBane.instance());
         allMods.add(Sweeping.instance());
+        allMods.add(Thorned.instance());
         allMods.add(Timber.instance());
         allMods.add(Webbed.instance());
+
+        if (NBTUtils.isOneFourteenCompatible()) {
+            allMods.add(Piercing.instance());
+            allMods.add(MultiShot.instance());
+        }
         
         reload();
     }
@@ -635,8 +648,7 @@ public class ModManager {
     public boolean durabilityCheck(Cancellable e, Player p, ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
 
-        // TODO: Check if damageable?
-        if (meta != null) {
+        if (meta instanceof Damageable) {
             if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2 && config.getBoolean("UnbreakableTools")) {
                 e.setCancelled(true);
 

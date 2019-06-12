@@ -2,11 +2,9 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -17,9 +15,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Reinforced extends Modifier implements Craftable {
+public class Reinforced extends Modifier {
 
     private static Reinforced instance;
 
@@ -59,12 +59,18 @@ public class Reinforced extends Modifier implements Craftable {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Reinforced-Modifier");
         config.addDefault(key + ".Color", "%DARK_GRAY%");
         config.addDefault(key + ".MaxLevel", 3);
+
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "OOO");
     	config.addDefault(key + ".Recipe.Middle", "OOO");
     	config.addDefault(key + ".Recipe.Bottom", "OOO");
-    	config.addDefault(key + ".Recipe.Materials.O", "OBSIDIAN");
-        
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("O", "OBSIDIAN");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+
+
     	ConfigurationManager.saveConfig(config);
     	
         init(config.getString(key + ".name"),
@@ -113,7 +119,7 @@ public class Reinforced extends Modifier implements Craftable {
     }
     
     private static FileConfiguration getConfig() {
-    	return ConfigurationManager.getConfig(Modifiers_Config.Reinforced);
+        return ConfigurationManager.getConfig(ModifierType.REINFORCED.getFileName());
     }
 
     @Override

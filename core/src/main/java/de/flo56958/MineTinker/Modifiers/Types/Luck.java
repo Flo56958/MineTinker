@@ -4,11 +4,9 @@ import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -19,9 +17,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Luck extends Modifier implements Craftable {
+public class Luck extends Modifier {
 
     private static Luck instance;
 
@@ -63,12 +63,17 @@ public class Luck extends Modifier implements Craftable {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Luck-Modifier");
         config.addDefault(key + ".Color", "%BLUE%");
         config.addDefault(key + ".MaxLevel", 5);
+
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "LLL");
     	config.addDefault(key + ".Recipe.Middle", "LLL");
     	config.addDefault(key + ".Recipe.Bottom", "LLL");
-    	config.addDefault(key + ".Recipe.Materials.L", "LAPIS_BLOCK");
-    	
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("L", "LAPIS_BLOCK");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+
     	ConfigurationManager.saveConfig(config);
     	
         init(config.getString(key + ".name"),
@@ -142,7 +147,7 @@ public class Luck extends Modifier implements Craftable {
     }
     
     private static FileConfiguration getConfig() {
-    	return ConfigurationManager.getConfig(Modifiers_Config.Luck);
+        return ConfigurationManager.getConfig(ModifierType.LUCK.getFileName());
     }
 
     @Override

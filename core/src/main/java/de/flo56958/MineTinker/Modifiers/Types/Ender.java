@@ -6,12 +6,10 @@ import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Events.MTProjectileHitEvent;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -25,9 +23,11 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Ender extends Modifier implements Craftable, Listener {
+public class Ender extends Modifier implements Listener {
 
     private boolean compatibleWithInfinity;
     private boolean hasSound;
@@ -70,21 +70,28 @@ public class Ender extends Modifier implements Craftable, Listener {
         config.addDefault(key + ".MaxLevel", 2);
         config.addDefault(key + ".Sound", true); //#Enderman-Teleport-Sound
         config.addDefault(key + ".Particles", true);
+
         config.addDefault(key + ".CompatibleWithInfinity", true);
+
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "PPP");
     	config.addDefault(key + ".Recipe.Middle", "PEP");
     	config.addDefault(key + ".Recipe.Bottom", "PPP");
-    	config.addDefault(key + ".Recipe.Materials.P", "ENDER_PEARL");
-    	config.addDefault(key + ".Recipe.Materials.E", "ENDER_EYE");
-    	
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("P", "ENDER_PEARL");
+        recipeMaterials.put("E", "ENDER_EYE");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+
     	ConfigurationManager.saveConfig(config);
         
         init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
+                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
+                ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
+                ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.hasSound = config.getBoolean(key + ".Sound");
         this.hasParticles = config.getBoolean(key + ".Particles");
@@ -94,11 +101,9 @@ public class Ender extends Modifier implements Craftable, Listener {
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
         if (!this.compatibleWithInfinity) {
-            if (modManager.get(ModifierType.INFINITY) != null) {
-                if (modManager.hasMod(tool, modManager.get(ModifierType.INFINITY))) {
-                    pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                    return null;
-                }
+            if (modManager.hasMod(tool, Infinity.instance())) {
+                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                return null;
             }
         }
 
@@ -185,7 +190,7 @@ public class Ender extends Modifier implements Craftable, Listener {
     }
     
     private static FileConfiguration getConfig() {
-    	return ConfigurationManager.getConfig(Modifiers_Config.Ender);
+        return ConfigurationManager.getConfig(ModifierType.ENDER.getFileName());
     }
 
     @Override

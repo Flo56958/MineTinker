@@ -6,49 +6,62 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 //      Modmanager as we can use .instance()
 //      Without this Enum the API for MineTinker will become a lot easier
 public enum ModifierType {
-    AQUAPHILIC("Aquaphilic"),
-    AUTO_SMELT("Auto-Smelt"),
-    BEHEADING("Beheading"),
-    DIRECTING("Directing"),
-    ENDER("Ender"),
-    EXPERIENCED("Experienced"),
-    EXTRA_MODIFIER("Extra-Modifier"),
-    FIERY("Fiery"),
-    FREEZING("Freezing"),
-    GLOWING("Glowing"),
-    HASTE("Haste"),
-    INFINITY("Infinity"),
-    KNOCKBACK("Knockback"),
-    LIGHT_WEIGHT("Light-Weight"),
-    LIFESTEAL("Lifesteal"),
-    LUCK("Luck"),
-    MELTING("Melting"),
-    POISONOUS("Poisonous"),
-    POWER("Power"),
-    PROPELLING("Propelling"),
-    PROTECTING("Protecting"),
-    REINFORCED("Reinforced"),
-    SELF_REPAIR("Self-Repair"),
-    SHARPNESS("Sharpness"),
-    SHULKING("Shulking"),
-    SILK_TOUCH("Silk-Touch"),
-    SOULBOUND("Soulbound"),
-    SWEEPING("Sweeping"),
-    TIMBER("Timber"),
-    WEBBED("Webbed"),
 
-    UNSPECIFIED("Unspecified"); //Should be used for third party modifiers
+    ANTI_ARROW_PLATING("Anti-Arrow-Plating", "Anti-Arrow-Plating.yml"),
+    ANTI_BLAST_PLATING("Anti-Blast-Plating", "Anti-Blast-Plating.yml"),
+    AQUAPHILIC("Aquaphilic", "Aquaphilic.yml"),
+    AUTO_SMELT("Auto-Smelt", "Auto-Smelt.yml"),
+    BEHEADING("Beheading", "Beheading.yml"),
+    CHANNELING("Channeling", "Channeling.yml"),
+    DIRECTING("Directing", "Directing.yml"),
+    ENDER("Ender", "Ender.yml"),
+    EXPERIENCED("Experienced", "Experienced.yml"),
+    EXTRA_MODIFIER("Extra-Modifier", "Extra-Modifier.yml"),
+    FIERY("Fiery", "Fiery.yml"),
+    FREEZING("Freezing", "Freezing.yml"),
+    GLOWING("Glowing", "Glowing.yml"),
+    HASTE("Haste", "Haste.yml"),
+    INFINITY("Infinity", "Infinity.yml"),
+    INSULATING("Insulating", "Insulating.yml"),
+    KNOCKBACK("Knockback", "Knockback.yml"),
+    LIGHT_WEIGHT("Light-Weight", "Lifesteal.yml"),
+    LIFESTEAL("Lifesteal", "Light-Weight.yml"),
+    LUCK("Luck", "Luck.yml"),
+    MULTISHOT("Multishot", "Melting.yml"),
+    MELTING("Melting", "Multishot.yml"),
+    PIERCING("Piercing", "Piercing.yml"),
+    POISONOUS("Poisonous", "Poisonous.yml"),
+    POWER("Power", "Power.yml"),
+    PROPELLING("Propelling", "Propelling.yml"),
+    PROTECTING("Protecting", "Protecting.yml"),
+    REINFORCED("Reinforced", "Reinforced.yml"),
+    SELF_REPAIR("Self-Repair", "Self-Repair.yml"),
+    SHARPNESS("Sharpness", "Sharpness.yml"),
+    SHULKING("Shulking", "Shulking.yml"),
+    SILK_TOUCH("Silk-Touch", "Silk-Touch.yml"),
+    SMITE("Smite", "Smite.yml"),
+    SOULBOUND("Soulbound", "Soulbound.yml"),
+    SPIDERSBANE("Spider's-Bane", "Spiders-Bane.yml"),
+    SWEEPING("Sweeping", "Sweeping.yml"),
+    THORNED("Thorned", "Thorned.yml"),
+    TIMBER("Timber", "Timber.yml"),
+    WEBBED("Webbed", "Webbed.yml"),
+
+    UNSPECIFIED("Unspecified", ""); //Should be used for third party modifiers
 
     private final String nbtTag;
-    ModifierType(String nbtTag) { this.nbtTag = nbtTag; }
+    private final String fileName;
 
-    private final ModManager modManager = ModManager.instance();
-
-    public String getName() {
-        return modManager.get(this).getName();
+    ModifierType(String nbtTag, String fileName) {
+        this.nbtTag = nbtTag;
+        this.fileName = fileName;
     }
 
     public String getNBTKey() {
         return nbtTag;
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 }

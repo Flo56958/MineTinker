@@ -21,66 +21,66 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Sharpness extends Modifier {
+public class Smite extends Modifier {
 
-    private boolean compatibleWithSmite;
+    private boolean compatibleWithSharpness;
     private boolean compatibleWithArthropods;
 
-    private static Sharpness instance;
+    private static Smite instance;
 
-    public static Sharpness instance() {
-        synchronized (Sharpness.class) {
-            if (instance == null) instance = new Sharpness();
+    public static Smite instance() {
+        synchronized (Smite.class) {
+            if (instance == null) instance = new Smite();
         }
         return instance;
     }
 
-    private Sharpness() {
-        super(ModifierType.SHARPNESS,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT)),
+    private Smite() {
+        super(ModifierType.SMITE,
+                new ArrayList<>(Arrays.asList(ToolType.SWORD, ToolType.AXE)),
                 Main.getPlugin());
     }
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
         List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.DAMAGE_ALL);
-        enchantments.add(Enchantment.ARROW_DAMAGE);
-        enchantments.add(Enchantment.IMPALING);
+        enchantments.add(Enchantment.DAMAGE_UNDEAD);
 
         return enchantments;
     }
 
     @Override
     public void reload() {
-    	FileConfiguration config = getConfig();
-    	config.options().copyDefaults(true);
-    	
-    	String key = "Sharpness";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Compressed Quartzblock");
-        config.addDefault(key + ".modifier_item", "QUARTZ_BLOCK"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Weapon does additional damage!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Sharpness-Modifier");
-        config.addDefault(key + ".Color", "%WHITE%");
+        FileConfiguration config = getConfig();
+        config.options().copyDefaults(true);
+
+        String key = "Smite";
+        config.addDefault(key + ".allowed", true);
+        config.addDefault(key + ".name", key);
+        config.addDefault(key + ".name_modifier", "Holy Bone");
+        config.addDefault(key + ".modifier_item", "BONE"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".description", "Weapon does additional damage towards the Undead!");
+        config.addDefault(key + ".description_modifier", "%YELLOW%Modifier-Item for the Smite-Modifier");
+        config.addDefault(key + ".Color", "%YELLOW%");
         config.addDefault(key + ".MaxLevel", 5);
 
-        config.addDefault(key + ".CompatibleWithSmite", false);
+        config.addDefault(key + ".CompatibleWithSharpness", false);
         config.addDefault(key + ".CompatibleWithArthropods", false);
 
         config.addDefault(key + ".Recipe.Enabled", true);
-    	config.addDefault(key + ".Recipe.Top", "QQQ");
-    	config.addDefault(key + ".Recipe.Middle", "QQQ");
-    	config.addDefault(key + ".Recipe.Bottom", "QQQ");
+        config.addDefault(key + ".Recipe.Top", "BMB");
+        config.addDefault(key + ".Recipe.Middle", "MIM");
+        config.addDefault(key + ".Recipe.Bottom", "BMB");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("Q", "QUARTZ_BLOCK");
+        recipeMaterials.put("B", "BONE");
+        recipeMaterials.put("M", "BONE_MEAL");
+        recipeMaterials.put("I", "IRON_INGOT");
 
         config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
-    	ConfigurationManager.saveConfig(config);
-    	
+        ConfigurationManager.saveConfig(config);
+
         init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
@@ -88,22 +88,22 @@ public class Sharpness extends Modifier {
                 ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
                 ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
 
-        this.compatibleWithSmite = config.getBoolean(key + ".CompatibleWithSmite");
+        this.compatibleWithSharpness = config.getBoolean(key + ".CompatibleWithSharpness");
         this.compatibleWithArthropods = config.getBoolean(key + ".CompatibleWithArthropods");
     }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "sharpness", isCommand) == null) {
+        if (Modifier.checkAndAdd(p, tool, this, "smite", isCommand) == null) {
             return null;
         }
 
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (ToolType.AXE.getMaterials().contains(tool.getType()) || ToolType.SWORD.getMaterials().contains(tool.getType())) {
-                if (!this.compatibleWithSmite) {
-                    if (modManager.hasMod(tool, Smite.instance()) || meta.hasEnchant(Enchantment.DAMAGE_UNDEAD)) {
+            if (!ToolType.AXE.getMaterials().contains(tool.getType()) && !ToolType.SWORD.getMaterials().contains(tool.getType())) {
+                if (!this.compatibleWithSharpness) {
+                    if (modManager.hasMod(tool, Sharpness.instance()) || meta.hasEnchant(Enchantment.DAMAGE_ALL)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
                         return null;
                     }
@@ -116,12 +116,7 @@ public class Sharpness extends Modifier {
                     }
                 }
 
-                meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.BOW.getMaterials().contains(tool.getType()) || ToolType.CROSSBOW.getMaterials().contains(tool.getType())) {
-                meta.addEnchant(Enchantment.ARROW_DAMAGE, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
-                meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
-                meta.addEnchant(Enchantment.IMPALING, modManager.getModLevel(tool, this), true);
+                meta.addEnchant(Enchantment.DAMAGE_UNDEAD, modManager.getModLevel(tool, this), true);
             }
 
             if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
@@ -141,9 +136,7 @@ public class Sharpness extends Modifier {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            meta.removeEnchant(Enchantment.DAMAGE_ALL);
-            meta.removeEnchant(Enchantment.ARROW_DAMAGE);
-            meta.removeEnchant(Enchantment.IMPALING);
+            meta.removeEnchant(Enchantment.DAMAGE_UNDEAD);
 
             tool.setItemMeta(meta);
         }
@@ -151,15 +144,15 @@ public class Sharpness extends Modifier {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Sharpness", "Modifier_Sharpness");
+        _registerCraftingRecipe(getConfig(), this, "Smite", "Modifier_Smite");
     }
-    
+
     private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.SHARPNESS.getFileName());
+        return ConfigurationManager.getConfig(ModifierType.SMITE.getFileName());
     }
 
     @Override
     public boolean isAllowed() {
-    	return getConfig().getBoolean("Sharpness.allowed");
+        return getConfig().getBoolean("Smite.allowed");
     }
 }

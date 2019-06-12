@@ -130,21 +130,29 @@ permissions:
   #Modifiers:
   minetinker.modifiers.*:
     children:
+      minetinker.modifiers.antiarrowplating.*: true
+      minetinker.modifiers.antiblastplating.*: true
       minetinker.modifiers.aquaphilic.*: true
       minetinker.modifiers.autosmelt.*: true
       minetinker.modifiers.beheading.*: true
+      minetinker.modifiers.channeling.*: true
       minetinker.modifiers.directing.*: true
       minetinker.modifiers.ender.*: true
+      minetinker.modifiers.experienced.*: true
       minetinker.modifiers.extramodifier.*: true
       minetinker.modifiers.fiery.*: true
       minetinker.modifiers.freezing.*: true
       minetinker.modifiers.glowing.*: true
       minetinker.modifiers.haste.*: true
       minetinker.modifiers.infinity.*: true
-      minetinker.modifiers.melting.*: true
-      minetinker.modifiers.lightweight.*: true
+      minetinker.modifiers.insulating.*: true
+      minetinker.modifiers.knockback.*: true
       minetinker.modifiers.lifesteal.*: true
+      minetinker.modifiers.lightweight.*: true
       minetinker.modifiers.luck.*: true
+      minetinker.modifiers.melting.*: true
+      minetinker.modifiers.multishot.*: true
+      minetinker.modifiers.piercing.*: true
       minetinker.modifiers.poisonous.*: true
       minetinker.modifiers.power.*: true
       minetinker.modifiers.propelling.*: true
@@ -154,11 +162,27 @@ permissions:
       minetinker.modifiers.sharpness.*: true
       minetinker.modifiers.shulking.*: true
       minetinker.modifiers.silktouch.*: true
+      minetinker.modifiers.smite.*: true
       minetinker.modifiers.soulbound.*: true
+      minetinker.modifiers.spidersbane.*: true
       minetinker.modifiers.sweeping.*: true
+      minetinker.modifiers.thorned.*: true
       minetinker.modifiers.timber.*: true
       minetinker.modifiers.webbed.*: true
-      minetinker.modifiers.experienced.*: true
+
+  minetinker.modifiers.antiarrowplating.*:
+    children:
+      minetinker.modifiers.antiarrowplating.apply: true
+  minetinker.modifiers.antiarrowplating.apply:
+    description: Allows to apply Anti-Arrow-Plating to the MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.antiblastplating.*:
+    children:
+      minetinker.modifiers.antiblastplating.apply: true
+  minetinker.modifiers.antiblastplating.apply:
+    description: Allows to apply Anti-Blast-Plating to the MineTinker-Tool
+    default: true
 
   minetinker.modifiers.aquaphilic.*:
     children:
@@ -191,6 +215,13 @@ permissions:
     default: true
   minetinker.modifiers.beheading.use:
     description: Allows to use Beheading on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.channeling.*:
+    children:
+      minetinker.modifiers.channeling.apply: true
+  minetinker.modifiers.channeling.apply:
+    description: Allows to apply Channeling to the MineTinker-Tool
     default: true
 
   minetinker.modifiers.directing.*:
@@ -293,6 +324,48 @@ permissions:
     default: true
   minetinker.modifiers.melting.use:
     description: Allows to use the Melting-Modifier on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.insulating.*:
+    children:
+      minetinker.modifiers.insulating.apply: true
+  minetinker.modifiers.insulating.apply:
+    description: Allows to apply Insulating to the MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.multishot.*:
+    children:
+      minetinker.modifiers.multishot.apply: true
+  minetinker.modifiers.multishot.apply:
+    description: Allows to apply Multishot to the MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.piercing.*:
+    children:
+      minetinker.modifiers.piercing.apply: true
+  minetinker.modifiers.piercing.apply:
+    description: Allows to apply Piercing to the MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.smite.*:
+    children:
+      minetinker.modifiers.smite.apply: true
+  minetinker.modifiers.smite.apply:
+    description: Allows to apply Smite to the MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.spidersbane.*:
+    children:
+      minetinker.modifiers.spidersbane.apply: true
+  minetinker.modifiers.spidersbane.apply:
+    description: Allows to apply Spider's Bane to the MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.thorned.*:
+    children:
+      minetinker.modifiers.thorned.apply: true
+  minetinker.modifiers.thorned.apply:
+    description: Allows to apply Thorned gto the MineTinker-Tool
     default: true
 
   minetinker.modifiers.lifesteal.*:

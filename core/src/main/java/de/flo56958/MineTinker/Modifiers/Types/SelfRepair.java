@@ -6,13 +6,11 @@ import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Events.MTEntityDamageEvent;
 import de.flo56958.MineTinker.Events.MTPlayerInteractEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -31,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class SelfRepair extends Modifier implements Enchantable, Craftable, Listener {
+public class SelfRepair extends Modifier implements Enchantable, Listener {
 
     private int percentagePerLevel;
     private int healthRepair;
@@ -220,7 +218,7 @@ public class SelfRepair extends Modifier implements Enchantable, Craftable, List
     }
     
     private static FileConfiguration getConfig() {
-    	return ConfigurationManager.getConfig(Modifiers_Config.Self_Repair);
+        return ConfigurationManager.getConfig(ModifierType.SELF_REPAIR.getFileName());
     }
 
     @Override

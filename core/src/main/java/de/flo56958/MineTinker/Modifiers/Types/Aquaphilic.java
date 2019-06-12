@@ -4,11 +4,9 @@ import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -19,9 +17,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Aquaphilic extends Modifier implements Craftable {
+public class Aquaphilic extends Modifier {
 
     private static Aquaphilic instance;
 
@@ -62,13 +62,18 @@ public class Aquaphilic extends Modifier implements Craftable {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Aquaphilic-Modifier");
         config.addDefault(key + ".Color", "%AQUA%");
         config.addDefault(key + ".MaxLevel", 3); //higher will have no effect on depth strider
+
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "PNP");
         config.addDefault(key + ".Recipe.Middle", "NHN");
         config.addDefault(key + ".Recipe.Bottom", "PNP");
-        config.addDefault(key + ".Recipe.Materials.H", "HEART_OF_THE_SEA");
-        config.addDefault(key + ".Recipe.Materials.N", "NAUTILUS_SHELL");
-        config.addDefault(key + ".Recipe.Materials.P", "PRISMARINE_SHARD");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("H", "HEART_OF_THE_SEA");
+        recipeMaterials.put("N", "NAUTILUS_SHELL");
+        recipeMaterials.put("P", "PRISMARINE_SHARD");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
 
@@ -128,7 +133,7 @@ public class Aquaphilic extends Modifier implements Craftable {
     }
 
     private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(Modifiers_Config.Aquaphilic);
+        return ConfigurationManager.getConfig(ModifierType.AQUAPHILIC.getFileName());
     }
 
     @Override

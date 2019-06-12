@@ -3,11 +3,9 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTEntityDeathEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,9 +17,11 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Directing extends Modifier implements Craftable, Listener {
+public class Directing extends Modifier implements Listener {
 
     private static Directing instance;
 
@@ -60,13 +60,18 @@ public class Directing extends Modifier implements Craftable, Listener {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Directing-Modifier");
         config.addDefault(key + ".workinpvp", true);
         config.addDefault(key + ".Color", "%GRAY%");
+
         config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "ECE");
     	config.addDefault(key + ".Recipe.Middle", "CIC");
     	config.addDefault(key + ".Recipe.Bottom", "ECE");
-    	config.addDefault(key + ".Recipe.Materials.C", "COMPASS");
-    	config.addDefault(key + ".Recipe.Materials.E", "ENDER_PEARL");
-    	config.addDefault(key + ".Recipe.Materials.I", "IRON_BLOCK");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("C", "COMPASS");
+        recipeMaterials.put("E", "ENDER_PEARL");
+        recipeMaterials.put("I", "IRON_BLOCK");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
     	
     	ConfigurationManager.saveConfig(config);
     	
@@ -115,7 +120,7 @@ public class Directing extends Modifier implements Craftable, Listener {
     }
     
     private static FileConfiguration getConfig() {
-    	return ConfigurationManager.getConfig(Modifiers_Config.Directing);
+        return ConfigurationManager.getConfig(ModifierType.DIRECTING.getFileName());
     }
 
     @Override

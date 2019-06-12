@@ -21,66 +21,66 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Sharpness extends Modifier {
+public class SpidersBane extends Modifier {
 
     private boolean compatibleWithSmite;
-    private boolean compatibleWithArthropods;
+    private boolean compatibleWithSharpness;
 
-    private static Sharpness instance;
+    private static SpidersBane instance;
 
-    public static Sharpness instance() {
-        synchronized (Sharpness.class) {
-            if (instance == null) instance = new Sharpness();
+    public static SpidersBane instance() {
+        synchronized (SpidersBane.class) {
+            if (instance == null) instance = new SpidersBane();
         }
         return instance;
     }
 
-    private Sharpness() {
-        super(ModifierType.SHARPNESS,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT)),
+    private SpidersBane() {
+        super(ModifierType.SPIDERSBANE,
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.SWORD)),
                 Main.getPlugin());
     }
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
         List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.DAMAGE_ALL);
-        enchantments.add(Enchantment.ARROW_DAMAGE);
-        enchantments.add(Enchantment.IMPALING);
+        enchantments.add(Enchantment.DAMAGE_ARTHROPODS);
 
         return enchantments;
     }
 
     @Override
     public void reload() {
-    	FileConfiguration config = getConfig();
-    	config.options().copyDefaults(true);
-    	
-    	String key = "Sharpness";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Compressed Quartzblock");
-        config.addDefault(key + ".modifier_item", "QUARTZ_BLOCK"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Weapon does additional damage!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Sharpness-Modifier");
-        config.addDefault(key + ".Color", "%WHITE%");
+        FileConfiguration config = getConfig();
+        config.options().copyDefaults(true);
+
+        String key = "Spiders-Bane";
+        config.addDefault(key + ".allowed", true);
+        config.addDefault(key + ".name", "Spider's-Bane");
+        config.addDefault(key + ".name_modifier", "Cleansed Spider Eye");
+        config.addDefault(key + ".modifier_item", "FERMENTED_SPIDER_EYE"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".description", "Weapon does additional damage to Spiders!");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Spider's-Bane-Modifier");
+        config.addDefault(key + ".Color", "%RED%");
         config.addDefault(key + ".MaxLevel", 5);
 
         config.addDefault(key + ".CompatibleWithSmite", false);
-        config.addDefault(key + ".CompatibleWithArthropods", false);
-
+        config.addDefault(key + ".CompatibleWithSharpness", false);
         config.addDefault(key + ".Recipe.Enabled", true);
-    	config.addDefault(key + ".Recipe.Top", "QQQ");
-    	config.addDefault(key + ".Recipe.Middle", "QQQ");
-    	config.addDefault(key + ".Recipe.Bottom", "QQQ");
+
+        config.addDefault(key + ".Recipe.Top", "ESE");
+        config.addDefault(key + ".Recipe.Middle", "SFS");
+        config.addDefault(key + ".Recipe.Bottom", "ESE");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("Q", "QUARTZ_BLOCK");
+        recipeMaterials.put("E", "SPIDER_EYE");
+        recipeMaterials.put("S", "STRING");
+        recipeMaterials.put("F", "FERMENTED_SPIDER_EYE");
 
         config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
-    	ConfigurationManager.saveConfig(config);
-    	
+        ConfigurationManager.saveConfig(config);
+
         init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
@@ -89,7 +89,7 @@ public class Sharpness extends Modifier {
                 ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
 
         this.compatibleWithSmite = config.getBoolean(key + ".CompatibleWithSmite");
-        this.compatibleWithArthropods = config.getBoolean(key + ".CompatibleWithArthropods");
+        this.compatibleWithSharpness = config.getBoolean(key + ".CompatibleWithSharpness");
     }
 
     @Override
@@ -109,19 +109,14 @@ public class Sharpness extends Modifier {
                     }
                 }
 
-                if (!this.compatibleWithArthropods) {
-                    if (modManager.hasMod(tool, SpidersBane.instance()) || meta.hasEnchant(Enchantment.DAMAGE_ARTHROPODS)) {
+                if (!this.compatibleWithSharpness) {
+                    if (modManager.hasMod(tool, Sharpness.instance()) || meta.hasEnchant(Enchantment.DAMAGE_ALL)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
                         return null;
                     }
                 }
 
-                meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.BOW.getMaterials().contains(tool.getType()) || ToolType.CROSSBOW.getMaterials().contains(tool.getType())) {
-                meta.addEnchant(Enchantment.ARROW_DAMAGE, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
-                meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
-                meta.addEnchant(Enchantment.IMPALING, modManager.getModLevel(tool, this), true);
+                meta.addEnchant(Enchantment.DAMAGE_ARTHROPODS, modManager.getModLevel(tool, this), true);
             }
 
             if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
@@ -141,9 +136,7 @@ public class Sharpness extends Modifier {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            meta.removeEnchant(Enchantment.DAMAGE_ALL);
-            meta.removeEnchant(Enchantment.ARROW_DAMAGE);
-            meta.removeEnchant(Enchantment.IMPALING);
+            meta.removeEnchant(Enchantment.DAMAGE_ARTHROPODS);
 
             tool.setItemMeta(meta);
         }
@@ -151,15 +144,15 @@ public class Sharpness extends Modifier {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Sharpness", "Modifier_Sharpness");
+        _registerCraftingRecipe(getConfig(), this, "SpidersBane", "Modifier_SpidersBane");
     }
-    
+
     private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.SHARPNESS.getFileName());
+        return ConfigurationManager.getConfig(ModifierType.SPIDERSBANE.getFileName());
     }
 
     @Override
     public boolean isAllowed() {
-    	return getConfig().getBoolean("Sharpness.allowed");
+        return getConfig().getBoolean("Spiders-Bane.allowed");
     }
 }

@@ -2,12 +2,10 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -23,7 +21,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class Soulbound extends Modifier implements Craftable, Listener {
+public class Soulbound extends Modifier implements Listener {
 
     private final HashMap<Player, ArrayList<ItemStack>> storedItemStacks = new HashMap<>(); //saves ItemStacks untill reload (if the player does not respawn instantly)
     private boolean toolDropable;
@@ -83,13 +81,18 @@ public class Soulbound extends Modifier implements Craftable, Listener {
         config.addDefault(key + ".PercentagePerLevel", 100);
         config.addDefault(key + ".DecrementModLevelOnUse", false);
         config.addDefault(key + ".ToolDropable", true);
+
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "BLB");
         config.addDefault(key + ".Recipe.Middle", "LNL");
         config.addDefault(key + ".Recipe.Bottom", "BLB");
-        config.addDefault(key + ".Recipe.Materials.B", "BLAZE_ROD");
-        config.addDefault(key + ".Recipe.Materials.L", "LAVA_BUCKET");
-        config.addDefault(key + ".Recipe.Materials.N", "NETHER_STAR");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("B", "BLAZE_ROD");
+        recipeMaterials.put("L", "LAVA_BUCKET");
+        recipeMaterials.put("N", "NETHER_STAR");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
 
@@ -177,7 +180,7 @@ public class Soulbound extends Modifier implements Craftable, Listener {
     }
 
     private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(Modifiers_Config.Soulbound);
+        return ConfigurationManager.getConfig(ModifierType.SOULBOUND.getFileName());
     }
 
     @Override

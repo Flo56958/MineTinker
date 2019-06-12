@@ -1,8 +1,6 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -16,32 +14,32 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Freezing extends Modifier {
+public class Channeling extends Modifier {
 
-    private static Freezing instance;
+    private static Channeling instance;
 
-    public static Freezing instance() {
-        synchronized (Freezing.class) {
-            if (instance == null) instance = new Freezing();
+    public static Channeling instance() {
+        synchronized (Channeling.class) {
+            if (instance == null) instance = new Channeling();
         }
         return instance;
     }
 
-    private Freezing() {
-        super(ModifierType.FREEZING,
-                new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
+    private Channeling() {
+        super(ModifierType.CHANNELING,
+                new ArrayList<>(Arrays.asList(ToolType.TRIDENT)),
                 Main.getPlugin());
     }
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
         List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.FROST_WALKER);
+        enchantments.add(Enchantment.CHANNELING);
 
         return enchantments;
     }
@@ -51,24 +49,25 @@ public class Freezing extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Freezing";
+        String key = "Channeling";
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Icy Crystal");
-        config.addDefault(key + ".modifier_item", "DIAMOND"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "It is freezing around you.");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Freezing-Modifier");
-        config.addDefault(key + ".Color", "%AQUA%");
-        config.addDefault(key + ".MaxLevel", 3);
+        config.addDefault(key + ".name_modifier", "Lightning Infused Shard");
+        config.addDefault(key + ".modifier_item", "PRISMARINE_SHARD"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".description", "Summons lightning when weapon is thrown at mobs!");
+        config.addDefault(key + ".description_modifier", "%GRAY%Modifier-Item for the Channeling-Modifier");
+        config.addDefault(key + ".Color", "%GRAY%");
+        config.addDefault(key + ".MaxLevel", 1);
 
         config.addDefault(key + ".Recipe.Enabled", true);
-        config.addDefault(key + ".Recipe.Top", "BBB");
-        config.addDefault(key + ".Recipe.Middle", "BDB");
-        config.addDefault(key + ".Recipe.Bottom", "BBB");
+        config.addDefault(key + ".Recipe.Top", "SPS");
+        config.addDefault(key + ".Recipe.Middle", "PCP");
+        config.addDefault(key + ".Recipe.Bottom", "SPS");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("B", "BLUE_ICE");
-        recipeMaterials.put("D", "DIAMOND");
+        recipeMaterials.put("S", "SEA_LANTERN");
+        recipeMaterials.put("P", "PRISMARINE_SHARDS");
+        recipeMaterials.put("C", "CREEPER_HEAD");
 
         config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
@@ -79,35 +78,30 @@ public class Freezing extends Modifier {
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
-
     }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.get(ModifierType.AQUAPHILIC) != null) {
-            if (modManager.hasMod(tool, modManager.get(ModifierType.AQUAPHILIC))) {
-                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                return null;
-            }
-        }
-
-        if (Modifier.checkAndAdd(p, tool, this, "freezing", isCommand) == null) {
+        if (Modifier.checkAndAdd(p, tool, this, "channeling", isCommand) == null) {
             return null;
         }
 
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            meta.addEnchant(Enchantment.FROST_WALKER, modManager.getModLevel(tool, this), true);
+            if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
+                meta.addEnchant(Enchantment.CHANNELING, modManager.getModLevel(tool, this), true);
+            }
 
             if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             } else {
                 meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
+
+            tool.setItemMeta(meta);
         }
 
-        tool.setItemMeta(meta);
         return tool;
     }
 
@@ -116,22 +110,22 @@ public class Freezing extends Modifier {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            meta.removeEnchant(Enchantment.FROST_WALKER);
+            meta.removeEnchant(Enchantment.CHANNELING);
             tool.setItemMeta(meta);
         }
     }
 
+    @Override
+    public void registerCraftingRecipe() {
+        _registerCraftingRecipe(getConfig(), this, "Channeling", "Modifier_Channeling");
+    }
+
     private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.FREEZING.getFileName());
+        return ConfigurationManager.getConfig(ModifierType.CHANNELING.getFileName());
     }
 
     @Override
     public boolean isAllowed() {
-        return getConfig().getBoolean("Freezing.allowed");
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Freezing", "Modifier_Freezing");
+        return getConfig().getBoolean("Channeling.allowed");
     }
 }

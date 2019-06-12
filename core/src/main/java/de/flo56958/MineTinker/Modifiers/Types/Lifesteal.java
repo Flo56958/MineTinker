@@ -3,15 +3,15 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -22,10 +22,12 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
-public class Lifesteal extends Modifier implements Craftable, Listener {
+public class Lifesteal extends Modifier implements Listener {
 
     private int percentPerLevel;
     private int percentToTrigger;
@@ -67,13 +69,18 @@ public class Lifesteal extends Modifier implements Craftable, Listener {
         config.addDefault(key + ".MaxLevel", 3);
         config.addDefault(key + ".PercentToTrigger", 50);
         config.addDefault(key + ".PercentOfDamagePerLevel", 10);
+
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "SRS");
         config.addDefault(key + ".Recipe.Middle", "RNR");
         config.addDefault(key + ".Recipe.Bottom", "SRS");
-        config.addDefault(key + ".Recipe.Materials.N", "NETHERRACK");
-        config.addDefault(key + ".Recipe.Materials.R", "ROTTEN_FLESH");
-        config.addDefault(key + ".Recipe.Materials.S", "SOUL_SAND");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("N", "NETHERRACK");
+        recipeMaterials.put("R", "ROTTEN_FLESH");
+        recipeMaterials.put("S", "SOUL_SAND");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
 
@@ -106,15 +113,22 @@ public class Lifesteal extends Modifier implements Craftable, Listener {
         double recovery = damage * ((percentPerLevel * level) / 100.0);
         double health = p.getHealth() + recovery;
 
-        // TODO: don't call getMaxHealth
-        if (health > p.getMaxHealth()) { health = p.getMaxHealth(); } // for IllegalArgumentExeption if Health is biggen than MaxHealth
-        p.setHealth(health);
+        AttributeInstance attribute = p.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+
+        if (attribute != null) {
+            // for IllegalArgumentExeption if Health is biggen than MaxHealth
+            if (health > attribute.getValue()) {
+                health = attribute.getValue();
+            }
+
+            p.setHealth(health);
+        }
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Lifesteal on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") and got " + recovery + " health back!");
     }
 
     private FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(Modifiers_Config.Lifesteal);
+        return ConfigurationManager.getConfig(ModifierType.LIFESTEAL.getFileName());
     }
 
     @Override

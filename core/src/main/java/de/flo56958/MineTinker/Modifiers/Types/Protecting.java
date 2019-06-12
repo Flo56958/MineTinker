@@ -2,11 +2,9 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -17,9 +15,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Protecting extends Modifier implements Craftable {
+public class Protecting extends Modifier {
 
     private static Protecting instance;
 
@@ -58,13 +58,18 @@ public class Protecting extends Modifier implements Craftable {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Protecting-Modifier");
         config.addDefault(key + ".Color", "%GRAY%");
         config.addDefault(key + ".MaxLevel", 5);
+
      	config.addDefault(key + ".Recipe.Enabled", true);
      	config.addDefault(key + ".Recipe.Top", "DID");
      	config.addDefault(key + ".Recipe.Middle", "IOI");
      	config.addDefault(key + ".Recipe.Bottom", "DID");
-     	config.addDefault(key + ".Recipe.Materials.D", "DIAMOND");
-     	config.addDefault(key + ".Recipe.Materials.I", "IRON_INGOT");
-     	config.addDefault(key + ".Recipe.Materials.O", "OBSIDIAN");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("D", "DIAMOND");
+        recipeMaterials.put("I", "IRON_INGOT");
+        recipeMaterials.put("O", "OBSIDIAN");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
          
      	ConfigurationManager.saveConfig(config);
      	
@@ -114,7 +119,7 @@ public class Protecting extends Modifier implements Craftable {
     }
     
     private static FileConfiguration getConfig() {
-    	return ConfigurationManager.getConfig(Modifiers_Config.Protecting);
+        return ConfigurationManager.getConfig(ModifierType.PROTECTING.getFileName());
     }
 
     @Override

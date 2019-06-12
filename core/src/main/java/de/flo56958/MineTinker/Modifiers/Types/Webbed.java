@@ -4,12 +4,10 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Events.MTProjectileHitEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -26,9 +24,11 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Webbed extends Modifier implements Craftable, Listener {
+public class Webbed extends Modifier implements Listener {
 
     private int duration;
     private double durationMultiplier;
@@ -74,12 +74,17 @@ public class Webbed extends Modifier implements Craftable, Listener {
     	config.addDefault(key + ".Sound", true);
     	config.addDefault(key + ".DurationMultiplier", 1.2);//Duration * (Multiplier^Level)
     	config.addDefault(key + ".EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
-    	config.addDefault(key + ".Recipe.Enabled", true);
+
+        config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "WWW");
     	config.addDefault(key + ".Recipe.Middle", "WWW");
     	config.addDefault(key + ".Recipe.Bottom", "WWW");
-    	config.addDefault(key + ".Recipe.Materials.W", "COBWEB");
-    	
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("W", "COBWEB");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+
     	ConfigurationManager.saveConfig(config);
         
         init(getConfig().getString(key + ".name"),
@@ -139,7 +144,7 @@ public class Webbed extends Modifier implements Craftable, Listener {
     }
     
     private static FileConfiguration getConfig() {
-    	return ConfigurationManager.getConfig(Modifiers_Config.Webbed);
+        return ConfigurationManager.getConfig(ModifierType.WEBBED.getFileName());
     }
 
     @Override

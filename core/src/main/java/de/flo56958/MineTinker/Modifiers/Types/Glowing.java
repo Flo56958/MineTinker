@@ -3,12 +3,10 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -24,9 +22,11 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Glowing extends Modifier implements Craftable, Listener {
+public class Glowing extends Modifier implements Listener {
 
     private int duration;
     private double durationMultiplier;
@@ -68,12 +68,17 @@ public class Glowing extends Modifier implements Craftable, Listener {
         config.addDefault(key + ".MaxLevel", 3);
     	config.addDefault(key + ".Duration", 200); //ticks INTEGER (20 ticks ~ 1 sec)
     	config.addDefault(key + ".DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
+
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "GGG");
     	config.addDefault(key + ".Recipe.Middle", "GEG");
     	config.addDefault(key + ".Recipe.Bottom", "GGG");
-    	config.addDefault(key + ".Recipe.Materials.G", "GLOWSTONE_DUST");
-    	config.addDefault(key + ".Recipe.Materials.E", "ENDER_EYE");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("G", "GLOWSTONE_DUST");
+        recipeMaterials.put("E", "ENDER_EYE");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
         
     	ConfigurationManager.saveConfig(config);
     	
@@ -119,7 +124,7 @@ public class Glowing extends Modifier implements Craftable, Listener {
     }
     
     private static FileConfiguration getConfig() {
-    	return ConfigurationManager.getConfig(Modifiers_Config.Glowing);
+        return ConfigurationManager.getConfig(ModifierType.GLOWING.getFileName());
     }
 
     @Override

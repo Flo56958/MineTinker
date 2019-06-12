@@ -5,12 +5,10 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTBlockBreakEvent;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -23,10 +21,12 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
-public class AutoSmelt extends Modifier implements Craftable, Listener {
+public class AutoSmelt extends Modifier implements Listener {
 
     private int percentagePerLevel;
     private boolean hasSound;
@@ -78,20 +78,26 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
     	config.addDefault(key + ".smelt_terracotta", false);
     	config.addDefault(key + ".burn_coal", true);
     	config.addDefault(key + ".works_under_water", true);
+
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "CCC");
     	config.addDefault(key + ".Recipe.Middle", "CFC");
     	config.addDefault(key + ".Recipe.Bottom", "CCC");
-    	config.addDefault(key + ".Recipe.Materials.C", "FURNACE");
-    	config.addDefault(key + ".Recipe.Materials.F", "BLAZE_ROD");
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("C", "FURNACE");
+        recipeMaterials.put("F", "BLAZE_ROD");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
     	
     	ConfigurationManager.saveConfig(config);
     	
     	init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+                ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
+                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
+                ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
+                ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.percentagePerLevel = config.getInt(key + ".PercentagePerLevel");
         this.hasSound = config.getBoolean(key + ".Sound");
@@ -326,7 +332,9 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
 
             if (this.hasParticles) { b.getLocation().getWorld().spawnParticle(Particle.FLAME, b.getLocation(), 5); }
             if (this.hasSound) { b.getLocation().getWorld().playSound(b.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F); }
-            ChatWriter.log(false, p.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") while mining " + e.getBlock().getType().toString() + "!");
+
+            ChatWriter.log(false, p.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY +
+                    " (" + tool.getType().toString() + ") while mining " + e.getBlock().getType().toString() + "!");
         }
     }
 
@@ -336,7 +344,7 @@ public class AutoSmelt extends Modifier implements Craftable, Listener {
     }
     
     private static FileConfiguration getConfig() {
-		return ConfigurationManager.getConfig(Modifiers_Config.Auto_Smelt);
+		return ConfigurationManager.getConfig(ModifierType.AUTO_SMELT.getFileName());
     }
 
     @Override

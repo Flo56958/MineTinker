@@ -16,32 +16,34 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Freezing extends Modifier {
+public class MultiShot extends Modifier {
 
-    private static Freezing instance;
+    private boolean compatibleWithPiercing;
 
-    public static Freezing instance() {
-        synchronized (Freezing.class) {
-            if (instance == null) instance = new Freezing();
+    private static MultiShot instance;
+
+    public static MultiShot instance() {
+        synchronized (MultiShot.class) {
+            if (instance == null) instance = new MultiShot();
         }
         return instance;
     }
 
-    private Freezing() {
-        super(ModifierType.FREEZING,
-                new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
+    private MultiShot() {
+        super(ModifierType.MULTISHOT,
+                new ArrayList<>(Arrays.asList(ToolType.CROSSBOW)),
                 Main.getPlugin());
     }
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
         List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.FROST_WALKER);
+        enchantments.add(Enchantment.MULTISHOT);
 
         return enchantments;
     }
@@ -51,26 +53,29 @@ public class Freezing extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Freezing";
+        String key = "Multishot";
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Icy Crystal");
-        config.addDefault(key + ".modifier_item", "DIAMOND"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "It is freezing around you.");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Freezing-Modifier");
-        config.addDefault(key + ".Color", "%AQUA%");
-        config.addDefault(key + ".MaxLevel", 3);
+        config.addDefault(key + ".name_modifier", "Enchanted Blaze-Rod");
+        config.addDefault(key + ".modifier_item", "BLAZE_ROD"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".description", "Inflames enemies!");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Multishot-Modifier");
+        config.addDefault(key + ".Color", "%YELLOW%");
+        config.addDefault(key + ".MaxLevel", 1);
+
+        config.addDefault(key + ".CompatibleWithPiercing", false);
 
         config.addDefault(key + ".Recipe.Enabled", true);
-        config.addDefault(key + ".Recipe.Top", "BBB");
-        config.addDefault(key + ".Recipe.Middle", "BDB");
-        config.addDefault(key + ".Recipe.Bottom", "BBB");
+        config.addDefault(key + ".Recipe.Top", "QQQ");
+        config.addDefault(key + ".Recipe.Middle", "AAA");
+        config.addDefault(key + ".Recipe.Bottom", "QQQ");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("B", "BLUE_ICE");
-        recipeMaterials.put("D", "DIAMOND");
+        recipeMaterials.put("Q", "QUARTZ_BLOCK");
+        recipeMaterials.put("A", "ARROW");
 
         config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        // TODO: Better recipe
 
         ConfigurationManager.saveConfig(config);
 
@@ -80,34 +85,38 @@ public class Freezing extends Modifier {
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
 
+        this.compatibleWithPiercing = config.getBoolean(key + ".CompatibleWithPiercing");
     }
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.get(ModifierType.AQUAPHILIC) != null) {
-            if (modManager.hasMod(tool, modManager.get(ModifierType.AQUAPHILIC))) {
-                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                return null;
-            }
-        }
-
-        if (Modifier.checkAndAdd(p, tool, this, "freezing", isCommand) == null) {
+        if (Modifier.checkAndAdd(p, tool, this, "multishot", isCommand) == null) {
             return null;
         }
 
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            meta.addEnchant(Enchantment.FROST_WALKER, modManager.getModLevel(tool, this), true);
+            if (ToolType.CROSSBOW.getMaterials().contains(tool.getType())) {
+                if (!this.compatibleWithPiercing) {
+                    if (modManager.hasMod(tool, Piercing.instance()) || meta.hasEnchant(Enchantment.PIERCING)) {
+                        pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+                        return null;
+                    }
+                }
+
+                meta.addEnchant(Enchantment.MULTISHOT, modManager.getModLevel(tool, this), true);
+            }
 
             if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             } else {
                 meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
+
+            tool.setItemMeta(meta);
         }
 
-        tool.setItemMeta(meta);
         return tool;
     }
 
@@ -116,22 +125,22 @@ public class Freezing extends Modifier {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            meta.removeEnchant(Enchantment.FROST_WALKER);
+            meta.removeEnchant(Enchantment.MULTISHOT);
             tool.setItemMeta(meta);
         }
     }
 
+    @Override
+    public void registerCraftingRecipe() {
+        _registerCraftingRecipe(getConfig(), this, "Multishot", "Modifier_Multishot");
+    }
+
     private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.FREEZING.getFileName());
+        return ConfigurationManager.getConfig(ModifierType.MULTISHOT.getFileName());
     }
 
     @Override
     public boolean isAllowed() {
-        return getConfig().getBoolean("Freezing.allowed");
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Freezing", "Modifier_Freezing");
+        return getConfig().getBoolean("Multishot.allowed");
     }
 }

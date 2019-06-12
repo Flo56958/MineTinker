@@ -6,12 +6,10 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTBlockBreakEvent;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Craftable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import de.flo56958.MineTinker.Utilities.Modifiers_Config;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -27,9 +25,11 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Timber extends Modifier implements Craftable, Listener {
+public class Timber extends Modifier implements Listener {
 
     private static final ArrayList<Location> locs = new ArrayList<>();
 
@@ -68,13 +68,18 @@ public class Timber extends Modifier implements Craftable, Listener {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Timber-Modifier");
         config.addDefault(key + ".Color", "%GREEN%");
         config.addDefault(key + ".MaximumBlocksPerSwing", -1);
+
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "LLL");
     	config.addDefault(key + ".Recipe.Middle", "LEL");
     	config.addDefault(key + ".Recipe.Bottom", "LLL");
-    	config.addDefault(key + ".Recipe.Materials.L", "OAK_WOOD");
-    	config.addDefault(key + ".Recipe.Materials.E", "EMERALD");
-    	
+
+        Map<String, String> recipeMaterials = new HashMap<>();
+        recipeMaterials.put("L", "OAK_WOOD");
+        recipeMaterials.put("E", "EMERALD");
+
+        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+
     	ConfigurationManager.saveConfig(config);
         
         init(config.getString(key + ".name"),
@@ -186,7 +191,7 @@ public class Timber extends Modifier implements Craftable, Listener {
     }
     
     private static FileConfiguration getConfig() {
-    	return ConfigurationManager.getConfig(Modifiers_Config.Timber);
+        return ConfigurationManager.getConfig(ModifierType.TIMBER.getFileName());
     }
 
     @Override
