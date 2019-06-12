@@ -2,6 +2,9 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Modifiers.ModManager;
 
+//TODO: Integrate into Modifier as every Modifier needs to have this and we do not need the Enums anymore to get the specific Modifier from the
+//      Modmanager as we can use .instance()
+//      Without this Enum the API for MineTinker will become a lot easier
 public enum ModifierType {
     AQUAPHILIC("Aquaphilic"),
     AUTO_SMELT("Auto-Smelt"),

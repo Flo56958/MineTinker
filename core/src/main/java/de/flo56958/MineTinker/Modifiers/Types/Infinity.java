@@ -61,8 +61,9 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted Arrow");
         config.addDefault(key + ".modifier_item", "ARROW"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "You only need one Arrow to shoot a bowand the Trident comes back!");
+        config.addDefault(key + ".description", "You only need one Arrow to shoot a bow and the Trident comes back!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Infinity-Modifier");
+        config.addDefault(key + ".MaxLevel", 3); //higher values than 1 have no effect on Infinity
         config.addDefault(key + ".Color", "%WHITE%");
         config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".Recipe.Enabled", false);
@@ -73,7 +74,7 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
         init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                1,
+                config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
         this.compatibleWithEnder = ConfigurationManager.getConfig("Ender.yml").getBoolean("Ender.CompatibleWithInfinity");
@@ -82,13 +83,13 @@ public class Infinity extends Modifier implements Enchantable, Craftable {
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
         if (!this.compatibleWithEnder) {
-            if (modManager.hasMod(tool, modManager.getAdmin(ModifierType.ENDER))) {
+            if (modManager.hasMod(tool, Ender.instance())) {
                 pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
                 return null;
             }
         }
 
-        if (modManager.hasMod(tool, modManager.getAdmin(ModifierType.PROPELLING))) {
+        if (modManager.hasMod(tool, Propelling.instance())) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
             return null;
         }
