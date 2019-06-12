@@ -194,7 +194,6 @@ public class ModManager {
         if (NBTUtils.isOneFourteenCompatible()) {
             allMods.add(Piercing.instance());
             allMods.add(MultiShot.instance());
-            allMods.add(QuickCharge.instance());
         }
         
         reload();

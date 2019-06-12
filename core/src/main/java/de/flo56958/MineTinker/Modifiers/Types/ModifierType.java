@@ -31,7 +31,6 @@ public enum ModifierType {
     POWER("Power", "Power.yml"),
     PROPELLING("Propelling", "Propelling.yml"),
     PROTECTING("Protecting", "Protecting.yml"),
-    QUICK_CHARGE("Quick-Charge", "Quick-Charge.yml"),
     REINFORCED("Reinforced", "Reinforced.yml"),
     SELF_REPAIR("Self-Repair", "Self-Repair.yml"),
     SHARPNESS("Sharpness", "Sharpness.yml"),
