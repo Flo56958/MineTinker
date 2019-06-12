@@ -160,6 +160,7 @@ public class Timber extends Modifier implements Craftable, Listener {
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
                 for (int dz = -1; dz <= 1; dz++) {
+                    if (dx == 0 && dy == 0 && dz == 0) continue;
                     Location loc = b.getLocation().clone();
                     loc.add(dx, dy, dz);
 
@@ -169,9 +170,10 @@ public class Timber extends Modifier implements Craftable, Listener {
 
                     locs.add(loc);
 
-                    if (allowed.contains(p.getWorld().getBlockAt(loc).getType())) {
-                        breakTree(p, p.getWorld().getBlockAt(loc), allowed);
-                        NBTUtils.getHandler().playerBreakBlock(p, b);
+                    Block toBreak = p.getWorld().getBlockAt(loc);
+                    if (allowed.contains(toBreak.getType())) {
+                        breakTree(p, toBreak, allowed);
+                        NBTUtils.getHandler().playerBreakBlock(p, toBreak);
                     }
                 }
             }
