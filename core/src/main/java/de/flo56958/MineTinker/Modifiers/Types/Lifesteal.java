@@ -10,6 +10,8 @@ import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -111,9 +113,16 @@ public class Lifesteal extends Modifier implements Listener {
         double recovery = damage * ((percentPerLevel * level) / 100.0);
         double health = p.getHealth() + recovery;
 
-        // TODO: don't call getMaxHealth
-        if (health > p.getMaxHealth()) { health = p.getMaxHealth(); } // for IllegalArgumentExeption if Health is biggen than MaxHealth
-        p.setHealth(health);
+        AttributeInstance attribute = p.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+
+        if (attribute != null) {
+            // for IllegalArgumentExeption if Health is biggen than MaxHealth
+            if (health > attribute.getValue()) {
+                health = attribute.getValue();
+            }
+
+            p.setHealth(health);
+        }
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Lifesteal on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") and got " + recovery + " health back!");
     }
