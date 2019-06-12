@@ -54,7 +54,7 @@ public class Channeling extends Modifier {
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Lightning Infused Shard");
         config.addDefault(key + ".modifier_item", "PRISMARINE_SHARD"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Reduces crossbow loading time!");
+        config.addDefault(key + ".description", "Summons lightning when weapon is thrown at mobs!");
         config.addDefault(key + ".description_modifier", "%GRAY%Modifier-Item for the Channeling-Modifier");
         config.addDefault(key + ".Color", "%GRAY%");
         config.addDefault(key + ".MaxLevel", 1);
