@@ -12,6 +12,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -339,48 +340,24 @@ public class BuildersWandListener implements Listener {
 
                         Location loc = l.clone().subtract(v.clone().multiply(-1));
 
-                        if (b.getWorld().getBlockAt(l).getType().equals(b.getType())) {
-                            if (b.getWorld().getBlockAt(loc).getType().equals(Material.AIR) ||
-                                    b.getWorld().getBlockAt(loc).getType().equals(Material.CAVE_AIR) ||
-                                    b.getWorld().getBlockAt(loc).getType().equals(Material.WATER) ||
-                                    b.getWorld().getBlockAt(loc).getType().equals(Material.BUBBLE_COLUMN) ||
-                                    b.getWorld().getBlockAt(loc).getType().equals(Material.LAVA) ||
-                                    b.getWorld().getBlockAt(loc).getType().equals(Material.GRASS)) {
-                                if (wand.getType().getMaxDurability() - wand.getDurability() <= 1) {
-                                    break loop;
-                                }
-                                //triggers a pseudoevent to find out if the Player can build
-                                BlockState bs = b.getWorld().getBlockAt(loc).getState();
+                        if (wand.getType().getMaxDurability() - wand.getDurability() <= 1) break loop;
 
-                                BlockPlaceEvent placeEvent = new BlockPlaceEvent(b.getWorld().getBlockAt(loc), b.getWorld().getBlockAt(loc).getState(), b, current, p, true);
-                                Bukkit.getPluginManager().callEvent(placeEvent);
+                        if (!placeBlock(b, p, l, loc, current, v)) continue;
 
-                                //check the pseudoevent
-                                if (!placeEvent.canBuild() || placeEvent.isCancelled()) { continue; }
+                        int amountPlaced = 1;
 
-                                Block nb = b.getWorld().getBlockAt(loc);
-                                nb.setType(current.getType());
-                                BlockData bd = nb.getBlockData();
+                        BlockData behindData = b.getWorld().getBlockAt(loc.subtract(v)).getBlockData();
+                        if (behindData instanceof Slab && ((Slab) behindData).getType().equals(Slab.Type.DOUBLE)) amountPlaced = 2; //Special case for slabs as you place two slabs at once
 
-                                if (bd instanceof Directional) {
-                                    ((Directional) bd).setFacing(((Directional) nb.getWorld().getBlockAt(loc.subtract(v)).getBlockData()).getFacing());
-                                }
+                        current.setAmount(current.getAmount() - amountPlaced);
 
-                                nb.setBlockData(bd);
+                        if (config.getBoolean("BuildersWand.useDurability")) //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
+                            wand.setDurability((short) (wand.getDurability() + 1));
 
-                                current.setAmount(current.getAmount() - 1);
+                        if (current.getAmount() == 0) //TODO: Add Exp gain for Builderswands
+                            break loop;
 
-                                if (config.getBoolean("BuildersWand.useDurability")) { //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
-                                    wand.setDurability((short) (wand.getDurability() + 1));
-                                }
-
-                                if (current.getAmount() == 0) { //TODO: Add Exp gain for Builderswands
-                                    break loop;
-                                }
-
-                                e.setCancelled(true);
-                            }
-                        }
+                        e.setCancelled(true);
                     }
                 }
                 break;
@@ -394,39 +371,47 @@ public class BuildersWandListener implements Listener {
                     l.subtract(u.clone().multiply(j));
 
                     Location loc = l.clone().subtract(v.clone().multiply(-1));
-
-                    if (b.getWorld().getBlockAt(l).getType().equals(b.getType())) {
-                        if (b.getWorld().getBlockAt(loc).getType().equals(Material.AIR) ||
-                                b.getWorld().getBlockAt(loc).getType().equals(Material.CAVE_AIR) ||
-                                b.getWorld().getBlockAt(loc).getType().equals(Material.WATER) ||
-                                b.getWorld().getBlockAt(loc).getType().equals(Material.BUBBLE_COLUMN) ||
-                                b.getWorld().getBlockAt(loc).getType().equals(Material.LAVA) ||
-                                b.getWorld().getBlockAt(loc).getType().equals(Material.GRASS)) {
-                            //triggers a pseudoevent to find out if the Player can build
-                            BlockState bs = b.getWorld().getBlockAt(loc).getState();
-
-                            BlockPlaceEvent placeEvent = new BlockPlaceEvent(b.getWorld().getBlockAt(loc), b.getWorld().getBlockAt(loc).getState(), b, new ItemStack(b.getType(), 1), p, true);
-                            Bukkit.getPluginManager().callEvent(placeEvent);
-
-                            //check the pseudoevent
-                            if (!placeEvent.canBuild() || placeEvent.isCancelled()) { continue; }
-
-                            Block nb = b.getWorld().getBlockAt(loc);
-                            nb.setType(b.getType());
-                            BlockData bd = nb.getBlockData();
-
-                            if (bd instanceof Directional) {
-                                ((Directional) bd).setFacing(((Directional) nb.getWorld().getBlockAt(loc.subtract(v)).getBlockData()).getFacing());
-                            }
-
-                            nb.setBlockData(bd);
-                            e.setCancelled(true);
-                        }
-                    }
+                    placeBlock(b, p, l, loc, new ItemStack(b.getType(), 64), v);
                 }
             }
         }
+    }
 
+    private boolean placeBlock(Block b, Player p, Location l, Location loc, ItemStack item, Vector v) {
+        if (!b.getWorld().getBlockAt(l).getType().equals(b.getType())) return false;
+        if (!(b.getWorld().getBlockAt(loc).getType().equals(Material.AIR) ||
+                b.getWorld().getBlockAt(loc).getType().equals(Material.CAVE_AIR) ||
+                b.getWorld().getBlockAt(loc).getType().equals(Material.WATER) ||
+                b.getWorld().getBlockAt(loc).getType().equals(Material.BUBBLE_COLUMN) ||
+                b.getWorld().getBlockAt(loc).getType().equals(Material.LAVA) ||
+                b.getWorld().getBlockAt(loc).getType().equals(Material.GRASS))) return false;
+
+        //triggers a pseudoevent to find out if the Player can build
+        BlockState bs = b.getWorld().getBlockAt(loc).getState();
+
+        BlockPlaceEvent placeEvent = new BlockPlaceEvent(b.getWorld().getBlockAt(loc), b.getWorld().getBlockAt(loc).getState(), b, item, p, true);
+        Bukkit.getPluginManager().callEvent(placeEvent);
+
+        //check the pseudoevent
+        if (!placeEvent.canBuild() || placeEvent.isCancelled()) return false;
+
+        Block nb = b.getWorld().getBlockAt(loc);
+        Block behind = nb.getWorld().getBlockAt(loc.clone().subtract(v));
+        if (behind.getBlockData() instanceof Slab) {
+            if (((Slab) behind.getBlockData()).getType().equals(Slab.Type.DOUBLE)) {
+                if (item.getAmount() - 2 < 0) return false;
+            }
+        }
+        nb.setType(item.getType());
+        BlockData bd = nb.getBlockData();
+
+        if (bd instanceof Directional) ((Directional) bd).setFacing(((Directional) behind.getBlockData()).getFacing());
+        if (bd instanceof Slab) {
+            ((Slab) bd).setType(((Slab) behind.getBlockData()).getType());
+        }
+
+        nb.setBlockData(bd);
+        return true;
     }
 
     public static ArrayList<ItemStack> getWands() {
