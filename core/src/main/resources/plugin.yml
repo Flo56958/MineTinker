@@ -170,6 +170,20 @@ permissions:
       minetinker.modifiers.timber.*: true
       minetinker.modifiers.webbed.*: true
 
+  minetinker.modifiers.antiarrowplating.*:
+    children:
+      minetinker.modifiers.antiarrowplating.apply: true
+  minetinker.modifiers.antiarrowplating.apply:
+    description: Allows to apply Anti-Arrow-Plating to the MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.antiblastplating.*:
+    children:
+      minetinker.modifiers.antiblastplating.apply: true
+  minetinker.modifiers.antiblastplating.apply:
+    description: Allows to apply Anti-Blast-Plating to the MineTinker-Tool
+    default: true
+
   minetinker.modifiers.aquaphilic.*:
     children:
       minetinker.modifiers.aphaphilic.apply: true
@@ -201,6 +215,13 @@ permissions:
     default: true
   minetinker.modifiers.beheading.use:
     description: Allows to use Beheading on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.channeling.*:
+    children:
+      minetinker.modifiers.channeling.apply: true
+  minetinker.modifiers.channeling.apply:
+    description: Allows to apply Channeling to the MineTinker-Tool
     default: true
 
   minetinker.modifiers.directing.*:
@@ -303,6 +324,48 @@ permissions:
     default: true
   minetinker.modifiers.melting.use:
     description: Allows to use the Melting-Modifier on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.insulating.*:
+    children:
+      minetinker.modifiers.insulating.apply: true
+  minetinker.modifiers.insulating.apply:
+    description: Allows to apply Insulating to the MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.multishot.*:
+    children:
+      minetinker.modifiers.multishot.apply: true
+  minetinker.modifiers.multishot.apply:
+    description: Allows to apply Multishot to the MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.piercing.*:
+    children:
+      minetinker.modifiers.piercing.apply: true
+  minetinker.modifiers.piercing.apply:
+    description: Allows to apply Piercing to the MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.smite.*:
+    children:
+      minetinker.modifiers.smite.apply: true
+  minetinker.modifiers.smite.apply:
+    description: Allows to apply Smite to the MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.spidersbane.*:
+    children:
+      minetinker.modifiers.spidersbane.apply: true
+  minetinker.modifiers.spidersbane.apply:
+    description: Allows to apply Spider's Bane to the MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.thorned.*:
+    children:
+      minetinker.modifiers.thorned.apply: true
+  minetinker.modifiers.thorned.apply:
+    description: Allows to apply Thorned gto the MineTinker-Tool
     default: true
 
   minetinker.modifiers.lifesteal.*:
