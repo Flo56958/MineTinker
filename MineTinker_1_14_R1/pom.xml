@@ -17,7 +17,7 @@
     <parent>
         <groupId>de.flo56958</groupId>
         <artifactId>MineTinker-Parent</artifactId>
-        <version>a16.2-pre</version>
+        <version>a17</version>
     </parent>
 
     <developers>
