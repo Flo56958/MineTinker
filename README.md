@@ -5,3 +5,5 @@ A Tinker's Construct inspired Spigot plugin. It currently has over 30 modifiers 
 
 ## Documentation
 The home page can be found [here](https://minetinker.flo56958.de/) and the modifier list [here](https://minetinker.flo56958.de/modifiers.html).
+
+[![CodeFactor](https://www.codefactor.io/repository/github/flo56958/minetinker/badge)](https://www.codefactor.io/repository/github/flo56958/minetinker)
