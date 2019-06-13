@@ -117,7 +117,6 @@ public class ModManager {
     		
     		if (m.isAllowed()) {
                 register(m);
-
             } else {
                 unregister(m);
             }

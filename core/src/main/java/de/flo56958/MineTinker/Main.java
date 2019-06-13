@@ -20,8 +20,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Main extends JavaPlugin {
 
+    private static JavaPlugin plugin;
+
     @Override
     public void onEnable() {
+        plugin = this;
         ChatWriter.log(false, "Setting up internals...");
         if (!NBTUtils.init()) {
             Bukkit.getPluginManager().disablePlugin(this); //Disable Plugin for safety
@@ -101,6 +104,6 @@ public class Main extends JavaPlugin {
     }
 
     public static Plugin getPlugin() { // necessary to do getConfig() in other classes
-        return Bukkit.getPluginManager().getPlugin("MineTinker");
+        return plugin;
     }
 }

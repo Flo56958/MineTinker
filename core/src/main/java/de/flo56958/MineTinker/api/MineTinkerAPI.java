@@ -1,5 +1,6 @@
-package de.flo56958.MineTinker;
+package de.flo56958.MineTinker.api;
 
+import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;

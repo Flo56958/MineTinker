@@ -5,26 +5,58 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.Updater;
+import de.flo56958.MineTinker.api.GUI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
 
 class Functions {
 
     private static final ModManager modManager = ModManager.instance();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
+    private static GUI modGUI;
+
+    static {
+        modGUI = new GUI();
+        GUI.Window page1 = new GUI.Window(54, "MineTinker-Modifiers");
+        modGUI.addWindow(page1);
+
+        int i = 0;
+        for (Modifier m : modManager.getAllowedMods()) {
+            ItemStack item = m.getModItem().clone();
+            ItemMeta meta = item.getItemMeta();
+            meta.setDisplayName(m.getColor() + m.getName());
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add(ChatColor.WHITE + m.getDescription());
+            for (Enchantment e : m.getAppliedEnchantments()) {
+                lore.add(ChatColor.WHITE + e.getName());
+            }
+            meta.setLore(lore);
+            item.setItemMeta(meta);
+            page1.addButton(i % 9, i / 9, item);
+            i++;
+        }
+    }
+
     /**
      * Outputs all available mods to the command sender chat
      * @param sender
      */
     static void modList(CommandSender sender) {
+        if (sender instanceof Player) {
+            modGUI.show((Player) sender);
+            return;
+        }
         ChatWriter.sendMessage(sender, ChatColor.GOLD, "Possible Modifiers:");
 
         int index = 1;
