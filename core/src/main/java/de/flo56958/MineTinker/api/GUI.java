@@ -22,6 +22,9 @@ import java.util.List;
 
 /**
  * This class is for all User-Interfaces and Items within them.
+ * This class should be thread-safe to use.
+ *
+ * @author Flo56958
  */
 public class GUI implements Listener {
 
@@ -55,6 +58,12 @@ public class GUI implements Listener {
             addWindow(window);
     }
 
+    /**
+     * Removes a given window from the GUI
+     * @param window the window to remove
+     * @return  true:  if window was in GUI and was successfully removed
+     *          false: if window was not in GUI or was not removed
+     */
     public boolean removeWindow(@NotNull final Window window) {
         return windows.remove(window);
     }
@@ -85,6 +94,7 @@ public class GUI implements Listener {
      * shows the [page] page of the GUI to the specified Player
      * @param p the Player
      * @param page the Page shown to the Player
+     * @throws IllegalStateException when show() was called as the GUI was closed
      */
     public void show(@NotNull final Player p, final int page) {
         synchronized (this) {
@@ -93,6 +103,10 @@ public class GUI implements Listener {
         }
     }
 
+    /**
+     * This will open the GUI again for further interactions.
+     * can be used to micro manage the performance of the GUIs
+     */
     public void open() {
         synchronized (this) {
             if (!isClosed) return;
@@ -104,6 +118,8 @@ public class GUI implements Listener {
 
     /**
      * this will close the Listener section of the GUI
+     * show() will throw Exception when called after close()
+     * can be used to micro manage the performance of the GUIs
      */
     public void close() {
         synchronized (this) {
@@ -113,6 +129,8 @@ public class GUI implements Listener {
             isClosed = true;
         }
     }
+
+    //<------------------------------------Events------------------------------------------->
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onClick(InventoryClickEvent e) {
@@ -145,6 +163,8 @@ public class GUI implements Listener {
         e.setCancelled(true);
     }
 
+    //<------------------------------------Events------------------------------------------->
+
     /**
      * A wrapper class for the Minecraft Inventory Window
      */
@@ -157,16 +177,22 @@ public class GUI implements Listener {
             inventory = Bukkit.createInventory(null, type, title);
         }
 
-        public Window(final int size, @NotNull final String title) {
-            this(Bukkit.createInventory(null, size, title));
-        }
+        /**
+         * Creates a new Window with the given size and the given title.
+         * @param size  The number of rows in the Inventory. Due to Minecraft-Limitations must be between 1 and 6.
+         * @param title The Title of the Window
+         * @throws IllegalArgumentException when size is does not match the limitations.
+         */
+        public Window(int size, @NotNull final String title) {
+            if (size <= 0)       throw new IllegalArgumentException("Size of Inventory needs to be at least ONE!");
+            else if (size > 6)  throw new IllegalArgumentException("Size of Inventory needs to be at least SIX!");
 
-        public Window(@NotNull final Inventory inventory) {
-            this.inventory = inventory;
+            size *= 9;
+            this.inventory = Bukkit.createInventory(null, size, title);
             this.buttonMap = new Button[9][inventory.getSize() / 9];
         }
 
-        public void addButton(final int x, final int y, final ItemStack item) {
+        public void addButton(final int x, final int y, @NotNull final ItemStack item) {
             Button b = new Button(item);
             buttonMap[x][y] = b;
             inventory.setItem(getSlot(x, y), b.item);
@@ -185,7 +211,7 @@ public class GUI implements Listener {
          * @throws IllegalArgumentException when Coordinates less than zero
          */
         public static int getSlot(final int x, final int y) {
-            if (x < 0 || y < 0) throw new IllegalArgumentException("Coordinates can not be less than zero!");
+            if (x < 0 || y < 0) throw new IllegalArgumentException("Coordinates can not be less than ZERO!");
             int slot = 0;
             for (int i = y; i > 0; i--)
                 slot += 9;
@@ -199,10 +225,10 @@ public class GUI implements Listener {
         private static class Button {
             private final ItemStack item;
 
-            private Runnable leftClick; /**left click action*/
-            private Runnable s_leftClick; /**shift left click action*/
-            private Runnable rightClick; /**right click action*/
-            private Runnable s_rightClick; /**shift right click action*/
+            private ButtonAction leftClick    = ButtonAction.NOTHING; //      left  click action
+            private ButtonAction s_leftClick  = ButtonAction.NOTHING; //shift left  click action
+            private ButtonAction rightClick   = ButtonAction.NOTHING; //      right click action
+            private ButtonAction s_rightClick = ButtonAction.NOTHING; //shift right click action
 
             /**
              * creates a Button with no actions
@@ -211,8 +237,23 @@ public class GUI implements Listener {
             Button(@NotNull ItemStack item) {
                 this.item = item;
             }
+        }
 
-            //TODO: Implement functions for clicking
+        /**
+         * Every action a Button can do on a Click
+         */
+        public enum ButtonAction {
+            //TODO: Implement actions
+            PAGE_UP,                    //go to next Page (in the ArrayList)
+            PAGE_DOWN,                  //go to prior Page (in the ArrayList)
+            PAGE_GOTO,                  //go to specific Page (index in ArrayList)
+
+            RUN_TASK,                   //run a Runnable-Task
+            RUN_FUTURE,                 //run a Future-Object
+            RUN_COMMAND,                //run a server command with permission check
+            RUN_COMMAND_WO_PERMCHECK,   //run a server command with out permission check
+
+            NOTHING                     //do nothing on click
         }
     }
 }

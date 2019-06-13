@@ -28,7 +28,7 @@ class Functions {
 
     static {
         modGUI = new GUI();
-        GUI.Window page1 = new GUI.Window(54, "MineTinker-Modifiers");
+        GUI.Window page1 = new GUI.Window(6, "MineTinker-Modifiers");
         modGUI.addWindow(page1);
 
         int i = 0;
