@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -121,8 +122,12 @@ public class ModManager {
                 unregister(m);
             }
     	}
-    	
-    	this.craftableMods.clear();
+
+    	allMods.sort(Comparator.comparing(Modifier::getName));
+        mods.sort(Comparator.comparing(Modifier::getName));
+
+
+        this.craftableMods.clear();
         this.enchantableMods.clear();
     	
     	for (Modifier m : this.mods) {

@@ -15,11 +15,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Insulating extends Modifier {
 
@@ -59,7 +55,7 @@ public class Insulating extends Modifier {
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Heat Resistant Metal");
-        config.addDefault(key + ".modifier_item", "IRON_BLOCK"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".modifier_item", "MAGMA_CREAM"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Armor mitigates heat damage!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Anti-Fire-Plating-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");

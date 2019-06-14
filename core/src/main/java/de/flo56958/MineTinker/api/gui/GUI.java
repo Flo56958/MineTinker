@@ -1,4 +1,4 @@
-package de.flo56958.MineTinker.api;
+package de.flo56958.MineTinker.api.gui;
 
 import de.flo56958.MineTinker.Main;
 import org.bukkit.Bukkit;
@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class is for all User-Interfaces and Items within them.
@@ -35,24 +36,28 @@ public class GUI implements Listener {
 
     /**
      * Adds a window to the GUI
-     * @param window The window that is inserted into the GUI
+     * @param type  the inventory type
+     * @param title the title of the Window
+     * @throws      IllegalStateException when GUI is closed
      */
-    public boolean addWindow(@NotNull final Window window) {
-        return windows.add(window);
+    public Window addWindow(@NotNull final InventoryType type, @NotNull final String title) {
+        if (isClosed) throw new IllegalStateException("GUI (" + this.hashCode() + ") is already closed!");
+        Window window = new Window(type, title, this);
+        windows.add(window);
+        return window;
     }
 
     /**
      * Adds a window to the GUI
-     * @param window        The window that is inserted into the GUI
-     * @param isStart       Should the windows be the start of the GUI when opened
-     * @throws              IllegalStateException when GUI is already closed
+     * @param size      The size of the window
+     * @param title     The title of the window
+     * @throws          IllegalStateException when GUI is closed
      */
-    public void addWindow(@NotNull final Window window, final boolean isStart) {
+    public Window addWindow(final int size, @NotNull final String title) {
         if (isClosed) throw new IllegalStateException("GUI (" + this.hashCode() + ") is already closed!");
-        if (isStart)
-            windows.add(0, window);
-        else
-            addWindow(window);
+        Window window = new Window(size, title, this);
+        windows.add(window);
+        return window;
     }
 
     /**
@@ -100,6 +105,14 @@ public class GUI implements Listener {
         }
     }
 
+    public int getWindowNumber(Window window) {
+        return windows.indexOf(window);
+    }
+
+    public int getWindowAmount() {
+        return windows.size();
+    }
+
     /**
      * This will open the GUI again for further interactions.
      * can be used to micro manage the performance of the GUIs
@@ -135,7 +148,10 @@ public class GUI implements Listener {
         if (w == null) return;
 
         e.setCancelled(true);
-        //TODO: Trigger Buttons
+
+        Window.Button clickedButton = w.getButtonFromSlot(e.getSlot());
+        if (clickedButton != null)
+            clickedButton.executeAction(e);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -167,32 +183,43 @@ public class GUI implements Listener {
      */
     public static class Window {
 
-        private Inventory inventory;
-        private Button[][] buttonMap;
+        private final Inventory inventory;
+        private final GUI gui;
+        private final Button[][] buttonMap;
 
-        public Window(@NotNull final InventoryType type, @NotNull final String title) {
-            inventory = Bukkit.createInventory(null, type, title);
+        private Window(@NotNull final InventoryType type, @NotNull final String title, @NotNull final GUI gui) {
+            this.inventory = Bukkit.createInventory(null, type, title);
+            this.gui = gui;
+            switch (type) {
+                case CHEST:
+                    this.buttonMap = new Button[9][inventory.getSize() / 9];
+                    break;
+                default:
+                    throw new IllegalArgumentException("InventoryType not supported!");
+            }
         }
 
         /**
          * Creates a new Window with the given size and the given title.
-         * @param size      The number of rows in the Inventory. Due to Minecraft-Limitations must be between 1 and 6.
+         * @param size      The number of rows in the standard Inventory. Due to Minecraft-Limitations must be between 1 and 6.
          * @param title     The Title of the Window
          * @throws          IllegalArgumentException when size is does not match the limitations.
          */
-        public Window(int size, @NotNull final String title) {
+        private Window(int size, @NotNull final String title, @NotNull final GUI gui) {
             if (size <= 0)       throw new IllegalArgumentException("Size of Inventory needs to be at least ONE!");
             else if (size > 6)  throw new IllegalArgumentException("Size of Inventory needs to be at least SIX!");
 
             size *= 9;
             this.inventory = Bukkit.createInventory(null, size, title);
             this.buttonMap = new Button[9][inventory.getSize() / 9];
+            this.gui = gui;
         }
 
-        public void addButton(final int x, final int y, @NotNull final ItemStack item) {
-            Button b = new Button(item);
+        public Button addButton(final int x, final int y, @NotNull final ItemStack item) {
+            Button b = new Button(item, this);
             buttonMap[x][y] = b;
             inventory.setItem(getSlot(x, y), b.item);
+            return b;
         }
 
         /**
@@ -202,7 +229,7 @@ public class GUI implements Listener {
          * @return  null on failure
          */
         @Nullable
-        private Button getButton(final int x, final int y) {
+        public Button getButton(final int x, final int y) {
             //TODO: Parameter check
             return buttonMap[x][y];
         }
@@ -210,6 +237,11 @@ public class GUI implements Listener {
         @NotNull
         public Inventory getInventory() {
             return inventory;
+        }
+
+        @NotNull
+        public GUI getGUI() {
+            return gui;
         }
 
         /**
@@ -220,6 +252,7 @@ public class GUI implements Listener {
          * @throws      IllegalArgumentException when Coordinates less than zero
          */
         public static int getSlot(final int x, final int y) {
+            //TODO: Does not support other Inventory-Types
             if (x < 0 || y < 0) throw new IllegalArgumentException("Coordinates can not be less than ZERO!");
             int slot = 0;
             for (int i = y; i > 0; i--)
@@ -228,33 +261,51 @@ public class GUI implements Listener {
             return slot;
         }
 
+        @Nullable
+        public Button getButtonFromSlot(final int slot) {
+            return buttonMap[slot % 9][slot / 9];
+        }
+
         /**
          * This class is a Button for the Window. The button can be clicked by the User to trigger certain methods.
          */
-        private static class Button {
+        public static class Button {
             private final ItemStack item;
+            private final Window window;
 
-            private ButtonAction leftClick    = ButtonAction.NOTHING; //      left  click action
-            private ButtonAction s_leftClick  = ButtonAction.NOTHING; //shift left  click action
-            private ButtonAction rightClick   = ButtonAction.NOTHING; //      right click action
-            private ButtonAction s_rightClick = ButtonAction.NOTHING; //shift right click action
+            private ConcurrentHashMap<ClickType, ButtonAction> actions = new ConcurrentHashMap<>();
 
             /**
              * creates a Button with no actions
              * @param item the ItemStack that will appear in the Window
              */
-            private Button(@NotNull ItemStack item) {
+            private Button(@NotNull ItemStack item, @NotNull Window window) {
+                this.window = window;
                 this.item = item;
             }
 
-            private void executeButton(@NotNull InventoryAction action) {
+            public void addAction(@NotNull ClickType c_action, @NotNull ButtonAction b_action) {
+                actions.put(c_action, b_action);
+            }
 
+            private void executeAction(@NotNull InventoryClickEvent event) {
+                ButtonAction action = actions.get(event.getClick());
+                if (action == null) return;
+                if (action instanceof PlayerAction && event.getWhoClicked() instanceof Player) {
+                    ((PlayerAction) action).run((Player) event.getWhoClicked());
+                }
+            }
+
+            @NotNull
+            public Window getWindow() {
+                return window;
             }
         }
 
         /**
          * Every action a Button can do on a Click
          */
+        /*
         public enum ButtonAction {
             //TODO: Implement actions
             PAGE_UP,                    //go to next Page (in the ArrayList)
@@ -271,5 +322,6 @@ public class GUI implements Listener {
 
             NOTHING                     //do nothing on click
         }
+        */
     }
 }
