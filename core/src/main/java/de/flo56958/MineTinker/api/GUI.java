@@ -7,10 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -46,9 +43,9 @@ public class GUI implements Listener {
 
     /**
      * Adds a window to the GUI
-     * @param window The window that is inserted into the GUI
-     * @param isStart Should the windows be the start of the GUI when opened
-     * @throws IllegalStateException when GUI is already closed
+     * @param window        The window that is inserted into the GUI
+     * @param isStart       Should the windows be the start of the GUI when opened
+     * @throws              IllegalStateException when GUI is already closed
      */
     public void addWindow(@NotNull final Window window, final boolean isStart) {
         if (isClosed) throw new IllegalStateException("GUI (" + this.hashCode() + ") is already closed!");
@@ -60,9 +57,9 @@ public class GUI implements Listener {
 
     /**
      * Removes a given window from the GUI
-     * @param window the window to remove
-     * @return  true:  if window was in GUI and was successfully removed
-     *          false: if window was not in GUI or was not removed
+     * @param window    the window to remove
+     * @return          true:  if window was in GUI and was successfully removed
+     *                  false: if window was not in GUI or was not removed
      */
     public boolean removeWindow(@NotNull final Window window) {
         return windows.remove(window);
@@ -70,8 +67,8 @@ public class GUI implements Listener {
 
     /**
      * Returns if possible the associated Window-object in the GUI-Framework
-     * @param inv the Inventory to find the Window for
-     * @return the found window or null
+     * @param inv       the Inventory to find the Window for
+     * @return          the found window or null
      */
     @Nullable
     public Window getWindowFromInventory(final Inventory inv) {
@@ -92,9 +89,9 @@ public class GUI implements Listener {
 
     /**
      * shows the [page] page of the GUI to the specified Player
-     * @param p the Player
-     * @param page the Page shown to the Player
-     * @throws IllegalStateException when show() was called as the GUI was closed
+     * @param p         the Player
+     * @param page      the Page shown to the Player
+     * @throws          IllegalStateException when show() was called as the GUI was closed
      */
     public void show(@NotNull final Player p, final int page) {
         synchronized (this) {
@@ -179,9 +176,9 @@ public class GUI implements Listener {
 
         /**
          * Creates a new Window with the given size and the given title.
-         * @param size  The number of rows in the Inventory. Due to Minecraft-Limitations must be between 1 and 6.
-         * @param title The Title of the Window
-         * @throws IllegalArgumentException when size is does not match the limitations.
+         * @param size      The number of rows in the Inventory. Due to Minecraft-Limitations must be between 1 and 6.
+         * @param title     The Title of the Window
+         * @throws          IllegalArgumentException when size is does not match the limitations.
          */
         public Window(int size, @NotNull final String title) {
             if (size <= 0)       throw new IllegalArgumentException("Size of Inventory needs to be at least ONE!");
@@ -198,6 +195,18 @@ public class GUI implements Listener {
             inventory.setItem(getSlot(x, y), b.item);
         }
 
+        /**
+         *
+         * @param x
+         * @param y
+         * @return  null on failure
+         */
+        @Nullable
+        private Button getButton(final int x, final int y) {
+            //TODO: Parameter check
+            return buttonMap[x][y];
+        }
+
         @NotNull
         public Inventory getInventory() {
             return inventory;
@@ -205,10 +214,10 @@ public class GUI implements Listener {
 
         /**
          * Calculates the slot nr. from the coordinates
-         * @param x x-Coordinate
-         * @param y y-Coordinate
-         * @return the slot
-         * @throws IllegalArgumentException when Coordinates less than zero
+         * @param x     x-Coordinate
+         * @param y     y-Coordinate
+         * @return      the slot
+         * @throws      IllegalArgumentException when Coordinates less than zero
          */
         public static int getSlot(final int x, final int y) {
             if (x < 0 || y < 0) throw new IllegalArgumentException("Coordinates can not be less than ZERO!");
@@ -234,8 +243,12 @@ public class GUI implements Listener {
              * creates a Button with no actions
              * @param item the ItemStack that will appear in the Window
              */
-            Button(@NotNull ItemStack item) {
+            private Button(@NotNull ItemStack item) {
                 this.item = item;
+            }
+
+            private void executeButton(@NotNull InventoryAction action) {
+
             }
         }
 
@@ -249,9 +262,12 @@ public class GUI implements Listener {
             PAGE_GOTO,                  //go to specific Page (index in ArrayList)
 
             RUN_TASK,                   //run a Runnable-Task
+            RUN_BUKKITTASK,             //run a Bukkit-Runnable-Task
             RUN_FUTURE,                 //run a Future-Object
             RUN_COMMAND,                //run a server command with permission check
             RUN_COMMAND_WO_PERMCHECK,   //run a server command with out permission check
+
+            CHANGE_ITEM,                //Change the Item of the Button to another Item
 
             NOTHING                     //do nothing on click
         }
