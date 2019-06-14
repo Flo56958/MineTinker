@@ -94,7 +94,7 @@ public class SpidersBane extends Modifier {
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "sharpness", isCommand) == null) {
+        if (Modifier.checkAndAdd(p, tool, this, "spidersbane", isCommand) == null) {
             return null;
         }
 
