@@ -63,6 +63,33 @@ public abstract class ButtonAction {
             gui.show(player, Math.abs(--pageNo) % gui.getWindowAmount());
         }
     }
+
+    public static class PAGE_GOTO extends ButtonAction implements PlayerAction {
+
+        private final int page;
+        private final GUI.Window window;
+
+        public PAGE_GOTO(@NotNull GUI.Window.Button button, int page) {
+            super(button);
+            this.page = page;
+            this.window = null;
+        }
+
+        public PAGE_GOTO(@NotNull GUI.Window.Button button, @NotNull GUI.Window window) {
+            super(button);
+            this.window = window;
+            this.page = -1;
+        }
+
+        @Override
+        public void run() {}
+
+        public void run(Player player) {
+            GUI gui = (window != null) ? window.getGUI() : button.getWindow().getGUI();
+            int pageNo = (window != null) ? gui.getWindowNumber(window) : page;
+            gui.show(player, pageNo);
+        }
+    }
 }
 
 interface PlayerAction {

@@ -48,7 +48,7 @@ public abstract class Modifier {
         return color;
     }
 
-    private int getMaxLvl() { return maxLvl; }
+    public int getMaxLvl() { return maxLvl; }
 
     public ItemStack getModItem() {
         return modItem;
@@ -70,7 +70,7 @@ public abstract class Modifier {
         this.type = type;
         this.allowedTools = allowedTools;
         this.source = source;
-        init("", "", ChatColor.MAGIC, 1, new ItemStack(Material.BEDROCK, 1)); //init, maybe someone forget it
+        init("", "", ChatColor.MAGIC, 1, new ItemStack(Material.BEDROCK, 1)); //reload, maybe someone forget it
         reload();
     }
 
@@ -161,7 +161,7 @@ public abstract class Modifier {
         if (config.getBoolean(name + ".Recipe.Enabled")) {
             try {
                 NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), keyName);
-                ShapedRecipe newRecipe = new ShapedRecipe(nkey, mod.getModItem()); //init recipe
+                ShapedRecipe newRecipe = new ShapedRecipe(nkey, mod.getModItem()); //reload recipe
                 String top = config.getString(name + ".Recipe.Top");
                 String middle = config.getString(name + ".Recipe.Middle");
                 String bottom = config.getString(name + ".Recipe.Bottom");

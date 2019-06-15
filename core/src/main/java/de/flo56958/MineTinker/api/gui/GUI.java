@@ -7,7 +7,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.*;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -32,19 +35,6 @@ public class GUI implements Listener {
 
     public GUI() {
         open();
-    }
-
-    /**
-     * Adds a window to the GUI
-     * @param type  the inventory type
-     * @param title the title of the Window
-     * @throws      IllegalStateException when GUI is closed
-     */
-    public Window addWindow(@NotNull final InventoryType type, @NotNull final String title) {
-        if (isClosed) throw new IllegalStateException("GUI (" + this.hashCode() + ") is already closed!");
-        Window window = new Window(type, title, this);
-        windows.add(window);
-        return window;
     }
 
     /**
@@ -79,7 +69,7 @@ public class GUI implements Listener {
     public Window getWindowFromInventory(final Inventory inv) {
         if (inv == null) return null;
         for (Window w : windows) {
-            if (w.getInventory().equals(inv)) return w;
+            if (w.inventory.equals(inv)) return w;
         }
         return null;
     }
@@ -101,7 +91,15 @@ public class GUI implements Listener {
     public void show(@NotNull final Player p, final int page) {
         synchronized (this) {
             if (isClosed) throw new IllegalStateException("GUI (" + this.hashCode() + ") is closed.");
-            p.openInventory(windows.get(page).getInventory());
+            p.openInventory(windows.get(page).inventory);
+        }
+    }
+
+    public void show(@NotNull final Player p, final Window window) {
+        synchronized (this) {
+            if (isClosed) throw new IllegalStateException("GUI (" + this.hashCode() + ") is closed.");
+            if (!window.getGUI().equals(this)) throw new IllegalArgumentException("GUI (" + this.hashCode() + ") does not manage Window (" + window.hashCode() + ")!");
+            p.openInventory(window.inventory);
         }
     }
 
@@ -185,19 +183,7 @@ public class GUI implements Listener {
 
         private final Inventory inventory;
         private final GUI gui;
-        private final Button[][] buttonMap;
-
-        private Window(@NotNull final InventoryType type, @NotNull final String title, @NotNull final GUI gui) {
-            this.inventory = Bukkit.createInventory(null, type, title);
-            this.gui = gui;
-            switch (type) {
-                case CHEST:
-                    this.buttonMap = new Button[9][inventory.getSize() / 9];
-                    break;
-                default:
-                    throw new IllegalArgumentException("InventoryType not supported!");
-            }
-        }
+        private final Button[] buttonMap;
 
         /**
          * Creates a new Window with the given size and the given title.
@@ -211,14 +197,18 @@ public class GUI implements Listener {
 
             size *= 9;
             this.inventory = Bukkit.createInventory(null, size, title);
-            this.buttonMap = new Button[9][inventory.getSize() / 9];
+            this.buttonMap = new Button[54];
             this.gui = gui;
         }
 
         public Button addButton(final int x, final int y, @NotNull final ItemStack item) {
+            return addButton(getSlot(x, y, this), item);
+        }
+
+        public Button addButton(final int slot, @NotNull final ItemStack item) {
             Button b = new Button(item, this);
-            buttonMap[x][y] = b;
-            inventory.setItem(getSlot(x, y), b.item);
+            buttonMap[slot] = b;
+            inventory.setItem(slot, b.item);
             return b;
         }
 
@@ -231,7 +221,13 @@ public class GUI implements Listener {
         @Nullable
         public Button getButton(final int x, final int y) {
             //TODO: Parameter check
-            return buttonMap[x][y];
+            return buttonMap[getSlot(x, y, this)];
+        }
+
+        @Nullable
+        public Button getButton(final int slot) {
+            //TODO: Parameter check
+            return buttonMap[slot];
         }
 
         @NotNull
@@ -251,19 +247,21 @@ public class GUI implements Listener {
          * @return      the slot
          * @throws      IllegalArgumentException when Coordinates less than zero
          */
-        public static int getSlot(final int x, final int y) {
-            //TODO: Does not support other Inventory-Types
+        public static int getSlot(final int x, final int y, Window window) {
             if (x < 0 || y < 0) throw new IllegalArgumentException("Coordinates can not be less than ZERO!");
             int slot = 0;
+
             for (int i = y; i > 0; i--)
                 slot += 9;
             slot += x;
+
+            if (slot >= window.inventory.getSize()) throw new IllegalArgumentException("Coordinates are to big for the given Inventory!");
             return slot;
         }
 
         @Nullable
         public Button getButtonFromSlot(final int slot) {
-            return buttonMap[slot % 9][slot / 9];
+            return buttonMap[slot];
         }
 
         /**
@@ -291,6 +289,7 @@ public class GUI implements Listener {
             private void executeAction(@NotNull InventoryClickEvent event) {
                 ButtonAction action = actions.get(event.getClick());
                 if (action == null) return;
+                action.run();
                 if (action instanceof PlayerAction && event.getWhoClicked() instanceof Player) {
                     ((PlayerAction) action).run((Player) event.getWhoClicked());
                 }
@@ -308,9 +307,9 @@ public class GUI implements Listener {
         /*
         public enum ButtonAction {
             //TODO: Implement actions
-            PAGE_UP,                    //go to next Page (in the ArrayList)
-            PAGE_DOWN,                  //go to prior Page (in the ArrayList)
-            PAGE_GOTO,                  //go to specific Page (index in ArrayList)
+            PAGE_UP, --DONE                   //go to next Page (in the ArrayList)
+            PAGE_DOWN,    --DONE              //go to prior Page (in the ArrayList)
+            PAGE_GOTO,    --DONE              //go to specific Page (index in ArrayList)
 
             RUN_TASK,                   //run a Runnable-Task
             RUN_BUKKITTASK,             //run a Bukkit-Runnable-Task

@@ -2,6 +2,7 @@ package de.flo56958.MineTinker;
 
 import de.flo56958.MineTinker.Commands.Commands;
 import de.flo56958.MineTinker.Data.CraftingRecipes;
+import de.flo56958.MineTinker.Data.GUIs;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Listeners.*;
 import de.flo56958.MineTinker.Modifiers.ModManager;
@@ -77,6 +78,9 @@ public class Main extends JavaPlugin {
         ChatWriter.log(false, "Registered events!");
 
         if (getConfig().getBoolean("logging.metrics")) new Metrics(this);
+
+        ChatWriter.log(false, "Loading GUIs!");
+        GUIs.reload();
 
         ChatWriter.log(false, "Standard Logging is enabled. You can disable it in the config under Logging.Standard!");
         ChatWriter.log(true, "Debug Logging is enabled. You should disable it in the config under Logging.Debug!");

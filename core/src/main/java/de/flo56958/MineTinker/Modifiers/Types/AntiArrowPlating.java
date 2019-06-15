@@ -15,11 +15,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AntiArrowPlating extends Modifier {
 
@@ -70,9 +66,9 @@ public class AntiArrowPlating extends Modifier {
         config.addDefault(key + ".CompatibleWithAntiBlast", false);
 
         config.addDefault(key + ".Recipe.Enabled", true);
-        config.addDefault(key + ".Recipe.Top", "IMI");
-        config.addDefault(key + ".Recipe.Middle", "MDM");
-        config.addDefault(key + ".Recipe.Bottom", "IMI");
+        config.addDefault(key + ".Recipe.Top", "DAD");
+        config.addDefault(key + ".Recipe.Middle", "AIA");
+        config.addDefault(key + ".Recipe.Bottom", "DAD");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("I", "IRON_BLOCK");

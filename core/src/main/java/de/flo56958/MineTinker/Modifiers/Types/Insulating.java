@@ -54,7 +54,7 @@ public class Insulating extends Modifier {
         String key = "Insulating";
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Heat Resistant Metal");
+        config.addDefault(key + ".name_modifier", "Heat Resistant Alloy");
         config.addDefault(key + ".modifier_item", "MAGMA_CREAM"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Armor mitigates heat damage!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Anti-Fire-Plating-Modifier");

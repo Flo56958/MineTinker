@@ -1,5 +1,6 @@
 package de.flo56958.MineTinker.Commands;
 
+import de.flo56958.MineTinker.Data.GUIs;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Listeners.BuildersWandListener;
 import de.flo56958.MineTinker.Main;
@@ -304,12 +305,16 @@ public class Commands implements TabExecutor {
         ChatWriter.sendMessage(sender, ChatColor.WHITE, "Reloading Builderswands!");
         BuildersWandListener.reload();
 
+        ChatWriter.sendMessage(sender, ChatColor.WHITE, "Reloading GUIs!");
+        GUIs.reload();
+
         ChatWriter.sendMessage(sender, ChatColor.WHITE, "Done reloading!");
 
         if (config.getBoolean("CheckForUpdates")) {
             Bukkit.getScheduler().scheduleAsyncDelayedTask(Main.getPlugin(),
                     Updater::checkForUpdate, 20);
         }
+
     }
 
     @Override

@@ -1,64 +1,25 @@
 package de.flo56958.MineTinker.Commands;
 
+import de.flo56958.MineTinker.Data.GUIs;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.Updater;
-import de.flo56958.MineTinker.api.gui.ButtonAction;
-import de.flo56958.MineTinker.api.gui.GUI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.ArrayList;
 
 class Functions {
 
     private static final ModManager modManager = ModManager.instance();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
-
-    private static GUI modGUI;
-
-    static {
-        int pageNo = 0;
-        modGUI = new GUI();
-        GUI.Window currentPage = modGUI.addWindow(6, "MineTinker-Modifiers, " + ++pageNo);
-
-        int i = 0;
-        GUI.Window.Button back = currentPage.addButton(0, 5, new ItemStack(Material.RED_STAINED_GLASS_PANE, 1));
-        back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
-        GUI.Window.Button forward = currentPage.addButton(8, 5, new ItemStack(Material.GREEN_STAINED_GLASS_PANE, 1));
-        forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(back));
-
-        for (Modifier m : modManager.getAllowedMods()) {
-            ItemStack item = m.getModItem().clone();
-            ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(m.getColor() + m.getName());
-            ArrayList<String> lore = new ArrayList<>();
-            lore.add(ChatColor.WHITE + m.getDescription());
-            meta.setLore(lore);
-            item.setItemMeta(meta);
-            currentPage.addButton((i % 7) + 1, (i / 7) + 1, item);
-
-            i++;
-            if(i % 28 == 0) {
-                currentPage = modGUI.addWindow(6, "MineTinker-Modifiers, " + ++pageNo);
-                back = currentPage.addButton(0, 5, new ItemStack(Material.RED_STAINED_GLASS_PANE, 1));
-                back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
-                forward = currentPage.addButton(8, 5, new ItemStack(Material.GREEN_STAINED_GLASS_PANE, 1));
-                forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(back));
-                i = 0;
-            }
-        }
-    }
 
     /**
      * Outputs all available mods to the command sender chat
@@ -66,7 +27,7 @@ class Functions {
      */
     static void modList(CommandSender sender) {
         if (sender instanceof Player) {
-            modGUI.show((Player) sender);
+            GUIs.getModGUI().show((Player) sender);
             return;
         }
         ChatWriter.sendMessage(sender, ChatColor.GOLD, "Possible Modifiers:");
