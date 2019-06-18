@@ -70,9 +70,9 @@ public class AntiArrowPlating extends Modifier {
         config.addDefault(key + ".CompatibleWithAntiBlast", false);
 
         config.addDefault(key + ".Recipe.Enabled", true);
-        config.addDefault(key + ".Recipe.Top", "IMI");
-        config.addDefault(key + ".Recipe.Middle", "MDM");
-        config.addDefault(key + ".Recipe.Bottom", "IMI");
+        config.addDefault(key + ".Recipe.Top", "IAI");
+        config.addDefault(key + ".Recipe.Middle", "ADA");
+        config.addDefault(key + ".Recipe.Bottom", "IAI");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("I", "IRON_BLOCK");
