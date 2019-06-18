@@ -65,7 +65,7 @@ public class Fiery extends Modifier implements Enchantable {
     	ConfigurationManager.saveConfig(config);
     	
         init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
+                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));

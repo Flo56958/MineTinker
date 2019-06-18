@@ -101,7 +101,7 @@ public class Power extends Modifier implements Enchantable, Listener {
         ConfigurationManager.saveConfig(config);
 
         init(config.getString(key + ".name"),
-                "[" + config.getString("Power.name_modifier") + "] " + config.getString(key + ".description"),
+                "[" + config.getString("Power.name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
                         ChatWriter.getColor(config.getString(key + ".Color"))

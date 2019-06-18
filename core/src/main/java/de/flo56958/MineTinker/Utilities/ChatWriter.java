@@ -188,6 +188,8 @@ public class ChatWriter {
 
     public static String toRomanNumerals(int num) {
         if (num == 1337) return "LEET";
+        if (num <= 0) return "0";
+
         String[] romanCharacters = { "%BOLD%M%RESET%", "%BOLD%CM%RESET%", "%BOLD%D%RESET%", "%BOLD%C%RESET%", "%BOLD%XC%RESET%", "%BOLD%L%RESET%", "%BOLD%X%RESET%", "%BOLD%IX%RESET%", "%BOLD%V%RESET%",
                                     "M", "CM", "D", "C", "XC", "L", "X", "IX", "V", "I" };
         int[] romanValues = { 1000000, 900000, 500000, 100000, 90000, 50000, 10000, 9000, 5000,

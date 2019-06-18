@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Data;
 
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.api.gui.ButtonAction;
 import de.flo56958.MineTinker.api.gui.GUI;
 import org.bukkit.Bukkit;
@@ -52,9 +53,22 @@ public class GUIs {
                 ItemStack item = m.getModItem().clone();
                 ItemMeta meta = item.getItemMeta();
                 meta.setDisplayName(m.getColor() + m.getName());
+
+                String[] desc = m.getDescription().split("\u200B");
+
                 ArrayList<String> lore = new ArrayList<>();
-                lore.add(ChatColor.WHITE + m.getDescription());
-                lore.add(ChatColor.WHITE + "Max Level: " + m.getMaxLvl());
+
+                lore.add("");
+
+                if (desc.length == 2) {
+                    lore.add(ChatColor.AQUA + desc[0]);
+                    lore.add(ChatColor.WHITE + desc[1]);
+                } else {
+                    lore.add(ChatColor.WHITE + m.getDescription());
+                }
+
+                lore.add("");
+                lore.add(ChatColor.GOLD + "Max Level: " + ChatColor.WHITE + ChatWriter.toRomanNumerals(m.getMaxLvl()));
                 meta.setLore(lore);
                 item.setItemMeta(meta);
                 GUI.Window.Button modButton = currentPage.addButton((i % 7) + 1, (i / 7) + 1, item);

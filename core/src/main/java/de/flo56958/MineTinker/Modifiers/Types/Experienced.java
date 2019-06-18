@@ -73,7 +73,7 @@ public class Experienced extends Modifier implements Listener {
     	ConfigurationManager.saveConfig(config);
     	
         init(config.getString(key + ".name"),
-                "[Bottle o' Experience] " + config.getString(key + ".description"),
+                "[Bottle o' Experience] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 new ItemStack(Material.EXPERIENCE_BOTTLE, 1));
