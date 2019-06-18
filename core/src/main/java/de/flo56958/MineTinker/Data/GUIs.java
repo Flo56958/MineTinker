@@ -16,6 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class GUIs {
 
@@ -29,6 +30,7 @@ public class GUIs {
     public static void reload() {
         ItemStack forwardStack = new ItemStack(Material.GREEN_STAINED_GLASS_PANE, 1);
         ItemMeta meta_ = forwardStack.getItemMeta();
+
         meta_.setDisplayName(ChatColor.GREEN + "Forward");
         forwardStack.setItemMeta(meta_);
 
@@ -62,7 +64,12 @@ public class GUIs {
 
                 if (desc.length == 2) {
                     lore.add(ChatColor.AQUA + desc[0]);
-                    lore.add(ChatColor.WHITE + desc[1]);
+
+                    List<String> descList = ChatWriter.splitString(desc[1], 30);
+
+                    for (String descPart : descList) {
+                        lore.add(ChatColor.WHITE + descPart);
+                    }
                 } else {
                     lore.add(ChatColor.WHITE + m.getDescription());
                 }
