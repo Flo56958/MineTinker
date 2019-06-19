@@ -7,10 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -169,6 +166,14 @@ public class GUI implements Listener {
         if (w == null) return;
 
         w = getWindowFromInventory(e.getSource());
+        if (w == null) return;
+
+        e.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onEvent(InventoryInteractEvent e) {
+        Window w = getWindowFromInventory(e.getInventory());
         if (w == null) return;
 
         e.setCancelled(true);
