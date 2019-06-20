@@ -3,6 +3,7 @@ package de.flo56958.MineTinker.Data;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import de.flo56958.MineTinker.api.gui.ButtonAction;
 import de.flo56958.MineTinker.api.gui.GUI;
 import org.bukkit.Bukkit;
@@ -101,7 +102,9 @@ public class GUIs {
                                 slot++;
                                 if (c == ' ') continue;
                                 try {
-                                    modRecipe.addButton((slot % 3) + 2, (slot / 3), srec.getIngredientMap().get(c).clone());
+                                    ItemStack resItem = srec.getIngredientMap().get(c).clone();
+                                    NBTUtils.getHandler().setLong(resItem, "MT-MODS Recipe Item", Math.round(Math.random() * 42));
+                                    modRecipe.addButton((slot % 3) + 2, (slot / 3), resItem);
                                 } catch (NullPointerException ignored) {
                                 }
                             }
