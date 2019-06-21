@@ -9,6 +9,8 @@ import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.nms.NBTHandler;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -19,7 +21,9 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class ModManager {
@@ -570,6 +574,38 @@ public class ModManager {
         setLevel(is, 1);
         setFreeSlots(is, config.getInt("StartingModifierSlots"));
         rewriteLore(is);
+
+        ItemMeta meta = is.getItemMeta();
+
+        for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
+            Modifier modifier = getModifierFromEnchantment(entry.getKey());
+
+            if (modifier == null) {
+                continue;
+            }
+
+            meta.removeEnchant(entry.getKey());
+
+            for (int i = 0; i < entry.getValue(); i++) {
+                addMod(is, modifier);
+            }
+        }
+
+        if (meta.getAttributeModifiers() == null) {
+            return;
+        }
+
+        for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : meta.getAttributeModifiers().asMap().entrySet()) {
+            Modifier modifier = getModifierFromAttribute(entry.getKey());
+
+            if (modifier == null) {
+                continue;
+            }
+
+            meta.removeAttributeModifier(entry.getKey());
+
+            addMod(is, modifier);
+        }
     }
 
     public ItemStack createModifierItem(Material m, String name, String description, Modifier mod) {
@@ -633,6 +669,22 @@ public class ModManager {
     public Modifier getModifierFromEnchantment(Enchantment enchantment) {
         for (Modifier modifier : getAllMods()) {
             if (modifier.getAppliedEnchantments().contains(enchantment)) return modifier;
+        }
+
+        return null;
+    }
+
+    /**
+     * Gets the first found modifier that applies the supplied attribute.
+     *
+     * @param attribute
+     * @return
+     */
+    public Modifier getModifierFromAttribute(Attribute attribute) {
+        for (Modifier modifier : getAllMods()) {
+            if (modifier.getAppliedAttributes().contains(attribute)) {
+                return modifier;
+            }
         }
 
         return null;
