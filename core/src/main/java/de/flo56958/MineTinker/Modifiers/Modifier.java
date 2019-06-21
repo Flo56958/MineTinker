@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -35,6 +36,8 @@ public abstract class Modifier {
     private ItemStack modItem;
     private final ArrayList<ToolType> allowedTools;
     private final Plugin source;
+
+    private final ArrayList<Attribute> emptyArrayList = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -120,6 +123,13 @@ public abstract class Modifier {
      * @return a list of enchantments that may be applied when the modifier is applied
      */
     public abstract List<Enchantment> getAppliedEnchantments();
+
+    /**
+     * @return a list of attributes that may be applied when the modifier is applied
+     */
+    public List<Attribute> getAppliedAttributes() {
+        return emptyArrayList;
+    }
 
     public static ItemStack checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand) {
         if ((modManager.getFreeSlots(tool) < 1 && !mod.getType().equals(ModifierType.EXTRA_MODIFIER)) && !isCommand) {
