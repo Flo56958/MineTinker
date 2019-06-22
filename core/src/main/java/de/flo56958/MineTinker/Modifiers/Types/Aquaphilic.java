@@ -33,7 +33,7 @@ public class Aquaphilic extends Modifier {
     }
 
     private Aquaphilic() {
-        super(ModifierType.AQUAPHILIC,
+        super("Aquaphilic", "Aquaphilic.yml",
                 new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.HELMET)),
                 Main.getPlugin());
     }
@@ -128,10 +128,6 @@ public class Aquaphilic extends Modifier {
 
             tool.setItemMeta(meta);
         }
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.AQUAPHILIC.getFileName());
     }
 
     @Override

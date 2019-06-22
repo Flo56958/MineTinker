@@ -31,7 +31,7 @@ public class ExtraModifier extends Modifier {
     }
 
     private ExtraModifier() {
-        super(ModifierType.EXTRA_MODIFIER,
+        super("Extra-Modifier", "Extra-Modifier.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.FISHINGROD,
                                                 ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
@@ -98,10 +98,6 @@ public class ExtraModifier extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         // no recipe
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.EXTRA_MODIFIER.getFileName());
     }
 
     @Override

@@ -43,7 +43,7 @@ public class Ender extends Modifier implements Listener {
     }
 
     private Ender() {
-        super(ModifierType.ENDER,
+        super("Ender", "Ender.yml",
                 new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.CROSSBOW, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
@@ -187,10 +187,6 @@ public class Ender extends Modifier implements Listener {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Ender", "Modifier_Ender");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.ENDER.getFileName());
     }
 
     @Override

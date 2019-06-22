@@ -33,7 +33,7 @@ public class AntiArrowPlating extends Modifier {
     }
 
     private AntiArrowPlating() {
-        super(ModifierType.ANTI_ARROW_PLATING,
+        super("Anti-Arrow-Plating", "Anti-Arrow-Plating.yml",
                 new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS, ToolType.CHESTPLATE, ToolType.HELMET)),
                 Main.getPlugin());
     }
@@ -153,10 +153,6 @@ public class AntiArrowPlating extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Anti-Arrow-Plating", "Modifier_AntiArrowPlating");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.ANTI_ARROW_PLATING.getFileName());
     }
 
     @Override

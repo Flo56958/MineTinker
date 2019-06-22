@@ -35,7 +35,7 @@ public class Piercing extends Modifier {
     }
 
     private Piercing() {
-        super(ModifierType.PIERCING,
+        super("Piercing", "Piercing.yml",
                 new ArrayList<>(Arrays.asList(ToolType.CROSSBOW)),
                 Main.getPlugin());
     }
@@ -132,10 +132,6 @@ public class Piercing extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Piercing", "Modifier_Piercing");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.PIERCING.getFileName());
     }
 
     @Override

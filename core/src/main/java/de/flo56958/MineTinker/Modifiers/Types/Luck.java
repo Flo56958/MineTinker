@@ -33,7 +33,7 @@ public class Luck extends Modifier {
     }
 
     private Luck() {
-        super(ModifierType.LUCK,
+        super("Luck", "Luck.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS,
                         ToolType.FISHINGROD, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
@@ -140,10 +140,6 @@ public class Luck extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Luck", "Modifier_Luck");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.LUCK.getFileName());
     }
 
     @Override

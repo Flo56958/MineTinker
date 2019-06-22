@@ -31,7 +31,7 @@ public class Protecting extends Modifier {
     }
 
     private Protecting() {
-        super(ModifierType.PROTECTING,
+        super("Protecting", "Protecting.yml",
                 new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
     }
@@ -114,10 +114,6 @@ public class Protecting extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Protecting", "Modifier_Protecting");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.PROTECTING.getFileName());
     }
 
     @Override

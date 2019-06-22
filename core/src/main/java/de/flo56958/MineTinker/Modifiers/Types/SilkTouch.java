@@ -32,7 +32,7 @@ public class SilkTouch extends Modifier implements Enchantable {
     }
 
     private SilkTouch() {
-        super(ModifierType.SILK_TOUCH,
+        super("Silk-Touch", "Silk-Touch.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
                 Main.getPlugin());
     }
@@ -121,10 +121,6 @@ public class SilkTouch extends Modifier implements Enchantable {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Silk-Touch", "Modifier_SilkTouch");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.SILK_TOUCH.getFileName());
     }
 
     @Override

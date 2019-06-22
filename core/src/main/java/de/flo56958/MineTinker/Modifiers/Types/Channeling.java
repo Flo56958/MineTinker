@@ -31,7 +31,7 @@ public class Channeling extends Modifier {
     }
 
     private Channeling() {
-        super(ModifierType.CHANNELING,
+        super("Channeling", "Channeling.yml",
                 new ArrayList<>(Arrays.asList(ToolType.TRIDENT)),
                 Main.getPlugin());
     }
@@ -116,10 +116,6 @@ public class Channeling extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Channeling", "Modifier_Channeling");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.CHANNELING.getFileName());
     }
 
     @Override

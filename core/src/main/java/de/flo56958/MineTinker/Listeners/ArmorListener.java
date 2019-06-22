@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Events.MTEntityDamageEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
-import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
 import de.flo56958.MineTinker.Modifiers.Types.SelfRepair;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Bukkit;

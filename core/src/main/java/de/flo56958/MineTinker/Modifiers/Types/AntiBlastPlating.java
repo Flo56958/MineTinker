@@ -37,7 +37,7 @@ public class AntiBlastPlating extends Modifier {
     }
 
     private AntiBlastPlating() {
-        super(ModifierType.ANTI_BLAST_PLATING,
+        super("Anti-Blast-Plating", "Anti-Blast-Plating.yml",
                 new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS, ToolType.CHESTPLATE, ToolType.HELMET)),
                 Main.getPlugin());
     }
@@ -155,10 +155,6 @@ public class AntiBlastPlating extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Anti-Blast-Plating", "Modifier_AntiBlastPlating");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.ANTI_BLAST_PLATING.getFileName());
     }
 
     @Override

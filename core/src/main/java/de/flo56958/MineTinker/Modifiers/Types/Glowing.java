@@ -41,7 +41,7 @@ public class Glowing extends Modifier implements Listener {
     }
 
     private Glowing() {
-        super(ModifierType.GLOWING,
+        super("Glowing", "Glowing.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
@@ -121,10 +121,6 @@ public class Glowing extends Modifier implements Listener {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Glowing", "Modifier_Glowing");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.GLOWING.getFileName());
     }
 
     @Override

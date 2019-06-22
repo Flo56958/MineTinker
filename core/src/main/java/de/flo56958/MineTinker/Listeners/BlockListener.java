@@ -9,7 +9,6 @@ import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Modifiers.Types.Ender;
-import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Modifiers.Types.SilkTouch;
 import de.flo56958.MineTinker.Utilities.ChatWriter;

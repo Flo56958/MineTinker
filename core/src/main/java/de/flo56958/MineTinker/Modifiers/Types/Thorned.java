@@ -31,7 +31,7 @@ public class Thorned extends Modifier {
     }
 
     private Thorned() {
-        super(ModifierType.THORNED,
+        super("Thorned", "Thorned.yml",
                 new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS)),
                 Main.getPlugin());
     }
@@ -115,10 +115,6 @@ public class Thorned extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Thorned", "Modifier_Thorned");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.THORNED.getFileName());
     }
 
     @Override

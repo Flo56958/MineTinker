@@ -44,7 +44,7 @@ public class Webbed extends Modifier implements Listener {
     }
 
     private Webbed() {
-        super(ModifierType.WEBBED,
+        super("Webbed", "Webbed.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
@@ -141,10 +141,6 @@ public class Webbed extends Modifier implements Listener {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Webbed", "Modifier_Webbed");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.WEBBED.getFileName());
     }
 
     @Override

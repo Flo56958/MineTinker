@@ -33,7 +33,7 @@ public class Freezing extends Modifier {
     }
 
     private Freezing() {
-        super(ModifierType.FREEZING,
+        super("Freezing", "Freezing.yml",
                 new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
                 Main.getPlugin());
     }
@@ -115,10 +115,6 @@ public class Freezing extends Modifier {
             meta.removeEnchant(Enchantment.FROST_WALKER);
             tool.setItemMeta(meta);
         }
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.FREEZING.getFileName());
     }
 
     @Override

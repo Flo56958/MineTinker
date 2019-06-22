@@ -31,7 +31,7 @@ public class Reinforced extends Modifier {
     }
 
     private Reinforced() {
-        super(ModifierType.REINFORCED,
+        super("Reinforced", "Reinforced.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
@@ -114,10 +114,6 @@ public class Reinforced extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Reinforced", "Modifier_Reinforced");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.REINFORCED.getFileName());
     }
 
     @Override

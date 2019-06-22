@@ -38,7 +38,7 @@ public class Soulbound extends Modifier implements Listener {
     }
 
     private Soulbound() {
-        super(ModifierType.SOULBOUND,
+        super("Soulbound", "Soulbound.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL,
                                                 ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
@@ -135,7 +135,7 @@ public class Soulbound extends Modifier implements Listener {
         if (decrementModLevelOnUse) {
             int newLevel = modManager.getModLevel(is, this) - 1;
             if (newLevel == 0) { modManager.removeMod(is, this); }
-            else { modManager.getNBTHandler().setInt(is, this.getType().getNBTKey(), modManager.getModLevel(is, this) - 1); }
+            else { modManager.getNBTHandler().setInt(is, this.getNBTKey(), modManager.getModLevel(is, this) - 1); }
         }
 
         stored.add(is.clone());
@@ -177,10 +177,6 @@ public class Soulbound extends Modifier implements Listener {
         if (toolDropable) return;
 
         e.setCancelled(true);
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.SOULBOUND.getFileName());
     }
 
     @Override

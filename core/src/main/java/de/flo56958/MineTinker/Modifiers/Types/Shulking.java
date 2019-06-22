@@ -43,7 +43,7 @@ public class Shulking extends Modifier implements Listener {
     }
 
     private Shulking() {
-        super(ModifierType.SHULKING,
+        super("Shulking", "Shulking.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
@@ -143,10 +143,6 @@ public class Shulking extends Modifier implements Listener {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Shulking", "Modifier_Shulking");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.SHULKING.getFileName());
     }
 
     @Override

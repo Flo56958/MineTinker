@@ -52,7 +52,7 @@ public class Power extends Modifier implements Enchantable, Listener {
     }
 
     private Power() {
-        super(ModifierType.POWER,
+        super("Power", "Power.yml",
                 new ArrayList<>(
                         Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
                 Main.getPlugin());
@@ -377,10 +377,6 @@ public class Power extends Modifier implements Enchantable, Listener {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Power", "Modifier_Power");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.POWER.getFileName());
     }
 
     @Override

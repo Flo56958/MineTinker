@@ -4,7 +4,6 @@ import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
-import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;

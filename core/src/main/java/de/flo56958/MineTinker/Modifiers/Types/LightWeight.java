@@ -30,7 +30,7 @@ public class LightWeight extends Modifier implements Enchantable {
     }
 
     private LightWeight() {
-        super(ModifierType.LIGHT_WEIGHT,
+        super("Lifesteal", "Light-Weight.yml",
                 new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
                 Main.getPlugin());
     }
@@ -108,10 +108,6 @@ public class LightWeight extends Modifier implements Enchantable {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Light-Weight", "Modifier_LightWeight");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.LIGHT_WEIGHT.getFileName());
     }
 
     @Override

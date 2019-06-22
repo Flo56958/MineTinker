@@ -36,7 +36,7 @@ public class Smite extends Modifier {
     }
 
     private Smite() {
-        super(ModifierType.SMITE,
+        super("Smite", "Smite.yml",
                 new ArrayList<>(Arrays.asList(ToolType.SWORD, ToolType.AXE)),
                 Main.getPlugin());
     }
@@ -143,10 +143,6 @@ public class Smite extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Smite", "Modifier_Smite");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.SMITE.getFileName());
     }
 
     @Override

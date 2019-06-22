@@ -30,7 +30,7 @@ public class Knockback extends Modifier implements Enchantable {
     }
 
     private Knockback() {
-        super(ModifierType.KNOCKBACK,
+        super("Knockback", "Knockback.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
     }
@@ -116,10 +116,6 @@ public class Knockback extends Modifier implements Enchantable {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Knockback", "Modifier_Knockback");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.KNOCKBACK.getFileName());
     }
 
     @Override

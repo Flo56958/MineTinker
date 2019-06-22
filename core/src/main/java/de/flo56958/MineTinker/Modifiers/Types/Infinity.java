@@ -35,7 +35,7 @@ public class Infinity extends Modifier implements Enchantable {
 
     //Infinity does not work on crossbows
     private Infinity() {
-        super(ModifierType.INFINITY,
+        super("Infinity", "Infinity.yml",
                 new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.TRIDENT)),
                 Main.getPlugin());
     }
@@ -136,10 +136,6 @@ public class Infinity extends Modifier implements Enchantable {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Infinity", "Modifier_Infinity");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.INFINITY.getFileName());
     }
 
     @Override

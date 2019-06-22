@@ -36,7 +36,7 @@ public class SpidersBane extends Modifier {
     }
 
     private SpidersBane() {
-        super(ModifierType.SPIDERSBANE,
+        super("Spider's-Bane", "Spiders-Bane.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.SWORD)),
                 Main.getPlugin());
     }
@@ -143,10 +143,6 @@ public class SpidersBane extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "SpidersBane", "Modifier_SpidersBane");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.SPIDERSBANE.getFileName());
     }
 
     @Override

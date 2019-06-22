@@ -32,7 +32,7 @@ public class Sweeping extends Modifier implements Enchantable {
     }
 
     private Sweeping() {
-        super(ModifierType.SWEEPING,
+        super("Sweeping", "Sweeping.yml",
                 new ArrayList<>(Collections.singletonList(ToolType.SWORD)),
                 Main.getPlugin());
     }
@@ -104,10 +104,6 @@ public class Sweeping extends Modifier implements Enchantable {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Sweeping", "Modifier_Sweeping");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.SWEEPING.getFileName());
     }
 
     @Override

@@ -36,7 +36,7 @@ public class Sharpness extends Modifier {
     }
 
     private Sharpness() {
-        super(ModifierType.SHARPNESS,
+        super("Sharpness", "Sharpness.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
     }
@@ -150,10 +150,6 @@ public class Sharpness extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Sharpness", "Modifier_Sharpness");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.SHARPNESS.getFileName());
     }
 
     @Override

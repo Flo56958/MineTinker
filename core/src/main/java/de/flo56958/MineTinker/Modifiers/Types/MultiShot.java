@@ -35,7 +35,7 @@ public class MultiShot extends Modifier {
     }
 
     private MultiShot() {
-        super(ModifierType.MULTISHOT,
+        super("Melting", "Multishot.yml",
                 new ArrayList<>(Arrays.asList(ToolType.CROSSBOW)),
                 Main.getPlugin());
     }
@@ -131,10 +131,6 @@ public class MultiShot extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Multishot", "Modifier_Multishot");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.MULTISHOT.getFileName());
     }
 
     @Override

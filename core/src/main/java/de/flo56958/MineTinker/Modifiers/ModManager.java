@@ -203,7 +203,8 @@ public class ModManager {
             allMods.add(Piercing.instance());
             allMods.add(MultiShot.instance());
         }
-        
+
+        ConfigurationManager.reload(); //To load all Modifier-Configurations in
         reload();
     }
 
@@ -276,7 +277,7 @@ public class ModManager {
      * @param mod the modifier to add
      */
     void addMod(ItemStack is, Modifier mod) {
-        nbt.setInt(is, mod.getType().getNBTKey(), getModLevel(is, mod) + 1);
+        nbt.setInt(is, mod.getNBTKey(), getModLevel(is, mod) + 1);
         rewriteLore(is);
     }
 
@@ -287,7 +288,7 @@ public class ModManager {
      * @param mod the modifier
      */
     public int getModLevel(ItemStack is, Modifier mod) {
-        return nbt.getInt(is, mod.getType().getNBTKey());
+        return nbt.getInt(is, mod.getNBTKey());
     }
 
     /**
@@ -297,7 +298,7 @@ public class ModManager {
      * @param mod the modifier to remove
      */
     public void removeMod(ItemStack is, Modifier mod) {
-        nbt.removeTag(is, mod.getType().getNBTKey());
+        nbt.removeTag(is, mod.getNBTKey());
         mod.removeMod(is);
         rewriteLore(is);
     }
@@ -363,7 +364,7 @@ public class ModManager {
      * @return if the tool has the mod
      */
     public boolean hasMod(ItemStack tool, Modifier mod) {
-        return mod.isAllowed() && nbt.hasTag(tool, mod.getType().getNBTKey());
+        return mod.isAllowed() && nbt.hasTag(tool, mod.getNBTKey());
     }
 
     /**
@@ -489,7 +490,7 @@ public class ModManager {
         lore.remove(index);
 
         for (Modifier m : this.mods) {
-            if (nbt.hasTag(is, m.getType().getNBTKey())) {
+            if (nbt.hasTag(is, m.getNBTKey())) {
                 int modLevel = getModLevel(is, m);
                 String modLevel_ = layout.getBoolean("UseRomans.ModifierLevels") ? ChatWriter.toRomanNumerals(modLevel) : String.valueOf(modLevel);
                 String s = this.modifierLayout;
@@ -596,7 +597,7 @@ public class ModManager {
             is.setItemMeta(meta);
         }
 
-        nbt.setString(is, "modifierItem", mod.getType().getNBTKey());
+        nbt.setString(is, "modifierItem", mod.getNBTKey());
         nbt.setStringList(is, "CanPlaceOn", "minecraft:air");
 
         return is;
@@ -624,7 +625,7 @@ public class ModManager {
         String name = Objects.requireNonNull(nbt.getString(item, "modifierItem"));
 
         for (Modifier m : mods) {
-            if (m.getType().getNBTKey() != null && m.getType().getNBTKey().equals(name)) {
+            if (m.getNBTKey() != null && m.getNBTKey().equals(name)) {
                 return m;
             }
         }

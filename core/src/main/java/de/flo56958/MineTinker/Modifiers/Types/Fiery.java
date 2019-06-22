@@ -31,7 +31,7 @@ public class Fiery extends Modifier implements Enchantable {
     }
 
     private Fiery() {
-        super(ModifierType.FIERY,
+        super("Fiery", "Fiery.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD)),
                 Main.getPlugin());
     }
@@ -116,10 +116,6 @@ public class Fiery extends Modifier implements Enchantable {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Fiery", "Modifier_Fiery");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.FIERY.getFileName());
     }
 
     @Override

@@ -33,7 +33,7 @@ public class Insulating extends Modifier {
     }
 
     private Insulating() {
-        super(ModifierType.INSULATING,
+        super("Insulating", "Insulating.yml",
                 new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS, ToolType.CHESTPLATE, ToolType.HELMET)),
                 Main.getPlugin());
     }
@@ -151,10 +151,6 @@ public class Insulating extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Insulating", "Modifier_Insulating");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.INSULATING.getFileName());
     }
 
     @Override

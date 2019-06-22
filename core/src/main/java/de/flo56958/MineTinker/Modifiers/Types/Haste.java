@@ -32,7 +32,7 @@ public class Haste extends Modifier {
     }
 
     private Haste() {
-        super(ModifierType.HASTE,
+        super("Haste", "Haste.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.CROSSBOW, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS, ToolType.FISHINGROD)),
                 Main.getPlugin());
     }
@@ -122,10 +122,6 @@ public class Haste extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Haste", "Modifier_Haste");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.HASTE.getFileName());
     }
 
     @Override

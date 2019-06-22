@@ -46,7 +46,7 @@ public class AutoSmelt extends Modifier implements Listener {
     }
 
     private AutoSmelt() {
-        super(ModifierType.AUTO_SMELT,
+        super("Auto-Smelt", "Auto-Smelt.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
@@ -339,10 +339,6 @@ public class AutoSmelt extends Modifier implements Listener {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Auto-Smelt", "Modifier_Autosmelt");
-    }
-    
-    private static FileConfiguration getConfig() {
-		return ConfigurationManager.getConfig(ModifierType.AUTO_SMELT.getFileName());
     }
 
     @Override

@@ -43,7 +43,7 @@ public class Propelling extends Modifier implements Enchantable, Listener {
     }
 
     private Propelling() {
-        super(ModifierType.PROPELLING,
+        super("Propelling", "Propelling.yml",
                 new ArrayList<>(Arrays.asList(ToolType.ELYTRA, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
@@ -173,10 +173,6 @@ public class Propelling extends Modifier implements Enchantable, Listener {
 
         if (sound && loc.getWorld() != null) loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
         if (particles) p.playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.PROPELLING.getFileName());
     }
 
     @Override
