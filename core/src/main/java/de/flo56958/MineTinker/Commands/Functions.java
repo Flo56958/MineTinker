@@ -1,5 +1,6 @@
 package de.flo56958.MineTinker.Commands;
 
+import de.flo56958.MineTinker.Data.GUIs;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -25,6 +26,10 @@ class Functions {
      * @param sender
      */
     static void modList(CommandSender sender) {
+        if (sender instanceof Player) {
+            GUIs.getModGUI().show((Player) sender);
+            return;
+        }
         ChatWriter.sendMessage(sender, ChatColor.GOLD, "Possible Modifiers:");
 
         int index = 1;

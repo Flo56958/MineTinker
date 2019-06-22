@@ -9,7 +9,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ChatWriter {
 
@@ -188,6 +192,8 @@ public class ChatWriter {
 
     public static String toRomanNumerals(int num) {
         if (num == 1337) return "LEET";
+        if (num <= 0) return "0";
+
         String[] romanCharacters = { "%BOLD%M%RESET%", "%BOLD%CM%RESET%", "%BOLD%D%RESET%", "%BOLD%C%RESET%", "%BOLD%XC%RESET%", "%BOLD%L%RESET%", "%BOLD%X%RESET%", "%BOLD%IX%RESET%", "%BOLD%V%RESET%",
                                     "M", "CM", "D", "C", "XC", "L", "X", "IX", "V", "I" };
         int[] romanValues = { 1000000, 900000, 500000, 100000, 90000, 50000, 10000, 9000, 5000,
@@ -205,5 +211,17 @@ public class ChatWriter {
         }
 
         return addColors(result.toString());
+    }
+
+    public static List<String> splitString(String msg, int lineSize) {
+        List<String> res = new ArrayList<>();
+
+        Pattern p = Pattern.compile("\\b.{1," + (lineSize-1) + "}\\b\\W?");
+        Matcher m = p.matcher(msg);
+
+        while(m.find()) {
+            res.add(m.group());
+        }
+        return res;
     }
 }

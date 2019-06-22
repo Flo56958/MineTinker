@@ -88,7 +88,7 @@ public class Webbed extends Modifier implements Listener {
     	ConfigurationManager.saveConfig(config);
         
         init(getConfig().getString(key + ".name"),
-                "[" + getConfig().getString(key + ".name_modifier") + "] " + getConfig().getString(key + ".description"),
+                "[" + getConfig().getString(key + ".name_modifier") + "] \u200B" + getConfig().getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 getConfig().getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));

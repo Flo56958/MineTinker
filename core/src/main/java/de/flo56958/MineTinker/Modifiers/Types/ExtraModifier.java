@@ -59,7 +59,7 @@ public class ExtraModifier extends Modifier {
     	ConfigurationManager.saveConfig(config);
     	
         init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".modifier_item")+ "] " + config.getString(key + ".description"),
+                "[" + config.getString(key + ".modifier_item")+ "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 -1,
                 new ItemStack(Material.getMaterial(config.getString(key + ".modifier_item")), 1));

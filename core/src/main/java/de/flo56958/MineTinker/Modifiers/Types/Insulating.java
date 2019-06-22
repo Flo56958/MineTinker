@@ -15,11 +15,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Insulating extends Modifier {
 
@@ -58,8 +54,8 @@ public class Insulating extends Modifier {
         String key = "Insulating";
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Heat Resistant Metal");
-        config.addDefault(key + ".modifier_item", "IRON_BLOCK"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".name_modifier", "Heat Resistant Alloy");
+        config.addDefault(key + ".modifier_item", "MAGMA_CREAM"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Armor mitigates heat damage!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Anti-Fire-Plating-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");
@@ -84,7 +80,7 @@ public class Insulating extends Modifier {
         ConfigurationManager.saveConfig(config);
 
         init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
+                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
                         ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),

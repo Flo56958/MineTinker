@@ -23,11 +23,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Timber extends Modifier implements Listener {
 
@@ -83,7 +79,7 @@ public class Timber extends Modifier implements Listener {
     	ConfigurationManager.saveConfig(config);
         
         init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
+                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 1,
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
@@ -136,13 +132,17 @@ public class Timber extends Modifier implements Listener {
             }
         }
 
-        for (int dy = b.getY() + 1; dy < 256; dy++) {
+        for (int dy = b.getY() + 1, airgap = 0; dy < 256 && airgap < 6; dy++) {
             if (!allowed.contains(p.getWorld().getBlockAt(b.getX(), dy, b.getZ()).getType())) {
                 Location loc = b.getLocation().clone();
                 loc.setY(dy);
 
-                if (Lists.getWoodLeaves().contains(p.getWorld().getBlockAt(loc).getType())) {
+                Material mat = p.getWorld().getBlockAt(loc).getType();
+                if (Lists.getWoodLeaves().contains(mat)) {
                     isTreeTop = true;
+                } else if (mat.equals(Material.AIR) || mat.equals(Material.CAVE_AIR)) {
+                    airgap++;
+                    continue;
                 }
                 break;
             }

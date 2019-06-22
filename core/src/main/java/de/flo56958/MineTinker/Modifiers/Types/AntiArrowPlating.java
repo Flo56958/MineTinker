@@ -15,11 +15,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AntiArrowPlating extends Modifier {
 
@@ -86,7 +82,7 @@ public class AntiArrowPlating extends Modifier {
 
         // Initialize modifier
         init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] " + config.getString(key + ".description"),
+                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
                         ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
