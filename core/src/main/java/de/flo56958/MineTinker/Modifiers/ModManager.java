@@ -270,38 +270,6 @@ public class ModManager {
     public List<Modifier> getEnchantableMods() { return this.enchantableMods; }
 
     /**
-     * get a specific modifier instance (can be replaced with .instance())
-     *
-     * @param type the modifiertype
-     * @return the modifier instance, null if modifier is not allowed or loaded
-     */
-    public Modifier get(ModifierType type) {
-        for (Modifier m : mods) {
-            if (m.getType().equals(type)) {
-                return m;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * get a specific modifier instance even the not allowed ones (can be replaced with .instance())
-     *
-     * @param type the modifiertype
-     * @return the modifier instance, null if modifier is not allowed or loaded
-     */
-    public Modifier getAdmin(ModifierType type) {
-        for (Modifier m : allMods) {
-            if (m.getType().equals(type)) {
-                return m;
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * add a specified modifier to a tool
      *
      * @param is the item to add the modifier to
@@ -639,7 +607,7 @@ public class ModManager {
      * @return if the ItemStack is viable as MineTinker-Modifier-Item
      */
     public boolean isModifierItem(ItemStack item) {
-        return nbt.hasTag(item, "modifierItem") || item.getType().equals(get(ModifierType.EXPERIENCED).getModItem().getType()) || item.getType().equals(get(ModifierType.EXTRA_MODIFIER).getModItem().getType());
+        return nbt.hasTag(item, "modifierItem") || item.getType().equals(Experienced.instance().getModItem().getType()) || item.getType().equals(ExtraModifier.instance().getModItem().getType());
     }
 
     /**
@@ -648,9 +616,9 @@ public class ModManager {
      */
     public Modifier getModifierFromItem(ItemStack item) {
         if (!isModifierItem(item)) { return null; }
-        if (item.getType().equals(get(ModifierType.EXPERIENCED).getModItem().getType())) { return get(ModifierType.EXPERIENCED); }
-        if (item.getType().equals(get(ModifierType.EXTRA_MODIFIER).getModItem().getType())
-                && !nbt.hasTag(item, "modifierItem")) { return get(ModifierType.EXTRA_MODIFIER); }
+        if (item.getType().equals(Experienced.instance().getModItem().getType())) { return Experienced.instance(); }
+        if (item.getType().equals(ExtraModifier.instance().getModItem().getType())
+                && !nbt.hasTag(item, "modifierItem")) { return ExtraModifier.instance(); }
         if (!nbt.hasTag(item, "modifierItem")) { return null; }
 
         String name = Objects.requireNonNull(nbt.getString(item, "modifierItem"));

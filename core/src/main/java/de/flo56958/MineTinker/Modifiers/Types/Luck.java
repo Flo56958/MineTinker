@@ -85,11 +85,9 @@ public class Luck extends Modifier {
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.get(ModifierType.SILK_TOUCH) != null) {
-            if (modManager.hasMod(tool, modManager.get(ModifierType.SILK_TOUCH))) {
-                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                return null;
-            }
+        if (modManager.hasMod(tool, SilkTouch.instance())) {
+            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+            return null;
         }
         if (Modifier.checkAndAdd(p, tool, this, "luck", isCommand) == null) {
             return null;

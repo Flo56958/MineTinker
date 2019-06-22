@@ -84,11 +84,9 @@ public class Freezing extends Modifier {
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.get(ModifierType.AQUAPHILIC) != null) {
-            if (modManager.hasMod(tool, modManager.get(ModifierType.AQUAPHILIC))) {
-                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                return null;
-            }
+        if (modManager.hasMod(tool, Aquaphilic.instance())) {
+            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+            return null;
         }
 
         if (Modifier.checkAndAdd(p, tool, this, "freezing", isCommand) == null) {

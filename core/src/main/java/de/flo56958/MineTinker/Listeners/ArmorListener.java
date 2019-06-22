@@ -97,6 +97,6 @@ public class ArmorListener implements Listener {
 
         if (chance < ConfigurationManager.getConfig("Elytra.yml").getInt("Elytra.ExpChanceWhileFlying")) modManager.addExp(e.getPlayer(), e.getItem(), config.getInt("ExpPerEntityHit"));
 
-        ((SelfRepair) modManager.getAdmin(ModifierType.SELF_REPAIR)).effectElytra(e.getPlayer(), e.getItem());
+        SelfRepair.instance().effectElytra(e.getPlayer(), e.getItem());
     }
 }

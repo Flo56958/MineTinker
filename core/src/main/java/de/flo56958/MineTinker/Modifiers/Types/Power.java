@@ -134,12 +134,10 @@ public class Power extends Modifier implements Enchantable, Listener {
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.get(ModifierType.TIMBER) != null) {
-            if (modManager.hasMod(tool, modManager.get(ModifierType.TIMBER))) {
-                pluginManager.callEvent(
-                        new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                return null;
-            }
+        if (modManager.hasMod(tool, Timber.instance())) {
+            pluginManager.callEvent(
+                    new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+            return null;
         }
 
         return Modifier.checkAndAdd(p, tool, this, "power", isCommand);

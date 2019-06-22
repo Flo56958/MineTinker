@@ -87,11 +87,9 @@ public class Timber extends Modifier implements Listener {
 
     @Override
     public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.get(ModifierType.POWER) != null) {
-            if (modManager.hasMod(tool, modManager.get(ModifierType.POWER))) {
-                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                return null;
-            }
+        if (modManager.hasMod(tool, Power.instance())) {
+            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+            return null;
         }
 
         return Modifier.checkAndAdd(p, tool, this, "timber", isCommand);
