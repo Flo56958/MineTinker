@@ -96,10 +96,8 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "selfrepair", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (Modifier.checkAndAdd(p, tool, this, "selfrepair", isCommand)) return false;
 
         if (useMending) {
             ItemMeta meta = tool.getItemMeta();
@@ -116,7 +114,7 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
                 tool.setItemMeta(meta);
             }
         }
-        return tool;
+        return true;
     }
 
     @Override

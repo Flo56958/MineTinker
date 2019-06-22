@@ -82,10 +82,8 @@ public class Thorned extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "thorned", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (Modifier.checkAndAdd(p, tool, this, "thorned", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -101,7 +99,7 @@ public class Thorned extends Modifier {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override

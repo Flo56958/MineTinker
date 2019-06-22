@@ -68,28 +68,28 @@ public class ExtraModifier extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
         if (!p.hasPermission("minetinker.modifiers.extramodifier.apply")) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.NO_PERMISSION, isCommand));
-            return null;
+            return false;
         }
 
         if (!getAllowedTools().contains(ToolType.get(tool.getType()))) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
-            return null;
+            return false;
         }
 
         int slotsRemaining = modManager.getFreeSlots(tool);
 
         if (slotsRemaining + gain == Integer.MAX_VALUE || slotsRemaining + gain < 0) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.MAXIMUM_SLOTS_REACHED, isCommand));
-            return null;
+            return false;
         }
         int amount = slotsRemaining + gain;
 
         modManager.setFreeSlots(tool, amount);
 
-        return tool;
+        return true;
     }
 
     @Override

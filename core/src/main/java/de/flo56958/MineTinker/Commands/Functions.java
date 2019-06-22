@@ -125,15 +125,9 @@ class Functions {
         if (args.length == 2) {
             for (Modifier m : modManager.getAllowedMods()) {
                 if (m.getName().equalsIgnoreCase(args[1])) {
-                    ItemStack tool = player.getInventory().getItemInMainHand().clone();
+                    ItemStack tool = player.getInventory().getItemInMainHand();
 
-                    if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
-                        tool = m.applyMod(player, tool, true);
-
-                        if (tool != null) {
-                            player.getInventory().setItemInMainHand(tool);
-                        }
-                    }
+                    if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) m.applyMod(player, tool, true);
                     break;
                 }
             }

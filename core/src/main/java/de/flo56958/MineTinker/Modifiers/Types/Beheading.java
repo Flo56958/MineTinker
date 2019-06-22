@@ -83,7 +83,7 @@ public class Beheading extends Modifier implements Enchantable, Listener {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
         return checkAndAdd(p, tool, this, "beheading", isCommand);
     }
 

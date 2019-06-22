@@ -72,10 +72,8 @@ public class Fiery extends Modifier implements Enchantable {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "fiery", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (Modifier.checkAndAdd(p, tool, this, "fiery", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -95,7 +93,7 @@ public class Fiery extends Modifier implements Enchantable {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override

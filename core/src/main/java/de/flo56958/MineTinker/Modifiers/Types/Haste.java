@@ -82,10 +82,8 @@ public class Haste extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "haste", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (Modifier.checkAndAdd(p, tool, this, "haste", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -106,7 +104,7 @@ public class Haste extends Modifier {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override

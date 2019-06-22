@@ -100,15 +100,13 @@ public class Propelling extends Modifier implements Enchantable, Listener {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
         if (modManager.hasMod(tool, Infinity.instance())) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-            return null;
+            return false;
         }
 
-        if (Modifier.checkAndAdd(p, tool, this, "propelling", isCommand) == null) {
-            return null;
-        }
+        if (Modifier.checkAndAdd(p, tool, this, "propelling", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -126,7 +124,7 @@ public class Propelling extends Modifier implements Enchantable, Listener {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override

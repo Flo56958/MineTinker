@@ -97,11 +97,10 @@ public abstract class Modifier {
      * applies the Modifier to the tool
      * @param p the Player
      * @param tool the Tool to modify
+     * @return  true if successful
+     *          false if failure
      */
-    //TODO: Make return type boolean as the given tool gets modified and does not need to be returned (return null is not the best code style)
-    // -> true: Mod was applied
-    // -> false: Application has failed
-    public abstract ItemStack applyMod(Player p, ItemStack tool, boolean isCommand);
+    public abstract boolean applyMod(Player p, ItemStack tool, boolean isCommand);
 
     /**
      * what should be done to the Tool if the Modifier gets removed
@@ -131,25 +130,25 @@ public abstract class Modifier {
         return emptyArrayList;
     }
 
-    public static ItemStack checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand) {
+    public static boolean checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand) {
         if ((modManager.getFreeSlots(tool) < 1 && !mod.getType().equals(ModifierType.EXTRA_MODIFIER)) && !isCommand) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_FREE_SLOTS, isCommand));
-            return null;
+            return false;
         }
 
         if (!p.hasPermission("minetinker.modifiers." + permission + ".apply")) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_PERMISSION, isCommand));
-            return null;
+            return false;
         }
 
         if (!mod.getAllowedTools().contains(ToolType.get(tool.getType()))) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
-            return null;
+            return false;
         }
 
         if (modManager.getModLevel(tool, mod) >= mod.getMaxLvl()) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.MOD_MAXLEVEL, isCommand));
-            return null;
+            return false;
         }
 
         modManager.addMod(tool, mod);
@@ -162,7 +161,7 @@ public abstract class Modifier {
             Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(p, tool, mod, freeSlots, true));
         }
 
-        return tool;
+        return true;
     }
 
     public abstract void registerCraftingRecipe();

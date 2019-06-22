@@ -83,7 +83,7 @@ public class Experienced extends Modifier implements Listener {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
         return Modifier.checkAndAdd(p, tool, this, "experienced", isCommand);
     }
 

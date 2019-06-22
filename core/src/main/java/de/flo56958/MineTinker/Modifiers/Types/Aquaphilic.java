@@ -86,19 +86,17 @@ public class Aquaphilic extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
         if (modManager.hasMod(tool, Freezing.instance())) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-            return null;
+            return false;
         }
 
-        if (Modifier.checkAndAdd(p, tool, this, "aquaphilic", isCommand) == null) {
-            return null;
-        }
+        if (Modifier.checkAndAdd(p, tool, this, "aquaphilic", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
-        if (meta != null ) {
+        if (meta != null) {
             if (ToolType.BOOTS.getMaterials().contains(tool.getType())) {
                 meta.addEnchant(Enchantment.DEPTH_STRIDER, modManager.getModLevel(tool, this), true);
             } else if (ToolType.HELMET.getMaterials().contains(tool.getType())) {
@@ -116,7 +114,7 @@ public class Aquaphilic extends Modifier {
 
         tool.setItemMeta(meta);
 
-        return tool;
+        return true;
     }
 
     @Override

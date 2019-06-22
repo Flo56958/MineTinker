@@ -126,7 +126,7 @@ public class TinkerListener implements Listener {
                                 int index;
                                 do {
                                     index = new Random().nextInt(mods.size());
-                                    appliedRandomMod = mods.get(index).applyMod(p, tool, true) != null;
+                                    appliedRandomMod = mods.get(index).applyMod(p, tool, true);
                                     if (!appliedRandomMod) mods.remove(index); //Remove the failed modifier from the the list of the possibles
                                     if (mods.isEmpty()) { break; } //Secures that the while will terminate after some time (if all modifiers were removed)
                                 } while (!appliedRandomMod);

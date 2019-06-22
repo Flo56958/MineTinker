@@ -84,14 +84,12 @@ public class Luck extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
         if (modManager.hasMod(tool, SilkTouch.instance())) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-            return null;
+            return false;
         }
-        if (Modifier.checkAndAdd(p, tool, this, "luck", isCommand) == null) {
-            return null;
-        }
+        if (Modifier.checkAndAdd(p, tool, this, "luck", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -124,7 +122,7 @@ public class Luck extends Modifier {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override

@@ -81,10 +81,8 @@ public class Reinforced extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "reinforced", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (Modifier.checkAndAdd(p, tool, this, "reinforced", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -100,7 +98,7 @@ public class Reinforced extends Modifier {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override
