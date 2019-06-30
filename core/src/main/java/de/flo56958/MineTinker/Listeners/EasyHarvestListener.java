@@ -41,17 +41,29 @@ public class EasyHarvestListener implements Listener {
         if (e.getClickedBlock() == null) return;
         if (e.getItem() == null) return;
 
-        //triggers a pseudoevent to find out if the Player can build
-        BlockPlaceEvent placeEvent = new BlockPlaceEvent(e.getClickedBlock(), e.getClickedBlock().getState(), e.getClickedBlock(), e.getItem(), p, true);
-        Bukkit.getPluginManager().callEvent(placeEvent);
-
-        //check the pseudoevent
-        if (!placeEvent.canBuild() || placeEvent.isCancelled()) return;
-
         Block b = e.getClickedBlock();
 
-        if (b.getState().getData() instanceof Crops) harvestCrops(p, tool, b);
-        if (b.getState().getData() instanceof NetherWarts) harvestWarts(p, tool, b);
+        if (b.getState().getData() instanceof Crops) {
+            //triggers a pseudoevent to find out if the Player can build
+            BlockPlaceEvent placeEvent = new BlockPlaceEvent(b, b.getState(), b, e.getItem(), p, true);
+            Bukkit.getPluginManager().callEvent(placeEvent);
+
+            //check the pseudoevent
+            if (!placeEvent.canBuild() || placeEvent.isCancelled()) return;
+
+            harvestCrops(p, tool, b);
+        }
+        
+        if (b.getState().getData() instanceof NetherWarts) {
+            //triggers a pseudoevent to find out if the Player can build
+            BlockPlaceEvent placeEvent = new BlockPlaceEvent(b, b.getState(), b, e.getItem(), p, true);
+            Bukkit.getPluginManager().callEvent(placeEvent);
+
+            //check the pseudoevent
+            if (!placeEvent.canBuild() || placeEvent.isCancelled()) return;
+
+            harvestWarts(p, tool, b);
+        }
     }
 
     private static void harvestWarts(Player p, ItemStack tool, Block b) {
