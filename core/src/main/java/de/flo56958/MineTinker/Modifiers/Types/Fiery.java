@@ -32,7 +32,7 @@ public class Fiery extends Modifier implements Enchantable {
 
     private Fiery() {
         super("Fiery", "Fiery.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
     }
 
