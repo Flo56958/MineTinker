@@ -39,7 +39,7 @@ public class Commands implements TabExecutor {
     /**
      * all console commands
      */
-    private static final String[] cmds_console = {"checkupdate", "info", "modifiers", "reload"};
+    private static final String[] cmds_console = {"checkupdate", "info", "modifiers", "reload", "givemodifieritem"};
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
@@ -174,6 +174,15 @@ public class Commands implements TabExecutor {
      */
     static void invalidArgs(Player player) {
         ChatWriter.sendMessage(player, ChatColor.RED, config.getString("Language.Commands.InvalidArguments"));
+    }
+
+    /**
+     * Outputs the error message "Invalid Arguments" to the CommandSender
+     *
+     * @param sender
+     */
+    static void invalidArgs(CommandSender sender) {
+        ChatWriter.sendMessage(sender, ChatColor.RED, config.getString("Language.Commands.InvalidArguments"));
     }
 
     /**

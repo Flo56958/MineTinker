@@ -219,10 +219,10 @@ class Functions {
 
     /**
      * gives the player the requested modifier item from the specific modifier
-     * @param player
+     * @param sender
      * @param args command input of the player - parsed down from onCommand()
      */
-    static void giveModifierItem(Player player, String[] args) {
+    static void giveModifierItem(CommandSender sender, String[] args) {
         boolean allOnline = false;
 
         if (args.length >= 2) {
@@ -234,7 +234,7 @@ class Functions {
                         try {
                             amount = Integer.parseInt(args[2]);
                         } catch (Exception e) {
-                            Commands.invalidArgs(player);
+                            Commands.invalidArgs(sender);
                             return;
                         }
                     }
@@ -246,10 +246,10 @@ class Functions {
                             Player temp = Bukkit.getServer().getPlayer(args[3]);
 
                             if (temp == null) {
-                                ChatWriter.sendMessage(player, ChatColor.RED, "Player " + args[3] + " not found or not online!");
+                                ChatWriter.sendMessage(sender, ChatColor.RED, "Player " + args[3] + " not found or not online!");
                                 return;
                             }
-                            player = temp;
+                            sender = temp;
                         }
 
                     }
@@ -262,7 +262,9 @@ class Functions {
                                 } // no else as it gets added in if
                             }
                         }
-                    } else {
+                    } else if (sender instanceof Player){
+                        Player player = (Player)sender;
+
                         for (int i = 0; i < amount; i++) {
                             if (player.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
                                 player.getWorld().dropItem(player.getLocation(), mod.getModItem());
