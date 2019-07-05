@@ -34,6 +34,7 @@ public class ConvertListener implements Listener{
 		converting.addAll(ToolType.HOE.getMaterials());
 		converting.addAll(ToolType.SWORD.getMaterials());
 		converting.addAll(ToolType.SHEARS.getMaterials());
+		converting.addAll(ToolType.SHOVEL.getMaterials());
 		converting.addAll(ToolType.FISHINGROD.getMaterials());
 		converting.addAll(ToolType.HELMET.getMaterials());
 		converting.addAll(ToolType.CHESTPLATE.getMaterials());
