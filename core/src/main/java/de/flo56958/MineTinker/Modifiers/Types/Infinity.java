@@ -92,7 +92,7 @@ public class Infinity extends Modifier implements Enchantable {
             return false;
         }
 
-        if (Modifier.checkAndAdd(p, tool, this, "infinity", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "infinity", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 

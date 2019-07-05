@@ -93,7 +93,7 @@ public class Insulating extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "insulating", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "insulating", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 

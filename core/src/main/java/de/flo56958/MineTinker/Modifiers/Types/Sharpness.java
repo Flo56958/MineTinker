@@ -94,7 +94,7 @@ public class Sharpness extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "sharpness", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "sharpness", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 

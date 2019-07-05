@@ -67,10 +67,7 @@ public class ModManager {
      * stores the list of allowed modifiers
      */
     private final ArrayList<Modifier> mods = new ArrayList<>();
-    /**
-     * sublist of mods which contains all modifiers that can be crafted (if enabled)
-     */
-    private final ArrayList<Modifier> craftableMods = new ArrayList<>();
+
     /**
      * sublist of mods which contains all modifiers that are crafted through the bookshelf
      */
@@ -89,9 +86,8 @@ public class ModManager {
     private ModManager() {
         this.loreScheme = layout.getStringList("LoreLayout");
 
-        for (int i = 0; i < loreScheme.size(); i++) {
+        for (int i = 0; i < loreScheme.size(); i++)
             loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
-        }
 
         this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
     }
@@ -120,38 +116,29 @@ public class ModManager {
     	for (Modifier m : allMods) {
     		m.reload();
     		
-    		if (m.isAllowed()) {
+    		if (m.isAllowed())
                 register(m);
-            } else {
+            else
                 unregister(m);
-            }
     	}
 
     	allMods.sort(Comparator.comparing(Modifier::getName));
         mods.sort(Comparator.comparing(Modifier::getName));
 
 
-        this.craftableMods.clear();
         this.enchantableMods.clear();
     	
     	for (Modifier m : this.mods) {
-    	    // TODO: Check if this list is necessary
-    	    this.craftableMods.add(m);
-
             if (m instanceof Enchantable) {
                 this.enchantableMods.add(m);
             }
-        }
-
-        for (Modifier m : this.craftableMods) {
             m.registerCraftingRecipe();
         }
 
         this.loreScheme = layout.getStringList("LoreLayout");
 
-        for (int i = 0; i < loreScheme.size(); i++) {
+        for (int i = 0; i < loreScheme.size(); i++)
             loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
-        }
 
         this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
         this.allowBookConvert = config.getBoolean("ConvertBookToModifier");
@@ -195,6 +182,7 @@ public class ModManager {
         allMods.add(Soulbound.instance());
         allMods.add(SpidersBane.instance());
         allMods.add(Sweeping.instance());
+        allMods.add(Tanky.instance());
         allMods.add(Thorned.instance());
         allMods.add(Timber.instance());
         allMods.add(Webbed.instance());
@@ -255,13 +243,6 @@ public class ModManager {
     }
 
     public List<Modifier> getAllMods() { return this.allMods; }
-
-    /**
-     * get all the craftable modifiers in the list
-     *
-     * @return the craftable modifier list
-     */
-    public List<Modifier> getCraftableMods() { return this.craftableMods; }
 
     /**
      * get all the enchantable modifiers in the list

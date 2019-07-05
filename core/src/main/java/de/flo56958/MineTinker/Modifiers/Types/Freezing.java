@@ -89,7 +89,7 @@ public class Freezing extends Modifier {
             return false;
         }
 
-        if (Modifier.checkAndAdd(p, tool, this, "freezing", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "freezing", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 

@@ -97,7 +97,7 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "selfrepair", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "selfrepair", isCommand)) return false;
 
         if (useMending) {
             ItemMeta meta = tool.getItemMeta();

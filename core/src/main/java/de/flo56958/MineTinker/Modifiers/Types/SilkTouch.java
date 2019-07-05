@@ -84,7 +84,7 @@ public class SilkTouch extends Modifier implements Enchantable {
             return false;
         }
 
-        if (Modifier.checkAndAdd(p, tool, this, "silktouch", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "silktouch", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
