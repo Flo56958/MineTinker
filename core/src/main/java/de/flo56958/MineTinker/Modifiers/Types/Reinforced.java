@@ -22,6 +22,8 @@ import java.util.Map;
 public class Reinforced extends Modifier {
 
     private static Reinforced instance;
+    private boolean applyUnbreakableOnMaxLevel;
+    private boolean hideUnbreakableFlag;
 
     public static Reinforced instance() {
         synchronized (Reinforced.class) {
@@ -59,6 +61,8 @@ public class Reinforced extends Modifier {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Reinforced-Modifier");
         config.addDefault(key + ".Color", "%DARK_GRAY%");
         config.addDefault(key + ".MaxLevel", 3);
+        config.addDefault(key + ".ApplyUnbreakableOnMaxLevel", false);
+        config.addDefault(key + ".HideUnbreakableFlag", true);
 
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "OOO");
@@ -72,6 +76,9 @@ public class Reinforced extends Modifier {
 
 
     	ConfigurationManager.saveConfig(config);
+
+    	this.applyUnbreakableOnMaxLevel = config.getBoolean(key + ".ApplyUnbreakableOnMaxLevel");
+    	this.hideUnbreakableFlag = config.getBoolean(key + ".HideUnbreakableFlag");
     	
         init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
@@ -95,6 +102,13 @@ public class Reinforced extends Modifier {
                 meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
 
+            if (modManager.getModLevel(tool, this) == this.getMaxLvl() && this.applyUnbreakableOnMaxLevel) {
+                meta.setUnbreakable(true);
+                if(hideUnbreakableFlag) {
+                    meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+                }
+            }
+
             tool.setItemMeta(meta);
         }
 
@@ -107,6 +121,11 @@ public class Reinforced extends Modifier {
 
         if (meta != null) {
             meta.removeEnchant(Enchantment.DURABILITY);
+            if (this.applyUnbreakableOnMaxLevel) {
+                meta.setUnbreakable(false);
+                meta.removeItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+            }
+
             tool.setItemMeta(meta);
         }
     }

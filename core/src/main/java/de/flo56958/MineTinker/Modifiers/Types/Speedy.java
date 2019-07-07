@@ -18,35 +18,35 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-public class Tanky extends Modifier {
+public class Speedy extends Modifier {
 
-    private static Tanky instance;
+    private static Speedy instance;
 
-    private int healthPerLevel;
+    private double speedPerLevel;
 
-    public static Tanky instance() {
-        synchronized (Tanky.class) {
-            if (instance == null) instance = new Tanky();
+    public static Speedy instance() {
+        synchronized (Speedy.class) {
+            if (instance == null) instance = new Speedy();
         }
         return instance;
     }
 
-    private Tanky() {
-        super("Tanky", "Tanky.yml",
-                new ArrayList<>(Arrays.asList(ToolType.CHESTPLATE, ToolType.LEGGINGS)),
+    private Speedy() {
+        super("Speedy", "Speedy.yml",
+                new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS)),
                 Main.getPlugin());
     }
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "tanky", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "speedy", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
         if (meta == null) return false;
 
-        meta.removeAttributeModifier(Attribute.GENERIC_MAX_HEALTH);
-        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(), "generic.maxHealth", this.healthPerLevel * modManager.getModLevel(tool, this), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
-        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(), "generic.maxHealth", this.healthPerLevel * modManager.getModLevel(tool, this), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
+        meta.removeAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED);
+        meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(UUID.randomUUID(), "generic.movementSpeed", this.speedPerLevel * modManager.getModLevel(tool, this), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
+        meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(UUID.randomUUID(), "generic.movementSpeed", this.speedPerLevel * modManager.getModLevel(tool, this), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
 
         if (Main.getPlugin().getConfig().getBoolean("HideAttributes")) {
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -63,7 +63,7 @@ public class Tanky extends Modifier {
         ItemMeta meta = tool.getItemMeta();
         if (meta == null) return;
 
-        meta.removeAttributeModifier(Attribute.GENERIC_MAX_HEALTH);
+        meta.removeAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED);
         tool.setItemMeta(meta);
     }
 
@@ -72,32 +72,31 @@ public class Tanky extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Tanky";
+        String key = "Speedy";
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Bloodinfused Obsidian");
-        config.addDefault(key + ".modifier_item", "OBSIDIAN"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Makes you extra tanky!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Tanky-Modifier");
-        config.addDefault(key + ".Color", "%DARK_GRAY%");
-        config.addDefault(key + ".MaxLevel", 5);
-        config.addDefault(key + ".HealthPerLevel", 3);
+        config.addDefault(key + ".name_modifier", "Enhanced Rabbithide");
+        config.addDefault(key + ".modifier_item", "RABBIT_HIDE"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".description", "Gotta go fast!");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Speedy-Modifier");
+        config.addDefault(key + ".Color", "%BLUE%");
+        config.addDefault(key + ".MaxLevel", 3);
+        config.addDefault(key + ".SpeedPerLevel", 0.05);
 
         config.addDefault(key + ".Recipe.Enabled", true);
-        config.addDefault(key + ".Recipe.Top", "RBR");
-        config.addDefault(key + ".Recipe.Middle", "BOB");
-        config.addDefault(key + ".Recipe.Bottom", "RBR");
+        config.addDefault(key + ".Recipe.Top", "R R");
+        config.addDefault(key + ".Recipe.Middle", " H ");
+        config.addDefault(key + ".Recipe.Bottom", "R R");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("B", "BONE");
-        recipeMaterials.put("O", "OBSIDIAN");
-        recipeMaterials.put("R", "ROTTEN_FLESH");
+        recipeMaterials.put("H", "RABBIT_HIDE");
+        recipeMaterials.put("R", "RABBIT_FOOT");
 
         config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
 
-        this.healthPerLevel = config.getInt(key + ".HealthPerLevel");
+        this.speedPerLevel = config.getDouble(key + ".SpeedPerLevel");
 
         init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
@@ -108,7 +107,7 @@ public class Tanky extends Modifier {
 
     @Override
     public boolean isAllowed() {
-        return getConfig().getBoolean("Tanky.allowed");
+        return getConfig().getBoolean("Speedy.allowed");
     }
 
     @Override
@@ -118,6 +117,6 @@ public class Tanky extends Modifier {
 
     @Override
     public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Tanky", "Modifier_Tanky");
+        _registerCraftingRecipe(getConfig(), this, "Speedy", "Modifier_Speedy");
     }
 }
