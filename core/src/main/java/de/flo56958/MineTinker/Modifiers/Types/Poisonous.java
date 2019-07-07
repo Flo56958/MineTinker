@@ -45,7 +45,7 @@ public class Poisonous extends Modifier implements Enchantable, Listener {
     }
 
     private Poisonous() {
-        super(ModifierType.POISONOUS,
+        super("Poisonous", "Poisonous.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
@@ -93,7 +93,7 @@ public class Poisonous extends Modifier implements Enchantable, Listener {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
         return checkAndAdd(p, tool, this, "poisonous", isCommand);
     }
 
@@ -186,10 +186,6 @@ public class Poisonous extends Modifier implements Enchantable, Listener {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Poisonous", "Modifier_Poisonous");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.POISONOUS.getFileName());
     }
 
     @Override

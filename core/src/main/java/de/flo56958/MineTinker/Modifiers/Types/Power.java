@@ -52,7 +52,7 @@ public class Power extends Modifier implements Enchantable, Listener {
     }
 
     private Power() {
-        super(ModifierType.POWER,
+        super("Power", "Power.yml",
                 new ArrayList<>(
                         Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
                 Main.getPlugin());
@@ -133,13 +133,11 @@ public class Power extends Modifier implements Enchantable, Listener {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.get(ModifierType.TIMBER) != null) {
-            if (modManager.hasMod(tool, modManager.get(ModifierType.TIMBER))) {
-                pluginManager.callEvent(
-                        new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                return null;
-            }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (modManager.hasMod(tool, Timber.instance())) {
+            pluginManager.callEvent(
+                    new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+            return false;
         }
 
         return Modifier.checkAndAdd(p, tool, this, "power", isCommand);
@@ -379,10 +377,6 @@ public class Power extends Modifier implements Enchantable, Listener {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Power", "Modifier_Power");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.POWER.getFileName());
     }
 
     @Override

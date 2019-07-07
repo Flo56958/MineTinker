@@ -42,7 +42,7 @@ public class Beheading extends Modifier implements Enchantable, Listener {
     }
 
     private Beheading() {
-        super(ModifierType.BEHEADING,
+        super("Beheading", "Beheading.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
@@ -83,7 +83,7 @@ public class Beheading extends Modifier implements Enchantable, Listener {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
         return checkAndAdd(p, tool, this, "beheading", isCommand);
     }
 
@@ -148,10 +148,6 @@ public class Beheading extends Modifier implements Enchantable, Listener {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Beheading", "Modifier_Beheading");
-    }
-    
-    private static FileConfiguration getConfig() {
-    	return ConfigurationManager.getConfig(ModifierType.BEHEADING.getFileName());
     }
 
     @Override

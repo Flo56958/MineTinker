@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Events.MTEntityDamageEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
-import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
 import de.flo56958.MineTinker.Modifiers.Types.SelfRepair;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Bukkit;
@@ -97,6 +96,6 @@ public class ArmorListener implements Listener {
 
         if (chance < ConfigurationManager.getConfig("Elytra.yml").getInt("Elytra.ExpChanceWhileFlying")) modManager.addExp(e.getPlayer(), e.getItem(), config.getInt("ExpPerEntityHit"));
 
-        ((SelfRepair) modManager.getAdmin(ModifierType.SELF_REPAIR)).effectElytra(e.getPlayer(), e.getItem());
+        SelfRepair.instance().effectElytra(e.getPlayer(), e.getItem());
     }
 }

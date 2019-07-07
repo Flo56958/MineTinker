@@ -33,7 +33,7 @@ public class Freezing extends Modifier {
     }
 
     private Freezing() {
-        super(ModifierType.FREEZING,
+        super("Freezing", "Freezing.yml",
                 new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
                 Main.getPlugin());
     }
@@ -83,17 +83,13 @@ public class Freezing extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.get(ModifierType.AQUAPHILIC) != null) {
-            if (modManager.hasMod(tool, modManager.get(ModifierType.AQUAPHILIC))) {
-                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                return null;
-            }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (modManager.hasMod(tool, Aquaphilic.instance())) {
+            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+            return false;
         }
 
-        if (Modifier.checkAndAdd(p, tool, this, "freezing", isCommand) == null) {
-            return null;
-        }
+        if (!Modifier.checkAndAdd(p, tool, this, "freezing", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -108,7 +104,7 @@ public class Freezing extends Modifier {
         }
 
         tool.setItemMeta(meta);
-        return tool;
+        return true;
     }
 
     @Override
@@ -119,10 +115,6 @@ public class Freezing extends Modifier {
             meta.removeEnchant(Enchantment.FROST_WALKER);
             tool.setItemMeta(meta);
         }
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.FREEZING.getFileName());
     }
 
     @Override

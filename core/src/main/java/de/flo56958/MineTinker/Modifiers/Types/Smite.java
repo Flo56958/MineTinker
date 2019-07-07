@@ -36,7 +36,7 @@ public class Smite extends Modifier {
     }
 
     private Smite() {
-        super(ModifierType.SMITE,
+        super("Smite", "Smite.yml",
                 new ArrayList<>(Arrays.asList(ToolType.SWORD, ToolType.AXE)),
                 Main.getPlugin());
     }
@@ -93,10 +93,8 @@ public class Smite extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "smite", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (!Modifier.checkAndAdd(p, tool, this, "smite", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -105,14 +103,14 @@ public class Smite extends Modifier {
                 if (!this.compatibleWithSharpness) {
                     if (modManager.hasMod(tool, Sharpness.instance()) || meta.hasEnchant(Enchantment.DAMAGE_ALL)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return null;
+                        return false;
                     }
                 }
 
                 if (!this.compatibleWithArthropods) {
                     if (modManager.hasMod(tool, SpidersBane.instance()) || meta.hasEnchant(Enchantment.DAMAGE_ARTHROPODS)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return null;
+                        return false;
                     }
                 }
 
@@ -128,7 +126,7 @@ public class Smite extends Modifier {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override
@@ -145,10 +143,6 @@ public class Smite extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Smite", "Modifier_Smite");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.SMITE.getFileName());
     }
 
     @Override

@@ -39,7 +39,7 @@ public class Timber extends Modifier implements Listener {
     }
 
     private Timber() {
-        super(ModifierType.TIMBER,
+        super("Timber", "Timber.yml",
                 new ArrayList<>(Collections.singletonList(ToolType.AXE)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
@@ -86,12 +86,10 @@ public class Timber extends Modifier implements Listener {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.get(ModifierType.POWER) != null) {
-            if (modManager.hasMod(tool, modManager.get(ModifierType.POWER))) {
-                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                return null;
-            }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (modManager.hasMod(tool, Power.instance())) {
+            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+            return false;
         }
 
         return Modifier.checkAndAdd(p, tool, this, "timber", isCommand);
@@ -161,7 +159,7 @@ public class Timber extends Modifier implements Listener {
         ChatWriter.log(false, p.getDisplayName() + " triggered Timber on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 
-    private static void breakTree(Player p, Block b, ArrayList<Material> allowed) { //TODO: Improve algorythm and performance -> async?
+    private void breakTree(Player p, Block b, ArrayList<Material> allowed) { //TODO: Improve algorythm and performance -> async?
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
                 for (int dz = -1; dz <= 1; dz++) {
@@ -188,10 +186,6 @@ public class Timber extends Modifier implements Listener {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Timber", "Modifier_Timber");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.TIMBER.getFileName());
     }
 
     @Override

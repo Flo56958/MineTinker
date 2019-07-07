@@ -46,7 +46,7 @@ public class AutoSmelt extends Modifier implements Listener {
     }
 
     private AutoSmelt() {
-        super(ModifierType.AUTO_SMELT,
+        super("Auto-Smelt", "Auto-Smelt.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
@@ -109,12 +109,10 @@ public class AutoSmelt extends Modifier implements Listener {
     }
     
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.get(ModifierType.SILK_TOUCH) != null) {
-            if (modManager.hasMod(tool, modManager.get(ModifierType.SILK_TOUCH))) {
-                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                return null;
-            }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (modManager.hasMod(tool, SilkTouch.instance())) {
+            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+            return false;
         }
 
         return Modifier.checkAndAdd(p, tool, this, "autosmelt", isCommand);
@@ -317,8 +315,8 @@ public class AutoSmelt extends Modifier implements Listener {
         Random rand = new Random();
         int n = rand.nextInt(100);
         if (n <= this.percentagePerLevel * modManager.getModLevel(tool, this) && b.getLocation().getWorld() != null) {
-            if (allowLuck && modManager.get(ModifierType.LUCK) != null) {
-                int level = modManager.getModLevel(tool, modManager.get(ModifierType.LUCK));
+            if (allowLuck) {
+                int level = modManager.getModLevel(tool, Luck.instance());
                 if (level > 0) {
                     amount = amount + rand.nextInt(level) * amount; //Times amount is for clay as it drops 4 per block
                 }
@@ -341,10 +339,6 @@ public class AutoSmelt extends Modifier implements Listener {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Auto-Smelt", "Modifier_Autosmelt");
-    }
-    
-    private static FileConfiguration getConfig() {
-		return ConfigurationManager.getConfig(ModifierType.AUTO_SMELT.getFileName());
     }
 
     @Override

@@ -1,7 +1,8 @@
 package de.flo56958.MineTinker.Utilities;
 
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
+import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Modifiers.Modifier;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,7 +25,7 @@ public class ConfigurationManager {
      * @param modifier The Name of the file (Enum modifiers_Config)
      * @return The FileConfiguration with the given name
      */
-    public static FileConfiguration getConfig(ModifierType modifier) {
+    public static FileConfiguration getConfig(Modifier modifier) {
         return configs.get(modifier.getFileName());
     }
 
@@ -38,20 +39,20 @@ public class ConfigurationManager {
     }
 
     public static void reload() {
-        for (ModifierType modifier : ModifierType.values()) {
-            if (modifier.getFileName().isEmpty()) {
-                continue;
-            }
-
-        	loadConfig("Modifiers" + File.separator, modifier.getFileName());
-        }
-
         loadConfig("", "layout.yml");
 
         loadConfig("", "BuildersWand.yml");
 
         loadConfig("", "Elytra.yml");
         loadConfig("", "Trident.yml");
+
+        for (Modifier modifier : ModManager.instance().getAllMods()) {
+            if (modifier.getFileName().isEmpty()) {
+                continue;
+            }
+
+            loadConfig("Modifiers" + File.separator, modifier.getFileName());
+        }
     }
 
     /**
@@ -73,7 +74,6 @@ public class ConfigurationManager {
         }
     }
 
-    //TODO: Make Set-first-Time option
     public static void saveConfig(FileConfiguration config) {
     	try {
 			config.save(configsFolder.get(config));

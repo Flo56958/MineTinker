@@ -32,7 +32,7 @@ public class Haste extends Modifier {
     }
 
     private Haste() {
-        super(ModifierType.HASTE,
+        super("Haste", "Haste.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.CROSSBOW, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS, ToolType.FISHINGROD)),
                 Main.getPlugin());
     }
@@ -82,10 +82,8 @@ public class Haste extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "haste", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (!Modifier.checkAndAdd(p, tool, this, "haste", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -106,7 +104,7 @@ public class Haste extends Modifier {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override
@@ -124,10 +122,6 @@ public class Haste extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Haste", "Modifier_Haste");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.HASTE.getFileName());
     }
 
     @Override

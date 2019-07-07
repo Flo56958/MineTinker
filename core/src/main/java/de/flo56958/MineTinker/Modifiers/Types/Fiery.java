@@ -31,8 +31,8 @@ public class Fiery extends Modifier implements Enchantable {
     }
 
     private Fiery() {
-        super(ModifierType.FIERY,
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD)),
+        super("Fiery", "Fiery.yml",
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
                 Main.getPlugin());
     }
 
@@ -72,10 +72,8 @@ public class Fiery extends Modifier implements Enchantable {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "fiery", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (!Modifier.checkAndAdd(p, tool, this, "fiery", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -95,7 +93,7 @@ public class Fiery extends Modifier implements Enchantable {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override
@@ -118,10 +116,6 @@ public class Fiery extends Modifier implements Enchantable {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Fiery", "Modifier_Fiery");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.FIERY.getFileName());
     }
 
     @Override

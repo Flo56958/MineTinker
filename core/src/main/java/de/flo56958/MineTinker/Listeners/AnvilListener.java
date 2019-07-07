@@ -131,7 +131,8 @@ public class AnvilListener implements Listener {
         ItemStack newTool = null;
 
         if (mod != null) {
-            newTool = mod.applyMod(player, tool.clone(), false);
+            newTool = tool.clone();
+            if (!mod.applyMod(player, newTool, false)) return;
         } else {
             if (config.getBoolean("Upgradeable") && player.hasPermission("minetinker.tool.upgrade")) {
                 ItemStack item = i.getItem(1);
@@ -177,11 +178,9 @@ public class AnvilListener implements Listener {
                 }
             }
         }
-        
-        if (newTool != null) {
-        	e.setResult(newTool);
-        	i.setRepairCost(0);
-        }
+
+        e.setResult(newTool);
+        i.setRepairCost(0);
     }
 
     @EventHandler

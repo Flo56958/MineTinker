@@ -8,8 +8,9 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
+import de.flo56958.MineTinker.Modifiers.Types.Ender;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
+import de.flo56958.MineTinker.Modifiers.Types.SilkTouch;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -66,7 +67,7 @@ public class BlockListener implements Listener {
         if (!Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
             if (config.getBoolean("Spawners.enabled")) {
                 if (e.getBlock().getState() instanceof CreatureSpawner && p.hasPermission("minetinker.spawners.mine")) {
-                    if ((config.getBoolean("Spawners.onlyWithSilkTouch") && modManager.hasMod(tool, modManager.get(ModifierType.SILK_TOUCH)))
+                    if ((config.getBoolean("Spawners.onlyWithSilkTouch") && modManager.hasMod(tool, SilkTouch.instance()))
                             || !config.getBoolean("Spawners.onlyWithSilkTouch")) {
 
                         CreatureSpawner cs = (CreatureSpawner) e.getBlock().getState();
@@ -99,10 +100,8 @@ public class BlockListener implements Listener {
         ItemStack norm = p.getInventory().getItemInMainHand();
 
         if (e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
-            if (modManager.get(ModifierType.ENDER) != null) {
-                if (modManager.get(ModifierType.ENDER).getModItem().equals(norm)) {
-                    e.setCancelled(true);
-                }
+            if (Ender.instance().getModItem().equals(norm)) {
+                e.setCancelled(true);
             }
         } else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             if (!p.isSneaking()) {

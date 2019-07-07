@@ -43,7 +43,7 @@ public class Propelling extends Modifier implements Enchantable, Listener {
     }
 
     private Propelling() {
-        super(ModifierType.PROPELLING,
+        super("Propelling", "Propelling.yml",
                 new ArrayList<>(Arrays.asList(ToolType.ELYTRA, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
@@ -100,15 +100,13 @@ public class Propelling extends Modifier implements Enchantable, Listener {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.hasMod(tool, modManager.getAdmin(ModifierType.INFINITY))) {
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (modManager.hasMod(tool, Infinity.instance())) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-            return null;
+            return false;
         }
 
-        if (Modifier.checkAndAdd(p, tool, this, "propelling", isCommand) == null) {
-            return null;
-        }
+        if (Modifier.checkAndAdd(p, tool, this, "propelling", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -126,7 +124,7 @@ public class Propelling extends Modifier implements Enchantable, Listener {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override
@@ -175,10 +173,6 @@ public class Propelling extends Modifier implements Enchantable, Listener {
 
         if (sound && loc.getWorld() != null) loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
         if (particles) p.playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.PROPELLING.getFileName());
     }
 
     @Override

@@ -4,7 +4,6 @@ import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
 import de.flo56958.MineTinker.Modifiers.Types.Soulbound;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -99,7 +98,7 @@ public class ItemListener implements Listener {
 
             if (!isMineTinker) continue;
 
-            if (((Soulbound) modManager.getAdmin(ModifierType.SOULBOUND)).effect(p, is)) { is.setAmount(0); continue; } //workaround as inv.remove(is) does not work insteads duplicates item
+            if (Soulbound.instance().effect(p, is)) { is.setAmount(0); continue; } //workaround as inv.remove(is) does not work insteads duplicates item
 
             if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
                 Bukkit.getPluginManager().callEvent(new PlayerDropItemEvent(p, p.getWorld().dropItem(p.getLocation(), is))); //To trigger item behaviour

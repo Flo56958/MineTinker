@@ -4,7 +4,6 @@ import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
-import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
@@ -79,9 +78,9 @@ public class EasyHarvestListener implements Listener {
         Power.HASPOWER.get(p).set(true);
         Material m = b.getType();
 
-        if (modManager.hasMod(tool, modManager.getAdmin(ModifierType.POWER)) && !p.isSneaking()) {
+        if (modManager.hasMod(tool, Power.instance()) && !p.isSneaking()) {
 
-            int level = modManager.getModLevel(tool, modManager.getAdmin(ModifierType.POWER));
+            int level = modManager.getModLevel(tool, Power.instance());
 
             if (level == 1) {
                 Block b1;
@@ -152,52 +151,50 @@ public class EasyHarvestListener implements Listener {
         Power.HASPOWER.get(p).set(true);
         Material m = b.getType();
 
-        if (modManager.get(ModifierType.POWER) != null) {
-            if (modManager.hasMod(tool, modManager.get(ModifierType.POWER)) && !p.isSneaking()) {
-                int level = modManager.getModLevel(tool, modManager.get(ModifierType.POWER));
-                if (level == 1) {
-                    Block b1;
-                    Block b2;
+        if (modManager.hasMod(tool, Power.instance()) && !p.isSneaking()) {
+            int level = modManager.getModLevel(tool, Power.instance());
+            if (level == 1) {
+                Block b1;
+                Block b2;
 
-                    if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
-                        if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
-                            b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
-                            b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
-                        } else {
-                            b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
-                            b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
-                        }
-                    } else if (PlayerInfo.getFacingDirection(p).equals("W") || PlayerInfo.getFacingDirection(p).equals("E")) {
-                        if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
-                            b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
-                            b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
-                        } else {
-                            b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
-                            b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
-                        }
+                if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
+                    if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
+                        b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
+                        b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
                     } else {
-                        return;
+                        b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
+                        b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
                     }
-
-                    if (b1.getType().equals(b.getType()) && ((Crops) b1.getState().getData()).getState().equals(CropState.RIPE)) {
-                        breakBlock(b1, p);
-                        replantCrops(p, b1, m);
-                    }
-
-                    if (b2.getType().equals(b.getType()) && ((Crops) b2.getState().getData()).getState().equals(CropState.RIPE)) {
-                        breakBlock(b2, p);
-                        replantCrops(p, b2, m);
+                } else if (PlayerInfo.getFacingDirection(p).equals("W") || PlayerInfo.getFacingDirection(p).equals("E")) {
+                    if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
+                        b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
+                        b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
+                    } else {
+                        b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
+                        b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
                     }
                 } else {
-                    for (int x = -(level - 1); x <= (level - 1); x++) {
-                        for (int z = -(level - 1); z <= (level - 1); z++) {
-                            if (!(x == 0 && z == 0)) {
-                                Block b1 = b.getWorld().getBlockAt(b.getLocation().add(x, 0, z));
+                    return;
+                }
 
-                                if (b1.getType().equals(b.getType()) && ((Crops) b1.getState().getData()).getState().equals(CropState.RIPE)) {
-                                    breakBlock(b1, p);
-                                    replantCrops(p, b1, m);
-                                }
+                if (b1.getType().equals(b.getType()) && ((Crops) b1.getState().getData()).getState().equals(CropState.RIPE)) {
+                    breakBlock(b1, p);
+                    replantCrops(p, b1, m);
+                }
+
+                if (b2.getType().equals(b.getType()) && ((Crops) b2.getState().getData()).getState().equals(CropState.RIPE)) {
+                    breakBlock(b2, p);
+                    replantCrops(p, b2, m);
+                }
+            } else {
+                for (int x = -(level - 1); x <= (level - 1); x++) {
+                    for (int z = -(level - 1); z <= (level - 1); z++) {
+                        if (!(x == 0 && z == 0)) {
+                            Block b1 = b.getWorld().getBlockAt(b.getLocation().add(x, 0, z));
+
+                            if (b1.getType().equals(b.getType()) && ((Crops) b1.getState().getData()).getState().equals(CropState.RIPE)) {
+                                breakBlock(b1, p);
+                                replantCrops(p, b1, m);
                             }
                         }
                     }

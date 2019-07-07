@@ -33,7 +33,7 @@ public class Insulating extends Modifier {
     }
 
     private Insulating() {
-        super(ModifierType.INSULATING,
+        super("Insulating", "Insulating.yml",
                 new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS, ToolType.CHESTPLATE, ToolType.HELMET)),
                 Main.getPlugin());
     }
@@ -92,10 +92,8 @@ public class Insulating extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "insulating", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (!Modifier.checkAndAdd(p, tool, this, "insulating", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -106,21 +104,21 @@ public class Insulating extends Modifier {
                 if (!this.compatibleWithProtecting) {
                     if (modManager.hasMod(tool, Protecting.instance()) || meta.hasEnchant(Enchantment.PROTECTION_ENVIRONMENTAL)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return null;
+                        return false;
                     }
                 }
 
                 if (!this.compatibleWithAntiArrow) {
                     if (modManager.hasMod(tool, AntiArrowPlating.instance()) || meta.hasEnchant(Enchantment.PROTECTION_PROJECTILE)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return null;
+                        return false;
                     }
                 }
 
                 if (!this.compatibleWithAntiBlast) {
                     if (modManager.hasMod(tool, AntiBlastPlating.instance()) || meta.hasEnchant(Enchantment.PROTECTION_EXPLOSIONS)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return null;
+                        return false;
                     }
                 }
 
@@ -136,7 +134,7 @@ public class Insulating extends Modifier {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override
@@ -153,10 +151,6 @@ public class Insulating extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Insulating", "Modifier_Insulating");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.INSULATING.getFileName());
     }
 
     @Override

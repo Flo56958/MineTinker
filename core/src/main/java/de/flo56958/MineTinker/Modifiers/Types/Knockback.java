@@ -30,7 +30,7 @@ public class Knockback extends Modifier implements Enchantable {
     }
 
     private Knockback() {
-        super(ModifierType.KNOCKBACK,
+        super("Knockback", "Knockback.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
     }
@@ -71,10 +71,8 @@ public class Knockback extends Modifier implements Enchantable {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "knockback", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (!Modifier.checkAndAdd(p, tool, this, "knockback", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -95,7 +93,7 @@ public class Knockback extends Modifier implements Enchantable {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override
@@ -118,10 +116,6 @@ public class Knockback extends Modifier implements Enchantable {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Knockback", "Modifier_Knockback");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.KNOCKBACK.getFileName());
     }
 
     @Override

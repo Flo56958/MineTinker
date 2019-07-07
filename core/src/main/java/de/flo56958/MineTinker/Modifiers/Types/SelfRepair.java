@@ -46,7 +46,7 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
     }
 
     private SelfRepair() {
-        super(ModifierType.SELF_REPAIR,
+        super("Self-Repair", "Self-Repair.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.TRIDENT, ToolType.FISHINGROD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
@@ -96,10 +96,8 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "selfrepair", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (!Modifier.checkAndAdd(p, tool, this, "selfrepair", isCommand)) return false;
 
         if (useMending) {
             ItemMeta meta = tool.getItemMeta();
@@ -116,7 +114,7 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
                 tool.setItemMeta(meta);
             }
         }
-        return tool;
+        return true;
     }
 
     @Override
@@ -215,10 +213,6 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Self-Repair", "Modifier_SelfRepair");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.SELF_REPAIR.getFileName());
     }
 
     @Override

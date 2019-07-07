@@ -33,7 +33,7 @@ public class Luck extends Modifier {
     }
 
     private Luck() {
-        super(ModifierType.LUCK,
+        super("Luck", "Luck.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS,
                         ToolType.FISHINGROD, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
@@ -84,16 +84,12 @@ public class Luck extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.get(ModifierType.SILK_TOUCH) != null) {
-            if (modManager.hasMod(tool, modManager.get(ModifierType.SILK_TOUCH))) {
-                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                return null;
-            }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (modManager.hasMod(tool, SilkTouch.instance())) {
+            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+            return false;
         }
-        if (Modifier.checkAndAdd(p, tool, this, "luck", isCommand) == null) {
-            return null;
-        }
+        if (!Modifier.checkAndAdd(p, tool, this, "luck", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -126,7 +122,7 @@ public class Luck extends Modifier {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override
@@ -144,10 +140,6 @@ public class Luck extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Luck", "Modifier_Luck");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.LUCK.getFileName());
     }
 
     @Override

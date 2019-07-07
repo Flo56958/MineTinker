@@ -36,7 +36,7 @@ public class SpidersBane extends Modifier {
     }
 
     private SpidersBane() {
-        super(ModifierType.SPIDERSBANE,
+        super("Spider's-Bane", "Spiders-Bane.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.SWORD)),
                 Main.getPlugin());
     }
@@ -93,10 +93,8 @@ public class SpidersBane extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "spidersbane", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (!Modifier.checkAndAdd(p, tool, this, "spidersbane", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -105,14 +103,14 @@ public class SpidersBane extends Modifier {
                 if (!this.compatibleWithSmite) {
                     if (modManager.hasMod(tool, Smite.instance()) || meta.hasEnchant(Enchantment.DAMAGE_UNDEAD)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return null;
+                        return false;
                     }
                 }
 
                 if (!this.compatibleWithSharpness) {
                     if (modManager.hasMod(tool, Sharpness.instance()) || meta.hasEnchant(Enchantment.DAMAGE_ALL)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return null;
+                        return false;
                     }
                 }
 
@@ -128,7 +126,7 @@ public class SpidersBane extends Modifier {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override
@@ -145,10 +143,6 @@ public class SpidersBane extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "SpidersBane", "Modifier_SpidersBane");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.SPIDERSBANE.getFileName());
     }
 
     @Override

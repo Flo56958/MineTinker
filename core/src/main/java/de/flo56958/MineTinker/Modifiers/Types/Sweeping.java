@@ -32,7 +32,7 @@ public class Sweeping extends Modifier implements Enchantable {
     }
 
     private Sweeping() {
-        super(ModifierType.SWEEPING,
+        super("Sweeping", "Sweeping.yml",
                 new ArrayList<>(Collections.singletonList(ToolType.SWORD)),
                 Main.getPlugin());
     }
@@ -72,10 +72,8 @@ public class Sweeping extends Modifier implements Enchantable {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "sweeping", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (!Modifier.checkAndAdd(p, tool, this, "sweeping", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -91,7 +89,7 @@ public class Sweeping extends Modifier implements Enchantable {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override
@@ -106,10 +104,6 @@ public class Sweeping extends Modifier implements Enchantable {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Sweeping", "Modifier_Sweeping");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.SWEEPING.getFileName());
     }
 
     @Override

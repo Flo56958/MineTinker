@@ -36,7 +36,7 @@ public class Sharpness extends Modifier {
     }
 
     private Sharpness() {
-        super(ModifierType.SHARPNESS,
+        super("Sharpness", "Sharpness.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
     }
@@ -93,10 +93,8 @@ public class Sharpness extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "sharpness", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (!Modifier.checkAndAdd(p, tool, this, "sharpness", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -105,14 +103,14 @@ public class Sharpness extends Modifier {
                 if (!this.compatibleWithSmite) {
                     if (modManager.hasMod(tool, Smite.instance()) || meta.hasEnchant(Enchantment.DAMAGE_UNDEAD)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return null;
+                        return false;
                     }
                 }
 
                 if (!this.compatibleWithArthropods) {
                     if (modManager.hasMod(tool, SpidersBane.instance()) || meta.hasEnchant(Enchantment.DAMAGE_ARTHROPODS)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return null;
+                        return false;
                     }
                 }
 
@@ -133,7 +131,7 @@ public class Sharpness extends Modifier {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override
@@ -152,10 +150,6 @@ public class Sharpness extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Sharpness", "Modifier_Sharpness");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.SHARPNESS.getFileName());
     }
 
     @Override

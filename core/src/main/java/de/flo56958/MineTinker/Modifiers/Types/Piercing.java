@@ -35,7 +35,7 @@ public class Piercing extends Modifier {
     }
 
     private Piercing() {
-        super(ModifierType.PIERCING,
+        super("Piercing", "Piercing.yml",
                 new ArrayList<>(Arrays.asList(ToolType.CROSSBOW)),
                 Main.getPlugin());
     }
@@ -90,10 +90,8 @@ public class Piercing extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "piercing", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (!Modifier.checkAndAdd(p, tool, this, "piercing", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -102,7 +100,7 @@ public class Piercing extends Modifier {
                 if (!this.compatibleWithMultishot) {
                     if (modManager.hasMod(tool, MultiShot.instance()) || meta.hasEnchant(Enchantment.MULTISHOT)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return null;
+                        return false;
                     }
                 }
 
@@ -118,7 +116,7 @@ public class Piercing extends Modifier {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override
@@ -134,10 +132,6 @@ public class Piercing extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Piercing", "Modifier_Piercing");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.PIERCING.getFileName());
     }
 
     @Override

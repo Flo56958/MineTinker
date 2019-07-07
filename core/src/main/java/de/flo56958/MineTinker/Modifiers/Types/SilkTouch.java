@@ -32,7 +32,7 @@ public class SilkTouch extends Modifier implements Enchantable {
     }
 
     private SilkTouch() {
-        super(ModifierType.SILK_TOUCH,
+        super("Silk-Touch", "Silk-Touch.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
                 Main.getPlugin());
     }
@@ -72,25 +72,19 @@ public class SilkTouch extends Modifier implements Enchantable {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
 
-        if (modManager.get(ModifierType.AUTO_SMELT) != null) {
-            if (modManager.hasMod(tool, modManager.get(ModifierType.AUTO_SMELT))) {
-                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                return null;
-            }
+        if (modManager.hasMod(tool, AutoSmelt.instance())) {
+            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+            return false;
         }
 
-        if (modManager.get(ModifierType.LUCK) != null) {
-            if (modManager.hasMod(tool, modManager.get(ModifierType.LUCK))) {
-                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                return null;
-            }
+        if (modManager.hasMod(tool, Luck.instance())) {
+            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+            return false;
         }
 
-        if (Modifier.checkAndAdd(p, tool, this, "silktouch", isCommand) == null) {
-            return null;
-        }
+        if (!Modifier.checkAndAdd(p, tool, this, "silktouch", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -105,7 +99,7 @@ public class SilkTouch extends Modifier implements Enchantable {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override
@@ -127,10 +121,6 @@ public class SilkTouch extends Modifier implements Enchantable {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Silk-Touch", "Modifier_SilkTouch");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.SILK_TOUCH.getFileName());
     }
 
     @Override

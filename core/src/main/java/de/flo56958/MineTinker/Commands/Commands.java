@@ -290,7 +290,7 @@ public class Commands implements TabExecutor {
         while (it.hasNext()) {
             Recipe rec = it.next();
 
-            for (Modifier mod : modManager.getAllowedMods()) {
+            for (Modifier mod : modManager.getAllMods()) {
                 if (mod.getModItem().equals(rec.getResult())) {
                     it.remove();
                     break;

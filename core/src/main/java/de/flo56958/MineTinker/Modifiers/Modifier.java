@@ -5,8 +5,9 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierApplyEvent;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Types.ModifierType;
+import de.flo56958.MineTinker.Modifiers.Types.ExtraModifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -29,7 +30,6 @@ public abstract class Modifier {
     protected static final PluginManager pluginManager = Bukkit.getPluginManager();
 
     private String name;
-    private final ModifierType type;
     private String description;
     private ChatColor color;
     private int maxLvl;
@@ -45,8 +45,6 @@ public abstract class Modifier {
 
     public String getDescription() { return description; }
 
-    public ModifierType getType() { return type; }
-
     public ChatColor getColor() {
         return color;
     }
@@ -61,20 +59,21 @@ public abstract class Modifier {
         return allowedTools;
     }
 
+    private final String nbtTag;
+    private final String fileName;
+
     Plugin getSource() { return source; } //for other Plugins/Addons that register Modifiers
 
     /**
      * Class constructor
-     * @param type ModifierType of the Modifier
      * @param allowedTools Lists of ToolTypes where the Modifier is allowed on
      * @param source The Plugin that registered the Modifier
      */
-    protected Modifier(ModifierType type, ArrayList<ToolType> allowedTools, Plugin source) {
-        this.type = type;
+    protected Modifier(String nbtTag, String fileName, ArrayList<ToolType> allowedTools, Plugin source) {
+        this.nbtTag = nbtTag;
+        this.fileName = fileName;
         this.allowedTools = allowedTools;
         this.source = source;
-        init("", "", ChatColor.MAGIC, 1, new ItemStack(Material.BEDROCK, 1)); //reload, maybe someone forget it
-        reload();
     }
 
     /**
@@ -97,11 +96,10 @@ public abstract class Modifier {
      * applies the Modifier to the tool
      * @param p the Player
      * @param tool the Tool to modify
+     * @return  true if successful
+     *          false if failure
      */
-    //TODO: Make return type boolean as the given tool gets modified and does not need to be returned (return null is not the best code style)
-    // -> true: Mod was applied
-    // -> false: Application has failed
-    public abstract ItemStack applyMod(Player p, ItemStack tool, boolean isCommand);
+    public abstract boolean applyMod(Player p, ItemStack tool, boolean isCommand);
 
     /**
      * what should be done to the Tool if the Modifier gets removed
@@ -119,6 +117,14 @@ public abstract class Modifier {
      */
     public abstract boolean isAllowed();
 
+    public String getNBTKey() {
+        return nbtTag;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
     /**
      * @return a list of enchantments that may be applied when the modifier is applied
      */
@@ -131,25 +137,25 @@ public abstract class Modifier {
         return emptyArrayList;
     }
 
-    public static ItemStack checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand) {
-        if ((modManager.getFreeSlots(tool) < 1 && !mod.getType().equals(ModifierType.EXTRA_MODIFIER)) && !isCommand) {
+    public static boolean checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand) {
+        if ((modManager.getFreeSlots(tool) < 1 && !mod.equals(ExtraModifier.instance())) && !isCommand) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_FREE_SLOTS, isCommand));
-            return null;
+            return false;
         }
 
         if (!p.hasPermission("minetinker.modifiers." + permission + ".apply")) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_PERMISSION, isCommand));
-            return null;
+            return false;
         }
 
         if (!mod.getAllowedTools().contains(ToolType.get(tool.getType()))) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
-            return null;
+            return false;
         }
 
         if (modManager.getModLevel(tool, mod) >= mod.getMaxLvl()) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.MOD_MAXLEVEL, isCommand));
-            return null;
+            return false;
         }
 
         modManager.addMod(tool, mod);
@@ -162,10 +168,14 @@ public abstract class Modifier {
             Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(p, tool, mod, freeSlots, true));
         }
 
-        return tool;
+        return true;
     }
 
     public abstract void registerCraftingRecipe();
+
+    protected FileConfiguration getConfig() {
+        return ConfigurationManager.getConfig(this.getFileName());
+    }
 
     public void _registerCraftingRecipe(FileConfiguration config, Modifier mod, String name, String keyName) {
         if (config.getBoolean(name + ".Recipe.Enabled")) {

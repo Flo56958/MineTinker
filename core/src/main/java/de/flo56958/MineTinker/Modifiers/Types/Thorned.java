@@ -31,7 +31,7 @@ public class Thorned extends Modifier {
     }
 
     private Thorned() {
-        super(ModifierType.THORNED,
+        super("Thorned", "Thorned.yml",
                 new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS)),
                 Main.getPlugin());
     }
@@ -82,10 +82,8 @@ public class Thorned extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "thorned", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (!Modifier.checkAndAdd(p, tool, this, "thorned", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -101,7 +99,7 @@ public class Thorned extends Modifier {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override
@@ -117,10 +115,6 @@ public class Thorned extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Thorned", "Modifier_Thorned");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.THORNED.getFileName());
     }
 
     @Override

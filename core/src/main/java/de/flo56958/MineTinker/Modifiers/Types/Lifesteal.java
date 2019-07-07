@@ -42,7 +42,7 @@ public class Lifesteal extends Modifier implements Listener {
     }
 
     private Lifesteal() {
-        super(ModifierType.LIFESTEAL,
+        super("Light-Weight", "Lifesteal.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
@@ -127,17 +127,13 @@ public class Lifesteal extends Modifier implements Listener {
         ChatWriter.log(false, p.getDisplayName() + " triggered Lifesteal on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") and got " + recovery + " health back!");
     }
 
-    private FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.LIFESTEAL.getFileName());
-    }
-
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Lifesteal", "Modifier_Lifesteal");
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
         return Modifier.checkAndAdd(p, tool, this, "lifesteal", isCommand);
     }
 

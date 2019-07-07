@@ -31,7 +31,7 @@ public class Protecting extends Modifier {
     }
 
     private Protecting() {
-        super(ModifierType.PROTECTING,
+        super("Protecting", "Protecting.yml",
                 new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
     }
@@ -81,10 +81,8 @@ public class Protecting extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "protecting", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (!Modifier.checkAndAdd(p, tool, this, "protecting", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -100,7 +98,7 @@ public class Protecting extends Modifier {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override
@@ -116,10 +114,6 @@ public class Protecting extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Protecting", "Modifier_Protecting");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.PROTECTING.getFileName());
     }
 
     @Override

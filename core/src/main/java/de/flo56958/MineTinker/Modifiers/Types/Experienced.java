@@ -41,7 +41,7 @@ public class Experienced extends Modifier implements Listener {
     }
 
     private Experienced() {
-        super(ModifierType.EXPERIENCED,
+        super("Experienced", "Experienced.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL,
                                                 ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
@@ -83,7 +83,7 @@ public class Experienced extends Modifier implements Listener {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
         return Modifier.checkAndAdd(p, tool, this, "experienced", isCommand);
     }
 
@@ -150,10 +150,6 @@ public class Experienced extends Modifier implements Listener {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Experienced", "Modifier_Experienced");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.ENDER.getFileName());
     }
 
     @Override

@@ -22,6 +22,8 @@ import java.util.Map;
 public class Reinforced extends Modifier {
 
     private static Reinforced instance;
+    private boolean applyUnbreakableOnMaxLevel;
+    private boolean hideUnbreakableFlag;
 
     public static Reinforced instance() {
         synchronized (Reinforced.class) {
@@ -31,7 +33,7 @@ public class Reinforced extends Modifier {
     }
 
     private Reinforced() {
-        super(ModifierType.REINFORCED,
+        super("Reinforced", "Reinforced.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
@@ -59,6 +61,8 @@ public class Reinforced extends Modifier {
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Reinforced-Modifier");
         config.addDefault(key + ".Color", "%DARK_GRAY%");
         config.addDefault(key + ".MaxLevel", 3);
+        config.addDefault(key + ".ApplyUnbreakableOnMaxLevel", false);
+        config.addDefault(key + ".HideUnbreakableFlag", true);
 
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "OOO");
@@ -72,6 +76,9 @@ public class Reinforced extends Modifier {
 
 
     	ConfigurationManager.saveConfig(config);
+
+    	this.applyUnbreakableOnMaxLevel = config.getBoolean(key + ".ApplyUnbreakableOnMaxLevel");
+    	this.hideUnbreakableFlag = config.getBoolean(key + ".HideUnbreakableFlag");
     	
         init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
@@ -81,10 +88,8 @@ public class Reinforced extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "reinforced", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (!Modifier.checkAndAdd(p, tool, this, "reinforced", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -97,10 +102,17 @@ public class Reinforced extends Modifier {
                 meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
 
+            if (modManager.getModLevel(tool, this) == this.getMaxLvl() && this.applyUnbreakableOnMaxLevel) {
+                meta.setUnbreakable(true);
+                if(hideUnbreakableFlag) {
+                    meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+                }
+            }
+
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return true;
     }
 
     @Override
@@ -109,6 +121,11 @@ public class Reinforced extends Modifier {
 
         if (meta != null) {
             meta.removeEnchant(Enchantment.DURABILITY);
+            if (this.applyUnbreakableOnMaxLevel) {
+                meta.setUnbreakable(false);
+                meta.removeItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+            }
+
             tool.setItemMeta(meta);
         }
     }
@@ -116,10 +133,6 @@ public class Reinforced extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Reinforced", "Modifier_Reinforced");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.REINFORCED.getFileName());
     }
 
     @Override

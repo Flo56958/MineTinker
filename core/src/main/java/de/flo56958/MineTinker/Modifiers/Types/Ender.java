@@ -43,7 +43,7 @@ public class Ender extends Modifier implements Listener {
     }
 
     private Ender() {
-        super(ModifierType.ENDER,
+        super("Ender", "Ender.yml",
                 new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.CROSSBOW, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
@@ -99,11 +99,11 @@ public class Ender extends Modifier implements Listener {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
         if (!this.compatibleWithInfinity) {
             if (modManager.hasMod(tool, Infinity.instance())) {
                 pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                return null;
+                return false;
             }
         }
 
@@ -187,10 +187,6 @@ public class Ender extends Modifier implements Listener {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Ender", "Modifier_Ender");
-    }
-    
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.ENDER.getFileName());
     }
 
     @Override

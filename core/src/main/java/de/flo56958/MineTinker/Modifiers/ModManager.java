@@ -67,10 +67,7 @@ public class ModManager {
      * stores the list of allowed modifiers
      */
     private final ArrayList<Modifier> mods = new ArrayList<>();
-    /**
-     * sublist of mods which contains all modifiers that can be crafted (if enabled)
-     */
-    private final ArrayList<Modifier> craftableMods = new ArrayList<>();
+
     /**
      * sublist of mods which contains all modifiers that are crafted through the bookshelf
      */
@@ -89,9 +86,8 @@ public class ModManager {
     private ModManager() {
         this.loreScheme = layout.getStringList("LoreLayout");
 
-        for (int i = 0; i < loreScheme.size(); i++) {
+        for (int i = 0; i < loreScheme.size(); i++)
             loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
-        }
 
         this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
     }
@@ -120,38 +116,29 @@ public class ModManager {
     	for (Modifier m : allMods) {
     		m.reload();
     		
-    		if (m.isAllowed()) {
+    		if (m.isAllowed())
                 register(m);
-            } else {
+            else
                 unregister(m);
-            }
     	}
 
     	allMods.sort(Comparator.comparing(Modifier::getName));
         mods.sort(Comparator.comparing(Modifier::getName));
 
 
-        this.craftableMods.clear();
         this.enchantableMods.clear();
     	
     	for (Modifier m : this.mods) {
-    	    // TODO: Check if this list is necessary
-    	    this.craftableMods.add(m);
-
             if (m instanceof Enchantable) {
                 this.enchantableMods.add(m);
             }
-        }
-
-        for (Modifier m : this.craftableMods) {
             m.registerCraftingRecipe();
         }
 
         this.loreScheme = layout.getStringList("LoreLayout");
 
-        for (int i = 0; i < loreScheme.size(); i++) {
+        for (int i = 0; i < loreScheme.size(); i++)
             loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
-        }
 
         this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
         this.allowBookConvert = config.getBoolean("ConvertBookToModifier");
@@ -193,8 +180,10 @@ public class ModManager {
         allMods.add(SilkTouch.instance());
         allMods.add(Smite.instance());
         allMods.add(Soulbound.instance());
+        allMods.add(Speedy.instance());
         allMods.add(SpidersBane.instance());
         allMods.add(Sweeping.instance());
+        allMods.add(Tanky.instance());
         allMods.add(Thorned.instance());
         allMods.add(Timber.instance());
         allMods.add(Webbed.instance());
@@ -203,7 +192,8 @@ public class ModManager {
             allMods.add(Piercing.instance());
             allMods.add(MultiShot.instance());
         }
-        
+
+        ConfigurationManager.reload(); //To load all Modifier-Configurations in
         reload();
     }
 
@@ -256,50 +246,11 @@ public class ModManager {
     public List<Modifier> getAllMods() { return this.allMods; }
 
     /**
-     * get all the craftable modifiers in the list
-     *
-     * @return the craftable modifier list
-     */
-    public List<Modifier> getCraftableMods() { return this.craftableMods; }
-
-    /**
      * get all the enchantable modifiers in the list
      *
      * @return the enchantable modifier list
      */
     public List<Modifier> getEnchantableMods() { return this.enchantableMods; }
-
-    /**
-     * get a specific modifier instance (can be replaced with .instance())
-     *
-     * @param type the modifiertype
-     * @return the modifier instance, null if modifier is not allowed or loaded
-     */
-    public Modifier get(ModifierType type) {
-        for (Modifier m : mods) {
-            if (m.getType().equals(type)) {
-                return m;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * get a specific modifier instance even the not allowed ones (can be replaced with .instance())
-     *
-     * @param type the modifiertype
-     * @return the modifier instance, null if modifier is not allowed or loaded
-     */
-    public Modifier getAdmin(ModifierType type) {
-        for (Modifier m : allMods) {
-            if (m.getType().equals(type)) {
-                return m;
-            }
-        }
-
-        return null;
-    }
 
     /**
      * add a specified modifier to a tool
@@ -308,7 +259,7 @@ public class ModManager {
      * @param mod the modifier to add
      */
     void addMod(ItemStack is, Modifier mod) {
-        nbt.setInt(is, mod.getType().getNBTKey(), getModLevel(is, mod) + 1);
+        nbt.setInt(is, mod.getNBTKey(), getModLevel(is, mod) + 1);
         rewriteLore(is);
     }
 
@@ -319,7 +270,7 @@ public class ModManager {
      * @param mod the modifier
      */
     public int getModLevel(ItemStack is, Modifier mod) {
-        return nbt.getInt(is, mod.getType().getNBTKey());
+        return nbt.getInt(is, mod.getNBTKey());
     }
 
     /**
@@ -329,7 +280,7 @@ public class ModManager {
      * @param mod the modifier to remove
      */
     public void removeMod(ItemStack is, Modifier mod) {
-        nbt.removeTag(is, mod.getType().getNBTKey());
+        nbt.removeTag(is, mod.getNBTKey());
         mod.removeMod(is);
         rewriteLore(is);
     }
@@ -395,7 +346,7 @@ public class ModManager {
      * @return if the tool has the mod
      */
     public boolean hasMod(ItemStack tool, Modifier mod) {
-        return mod.isAllowed() && nbt.hasTag(tool, mod.getType().getNBTKey());
+        return mod.isAllowed() && nbt.hasTag(tool, mod.getNBTKey());
     }
 
     /**
@@ -521,7 +472,7 @@ public class ModManager {
         lore.remove(index);
 
         for (Modifier m : this.mods) {
-            if (nbt.hasTag(is, m.getType().getNBTKey())) {
+            if (nbt.hasTag(is, m.getNBTKey())) {
                 int modLevel = getModLevel(is, m);
                 String modLevel_ = layout.getBoolean("UseRomans.ModifierLevels") ? ChatWriter.toRomanNumerals(modLevel) : String.valueOf(modLevel);
                 String s = this.modifierLayout;
@@ -628,7 +579,7 @@ public class ModManager {
             is.setItemMeta(meta);
         }
 
-        nbt.setString(is, "modifierItem", mod.getType().getNBTKey());
+        nbt.setString(is, "modifierItem", mod.getNBTKey());
         nbt.setStringList(is, "CanPlaceOn", "minecraft:air");
 
         return is;
@@ -639,7 +590,7 @@ public class ModManager {
      * @return if the ItemStack is viable as MineTinker-Modifier-Item
      */
     public boolean isModifierItem(ItemStack item) {
-        return nbt.hasTag(item, "modifierItem") || item.getType().equals(get(ModifierType.EXPERIENCED).getModItem().getType()) || item.getType().equals(get(ModifierType.EXTRA_MODIFIER).getModItem().getType());
+        return nbt.hasTag(item, "modifierItem") || item.getType().equals(Experienced.instance().getModItem().getType()) || item.getType().equals(ExtraModifier.instance().getModItem().getType());
     }
 
     /**
@@ -648,15 +599,15 @@ public class ModManager {
      */
     public Modifier getModifierFromItem(ItemStack item) {
         if (!isModifierItem(item)) { return null; }
-        if (item.getType().equals(get(ModifierType.EXPERIENCED).getModItem().getType())) { return get(ModifierType.EXPERIENCED); }
-        if (item.getType().equals(get(ModifierType.EXTRA_MODIFIER).getModItem().getType())
-                && !nbt.hasTag(item, "modifierItem")) { return get(ModifierType.EXTRA_MODIFIER); }
+        if (item.getType().equals(Experienced.instance().getModItem().getType())) { return Experienced.instance(); }
+        if (item.getType().equals(ExtraModifier.instance().getModItem().getType())
+                && !nbt.hasTag(item, "modifierItem")) { return ExtraModifier.instance(); }
         if (!nbt.hasTag(item, "modifierItem")) { return null; }
 
         String name = Objects.requireNonNull(nbt.getString(item, "modifierItem"));
 
         for (Modifier m : mods) {
-            if (m.getType().getNBTKey() != null && m.getType().getNBTKey().equals(name)) {
+            if (m.getNBTKey() != null && m.getNBTKey().equals(name)) {
                 return m;
             }
         }

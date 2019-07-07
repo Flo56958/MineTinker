@@ -93,7 +93,9 @@ public class GUIs {
                     GUI.Window modRecipe = modRecipes.addWindow(3, m.getColor() + m.getName());
                     if (rec instanceof ShapedRecipe) {
                         ShapedRecipe srec = (ShapedRecipe) rec;
-                        GUI.Window.Button result = modRecipe.addButton(6, 1, m.getModItem().clone());
+                        ItemStack modItem = m.getModItem().clone();
+                        NBTUtils.getHandler().setInt(modItem, "Showcase", (int) Math.round(Math.random() * 1000));
+                        GUI.Window.Button result = modRecipe.addButton(6, 1, modItem);
                         result.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(result, currentPage));
                         int slot = -1;
                         for (String s : srec.getShape()) {

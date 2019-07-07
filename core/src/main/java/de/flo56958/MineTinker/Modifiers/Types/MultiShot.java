@@ -35,7 +35,7 @@ public class MultiShot extends Modifier {
     }
 
     private MultiShot() {
-        super(ModifierType.MULTISHOT,
+        super("Melting", "Multishot.yml",
                 new ArrayList<>(Arrays.asList(ToolType.CROSSBOW)),
                 Main.getPlugin());
     }
@@ -89,10 +89,8 @@ public class MultiShot extends Modifier {
     }
 
     @Override
-    public ItemStack applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (Modifier.checkAndAdd(p, tool, this, "multishot", isCommand) == null) {
-            return null;
-        }
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        if (!Modifier.checkAndAdd(p, tool, this, "multishot", isCommand)) return false;
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -101,7 +99,7 @@ public class MultiShot extends Modifier {
                 if (!this.compatibleWithPiercing) {
                     if (modManager.hasMod(tool, Piercing.instance()) || meta.hasEnchant(Enchantment.PIERCING)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return null;
+                        return false;
                     }
                 }
 
@@ -117,7 +115,7 @@ public class MultiShot extends Modifier {
             tool.setItemMeta(meta);
         }
 
-        return tool;
+        return false;
     }
 
     @Override
@@ -133,10 +131,6 @@ public class MultiShot extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Multishot", "Modifier_Multishot");
-    }
-
-    private static FileConfiguration getConfig() {
-        return ConfigurationManager.getConfig(ModifierType.MULTISHOT.getFileName());
     }
 
     @Override
