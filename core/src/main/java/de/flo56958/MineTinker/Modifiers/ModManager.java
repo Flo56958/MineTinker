@@ -15,17 +15,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class ModManager {
 
@@ -309,7 +305,7 @@ public class ModManager {
      *
      * @param is the item to get the information from
      */
-    private int getLevel(ItemStack is) {
+    public int getLevel(ItemStack is) {
         return nbt.getInt(is, "Level");
     }
 
@@ -327,7 +323,7 @@ public class ModManager {
      *
      * @param is the item to get the information from
      */
-    private long getExp(ItemStack is) {
+    public long getExp(ItemStack is) {
         return nbt.getLong(is, "Exp");
     }
 
@@ -354,7 +350,7 @@ public class ModManager {
      * @param level
      * @return long value of the exp required
      */
-    private long getNextLevelReq(int level) {
+    public long getNextLevelReq(int level) {
         if (config.getBoolean("ProgressionIsLinear")) {
             return (long) (Main.getPlugin().getConfig().getInt("LevelStep") * Main.getPlugin().getConfig().getDouble("LevelFactor") * (level - 1));
         } else {
@@ -436,6 +432,7 @@ public class ModManager {
      * @param is
      */
     private void rewriteLore(ItemStack is) {
+        if (!Main.getPlugin().getConfig().getBoolean("EnableLore")) return;
         ArrayList<String> lore = new ArrayList<>(this.loreScheme);
 
         long exp = getExp(is);
@@ -546,6 +543,8 @@ public class ModManager {
             }
         }
 
+        addArmorAttributes(is);
+
         if (meta.getAttributeModifiers() == null) {
             return;
         }
@@ -561,6 +560,88 @@ public class ModManager {
 
             addMod(is, modifier);
         }
+    }
+
+    public void addArmorAttributes(ItemStack is) {
+        double armor = 0.0d;
+        double toughness = 0.0d;
+        switch (is.getType()) {
+            case LEATHER_BOOTS:
+            case CHAINMAIL_BOOTS:
+            case GOLDEN_BOOTS:
+            case LEATHER_HELMET:
+                armor = 1.0d;
+                break;
+            case IRON_BOOTS:
+            case CHAINMAIL_HELMET:
+            case IRON_HELMET:
+            case GOLDEN_HELMET:
+            case TURTLE_HELMET:
+            case LEATHER_LEGGINGS:
+                armor = 2.0d;
+                break;
+            case DIAMOND_BOOTS:
+            case DIAMOND_HELMET:
+                armor = 3.0d;
+                toughness = 2.0d;
+                break;
+            case LEATHER_CHESTPLATE:
+            case GOLDEN_LEGGINGS:
+                armor = 3.0d;
+                break;
+            case CHAINMAIL_CHESTPLATE:
+            case GOLDEN_CHESTPLATE:
+            case IRON_LEGGINGS:
+                armor = 5.0d;
+                break;
+            case IRON_CHESTPLATE:
+                armor = 6.0d;
+                break;
+            case DIAMOND_CHESTPLATE:
+                armor = 8.0d;
+                toughness = 2.0d;
+                break;
+            case CHAINMAIL_LEGGINGS:
+                armor = 4.0d;
+                break;
+            case DIAMOND_LEGGINGS:
+                armor = 6.0d;
+                toughness = 2.0d;
+                break;
+            default:
+                return;
+        }
+
+        ItemMeta meta = is.getItemMeta();
+        AttributeModifier armorAM;
+        AttributeModifier toughnessAM;
+        if (ToolType.BOOTS.getMaterials().contains(is.getType())) {
+            armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+            toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+        } else if (ToolType.CHESTPLATE.getMaterials().contains(is.getType())) {
+            armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+            toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+        } else if (ToolType.HELMET.getMaterials().contains(is.getType())) {
+            armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+            toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+        } else if (ToolType.LEGGINGS.getMaterials().contains(is.getType())) {
+            armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+            toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+        } else return;
+
+        meta.removeAttributeModifier(Attribute.GENERIC_ARMOR);
+        meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
+        if (toughness > 0.0d) {
+            meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);
+            meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
+        }
+
+        if (Main.getPlugin().getConfig().getBoolean("HideAttributes")) {
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        } else {
+            meta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        }
+        is.setItemMeta(meta);
     }
 
     public ItemStack createModifierItem(Material m, String name, String description, Modifier mod) {

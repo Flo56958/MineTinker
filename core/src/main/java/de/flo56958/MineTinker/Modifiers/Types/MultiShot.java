@@ -15,11 +15,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MultiShot extends Modifier {
 
@@ -35,8 +31,8 @@ public class MultiShot extends Modifier {
     }
 
     private MultiShot() {
-        super("Melting", "Multishot.yml",
-                new ArrayList<>(Arrays.asList(ToolType.CROSSBOW)),
+        super("Multishot", "Multishot.yml",
+                new ArrayList<>(Collections.singletonList(ToolType.CROSSBOW)),
                 Main.getPlugin());
     }
 
@@ -56,9 +52,9 @@ public class MultiShot extends Modifier {
         String key = "Multishot";
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Enchanted Blaze-Rod");
-        config.addDefault(key + ".modifier_item", "BLAZE_ROD"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Inflames enemies!");
+        config.addDefault(key + ".name_modifier", "Multi-Arrow");
+        config.addDefault(key + ".modifier_item", "ARROW"); //Needs to be a viable Material-Type
+        config.addDefault(key + ".description", "Shoot more Arrows per shot!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Multishot-Modifier");
         config.addDefault(key + ".Color", "%YELLOW%");
         config.addDefault(key + ".MaxLevel", 1);

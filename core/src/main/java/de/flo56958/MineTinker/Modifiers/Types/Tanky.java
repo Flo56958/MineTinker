@@ -44,9 +44,19 @@ public class Tanky extends Modifier {
         ItemMeta meta = tool.getItemMeta();
         if (meta == null) return false;
 
+        if (meta.getAttributeModifiers(Attribute.GENERIC_ARMOR) == null || meta.getAttributeModifiers(Attribute.GENERIC_ARMOR).isEmpty()) modManager.addArmorAttributes(tool);
+
+        Collection<AttributeModifier> healthModifiers = meta.getAttributeModifiers(Attribute.GENERIC_MAX_HEALTH);
+        double healthOnItem = 0.0D;
+        if (!(healthModifiers == null || healthModifiers.isEmpty())) {
+            HashSet<String> names = new HashSet<>();
+            for(AttributeModifier am : healthModifiers) {
+                if(names.add(am.getName())) healthOnItem += am.getAmount();
+            }
+        }
         meta.removeAttributeModifier(Attribute.GENERIC_MAX_HEALTH);
-        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(), "generic.maxHealth", this.healthPerLevel * modManager.getModLevel(tool, this), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
-        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(), "generic.maxHealth", this.healthPerLevel * modManager.getModLevel(tool, this), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
+        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(), "generic.maxHealth", healthOnItem + this.healthPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
+        meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(), "generic.maxHealth", healthOnItem + this.healthPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
 
         if (Main.getPlugin().getConfig().getBoolean("HideAttributes")) {
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -104,6 +114,13 @@ public class Tanky extends Modifier {
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+    }
+
+    @Override
+    public List<Attribute> getAppliedAttributes() {
+        List<Attribute> attributes = new ArrayList<>();
+        attributes.add(Attribute.GENERIC_MAX_HEALTH);
+        return attributes;
     }
 
     @Override

@@ -44,9 +44,19 @@ public class Speedy extends Modifier {
         ItemMeta meta = tool.getItemMeta();
         if (meta == null) return false;
 
+        if (meta.getAttributeModifiers(Attribute.GENERIC_ARMOR) == null || meta.getAttributeModifiers(Attribute.GENERIC_ARMOR).isEmpty()) modManager.addArmorAttributes(tool);
+        Collection<AttributeModifier> speedModifiers = meta.getAttributeModifiers(Attribute.GENERIC_MOVEMENT_SPEED);
+        double speedOnItem = 0.0D;
+        if (!(speedModifiers == null || speedModifiers.isEmpty())) {
+            HashSet<String> names = new HashSet<>();
+            for(AttributeModifier am : speedModifiers) {
+                if(names.add(am.getName())) speedOnItem += am.getAmount();
+            }
+        }
+
         meta.removeAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED);
-        meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(UUID.randomUUID(), "generic.movementSpeed", this.speedPerLevel * modManager.getModLevel(tool, this), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
-        meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(UUID.randomUUID(), "generic.movementSpeed", this.speedPerLevel * modManager.getModLevel(tool, this), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
+        meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(UUID.randomUUID(), "generic.movementSpeed", speedOnItem + this.speedPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
+        meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(UUID.randomUUID(), "generic.movementSpeed", speedOnItem + this.speedPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
 
         if (Main.getPlugin().getConfig().getBoolean("HideAttributes")) {
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -80,8 +90,8 @@ public class Speedy extends Modifier {
         config.addDefault(key + ".description", "Gotta go fast!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Speedy-Modifier");
         config.addDefault(key + ".Color", "%BLUE%");
-        config.addDefault(key + ".MaxLevel", 3);
-        config.addDefault(key + ".SpeedPerLevel", 0.05);
+        config.addDefault(key + ".MaxLevel", 5);
+        config.addDefault(key + ".SpeedPerLevel", 0.01);
 
         config.addDefault(key + ".Recipe.Enabled", true);
         config.addDefault(key + ".Recipe.Top", "R R");
@@ -108,6 +118,13 @@ public class Speedy extends Modifier {
     @Override
     public boolean isAllowed() {
         return getConfig().getBoolean("Speedy.allowed");
+    }
+
+    @Override
+    public List<Attribute> getAppliedAttributes() {
+        List<Attribute> attributes = new ArrayList<>();
+        attributes.add(Attribute.GENERIC_MOVEMENT_SPEED);
+        return attributes;
     }
 
     @Override

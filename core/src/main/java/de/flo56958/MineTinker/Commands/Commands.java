@@ -98,6 +98,12 @@ public class Commands implements TabExecutor {
                                 ChatWriter.sendMessage(p, ChatColor.WHITE, "It is inspired by different mods (e.g. TinkersConstruct)");
                             } else noPerm(p);
                             break;
+                        case "itemstatistics":
+                        case "is":
+                            if (p.hasPermission("minetinker.commands.itemstatistics")) {
+                                Functions.itemStatistics(p);
+                            } else noPerm(p);
+                            break;
                         case "modifiers":
                         case "mods":
                             if (p.hasPermission("minetinker.commands.modifiers")) {
@@ -233,6 +239,9 @@ public class Commands implements TabExecutor {
         }
         if (player.hasPermission("minetinker.commands.info")) {
             ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". Info (i)");
+        }
+        if (player.hasPermission("minetinker.commands.itemstatistics")) {
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". ItemStatistics (is)");
         }
         if (player.hasPermission("minetinker.commands.modifiers")) {
             ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". Modifiers (mods)");

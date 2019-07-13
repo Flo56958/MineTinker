@@ -193,45 +193,45 @@ public class Power extends Modifier implements Enchantable, Listener {
                     if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
                         Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
                         Block b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
-                        powerBlockBreak(b1, p);
-                        powerBlockBreak(b2, p);
+                        powerBlockBreak(b1, b, p);
+                        powerBlockBreak(b2, b, p);
                     } else if (PlayerInfo.getFacingDirection(p).equals("W")
                             || PlayerInfo.getFacingDirection(p).equals("E")) {
                         Block b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
                         Block b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
-                        powerBlockBreak(b1, p);
-                        powerBlockBreak(b2, p);
+                        powerBlockBreak(b1, b, p);
+                        powerBlockBreak(b2, b, p);
                     }
                 } else {
                     Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 1, 0));
                     Block b2 = b.getWorld().getBlockAt(b.getLocation().add(0, -1, 0));
-                    powerBlockBreak(b1, p);
-                    powerBlockBreak(b2, p);
+                    powerBlockBreak(b1, b, p);
+                    powerBlockBreak(b2, b, p);
                 }
             } else if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
                 if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
                     Block b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
                     Block b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
-                    powerBlockBreak(b1, p);
-                    powerBlockBreak(b2, p);
+                    powerBlockBreak(b1, b, p);
+                    powerBlockBreak(b2, b, p);
                 } else if (PlayerInfo.getFacingDirection(p).equals("W")
                         || PlayerInfo.getFacingDirection(p).equals("E")) {
                     Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
                     Block b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
-                    powerBlockBreak(b1, p);
-                    powerBlockBreak(b2, p);
+                    powerBlockBreak(b1, b, p);
+                    powerBlockBreak(b2, b, p);
                 }
             } else if (Lists.BLOCKFACE.get(p).equals(BlockFace.NORTH)
                     || Lists.BLOCKFACE.get(p).equals(BlockFace.SOUTH)) {
                 Block b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
                 Block b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
-                powerBlockBreak(b1, p);
-                powerBlockBreak(b2, p);
+                powerBlockBreak(b1, b, p);
+                powerBlockBreak(b2, b, p);
             } else if (Lists.BLOCKFACE.get(p).equals(BlockFace.WEST) || Lists.BLOCKFACE.get(p).equals(BlockFace.EAST)) {
                 Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
                 Block b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
-                powerBlockBreak(b1, p);
-                powerBlockBreak(b2, p);
+                powerBlockBreak(b1, b, p);
+                powerBlockBreak(b2, b, p);
             }
         } else {
             HASPOWER.get(p).set(true);
@@ -241,7 +241,7 @@ public class Power extends Modifier implements Enchantable, Listener {
                     for (int z = -(level - 1); z <= (level - 1); z++) {
                         if (!(x == 0 && z == 0)) {
                             Block b1 = b.getWorld().getBlockAt(b.getLocation().add(x, 0, z));
-                            powerBlockBreak(b1, p);
+                            powerBlockBreak(b1, b, p);
                         }
                     }
                 }
@@ -251,7 +251,7 @@ public class Power extends Modifier implements Enchantable, Listener {
                     for (int y = -(level - 1); y <= (level - 1); y++) {
                         if (!(x == 0 && y == 0)) {
                             Block b1 = b.getWorld().getBlockAt(b.getLocation().add(x, y, 0));
-                            powerBlockBreak(b1, p);
+                            powerBlockBreak(b1, b, p);
                         }
                     }
                 }
@@ -260,7 +260,7 @@ public class Power extends Modifier implements Enchantable, Listener {
                     for (int y = -(level - 1); y <= (level - 1); y++) {
                         if (!(z == 0 && y == 0)) {
                             Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, y, z));
-                            powerBlockBreak(b1, p);
+                            powerBlockBreak(b1, b, p);
                         }
                     }
                 }
@@ -345,10 +345,11 @@ public class Power extends Modifier implements Enchantable, Listener {
         HASPOWER.get(p).set(false);
     }
 
-    private void powerBlockBreak(Block b, Player p) {
+    private void powerBlockBreak(Block b, Block centralBlock, Player p) {
         if (blacklist.contains(b.getType())) return;
 
         if (b.getDrops(p.getInventory().getItemInMainHand()).isEmpty()) return;
+        if (b.getType().getHardness() > centralBlock.getType().getHardness()) return; //So Obsidian can not be mined using Cobblestone and Power
         NBTUtils.getHandler().playerBreakBlock(p, b);
     }
 

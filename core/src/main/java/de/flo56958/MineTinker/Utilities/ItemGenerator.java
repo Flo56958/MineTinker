@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Utilities;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ToolUpgradeEvent;
+import de.flo56958.MineTinker.Modifiers.ModManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -288,6 +289,7 @@ public class ItemGenerator {
         }
 
         tool.setItemMeta(meta);
+        ModManager.instance().addArmorAttributes(tool);
         return tool;
     }
 }

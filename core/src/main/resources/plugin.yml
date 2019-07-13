@@ -51,6 +51,7 @@ permissions:
       minetinker.commands.main: true
       minetinker.commands.help: true
       minetinker.commands.info: true
+      minetinker.commands.itemstatistics: true
       minetinker.commands.modifiers: true
       minetinker.commands.addexp: true
       minetinker.commands.name: true
@@ -73,6 +74,10 @@ permissions:
 
   minetinker.commands.info:
     description: Allows to access information about MineTinker
+    default: true
+
+  minetinker.commands.itemstatistics:
+    description: Allows to access information about the held MineTinker-Item
     default: true
 
   minetinker.commands.modifiers:
@@ -164,8 +169,10 @@ permissions:
       minetinker.modifiers.silktouch.*: true
       minetinker.modifiers.smite.*: true
       minetinker.modifiers.soulbound.*: true
+      minetinker.modifiers.speedy.*: true
       minetinker.modifiers.spidersbane.*: true
       minetinker.modifiers.sweeping.*: true
+      minetinker.modifiers.tanky.*: true
       minetinker.modifiers.thorned.*: true
       minetinker.modifiers.timber.*: true
       minetinker.modifiers.webbed.*: true
@@ -506,10 +513,17 @@ permissions:
       minetinker.modifiers.soulbound.apply: true
       minetinker.modifiers.soulbound.use: true
   minetinker.modifiers.soulbound.apply:
-    description: Allows to apply Soulbound to a MineTinker-Tool
+    description: Allows to apply Soulbound to a MineTinker-Item
     default: true
   minetinker.modifiers.soulbound.use:
     description: Allows to use a Soulbound-Modifier
+    default: true
+
+  minetinker.modifiers.speedy.*:
+    children:
+      minetinker.modifiers.speedy.apply: true
+  minetinker.modifiers.speedy.apply:
+    description: Allows to apply Speedy to a MineTinker-Armor-Piece
     default: true
 
   minetinker.modifiers.sweeping.*:
@@ -521,6 +535,13 @@ permissions:
     default: true
   minetinker.modifiers.sweeping.craft:
     description: Allows to craft a Sweeping-Modifiers
+    default: true
+
+  minetinker.modifiers.tanky.*:
+    children:
+      minetinker.modifiers.tanky.apply: true
+  minetinker.modifiers.tanky.apply:
+    description: Allows to apply Tanky to a MineTinker-Armor-Piece
     default: true
 
   minetinker.modifiers.timber.*:

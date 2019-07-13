@@ -5,7 +5,9 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.Updater;
+import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -284,6 +286,22 @@ class Functions {
             }.runTaskLater(Main.getPlugin(), 20);
         } else {
             ChatWriter.sendMessage(sender, ChatColor.RED, "Checking for updates is disabled by the server admin!");
+        }
+    }
+
+    static void itemStatistics(Player p) {
+        ItemStack is = p.getInventory().getItemInMainHand();
+        if (!(modManager.isToolViable(is) || modManager.isArmorViable(is))) return;
+
+        ChatWriter.sendMessage(p, ChatColor.WHITE, "Item-Statistics for " + ItemGenerator.getDisplayName(is));
+        ChatWriter.sendMessage(p, ChatColor.WHITE, "Level: " + modManager.getLevel(is));
+        ChatWriter.sendMessage(p, ChatColor.WHITE, "Exp: " + modManager.getExp(is) + "/" + modManager.getNextLevelReq(modManager.getLevel(is)));
+        ChatWriter.sendMessage(p, ChatColor.WHITE, "Free Modifier Slots: " + modManager.getFreeSlots(is));
+        ChatWriter.sendMessage(p, ChatColor.WHITE, "Modifiers:");
+        for (Modifier mod : modManager.getAllowedMods()) {
+            if (NBTUtils.getHandler().hasTag(is, mod.getNBTKey())) {
+                ChatWriter.sendMessage(p, ChatColor.WHITE, mod.getColor() + mod.getName() + ChatColor.WHITE + " " + NBTUtils.getHandler().getInt(is, mod.getNBTKey()));
+            }
         }
     }
 }

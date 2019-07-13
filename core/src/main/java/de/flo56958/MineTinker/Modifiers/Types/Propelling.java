@@ -153,7 +153,7 @@ public class Propelling extends Modifier implements Enchantable, Listener {
         int maxDamage = elytra.getType().getMaxDurability();
         ItemMeta meta = elytra.getItemMeta();
 
-        if (meta instanceof Damageable) {
+        if (meta instanceof Damageable && !meta.isUnbreakable()) {
             Damageable dam = (Damageable) meta;
 
             if (maxDamage <= dam.getDamage() + durabilityLoss + 1) {
