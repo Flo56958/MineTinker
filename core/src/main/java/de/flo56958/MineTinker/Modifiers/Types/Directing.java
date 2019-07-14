@@ -15,17 +15,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Directing extends Modifier implements Listener {
 
     private static Directing instance;
 
     private boolean workInPVP;
+    private boolean workOnXP;
+    private int minimumLevelForXP;
 
     public static Directing instance() {
         synchronized (Directing.class) {
@@ -58,6 +56,9 @@ public class Directing extends Modifier implements Listener {
         config.addDefault(key + ".modifier_item", "COMPASS"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Loot goes directly into Inventory!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Directing-Modifier");
+        config.addDefault(key + ".MaxLevel", 1);
+        config.addDefault(key + ".worksOnXP", true);
+        config.addDefault(key + ".minimumLevelToGetXP", 1); //Modifier-Level to give Player XP
         config.addDefault(key + ".workinpvp", true);
         config.addDefault(key + ".Color", "%GRAY%");
 
@@ -78,10 +79,12 @@ public class Directing extends Modifier implements Listener {
         init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
-                1,
+                config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
 
-        this.workInPVP = config.getBoolean(key + ".workinpvp");
+        this.workInPVP = config.getBoolean(key + ".workinpvp", true);
+        this.workOnXP = config.getBoolean(key + ".workOnXP", true);
+        this.minimumLevelForXP = config.getInt(key + ".minimumLevelToGetXP", 1);
     }
 
     @Override
@@ -96,7 +99,6 @@ public class Directing extends Modifier implements Listener {
     public void effect(MTEntityDeathEvent event) {
         if (!this.isAllowed()) return;
         if (!this.workInPVP && event.getEvent().getEntity() instanceof Player) return;
-
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
 
@@ -112,6 +114,11 @@ public class Directing extends Modifier implements Listener {
         }
 
         drops.clear();
+
+        if (this.workOnXP && modManager.getModLevel(tool, this) >= this.minimumLevelForXP) {
+            p.giveExp(event.getEvent().getDroppedExp());
+            event.getEvent().setDroppedExp(0);
+        }
     }
 
     @Override

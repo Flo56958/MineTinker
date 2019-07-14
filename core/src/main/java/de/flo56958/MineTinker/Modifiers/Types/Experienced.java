@@ -15,7 +15,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -139,8 +138,7 @@ public class Experienced extends Modifier implements Listener {
         int n = rand.nextInt(100);
 
         if (n <= this.percentagePerLevel * level) {
-            ExperienceOrb orb = p.getWorld().spawn(p.getLocation(), ExperienceOrb.class);
-            orb.setExperience(this.amount);
+            p.giveExp(this.amount);
             ChatWriter.log(false, p.getDisplayName() + " triggered Experienced on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
         }
     }

@@ -349,7 +349,7 @@ public class Power extends Modifier implements Enchantable, Listener {
         if (blacklist.contains(b.getType())) return;
 
         if (b.getDrops(p.getInventory().getItemInMainHand()).isEmpty()) return;
-        if (b.getType().getHardness() > centralBlock.getType().getHardness()) return; //So Obsidian can not be mined using Cobblestone and Power
+        if (b.getType().getHardness() > centralBlock.getType().getHardness() + 2) return; //So Obsidian can not be mined using Cobblestone and Power
         NBTUtils.getHandler().playerBreakBlock(p, b);
     }
 

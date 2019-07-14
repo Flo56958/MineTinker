@@ -13,25 +13,25 @@ import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.AreaEffectCloud;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Ender extends Modifier implements Listener {
 
     private boolean compatibleWithInfinity;
     private boolean hasSound;
     private boolean hasParticles;
+    private boolean giveNauseaOnUse;
+    private int nauseaDuration;
+    private boolean giveBlindnessOnUse;
+    private int blindnessDuration;
 
     private static Ender instance;
 
@@ -70,6 +70,10 @@ public class Ender extends Modifier implements Listener {
         config.addDefault(key + ".MaxLevel", 2);
         config.addDefault(key + ".Sound", true); //#Enderman-Teleport-Sound
         config.addDefault(key + ".Particles", true);
+        config.addDefault(key + ".giveNauseaOnUse", true);
+        config.addDefault(key + ".nauseaDuration", 5); //seconds
+        config.addDefault(key + ".giveBlindnessOnUse", true);
+        config.addDefault(key + ".blindnessDuration", 3); //seconds
 
         config.addDefault(key + ".CompatibleWithInfinity", true);
 
@@ -93,9 +97,13 @@ public class Ender extends Modifier implements Listener {
                 ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
                 ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
         
-        this.hasSound = config.getBoolean(key + ".Sound");
-        this.hasParticles = config.getBoolean(key + ".Particles");
-        this.compatibleWithInfinity = config.getBoolean(key + ".CompatibleWithInfinity");
+        this.hasSound = config.getBoolean(key + ".Sound", true);
+        this.hasParticles = config.getBoolean(key + ".Particles", true);
+        this.compatibleWithInfinity = config.getBoolean(key + ".CompatibleWithInfinity", true);
+        this.giveNauseaOnUse = config.getBoolean(key + ".giveNauseaOnUse", true);
+        this.nauseaDuration = config.getInt(key + ".nauseaDuration", 5) * 20;
+        this.giveBlindnessOnUse = config.getBoolean(key + ".giveBlindnessOnUse", true);
+        this.blindnessDuration = config.getInt(key + ".blindnessDuration", 3) * 20;
     }
 
     @Override
@@ -137,6 +145,71 @@ public class Ender extends Modifier implements Listener {
             p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F);
         }
 
+        spawnParticles(p, oldLoc);
+
+        if (this.giveNauseaOnUse) {
+            p.removePotionEffect(PotionEffectType.CONFUSION);
+            p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, this.nauseaDuration, 0, false, false));
+        }
+        if (this.giveBlindnessOnUse) {
+            p.removePotionEffect(PotionEffectType.BLINDNESS);
+            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, this.blindnessDuration, 0, false, false));
+        }
+        ChatWriter.log(false, p.getDisplayName() + " triggered Ender on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+    }
+
+    /**
+     * The Effect for the EntityDamageByEntityEvent
+     * @param event
+     */
+    @EventHandler
+    public void effect(MTEntityDamageByEntityEvent event) {
+        if (event.isCancelled() || !this.isAllowed()) return;
+
+        Player p = event.getPlayer();
+        Entity e = event.getEvent().getEntity();
+        if (!p.isSneaking()) return;
+        if (p.equals(event.getEvent().getEntity())) return;
+        if (!p.hasPermission("minetinker.modifiers.ender.use")) return;
+
+        ItemStack tool = event.getTool();
+        if (!modManager.hasMod(tool, this)) return; //No check needed, as Ender can only be applied on the Bow
+        if (modManager.getModLevel(tool, this) < 2) return;
+
+        Location loc = e.getLocation().clone();
+        e.teleport(p.getLocation());
+
+        spawnParticles(p, loc);
+
+        p.teleport(loc);
+
+        if (this.hasSound) {
+            p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F); //Sound at Players position
+            p.getWorld().playSound(event.getEvent().getEntity().getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F); //Sound at Entity's position
+        }
+
+        if (this.giveNauseaOnUse) {
+            p.removePotionEffect(PotionEffectType.CONFUSION);
+            p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, this.nauseaDuration, 0, false, false));
+            if (e instanceof LivingEntity) {
+                ((LivingEntity) e).removePotionEffect(PotionEffectType.CONFUSION);
+                ((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, this.nauseaDuration, 0, false, false));
+            }
+        }
+
+        if (this.giveBlindnessOnUse) {
+            p.removePotionEffect(PotionEffectType.BLINDNESS);
+            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, this.blindnessDuration, 0, false, false));
+            if (e instanceof LivingEntity) {
+                ((LivingEntity) e).removePotionEffect(PotionEffectType.BLINDNESS);
+                ((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, this.blindnessDuration, 0, false, false));
+            }
+        }
+
+        ChatWriter.log(false, p.getDisplayName() + " triggered Ender on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+    }
+
+    private void spawnParticles(Player p, Location oldLoc) {
         if (this.hasParticles) {
             AreaEffectCloud cloud = (AreaEffectCloud) p.getWorld().spawnEntity(p.getLocation(), EntityType.AREA_EFFECT_CLOUD);
             cloud.setVelocity(new Vector(0, 1, 0));
@@ -152,36 +225,6 @@ public class Ender extends Modifier implements Listener {
             cloud2.setColor(Color.GREEN);
             cloud2.getLocation().setPitch(90);
         }
-        ChatWriter.log(false, p.getDisplayName() + " triggered Ender on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
-    }
-
-    /**
-     * The Effect for the EntityDamageByEntityEvent
-     * @param event
-     */
-    @EventHandler
-    public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
-
-        Player p = event.getPlayer();
-        if (!p.isSneaking()) return;
-        if (p.equals(event.getEvent().getEntity())) return;
-        if (!p.hasPermission("minetinker.modifiers.ender.use")) return;
-
-        ItemStack tool = event.getTool();
-        if (!modManager.hasMod(tool, this)) return; //No check needed, as Ender can only be applied on the Bow
-        if (modManager.getModLevel(tool, this) < 2) return;
-
-        Location loc = event.getEvent().getEntity().getLocation().clone();
-        event.getEvent().getEntity().teleport(p.getLocation());
-        p.teleport(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ()));
-
-        if (this.hasSound) {
-            p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F); //Sound at Players position
-            p.getWorld().playSound(event.getEvent().getEntity().getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F); //Sound at Entity's position
-        }
-
-        ChatWriter.log(false, p.getDisplayName() + " triggered Ender on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 
     @Override
