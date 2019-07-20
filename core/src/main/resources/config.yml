@@ -27,10 +27,10 @@ ExtraExpPerBlock:                     #Extra Exp for block break
   GOLD_ORE: 1
 ExtraExpPerEntityHit:                 #Extra Exp for entity hit
   ENDER_DRAGON: 2
-ExtraExpPerEntityDeath:               #Extra Exp for enitity death
+ExtraExpPerEntityDeath:               #Extra Exp for entity death
   ENDER_DRAGON: 20
   WITHER: 10
-EnableDamageExp: false                #When true: Sword/Bow will gain XP equal to the damage-value
+EnableDamageExp: true                 #When true: Sword/Bow will gain XP equal to the damage-value
 
 #---------------TOOL-SETTINGS--------------
 AddModifierSlotsPerLevel: 1           #Amount of new free Modifier-Slots for each Level-Up (must be positive or zero)

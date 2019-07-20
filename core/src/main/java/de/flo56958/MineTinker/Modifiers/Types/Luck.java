@@ -15,11 +15,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Luck extends Modifier {
 
@@ -62,7 +58,7 @@ public class Luck extends Modifier {
         config.addDefault(key + ".description", "Get more loot from enemies and blocks!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Luck-Modifier");
         config.addDefault(key + ".Color", "%BLUE%");
-        config.addDefault(key + ".MaxLevel", 5);
+        config.addDefault(key + ".MaxLevel", 3);
 
     	config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "LLL");

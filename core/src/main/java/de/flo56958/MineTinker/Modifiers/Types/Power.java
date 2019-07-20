@@ -119,7 +119,6 @@ public class Power extends Modifier implements Enchantable, Listener {
                 Material material = Material.valueOf(mat);
 
                 if (blacklist == null) {
-                    System.out.println("The blacklist is null?");
                     continue;
                 }
 

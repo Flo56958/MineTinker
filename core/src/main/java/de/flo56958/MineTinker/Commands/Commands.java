@@ -34,7 +34,7 @@ public class Commands implements TabExecutor {
      * all commands
      */
     private static final String[] cmds = {"addexp", "addmod", "checkupdate",
-            "convert", "give", "givemodifieritem", "help", "info", "modifiers",
+            "convert", "give", "givemodifieritem", "help", "info", "itemstatistics", "modifiers",
             "name", "reload", "removemod", "setdurability"};
     /**
      * all console commands
