@@ -20,6 +20,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -70,6 +71,7 @@ public class Experienced extends Modifier implements Listener {
     	config.addDefault(key + ".Recipe.Enabled", false);
     	
     	ConfigurationManager.saveConfig(config);
+        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
     	
         init(config.getString(key + ".name"),
                 "[Bottle o' Experience] \u200B" + config.getString(key + ".description"),

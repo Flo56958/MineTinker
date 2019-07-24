@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.io.File;
 import java.util.*;
 
 public class MultiShot extends Modifier {
@@ -74,6 +75,7 @@ public class MultiShot extends Modifier {
         // TODO: Better recipe
 
         ConfigurationManager.saveConfig(config);
+        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
         init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),

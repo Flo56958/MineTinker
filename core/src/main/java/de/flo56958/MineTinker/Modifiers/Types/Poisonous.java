@@ -23,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -79,6 +80,7 @@ public class Poisonous extends Modifier implements Enchantable, Listener {
     	config.addDefault(key + ".Recipe.Enabled", false);
     	
     	ConfigurationManager.saveConfig(config);
+        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
         
         init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),

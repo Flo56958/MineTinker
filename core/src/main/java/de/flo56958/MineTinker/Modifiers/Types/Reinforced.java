@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -74,8 +75,8 @@ public class Reinforced extends Modifier {
 
         config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
-
     	ConfigurationManager.saveConfig(config);
+        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
     	this.applyUnbreakableOnMaxLevel = config.getBoolean(key + ".ApplyUnbreakableOnMaxLevel");
     	this.hideUnbreakableFlag = config.getBoolean(key + ".HideUnbreakableFlag");

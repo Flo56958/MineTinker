@@ -20,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -81,7 +82,8 @@ public class Glowing extends Modifier implements Listener {
         config.addDefault(key + ".Recipe.Materials", recipeMaterials);
         
     	ConfigurationManager.saveConfig(config);
-    	
+        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+
         init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),

@@ -202,6 +202,11 @@ public abstract class Modifier {
                             newRecipe.setIngredient(key.charAt(0), material);
                         }
                     }
+                } else {
+                    ChatWriter.logError("Could not register recipe for the " + name + "-Modifier!"); //executes if the recipe could not initialize
+                    ChatWriter.logError("Cause: Malformed recipe config.");
+
+                    return;
                 }
 
                 Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
