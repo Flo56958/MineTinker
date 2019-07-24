@@ -18,7 +18,7 @@
     </properties>
 
     <artifactId>MineTinker-NMScore</artifactId>
-    <version>1.0</version>
+    <version>1.1-DEV</version>
     <description>A TinkersConstruct (and other mods) inspired server plugin</description>
     <url>https://flo56958.github.io/MineTinker</url>
 
