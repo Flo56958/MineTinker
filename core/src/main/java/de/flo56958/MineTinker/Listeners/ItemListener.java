@@ -131,6 +131,6 @@ public class ItemListener implements Listener {
             item.setItemMeta(meta);
         }
 
-        p.getInventory().setItem(p.getInventory().getHeldItemSlot(), item);
+        p.getInventory().addItem(item);
     }
 }
