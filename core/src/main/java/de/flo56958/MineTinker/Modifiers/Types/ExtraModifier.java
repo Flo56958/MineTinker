@@ -13,6 +13,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -57,7 +58,8 @@ public class ExtraModifier extends Modifier {
         config.addDefault(key + ".ExtraModifierGain", 1); //How much Slots should be added per Nether-Star
 
     	ConfigurationManager.saveConfig(config);
-    	
+        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+
         init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".modifier_item")+ "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),

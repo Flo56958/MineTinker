@@ -216,7 +216,7 @@ public class ChatWriter {
     public static List<String> splitString(String msg, int lineSize) {
         List<String> res = new ArrayList<>();
 
-        Pattern p = Pattern.compile("\\b.{1," + (lineSize-1) + "}\\b\\W?");
+        Pattern p = Pattern.compile("\\b.+" + (lineSize-1) + "}\\b\\W?");
         Matcher m = p.matcher(msg);
 
         while(m.find()) {

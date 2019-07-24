@@ -22,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -86,6 +87,7 @@ public class Webbed extends Modifier implements Listener {
         config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
     	ConfigurationManager.saveConfig(config);
+        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
         
         init(getConfig().getString(key + ".name"),
                 "[" + getConfig().getString(key + ".name_modifier") + "] \u200B" + getConfig().getString(key + ".description"),

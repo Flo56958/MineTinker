@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.io.File;
 import java.util.*;
 
 public class AntiArrowPlating extends Modifier {
@@ -79,6 +80,7 @@ public class AntiArrowPlating extends Modifier {
 
         // Save Config
         ConfigurationManager.saveConfig(config);
+        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
         // Initialize modifier
         init(config.getString(key + ".name"),

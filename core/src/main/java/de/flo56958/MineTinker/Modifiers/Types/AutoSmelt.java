@@ -19,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -89,9 +90,10 @@ public class AutoSmelt extends Modifier implements Listener {
         recipeMaterials.put("F", "BLAZE_ROD");
 
         config.addDefault(key + ".Recipe.Materials", recipeMaterials);
-    	
+
     	ConfigurationManager.saveConfig(config);
-    	
+        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+
     	init(config.getString(key + ".name"),
                 "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),

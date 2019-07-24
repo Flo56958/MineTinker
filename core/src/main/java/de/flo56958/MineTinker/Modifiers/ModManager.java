@@ -128,6 +128,7 @@ public class ModManager {
             if (m instanceof Enchantable) {
                 this.enchantableMods.add(m);
             }
+
             m.registerCraftingRecipe();
         }
 
