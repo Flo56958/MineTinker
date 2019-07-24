@@ -39,7 +39,7 @@ public class Melting extends Modifier implements Enchantable, Listener {
     }
 
     private Melting() {
-        super("Multishot", "Melting.yml",
+        super("Melting", "Melting.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD,
                                                 ToolType.CHESTPLATE, ToolType.LEGGINGS)),
                 Main.getPlugin());

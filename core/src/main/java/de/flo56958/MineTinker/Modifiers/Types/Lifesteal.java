@@ -42,7 +42,7 @@ public class Lifesteal extends Modifier implements Listener {
     }
 
     private Lifesteal() {
-        super("Light-Weight", "Lifesteal.yml",
+        super("Lifesteal", "Lifesteal.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());

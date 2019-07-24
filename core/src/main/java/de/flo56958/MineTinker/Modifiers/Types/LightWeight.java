@@ -30,7 +30,7 @@ public class LightWeight extends Modifier implements Enchantable {
     }
 
     private LightWeight() {
-        super("Lifesteal", "Light-Weight.yml",
+        super("Light-Weight", "Light-Weight.yml",
                 new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
                 Main.getPlugin());
     }
