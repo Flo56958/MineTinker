@@ -43,7 +43,7 @@
         <dependency>
             <groupId>de.flo56958</groupId>
             <artifactId>MineTinker-NMScore</artifactId>
-            <version>1.0</version>
+            <version>1.1-DEV</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
