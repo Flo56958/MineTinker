@@ -121,18 +121,26 @@ public class AnvilListener implements Listener {
         if (Lists.WORLDS.contains(player.getWorld().getName())) return;
         if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) return;
 
-        if (modifier.getType().equals(Material.ENCHANTED_BOOK) && !config.getBoolean("AllowEnchanting")) { //So no Tools can be enchanted via books, if enchanting is disabled
-            e.setResult(new ItemStack(Material.AIR, 0)); //sets ghostitem by client
-            return;
+        if (modifier.getType().equals(Material.ENCHANTED_BOOK)) { //So no Tools can be enchanted via books, if enchanting is disabled
+            if (config.getBoolean("AllowEnchanting")) {
+                // If enchanting is allowed, don't do anything
+                return;
+            } else {
+                // Otherwise, set the resulting item to AIR to negate the enchant
+                e.setResult(new ItemStack(Material.AIR, 0)); //sets ghostitem by client
+                return;
+            }
         }
 
         Modifier mod = modManager.getModifierFromItem(modifier);
 
-        ItemStack newTool = null;
+        ItemStack newTool;
 
         if (mod != null) {
             newTool = tool.clone();
-            if (!mod.applyMod(player, newTool, false)) return;
+            if (!mod.applyMod(player, newTool, false)) {
+                return;
+            }
         } else {
             if (config.getBoolean("Upgradeable") && player.hasPermission("minetinker.tool.upgrade")) {
                 ItemStack item = i.getItem(1);
@@ -142,36 +150,50 @@ public class AnvilListener implements Listener {
                         case 1:
                             if (ToolType.SHOVEL.getMaterials().contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
                             }
                             break;
                         case 2:
                             if (ToolType.SWORD.getMaterials().contains(tool.getType()) || ToolType.HOE.getMaterials().contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
                             }
                             break;
                         case 3:
                             if (ToolType.AXE.getMaterials().contains(tool.getType()) || ToolType.PICKAXE.getMaterials().contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
                             }
                             break;
                         case 4:
                             if (ToolType.BOOTS.getMaterials().contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
                             }
                             break;
                         case 5:
                             if (ToolType.HELMET.getMaterials().contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
                             }
                             break;
                         case 7:
                             if (ToolType.LEGGINGS.getMaterials().contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
                             }
                             break;
                         case 8:
                             if (ToolType.CHESTPLATE.getMaterials().contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
                             }
                             break;
                     }
@@ -179,8 +201,6 @@ public class AnvilListener implements Listener {
             }
         }
 
-        e.setResult(newTool);
-        i.setRepairCost(0);
     }
 
     @EventHandler
