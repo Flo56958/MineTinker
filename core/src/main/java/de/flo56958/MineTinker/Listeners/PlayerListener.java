@@ -21,7 +21,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -30,7 +32,6 @@ public class PlayerListener implements Listener {
 
     private static final ModManager modManager = ModManager.instance();
 
-    @SuppressWarnings("deprecation")
 	@EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent e) {
         if (Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) {
@@ -64,40 +65,80 @@ public class PlayerListener implements Listener {
 
         boolean eligible = false;
 
-        if (name[0].toLowerCase().equals("wooden") && Lists.getWoodPlanks().contains(repair.getType())) {
-            eligible = true;
-        } else if (name[0].toLowerCase().equals("stone") && (repair.getType().equals(Material.COBBLESTONE) || repair.getType().equals(Material.STONE))) {
-            eligible = true;
-        } else if ((name[0].toLowerCase().equals("shears") || name[0].toLowerCase().equals("iron")) && repair.getType().equals(Material.IRON_INGOT)) {
-            eligible = true;
-        } else if (name[0].toLowerCase().equals("golden") && repair.getType().equals(Material.GOLD_INGOT)) {
-            eligible = true;
-        } else if (name[0].toLowerCase().equals("diamond") && repair.getType().equals(Material.DIAMOND)) {
-            eligible = true;
-        } else if ((name[0].toLowerCase().equals("bow") || name[0].toLowerCase().equals("crossbow") || name[0].toLowerCase().equals("fishing")) && (repair.getType().equals(Material.STICK) || repair.getType().equals(Material.STRING))) {
-            eligible = true;
-        } else if (name[0].toLowerCase().equals("shield") && Lists.getWoodPlanks().contains(repair.getType())) {
-            eligible = true;
-        } else if (name[0].toLowerCase().equals("leather") && repair.getType().equals(Material.LEATHER)) {
-            eligible = true;
-        } else if (name[0].toLowerCase().equals("chainmail") && repair.getType().equals(Material.IRON_BARS)) {
-            eligible = true;
-        } else if (name[0].toLowerCase().equals("elytra") && repair.getType().equals(Material.PHANTOM_MEMBRANE)) {
-            eligible = true;
-        } else if (name[0].toLowerCase().equals("trident") && repair.getType().equals(Material.PRISMARINE_SHARD)) {
-            eligible = true;
-        } else if (name[0].toLowerCase().equals("turtle") && repair.getType().equals(Material.SCUTE)) {
-            eligible = true;
+        String beginning = name[0].toLowerCase();
+
+        switch (beginning) {
+            case "shield":
+            case "wooden":
+                if (Lists.getWoodPlanks().contains(repair.getType())) {
+                    eligible = true;
+                }
+                break;
+            case "stone":
+                if (repair.getType().equals(Material.COBBLESTONE) || repair.getType().equals(Material.STONE)) {
+                    eligible = true;
+                }
+                break;
+            case "shears":
+            case "iron":
+                if (repair.getType().equals(Material.IRON_INGOT)) {
+                    eligible = true;
+                }
+                break;
+            case "golden":
+                if (repair.getType().equals(Material.GOLD_INGOT)) {
+                    eligible = true;
+                }
+                break;
+            case "diamond":
+                if (repair.getType().equals(Material.DIAMOND)) {
+                    eligible = true;
+                }
+                break;
+            case "bow":
+            case "crossbow":
+            case "fishing":
+                if (repair.getType().equals(Material.STICK) || repair.getType().equals(Material.STRING)) {
+                    eligible = true;
+                }
+                break;
+            case "leather":
+                if (repair.getType().equals(Material.LEATHER)) {
+                    eligible = true;
+                }
+                break;
+            case "chainmail":
+                if (repair.getType().equals(Material.IRON_BARS)) {
+                    eligible = true;
+                }
+                break;
+            case "elytra":
+                if (repair.getType().equals(Material.PHANTOM_MEMBRANE)) {
+                    eligible = true;
+                }
+                break;
+            case "trident":
+                if (repair.getType().equals(Material.PRISMARINE_SHARD)) {
+                    eligible = true;
+                }
+                break;
+            case "turtle":
+                if (repair.getType().equals(Material.SCUTE)) {
+                    eligible = true;
+                }
+                break;
         }
 
         if (eligible) {
-            double dura = tool.getDurability();
-            double maxDura = tool.getType().getMaxDurability();
+            Damageable meta = (Damageable)tool;
+
+            int dura = meta.getDamage();
+            short maxDura = tool.getType().getMaxDurability();
             int amount = e.getWhoClicked().getItemOnCursor().getAmount();
-            double percent = Main.getPlugin().getConfig().getDouble("DurabilityPercentageRepair");
+            float percent = (float)Main.getPlugin().getConfig().getDouble("DurabilityPercentageRepair");
 
             while (amount > 0 && dura > 0) {
-                dura = dura - (maxDura * percent);
+                dura = (int)(dura - (maxDura * percent));
                 amount--;
             }
 
@@ -105,7 +146,7 @@ public class PlayerListener implements Listener {
                 dura = 0;
             }
 
-            tool.setDurability((short) dura);
+            meta.setDamage(dura);
 
             e.getWhoClicked().getItemOnCursor().setAmount(amount);
             e.setCancelled(true);
