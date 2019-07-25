@@ -117,6 +117,10 @@ public class BlockListener implements Listener {
 
         ItemStack norm = p.getInventory().getItemInMainHand();
 
+        if (norm.getType().equals(Material.EXPERIENCE_BOTTLE)) {
+            return;
+        }
+
         if (e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
             if (Ender.instance().getModItem().equals(norm)) {
                 e.setCancelled(true);
@@ -136,10 +140,6 @@ public class BlockListener implements Listener {
 
                     return;
                 }
-            }
-
-            if (norm.getType().equals(Material.EXPERIENCE_BOTTLE)) {
-                return;
             }
 
             int temp = norm.getAmount();
