@@ -29,7 +29,9 @@ public class ItemListener implements Listener {
         Item item = e.getEntity();
         ItemStack is = item.getItemStack();
 
-        if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) return; //TODO: Consider Modifier-Items
+        if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) {
+            return; //TODO: Consider Modifier-Items
+        }
 
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetPersistent")) {
             e.setCancelled(true);
@@ -39,7 +41,10 @@ public class ItemListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onItemDrop(PlayerDropItemEvent e) {
-        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) return;
+        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
+            return;
+        }
+
         Item item = e.getItemDrop();
         ItemStack is = item.getItemStack();
 
@@ -56,29 +61,41 @@ public class ItemListener implements Listener {
                 }
             }
         }
-        if (modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is)) { isMineTinker = true; }
+        if (modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is)) {
+            isMineTinker = true;
+        }
 
-        if (!isMineTinker) return;
+        if (!isMineTinker) {
+            return;
+        }
 
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ShowName") && is.getItemMeta() != null) {
             item.setCustomName(is.getItemMeta().getDisplayName());
             item.setCustomNameVisible(true);
         }
 
-        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetGlowing")) item.setGlowing(true);
+        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetGlowing")) {
+            item.setGlowing(true);
+        }
 
-        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetInvulnerable")) item.setInvulnerable(true);
+        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetInvulnerable")) {
+            item.setInvulnerable(true);
+        }
     }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
-        if (e.getKeepInventory()) return;
+        if (e.getKeepInventory()) {
+            return;
+        }
 
         Player p = e.getEntity();
         Inventory inv = p.getInventory();
 
         for (ItemStack is : inv.getContents()) {
-            if (is == null) continue; // More consistent nullability in NotNull fields
+            if (is == null) {
+                continue; // More consistent nullability in NotNull fields
+            }
 
             boolean isMineTinker = false;
 
@@ -94,14 +111,22 @@ public class ItemListener implements Listener {
                 }
             }
 
-            if (modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is)) isMineTinker = true;
+            if (modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is)) {
+                isMineTinker = true;
+            }
 
-            if (!isMineTinker) continue;
+            if (!isMineTinker) {
+                continue;
+            }
 
-            if (Soulbound.instance().effect(p, is)) { is.setAmount(0); continue; } //workaround as inv.remove(is) does not work insteads duplicates item
+            if (Soulbound.instance().effect(p, is)) {
+                is.setAmount(0);
+                continue;
+            } //workaround as inv.remove(is) does not work insteads duplicates item
 
             if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
-                Bukkit.getPluginManager().callEvent(new PlayerDropItemEvent(p, p.getWorld().dropItem(p.getLocation(), is))); //To trigger item behaviour
+                PlayerDropItemEvent event = new PlayerDropItemEvent(p, p.getWorld().dropItem(p.getLocation(), is));
+                Bukkit.getPluginManager().callEvent(event); //To trigger item behaviour
                 is.setAmount(0);
             }
         }
@@ -113,10 +138,17 @@ public class ItemListener implements Listener {
         Player p = e.getPlayer();
         ItemStack item = e.getBrokenItem();
 
-        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
-        if (!modManager.isToolViable(item)) return;
+        if (Lists.WORLDS.contains(p.getWorld().getName())) {
+            return;
+        }
 
-        if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.StopBreakEvent")) return;
+        if (!modManager.isToolViable(item)) {
+            return;
+        }
+
+        if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.StopBreakEvent")) {
+            return;
+        }
 
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.AlertPlayerOnBreak")) {
             e.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&',

@@ -33,15 +33,31 @@ public class PlayerListener implements Listener {
     @SuppressWarnings("deprecation")
 	@EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent e) {
-        if (Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) return;
-        if (e.getSlot() < 0) return;
-        if (!(e.getClickedInventory() instanceof PlayerInventory || e.getClickedInventory() instanceof DoubleChestInventory)) return;
+        if (Lists.WORLDS.contains(e.getWhoClicked().getWorld().getName())) {
+            return;
+
+        }
+        if (e.getSlot() < 0) {
+            return;
+        }
+
+        if (!(e.getClickedInventory() instanceof PlayerInventory || e.getClickedInventory() instanceof DoubleChestInventory)) {
+            return;
+        }
 
         ItemStack tool = e.getClickedInventory().getItem(e.getSlot());
 
-        if (!(modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool))) return;
-        if (!(Main.getPlugin().getConfig().getBoolean("Repairable") && e.getWhoClicked().hasPermission("minetinker.tool.repair"))) return;
-        if (tool == null) return;
+        if (tool == null) {
+            return;
+        }
+
+        if (!(modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool))) {
+            return;
+        }
+
+        if (!(Main.getPlugin().getConfig().getBoolean("Repairable") && e.getWhoClicked().hasPermission("minetinker.tool.repair"))) {
+            return;
+        }
 
         ItemStack repair = e.getWhoClicked().getItemOnCursor();
         String[] name = tool.getType().toString().split("_");
@@ -133,24 +149,38 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOW)
     public void onInteract(PlayerInteractEvent e) {
-        if (Lists.WORLDS.contains(e.getPlayer().getWorld().getName())) return;
+        if (Lists.WORLDS.contains(e.getPlayer().getWorld().getName())) {
+            return;
+        }
 
         if (!e.getBlockFace().equals(BlockFace.SELF)) {
             Lists.BLOCKFACE.replace(e.getPlayer(), e.getBlockFace());
         }
 
-        if (!modManager.allowBookToModifier()) return;
+        if (!modManager.allowBookToModifier()) {
+            return;
+        }
 
-        if (e.getClickedBlock() == null || e.getClickedBlock().getType() != Material.BOOKSHELF) return;
-        if (e.getItem() == null || e.getItem().getType() != Material.ENCHANTED_BOOK) return;
-        if (e.getItem().getItemMeta() == null || !(e.getItem().getItemMeta() instanceof EnchantmentStorageMeta)) return;
+        if (e.getClickedBlock() == null || e.getClickedBlock().getType() != Material.BOOKSHELF) {
+            return;
+        }
+
+        if (e.getItem() == null || e.getItem().getType() != Material.ENCHANTED_BOOK) {
+            return;
+        }
+
+        if (e.getItem().getItemMeta() == null || !(e.getItem().getItemMeta() instanceof EnchantmentStorageMeta)) {
+            return;
+        }
 
         EnchantmentStorageMeta meta = (EnchantmentStorageMeta)e.getItem().getItemMeta();
 
         for (Map.Entry<Enchantment, Integer> entry : meta.getStoredEnchants().entrySet()) {
             Modifier modifier = modManager.getModifierFromEnchantment(entry.getKey());
 
-            if (modifier == null) continue;
+            if (modifier == null) {
+                continue;
+            }
 
             ItemStack modDrop = modifier.getModItem();
             modDrop.setAmount(entry.getValue());
