@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 public class PlayerInfo {
 
     /**
-     * @param player
+     * @param player The player to get the facing direction of as a single character
      * @return The facing direction of the player in Degrees
      */
     public static String getFacingDirection(Player player) {
@@ -31,7 +31,7 @@ public class PlayerInfo {
             return "E";
         } else if (225 <= rot && rot < 315) {
             return "S";
-        } else if (315 <= rot && rot < 360.0) {
+        } else if (315 <= rot && rot < 360) {
             return "W";
         } else {
             return null;

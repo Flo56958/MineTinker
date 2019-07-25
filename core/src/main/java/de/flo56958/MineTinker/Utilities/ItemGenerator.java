@@ -28,6 +28,8 @@ public class ItemGenerator {
     }
 
 	public static ItemStack itemUpgrader(ItemStack tool, ItemStack upgrade, Player p) {
+        // TODO: Fix this fuckery
+
         ItemMeta meta = tool.getItemMeta();
         String[] name = tool.getType().toString().split("_");
 

@@ -43,6 +43,7 @@ public class NBTUtils {
                 ChatWriter.logError("Unsupported version: " + version);
                 return false;
         }
+
         return true;
     }
 

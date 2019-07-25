@@ -82,13 +82,16 @@ public class ModManager {
     private ModManager() {
         this.loreScheme = layout.getStringList("LoreLayout");
 
-        for (int i = 0; i < loreScheme.size(); i++)
+        for (int i = 0; i < loreScheme.size(); i++) {
             loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
+        }
 
         this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
     }
 
-    public NBTHandler getNBTHandler() { return nbt; }
+    public NBTHandler getNBTHandler() {
+        return nbt;
+    }
 
     /**
      * get the instance that contains the modifier list (VERY IMPORTANT)
@@ -102,6 +105,7 @@ public class ModManager {
                 instance.init();
             }
         }
+
         return instance;
     }
 
@@ -112,10 +116,11 @@ public class ModManager {
     	for (Modifier m : allMods) {
     		m.reload();
     		
-    		if (m.isAllowed())
+    		if (m.isAllowed()) {
                 register(m);
-            else
+            } else {
                 unregister(m);
+            }
     	}
 
     	allMods.sort(Comparator.comparing(Modifier::getName));
@@ -134,8 +139,9 @@ public class ModManager {
 
         this.loreScheme = layout.getStringList("LoreLayout");
 
-        for (int i = 0; i < loreScheme.size(); i++)
+        for (int i = 0; i < loreScheme.size(); i++) {
             loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
+        }
 
         this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
         this.allowBookConvert = config.getBoolean("ConvertBookToModifier");
@@ -207,6 +213,7 @@ public class ModManager {
 	        mes = ChatWriter.addColors(mes);
 	        mes = mes.replaceAll("%MOD%", mod.getColor() + mod.getName());
 	        mes = mes.replaceAll("%PLUGIN%", Main.getPlugin().getName());
+
 	        ChatWriter.logColor(mes);
     	}
     }
@@ -222,6 +229,7 @@ public class ModManager {
          mes = ChatWriter.addColors(mes);
          mes = mes.replaceAll("%MOD%", mod.getColor() + mod.getName());
          mes = mes.replaceAll("%PLUGIN%", Main.getPlugin().getName());
+
          ChatWriter.logColor(mes);
     }
 
@@ -229,7 +237,9 @@ public class ModManager {
      * should we let the player convert enchanted books to modifier items
      * @return
      */
-    public boolean allowBookToModifier() { return this.allowBookConvert; }
+    public boolean allowBookToModifier() {
+        return this.allowBookConvert;
+    }
 
     /**
      * get all the modifiers in the list
@@ -240,14 +250,18 @@ public class ModManager {
         return this.mods;
     }
 
-    public List<Modifier> getAllMods() { return this.allMods; }
+    public List<Modifier> getAllMods() {
+        return this.allMods;
+    }
 
     /**
      * get all the enchantable modifiers in the list
      *
      * @return the enchantable modifier list
      */
-    public List<Modifier> getEnchantableMods() { return this.enchantableMods; }
+    public List<Modifier> getEnchantableMods() {
+        return this.enchantableMods;
+    }
 
     /**
      * add a specified modifier to a tool
@@ -366,13 +380,18 @@ public class ModManager {
      * @param amount how much exp should the tool get
      */
     public void addExp(Player p, ItemStack tool, int amount) {
-        if (amount == 0) return;
+        if (amount == 0) {
+            return;
+        }
+
         boolean LevelUp = false;
 
         int level = this.getLevel(tool);
         long exp = this.getExp(tool);
 
-        if (level == -1 || exp == -1) return;
+        if (level == -1 || exp == -1) {
+            return;
+        }
 
         if (exp + 1 < 0 || level + 1 < 0) {
             if (Main.getPlugin().getConfig().getBoolean("ResetAtIntOverflow")) { //secures a "good" exp-system if the Values get to big
@@ -433,7 +452,10 @@ public class ModManager {
      * @param is
      */
     private void rewriteLore(ItemStack is) {
-        if (!Main.getPlugin().getConfig().getBoolean("EnableLore")) return;
+        if (!Main.getPlugin().getConfig().getBoolean("EnableLore")) {
+            return;
+        }
+
         ArrayList<String> lore = new ArrayList<>(this.loreScheme);
 
         long exp = getExp(is);
@@ -453,12 +475,14 @@ public class ModManager {
             s = s.replaceAll("%LEVEL%", "" + level_);
             s = s.replaceAll("%NEXT_LEVEL_EXP%", "" + nextLevelReq_);
             s = s.replaceAll("%FREE_SLOTS%", "" + freeSlots_);
+
             lore.set(i, s);
         }
 
         int index = -1;
         for (int i = 0; i < lore.size(); i++) {
             String s = lore.get(i);
+
             if (s.contains("%MODIFIERS%")) {
                 index = i;
                 break;
@@ -473,9 +497,11 @@ public class ModManager {
             if (nbt.hasTag(is, m.getNBTKey())) {
                 int modLevel = getModLevel(is, m);
                 String modLevel_ = layout.getBoolean("UseRomans.ModifierLevels") ? ChatWriter.toRomanNumerals(modLevel) : String.valueOf(modLevel);
+
                 String s = this.modifierLayout;
                 s = s.replaceAll("%MODIFIER%", m.getColor() + m.getName());
                 s = s.replaceAll("%MODLEVEL%", modLevel_);
+
                 lore.add(index++, s);
             }
         }
@@ -488,6 +514,7 @@ public class ModManager {
 
         if (meta != null) {
             ArrayList<String> oldLore = (ArrayList<String>) meta.getLore();
+
             if (oldLore != null && oldLore.size() > 0 && oldLore.get(oldLore.size() - 1).equals("mcMMO Ability Tool")) {
                 lore.add("mcMMO Ability Tool");
             }
@@ -689,11 +716,22 @@ public class ModManager {
      * @return the Modifier of the Modifier-Item (NULL if not found)
      */
     public Modifier getModifierFromItem(ItemStack item) {
-        if (!isModifierItem(item)) { return null; }
-        if (item.getType().equals(Experienced.instance().getModItem().getType())) { return Experienced.instance(); }
+        if (!isModifierItem(item)) {
+            return null;
+        }
+
+        if (item.getType().equals(Experienced.instance().getModItem().getType())) {
+            return Experienced.instance();
+        }
+
         if (item.getType().equals(ExtraModifier.instance().getModItem().getType())
-                && !nbt.hasTag(item, "modifierItem")) { return ExtraModifier.instance(); }
-        if (!nbt.hasTag(item, "modifierItem")) { return null; }
+                && !nbt.hasTag(item, "modifierItem")) {
+            return ExtraModifier.instance();
+        }
+
+        if (!nbt.hasTag(item, "modifierItem")) {
+            return null;
+        }
 
         String name = Objects.requireNonNull(nbt.getString(item, "modifierItem"));
 
@@ -714,7 +752,9 @@ public class ModManager {
      */
     public Modifier getModifierFromEnchantment(Enchantment enchantment) {
         for (Modifier modifier : getAllMods()) {
-            if (modifier.getAppliedEnchantments().contains(enchantment)) return modifier;
+            if (modifier.getAppliedEnchantments().contains(enchantment)) {
+                return modifier;
+            }
         }
 
         return null;
