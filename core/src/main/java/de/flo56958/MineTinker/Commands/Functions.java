@@ -227,8 +227,7 @@ class Functions {
      * @param args command input of the player - parsed down from onCommand()
      */
     static void convert(Player player, String[] args) {
-        ItemStack tool = player.getInventory().getItemInMainHand();
-        modManager.convertItemStack(tool);
+        modManager.convertItemStack(player.getInventory().getItemInMainHand());
     }
 
     /**

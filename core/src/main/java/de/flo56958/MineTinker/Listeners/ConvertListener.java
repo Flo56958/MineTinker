@@ -137,7 +137,8 @@ public class ConvertListener implements Listener{
 		}
 
         if (tool != null) {
-        	ChatWriter.log(false, player.getName() + " crafted " + ItemGenerator.getDisplayName(tool) + "! It is now a MineTinker-Item!");
+			modManager.convertItemStack(tool);
+			ChatWriter.log(false, player.getName() + " crafted " + ItemGenerator.getDisplayName(tool) + "! It is now a MineTinker-Item!");
 		}
     }
 }
