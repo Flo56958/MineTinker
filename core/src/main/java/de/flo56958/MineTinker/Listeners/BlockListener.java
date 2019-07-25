@@ -10,26 +10,19 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Modifiers.Types.Ender;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
-import de.flo56958.MineTinker.Modifiers.Types.SilkTouch;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.CreatureSpawner;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class BlockListener implements Listener {
 
@@ -74,37 +67,7 @@ public class BlockListener implements Listener {
 
         MTBlockBreakEvent event = new MTBlockBreakEvent(tool, e);
         Bukkit.getPluginManager().callEvent(event); //Event-Trigger for Modifiers
-
-        //-------------------------------------------SPAWNERS---------------------------------------------
-        //TODO: CHANGE TO NBT
-        if (!Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
-            if (config.getBoolean("Spawners.enabled")) {
-                if (e.getBlock().getState() instanceof CreatureSpawner && p.hasPermission("minetinker.spawners.mine")) {
-                    if ((config.getBoolean("Spawners.onlyWithSilkTouch") && modManager.hasMod(tool, SilkTouch.instance()))
-                            || !config.getBoolean("Spawners.onlyWithSilkTouch")) {
-
-                        CreatureSpawner cs = (CreatureSpawner) e.getBlock().getState();
-
-                        // TODO: Look into this
-                        ItemStack s = new ItemStack(Material.SPAWNER, 1, e.getBlock().getData());
-
-                        ItemMeta meta = s.getItemMeta();
-
-                        if (meta != null) {
-                            meta.setDisplayName(cs.getSpawnedType().toString());
-                            s.setItemMeta(meta);
-                        }
-
-                        p.getWorld().dropItemNaturally(e.getBlock().getLocation(), s);
-                        e.setExpToDrop(0);
-
-                        ChatWriter.log(false, p.getDisplayName() + " successfully mined a Spawner!");
-                    }
-                }
-            }
-        }
     }
-
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onClick(PlayerInteractEvent e) {
@@ -165,30 +128,6 @@ public class BlockListener implements Listener {
                         e.setCancelled(true);
                     }
                 }
-            }
-        }
-    }
-
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public static void onBlockPlace(BlockPlaceEvent e) {
-        Player p = e.getPlayer();
-        Block b = e.getBlockPlaced();
-        BlockState bs = b.getState();
-
-        //-------------------------------------------SPAWNERS---------------------------------------------
-        //TODO: CHANGE TO NBT
-        if (config.getBoolean("Spawners.enabled") && !Lists.WORLDS_SPAWNERS.contains(p.getWorld().getName())) {
-            if (!p.hasPermission("minetinker.spawners.place") && b.getState() instanceof CreatureSpawner) {
-                e.setCancelled(true);
-                //return;
-            } else if (p.hasPermission("minetinker.spawners.place") && b.getState() instanceof CreatureSpawner) {
-                CreatureSpawner cs = (CreatureSpawner) bs;
-
-                // TODO: Make safe
-                cs.setSpawnedType(EntityType.fromName(e.getItemInHand().getItemMeta().getDisplayName()));
-                bs.update(true);
-
-                ChatWriter.log(false,  p.getDisplayName() + " successfully placed a Spawner!");
             }
         }
     }

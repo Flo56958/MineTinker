@@ -24,7 +24,6 @@ permissions:
       minetinker.modifiers.*: true
       minetinker.builderswands.*: true
       minetinker.tool.*: true
-      minetinker.spawners.*: true
       minetinker.update.*: true
 
   minetinker.tool.*:
@@ -575,18 +574,6 @@ permissions:
     default: true
   minetinker.modifiers.experienced.use:
     description: Allows to use XP on a MineTinker-Tool
-    default: true
-
-  #Spawners
-  minetinker.spawners.*:
-    children:
-      minetinker.spawners.mine: true
-      minetinker.spawners.place: true
-  minetinker.spawners.mine:
-    description: Allows to mine a Spawner without breaking it.
-    default: true
-  minetinker.spawners.place:
-    description: Allows to place a mined Spawner.
     default: true
 
   #Builderswands:

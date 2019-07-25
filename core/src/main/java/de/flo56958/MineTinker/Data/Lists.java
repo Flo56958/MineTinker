@@ -17,7 +17,6 @@ public class Lists {
 
     public static final List<String> WORLDS = config.getStringList("BannedWorlds");
     public static final List<String> WORLDS_BUILDERSWANDS = ConfigurationManager.getConfig("BuildersWand.yml").getStringList("BuildersWand.BannedWorlds");
-    public static final List<String> WORLDS_SPAWNERS = config.getStringList("Spawners.BannedWorlds");
     public static final List<String> WORLDS_EASYHARVEST = config.getStringList("EasyHarvest.BannedWorlds");
 
     public static final HashMap<Player, BlockFace> BLOCKFACE = new HashMap<>();

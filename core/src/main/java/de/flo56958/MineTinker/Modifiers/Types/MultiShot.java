@@ -72,7 +72,6 @@ public class MultiShot extends Modifier {
         recipeMaterials.put("A", "ARROW");
 
         config.addDefault(key + ".Recipe.Materials", recipeMaterials);
-        // TODO: Better recipe
 
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
