@@ -42,11 +42,24 @@ public class BlockListener implements Listener {
         Player p = e.getPlayer();
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
-        if (e.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS || ToolType.HOE.getMaterials().contains(tool.getType()))) return;
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) return;
-        if (!modManager.isToolViable(tool)) return;
-        if (!modManager.durabilityCheck(e, p, tool)) return;
+        if (Lists.WORLDS.contains(p.getWorld().getName())) {
+            return;
+        }
+
+        if (e.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS || ToolType.HOE.getMaterials().contains(tool.getType()))) {
+            return;
+        }
+
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) {
+            return;
+        }
+
+        if (!modManager.isToolViable(tool)) {
+            return;
+        }
+        if (!modManager.durabilityCheck(e, p, tool)) {
+            return;
+        }
 
         int expAmount = config.getInt("ExpPerBlockBreak");
         expAmount += config.getInt("ExtraExpPerBlock." + e.getBlock().getType().toString()); //adds 0 if not in found in config (negative values are also fine)
@@ -60,7 +73,8 @@ public class BlockListener implements Listener {
             return;
         }
 
-        Bukkit.getPluginManager().callEvent(new MTBlockBreakEvent(tool, e)); //Event-Trigger for Modifiers
+        MTBlockBreakEvent event = new MTBlockBreakEvent(tool, e);
+        Bukkit.getPluginManager().callEvent(event); //Event-Trigger for Modifiers
 
         //-------------------------------------------SPAWNERS---------------------------------------------
         //TODO: CHANGE TO NBT
@@ -95,7 +109,9 @@ public class BlockListener implements Listener {
         Player p = e.getPlayer();
         Block b = e.getClickedBlock();
 
-        if (b == null) return;
+        if (b == null) {
+            return;
+        }
 
         ItemStack norm = p.getInventory().getItemInMainHand();
 
@@ -115,11 +131,14 @@ public class BlockListener implements Listener {
                     || b.getType().equals(Material.TRAPPED_CHEST)
                     || b.getType().equals(Material.FURNACE)
                     || b.getType().equals(Material.ENCHANTING_TABLE)) {
+
                     return;
                 }
             }
 
-            if (norm.getType().equals(Material.EXPERIENCE_BOTTLE)) return;
+            if (norm.getType().equals(Material.EXPERIENCE_BOTTLE)) {
+                return;
+            }
 
             int temp = norm.getAmount();
             norm.setAmount(1);
@@ -128,6 +147,7 @@ public class BlockListener implements Listener {
                 if (m.getModItem().equals(norm)) {
                     norm.setAmount(temp);
                     e.setCancelled(true);
+
                     return;
                 }
             }
@@ -175,13 +195,23 @@ public class BlockListener implements Listener {
     public static void onHoeUse(PlayerInteractEvent e) {
         Player p = e.getPlayer();
 
-        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) return;
+        if (Lists.WORLDS.contains(p.getWorld().getName())) {
+            return;
+        }
+
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) {
+            return;
+        }
 
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (!ToolType.HOE.getMaterials().contains(tool.getType())) return;
-        if (!modManager.isToolViable(tool)) return;
+        if (!ToolType.HOE.getMaterials().contains(tool.getType())) {
+            return;
+        }
+
+        if (!modManager.isToolViable(tool)) {
+            return;
+        }
 
         Block b = e.getClickedBlock();
 
@@ -195,25 +225,41 @@ public class BlockListener implements Listener {
                 apply = false;
         }
 
-        if (!apply) return;
-        if (!modManager.durabilityCheck(e, p, tool)) return;
+        if (!apply) {
+            return;
+        }
+
+        if (!modManager.durabilityCheck(e, p, tool)) {
+            return;
+        }
 
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 
-        Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, e));
+        MTPlayerInteractEvent event = new MTPlayerInteractEvent(tool, e);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public static void onAxeUse(PlayerInteractEvent e) {
         Player p = e.getPlayer();
 
-        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) return;
+        if (Lists.WORLDS.contains(p.getWorld().getName())) {
+            return;
+        }
+
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) {
+            return;
+        }
 
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (!ToolType.AXE.getMaterials().contains(tool.getType())) return;
-        if (!modManager.isToolViable(tool)) return;
+        if (!ToolType.AXE.getMaterials().contains(tool.getType())) {
+            return;
+        }
+
+        if (!modManager.isToolViable(tool)) {
+            return;
+        }
 
         boolean apply = false;
 
@@ -224,37 +270,61 @@ public class BlockListener implements Listener {
                 apply = true;
         }
 
-        if (!apply) return;
-        if (!modManager.durabilityCheck(e, p, tool)) return;
+        if (!apply) {
+            return;
+        }
+
+        if (!modManager.durabilityCheck(e, p, tool)) {
+            return;
+        }
 
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 
-        Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, e));
+        MTPlayerInteractEvent event = new MTPlayerInteractEvent(tool, e);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public static void onShovelUse(PlayerInteractEvent e) {
         Player p = e.getPlayer();
 
-        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) return;
+        if (Lists.WORLDS.contains(p.getWorld().getName())) {
+            return;
+        }
+
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) {
+            return;
+        }
 
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (!ToolType.SHOVEL.getMaterials().contains(tool.getType())) return;
-        if (!modManager.isToolViable(tool)) return;
+        if (!ToolType.SHOVEL.getMaterials().contains(tool.getType())) {
+            return;
+        }
+
+        if (!modManager.isToolViable(tool)) {
+            return;
+        }
 
         boolean apply = false;
 
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null) {
-            if (e.getClickedBlock().getType().equals(Material.GRASS_BLOCK)) apply = true;
+            if (e.getClickedBlock().getType().equals(Material.GRASS_BLOCK)) {
+                apply = true;
+            }
         }
 
-        if (!apply) return;
-        if (!modManager.durabilityCheck(e, p, tool)) return;
+        if (!apply) {
+            return;
+        }
+
+        if (!modManager.durabilityCheck(e, p, tool)) {
+            return;
+        }
 
         modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
 
-        Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, e));
+        MTPlayerInteractEvent event = new MTPlayerInteractEvent(tool, e);
+        Bukkit.getPluginManager().callEvent(event);
     }
 }

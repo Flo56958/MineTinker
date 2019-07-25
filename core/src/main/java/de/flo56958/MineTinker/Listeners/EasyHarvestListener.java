@@ -19,7 +19,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Crops;
 
 public class EasyHarvestListener implements Listener {
 
@@ -28,18 +27,37 @@ public class EasyHarvestListener implements Listener {
 
     @EventHandler
     public void onHarvestTry(PlayerInteractEvent e) {
-        if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
+        if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            return;
+        }
+
         Player p = e.getPlayer();
 
-        if (Lists.WORLDS_EASYHARVEST.contains(p.getWorld().getName())) return;
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) return;
+        if (Lists.WORLDS_EASYHARVEST.contains(p.getWorld().getName())) {
+            return;
+        }
+
+        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) {
+            return;
+        }
 
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (!ToolType.HOE.getMaterials().contains(tool.getType())) return;
-        if (!modManager.isToolViable(tool)) return;
-        if (e.getClickedBlock() == null) return;
-        if (e.getItem() == null) return;
+        if (!ToolType.HOE.getMaterials().contains(tool.getType())) {
+            return;
+        }
+
+        if (!modManager.isToolViable(tool)) {
+            return;
+        }
+
+        if (e.getClickedBlock() == null) {
+            return;
+        }
+
+        if (e.getItem() == null) {
+            return;
+        }
 
         Block b = e.getClickedBlock();
 
@@ -52,7 +70,9 @@ public class EasyHarvestListener implements Listener {
         Bukkit.getPluginManager().callEvent(placeEvent);
 
         //check the pseudoevent
-        if (!placeEvent.canBuild() || placeEvent.isCancelled()) return;
+        if (!placeEvent.canBuild() || placeEvent.isCancelled()) {
+            return;
+        }
 
         harvestCrops(p, tool, b);
     }
@@ -72,6 +92,7 @@ public class EasyHarvestListener implements Listener {
 
         if (modManager.hasMod(tool, Power.instance()) && !p.isSneaking()) {
             int level = modManager.getModLevel(tool, Power.instance());
+
             if (level == 1) {
                 Block b1;
                 Block b2;
@@ -165,7 +186,9 @@ public class EasyHarvestListener implements Listener {
     }
 
     private static void playSound(Block b) {
-        if (config.getBoolean("EasyHarvest.Sound")) b.getWorld().playSound(b.getLocation(), Sound.ITEM_HOE_TILL, 1.0F, 0.5F);
+        if (config.getBoolean("EasyHarvest.Sound")) {
+            b.getWorld().playSound(b.getLocation(), Sound.ITEM_HOE_TILL, 1.0F, 0.5F);
+        }
     }
 
     private static void breakBlock(Block b, Player p) {

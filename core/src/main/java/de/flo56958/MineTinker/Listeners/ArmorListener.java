@@ -31,8 +31,13 @@ public class ArmorListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent e) {
-        if (Lists.WORLDS.contains(e.getEntity().getWorld().getName())) return;
-        if (!(e.getEntity() instanceof Player)) return;
+        if (Lists.WORLDS.contains(e.getEntity().getWorld().getName())) {
+            return;
+        }
+
+        if (!(e.getEntity() instanceof Player)) {
+            return;
+        }
 
         Player p = (Player) e.getEntity();
 
@@ -44,20 +49,28 @@ public class ArmorListener implements Listener {
             Arrow arrow = (Arrow) ent;
             ProjectileSource source = arrow.getShooter();
 
-            if (source instanceof Entity) ent = (Entity) source;
-            else return;
+            if (source instanceof Entity) {
+                ent = (Entity) source;
+            } else {
+                return;
+            }
         }
 
         ItemStack[] armor = p.getInventory().getArmorContents();
 
         for (ItemStack piece : armor) {
-            if (!modManager.isArmorViable(piece)) continue;
+            if (!modManager.isArmorViable(piece)) {
+                continue;
+            }
 
-            Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(p, piece, ent, e));
+            MTEntityDamageByEntityEvent event = new MTEntityDamageByEntityEvent(p, piece, ent, e);
+            Bukkit.getPluginManager().callEvent(event);
 
             int amount = config.getInt("ExpPerEntityHit");
 
-            if (config.getBoolean("EnableDamageExp")) amount = (int) e.getDamage();
+            if (config.getBoolean("EnableDamageExp")) {
+                amount = (int) e.getDamage();
+            }
 
             modManager.addExp(p, piece, amount);
         }
@@ -65,21 +78,30 @@ public class ArmorListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerDamage(EntityDamageEvent e) {
-        if (Lists.WORLDS.contains(e.getEntity().getWorld().getName())) return;
-        if (!(e.getEntity() instanceof Player)) return;
+        if (Lists.WORLDS.contains(e.getEntity().getWorld().getName())) {
+            return;
+        }
+
+        if (!(e.getEntity() instanceof Player)) {
+            return;
+        }
 
         Player p = (Player) e.getEntity();
 
         ItemStack[] armor = p.getInventory().getArmorContents();
 
         for (ItemStack piece : armor) {
-            if (!modManager.isArmorViable(piece)) { continue; }
+            if (!modManager.isArmorViable(piece)) {
+                continue;
+            }
 
             Bukkit.getPluginManager().callEvent(new MTEntityDamageEvent(p, piece, e));
 
             int amount = config.getInt("ExpPerEntityHit") / 2;
 
-            if (config.getBoolean("EnableDamageExp")) amount = (int) e.getDamage() / 2;
+            if (config.getBoolean("EnableDamageExp")) {
+                amount = (int) e.getDamage() / 2;
+            }
 
             modManager.addExp(p, piece, amount);
         }
@@ -87,14 +109,24 @@ public class ArmorListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onElytraDamage(PlayerItemDamageEvent e) {
-        if (!e.getPlayer().isGliding()) return;
-        if (!e.getItem().getType().equals(Material.ELYTRA)) return;
-        if (!modManager.isArmorViable(e.getItem())) return;
+        if (!e.getPlayer().isGliding()) {
+            return;
+        }
+
+        if (!e.getItem().getType().equals(Material.ELYTRA)) {
+            return;
+        }
+
+        if (!modManager.isArmorViable(e.getItem())) {
+            return;
+        }
 
         Random rand = new Random();
         int chance = rand.nextInt(100);
 
-        if (chance < ConfigurationManager.getConfig("Elytra.yml").getInt("Elytra.ExpChanceWhileFlying")) modManager.addExp(e.getPlayer(), e.getItem(), config.getInt("ExpPerEntityHit"));
+        if (chance < ConfigurationManager.getConfig("Elytra.yml").getInt("Elytra.ExpChanceWhileFlying")) {
+            modManager.addExp(e.getPlayer(), e.getItem(), config.getInt("ExpPerEntityHit"));
+        }
 
         SelfRepair.instance().effectElytra(e.getPlayer(), e.getItem());
     }

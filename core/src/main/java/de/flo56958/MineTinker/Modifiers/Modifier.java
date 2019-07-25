@@ -177,7 +177,7 @@ public abstract class Modifier {
         return ConfigurationManager.getConfig(this.getFileName());
     }
 
-    public void _registerCraftingRecipe(FileConfiguration config, Modifier mod, String name, String keyName) {
+    protected void _registerCraftingRecipe(FileConfiguration config, Modifier mod, String name, String keyName) {
         if (config.getBoolean(name + ".Recipe.Enabled")) {
             try {
                 NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), keyName);
@@ -202,7 +202,6 @@ public abstract class Modifier {
 
                         if (material == null) {
                             ChatWriter.log(false, "Material [" + materialName + "] is null for mod [" + mod.name + "]");
-
                             return;
                         } else {
                             newRecipe.setIngredient(key.charAt(0), material);
