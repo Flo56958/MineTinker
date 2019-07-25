@@ -27,6 +27,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -354,14 +355,17 @@ public class Power extends Modifier implements Enchantable, Listener {
         NBTUtils.getHandler().playerBreakBlock(p, b);
     }
 
-    @SuppressWarnings("deprecation")
     private static void powerCreateFarmland(Player p, ItemStack tool, Block b) {
         if (b.getType().equals(Material.GRASS_BLOCK) || b.getType().equals(Material.DIRT)) {
             if (b.getWorld().getBlockAt(b.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
-                tool.setDurability((short) (tool.getDurability() + 1));
 
-                Bukkit.getPluginManager()
-                        .callEvent(new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, tool, b, BlockFace.UP));
+                if (tool instanceof Damageable) {
+                    Damageable damageable = (Damageable) tool;
+                    damageable.setDamage(damageable.getDamage() + 1);
+                }
+
+                PlayerInteractEvent event = new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, tool, b, BlockFace.UP);
+                Bukkit.getPluginManager().callEvent(event);
 
                 b.setType(Material.FARMLAND); // Event only does Plugin event (no vanilla conversion to Farmland and
                                               // Tool-Damage)

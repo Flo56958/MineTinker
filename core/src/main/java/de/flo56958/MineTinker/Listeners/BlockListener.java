@@ -36,7 +36,6 @@ public class BlockListener implements Listener {
     private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = ModManager.instance();
 
-    @SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
@@ -85,7 +84,10 @@ public class BlockListener implements Listener {
                             || !config.getBoolean("Spawners.onlyWithSilkTouch")) {
 
                         CreatureSpawner cs = (CreatureSpawner) e.getBlock().getState();
+
+                        // TODO: Look into this
                         ItemStack s = new ItemStack(Material.SPAWNER, 1, e.getBlock().getData());
+
                         ItemMeta meta = s.getItemMeta();
 
                         if (meta != null) {

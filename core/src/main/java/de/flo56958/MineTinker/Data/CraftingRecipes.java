@@ -69,8 +69,9 @@ public class CraftingRecipes {
             // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
 
-            for (String key : materials.getKeys(false))
+            for (String key : materials.getKeys(false)) {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
+            }
 
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
             ModManager.instance().recipe_Namespaces.add(nkey);
@@ -89,7 +90,11 @@ public class CraftingRecipes {
     public static void registerMTTrident() {
         FileConfiguration config = ConfigurationManager.getConfig("Trident.yml");
         String ckey = "Trident";
-        if (!config.getBoolean(ckey + ".craftable")) return;
+
+        if (!config.getBoolean(ckey + ".craftable")) {
+            return;
+        }
+
         try {
             NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "MineTinker_Trident");
             ItemStack trident = new ItemStack(Material.TRIDENT, 1);
@@ -103,8 +108,9 @@ public class CraftingRecipes {
             // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
 
-            for (String key : materials.getKeys(false))
+            for (String key : materials.getKeys(false)) {
                 newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
+            }
 
             Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
             ModManager.instance().recipe_Namespaces.add(nkey);

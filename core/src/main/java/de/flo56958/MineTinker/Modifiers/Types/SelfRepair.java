@@ -22,6 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
@@ -182,8 +183,6 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
      * @param p the Player
      * @param tool the Tool
      */
-    //TODO: Implement with Damagable
-    @SuppressWarnings("deprecation")
 	private void effect(Player p, ItemStack tool) {
         if (useMending) return;
         if (!p.hasPermission("minetinker.modifiers.selfrepair.use")) return;
@@ -194,13 +193,18 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
         int n = rand.nextInt(100);
 
         if (n <= this.percentagePerLevel * level) {
-            short dura = (short) (tool.getDurability() - this.healthRepair);
+            if (tool instanceof Damageable) {
+                Damageable damageable = (Damageable) tool;
+                short dura = (short) (damageable.getDamage() - this.healthRepair);
 
-            if (dura < 0) dura = 0;
+                if (dura < 0) {
+                    dura = 0;
+                }
 
-            tool.setDurability(dura);
+                damageable.setDamage(dura);
 
-            ChatWriter.log(false, p.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+                ChatWriter.log(false, p.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+            }
         }
     }
 

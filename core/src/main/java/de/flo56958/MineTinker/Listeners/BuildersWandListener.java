@@ -24,6 +24,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
@@ -235,7 +236,6 @@ public class BuildersWandListener implements Listener {
         }
     }
 
-    @SuppressWarnings("deprecation")
 	@EventHandler(ignoreCancelled = true)
     public void onClick (PlayerInteractEvent e) {
         if (Lists.WORLDS_BUILDERSWANDS.contains(e.getPlayer().getWorld().getName())) {
@@ -355,34 +355,38 @@ public class BuildersWandListener implements Listener {
 
                         Location loc = l.clone().subtract(v.clone().multiply(-1));
 
-                        if (wand.getType().getMaxDurability() - wand.getDurability() <= 1) {
-                            break loop;
+                        if (wand instanceof Damageable) {
+                            Damageable damageable = (Damageable) wand;
+
+                            if (wand.getType().getMaxDurability() - damageable.getDamage() <= 1) {
+                                break loop;
+                            }
+
+                            if (!placeBlock(b, p, l, loc, current, v)) {
+                                continue;
+                            }
+
+                            int amountPlaced = 1;
+                            BlockData behindData = b.getWorld().getBlockAt(loc.subtract(v)).getBlockData();
+
+                            if (behindData instanceof Slab && ((Slab) behindData).getType().equals(Slab.Type.DOUBLE)) {
+                                amountPlaced = 2; //Special case for slabs as you place two slabs at once
+                            }
+
+                            current.setAmount(current.getAmount() - amountPlaced);
+
+                            if (config.getBoolean("BuildersWand.useDurability")) {
+                                //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
+                                damageable.setDamage((short) (damageable.getDamage() + 1));
+                            }
+
+                            if (current.getAmount() == 0) {
+                                //TODO: Add Exp gain for Builderswands
+                                break loop;
+                            }
+
+                            e.setCancelled(true);
                         }
-
-                        if (!placeBlock(b, p, l, loc, current, v)) {
-                            continue;
-                        }
-
-                        int amountPlaced = 1;
-                        BlockData behindData = b.getWorld().getBlockAt(loc.subtract(v)).getBlockData();
-
-                        if (behindData instanceof Slab && ((Slab) behindData).getType().equals(Slab.Type.DOUBLE)) {
-                            amountPlaced = 2; //Special case for slabs as you place two slabs at once
-                        }
-
-                        current.setAmount(current.getAmount() - amountPlaced);
-
-                        if (config.getBoolean("BuildersWand.useDurability")) {
-                            //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
-                            wand.setDurability((short) (wand.getDurability() + 1));
-                        }
-
-                        if (current.getAmount() == 0) {
-                            //TODO: Add Exp gain for Builderswands
-                            break loop;
-                        }
-
-                        e.setCancelled(true);
                     }
                 }
 
