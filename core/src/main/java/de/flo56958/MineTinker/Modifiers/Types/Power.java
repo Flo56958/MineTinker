@@ -172,103 +172,103 @@ public class Power extends Modifier implements Enchantable, Listener {
         if (event.isCancelled() || !this.isAllowed())
             return;
 
-        Player p = event.getPlayer();
+        Player player = event.getPlayer();
         ItemStack tool = event.getTool();
-        Block b = event.getBlock();
+        Block block = event.getBlock();
 
-        if (!checkPower(p, tool))
+        if (!checkPower(player, tool))
             return;
         if (ToolType.HOE.getMaterials().contains(tool.getType()))
             return;
 
-        ChatWriter.log(false, p.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool)
+        ChatWriter.log(false, player.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool)
                 + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 
-        HASPOWER.get(p).set(true); // for the power-triggered BlockBreakEvents (prevents endless "recursion")
+        HASPOWER.get(player).set(true); // for the power-triggered BlockBreakEvents (prevents endless "recursion")
 
         int level = modManager.getModLevel(tool, this);
 
         if (level == 1) {
             if (lv1_vertical) {
-                if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
-                    if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
-                        Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
-                        Block b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
-                        powerBlockBreak(b1, b, p);
-                        powerBlockBreak(b2, b, p);
-                    } else if (PlayerInfo.getFacingDirection(p).equals("W")
-                            || PlayerInfo.getFacingDirection(p).equals("E")) {
-                        Block b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
-                        Block b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
-                        powerBlockBreak(b1, b, p);
-                        powerBlockBreak(b2, b, p);
+                if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
+                    if (PlayerInfo.getFacingDirection(player).equals("N") || PlayerInfo.getFacingDirection(player).equals("S")) {
+                        Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
+                        Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
+                        powerBlockBreak(b1, block, player);
+                        powerBlockBreak(b2, block, player);
+                    } else if (PlayerInfo.getFacingDirection(player).equals("W")
+                            || PlayerInfo.getFacingDirection(player).equals("E")) {
+                        Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
+                        Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
+                        powerBlockBreak(b1, block, player);
+                        powerBlockBreak(b2, block, player);
                     }
                 } else {
-                    Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 1, 0));
-                    Block b2 = b.getWorld().getBlockAt(b.getLocation().add(0, -1, 0));
-                    powerBlockBreak(b1, b, p);
-                    powerBlockBreak(b2, b, p);
+                    Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
+                    Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, -1, 0));
+                    powerBlockBreak(b1, block, player);
+                    powerBlockBreak(b2, block, player);
                 }
-            } else if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
-                if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
-                    Block b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
-                    Block b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
-                    powerBlockBreak(b1, b, p);
-                    powerBlockBreak(b2, b, p);
-                } else if (PlayerInfo.getFacingDirection(p).equals("W")
-                        || PlayerInfo.getFacingDirection(p).equals("E")) {
-                    Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
-                    Block b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
-                    powerBlockBreak(b1, b, p);
-                    powerBlockBreak(b2, b, p);
+            } else if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
+                if (PlayerInfo.getFacingDirection(player).equals("N") || PlayerInfo.getFacingDirection(player).equals("S")) {
+                    Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
+                    Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
+                    powerBlockBreak(b1, block, player);
+                    powerBlockBreak(b2, block, player);
+                } else if (PlayerInfo.getFacingDirection(player).equals("W")
+                        || PlayerInfo.getFacingDirection(player).equals("E")) {
+                    Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
+                    Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
+                    powerBlockBreak(b1, block, player);
+                    powerBlockBreak(b2, block, player);
                 }
-            } else if (Lists.BLOCKFACE.get(p).equals(BlockFace.NORTH)
-                    || Lists.BLOCKFACE.get(p).equals(BlockFace.SOUTH)) {
-                Block b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
-                Block b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
-                powerBlockBreak(b1, b, p);
-                powerBlockBreak(b2, b, p);
-            } else if (Lists.BLOCKFACE.get(p).equals(BlockFace.WEST) || Lists.BLOCKFACE.get(p).equals(BlockFace.EAST)) {
-                Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
-                Block b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
-                powerBlockBreak(b1, b, p);
-                powerBlockBreak(b2, b, p);
+            } else if (Lists.BLOCKFACE.get(player).equals(BlockFace.NORTH)
+                    || Lists.BLOCKFACE.get(player).equals(BlockFace.SOUTH)) {
+                Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
+                Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
+                powerBlockBreak(b1, block, player);
+                powerBlockBreak(b2, block, player);
+            } else if (Lists.BLOCKFACE.get(player).equals(BlockFace.WEST) || Lists.BLOCKFACE.get(player).equals(BlockFace.EAST)) {
+                Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
+                Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
+                powerBlockBreak(b1, block, player);
+                powerBlockBreak(b2, block, player);
             }
         } else {
-            HASPOWER.get(p).set(true);
+            HASPOWER.get(player).set(true);
 
-            if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
+            if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
                 for (int x = -(level - 1); x <= (level - 1); x++) {
                     for (int z = -(level - 1); z <= (level - 1); z++) {
                         if (!(x == 0 && z == 0)) {
-                            Block b1 = b.getWorld().getBlockAt(b.getLocation().add(x, 0, z));
-                            powerBlockBreak(b1, b, p);
+                            Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
+                            powerBlockBreak(b1, block, player);
                         }
                     }
                 }
-            } else if (Lists.BLOCKFACE.get(p).equals(BlockFace.NORTH)
-                    || Lists.BLOCKFACE.get(p).equals(BlockFace.SOUTH)) {
+            } else if (Lists.BLOCKFACE.get(player).equals(BlockFace.NORTH)
+                    || Lists.BLOCKFACE.get(player).equals(BlockFace.SOUTH)) {
                 for (int x = -(level - 1); x <= (level - 1); x++) {
                     for (int y = -(level - 1); y <= (level - 1); y++) {
                         if (!(x == 0 && y == 0)) {
-                            Block b1 = b.getWorld().getBlockAt(b.getLocation().add(x, y, 0));
-                            powerBlockBreak(b1, b, p);
+                            Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, y, 0));
+                            powerBlockBreak(b1, block, player);
                         }
                     }
                 }
-            } else if (Lists.BLOCKFACE.get(p).equals(BlockFace.EAST) || Lists.BLOCKFACE.get(p).equals(BlockFace.WEST)) {
+            } else if (Lists.BLOCKFACE.get(player).equals(BlockFace.EAST) || Lists.BLOCKFACE.get(player).equals(BlockFace.WEST)) {
                 for (int z = -(level - 1); z <= (level - 1); z++) {
                     for (int y = -(level - 1); y <= (level - 1); y++) {
                         if (!(z == 0 && y == 0)) {
-                            Block b1 = b.getWorld().getBlockAt(b.getLocation().add(0, y, z));
-                            powerBlockBreak(b1, b, p);
+                            Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, y, z));
+                            powerBlockBreak(b1, block, player);
                         }
                     }
                 }
             }
         }
 
-        HASPOWER.get(p).set(false); // so the effect of power is not disabled for the Player
+        HASPOWER.get(player).set(false); // so the effect of power is not disabled for the Player
     }
 
     /**

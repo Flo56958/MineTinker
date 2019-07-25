@@ -9,7 +9,6 @@ import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.type.Slab;
@@ -21,6 +20,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -387,9 +387,9 @@ public class BuildersWandListener implements Listener {
                 b.getWorld().getBlockAt(loc).getType().equals(Material.GRASS))) return false;
 
         //triggers a pseudoevent to find out if the Player can build
-        BlockState bs = b.getWorld().getBlockAt(loc).getState();
+        Block block = b.getWorld().getBlockAt(loc);
 
-        BlockPlaceEvent placeEvent = new BlockPlaceEvent(b.getWorld().getBlockAt(loc), b.getWorld().getBlockAt(loc).getState(), b, item, p, true);
+        BlockPlaceEvent placeEvent = new BlockPlaceEvent(block, block.getState(), b, item, p, true, EquipmentSlot.HAND);
         Bukkit.getPluginManager().callEvent(placeEvent);
 
         //check the pseudoevent

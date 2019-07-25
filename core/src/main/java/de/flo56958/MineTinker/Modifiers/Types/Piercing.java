@@ -17,7 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +37,7 @@ public class Piercing extends Modifier {
 
     private Piercing() {
         super("Piercing", "Piercing.yml",
-                new ArrayList<>(Arrays.asList(ToolType.CROSSBOW)),
+                new ArrayList<>(Collections.singletonList(ToolType.CROSSBOW)),
                 Main.getPlugin());
     }
 

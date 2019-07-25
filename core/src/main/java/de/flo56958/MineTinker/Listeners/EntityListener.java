@@ -63,8 +63,13 @@ public class EntityListener implements Listener {
 
         if (e.getDamager() instanceof Trident) {
             tool = TridentListener.TridentToItemStack.get(e.getDamager());
-            TridentListener.TridentToItemStack.remove((Trident)e.getDamager());
-            if (tool == null) return;
+
+            Trident trident = (Trident)e.getDamager();
+            TridentListener.TridentToItemStack.remove(trident);
+
+            if (tool == null) {
+                return;
+            }
         }
 
         if (!modManager.isToolViable(tool)) return;

@@ -329,8 +329,7 @@ public class Commands implements TabExecutor {
         ChatWriter.sendMessage(sender, ChatColor.WHITE, "Done reloading!");
 
         if (config.getBoolean("CheckForUpdates")) {
-            Bukkit.getScheduler().scheduleAsyncDelayedTask(Main.getPlugin(),
-                    Updater::checkForUpdate, 20);
+            Bukkit.getScheduler().scheduleAsyncDelayedTask(Main.getPlugin(), Updater::checkForUpdate, 20);
         }
 
     }

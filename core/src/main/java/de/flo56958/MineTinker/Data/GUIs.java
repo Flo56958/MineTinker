@@ -30,15 +30,20 @@ public class GUIs {
 
     public static void reload() {
         ItemStack forwardStack = new ItemStack(Material.GREEN_STAINED_GLASS_PANE, 1);
-        ItemMeta meta_ = forwardStack.getItemMeta();
+        ItemMeta forwardMeta = forwardStack.getItemMeta();
 
-        meta_.setDisplayName(ChatColor.GREEN + "Forward");
-        forwardStack.setItemMeta(meta_);
+        if (forwardMeta != null) {
+            forwardMeta.setDisplayName(ChatColor.GREEN + "Forward");
+            forwardStack.setItemMeta(forwardMeta);
+        }
 
         ItemStack backStack = new ItemStack(Material.RED_STAINED_GLASS_PANE, 1);
-        meta_ = backStack.getItemMeta();
-        meta_.setDisplayName(ChatColor.RED + "Back");
-        backStack.setItemMeta(meta_);
+        ItemMeta backMeta = backStack.getItemMeta();
+
+        if (backMeta != null) {
+            backMeta.setDisplayName(ChatColor.RED + "Back");
+            backStack.setItemMeta(backMeta);
+        }
 
         { /*/mt mods GUIs*/
             int pageNo = 0;
@@ -55,75 +60,78 @@ public class GUIs {
             for (Modifier m : ModManager.instance().getAllowedMods()) {
                 ItemStack item = m.getModItem().clone();
                 ItemMeta meta = item.getItemMeta();
-                meta.setDisplayName(m.getColor() + m.getName());
 
-                String[] desc = m.getDescription().split("\u200B");
+                if (meta != null) {
+                    meta.setDisplayName(m.getColor() + m.getName());
 
-                ArrayList<String> lore = new ArrayList<>();
+                    String[] desc = m.getDescription().split("\u200B");
 
-                lore.add("");
+                    ArrayList<String> lore = new ArrayList<>();
 
-                if (desc.length == 2) {
-                    lore.add(ChatColor.AQUA + desc[0]);
+                    lore.add("");
 
-                    List<String> descList = ChatWriter.splitString(desc[1], 30);
+                    if (desc.length == 2) {
+                        lore.add(ChatColor.AQUA + desc[0]);
 
-                    for (String descPart : descList) {
-                        lore.add(ChatColor.WHITE + descPart);
+                        List<String> descList = ChatWriter.splitString(desc[1], 30);
+
+                        for (String descPart : descList) {
+                            lore.add(ChatColor.WHITE + descPart);
+                        }
+                    } else {
+                        lore.add(ChatColor.WHITE + m.getDescription());
                     }
-                } else {
-                    lore.add(ChatColor.WHITE + m.getDescription());
-                }
 
-                lore.add("");
-                lore.add(ChatColor.GOLD + "Max Level: " + ChatColor.WHITE + ChatWriter.toRomanNumerals(m.getMaxLvl()));
-                meta.setLore(lore);
-                item.setItemMeta(meta);
-                GUI.Window.Button modButton = currentPage.addButton((i % 7) + 1, (i / 7) + 1, item);
-                Recipe rec = null;
-                Iterator<Recipe> it = Bukkit.getServer().recipeIterator();
-                while (it.hasNext()) {
-                    Recipe temp = it.next();
-                    if (temp.getResult().equals(m.getModItem())) {
-                        rec = temp;
-                        break;
-                    }
-                }
-                if (rec != null) {
-                    GUI.Window modRecipe = modRecipes.addWindow(3, m.getColor() + m.getName());
-                    if (rec instanceof ShapedRecipe) {
-                        ShapedRecipe srec = (ShapedRecipe) rec;
-                        ItemStack modItem = m.getModItem().clone();
-                        NBTUtils.getHandler().setInt(modItem, "Showcase", (int) Math.round(Math.random() * 1000));
-                        GUI.Window.Button result = modRecipe.addButton(6, 1, modItem);
-                        result.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(result, currentPage));
-                        int slot = -1;
-                        for (String s : srec.getShape()) {
-                            if (s.length() == 1 || s.length() == 2) slot++;
-                            for (char c : s.toCharArray()) {
-                                slot++;
-                                if (c == ' ') continue;
-                                try {
-                                    ItemStack resItem = srec.getIngredientMap().get(c).clone();
-                                    NBTUtils.getHandler().setLong(resItem, "MT-MODS Recipe Item", Math.round(Math.random() * 42));
-                                    modRecipe.addButton((slot % 3) + 2, (slot / 3), resItem);
-                                } catch (NullPointerException ignored) {
-                                }
-                            }
-                            if (s.length() == 1) slot++;
+                    lore.add("");
+                    lore.add(ChatColor.GOLD + "Max Level: " + ChatColor.WHITE + ChatWriter.toRomanNumerals(m.getMaxLvl()));
+                    meta.setLore(lore);
+                    item.setItemMeta(meta);
+                    GUI.Window.Button modButton = currentPage.addButton((i % 7) + 1, (i / 7) + 1, item);
+                    Recipe rec = null;
+                    Iterator<Recipe> it = Bukkit.getServer().recipeIterator();
+                    while (it.hasNext()) {
+                        Recipe temp = it.next();
+                        if (temp.getResult().equals(m.getModItem())) {
+                            rec = temp;
+                            break;
                         }
                     }
-                    modButton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(modButton, modRecipe));
-                }
+                    if (rec != null) {
+                        GUI.Window modRecipe = modRecipes.addWindow(3, m.getColor() + m.getName());
+                        if (rec instanceof ShapedRecipe) {
+                            ShapedRecipe srec = (ShapedRecipe) rec;
+                            ItemStack modItem = m.getModItem().clone();
+                            NBTUtils.getHandler().setInt(modItem, "Showcase", (int) Math.round(Math.random() * 1000));
+                            GUI.Window.Button result = modRecipe.addButton(6, 1, modItem);
+                            result.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(result, currentPage));
+                            int slot = -1;
+                            for (String s : srec.getShape()) {
+                                if (s.length() == 1 || s.length() == 2) slot++;
+                                for (char c : s.toCharArray()) {
+                                    slot++;
+                                    if (c == ' ') continue;
+                                    try {
+                                        ItemStack resItem = srec.getIngredientMap().get(c).clone();
+                                        NBTUtils.getHandler().setLong(resItem, "MT-MODS Recipe Item", Math.round(Math.random() * 42));
+                                        modRecipe.addButton((slot % 3) + 2, (slot / 3), resItem);
+                                    } catch (NullPointerException ignored) {
+                                    }
+                                }
+                                if (s.length() == 1) slot++;
+                            }
+                        }
+                        modButton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(modButton, modRecipe));
+                    }
 
-                i++;
-                if (i % 28 == 0) {
-                    currentPage = modGUI.addWindow(6, "MineTinker-Modifiers, " + ++pageNo);
-                    back = currentPage.addButton(0, 5, backStack.clone());
-                    back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
-                    forward = currentPage.addButton(8, 5, forwardStack.clone());
-                    forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
-                    i = 0;
+                    i++;
+                    if (i % 28 == 0) {
+                        currentPage = modGUI.addWindow(6, "MineTinker-Modifiers, " + ++pageNo);
+                        back = currentPage.addButton(0, 5, backStack.clone());
+                        back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
+                        forward = currentPage.addButton(8, 5, forwardStack.clone());
+                        forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
+                        i = 0;
+                    }
                 }
             }
         }

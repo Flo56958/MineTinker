@@ -79,7 +79,7 @@ public abstract class Modifier {
     /**
      * changes the core settings of the Modifier (like a secondary constructor)
      * @param name Name of the Modifier
-     * @param description
+     * @param description Description of the Modifier
      * @param color Color of the Modifier
      * @param maxLvl Maximum Level cap of the Modifier
      * @param modItem ItemStack that is required to craft the Modifier
@@ -192,6 +192,12 @@ public abstract class Modifier {
                 if (materials != null) {
                     for (String key : materials.getKeys(false)) {
                         String materialName = materials.getString(key);
+
+                        if (materialName == null) {
+                            ChatWriter.logInfo("Material entry not found! Aborting recipe registration for this modifier.");
+                            return;
+                        }
+
                         Material material = Material.getMaterial(materialName);
 
                         if (material == null) {

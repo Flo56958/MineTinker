@@ -530,42 +530,45 @@ public class ModManager {
 
         ItemMeta meta = is.getItemMeta();
 
-        for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
-            Modifier modifier = getModifierFromEnchantment(entry.getKey());
+        if (meta != null) {
+            for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
+                Modifier modifier = getModifierFromEnchantment(entry.getKey());
 
-            if (modifier == null) {
-                continue;
+                if (modifier == null) {
+                    continue;
+                }
+
+                meta.removeEnchant(entry.getKey());
+
+                for (int i = 0; i < entry.getValue(); i++) {
+                    addMod(is, modifier);
+                }
             }
 
-            meta.removeEnchant(entry.getKey());
+            addArmorAttributes(is);
 
-            for (int i = 0; i < entry.getValue(); i++) {
+            if (meta.getAttributeModifiers() == null) {
+                return;
+            }
+
+            for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : meta.getAttributeModifiers().asMap().entrySet()) {
+                Modifier modifier = getModifierFromAttribute(entry.getKey());
+
+                if (modifier == null) {
+                    continue;
+                }
+
+                meta.removeAttributeModifier(entry.getKey());
+
                 addMod(is, modifier);
             }
-        }
-
-        addArmorAttributes(is);
-
-        if (meta.getAttributeModifiers() == null) {
-            return;
-        }
-
-        for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : meta.getAttributeModifiers().asMap().entrySet()) {
-            Modifier modifier = getModifierFromAttribute(entry.getKey());
-
-            if (modifier == null) {
-                continue;
-            }
-
-            meta.removeAttributeModifier(entry.getKey());
-
-            addMod(is, modifier);
         }
     }
 
     public void addArmorAttributes(ItemStack is) {
-        double armor = 0.0d;
+        double armor;
         double toughness = 0.0d;
+
         switch (is.getType()) {
             case LEATHER_BOOTS:
             case CHAINMAIL_BOOTS:
@@ -614,35 +617,41 @@ public class ModManager {
         }
 
         ItemMeta meta = is.getItemMeta();
-        AttributeModifier armorAM;
-        AttributeModifier toughnessAM;
-        if (ToolType.BOOTS.getMaterials().contains(is.getType())) {
-            armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
-            toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
-        } else if (ToolType.CHESTPLATE.getMaterials().contains(is.getType())) {
-            armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
-            toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
-        } else if (ToolType.HELMET.getMaterials().contains(is.getType())) {
-            armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
-            toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
-        } else if (ToolType.LEGGINGS.getMaterials().contains(is.getType())) {
-            armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
-            toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
-        } else return;
 
-        meta.removeAttributeModifier(Attribute.GENERIC_ARMOR);
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
-        if (toughness > 0.0d) {
-            meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);
-            meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
-        }
+        if (meta != null) {
+            AttributeModifier armorAM;
+            AttributeModifier toughnessAM;
 
-        if (Main.getPlugin().getConfig().getBoolean("HideAttributes")) {
-            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            if (ToolType.BOOTS.getMaterials().contains(is.getType())) {
+                armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+                toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+            } else if (ToolType.CHESTPLATE.getMaterials().contains(is.getType())) {
+                armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+                toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+            } else if (ToolType.HELMET.getMaterials().contains(is.getType())) {
+                armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+                toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+            } else if (ToolType.LEGGINGS.getMaterials().contains(is.getType())) {
+                armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+                toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+            } else return;
+
+            meta.removeAttributeModifier(Attribute.GENERIC_ARMOR);
+            meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
+
+            if (toughness > 0.0d) {
+                meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);
+                meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
+            }
+
+            if (Main.getPlugin().getConfig().getBoolean("HideAttributes")) {
+                meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            }
+
+            is.setItemMeta(meta);
         }
-        is.setItemMeta(meta);
     }
 
     public ItemStack createModifierItem(Material m, String name, String description, Modifier mod) {
