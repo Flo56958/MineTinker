@@ -293,7 +293,7 @@ public class Commands implements TabExecutor {
      */
     private void reload(CommandSender sender) {
         ChatWriter.sendMessage(sender, ChatColor.RED, "NOTE: It is possible that the plugin will not work correctly after reload!");
-        ChatWriter.sendMessage(sender, ChatColor.RED, "NOTE: Elevator and Builderswands need a complete restart to function correctly on the new configurations!");
+        ChatWriter.sendMessage(sender, ChatColor.RED, "NOTE: Builderswands need a complete restart to function correctly on the new configurations!");
 
         ChatWriter.sendMessage(sender, ChatColor.WHITE, "Clearing recipes!");
 
