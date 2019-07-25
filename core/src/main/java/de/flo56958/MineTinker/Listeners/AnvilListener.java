@@ -141,6 +141,9 @@ public class AnvilListener implements Listener {
             if (!mod.applyMod(player, newTool, false)) {
                 return;
             }
+
+            e.setResult(newTool);
+            i.setRepairCost(0);
         } else {
             if (config.getBoolean("Upgradeable") && player.hasPermission("minetinker.tool.upgrade")) {
                 ItemStack item = i.getItem(1);
