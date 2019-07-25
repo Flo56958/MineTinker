@@ -46,8 +46,11 @@ public enum ToolType {
 	 */
 	public static ToolType get(Material mat) {
 		for (ToolType tt : values()) {
-			if (tt.getMaterials().contains(mat)) return tt;
+			if (tt.getMaterials().contains(mat)) {
+				return tt;
+			}
 		}
+
 		return null;
 	}
 
@@ -58,6 +61,7 @@ public enum ToolType {
 	 */
 	public List<Material> getMaterials() {
 		List<Material> materials = new ArrayList<>();
+		// TODO: Turn into a precompiled HashMap<Material, List<Material>>
 		switch (this) {
 			case AXE:
 				materials.addAll(Arrays.asList(Material.WOODEN_AXE, Material.STONE_AXE, Material.IRON_AXE, Material.GOLDEN_AXE, Material.DIAMOND_AXE));

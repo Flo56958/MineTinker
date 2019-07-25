@@ -33,12 +33,14 @@ class Functions {
             GUIs.getModGUI().show((Player) sender);
             return;
         }
+
         ChatWriter.sendMessage(sender, ChatColor.GOLD, "Possible Modifiers:");
 
         int index = 1;
 
-        for (Modifier m : modManager.getAllowedMods())
+        for (Modifier m : modManager.getAllowedMods()) {
             ChatWriter.sendMessage(sender, ChatColor.WHITE, index++ + ". " + m.getColor() + m.getName() + ChatColor.WHITE + ": " + m.getDescription());
+        }
     }
 
     /**
@@ -77,8 +79,9 @@ class Functions {
             if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
                 StringBuilder name = new StringBuilder();
 
-                for (int i = 1; i < args.length; i++)
+                for (int i = 1; i < args.length; i++) {
                     name.append(" ").append(args[i].replace('^', '§'));
+                }
 
                 name = new StringBuilder(name.substring(1));
 
@@ -105,7 +108,10 @@ class Functions {
         if (args.length >= 2) {
             ItemStack tool = player.getInventory().getItemInMainHand();
 
-            if (!modManager.isToolViable(tool) && !modManager.isArmorViable(tool)) { Commands.invalidArgs(player); return; }
+            if (!modManager.isToolViable(tool) && !modManager.isArmorViable(tool)) {
+                Commands.invalidArgs(player);
+                return;
+            }
 
             for (Modifier m : modManager.getAllMods()) {
                 if (args[1].equals(m.getName())) {
@@ -113,6 +119,7 @@ class Functions {
                     return;
                 }
             }
+
             Commands.invalidArgs(player);
         } else {
             Commands.invalidArgs(player);
@@ -130,7 +137,10 @@ class Functions {
                 if (m.getName().equalsIgnoreCase(args[1])) {
                     ItemStack tool = player.getInventory().getItemInMainHand();
 
-                    if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) m.applyMod(player, tool, true);
+                    if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
+                        m.applyMod(player, tool, true);
+                    }
+
                     break;
                 }
             }
@@ -203,8 +213,11 @@ class Functions {
         ItemStack tool = new ItemStack(material, 1);
         modManager.convertItemStack(tool);
 
-        if (player.getInventory().addItem(tool).size() != 0) //adds items to (full) inventory
+        if (player.getInventory().addItem(tool).size() != 0) {
+            //adds items to (full) inventory
             player.getWorld().dropItem(player.getLocation(), tool);
+        }
+
         // no else as it gets added in if
     }
 
@@ -250,6 +263,7 @@ class Functions {
                                 ChatWriter.sendMessage(sender, ChatColor.RED, "Player " + args[3] + " not found or not online!");
                                 return;
                             }
+
                             sender = temp;
                         }
 
@@ -303,6 +317,7 @@ class Functions {
         ChatWriter.sendMessage(p, ChatColor.WHITE, "Exp: " + modManager.getExp(is) + "/" + modManager.getNextLevelReq(modManager.getLevel(is)));
         ChatWriter.sendMessage(p, ChatColor.WHITE, "Free Modifier Slots: " + modManager.getFreeSlots(is));
         ChatWriter.sendMessage(p, ChatColor.WHITE, "Modifiers:");
+
         for (Modifier mod : modManager.getAllowedMods()) {
             if (NBTUtils.getHandler().hasTag(is, mod.getNBTKey())) {
                 ChatWriter.sendMessage(p, ChatColor.WHITE, mod.getColor() + mod.getName() + ChatColor.WHITE + " " + NBTUtils.getHandler().getInt(is, mod.getNBTKey()));

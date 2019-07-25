@@ -28,12 +28,14 @@ public class Lists {
      */
     public static ArrayList<Material> getWoodLeaves() {
         ArrayList<Material> mats = new ArrayList<>();
+
         mats.add(Material.ACACIA_LEAVES);
         mats.add(Material.BIRCH_LEAVES);
         mats.add(Material.DARK_OAK_LEAVES);
         mats.add(Material.JUNGLE_LEAVES);
         mats.add(Material.OAK_LEAVES);
         mats.add(Material.SPRUCE_LEAVES);
+
         return mats;
     }
 

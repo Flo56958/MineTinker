@@ -90,7 +90,9 @@ public class Main extends JavaPlugin {
             Lists.BLOCKFACE.put(current, null);
         }
 
-        if (getConfig().getBoolean("CheckForUpdates")) Bukkit.getScheduler().scheduleAsyncDelayedTask(this, Updater::checkForUpdate, 20);
+        if (getConfig().getBoolean("CheckForUpdates")) {
+            Bukkit.getScheduler().scheduleAsyncDelayedTask(this, Updater::checkForUpdate, 20);
+        }
     }
 
     public void onDisable() {
