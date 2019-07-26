@@ -3,8 +3,9 @@ package de.flo56958.MineTinker.Data;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Material;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumMap;
 import java.util.List;
 
 public enum ToolType {
@@ -28,6 +29,44 @@ public enum ToolType {
 	SWORD,
 	TRIDENT;
 
+	private static EnumMap<ToolType, List<Material>> tools = new EnumMap<>(ToolType.class);
+
+	static {
+		tools.put(ToolType.AXE, Arrays.asList(Material.WOODEN_AXE, Material.STONE_AXE, Material.IRON_AXE, Material.GOLDEN_AXE, Material.DIAMOND_AXE));
+		tools.put(ToolType.BOOTS, Arrays.asList(Material.LEATHER_BOOTS, Material.CHAINMAIL_BOOTS, Material.IRON_BOOTS, Material.GOLDEN_BOOTS, Material.DIAMOND_BOOTS));
+		tools.put(ToolType.BOW, Collections.singletonList(Material.BOW));
+		tools.put(ToolType.CHESTPLATE, Arrays.asList(Material.LEATHER_CHESTPLATE, Material.CHAINMAIL_CHESTPLATE, Material.IRON_CHESTPLATE, Material.GOLDEN_CHESTPLATE, Material.DIAMOND_CHESTPLATE));
+
+		if (NBTUtils.isOneFourteenCompatible()) {
+			tools.put(ToolType.CROSSBOW, Collections.singletonList(Material.CROSSBOW));
+		}
+
+		tools.put(ToolType.ELYTRA, Collections.singletonList(Material.ELYTRA));
+		tools.put(ToolType.HELMET, Arrays.asList(Material.LEATHER_HELMET, Material.CHAINMAIL_HELMET, Material.IRON_HELMET, Material.GOLDEN_HELMET, Material.DIAMOND_HELMET, Material.TURTLE_HELMET));
+		tools.put(ToolType.HOE, Arrays.asList(Material.WOODEN_HOE, Material.STONE_HOE, Material.IRON_HOE, Material.GOLDEN_HOE, Material.DIAMOND_HOE));
+		tools.put(ToolType.LEGGINGS, Arrays.asList(Material.LEATHER_LEGGINGS, Material.CHAINMAIL_LEGGINGS, Material.IRON_LEGGINGS, Material.GOLDEN_LEGGINGS, Material.DIAMOND_LEGGINGS));
+		tools.put(ToolType.PICKAXE, Arrays.asList(Material.WOODEN_PICKAXE, Material.STONE_PICKAXE, Material.IRON_PICKAXE, Material.GOLDEN_PICKAXE, Material.DIAMOND_PICKAXE));
+		tools.put(ToolType.FISHINGROD, Collections.singletonList(Material.FISHING_ROD));
+		tools.put(ToolType.SHIELD, Collections.singletonList(Material.SHIELD));
+		tools.put(ToolType.SHOVEL, Arrays.asList(Material.WOODEN_SHOVEL, Material.STONE_SHOVEL, Material.IRON_SHOVEL, Material.GOLDEN_SHOVEL, Material.DIAMOND_SHOVEL));
+		tools.put(ToolType.SWORD, Arrays.asList(Material.WOODEN_SWORD, Material.STONE_SWORD, Material.IRON_SWORD, Material.GOLDEN_SWORD, Material.DIAMOND_SWORD));
+		tools.put(ToolType.TRIDENT, Collections.singletonList(Material.TRIDENT));
+		tools.put(ToolType.OTHER, Arrays.asList(Material.FLINT_AND_STEEL, Material.CARROT_ON_A_STICK));
+		tools.put(ToolType.SHEARS, Collections.singletonList(Material.SHEARS));
+	}
+
+	public static EnumMap<ToolType, List<Material>> getTools() {
+		return tools;
+	}
+
+	public List<Material> getToolMaterials() {
+		return getTools().get(this);
+	}
+
+	public boolean contains(Material material) {
+		return getToolMaterials().contains(material);
+	}
+
 	/**
 	 * get the tooltype from a string
 	 *
@@ -41,81 +80,16 @@ public enum ToolType {
 	/**
 	 * get the tooltype for a given material
 	 *
-	 * @param mat the material to check
+	 * @param material the material to check
 	 * @return material's tooltype, null if invalid
 	 */
-	public static ToolType get(Material mat) {
-		for (ToolType tt : values()) {
-			if (tt.getMaterials().contains(mat)) {
-				return tt;
+	public static ToolType get(Material material) {
+		for (ToolType type : values()) {
+			if (getTools().get(type).contains(material)) {
+				return type;
 			}
 		}
 
 		return null;
-	}
-
-	/**
-	 * get all materials from a given tooltype
-	 *
-	 * @return list of materials
-	 */
-	public List<Material> getMaterials() {
-		List<Material> materials = new ArrayList<>();
-		// TODO: Turn into a precompiled HashMap<Material, List<Material>>
-		switch (this) {
-			case AXE:
-				materials.addAll(Arrays.asList(Material.WOODEN_AXE, Material.STONE_AXE, Material.IRON_AXE, Material.GOLDEN_AXE, Material.DIAMOND_AXE));
-				break;
-			case BOOTS:
-				materials.addAll(Arrays.asList(Material.LEATHER_BOOTS, Material.CHAINMAIL_BOOTS, Material.IRON_BOOTS, Material.GOLDEN_BOOTS, Material.DIAMOND_BOOTS));
-				break;
-			case BOW:
-				materials.add(Material.BOW);
-				break;
-			case CHESTPLATE:
-				materials.addAll(Arrays.asList(Material.LEATHER_CHESTPLATE, Material.CHAINMAIL_CHESTPLATE, Material.IRON_CHESTPLATE, Material.GOLDEN_CHESTPLATE, Material.DIAMOND_CHESTPLATE));
-				break;
-			case CROSSBOW:
-				if (NBTUtils.isOneFourteenCompatible()) materials.add(Material.CROSSBOW);
-				break;
-			case ELYTRA:
-				materials.add(Material.ELYTRA);
-				break;
-			case HELMET:
-				materials.addAll(Arrays.asList(Material.LEATHER_HELMET, Material.CHAINMAIL_HELMET, Material.IRON_HELMET, Material.GOLDEN_HELMET, Material.DIAMOND_HELMET, Material.TURTLE_HELMET));
-				break;
-			case HOE:
-				materials.addAll(Arrays.asList(Material.WOODEN_HOE, Material.STONE_HOE, Material.IRON_HOE, Material.GOLDEN_HOE, Material.DIAMOND_HOE));
-				break;
-			case LEGGINGS:
-				materials.addAll(Arrays.asList(Material.LEATHER_LEGGINGS, Material.CHAINMAIL_LEGGINGS, Material.IRON_LEGGINGS, Material.GOLDEN_LEGGINGS, Material.DIAMOND_LEGGINGS));
-				break;
-			case PICKAXE:
-				materials.addAll(Arrays.asList(Material.WOODEN_PICKAXE, Material.STONE_PICKAXE, Material.IRON_PICKAXE, Material.GOLDEN_PICKAXE, Material.DIAMOND_PICKAXE));
-				break;
-			case FISHINGROD:
-				materials.add(Material.FISHING_ROD);
-				break;
-			case SHIELD:
-				materials.add(Material.SHIELD);
-				break;
-			case SHOVEL:
-				materials.addAll(Arrays.asList(Material.WOODEN_SHOVEL, Material.STONE_SHOVEL, Material.IRON_SHOVEL, Material.GOLDEN_SHOVEL, Material.DIAMOND_SHOVEL));
-				break;
-			case SWORD:
-				materials.addAll(Arrays.asList(Material.WOODEN_SWORD, Material.STONE_SWORD, Material.IRON_SWORD, Material.GOLDEN_SWORD, Material.DIAMOND_SWORD));
-				break;
-			case TRIDENT:
-				materials.add(Material.TRIDENT);
-				break;
-			case OTHER:
-				materials.addAll(Arrays.asList(Material.FLINT_AND_STEEL, Material.CARROT_ON_A_STICK));
-				break;
-			case SHEARS:
-				materials.add(Material.SHEARS);
-			default:
-				break;
-		}
-		return materials;
 	}
 }

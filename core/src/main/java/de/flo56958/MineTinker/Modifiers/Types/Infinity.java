@@ -99,9 +99,9 @@ public class Infinity extends Modifier implements Enchantable {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (ToolType.BOW.getMaterials().contains(tool.getType())) {
+            if (ToolType.BOW.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.ARROW_INFINITE, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
+            } else if (ToolType.TRIDENT.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.LOYALTY, modManager.getModLevel(tool, this), true);
             }
 

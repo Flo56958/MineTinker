@@ -100,8 +100,8 @@ public class Insulating extends Modifier {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (ToolType.HELMET.getMaterials().contains(tool.getType()) || ToolType.CHESTPLATE.getMaterials().contains(tool.getType())
-                    || ToolType.LEGGINGS.getMaterials().contains(tool.getType()) || ToolType.BOOTS.getMaterials().contains(tool.getType())) {
+            if (ToolType.HELMET.contains(tool.getType()) || ToolType.CHESTPLATE.contains(tool.getType())
+                    || ToolType.LEGGINGS.contains(tool.getType()) || ToolType.BOOTS.contains(tool.getType())) {
 
                 if (!this.compatibleWithProtecting) {
                     if (modManager.hasMod(tool, Protecting.instance()) || meta.hasEnchant(Enchantment.PROTECTION_ENVIRONMENTAL)) {

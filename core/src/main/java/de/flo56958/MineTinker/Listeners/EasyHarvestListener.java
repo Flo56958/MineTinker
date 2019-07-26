@@ -43,7 +43,7 @@ public class EasyHarvestListener implements Listener {
 
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (!ToolType.HOE.getMaterials().contains(tool.getType())) {
+        if (!ToolType.HOE.contains(tool.getType())) {
             return;
         }
 

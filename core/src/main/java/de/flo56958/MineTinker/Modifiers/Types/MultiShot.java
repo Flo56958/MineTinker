@@ -92,7 +92,7 @@ public class MultiShot extends Modifier {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (ToolType.CROSSBOW.getMaterials().contains(tool.getType())) {
+            if (ToolType.CROSSBOW.contains(tool.getType())) {
                 if (!this.compatibleWithPiercing) {
                     if (modManager.hasMod(tool, Piercing.instance()) || meta.hasEnchant(Enchantment.PIERCING)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));

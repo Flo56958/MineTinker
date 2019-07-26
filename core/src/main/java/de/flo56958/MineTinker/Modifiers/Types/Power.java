@@ -179,7 +179,7 @@ public class Power extends Modifier implements Enchantable, Listener {
 
         if (!checkPower(player, tool))
             return;
-        if (ToolType.HOE.getMaterials().contains(tool.getType()))
+        if (ToolType.HOE.contains(tool.getType()))
             return;
 
         ChatWriter.log(false, player.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool)
@@ -283,7 +283,7 @@ public class Power extends Modifier implements Enchantable, Listener {
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
 
-        if (!ToolType.HOE.getMaterials().contains(tool.getType()))
+        if (!ToolType.HOE.contains(tool.getType()))
             return;
 
         PlayerInteractEvent e = event.getEvent();

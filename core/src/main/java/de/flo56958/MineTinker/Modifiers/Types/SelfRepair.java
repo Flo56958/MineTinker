@@ -142,10 +142,10 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;
 
-        if (ToolType.BOOTS.getMaterials().contains(event.getTool().getType())
-                || ToolType.LEGGINGS.getMaterials().contains(event.getTool().getType())
-                || ToolType.CHESTPLATE.getMaterials().contains(event.getTool().getType())
-                || ToolType.HELMET.getMaterials().contains(event.getTool().getType())) return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
+        if (ToolType.BOOTS.contains(event.getTool().getType())
+                || ToolType.LEGGINGS.contains(event.getTool().getType())
+                || ToolType.CHESTPLATE.contains(event.getTool().getType())
+                || ToolType.HELMET.contains(event.getTool().getType())) return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
 
         effect(event.getPlayer(), event.getTool());
     }
@@ -168,7 +168,7 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
 
         ItemStack tool = event.getPlayer().getInventory().getItemInMainHand();
 
-        if (!(modManager.isToolViable(tool) && ToolType.SHEARS.getMaterials().contains(tool.getType()))) return;
+        if (!(modManager.isToolViable(tool) && ToolType.SHEARS.contains(tool.getType()))) return;
 
         effect(event.getPlayer(), tool);
     }

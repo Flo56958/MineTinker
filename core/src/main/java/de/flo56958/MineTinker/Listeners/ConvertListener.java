@@ -29,20 +29,8 @@ public class ConvertListener implements Listener{
 	
 	public void register() {
 	    ArrayList<Material> converting = new ArrayList<>();
-	    converting.addAll(ToolType.PICKAXE.getMaterials());
-		converting.addAll(ToolType.AXE.getMaterials());
-		converting.addAll(ToolType.HOE.getMaterials());
-		converting.addAll(ToolType.SWORD.getMaterials());
-		converting.addAll(ToolType.SHEARS.getMaterials());
-		converting.addAll(ToolType.SHOVEL.getMaterials());
-		converting.addAll(ToolType.FISHINGROD.getMaterials());
-		converting.addAll(ToolType.HELMET.getMaterials());
-		converting.addAll(ToolType.CHESTPLATE.getMaterials());
-		converting.addAll(ToolType.LEGGINGS.getMaterials());
-		converting.addAll(ToolType.BOOTS.getMaterials());
-		converting.addAll(ToolType.BOW.getMaterials());
-		converting.addAll(ToolType.CROSSBOW.getMaterials());
 
+		ToolType.getTools().values().forEach(converting::addAll);
 
 		for (Material m : converting) {
 	    	ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(Main.getPlugin(), m.toString() + "_Converter"), new ItemStack(m, 1));

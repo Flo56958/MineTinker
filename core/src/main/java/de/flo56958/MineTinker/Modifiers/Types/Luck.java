@@ -92,22 +92,22 @@ public class Luck extends Modifier {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (ToolType.AXE.getMaterials().contains(tool.getType())) {
+            if (ToolType.AXE.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
                 meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.BOW.getMaterials().contains(tool.getType())) {
+            } else if (ToolType.BOW.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.HOE.getMaterials().contains(tool.getType())) {
+            } else if (ToolType.HOE.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.PICKAXE.getMaterials().contains(tool.getType())) {
+            } else if (ToolType.PICKAXE.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.SHOVEL.getMaterials().contains(tool.getType())) {
+            } else if (ToolType.SHOVEL.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
+            } else if (ToolType.SWORD.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.SHEARS.getMaterials().contains(tool.getType())) {
+            } else if (ToolType.SHEARS.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.FISHINGROD.getMaterials().contains(tool.getType())) {
+            } else if (ToolType.FISHINGROD.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.LUCK, modManager.getModLevel(tool, this), true);
             }
 

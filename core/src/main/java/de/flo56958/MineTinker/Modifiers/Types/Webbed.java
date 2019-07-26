@@ -120,7 +120,7 @@ public class Webbed extends Modifier implements Listener {
     public void effect(MTProjectileHitEvent event) {
         if (!this.isAllowed()) return;
         if (!(event.getEvent().getHitEntity() instanceof LivingEntity)) return;
-        if (!ToolType.FISHINGROD.getMaterials().contains(event.getTool().getType())) return;
+        if (!ToolType.FISHINGROD.contains(event.getTool().getType())) return;
 
         effect(event.getPlayer(), event.getTool(), event.getEvent().getHitEntity());
     }

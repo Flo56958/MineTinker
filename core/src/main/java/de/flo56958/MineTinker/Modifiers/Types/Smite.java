@@ -101,7 +101,7 @@ public class Smite extends Modifier {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (!ToolType.AXE.getMaterials().contains(tool.getType()) && !ToolType.SWORD.getMaterials().contains(tool.getType())) {
+            if (!ToolType.AXE.contains(tool.getType()) && !ToolType.SWORD.contains(tool.getType())) {
                 if (!this.compatibleWithSharpness) {
                     if (modManager.hasMod(tool, Sharpness.instance()) || meta.hasEnchant(Enchantment.DAMAGE_ALL)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));

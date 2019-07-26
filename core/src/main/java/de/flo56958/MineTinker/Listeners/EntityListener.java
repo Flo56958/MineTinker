@@ -137,7 +137,7 @@ public class EntityListener implements Listener {
         Player p = (Player) e.getEntity().getShooter();
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (e.getHitBlock() == null && !ToolType.FISHINGROD.getMaterials().contains(tool.getType())) {
+        if (e.getHitBlock() == null && !ToolType.FISHINGROD.contains(tool.getType())) {
             return;
         }
 

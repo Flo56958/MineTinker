@@ -386,7 +386,7 @@ public class Commands implements TabExecutor {
                     case "give":
                     case "g":
                         for (ToolType type : ToolType.values()) {
-                            for (Material mat : type.getMaterials()) {
+                            for (Material mat : type.getToolMaterials()) {
                                 result.add(mat.toString());
                             }
                         }

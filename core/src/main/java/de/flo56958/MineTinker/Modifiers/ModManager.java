@@ -531,22 +531,22 @@ public class ModManager {
     public void convertItemStack(ItemStack is) {
         Material m = is.getType();
 
-        if ((ToolType.AXE.getMaterials().contains(m)
-                || ToolType.BOW.getMaterials().contains(m)
-                || ToolType.CROSSBOW.getMaterials().contains(m)
-                || ToolType.HOE.getMaterials().contains(m)
-                || ToolType.PICKAXE.getMaterials().contains(m)
-                || ToolType.SHOVEL.getMaterials().contains(m)
-                || ToolType.SWORD.getMaterials().contains(m)
-                || ToolType.TRIDENT.getMaterials().contains(m)
-                || ToolType.SHEARS.getMaterials().contains(m)
-                || ToolType.FISHINGROD.getMaterials().contains(m)) && !isWandViable(is)) {
+        if ((ToolType.AXE.contains(m)
+                || ToolType.BOW.contains(m)
+                || ToolType.CROSSBOW.contains(m)
+                || ToolType.HOE.contains(m)
+                || ToolType.PICKAXE.contains(m)
+                || ToolType.SHOVEL.contains(m)
+                || ToolType.SWORD.contains(m)
+                || ToolType.TRIDENT.contains(m)
+                || ToolType.SHEARS.contains(m)
+                || ToolType.FISHINGROD.contains(m)) && !isWandViable(is)) {
             nbt.setInt(is, "IdentifierTool", 0);
-        } else if (ToolType.BOOTS.getMaterials().contains(m)
-                || ToolType.CHESTPLATE.getMaterials().contains(m)
-                || ToolType.HELMET.getMaterials().contains(m)
-                || ToolType.LEGGINGS.getMaterials().contains(m)
-                || ToolType.ELYTRA.getMaterials().contains(m)) {
+        } else if (ToolType.BOOTS.contains(m)
+                || ToolType.CHESTPLATE.contains(m)
+                || ToolType.HELMET.contains(m)
+                || ToolType.LEGGINGS.contains(m)
+                || ToolType.ELYTRA.contains(m)) {
             nbt.setInt(is, "IdentifierArmor", 0);
         } else return;
 
@@ -649,16 +649,16 @@ public class ModManager {
             AttributeModifier armorAM;
             AttributeModifier toughnessAM;
 
-            if (ToolType.BOOTS.getMaterials().contains(is.getType())) {
+            if (ToolType.BOOTS.contains(is.getType())) {
                 armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
                 toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
-            } else if (ToolType.CHESTPLATE.getMaterials().contains(is.getType())) {
+            } else if (ToolType.CHESTPLATE.contains(is.getType())) {
                 armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
                 toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
-            } else if (ToolType.HELMET.getMaterials().contains(is.getType())) {
+            } else if (ToolType.HELMET.contains(is.getType())) {
                 armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
                 toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
-            } else if (ToolType.LEGGINGS.getMaterials().contains(is.getType())) {
+            } else if (ToolType.LEGGINGS.contains(is.getType())) {
                 armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
                 toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
             } else return;

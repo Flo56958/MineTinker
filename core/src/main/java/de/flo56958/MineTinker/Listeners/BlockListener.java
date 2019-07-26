@@ -38,7 +38,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        if (e.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS || ToolType.HOE.getMaterials().contains(tool.getType()))) {
+        if (e.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS || ToolType.HOE.contains(tool.getType()))) {
             return;
         }
 
@@ -59,7 +59,7 @@ public class BlockListener implements Listener {
         modManager.addExp(p, tool, expAmount);
 
         //-------------------------------------------POWERCHECK---------------------------------------------
-        if (Power.HASPOWER.get(p).get() && !ToolType.PICKAXE.getMaterials().contains(tool.getType())
+        if (Power.HASPOWER.get(p).get() && !ToolType.PICKAXE.contains(tool.getType())
                 && e.getBlock().getDrops(tool).isEmpty() && !e.getBlock().getType().equals(Material.NETHER_WART)) { //Necessary for EasyHarvest NetherWard-Break
             e.setCancelled(true);
             return;
@@ -146,7 +146,7 @@ public class BlockListener implements Listener {
 
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (!ToolType.HOE.getMaterials().contains(tool.getType())) {
+        if (!ToolType.HOE.contains(tool.getType())) {
             return;
         }
 
@@ -194,7 +194,7 @@ public class BlockListener implements Listener {
 
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (!ToolType.AXE.getMaterials().contains(tool.getType())) {
+        if (!ToolType.AXE.contains(tool.getType())) {
             return;
         }
 
@@ -239,7 +239,7 @@ public class BlockListener implements Listener {
 
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (!ToolType.SHOVEL.getMaterials().contains(tool.getType())) {
+        if (!ToolType.SHOVEL.contains(tool.getType())) {
             return;
         }
 

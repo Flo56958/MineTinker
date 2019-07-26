@@ -89,7 +89,7 @@ public class Channeling extends Modifier {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
+            if (ToolType.TRIDENT.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.CHANNELING, modManager.getModLevel(tool, this), true);
             }
 
