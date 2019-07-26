@@ -25,12 +25,12 @@ public class ChatWriter {
     static {
     	CHAT_PREFIX = Main.getPlugin().getConfig().getString("chat-prefix");
 
-        map.put(1000000, "%BOLD%%UNDERLINE%M");
-        map.put(500000, "%BOLD%%UNDERLINE%D");
-        map.put(100000, "%BOLD%%UNDERLINE%C");
-        map.put(50000, "%BOLD%%UNDERLINE%L");
-        map.put(10000, "%BOLD%%UNDERLINE%X");
-    	map.put(5000, "%BOLD%%UNDERLINE%V");
+        map.put(1000000, "%BOLD%%UNDERLINE%M%RESET%");
+        map.put(500000, "%BOLD%%UNDERLINE%D%RESET%");
+        map.put(100000, "%BOLD%%UNDERLINE%C%RESET%");
+        map.put(50000, "%BOLD%%UNDERLINE%L%RESET%");
+        map.put(10000, "%BOLD%%UNDERLINE%X%RESET%");
+    	map.put(5000, "%BOLD%%UNDERLINE%V%RESET%");
         map.put(1000, "M");
         map.put(900, "CM");
         map.put(500, "D");
