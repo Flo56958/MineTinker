@@ -31,7 +31,7 @@ public class TridentListener implements Listener {
             return;
         }
 
-        ModManager.instance().addExp(p, trident, -20000);
+        ModManager.instance().addExp(p, trident, -20000); //trident is a item clone and only for triggering modifier effects - this makes sure that the item duplicate does not get any level ups
         TridentToItemStack.put((Trident) e.getEntity(), trident);
     }
 }

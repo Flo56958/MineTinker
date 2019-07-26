@@ -3,11 +3,7 @@ package de.flo56958.MineTinker.Data;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Material;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.List;
+import java.util.*;
 
 public enum ToolType {
 
@@ -57,6 +53,8 @@ public enum ToolType {
 		tools.put(ToolType.TRIDENT, Collections.singletonList(Material.TRIDENT));
 		tools.put(ToolType.OTHER, Arrays.asList(Material.FLINT_AND_STEEL, Material.CARROT_ON_A_STICK));
 		tools.put(ToolType.SHEARS, Collections.singletonList(Material.SHEARS));
+
+		tools.put(ToolType.INVALID, Collections.emptyList());
 
 		ToolType.getTools().values().forEach(toolMaterials::addAll);
 	}
