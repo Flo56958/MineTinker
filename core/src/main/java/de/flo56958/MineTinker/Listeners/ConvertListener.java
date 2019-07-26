@@ -28,11 +28,7 @@ public class ConvertListener implements Listener{
     private static final ModManager modManager = ModManager.instance();
 	
 	public void register() {
-	    ArrayList<Material> converting = new ArrayList<>();
-
-		ToolType.getTools().values().forEach(converting::addAll);
-
-		for (Material m : converting) {
+		for (Material m : ToolType.getAllToolMaterials()) {
 	    	ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(Main.getPlugin(), m.toString() + "_Converter"), new ItemStack(m, 1));
 			recipe.addIngredient(m);
 

@@ -159,6 +159,7 @@ class Functions {
             ItemStack tool = player.getInventory().getItemInMainHand();
 
             if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
+                // TODO: Fix, meta id Damageable, not the tool
                 if (tool instanceof Damageable) {
                     Damageable damageable = (Damageable)tool;
 

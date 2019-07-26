@@ -359,6 +359,7 @@ public class Power extends Modifier implements Enchantable, Listener {
         if (b.getType().equals(Material.GRASS_BLOCK) || b.getType().equals(Material.DIRT)) {
             if (b.getWorld().getBlockAt(b.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
 
+                // TODO: Fix, meta id Damageable, not the tool
                 if (tool instanceof Damageable) {
                     Damageable damageable = (Damageable) tool;
                     damageable.setDamage(damageable.getDamage() + 1);

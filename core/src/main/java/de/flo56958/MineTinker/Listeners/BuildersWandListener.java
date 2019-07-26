@@ -355,6 +355,7 @@ public class BuildersWandListener implements Listener {
 
                         Location loc = l.clone().subtract(v.clone().multiply(-1));
 
+                        // TODO: Fix, meta id Damageable, not the tool
                         if (wand instanceof Damageable) {
                             Damageable damageable = (Damageable) wand;
 

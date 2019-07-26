@@ -3,6 +3,7 @@ package de.flo56958.MineTinker.Data;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Material;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -30,6 +31,7 @@ public enum ToolType {
 	TRIDENT;
 
 	private static EnumMap<ToolType, List<Material>> tools = new EnumMap<>(ToolType.class);
+	private static List<Material> toolMaterials = new ArrayList<>();
 
 	static {
 		tools.put(ToolType.AXE, Arrays.asList(Material.WOODEN_AXE, Material.STONE_AXE, Material.IRON_AXE, Material.GOLDEN_AXE, Material.DIAMOND_AXE));
@@ -55,10 +57,16 @@ public enum ToolType {
 		tools.put(ToolType.TRIDENT, Collections.singletonList(Material.TRIDENT));
 		tools.put(ToolType.OTHER, Arrays.asList(Material.FLINT_AND_STEEL, Material.CARROT_ON_A_STICK));
 		tools.put(ToolType.SHEARS, Collections.singletonList(Material.SHEARS));
+
+		ToolType.getTools().values().forEach(toolMaterials::addAll);
 	}
 
 	public static EnumMap<ToolType, List<Material>> getTools() {
 		return tools;
+	}
+
+	public static List<Material> getAllToolMaterials() {
+		return toolMaterials;
 	}
 
 	public List<Material> getToolMaterials() {
