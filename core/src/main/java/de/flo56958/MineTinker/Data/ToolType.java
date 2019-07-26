@@ -39,6 +39,8 @@ public enum ToolType {
 
 		if (NBTUtils.isOneFourteenCompatible()) {
 			tools.put(ToolType.CROSSBOW, Collections.singletonList(Material.CROSSBOW));
+		} else {
+			tools.put(ToolType.CROSSBOW, Collections.emptyList());
 		}
 
 		tools.put(ToolType.ELYTRA, Collections.singletonList(Material.ELYTRA));
