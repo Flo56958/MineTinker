@@ -93,7 +93,12 @@ public class ConvertListener implements Listener{
 			}
 		}
 
-		modManager.convertItemStack(currentItem);
+		if (!ToolType.getAllToolMaterials().contains(lastItem.getType())) {
+			return;
+		}
+
+		e.getInventory().setResult(lastItem.clone());
+		modManager.convertItemStack(e.getInventory().getResult());
 	}
 	
 	@EventHandler(ignoreCancelled = true)
@@ -121,7 +126,6 @@ public class ConvertListener implements Listener{
 		}
 
         if (tool != null) {
-			modManager.convertItemStack(tool);
 			ChatWriter.log(false, player.getName() + " crafted " + ItemGenerator.getDisplayName(tool) + "! It is now a MineTinker-Item!");
 		}
     }
