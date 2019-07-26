@@ -137,7 +137,7 @@ public class PlayerListener implements Listener {
             float percent = (float)Main.getPlugin().getConfig().getDouble("DurabilityPercentageRepair");
 
             while (amount > 0 && dura > 0) {
-                dura = (int)(dura - (maxDura * percent));
+                dura = Math.round(dura - (maxDura * percent));
                 amount--;
             }
 
