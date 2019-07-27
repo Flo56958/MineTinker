@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -52,47 +51,40 @@ public class AntiArrowPlating extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Anti-Arrow-Plating";
-        config.addDefault(key + ".allowed", true);
-        config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Pierce Resistant Metal");
-        config.addDefault(key + ".modifier_item", "IRON_BLOCK"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Armor mitigates projectile damage!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Anti-Arrow-Plating-Modifier");
-        config.addDefault(key + ".Color", "%WHITE%");
-        config.addDefault(key + ".MaxLevel", 5);
+        config.addDefault("Allowed", true);
+        config.addDefault("Name", "Anti-Arrow-Plating");
+        config.addDefault("ModifierItemName", "Pierce Resistant Metal");
+        config.addDefault("Description", "Armor mitigates projectile damage!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Anti-Arrow-Plating-Modifier");
+        config.addDefault("Color", "%WHITE%");
+        config.addDefault("MaxLevel", 5);
 
-        config.addDefault(key + ".CompatibleWithProtecting", false);
-        config.addDefault(key + ".CompatibleWithAntiFire", false);
-        config.addDefault(key + ".CompatibleWithAntiBlast", false);
+        config.addDefault("CompatibleWithProtecting", false);
+        config.addDefault("CompatibleWithAntiFire", false);
+        config.addDefault("CompatibleWithAntiBlast", false);
 
-        config.addDefault(key + ".Recipe.Enabled", true);
-        config.addDefault(key + ".Recipe.Top", "IAI");
-        config.addDefault(key + ".Recipe.Middle", "ADA");
-        config.addDefault(key + ".Recipe.Bottom", "IAI");
+        config.addDefault("Recipe.Enabled", true);
+        config.addDefault("Recipe.Top", "IAI");
+        config.addDefault("Recipe.Middle", "ADA");
+        config.addDefault("Recipe.Bottom", "IAI");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("I", "IRON_BLOCK");
         recipeMaterials.put("A", "ARROW");
         recipeMaterials.put("D", "DIAMOND");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
         // Save Config
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
         // Initialize modifier
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
-                        ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
-                        ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.IRON_BLOCK);
 
-        this.compatibleWithProtecting = config.getBoolean(key + ".CompatibleWithProtecting");
-        this.compatibleWithAntiFire = config.getBoolean(key + ".CompatibleWithAntiFire");
-        this.compatibleWithAntiBlast = config.getBoolean(key + ".CompatibleWithAntiBlast");
+        this.compatibleWithProtecting = config.getBoolean("CompatibleWithProtecting", false);
+        this.compatibleWithAntiFire = config.getBoolean("CompatibleWithAntiFire", false);
+        this.compatibleWithAntiBlast = config.getBoolean("CompatibleWithAntiBlast", false);
     }
 
     @Override
@@ -150,15 +142,5 @@ public class AntiArrowPlating extends Modifier {
 
             tool.setItemMeta(meta);
         }
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Anti-Arrow-Plating", "Modifier_AntiArrowPlating");
-    }
-
-    @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Anti-Arrow-Plating.allowed");
     }
 }

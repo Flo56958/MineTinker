@@ -59,29 +59,23 @@ public class Beheading extends Modifier implements Enchantable, Listener {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
     	
-    	String key = "Beheading";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Enchanted Wither-Skull");
-        config.addDefault(key + ".modifier_item", "WITHER_SKELETON_SKULL"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Chance to drop the head of the mob!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Beheading-Modifier");
-    	config.addDefault(key + ".Color", "%DARK_GRAY%");
-    	config.addDefault(key + ".MaxLevel", 10);
-    	config.addDefault(key + ".PercentagePerLevel", 10);  //= 100% at Level 10
-    	config.addDefault(key + ".EnchantCost", 10);
-    	config.addDefault(key + ".Recipe.Enabled", false);
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Beheading");
+        config.addDefault("ModifierItemName", "Enchanted Wither-Skull");
+        config.addDefault("Description", "Chance to drop the head of the mob!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Beheading-Modifier");
+    	config.addDefault("Color", "%DARK_GRAY%");
+    	config.addDefault("MaxLevel", 10);
+    	config.addDefault("PercentagePerLevel", 10);  //= 100% at Level 10
+    	config.addDefault("EnchantCost", 10);
+    	config.addDefault("Recipe.Enabled", false);
     	
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
     	
-    	init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
-        
-        this.percentagePerLevel = config.getInt("Beheading.PercentagePerLevel");
+    	init(Material.WITHER_SKELETON_SKULL);
+
+        this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
     }
 
     @Override
@@ -144,16 +138,6 @@ public class Beheading extends Modifier implements Enchantable, Listener {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.beheading.craft")) return;
-        _createModifierItem(getConfig(), p, this, "Beheading");
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Beheading", "Modifier_Beheading");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Beheading.allowed");
+        _createModifierItem(getConfig(), p, this);
     }
 }

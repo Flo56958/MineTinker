@@ -4,7 +4,6 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTEntityDeathEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -49,44 +48,38 @@ public class Directing extends Modifier implements Listener {
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Directing";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Enhanced Compass");
-        config.addDefault(key + ".modifier_item", "COMPASS"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Loot goes directly into Inventory!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Directing-Modifier");
-        config.addDefault(key + ".MaxLevel", 1);
-        config.addDefault(key + ".worksOnXP", true);
-        config.addDefault(key + ".minimumLevelToGetXP", 1); //Modifier-Level to give Player XP
-        config.addDefault(key + ".workinpvp", true);
-        config.addDefault(key + ".Color", "%GRAY%");
 
-        config.addDefault(key + ".Recipe.Enabled", true);
-    	config.addDefault(key + ".Recipe.Top", "ECE");
-    	config.addDefault(key + ".Recipe.Middle", "CIC");
-    	config.addDefault(key + ".Recipe.Bottom", "ECE");
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Directing");
+    	config.addDefault("ModifierItemName", "Enhanced Compass");
+        config.addDefault("Description", "Loot goes directly into Inventory!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Directing-Modifier");
+        config.addDefault("MaxLevel", 1);
+        config.addDefault("WorksOnXP", true);
+        config.addDefault("MinimumLevelToGetXP", 1); //Modifier-Level to give Player XP
+        config.addDefault("WorkInPVP", true);
+        config.addDefault("Color", "%GRAY%");
+
+        config.addDefault("Recipe.Enabled", true);
+    	config.addDefault("Recipe.Top", "ECE");
+    	config.addDefault("Recipe.Middle", "CIC");
+    	config.addDefault("Recipe.Bottom", "ECE");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("C", "COMPASS");
         recipeMaterials.put("E", "ENDER_PEARL");
         recipeMaterials.put("I", "IRON_BLOCK");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
     	
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.COMPASS);
 
-        this.workInPVP = config.getBoolean(key + ".workinpvp", true);
-        this.workOnXP = config.getBoolean(key + ".workOnXP", true);
-        this.minimumLevelForXP = config.getInt(key + ".minimumLevelToGetXP", 1);
+        this.workInPVP = config.getBoolean("WorkInPVP", true);
+        this.workOnXP = config.getBoolean("WorksOnXP", true);
+        this.minimumLevelForXP = config.getInt("MinimumLevelToGetXP", 1);
     }
 
     @Override
@@ -121,15 +114,5 @@ public class Directing extends Modifier implements Listener {
             p.giveExp(event.getEvent().getDroppedExp());
             event.getEvent().setDroppedExp(0);
         }
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Directing", "Modifier_Directing");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Directing.allowed");
     }
 }
