@@ -34,7 +34,10 @@ public class AnvilListener implements Listener {
 	public void onInventoryClick(InventoryClickEvent e) {
 		HumanEntity he = e.getWhoClicked();
 		
-		if (!(he instanceof Player && e.getClickedInventory() instanceof AnvilInventory)) return;
+		if (!(he instanceof Player && e.getClickedInventory() instanceof AnvilInventory)) {
+		    return;
+        }
+
         AnvilInventory inv = (AnvilInventory) e.getClickedInventory();
         Player player = (Player) he;
 
@@ -42,14 +45,26 @@ public class AnvilListener implements Listener {
         ItemStack modifier = inv.getItem(1);
         ItemStack newTool = inv.getItem(2);
 
-        if (tool == null || modifier == null || newTool == null) return;
+        if (tool == null || modifier == null || newTool == null) {
+            return;
+        }
 
-        if (e.getSlot() != 2) return;
-        if (Lists.WORLDS.contains(player.getWorld().getName())) return;
-        if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) return;
+        if (e.getSlot() != 2) {
+            return;
+        }
+
+        if (Lists.WORLDS.contains(player.getWorld().getName())) {
+            return;
+        }
+
+        if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) {
+            return;
+        }
 
         //boolean deleteAllItems = false;
-        if (e.getCursor() != null && !e.getCursor().getType().equals(Material.AIR)) return;
+        if (e.getCursor() != null && !e.getCursor().getType().equals(Material.AIR)) {
+            return;
+        }
 
         if (!modManager.isModifierItem(modifier)) { //upgrade
             if (tool.getType().equals(newTool.getType())) return; //Not an upgrade
@@ -62,6 +77,7 @@ public class AnvilListener implements Listener {
                 } // no else as it gets added in if-clause
 
                 inv.clear();
+
                 return;
             }
 
@@ -71,7 +87,10 @@ public class AnvilListener implements Listener {
             inv.clear();
         } else { //is modifier
             Modifier mod = modManager.getModifierFromItem(modifier);
-            if (mod == null) return;
+
+            if (mod == null) {
+                return;
+            }
 
             modifier.setAmount(modifier.getAmount() - 1);
             Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
@@ -84,6 +103,7 @@ public class AnvilListener implements Listener {
 
                 inv.clear();
                 inv.setItem(1, modifier);
+
                 return;
             }
 
@@ -100,7 +120,9 @@ public class AnvilListener implements Listener {
         ItemStack tool = i.getItem(0);
         ItemStack modifier = i.getItem(1);
 
-        if (tool == null || modifier == null) return;
+        if (tool == null || modifier == null) {
+            return;
+        }
 
         //-----
         Player player = null;
@@ -114,12 +136,19 @@ public class AnvilListener implements Listener {
             }
         }
 
-        if (player == null) return;
+        if (player == null) {
+            return;
+        }
 
         //-----
 
-        if (Lists.WORLDS.contains(player.getWorld().getName())) return;
-        if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) return;
+        if (Lists.WORLDS.contains(player.getWorld().getName())) {
+            return;
+        }
+
+        if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) {
+            return;
+        }
 
         if (modifier.getType().equals(Material.ENCHANTED_BOOK)) { //So no Tools can be enchanted via books, if enchanting is disabled
             if (config.getBoolean("AllowEnchanting")) {
@@ -151,49 +180,49 @@ public class AnvilListener implements Listener {
                 if (item != null) {
                     switch (item.getAmount()) {
                         case 1:
-                            if (ToolType.SHOVEL.getMaterials().contains(tool.getType())) {
+                            if (ToolType.SHOVEL.contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
                                 e.setResult(newTool);
                                 i.setRepairCost(0);
                             }
                             break;
                         case 2:
-                            if (ToolType.SWORD.getMaterials().contains(tool.getType()) || ToolType.HOE.getMaterials().contains(tool.getType())) {
+                            if (ToolType.SWORD.contains(tool.getType()) || ToolType.HOE.contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
                                 e.setResult(newTool);
                                 i.setRepairCost(0);
                             }
                             break;
                         case 3:
-                            if (ToolType.AXE.getMaterials().contains(tool.getType()) || ToolType.PICKAXE.getMaterials().contains(tool.getType())) {
+                            if (ToolType.AXE.contains(tool.getType()) || ToolType.PICKAXE.contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
                                 e.setResult(newTool);
                                 i.setRepairCost(0);
                             }
                             break;
                         case 4:
-                            if (ToolType.BOOTS.getMaterials().contains(tool.getType())) {
+                            if (ToolType.BOOTS.contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
                                 e.setResult(newTool);
                                 i.setRepairCost(0);
                             }
                             break;
                         case 5:
-                            if (ToolType.HELMET.getMaterials().contains(tool.getType())) {
+                            if (ToolType.HELMET.contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
                                 e.setResult(newTool);
                                 i.setRepairCost(0);
                             }
                             break;
                         case 7:
-                            if (ToolType.LEGGINGS.getMaterials().contains(tool.getType())) {
+                            if (ToolType.LEGGINGS.contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
                                 e.setResult(newTool);
                                 i.setRepairCost(0);
                             }
                             break;
                         case 8:
-                            if (ToolType.CHESTPLATE.getMaterials().contains(tool.getType())) {
+                            if (ToolType.CHESTPLATE.contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
                                 e.setResult(newTool);
                                 i.setRepairCost(0);
@@ -208,12 +237,22 @@ public class AnvilListener implements Listener {
 
     @EventHandler
     public void onGrind(InventoryClickEvent e) {
-	    if (!NBTUtils.isOneFourteenCompatible()) return;
-	    if (!(e.getInventory() instanceof GrindstoneInventory)) return;
-	    if (e.getSlot() != 9) return;
+	    if (!NBTUtils.isOneFourteenCompatible()) {
+	        return;
+        }
+
+	    if (!(e.getInventory() instanceof GrindstoneInventory)) {
+	        return;
+        }
+
+	    if (e.getSlot() != 9) {
+	        return;
+        }
 
 	    ItemStack results = e.getCurrentItem();
 
-	    if (modManager.isToolViable(results) || modManager.isArmorViable(results)) e.setCancelled(true);
+	    if (modManager.isToolViable(results) || modManager.isArmorViable(results)) {
+	        e.setCancelled(true);
+        }
     }
 }

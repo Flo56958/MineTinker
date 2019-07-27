@@ -15,7 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class Channeling extends Modifier {
 
     private Channeling() {
         super("Channeling", "Channeling.yml",
-                new ArrayList<>(Arrays.asList(ToolType.TRIDENT)),
+                new ArrayList<>(Collections.singletonList(ToolType.TRIDENT)),
                 Main.getPlugin());
     }
 
@@ -89,7 +89,7 @@ public class Channeling extends Modifier {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
+            if (ToolType.TRIDENT.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.CHANNELING, modManager.getModLevel(tool, this), true);
             }
 

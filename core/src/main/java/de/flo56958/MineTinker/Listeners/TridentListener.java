@@ -16,15 +16,22 @@ public class TridentListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onTridentLaunch(ProjectileLaunchEvent e) {
-        if (!(e.getEntity().getShooter() instanceof Player)) return;
-        if (!(e.getEntity() instanceof Trident)) return;
+        if (!(e.getEntity().getShooter() instanceof Player)) {
+            return;
+        }
+
+        if (!(e.getEntity() instanceof Trident)) {
+            return;
+        }
 
         Player p = (Player) e.getEntity().getShooter();
         ItemStack trident = p.getInventory().getItemInMainHand().clone();
 
-        if (!ModManager.instance().isToolViable(trident)) return;
+        if (!ModManager.instance().isToolViable(trident)) {
+            return;
+        }
 
-        ModManager.instance().addExp(p, trident, -20000);
+        ModManager.instance().addExp(p, trident, -20000); //trident is a item clone and only for triggering modifier effects - this makes sure that the item duplicate does not get any level ups
         TridentToItemStack.put((Trident) e.getEntity(), trident);
     }
 }

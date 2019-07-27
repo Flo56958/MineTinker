@@ -124,7 +124,7 @@ public class Shulking extends Modifier implements Listener {
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
 
-        if (!ToolType.FISHINGROD.getMaterials().contains(tool.getType())) return;
+        if (!ToolType.FISHINGROD.contains(tool.getType())) return;
 
         effect(p, tool, event.getEvent().getHitEntity());
     }

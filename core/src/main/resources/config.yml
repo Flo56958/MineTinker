@@ -100,14 +100,6 @@ BannedWorlds:                         #Worlds where MineTinker-Tools can't be us
   - bannedExample1
   - bannedExample2
 
-#---------------SPAWNER-SETTINGS-------------- (deprecated)
-Spawners:
-  enabled: false                      #Should be disabled when using a different Spawner plugin
-  onlyWithSilkTouch: true
-  BannedWorlds:                       #Worlds where Spawners can't be mined and placed
-    - bannedExample1
-    - bannedExample2
-
 #---------------EASYHARVEST-Settings--------------
 EasyHarvest:
   enabled: true

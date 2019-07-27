@@ -176,7 +176,7 @@ public class Commands implements TabExecutor {
     /**
      * Outputs the error message "Invalid Arguments" in the Players chat
      *
-     * @param player
+     * @param player The player to send the message to
      */
     static void invalidArgs(Player player) {
         ChatWriter.sendMessage(player, ChatColor.RED, config.getString("Language.Commands.InvalidArguments"));
@@ -185,7 +185,7 @@ public class Commands implements TabExecutor {
     /**
      * Outputs the error message "Invalid Arguments" to the CommandSender
      *
-     * @param sender
+     * @param sender The sender to send the message to
      */
     static void invalidArgs(CommandSender sender) {
         ChatWriter.sendMessage(sender, ChatColor.RED, config.getString("Language.Commands.InvalidArguments"));
@@ -194,7 +194,7 @@ public class Commands implements TabExecutor {
     /**
      * Outputs the error message "Invalid Tool/Armor" in the Players chat
      *
-     * @param player
+     * @param player The player to send the message to
      */
     static void invalidTool(Player player) {
         ChatWriter.sendMessage(player, ChatColor.RED, config.getString("Language.Commands.InvalidTool"));
@@ -203,7 +203,7 @@ public class Commands implements TabExecutor {
     /**
      * Outputs the error message "No Permissions" in the Players chat
      *
-     * @param player
+     * @param player The player to send the message to
      */
     private void noPerm(Player player) {
         ChatWriter.sendMessage(player, ChatColor.RED, config.getString("Language.Commands.NoPermission"));
@@ -212,10 +212,12 @@ public class Commands implements TabExecutor {
     /**
      * Outputs all available commands from MineTinker in the chat of the Player
      *
-     * @param player
+     * @param player The player to send the message to
      */
     private void onHelp(Player player) {
+        // TODO: Turn into a HashMap<String, String> that's iterated over
         int index = 1;
+
         if (player.hasPermission("minetinker.commands.addexp")) {
             ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". AddExp (ae)");
         }
@@ -268,11 +270,12 @@ public class Commands implements TabExecutor {
     /**
      * Outputs all available commands from MineTinker in the console
      *
-     * @param sender
+     * @param sender The sender to send the message to
      */
     private void onHelpConsole(CommandSender sender) {
         int index = 1;
         sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + index++ + ". CheckUpdate (cu)");
+        sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + index++ + ". GiveModifierItem (gm)");
         sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + index++ + ". Info (i)");
         sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + index++ + ". Modifiers (mods)");
         sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + index + ". reload (r)");
@@ -286,11 +289,11 @@ public class Commands implements TabExecutor {
     /**
      * reloads the plugins configuration
      *
-     * @param sender
+     * @param sender The sender to send the message to
      */
     private void reload(CommandSender sender) {
         ChatWriter.sendMessage(sender, ChatColor.RED, "NOTE: It is possible that the plugin will not work correctly after reload!");
-        ChatWriter.sendMessage(sender, ChatColor.RED, "NOTE: Elevator and Builderswands need a complete restart to function correctly on the new configurations!");
+        ChatWriter.sendMessage(sender, ChatColor.RED, "NOTE: Builderswands need a complete restart to function correctly on the new configurations!");
 
         ChatWriter.sendMessage(sender, ChatColor.WHITE, "Clearing recipes!");
 
@@ -329,8 +332,7 @@ public class Commands implements TabExecutor {
         ChatWriter.sendMessage(sender, ChatColor.WHITE, "Done reloading!");
 
         if (config.getBoolean("CheckForUpdates")) {
-            Bukkit.getScheduler().scheduleAsyncDelayedTask(Main.getPlugin(),
-                    Updater::checkForUpdate, 20);
+            Bukkit.getScheduler().scheduleAsyncDelayedTask(Main.getPlugin(), Updater::checkForUpdate, 20);
         }
 
     }
@@ -384,7 +386,7 @@ public class Commands implements TabExecutor {
                     case "give":
                     case "g":
                         for (ToolType type : ToolType.values()) {
-                            for (Material mat : type.getMaterials()) {
+                            for (Material mat : type.getToolMaterials()) {
                                 result.add(mat.toString());
                             }
                         }

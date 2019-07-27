@@ -41,9 +41,13 @@ public class GUI implements Listener {
      * @throws          IllegalStateException when GUI is closed
      */
     public Window addWindow(final int size, @NotNull final String title) {
-        if (isClosed) throw new IllegalStateException("GUI (" + this.hashCode() + ") is already closed!");
+        if (isClosed) {
+            throw new IllegalStateException("GUI (" + this.hashCode() + ") is already closed!");
+        }
+
         Window window = new Window(size, title, this);
         windows.add(window);
+
         return window;
     }
 
@@ -64,10 +68,16 @@ public class GUI implements Listener {
      */
     @Nullable
     public Window getWindowFromInventory(final Inventory inv) {
-        if (inv == null) return null;
-        for (Window w : windows) {
-            if (w.inventory.equals(inv)) return w;
+        if (inv == null) {
+            return null;
         }
+
+        for (Window w : windows) {
+            if (w.inventory.equals(inv)) {
+                return w;
+            }
+        }
+
         return null;
     }
 
@@ -87,15 +97,24 @@ public class GUI implements Listener {
      */
     public void show(@NotNull final Player p, final int page) {
         synchronized (this) {
-            if (isClosed) throw new IllegalStateException("GUI (" + this.hashCode() + ") is closed.");
+            if (isClosed) {
+                throw new IllegalStateException("GUI (" + this.hashCode() + ") is closed.");
+            }
+
             p.openInventory(windows.get(page).inventory);
         }
     }
 
     public void show(@NotNull final Player p, final Window window) {
         synchronized (this) {
-            if (isClosed) throw new IllegalStateException("GUI (" + this.hashCode() + ") is closed.");
-            if (!window.getGUI().equals(this)) throw new IllegalArgumentException("GUI (" + this.hashCode() + ") does not manage Window (" + window.hashCode() + ")!");
+            if (isClosed) {
+                throw new IllegalStateException("GUI (" + this.hashCode() + ") is closed.");
+            }
+
+            if (!window.getGUI().equals(this)) {
+                throw new IllegalArgumentException("GUI (" + this.hashCode() + ") does not manage Window (" + window.hashCode() + ")!");
+            }
+
             p.openInventory(window.inventory);
         }
     }
@@ -114,7 +133,9 @@ public class GUI implements Listener {
      */
     public void open() {
         synchronized (this) {
-            if (!isClosed) return;
+            if (!isClosed) {
+                return;
+            }
 
             Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
             isClosed = false;
@@ -128,7 +149,9 @@ public class GUI implements Listener {
      */
     public void close() {
         synchronized (this) {
-            if (isClosed) return;
+            if (isClosed) {
+                return;
+            }
 
             HandlerList.unregisterAll(this);
             isClosed = true;
@@ -140,13 +163,18 @@ public class GUI implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onClick(InventoryClickEvent e) {
         Window w = getWindowFromInventory(e.getClickedInventory());
-        if (w == null) return;
+
+        if (w == null) {
+            return;
+        }
 
         e.setCancelled(true);
 
         Window.Button clickedButton = w.getButtonFromSlot(e.getSlot());
-        if (clickedButton != null)
+
+        if (clickedButton != null) {
             clickedButton.executeAction(e);
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -160,13 +188,19 @@ public class GUI implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onMove(InventoryMoveItemEvent e) {
         Window w = getWindowFromInventory(e.getDestination());
-        if (w == null) return;
+        if (w == null) {
+            return;
+        }
 
         w = getWindowFromInventory(e.getInitiator());
-        if (w == null) return;
+        if (w == null) {
+            return;
+        }
 
         w = getWindowFromInventory(e.getSource());
-        if (w == null) return;
+        if (w == null) {
+            return;
+        }
 
         e.setCancelled(true);
     }
@@ -174,7 +208,10 @@ public class GUI implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEvent(InventoryInteractEvent e) {
         Window w = getWindowFromInventory(e.getInventory());
-        if (w == null) return;
+
+        if (w == null) {
+            return;
+        }
 
         e.setCancelled(true);
     }
@@ -197,10 +234,14 @@ public class GUI implements Listener {
          * @throws          IllegalArgumentException when size is does not match the limitations.
          */
         private Window(int size, @NotNull final String title, @NotNull final GUI gui) {
-            if (size <= 0)       throw new IllegalArgumentException("Size of Inventory needs to be at least ONE!");
-            else if (size > 6)  throw new IllegalArgumentException("Size of Inventory needs to be at least SIX!");
+            if (size <= 0) {
+                throw new IllegalArgumentException("Size of Inventory needs to be at least ONE!");
+            } else if (size > 6) {
+                throw new IllegalArgumentException("Size of Inventory needs to be at least SIX!");
+            }
 
             size *= 9;
+
             this.inventory = Bukkit.createInventory(null, size, title);
             this.buttonMap = new Button[54];
             this.gui = gui;
@@ -212,28 +253,30 @@ public class GUI implements Listener {
 
         public Button addButton(final int slot, @NotNull final ItemStack item) {
             Button b = new Button(item, this);
+
             buttonMap[slot] = b;
             inventory.setItem(slot, b.item);
+
             return b;
         }
 
-        /**
-         *
-         * @param x
-         * @param y
-         * @return  null on failure
-         */
-        @Nullable
-        public Button getButton(final int x, final int y) {
-            //TODO: Parameter check
-            return buttonMap[getSlot(x, y, this)];
-        }
-
-        @Nullable
-        public Button getButton(final int slot) {
-            //TODO: Parameter check
-            return buttonMap[slot];
-        }
+//        /**
+//         *
+//         * @param x
+//         * @param y
+//         * @return  null on failure
+//         */
+//        @Nullable
+//        public Button getButton(final int x, final int y) {
+//            //TODO: Parameter check
+//            return buttonMap[getSlot(x, y, this)];
+//        }
+//
+//        @Nullable
+//        public Button getButton(final int slot) {
+//            //TODO: Parameter check
+//            return buttonMap[slot];
+//        }
 
         @NotNull
         public Inventory getInventory() {
@@ -253,14 +296,16 @@ public class GUI implements Listener {
          * @throws      IllegalArgumentException when Coordinates less than zero
          */
         public static int getSlot(final int x, final int y, Window window) {
-            if (x < 0 || y < 0) throw new IllegalArgumentException("Coordinates can not be less than ZERO!");
-            int slot = 0;
+            if (x < 0 || y < 0) {
+                throw new IllegalArgumentException("Coordinates can not be less than ZERO!");
+            }
 
-            for (int i = y; i > 0; i--)
-                slot += 9;
-            slot += x;
+            int slot = (9 * y) + x;
 
-            if (slot >= window.inventory.getSize()) throw new IllegalArgumentException("Coordinates are to big for the given Inventory!");
+            if (slot >= window.inventory.getSize()) {
+                throw new IllegalArgumentException("Coordinates are to big for the given Inventory!");
+            }
+
             return slot;
         }
 
@@ -293,8 +338,13 @@ public class GUI implements Listener {
 
             private void executeAction(@NotNull InventoryClickEvent event) {
                 ButtonAction action = actions.get(event.getClick());
-                if (action == null) return;
+
+                if (action == null) {
+                    return;
+                }
+
                 action.run();
+
                 if (action instanceof PlayerAction && event.getWhoClicked() instanceof Player) {
                     ((PlayerAction) action).run((Player) event.getWhoClicked());
                 }

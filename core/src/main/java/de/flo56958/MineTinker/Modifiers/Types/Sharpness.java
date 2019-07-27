@@ -101,7 +101,7 @@ public class Sharpness extends Modifier {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (ToolType.AXE.getMaterials().contains(tool.getType()) || ToolType.SWORD.getMaterials().contains(tool.getType())) {
+            if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType())) {
                 if (!this.compatibleWithSmite) {
                     if (modManager.hasMod(tool, Smite.instance()) || meta.hasEnchant(Enchantment.DAMAGE_UNDEAD)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
@@ -117,9 +117,9 @@ public class Sharpness extends Modifier {
                 }
 
                 meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.BOW.getMaterials().contains(tool.getType()) || ToolType.CROSSBOW.getMaterials().contains(tool.getType())) {
+            } else if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.ARROW_DAMAGE, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
+            } else if (ToolType.TRIDENT.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
                 meta.addEnchant(Enchantment.IMPALING, modManager.getModLevel(tool, this), true);
             }

@@ -1,7 +1,6 @@
 package de.flo56958.MineTinker;
 
 import de.flo56958.MineTinker.Commands.Commands;
-import de.flo56958.MineTinker.Data.CraftingRecipes;
 import de.flo56958.MineTinker.Data.GUIs;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Listeners.*;
@@ -13,6 +12,7 @@ import de.flo56958.MineTinker.Utilities.Updater;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -59,8 +59,10 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new TinkerListener(), this);
         Bukkit.getPluginManager().registerEvents(new TridentListener(), this);
 
-        CraftingRecipes.registerMTElytra();
-        CraftingRecipes.registerMTTrident();
+        FileConfiguration elytraConf = ConfigurationManager.getConfig("Elytra.yml");
+        elytraConf.options().copyDefaults(true);
+        elytraConf.addDefault("Elytra.ExpChanceWhileFlying", 10);
+        ConfigurationManager.saveConfig(elytraConf);
 
         if (!getConfig().getBoolean("AllowEnchanting")) Bukkit.getPluginManager().registerEvents(new EnchantingTableListener(), this);
 
@@ -90,7 +92,9 @@ public class Main extends JavaPlugin {
             Lists.BLOCKFACE.put(current, null);
         }
 
-        if (getConfig().getBoolean("CheckForUpdates")) Bukkit.getScheduler().scheduleAsyncDelayedTask(this, Updater::checkForUpdate, 20);
+        if (getConfig().getBoolean("CheckForUpdates")) {
+            Bukkit.getScheduler().scheduleAsyncDelayedTask(this, Updater::checkForUpdate, 20);
+        }
     }
 
     public void onDisable() {

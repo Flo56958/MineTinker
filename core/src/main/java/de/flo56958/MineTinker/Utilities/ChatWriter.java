@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,8 +20,30 @@ public class ChatWriter {
 
     public static final String CHAT_PREFIX;
 
+    private final static TreeMap<Integer, String> map = new TreeMap<>();
+
     static {
     	CHAT_PREFIX = Main.getPlugin().getConfig().getString("chat-prefix");
+
+        map.put(1000000, "%BOLD%%UNDERLINE%M%RESET%");
+        map.put(500000, "%BOLD%%UNDERLINE%D%RESET%");
+        map.put(100000, "%BOLD%%UNDERLINE%C%RESET%");
+        map.put(50000, "%BOLD%%UNDERLINE%L%RESET%");
+        map.put(10000, "%BOLD%%UNDERLINE%X%RESET%");
+    	map.put(5000, "%BOLD%%UNDERLINE%V%RESET%");
+        map.put(1000, "M");
+        map.put(900, "CM");
+        map.put(500, "D");
+        map.put(400, "CD");
+        map.put(100, "C");
+        map.put(90, "XC");
+        map.put(50, "L");
+        map.put(40, "XL");
+        map.put(10, "X");
+        map.put(9, "IX");
+        map.put(5, "V");
+        map.put(4, "IV");
+        map.put(1, "I");
     }
 
     /**
@@ -142,75 +165,23 @@ public class ChatWriter {
     }
 
     public static ChatColor getColor(String input) {
-        switch (input) {
-            case "%BLACK%":
-                return ChatColor.BLACK;
-            case "%DARK_BLUE%":
-                return ChatColor.DARK_BLUE;
-            case "%DARK_GREEN%":
-                return ChatColor.DARK_GREEN;
-            case "%DARK_AQUA%":
-                return ChatColor.DARK_AQUA;
-            case "%DARK_RED%":
-                return ChatColor.DARK_RED;
-            case "%DARK_PURPLE%":
-                return ChatColor.DARK_PURPLE;
-            case "%GOLD%":
-                return ChatColor.GOLD;
-            case "%GRAY%":
-                return ChatColor.GRAY;
-            case "%DARK_GRAY%":
-                return ChatColor.DARK_GRAY;
-            case "%BLUE%":
-                return ChatColor.BLUE;
-            case "%GREEN%":
-                return ChatColor.GREEN;
-            case "%AQUA%":
-                return ChatColor.AQUA;
-            case "%RED%":
-                return ChatColor.RED;
-            case "%LIGHT_PURPLE%":
-                return ChatColor.LIGHT_PURPLE;
-            case "%YELLOW%":
-                return ChatColor.YELLOW;
-            case "%BOLD%":
-                return ChatColor.BOLD;
-            case "%UNDERLINE%":
-                return ChatColor.UNDERLINE;
-            case "%ITALIC%":
-                return ChatColor.ITALIC;
-            case "%STRIKE%":
-                return ChatColor.STRIKETHROUGH;
-            case "%MAGIC%":
-                return ChatColor.MAGIC;
-            case "%RESET%":
-                return ChatColor.RESET;
-            default:
-                return ChatColor.WHITE;
-        }
+        return ChatColor.valueOf(input.split("%")[1]);
     }
 
-    public static String toRomanNumerals(int num) {
-        if (num == 1337) return "LEET";
-        if (num <= 0) return "0";
-
-        String[] romanCharacters = { "%BOLD%M%RESET%", "%BOLD%CM%RESET%", "%BOLD%D%RESET%", "%BOLD%C%RESET%", "%BOLD%XC%RESET%", "%BOLD%L%RESET%", "%BOLD%X%RESET%", "%BOLD%IX%RESET%", "%BOLD%V%RESET%",
-                                    "M", "CM", "D", "C", "XC", "L", "X", "IX", "V", "I" };
-        int[] romanValues = { 1000000, 900000, 500000, 100000, 90000, 50000, 10000, 9000, 5000,
-                                    1000, 900, 500, 100, 90, 50, 10, 9, 5, 1 };
-        StringBuilder result = new StringBuilder();
-
-        for (int i = 0; i < romanValues.length; i++) {
-            int numberInPlace = num / romanValues[i];
-            if (numberInPlace == 0) continue;
-
-            result.append(numberInPlace == 4 && i > 0 ? romanCharacters[i] + romanCharacters[i - 1] :
-                    new String(new char[numberInPlace]).replace("\0", romanCharacters[i]));
-
-            num = num % romanValues[i];
+    public static String toRomanNumerals(int number) {
+        if (number == 1337) {
+            return "LEET";
         }
 
-        return addColors(result.toString());
+        if (number <= 0) {
+            return "0";
+        }
+
+        int l =  map.floorKey(number);
+        if ( number == l ) {
+            return map.get(number);
+        }
+        return map.get(l) + toRomanNumerals(number-l);
     }
 
     public static List<String> splitString(String msg, int lineSize) {

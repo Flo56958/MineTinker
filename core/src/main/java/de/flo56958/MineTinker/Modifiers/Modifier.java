@@ -79,7 +79,7 @@ public abstract class Modifier {
     /**
      * changes the core settings of the Modifier (like a secondary constructor)
      * @param name Name of the Modifier
-     * @param description
+     * @param description Description of the Modifier
      * @param color Color of the Modifier
      * @param maxLvl Maximum Level cap of the Modifier
      * @param modItem ItemStack that is required to craft the Modifier
@@ -165,7 +165,8 @@ public abstract class Modifier {
         if (!isCommand) {
             modManager.setFreeSlots(tool, --freeSlots);
         } else {
-            Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(p, tool, mod, freeSlots, true));
+            ModifierApplyEvent event = new ModifierApplyEvent(p, tool, mod, freeSlots, true);
+            Bukkit.getPluginManager().callEvent(event);
         }
 
         return true;
@@ -177,7 +178,7 @@ public abstract class Modifier {
         return ConfigurationManager.getConfig(this.getFileName());
     }
 
-    public void _registerCraftingRecipe(FileConfiguration config, Modifier mod, String name, String keyName) {
+    protected void _registerCraftingRecipe(FileConfiguration config, Modifier mod, String name, String keyName) {
         if (config.getBoolean(name + ".Recipe.Enabled")) {
             try {
                 NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), keyName);
@@ -192,11 +193,16 @@ public abstract class Modifier {
                 if (materials != null) {
                     for (String key : materials.getKeys(false)) {
                         String materialName = materials.getString(key);
+
+                        if (materialName == null) {
+                            ChatWriter.logInfo("Material entry not found! Aborting recipe registration for this modifier.");
+                            return;
+                        }
+
                         Material material = Material.getMaterial(materialName);
 
                         if (material == null) {
                             ChatWriter.log(false, "Material [" + materialName + "] is null for mod [" + mod.name + "]");
-
                             return;
                         } else {
                             newRecipe.setIngredient(key.charAt(0), material);

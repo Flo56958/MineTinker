@@ -31,7 +31,9 @@ public class EntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent e) {
-        if (Lists.WORLDS.contains(e.getDamager().getWorld().getName())) return;
+        if (Lists.WORLDS.contains(e.getDamager().getWorld().getName())) {
+            return;
+        }
 
         Player p;
 
@@ -39,20 +41,27 @@ public class EntityListener implements Listener {
             Arrow arrow = (Arrow) e.getDamager();
             ProjectileSource source = arrow.getShooter();
 
-            if (source instanceof Player) p = (Player) source;
-            else return;
+            if (source instanceof Player) {
+                p = (Player) source;
+            } else {
+                return;
+            }
 
         } else if (e.getDamager() instanceof Trident) {
             Trident trident = (Trident) e.getDamager();
             ProjectileSource source = trident.getShooter();
 
-            if (source instanceof Player)
+            if (source instanceof Player){
                 p = (Player) source;
-            else return;
+            } else {
+                return;
+            }
 
-        } else if (e.getDamager() instanceof Player)
+        } else if (e.getDamager() instanceof Player) {
             p = (Player) e.getDamager();
-        else return;
+        } else {
+            return;
+        }
 
         /*
         if (e.getEntity() instanceof Player) {
@@ -63,19 +72,32 @@ public class EntityListener implements Listener {
 
         if (e.getDamager() instanceof Trident) {
             tool = TridentListener.TridentToItemStack.get(e.getDamager());
-            TridentListener.TridentToItemStack.remove((Trident)e.getDamager());
-            if (tool == null) return;
+
+            Trident trident = (Trident)e.getDamager();
+            TridentListener.TridentToItemStack.remove(trident);
+
+            if (tool == null) {
+                return;
+            }
         }
 
-        if (!modManager.isToolViable(tool)) return;
-        if (!modManager.durabilityCheck(e, p, tool)) return;
+        if (!modManager.isToolViable(tool)) {
+            return;
+        }
+
+        if (!modManager.durabilityCheck(e, p, tool)) {
+            return;
+        }
 
         int amount = config.getInt("ExpPerEntityHit");
 
-        Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(p, tool, e.getEntity(), e));
+        MTEntityDamageByEntityEvent event = new MTEntityDamageByEntityEvent(p, tool, e.getEntity(), e);
+        Bukkit.getPluginManager().callEvent(event);
 
-        if (config.getBoolean("EnableDamageExp")) //at bottom because of Melting
+        if (config.getBoolean("EnableDamageExp")) {
+            //at bottom because of Melting
             amount = (int) e.getDamage();
+        }
 
         amount += config.getInt("ExtraExpPerEntityHit." + e.getEntity().getType().toString()); //adds 0 if not in found in config (negative values are also fine)
         modManager.addExp(p, tool, amount);
@@ -86,25 +108,38 @@ public class EntityListener implements Listener {
         LivingEntity mob = e.getEntity();
         Player p = mob.getKiller();
 
-        if (p == null) return;
-        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
+        if (p == null) {
+            return;
+        }
+
+        if (Lists.WORLDS.contains(p.getWorld().getName())) {
+            return;
+        }
 
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (!modManager.isToolViable(tool)) return;
+        if (!modManager.isToolViable(tool)) {
+            return;
+        }
 
-        Bukkit.getPluginManager().callEvent(new MTEntityDeathEvent(p, tool, e));
+        MTEntityDeathEvent event = new MTEntityDeathEvent(p, tool, e);
+        Bukkit.getPluginManager().callEvent(event);
 
         modManager.addExp(p, tool, config.getInt("ExtraExpPerEntityDeath." + e.getEntity().getType().toString())); //adds 0 if not in found in config (negative values are also fine)
     }
 
     @EventHandler
     public void onArrowHit(ProjectileHitEvent e) {
-        if (!(e.getEntity().getShooter() instanceof Player)) return;
+        if (!(e.getEntity().getShooter() instanceof Player)) {
+            return;
+        }
+
         Player p = (Player) e.getEntity().getShooter();
         ItemStack tool = p.getInventory().getItemInMainHand();
 
-        if (e.getHitBlock() == null && !ToolType.FISHINGROD.getMaterials().contains(tool.getType())) return;
+        if (e.getHitBlock() == null && !ToolType.FISHINGROD.contains(tool.getType())) {
+            return;
+        }
 
         if (e.getEntity() instanceof Trident) {
             Trident trident = (Trident)e.getEntity(); // Intellij gets confused if this isn't assigned to a variable
@@ -112,17 +147,24 @@ public class EntityListener implements Listener {
             tool = TridentListener.TridentToItemStack.get(trident);
             TridentListener.TridentToItemStack.remove(trident);
 
-            if (tool == null) return;
+            if (tool == null) {
+                return;
+            }
         }
 
-        if (!modManager.isToolViable(tool)) return;
+        if (!modManager.isToolViable(tool)) {
+            return;
+        }
 
-        Bukkit.getPluginManager().callEvent(new MTProjectileHitEvent(p, tool, e));
+        MTProjectileHitEvent event = new MTProjectileHitEvent(p, tool, e);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
 	@EventHandler(ignoreCancelled = true)
     public void onProjectileLaunch(ProjectileLaunchEvent e) {
-        if (!(e.getEntity().getShooter() instanceof Player)) return;
+        if (!(e.getEntity().getShooter() instanceof Player)) {
+            return;
+        }
 
         Player p = (Player) e.getEntity().getShooter();
         ItemStack tool = p.getInventory().getItemInMainHand();
@@ -143,8 +185,13 @@ public class EntityListener implements Listener {
             p.setCooldown(Material.ENDER_PEARL, 10);
         }
 
-        if (!modManager.isToolViable(tool)) return;
-        if (!modManager.durabilityCheck(e, p, tool)) return;
+        if (!modManager.isToolViable(tool)) {
+            return;
+        }
+
+        if (!modManager.durabilityCheck(e, p, tool)) {
+            return;
+        }
 
         modManager.addExp(p, tool, config.getInt("ExpPerArrowShot"));
 
@@ -155,7 +202,9 @@ public class EntityListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBowShoot(EntityShootBowEvent e) {
-        if (!(e.getEntity() instanceof Player)) return;
+        if (!(e.getEntity() instanceof Player)) {
+            return;
+        }
 
         Player player = (Player) e.getEntity();
         ItemStack offHand = player.getInventory().getItemInOffHand();
@@ -167,14 +216,18 @@ public class EntityListener implements Listener {
                 e.setCancelled(true);
                 player.updateInventory();
 
-                if (NBTUtils.isOneFourteenCompatible()) player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
+                if (NBTUtils.isOneFourteenCompatible()) {
+                    player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
+                }
 
                 return;
             }
         }
 
         for (ItemStack item : player.getInventory().getContents()) {
-            if (item == null) continue; // Extremely consistently null
+            if (item == null) {
+                continue; // Extremely consistently null
+            }
 
             if (item.getType() == Material.ARROW) {
                 Modifier mod = modManager.getModifierFromItem(item);
@@ -184,7 +237,9 @@ public class EntityListener implements Listener {
 
                     player.updateInventory();
 
-                    if (NBTUtils.isOneFourteenCompatible()) player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
+                    if (NBTUtils.isOneFourteenCompatible()) {
+                        player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
+                    }
 
                     return;
                 }

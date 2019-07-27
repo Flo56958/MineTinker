@@ -99,9 +99,9 @@ public class Aquaphilic extends Modifier {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (ToolType.BOOTS.getMaterials().contains(tool.getType())) {
+            if (ToolType.BOOTS.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.DEPTH_STRIDER, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.HELMET.getMaterials().contains(tool.getType())) {
+            } else if (ToolType.HELMET.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.OXYGEN, modManager.getModLevel(tool, this), true);
                 meta.addEnchant(Enchantment.WATER_WORKER, modManager.getModLevel(tool, this), true);
             }

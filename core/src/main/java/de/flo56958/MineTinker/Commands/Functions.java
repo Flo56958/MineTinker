@@ -15,6 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -25,24 +26,26 @@ class Functions {
 
     /**
      * Outputs all available mods to the command sender chat
-     * @param sender
+     * @param sender The sender to send the mod list to
      */
     static void modList(CommandSender sender) {
         if (sender instanceof Player) {
             GUIs.getModGUI().show((Player) sender);
             return;
         }
+
         ChatWriter.sendMessage(sender, ChatColor.GOLD, "Possible Modifiers:");
 
         int index = 1;
 
-        for (Modifier m : modManager.getAllowedMods())
+        for (Modifier m : modManager.getAllowedMods()) {
             ChatWriter.sendMessage(sender, ChatColor.WHITE, index++ + ". " + m.getColor() + m.getName() + ChatColor.WHITE + ": " + m.getDescription());
+        }
     }
 
     /**
      * Adds Exp to the ItemStack in the main hand
-     * @param player
+     * @param player The player to get the item from
      * @param args command input of the player - parsed down from onCommand()
      */
     static void addExp(Player player, String[] args) {
@@ -66,7 +69,7 @@ class Functions {
 
     /**
      * renames the tool in the main hand
-     * @param player
+     * @param player The player to get the item from
      * @param args command input of the player - parsed down from onCommand()
      */
     static void name(Player player, String[] args) {
@@ -76,8 +79,9 @@ class Functions {
             if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
                 StringBuilder name = new StringBuilder();
 
-                for (int i = 1; i < args.length; i++)
+                for (int i = 1; i < args.length; i++) {
                     name.append(" ").append(args[i].replace('^', '§'));
+                }
 
                 name = new StringBuilder(name.substring(1));
 
@@ -97,14 +101,17 @@ class Functions {
 
     /**
      * Removes the specified modifier (index) from a valid MineTinker-Tool/Armor in the players main hand
-     * @param player
+     * @param player The player to get the item from
      * @param args command input of the player - parsed down from onCommand()
      */
     static void removeMod(Player player, String[] args) {
         if (args.length >= 2) {
             ItemStack tool = player.getInventory().getItemInMainHand();
 
-            if (!modManager.isToolViable(tool) && !modManager.isArmorViable(tool)) { Commands.invalidArgs(player); return; }
+            if (!modManager.isToolViable(tool) && !modManager.isArmorViable(tool)) {
+                Commands.invalidArgs(player);
+                return;
+            }
 
             for (Modifier m : modManager.getAllMods()) {
                 if (args[1].equals(m.getName())) {
@@ -112,6 +119,7 @@ class Functions {
                     return;
                 }
             }
+
             Commands.invalidArgs(player);
         } else {
             Commands.invalidArgs(player);
@@ -120,7 +128,7 @@ class Functions {
 
     /**
      * Adds the specified modifier to the valid MineTinker-Tool/Armor in the players main hand
-     * @param player
+     * @param player The player to get the item from
      * @param args command input of the player - parsed down from onCommand()
      */
     static void addMod(Player player, String[] args) {
@@ -129,7 +137,10 @@ class Functions {
                 if (m.getName().equalsIgnoreCase(args[1])) {
                     ItemStack tool = player.getInventory().getItemInMainHand();
 
-                    if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) m.applyMod(player, tool, true);
+                    if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
+                        m.applyMod(player, tool, true);
+                    }
+
                     break;
                 }
             }
@@ -140,28 +151,33 @@ class Functions {
 
     /**
      * Sets the durability of a valid MineTinker-Tool/Armor in the players main hand to the specified amount
-     * @param player
+     * @param player The player to get the item from
      * @param args command input of the player - parsed down from onCommand()
      */
-    @SuppressWarnings("deprecation")
 	static void setDurability(Player player, String[] args) {
         if (args.length == 2) {
             ItemStack tool = player.getInventory().getItemInMainHand();
 
             if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
-                try {
-                    int dura = Integer.parseInt(args[1]);
+                // TODO: Fix, meta id Damageable, not the tool
+                if (tool instanceof Damageable) {
+                    Damageable damageable = (Damageable)tool;
 
-                    if (dura <= tool.getType().getMaxDurability()) {
-                        tool.setDurability((short) (tool.getType().getMaxDurability() - dura));
-                    } else {
-                        ChatWriter.sendMessage(player, ChatColor.RED, "Please enter a valid number or 'full'!");
+                    try {
+                        int dura = Integer.parseInt(args[1]);
+
+                        if (dura <= tool.getType().getMaxDurability()) {
+                            damageable.setDamage(tool.getType().getMaxDurability() - dura);
+                        } else {
+                            ChatWriter.sendMessage(player, ChatColor.RED, "Please enter a valid number or 'full'!");
+                        }
+                    } catch (Exception e) {
+                        if (args[1].toLowerCase().equals("full") || args[1].toLowerCase().equals("f")) {
+                            damageable.setDamage(0);
+                        } else {
+                            ChatWriter.sendMessage(player, ChatColor.RED, "Please enter a valid number or 'full'!");
+                        }
                     }
-                } catch (Exception e) {
-                    if (args[1].toLowerCase().equals("full") || args[1].toLowerCase().equals("f"))
-                        tool.setDurability((short) 0);
-                    else
-                        ChatWriter.sendMessage(player, ChatColor.RED, "Please enter a valid number or 'full'!");
                 }
             } else {
                 Commands.invalidTool(player);
@@ -173,7 +189,7 @@ class Functions {
 
     /**
      * adds a MineTinker-Tool/Armor of the specified type to the players inventory
-     * @param player
+     * @param player The player to get the item from
      * @param args command input of the player - parsed down from onCommand()
      */
     static void give(Player player, String[] args) {
@@ -198,19 +214,21 @@ class Functions {
         ItemStack tool = new ItemStack(material, 1);
         modManager.convertItemStack(tool);
 
-        if (player.getInventory().addItem(tool).size() != 0) //adds items to (full) inventory
+        if (player.getInventory().addItem(tool).size() != 0) {
+            //adds items to (full) inventory
             player.getWorld().dropItem(player.getLocation(), tool);
+        }
+
         // no else as it gets added in if
     }
 
     /**
      * converts a viable item in the players main hand to a MineTinker-Tool/Armor
-     * @param player
+     * @param player The player to get the item from
      * @param args command input of the player - parsed down from onCommand()
      */
     static void convert(Player player, String[] args) {
-        ItemStack tool = player.getInventory().getItemInMainHand();
-        modManager.convertItemStack(tool);
+        modManager.convertItemStack(player.getInventory().getItemInMainHand());
     }
 
     /**
@@ -245,6 +263,7 @@ class Functions {
                                 ChatWriter.sendMessage(sender, ChatColor.RED, "Player " + args[3] + " not found or not online!");
                                 return;
                             }
+
                             sender = temp;
                         }
 
@@ -298,6 +317,7 @@ class Functions {
         ChatWriter.sendMessage(p, ChatColor.WHITE, "Exp: " + modManager.getExp(is) + "/" + modManager.getNextLevelReq(modManager.getLevel(is)));
         ChatWriter.sendMessage(p, ChatColor.WHITE, "Free Modifier Slots: " + modManager.getFreeSlots(is));
         ChatWriter.sendMessage(p, ChatColor.WHITE, "Modifiers:");
+
         for (Modifier mod : modManager.getAllowedMods()) {
             if (NBTUtils.getHandler().hasTag(is, mod.getNBTKey())) {
                 ChatWriter.sendMessage(p, ChatColor.WHITE, mod.getColor() + mod.getName() + ChatColor.WHITE + " " + NBTUtils.getHandler().getInt(is, mod.getNBTKey()));

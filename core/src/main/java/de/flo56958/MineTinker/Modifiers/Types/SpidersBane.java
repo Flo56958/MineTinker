@@ -101,7 +101,7 @@ public class SpidersBane extends Modifier {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (ToolType.AXE.getMaterials().contains(tool.getType()) || ToolType.SWORD.getMaterials().contains(tool.getType())) {
+            if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType())) {
                 if (!this.compatibleWithSmite) {
                     if (modManager.hasMod(tool, Smite.instance()) || meta.hasEnchant(Enchantment.DAMAGE_UNDEAD)) {
                         pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));

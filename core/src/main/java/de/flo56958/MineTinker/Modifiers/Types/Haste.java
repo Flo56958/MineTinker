@@ -90,9 +90,9 @@ public class Haste extends Modifier {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (ToolType.FISHINGROD.getMaterials().contains(tool.getType())) {
+            if (ToolType.FISHINGROD.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.LURE, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.CROSSBOW.getMaterials().contains(tool.getType())) {
+            } else if (ToolType.CROSSBOW.contains(tool.getType())) {
                 if (NBTUtils.isOneFourteenCompatible()) meta.addEnchant(Enchantment.QUICK_CHARGE, modManager.getModLevel(tool, this), true);
             } else {
                 meta.addEnchant(Enchantment.DIG_SPEED, modManager.getModLevel(tool, this), true);

@@ -28,6 +28,8 @@ public class ItemGenerator {
     }
 
 	public static ItemStack itemUpgrader(ItemStack tool, ItemStack upgrade, Player p) {
+        // TODO: Fix this fuckery
+
         ItemMeta meta = tool.getItemMeta();
         String[] name = tool.getType().toString().split("_");
 
@@ -64,7 +66,7 @@ public class ItemGenerator {
             return null;
         }
 
-        if (ToolType.SWORD.getMaterials().contains(tool.getType())) {
+        if (ToolType.SWORD.contains(tool.getType())) {
             switch (upgrade.getType()) {
                 case ACACIA_PLANKS:
                 case BIRCH_PLANKS:
@@ -90,7 +92,7 @@ public class ItemGenerator {
                     pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                     return null;
             }
-        } else if (ToolType.PICKAXE.getMaterials().contains(tool.getType())) {
+        } else if (ToolType.PICKAXE.contains(tool.getType())) {
             switch (upgrade.getType()) {
                 case ACACIA_PLANKS:
                 case BIRCH_PLANKS:
@@ -116,7 +118,7 @@ public class ItemGenerator {
                     pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                     return null;
             }
-        } else if (ToolType.AXE.getMaterials().contains(tool.getType())) {
+        } else if (ToolType.AXE.contains(tool.getType())) {
             switch (upgrade.getType()) {
                 case ACACIA_PLANKS:
                 case BIRCH_PLANKS:
@@ -142,7 +144,7 @@ public class ItemGenerator {
                     pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                     return null;
             }
-        } else if (ToolType.SHOVEL.getMaterials().contains(tool.getType())) {
+        } else if (ToolType.SHOVEL.contains(tool.getType())) {
             switch (upgrade.getType()) {
                 case ACACIA_PLANKS:
                 case BIRCH_PLANKS:
@@ -168,7 +170,7 @@ public class ItemGenerator {
                     pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                     return null;
             }
-        } else if (ToolType.HOE.getMaterials().contains(tool.getType())) {
+        } else if (ToolType.HOE.contains(tool.getType())) {
             switch (upgrade.getType()) {
                 case ACACIA_PLANKS:
                 case BIRCH_PLANKS:
@@ -194,7 +196,7 @@ public class ItemGenerator {
                     pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                     return null;
             }
-        } else if (ToolType.HELMET.getMaterials().contains(tool.getType())) {
+        } else if (ToolType.HELMET.contains(tool.getType())) {
             switch (upgrade.getType()) {
                 case LEATHER:
                     tool.setType(Material.LEATHER_HELMET);
@@ -218,7 +220,7 @@ public class ItemGenerator {
                     pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                     return null;
             }
-        } else if (ToolType.CHESTPLATE.getMaterials().contains(tool.getType())) {
+        } else if (ToolType.CHESTPLATE.contains(tool.getType())) {
             switch (upgrade.getType()) {
                 case LEATHER:
                     tool.setType(Material.LEATHER_CHESTPLATE);
@@ -239,7 +241,7 @@ public class ItemGenerator {
                     pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                     return null;
             }
-        } else if (ToolType.LEGGINGS.getMaterials().contains(tool.getType())) {
+        } else if (ToolType.LEGGINGS.contains(tool.getType())) {
             switch (upgrade.getType()) {
                 case LEATHER:
                     tool.setType(Material.LEATHER_LEGGINGS);
@@ -260,7 +262,7 @@ public class ItemGenerator {
                     pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
                     return null;
             }
-        } else if (ToolType.BOOTS.getMaterials().contains(tool.getType())) {
+        } else if (ToolType.BOOTS.contains(tool.getType())) {
             switch (upgrade.getType()) {
                 case LEATHER:
                     tool.setType(Material.LEATHER_BOOTS);

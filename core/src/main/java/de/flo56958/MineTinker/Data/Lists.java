@@ -17,7 +17,6 @@ public class Lists {
 
     public static final List<String> WORLDS = config.getStringList("BannedWorlds");
     public static final List<String> WORLDS_BUILDERSWANDS = ConfigurationManager.getConfig("BuildersWand.yml").getStringList("BuildersWand.BannedWorlds");
-    public static final List<String> WORLDS_SPAWNERS = config.getStringList("Spawners.BannedWorlds");
     public static final List<String> WORLDS_EASYHARVEST = config.getStringList("EasyHarvest.BannedWorlds");
 
     public static final HashMap<Player, BlockFace> BLOCKFACE = new HashMap<>();
@@ -28,12 +27,14 @@ public class Lists {
      */
     public static ArrayList<Material> getWoodLeaves() {
         ArrayList<Material> mats = new ArrayList<>();
+
         mats.add(Material.ACACIA_LEAVES);
         mats.add(Material.BIRCH_LEAVES);
         mats.add(Material.DARK_OAK_LEAVES);
         mats.add(Material.JUNGLE_LEAVES);
         mats.add(Material.OAK_LEAVES);
         mats.add(Material.SPRUCE_LEAVES);
+
         return mats;
     }
 

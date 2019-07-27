@@ -113,7 +113,7 @@ public class Propelling extends Modifier implements Enchantable, Listener {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (ToolType.TRIDENT.getMaterials().contains(tool.getType())) {
+            if (ToolType.TRIDENT.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.RIPTIDE, modManager.getModLevel(tool, this), true);
             } //Elytra does not get an enchantment
 
@@ -149,7 +149,7 @@ public class Propelling extends Modifier implements Enchantable, Listener {
 
         ItemStack elytra = p.getInventory().getChestplate();
 
-        if (!(modManager.isArmorViable(elytra) && ToolType.ELYTRA.getMaterials().contains(elytra.getType()))) return;
+        if (!(modManager.isArmorViable(elytra) && ToolType.ELYTRA.contains(elytra.getType()))) return;
         if (!modManager.hasMod(elytra, this)) return;
 
         int maxDamage = elytra.getType().getMaxDurability();

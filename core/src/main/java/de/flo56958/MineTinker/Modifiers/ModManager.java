@@ -82,13 +82,16 @@ public class ModManager {
     private ModManager() {
         this.loreScheme = layout.getStringList("LoreLayout");
 
-        for (int i = 0; i < loreScheme.size(); i++)
+        for (int i = 0; i < loreScheme.size(); i++) {
             loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
+        }
 
         this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
     }
 
-    public NBTHandler getNBTHandler() { return nbt; }
+    public NBTHandler getNBTHandler() {
+        return nbt;
+    }
 
     /**
      * get the instance that contains the modifier list (VERY IMPORTANT)
@@ -102,6 +105,7 @@ public class ModManager {
                 instance.init();
             }
         }
+
         return instance;
     }
 
@@ -112,10 +116,11 @@ public class ModManager {
     	for (Modifier m : allMods) {
     		m.reload();
     		
-    		if (m.isAllowed())
+    		if (m.isAllowed()) {
                 register(m);
-            else
+            } else {
                 unregister(m);
+            }
     	}
 
     	allMods.sort(Comparator.comparing(Modifier::getName));
@@ -134,8 +139,9 @@ public class ModManager {
 
         this.loreScheme = layout.getStringList("LoreLayout");
 
-        for (int i = 0; i < loreScheme.size(); i++)
+        for (int i = 0; i < loreScheme.size(); i++) {
             loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
+        }
 
         this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
         this.allowBookConvert = config.getBoolean("ConvertBookToModifier");
@@ -207,6 +213,7 @@ public class ModManager {
 	        mes = ChatWriter.addColors(mes);
 	        mes = mes.replaceAll("%MOD%", mod.getColor() + mod.getName());
 	        mes = mes.replaceAll("%PLUGIN%", Main.getPlugin().getName());
+
 	        ChatWriter.logColor(mes);
     	}
     }
@@ -222,6 +229,7 @@ public class ModManager {
          mes = ChatWriter.addColors(mes);
          mes = mes.replaceAll("%MOD%", mod.getColor() + mod.getName());
          mes = mes.replaceAll("%PLUGIN%", Main.getPlugin().getName());
+
          ChatWriter.logColor(mes);
     }
 
@@ -229,7 +237,9 @@ public class ModManager {
      * should we let the player convert enchanted books to modifier items
      * @return
      */
-    public boolean allowBookToModifier() { return this.allowBookConvert; }
+    public boolean allowBookToModifier() {
+        return this.allowBookConvert;
+    }
 
     /**
      * get all the modifiers in the list
@@ -240,14 +250,18 @@ public class ModManager {
         return this.mods;
     }
 
-    public List<Modifier> getAllMods() { return this.allMods; }
+    public List<Modifier> getAllMods() {
+        return this.allMods;
+    }
 
     /**
      * get all the enchantable modifiers in the list
      *
      * @return the enchantable modifier list
      */
-    public List<Modifier> getEnchantableMods() { return this.enchantableMods; }
+    public List<Modifier> getEnchantableMods() {
+        return this.enchantableMods;
+    }
 
     /**
      * add a specified modifier to a tool
@@ -366,13 +380,18 @@ public class ModManager {
      * @param amount how much exp should the tool get
      */
     public void addExp(Player p, ItemStack tool, int amount) {
-        if (amount == 0) return;
+        if (amount == 0) {
+            return;
+        }
+
         boolean LevelUp = false;
 
         int level = this.getLevel(tool);
         long exp = this.getExp(tool);
 
-        if (level == -1 || exp == -1) return;
+        if (level == -1 || exp == -1) {
+            return;
+        }
 
         if (exp + 1 < 0 || level + 1 < 0) {
             if (Main.getPlugin().getConfig().getBoolean("ResetAtIntOverflow")) { //secures a "good" exp-system if the Values get to big
@@ -433,7 +452,10 @@ public class ModManager {
      * @param is
      */
     private void rewriteLore(ItemStack is) {
-        if (!Main.getPlugin().getConfig().getBoolean("EnableLore")) return;
+        if (!Main.getPlugin().getConfig().getBoolean("EnableLore")) {
+            return;
+        }
+
         ArrayList<String> lore = new ArrayList<>(this.loreScheme);
 
         long exp = getExp(is);
@@ -453,12 +475,14 @@ public class ModManager {
             s = s.replaceAll("%LEVEL%", "" + level_);
             s = s.replaceAll("%NEXT_LEVEL_EXP%", "" + nextLevelReq_);
             s = s.replaceAll("%FREE_SLOTS%", "" + freeSlots_);
+
             lore.set(i, s);
         }
 
         int index = -1;
         for (int i = 0; i < lore.size(); i++) {
             String s = lore.get(i);
+
             if (s.contains("%MODIFIERS%")) {
                 index = i;
                 break;
@@ -473,9 +497,11 @@ public class ModManager {
             if (nbt.hasTag(is, m.getNBTKey())) {
                 int modLevel = getModLevel(is, m);
                 String modLevel_ = layout.getBoolean("UseRomans.ModifierLevels") ? ChatWriter.toRomanNumerals(modLevel) : String.valueOf(modLevel);
+
                 String s = this.modifierLayout;
                 s = s.replaceAll("%MODIFIER%", m.getColor() + m.getName());
                 s = s.replaceAll("%MODLEVEL%", modLevel_);
+
                 lore.add(index++, s);
             }
         }
@@ -488,6 +514,7 @@ public class ModManager {
 
         if (meta != null) {
             ArrayList<String> oldLore = (ArrayList<String>) meta.getLore();
+
             if (oldLore != null && oldLore.size() > 0 && oldLore.get(oldLore.size() - 1).equals("mcMMO Ability Tool")) {
                 lore.add("mcMMO Ability Tool");
             }
@@ -504,22 +531,22 @@ public class ModManager {
     public void convertItemStack(ItemStack is) {
         Material m = is.getType();
 
-        if ((ToolType.AXE.getMaterials().contains(m)
-                || ToolType.BOW.getMaterials().contains(m)
-                || ToolType.CROSSBOW.getMaterials().contains(m)
-                || ToolType.HOE.getMaterials().contains(m)
-                || ToolType.PICKAXE.getMaterials().contains(m)
-                || ToolType.SHOVEL.getMaterials().contains(m)
-                || ToolType.SWORD.getMaterials().contains(m)
-                || ToolType.TRIDENT.getMaterials().contains(m)
-                || ToolType.SHEARS.getMaterials().contains(m)
-                || ToolType.FISHINGROD.getMaterials().contains(m)) && !isWandViable(is)) {
+        if ((ToolType.AXE.contains(m)
+                || ToolType.BOW.contains(m)
+                || ToolType.CROSSBOW.contains(m)
+                || ToolType.HOE.contains(m)
+                || ToolType.PICKAXE.contains(m)
+                || ToolType.SHOVEL.contains(m)
+                || ToolType.SWORD.contains(m)
+                || ToolType.TRIDENT.contains(m)
+                || ToolType.SHEARS.contains(m)
+                || ToolType.FISHINGROD.contains(m)) && !isWandViable(is)) {
             nbt.setInt(is, "IdentifierTool", 0);
-        } else if (ToolType.BOOTS.getMaterials().contains(m)
-                || ToolType.CHESTPLATE.getMaterials().contains(m)
-                || ToolType.HELMET.getMaterials().contains(m)
-                || ToolType.LEGGINGS.getMaterials().contains(m)
-                || ToolType.ELYTRA.getMaterials().contains(m)) {
+        } else if (ToolType.BOOTS.contains(m)
+                || ToolType.CHESTPLATE.contains(m)
+                || ToolType.HELMET.contains(m)
+                || ToolType.LEGGINGS.contains(m)
+                || ToolType.ELYTRA.contains(m)) {
             nbt.setInt(is, "IdentifierArmor", 0);
         } else return;
 
@@ -530,42 +557,45 @@ public class ModManager {
 
         ItemMeta meta = is.getItemMeta();
 
-        for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
-            Modifier modifier = getModifierFromEnchantment(entry.getKey());
+        if (meta != null) {
+            for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
+                Modifier modifier = getModifierFromEnchantment(entry.getKey());
 
-            if (modifier == null) {
-                continue;
+                if (modifier == null) {
+                    continue;
+                }
+
+                meta.removeEnchant(entry.getKey());
+
+                for (int i = 0; i < entry.getValue(); i++) {
+                    addMod(is, modifier);
+                }
             }
 
-            meta.removeEnchant(entry.getKey());
+            addArmorAttributes(is);
 
-            for (int i = 0; i < entry.getValue(); i++) {
+            if (meta.getAttributeModifiers() == null) {
+                return;
+            }
+
+            for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : meta.getAttributeModifiers().asMap().entrySet()) {
+                Modifier modifier = getModifierFromAttribute(entry.getKey());
+
+                if (modifier == null) {
+                    continue;
+                }
+
+                meta.removeAttributeModifier(entry.getKey());
+
                 addMod(is, modifier);
             }
-        }
-
-        addArmorAttributes(is);
-
-        if (meta.getAttributeModifiers() == null) {
-            return;
-        }
-
-        for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : meta.getAttributeModifiers().asMap().entrySet()) {
-            Modifier modifier = getModifierFromAttribute(entry.getKey());
-
-            if (modifier == null) {
-                continue;
-            }
-
-            meta.removeAttributeModifier(entry.getKey());
-
-            addMod(is, modifier);
         }
     }
 
     public void addArmorAttributes(ItemStack is) {
-        double armor = 0.0d;
+        double armor;
         double toughness = 0.0d;
+
         switch (is.getType()) {
             case LEATHER_BOOTS:
             case CHAINMAIL_BOOTS:
@@ -614,35 +644,41 @@ public class ModManager {
         }
 
         ItemMeta meta = is.getItemMeta();
-        AttributeModifier armorAM;
-        AttributeModifier toughnessAM;
-        if (ToolType.BOOTS.getMaterials().contains(is.getType())) {
-            armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
-            toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
-        } else if (ToolType.CHESTPLATE.getMaterials().contains(is.getType())) {
-            armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
-            toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
-        } else if (ToolType.HELMET.getMaterials().contains(is.getType())) {
-            armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
-            toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
-        } else if (ToolType.LEGGINGS.getMaterials().contains(is.getType())) {
-            armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
-            toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
-        } else return;
 
-        meta.removeAttributeModifier(Attribute.GENERIC_ARMOR);
-        meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
-        if (toughness > 0.0d) {
-            meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);
-            meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
-        }
+        if (meta != null) {
+            AttributeModifier armorAM;
+            AttributeModifier toughnessAM;
 
-        if (Main.getPlugin().getConfig().getBoolean("HideAttributes")) {
-            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            if (ToolType.BOOTS.contains(is.getType())) {
+                armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+                toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+            } else if (ToolType.CHESTPLATE.contains(is.getType())) {
+                armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+                toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+            } else if (ToolType.HELMET.contains(is.getType())) {
+                armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+                toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+            } else if (ToolType.LEGGINGS.contains(is.getType())) {
+                armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+                toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+            } else return;
+
+            meta.removeAttributeModifier(Attribute.GENERIC_ARMOR);
+            meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
+
+            if (toughness > 0.0d) {
+                meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);
+                meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
+            }
+
+            if (Main.getPlugin().getConfig().getBoolean("HideAttributes")) {
+                meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            } else {
+                meta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            }
+
+            is.setItemMeta(meta);
         }
-        is.setItemMeta(meta);
     }
 
     public ItemStack createModifierItem(Material m, String name, String description, Modifier mod) {
@@ -680,11 +716,22 @@ public class ModManager {
      * @return the Modifier of the Modifier-Item (NULL if not found)
      */
     public Modifier getModifierFromItem(ItemStack item) {
-        if (!isModifierItem(item)) { return null; }
-        if (item.getType().equals(Experienced.instance().getModItem().getType())) { return Experienced.instance(); }
+        if (!isModifierItem(item)) {
+            return null;
+        }
+
+        if (item.getType().equals(Experienced.instance().getModItem().getType())) {
+            return Experienced.instance();
+        }
+
         if (item.getType().equals(ExtraModifier.instance().getModItem().getType())
-                && !nbt.hasTag(item, "modifierItem")) { return ExtraModifier.instance(); }
-        if (!nbt.hasTag(item, "modifierItem")) { return null; }
+                && !nbt.hasTag(item, "modifierItem")) {
+            return ExtraModifier.instance();
+        }
+
+        if (!nbt.hasTag(item, "modifierItem")) {
+            return null;
+        }
 
         String name = Objects.requireNonNull(nbt.getString(item, "modifierItem"));
 
@@ -705,7 +752,9 @@ public class ModManager {
      */
     public Modifier getModifierFromEnchantment(Enchantment enchantment) {
         for (Modifier modifier : getAllMods()) {
-            if (modifier.getAppliedEnchantments().contains(enchantment)) return modifier;
+            if (modifier.getAppliedEnchantments().contains(enchantment)) {
+                return modifier;
+            }
         }
 
         return null;

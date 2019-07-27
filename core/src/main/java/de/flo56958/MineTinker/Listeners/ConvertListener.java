@@ -28,45 +28,45 @@ public class ConvertListener implements Listener{
     private static final ModManager modManager = ModManager.instance();
 	
 	public void register() {
-	    ArrayList<Material> converting = new ArrayList<>();
-	    converting.addAll(ToolType.PICKAXE.getMaterials());
-		converting.addAll(ToolType.AXE.getMaterials());
-		converting.addAll(ToolType.HOE.getMaterials());
-		converting.addAll(ToolType.SWORD.getMaterials());
-		converting.addAll(ToolType.SHEARS.getMaterials());
-		converting.addAll(ToolType.SHOVEL.getMaterials());
-		converting.addAll(ToolType.FISHINGROD.getMaterials());
-		converting.addAll(ToolType.HELMET.getMaterials());
-		converting.addAll(ToolType.CHESTPLATE.getMaterials());
-		converting.addAll(ToolType.LEGGINGS.getMaterials());
-		converting.addAll(ToolType.BOOTS.getMaterials());
-		converting.addAll(ToolType.BOW.getMaterials());
-		converting.addAll(ToolType.CROSSBOW.getMaterials());
-
-
-		for (Material m : converting) {
+		for (Material m : ToolType.getAllToolMaterials()) {
 	    	ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(Main.getPlugin(), m.toString() + "_Converter"), new ItemStack(m, 1));
 			recipe.addIngredient(m);
+
 			Bukkit.addRecipe(recipe);
 	    }
 	}
 	
 	@EventHandler
 	public void PrepareCraft(PrepareItemCraftEvent e) {
-		if (e.getRecipe() == null) return;
+		if (e.getRecipe() == null) {
+			return;
+		}
 
 		Player player = null;
 
-		for (HumanEntity humans : e.getViewers())
-			if (humans instanceof Player) { player = (Player) humans; }
+		for (HumanEntity humans : e.getViewers()){
+			if (humans instanceof Player) {
+				player = (Player) humans;
+			}
+		}
 
-		if (player == null) return;
-		if (!player.hasPermission("minetinker.tool.create")) return;
-		if (Lists.WORLDS.contains(player.getWorld().getName())) return;
+		if (player == null) {
+			return;
+		}
+
+		if (!player.hasPermission("minetinker.tool.create")) {
+			return;
+		}
+
+		if (Lists.WORLDS.contains(player.getWorld().getName())) {
+			return;
+		}
 
 		ItemStack currentItem = e.getInventory().getResult();
 
-		if (currentItem == null) return;
+		if (currentItem == null) {
+			return;
+		}
 
 		int actualItems = 0;
 		ItemStack lastItem = null;
@@ -87,29 +87,46 @@ public class ConvertListener implements Listener{
 
 		ItemMeta m = currentItem.getItemMeta();
 
-		if (m != null)
-			if (modManager.isWandViable(currentItem)) return;
+		if (m != null){
+			if (modManager.isWandViable(currentItem)) {
+				return;
+			}
+		}
 
-		modManager.convertItemStack(currentItem);
+		if (!ToolType.getAllToolMaterials().contains(lastItem.getType())) {
+			return;
+		}
+
+		e.getInventory().setResult(lastItem.clone());
+		modManager.convertItemStack(e.getInventory().getResult());
 	}
 	
 	@EventHandler(ignoreCancelled = true)
     public void onCraft(CraftItemEvent e) {
-        if (!(e.getWhoClicked() instanceof Player)) return;
+        if (!(e.getWhoClicked() instanceof Player)) {
+        	return;
+		}
 
         Player player = (Player) e.getWhoClicked();
         
         if (config.getBoolean("Sound.OnEveryCrafting")) {
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
+
             return;
         }
         
         ItemStack tool = e.getInventory().getResult();
         
-        if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool) || modManager.isWandViable(tool))) return;
+        if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool) || modManager.isWandViable(tool))) {
+        	return;
+		}
 
-        if (config.getBoolean("Sound.OnCrafting")) player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
+        if (config.getBoolean("Sound.OnCrafting")) {
+        	player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
+		}
 
-        if (tool != null) ChatWriter.log(false, player.getName() + " crafted " + ItemGenerator.getDisplayName(tool) + "! It is now a MineTinker-Item!");
+        if (tool != null) {
+			ChatWriter.log(false, player.getName() + " crafted " + ItemGenerator.getDisplayName(tool) + "! It is now a MineTinker-Item!");
+		}
     }
 }

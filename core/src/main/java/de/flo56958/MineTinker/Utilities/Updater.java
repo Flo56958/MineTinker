@@ -14,9 +14,13 @@ public class Updater {
     private static String onlineVersion;
     private static final String version = Main.getPlugin().getDescription().getVersion();
 
-    public static String getOnlineVersion() { return onlineVersion; }
+    public static String getOnlineVersion() {
+        return onlineVersion;
+    }
 
-    public static synchronized boolean hasUpdate() { return onlineVersion != null && !onlineVersion.equals(version); }
+    public static synchronized boolean hasUpdate() {
+        return onlineVersion != null && !onlineVersion.equals(version);
+    }
 
     /**
      * tries to get the newest MineTinker-Version number from api.spigotmc.org
@@ -28,7 +32,9 @@ public class Updater {
             URLConnection connection = url.openConnection();
             Scanner scan = new Scanner(connection.getInputStream());
 
-            if (scan.hasNextLine()) onlineVersion = scan.nextLine();
+            if (scan.hasNextLine()) {
+                onlineVersion = scan.nextLine();
+            }
 
             scan.close();
         } catch (Exception ignored) {
@@ -41,6 +47,7 @@ public class Updater {
      */
     public static void checkForUpdate(CommandSender sender) {
         checkOnline();
+
         if (onlineVersion == null) {
             ChatWriter.sendMessage(sender, ChatColor.RED, "Unable to check for updates!");
         } else if (!version.equals(onlineVersion)) {

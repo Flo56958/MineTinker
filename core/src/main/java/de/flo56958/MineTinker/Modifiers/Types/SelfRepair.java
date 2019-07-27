@@ -22,6 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
@@ -141,10 +142,10 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;
 
-        if (ToolType.BOOTS.getMaterials().contains(event.getTool().getType())
-                || ToolType.LEGGINGS.getMaterials().contains(event.getTool().getType())
-                || ToolType.CHESTPLATE.getMaterials().contains(event.getTool().getType())
-                || ToolType.HELMET.getMaterials().contains(event.getTool().getType())) return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
+        if (ToolType.BOOTS.contains(event.getTool().getType())
+                || ToolType.LEGGINGS.contains(event.getTool().getType())
+                || ToolType.CHESTPLATE.contains(event.getTool().getType())
+                || ToolType.HELMET.contains(event.getTool().getType())) return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
 
         effect(event.getPlayer(), event.getTool());
     }
@@ -167,7 +168,7 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
 
         ItemStack tool = event.getPlayer().getInventory().getItemInMainHand();
 
-        if (!(modManager.isToolViable(tool) && ToolType.SHEARS.getMaterials().contains(tool.getType()))) return;
+        if (!(modManager.isToolViable(tool) && ToolType.SHEARS.contains(tool.getType()))) return;
 
         effect(event.getPlayer(), tool);
     }
@@ -182,8 +183,6 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
      * @param p the Player
      * @param tool the Tool
      */
-    //TODO: Implement with Damagable
-    @SuppressWarnings("deprecation")
 	private void effect(Player p, ItemStack tool) {
         if (useMending) return;
         if (!p.hasPermission("minetinker.modifiers.selfrepair.use")) return;
@@ -194,13 +193,19 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
         int n = rand.nextInt(100);
 
         if (n <= this.percentagePerLevel * level) {
-            short dura = (short) (tool.getDurability() - this.healthRepair);
+            // TODO: Fix, meta id Damageable, not the tool
+            if (tool instanceof Damageable) {
+                Damageable damageable = (Damageable) tool;
+                short dura = (short) (damageable.getDamage() - this.healthRepair);
 
-            if (dura < 0) dura = 0;
+                if (dura < 0) {
+                    dura = 0;
+                }
 
-            tool.setDurability(dura);
+                damageable.setDamage(dura);
 
-            ChatWriter.log(false, p.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+                ChatWriter.log(false, p.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+            }
         }
     }
 

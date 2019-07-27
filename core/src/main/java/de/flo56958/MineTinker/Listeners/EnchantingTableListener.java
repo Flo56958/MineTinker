@@ -13,11 +13,15 @@ public class EnchantingTableListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEnchant(EnchantItemEvent e) {
-        if (Lists.WORLDS.contains(e.getEnchanter().getWorld().getName())) return;
+        if (Lists.WORLDS.contains(e.getEnchanter().getWorld().getName())) {
+            return;
+        }
 
         ItemStack tool = e.getItem();
 
-        if (modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool)) e.setCancelled(true);
+        if (modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool)) {
+            e.setCancelled(true);
+        }
     }
 }
 
