@@ -23,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -129,7 +130,8 @@ public class PlayerListener implements Listener {
         }
 
         if (eligible) {
-            Damageable meta = (Damageable)tool;
+            Damageable meta = (Damageable) tool.getItemMeta();
+            if (meta == null) return;
 
             int dura = meta.getDamage();
             short maxDura = tool.getType().getMaxDurability();
@@ -146,6 +148,7 @@ public class PlayerListener implements Listener {
             }
 
             meta.setDamage(dura);
+            tool.setItemMeta((ItemMeta) meta);
 
             e.getWhoClicked().getItemOnCursor().setAmount(amount);
             e.setCancelled(true);
