@@ -194,15 +194,17 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
 
         if (n <= this.percentagePerLevel * level) {
             // TODO: Fix, meta id Damageable, not the tool
-            if (tool instanceof Damageable) {
-                Damageable damageable = (Damageable) tool;
-                short dura = (short) (damageable.getDamage() - this.healthRepair);
+            if (tool.getItemMeta() instanceof Damageable) {
+                Damageable damageable = (Damageable) tool.getItemMeta();
+                int dura = damageable.getDamage() - this.healthRepair;
 
                 if (dura < 0) {
                     dura = 0;
                 }
 
                 damageable.setDamage(dura);
+
+                tool.setItemMeta((ItemMeta) damageable);
 
                 ChatWriter.log(false, p.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
             }
