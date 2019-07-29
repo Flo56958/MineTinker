@@ -68,7 +68,7 @@ public class Channeling extends Modifier {
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(Material.PRISMARINE_SHARD);
+        init(Material.PRISMARINE_SHARD, true);
     }
 
     @Override

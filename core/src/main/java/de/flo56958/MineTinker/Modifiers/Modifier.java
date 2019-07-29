@@ -79,14 +79,19 @@ public abstract class Modifier {
     /**
      * changes the core settings of the Modifier (like a secondary constructor)
      */
-    protected void init(Material m) {
+    protected void init(Material m, boolean customItem) {
         FileConfiguration config = getConfig();
         this.name = config.getString("Name");
         this.description = ChatWriter.addColors(config.getString("Description"));
         this.color = ChatWriter.getColor(config.getString("Color", "%WHITE%"));
         this.maxLvl = config.getInt("MaxLevel");
-        this.modItem = modManager.createModifierItem(m, ChatWriter.getColor(config.getString("Color")) + config.getString("ModifierItemName"),
-                ChatWriter.addColors(config.getString("DescriptionModifierItem")), this);
+        if (customItem) {
+            this.modItem = modManager.createModifierItem(m, ChatWriter.getColor(config.getString("Color")) + config.getString("ModifierItemName"),
+                    ChatWriter.addColors(config.getString("DescriptionModifierItem")), this);
+        } else {
+            this.modItem = new ItemStack(m, 1);
+        }
+
     }
 
     /**

@@ -60,27 +60,22 @@ public class Experienced extends Modifier implements Listener {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
     	
-    	String key = "Experienced";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".description", "Tool has the chance to drop XP while using it!");
-        config.addDefault(key + ".Color", "%GREEN%");
-        config.addDefault(key + ".MaxLevel", 10);
-    	config.addDefault(key + ".PercentagePerLevel", 2); //= 20% at Level 10 -> every 5th hit / block will trigger Experienced
-    	config.addDefault(key + ".Amount", 1); //How much XP should be dropped when triggered
-    	config.addDefault(key + ".Recipe.Enabled", false);
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Experienced");
+    	config.addDefault("Description", "Tool has the chance to drop XP while using it!");
+        config.addDefault("Color", "%GREEN%");
+        config.addDefault("MaxLevel", 10);
+    	config.addDefault("PercentagePerLevel", 2); //= 20% at Level 10 -> every 5th hit / block will trigger Experienced
+    	config.addDefault("Amount", 1); //How much XP should be dropped when triggered
+    	config.addDefault("Recipe.Enabled", false);
     	
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
     	
-        init(config.getString(key + ".name"),
-                "[Bottle o' Experience] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                new ItemStack(Material.EXPERIENCE_BOTTLE, 1));
+        init(Material.EXPERIENCE_BOTTLE, false);
         
-        this.percentagePerLevel = config.getInt(key + ".PercentagePerLevel");
-        this.amount = config.getInt(key + ".Amount");
+        this.percentagePerLevel = config.getInt("PercentagePerLevel");
+        this.amount = config.getInt("Amount");
     }
 
     @Override
@@ -143,17 +138,5 @@ public class Experienced extends Modifier implements Listener {
             p.giveExp(this.amount);
             ChatWriter.log(false, p.getDisplayName() + " triggered Experienced on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
         }
-    }
-
-    //-------------------------------------------------------------
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Experienced", "Modifier_Experienced");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Experienced.allowed");
     }
 }

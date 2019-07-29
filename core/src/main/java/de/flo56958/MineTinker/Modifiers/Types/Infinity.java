@@ -6,7 +6,6 @@ import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -55,29 +54,23 @@ public class Infinity extends Modifier implements Enchantable {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
     	
-    	String key = "Infinity";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Enchanted Arrow");
-        config.addDefault(key + ".modifier_item", "ARROW"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "You only need one Arrow to shoot a bow and the Trident comes back!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Infinity-Modifier");
-        config.addDefault(key + ".MaxLevel", 3); //higher values than 1 have no effect on Infinity
-        config.addDefault(key + ".Color", "%WHITE%");
-        config.addDefault(key + ".EnchantCost", 10);
-    	config.addDefault(key + ".Recipe.Enabled", false);
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Infinity");
+    	config.addDefault("ModifierItemName", "Enchanted Arrow");
+        config.addDefault("Description", "You only need one Arrow to shoot a bow and the Trident comes back!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Infinity-Modifier");
+        config.addDefault("MaxLevel", 3); //higher values than 1 have no effect on Infinity
+        config.addDefault("Color", "%WHITE%");
+        config.addDefault("EnchantCost", 10);
+    	config.addDefault("Recipe.Enabled", false);
     	//Check Ender.yml for Compatibility-option for Ender and Infinity
     	
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
     	
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.ARROW, true);
         
-        this.compatibleWithEnder = ConfigurationManager.getConfig("Ender.yml").getBoolean("Ender.CompatibleWithInfinity");
+        this.compatibleWithEnder = ConfigurationManager.getConfig(Ender.instance()).getBoolean("CompatibleWithInfinity");
     }
 
     @Override
@@ -132,16 +125,6 @@ public class Infinity extends Modifier implements Enchantable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.infinity.craft")) return;
-        _createModifierItem(getConfig(), p, this, "Infinity");
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Infinity", "Modifier_Infinity");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Infinity.allowed");
+        _createModifierItem(getConfig(), p, this);
     }
 }

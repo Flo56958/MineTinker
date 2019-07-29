@@ -72,7 +72,7 @@ public class Aquaphilic extends Modifier {
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(Material.HEART_OF_THE_SEA);
+        init(Material.HEART_OF_THE_SEA, true);
     }
 
     @Override

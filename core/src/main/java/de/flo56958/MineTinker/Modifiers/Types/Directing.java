@@ -75,7 +75,7 @@ public class Directing extends Modifier implements Listener {
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(Material.COMPASS);
+        init(Material.COMPASS, true);
 
         this.workInPVP = config.getBoolean("WorkInPVP", true);
         this.workOnXP = config.getBoolean("WorksOnXP", true);

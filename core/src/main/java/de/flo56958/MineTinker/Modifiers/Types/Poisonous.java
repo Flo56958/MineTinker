@@ -62,36 +62,30 @@ public class Poisonous extends Modifier implements Enchantable, Listener {
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Poisonous";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Enhanced Rotten Flesh");
-        config.addDefault(key + ".modifier_item", "ROTTEN_FLESH"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Poisons enemies!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Poisonous-Modifier");
-        config.addDefault(key + ".Color", "%DARK_GREEN%");
-        config.addDefault(key + ".MaxLevel", 5);
-    	config.addDefault(key + ".EnchantCost", 10);
-    	config.addDefault(key + ".Duration", 120); //ticks INTEGER (20 ticks ~ 1 sec)
-    	config.addDefault(key + ".DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
-    	config.addDefault(key + ".EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...) INTEGER
-        config.addDefault(key + ".DropRottenMeatIfPoisoned", false);
-    	config.addDefault(key + ".Recipe.Enabled", false);
+
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Poisonous");
+    	config.addDefault("ModifierItemName", "Enhanced Rotten Flesh");
+        config.addDefault("Description", "Poisons enemies!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Poisonous-Modifier");
+        config.addDefault("Color", "%DARK_GREEN%");
+        config.addDefault("MaxLevel", 5);
+    	config.addDefault("EnchantCost", 10);
+    	config.addDefault("Duration", 120); //ticks INTEGER (20 ticks ~ 1 sec)
+    	config.addDefault("DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
+    	config.addDefault("EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...) INTEGER
+        config.addDefault("DropRottenMeatIfPoisoned", true);
+    	config.addDefault("Recipe.Enabled", false);
     	
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
         
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.ROTTEN_FLESH, true);
         
-        this.duration = config.getInt(key + ".Duration");
-        this.durationMultiplier = config.getDouble(key + ".DurationMultiplier");
-        this.effectAmplifier = config.getInt(key + ".EffectAmplifier");
-        this.dropPoisonedMeat = config.getBoolean(key + ".DropRottenMeatIfPoisoned");
+        this.duration = config.getInt("Duration", 120);
+        this.durationMultiplier = config.getDouble("DurationMultiplier", 1.1);
+        this.effectAmplifier = config.getInt("EffectAmplifier", 2);
+        this.dropPoisonedMeat = config.getBoolean("DropRottenMeatIfPoisoned", true);
     }
 
     @Override
@@ -182,16 +176,6 @@ public class Poisonous extends Modifier implements Enchantable, Listener {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.poisonous.craft")) return;
-        _createModifierItem(getConfig(), p, this, "Poisonous");
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Poisonous", "Modifier_Poisonous");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Poisonous.allowed");
+        _createModifierItem(getConfig(), p, this);
     }
 }

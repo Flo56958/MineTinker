@@ -3,7 +3,6 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,11 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Reinforced extends Modifier {
 
@@ -53,39 +48,33 @@ public class Reinforced extends Modifier {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
     	
-    	String key = "Reinforced";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Compressed Obsidian");
-        config.addDefault(key + ".modifier_item", "OBSIDIAN"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Chance to not use durability when using the tool/armor!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Reinforced-Modifier");
-        config.addDefault(key + ".Color", "%DARK_GRAY%");
-        config.addDefault(key + ".MaxLevel", 3);
-        config.addDefault(key + ".ApplyUnbreakableOnMaxLevel", false);
-        config.addDefault(key + ".HideUnbreakableFlag", true);
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Reinforced");
+    	config.addDefault("ModifierItemName", "Compressed Obsidian");
+        config.addDefault("Description", "Chance to not use durability when using the tool/armor!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Reinforced-Modifier");
+        config.addDefault("Color", "%DARK_GRAY%");
+        config.addDefault("MaxLevel", 3);
+        config.addDefault("ApplyUnbreakableOnMaxLevel", false);
+        config.addDefault("HideUnbreakableFlag", true);
 
-    	config.addDefault(key + ".Recipe.Enabled", true);
-    	config.addDefault(key + ".Recipe.Top", "OOO");
-    	config.addDefault(key + ".Recipe.Middle", "OOO");
-    	config.addDefault(key + ".Recipe.Bottom", "OOO");
+    	config.addDefault("Recipe.Enabled", true);
+    	config.addDefault("Recipe.Top", "OOO");
+    	config.addDefault("Recipe.Middle", "OOO");
+    	config.addDefault("Recipe.Bottom", "OOO");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("O", "OBSIDIAN");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-    	this.applyUnbreakableOnMaxLevel = config.getBoolean(key + ".ApplyUnbreakableOnMaxLevel");
-    	this.hideUnbreakableFlag = config.getBoolean(key + ".HideUnbreakableFlag");
+    	this.applyUnbreakableOnMaxLevel = config.getBoolean("ApplyUnbreakableOnMaxLevel");
+    	this.hideUnbreakableFlag = config.getBoolean("HideUnbreakableFlag");
     	
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.OBSIDIAN, true);
     }
 
     @Override
@@ -129,15 +118,5 @@ public class Reinforced extends Modifier {
 
             tool.setItemMeta(meta);
         }
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Reinforced", "Modifier_Reinforced");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Reinforced.allowed");
     }
 }

@@ -6,7 +6,6 @@ import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -51,26 +50,20 @@ public class SilkTouch extends Modifier implements Enchantable {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
     	
-    	String key = "Silk-Touch";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Enhanced Cobweb");
-        config.addDefault(key + ".modifier_item", "COBWEB"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Applies Silk-Touch!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Silk-Touch-Modifier");
-        config.addDefault(key + ".Color", "%WHITE%");
-        config.addDefault(key + ".MaxLevel", 1); //IF 2 Epic Spawners work with MT-SilkTouch
-    	config.addDefault(key + ".EnchantCost", 10);
-    	config.addDefault(key + ".Recipe.Enabled", false);
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Silk-Touch");
+    	config.addDefault("ModifierItemName", "Enhanced Cobweb");
+        config.addDefault("Description", "Applies Silk-Touch!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Silk-Touch-Modifier");
+        config.addDefault("Color", "%WHITE%");
+        config.addDefault("MaxLevel", 1); //IF 2: Epic Spawners work with MT-SilkTouch
+    	config.addDefault("EnchantCost", 10);
+    	config.addDefault("Recipe.Enabled", false);
     	
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
     	
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.COBWEB, true);
     }
 
     @Override
@@ -117,16 +110,6 @@ public class SilkTouch extends Modifier implements Enchantable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.silktouch.craft")) return;
-        _createModifierItem(getConfig(), p, this, "Silk-Touch");
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Silk-Touch", "Modifier_SilkTouch");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Silk-Touch.allowed");
+        _createModifierItem(getConfig(), p, this);
     }
 }

@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,11 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Sharpness extends Modifier {
 
@@ -57,41 +52,34 @@ public class Sharpness extends Modifier {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
     	
-    	String key = "Sharpness";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Compressed Quartzblock");
-        config.addDefault(key + ".modifier_item", "QUARTZ_BLOCK"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Weapon does additional damage!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Sharpness-Modifier");
-        config.addDefault(key + ".Color", "%WHITE%");
-        config.addDefault(key + ".MaxLevel", 5);
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Sharpness");
+    	config.addDefault("ModifierItemName", "Compressed Quartzblock");
+        config.addDefault("Description", "Weapon does additional damage!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Sharpness-Modifier");
+        config.addDefault("Color", "%WHITE%");
+        config.addDefault("MaxLevel", 5);
 
-        config.addDefault(key + ".CompatibleWithSmite", false);
-        config.addDefault(key + ".CompatibleWithArthropods", false);
+        config.addDefault("CompatibleWithSmite", false);
+        config.addDefault("CompatibleWithArthropods", false);
 
-        config.addDefault(key + ".Recipe.Enabled", true);
-    	config.addDefault(key + ".Recipe.Top", "QQQ");
-    	config.addDefault(key + ".Recipe.Middle", "QQQ");
-    	config.addDefault(key + ".Recipe.Bottom", "QQQ");
+        config.addDefault("Recipe.Enabled", true);
+    	config.addDefault("Recipe.Top", "QQQ");
+    	config.addDefault("Recipe.Middle", "QQQ");
+    	config.addDefault("Recipe.Bottom", "QQQ");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("Q", "QUARTZ_BLOCK");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
     	
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
-                ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
-                ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.QUARTZ_BLOCK, true);
 
-        this.compatibleWithSmite = config.getBoolean(key + ".CompatibleWithSmite");
-        this.compatibleWithArthropods = config.getBoolean(key + ".CompatibleWithArthropods");
+        this.compatibleWithSmite = config.getBoolean("CompatibleWithSmite", false);
+        this.compatibleWithArthropods = config.getBoolean("CompatibleWithArthropods", false);
     }
 
     @Override
@@ -147,15 +135,5 @@ public class Sharpness extends Modifier {
 
             tool.setItemMeta(meta);
         }
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Sharpness", "Modifier_Sharpness");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Sharpness.allowed");
     }
 }

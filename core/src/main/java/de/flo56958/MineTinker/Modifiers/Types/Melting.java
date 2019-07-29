@@ -42,7 +42,7 @@ public class Melting extends Modifier implements Enchantable, Listener {
     private Melting() {
         super("Melting", "Melting.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD,
-                                                ToolType.CHESTPLATE, ToolType.LEGGINGS)),
+                        ToolType.CHESTPLATE, ToolType.LEGGINGS)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
@@ -54,34 +54,28 @@ public class Melting extends Modifier implements Enchantable, Listener {
 
     @Override
     public void reload() {
-    	FileConfiguration config = getConfig();
-    	config.options().copyDefaults(true);
-    	
-    	String key = "Melting";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Enchanted Magma block");
-        config.addDefault(key + ".modifier_item", "MAGMA_BLOCK"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Extra damage against burning enemies and less damage taken while on fire!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Melting-Modifier");
-        config.addDefault(key + ".Color", "%GOLD%");
-        config.addDefault(key + ".MaxLevel", 3);
-    	config.addDefault(key + ".EnchantCost", 10);
-    	config.addDefault(key + ".BonusMultiplier", 0.1); //Percent of Bonus-damage per Level or Damage-reduction on Armor
-        config.addDefault(key + ".CancelBurningOnArmor", true);
-    	config.addDefault(key + ".Recipe.Enabled", false);
-        
-    	ConfigurationManager.saveConfig(config);
+        FileConfiguration config = getConfig();
+        config.options().copyDefaults(true);
+
+        config.addDefault("Allowed", true);
+        config.addDefault("Name", "Melting");
+        config.addDefault("ModifierItemName", "Enchanted Magma block");
+        config.addDefault("Description", "Extra damage against burning enemies and less damage taken while on fire!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Melting-Modifier");
+        config.addDefault("Color", "%GOLD%");
+        config.addDefault("MaxLevel", 3);
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("BonusMultiplier", 0.1); //Percent of Bonus-damage per Level or Damage-reduction on Armor
+        config.addDefault("CancelBurningOnArmor", true);
+        config.addDefault("Recipe.Enabled", false);
+
+        ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
-        
-        this.bonusMultiplier = config.getDouble(key + ".BonusMultiplier");
-        this.cancelBurning = config.getBoolean(key + ".CancelBurningOnArmor");
+        init(Material.MAGMA_BLOCK, true);
+
+        this.bonusMultiplier = config.getDouble("BonusMultiplier", 0.1);
+        this.cancelBurning = config.getBoolean("CancelBurningOnArmor", true);
     }
 
     @Override
@@ -90,7 +84,8 @@ public class Melting extends Modifier implements Enchantable, Listener {
     }
 
     @Override
-    public void removeMod(ItemStack tool) { }
+    public void removeMod(ItemStack tool) {
+    }
 
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
@@ -160,16 +155,6 @@ public class Melting extends Modifier implements Enchantable, Listener {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.melting.craft")) return;
-        _createModifierItem(getConfig(), p, this, "Melting");
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Melting", "Modifier_Melting");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Melting.allowed");
+        _createModifierItem(getConfig(), p, this);
     }
 }

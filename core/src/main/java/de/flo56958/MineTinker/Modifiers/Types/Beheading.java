@@ -73,7 +73,7 @@ public class Beheading extends Modifier implements Enchantable, Listener {
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
     	
-    	init(Material.WITHER_SKELETON_SKULL);
+    	init(Material.WITHER_SKELETON_SKULL, true);
 
         this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
     }

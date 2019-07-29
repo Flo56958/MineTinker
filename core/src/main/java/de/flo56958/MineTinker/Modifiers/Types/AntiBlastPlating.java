@@ -78,7 +78,7 @@ public class AntiBlastPlating extends Modifier {
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(Material.IRON_BLOCK);
+        init(Material.IRON_BLOCK, true);
 
         this.compatibleWithProtecting = config.getBoolean("CompatibleWithProtecting", false);
         this.compatibleWithInsulating = config.getBoolean("CompatibleWithInsulating", false);

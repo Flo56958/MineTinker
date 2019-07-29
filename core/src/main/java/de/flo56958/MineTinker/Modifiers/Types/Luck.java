@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -50,35 +49,29 @@ public class Luck extends Modifier {
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Luck";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Compressed Lapis-Block");
-        config.addDefault(key + ".modifier_item", "LAPIS_BLOCK"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Get more loot from enemies and blocks!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Luck-Modifier");
-        config.addDefault(key + ".Color", "%BLUE%");
-        config.addDefault(key + ".MaxLevel", 3);
 
-    	config.addDefault(key + ".Recipe.Enabled", true);
-    	config.addDefault(key + ".Recipe.Top", "LLL");
-    	config.addDefault(key + ".Recipe.Middle", "LLL");
-    	config.addDefault(key + ".Recipe.Bottom", "LLL");
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Luck");
+    	config.addDefault("ModifierItemName", "Compressed Lapis-Block");
+        config.addDefault("Description", "Get more loot from enemies and blocks!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Luck-Modifier");
+        config.addDefault("Color", "%BLUE%");
+        config.addDefault("MaxLevel", 3);
+
+    	config.addDefault("Recipe.Enabled", true);
+    	config.addDefault("Recipe.Top", "LLL");
+    	config.addDefault("Recipe.Middle", "LLL");
+    	config.addDefault("Recipe.Bottom", "LLL");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("L", "LAPIS_BLOCK");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.LAPIS_BLOCK, true);
     }
 
     @Override
@@ -133,15 +126,5 @@ public class Luck extends Modifier {
             meta.removeEnchant(Enchantment.LUCK);
             tool.setItemMeta(meta);
         }
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Luck", "Modifier_Luck");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Luck.allowed");
     }
 }

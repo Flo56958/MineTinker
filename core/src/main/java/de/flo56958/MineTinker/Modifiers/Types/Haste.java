@@ -3,7 +3,6 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Material;
@@ -15,11 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Haste extends Modifier {
 
@@ -52,35 +47,29 @@ public class Haste extends Modifier {
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Haste";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Compressed Redstoneblock");
-        config.addDefault(key + ".modifier_item", "REDSTONE_BLOCK"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Tool can destroy blocks faster!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Haste-Modifier");
-        config.addDefault(key + ".Color", "%DARK_RED%");
-        config.addDefault(key + ".MaxLevel", 5);
 
-    	config.addDefault(key + ".Recipe.Enabled", true);
-    	config.addDefault(key + ".Recipe.Top", "RRR");
-    	config.addDefault(key + ".Recipe.Middle", "RRR");
-    	config.addDefault(key + ".Recipe.Bottom", "RRR");
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Haste");
+    	config.addDefault("ModifierItemName", "Compressed Redstoneblock");
+        config.addDefault("Description", "Tool can destroy blocks faster!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Haste-Modifier");
+        config.addDefault("Color", "%DARK_RED%");
+        config.addDefault("MaxLevel", 5);
+
+    	config.addDefault("Recipe.Enabled", true);
+    	config.addDefault("Recipe.Top", "RRR");
+    	config.addDefault("Recipe.Middle", "RRR");
+    	config.addDefault("Recipe.Bottom", "RRR");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("R", "REDSTONE_BLOCK");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.REDSTONE_BLOCK, true);
     }
 
     @Override
@@ -119,15 +108,5 @@ public class Haste extends Modifier {
         meta.removeEnchant(Enchantment.LURE);
         if (NBTUtils.isOneFourteenCompatible()) meta.removeEnchant(Enchantment.QUICK_CHARGE);
         tool.setItemMeta(meta);
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Haste", "Modifier_Haste");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Haste.allowed");
     }
 }

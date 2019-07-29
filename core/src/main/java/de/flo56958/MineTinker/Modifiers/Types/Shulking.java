@@ -23,11 +23,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Shulking extends Modifier implements Listener {
 
@@ -61,40 +57,34 @@ public class Shulking extends Modifier implements Listener {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
     	
-    	String key = "Shulking";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key); //wingardium leviosa
-    	config.addDefault(key + ".name_modifier", "Enhanced Shulkershell");
-        config.addDefault(key + ".modifier_item", "SHULKER_SHELL"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Makes enemies levitate!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Shulking-Modifier");
-        config.addDefault(key + ".Color", "%LIGHT_PURPLE%");
-        config.addDefault(key + ".MaxLevel", 10);
-    	config.addDefault(key + ".Duration", 20); //ticks (20 ticks ~ 1 sec)
-    	config.addDefault(key + ".EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Shulking"); //wingardium leviosa
+    	config.addDefault("ModifierItemName", "Enhanced Shulkershell");
+        config.addDefault("Description", "Makes enemies levitate!");
+        config.addDefault("Description_modifier", "%WHITE%Modifier-Item for the Shulking-Modifier");
+        config.addDefault("Color", "%LIGHT_PURPLE%");
+        config.addDefault("MaxLevel", 10);
+    	config.addDefault("Duration", 20); //ticks (20 ticks ~ 1 sec)
+    	config.addDefault("EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
 
-        config.addDefault(key + ".Recipe.Enabled", true);
-    	config.addDefault(key + ".Recipe.Top", "S");
-    	config.addDefault(key + ".Recipe.Middle", "C");
-    	config.addDefault(key + ".Recipe.Bottom", "S");
+        config.addDefault("Recipe.Enabled", true);
+    	config.addDefault("Recipe.Top", "S");
+    	config.addDefault("Recipe.Middle", "C");
+    	config.addDefault("Recipe.Bottom", "S");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("S", "SHULKER_SHELL");
         recipeMaterials.put("C", "CHORUS_FRUIT");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
     	
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
         
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.SHULKER_SHELL, true);
     
-        this.duration = config.getInt("Shulking.Duration");
-        this.effectAmplifier = config.getInt("Shulking.EffectAmplifier");
+        this.duration = config.getInt("Shulking.Duration", 20);
+        this.effectAmplifier = config.getInt("Shulking.EffectAmplifier", 2);
     }
 
     @Override
@@ -140,15 +130,5 @@ public class Shulking extends Modifier implements Listener {
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Shulking on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Shulking", "Modifier_Shulking");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Shulking.allowed");
     }
 }

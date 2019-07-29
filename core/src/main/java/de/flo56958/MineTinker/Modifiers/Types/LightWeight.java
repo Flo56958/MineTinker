@@ -4,7 +4,6 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -49,26 +48,20 @@ public class LightWeight extends Modifier implements Enchantable {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
     	
-    	String key = "Light-Weight";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Enhanced Feather");
-        config.addDefault(key + ".modifier_item", "FEATHER"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "You fall like a feather - sort of...");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Light-Weight-Modifier");
-        config.addDefault(key + ".Color", "%GRAY%");
-        config.addDefault(key + ".MaxLevel", 3);
-    	config.addDefault(key + ".EnchantCost", 10);
-    	config.addDefault(key + ".Recipe.Enabled", false);
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Light-Weight");
+    	config.addDefault("ModifierItemName", "Enhanced Feather");
+        config.addDefault("Description", "You fall like a feather - sort of...");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Light-Weight-Modifier");
+        config.addDefault("Color", "%GRAY%");
+        config.addDefault("MaxLevel", 3);
+    	config.addDefault("EnchantCost", 10);
+    	config.addDefault("Recipe.Enabled", false);
     	
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
     	
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.FEATHER, true);
     }
 
     @Override
@@ -104,16 +97,6 @@ public class LightWeight extends Modifier implements Enchantable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.lightweight.craft")) return;
-        _createModifierItem(getConfig(), p, this, "Light-Weight");
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Light-Weight", "Modifier_LightWeight");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Light-Weight.allowed");
+        _createModifierItem(getConfig(), p, this);
     }
 }

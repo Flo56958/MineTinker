@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -48,25 +47,20 @@ public class ExtraModifier extends Modifier {
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Extra-Modifier";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-        config.addDefault(key + ".modifier_item", "NETHER_STAR"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Adds a additional Modifiers-Slot to the tool!");
-        config.addDefault(key + ".Color", "%WHITE%");
-        config.addDefault(key + ".ExtraModifierGain", 1); //How much Slots should be added per Nether-Star
+
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Extra-Modifier");
+        config.addDefault("ModifierItem", "NETHER_STAR"); //Needs to be a viable Material-Type
+        config.addDefault("Description", "Adds a additional Modifiers-Slot to the tool!");
+        config.addDefault("Color", "%WHITE%");
+        config.addDefault("ExtraModifierGain", 1); //How much Slots should be added per Nether-Star
 
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".modifier_item")+ "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                -1,
-                new ItemStack(Material.getMaterial(config.getString(key + ".modifier_item")), 1));
+        init(Material.getMaterial(config.getString("ModifierItem", "NETHER_STAR")), false);
         
-        this.gain = config.getInt(key + ".ExtraModifierGain");
+        this.gain = config.getInt("ExtraModifierGain");
     }
 
     @Override
@@ -100,10 +94,5 @@ public class ExtraModifier extends Modifier {
     @Override
     public void registerCraftingRecipe() {
         // no recipe
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Extra-Modifier.allowed");
     }
 }

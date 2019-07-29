@@ -87,7 +87,7 @@ public class AutoSmelt extends Modifier implements Listener {
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-    	init(Material.FURNACE);
+    	init(Material.FURNACE, true);
         
         this.percentagePerLevel = config.getInt("PercentagePerLevel", 20);
         this.hasSound = config.getBoolean("Sound", true);

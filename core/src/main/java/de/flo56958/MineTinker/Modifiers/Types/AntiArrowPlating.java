@@ -80,7 +80,7 @@ public class AntiArrowPlating extends Modifier {
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
         // Initialize modifier
-        init(Material.IRON_BLOCK);
+        init(Material.IRON_BLOCK, true);
 
         this.compatibleWithProtecting = config.getBoolean("CompatibleWithProtecting", false);
         this.compatibleWithAntiFire = config.getBoolean("CompatibleWithAntiFire", false);
