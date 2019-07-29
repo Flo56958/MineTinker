@@ -21,8 +21,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-
 public class ConvertListener implements Listener{
 	private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = ModManager.instance();
@@ -78,7 +76,11 @@ public class ConvertListener implements Listener{
 			}
 		}
 
-		if (lastItem != null && actualItems == 1 && currentItem.getType() == lastItem.getType()) {
+		if (lastItem == null) {
+			return;
+		}
+
+		if (actualItems == 1 && currentItem.getType() == lastItem.getType()) {
 			if (modManager.isArmorViable(lastItem) || modManager.isToolViable(lastItem) || modManager.isWandViable(lastItem)) {
 				e.getInventory().setResult(new ItemStack(Material.AIR, 1));
 				return;

@@ -28,6 +28,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -360,9 +361,10 @@ public class Power extends Modifier implements Enchantable, Listener {
             if (b.getWorld().getBlockAt(b.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
 
                 // TODO: Fix, meta id Damageable, not the tool
-                if (tool instanceof Damageable) {
-                    Damageable damageable = (Damageable) tool;
+                if (tool.getItemMeta() instanceof Damageable) {
+                    Damageable damageable = (Damageable) tool.getItemMeta();
                     damageable.setDamage(damageable.getDamage() + 1);
+                    tool.setItemMeta((ItemMeta) damageable);
                 }
 
                 PlayerInteractEvent event = new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, tool, b, BlockFace.UP);

@@ -16,11 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SpidersBane extends Modifier {
 
@@ -126,7 +122,7 @@ public class SpidersBane extends Modifier {
             }
 
             tool.setItemMeta(meta);
-        }
+        } else return false;
 
         return true;
     }
