@@ -1,0 +1,15 @@
+StartUp.Commands: "Registered commands!"
+StartUp.BuildersWands: "Enabled BuildersWands!"
+StartUp.EasyHarvest: "Enabled EasyHarvest!"
+StartUp.Events: "Registered Events!"
+StartUp.GUIs: "Loading GUIs!"
+StartUp.StdLogging: "Standard Logging is enabled. You can disable it in the config under Logging.Standard!"
+StartUp.DebugLogging: "Debug Logging is enabled. You should disable it in the config under Logging.Debug!"
+
+LanguageManager.LoadedLanguage: "LanguageManager loaded %lang successfully!"
+
+Updater.Unable: "Unable to check for updates!"
+Updater.UpdateAvailable: "There is an update available on spigotmc.org!"
+Updater.YourVersion: "Your Version: %ver"
+Updater.OnlineVersion: "Online Version: %ver"
+Updater.UpToDate: "You have the newest version of MineTinker installed!"

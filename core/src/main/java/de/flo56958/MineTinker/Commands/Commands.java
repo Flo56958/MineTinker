@@ -8,6 +8,7 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.Utilities.Updater;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -319,6 +320,8 @@ public class Commands implements TabExecutor {
         ChatWriter.sendMessage(sender, ChatColor.WHITE, "Reloading Config!");
         Main.getPlugin().reloadConfig();
         ConfigurationManager.reload();
+
+        LanguageManager.reload();
 
         ChatWriter.sendMessage(sender, ChatColor.WHITE, "Reloading ModManager!");
         modManager.reload();

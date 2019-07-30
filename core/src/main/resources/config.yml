@@ -1,6 +1,7 @@
 #---------------MAIN-PLUGIN-SETTINGS--------------
 chat-prefix: [MineTinker]
 CheckForUpdates: true                 #Checks for updates on startup
+Language: de_DE                       #Changes the Plugins Language
 
 #--LOGGING--
 logging:

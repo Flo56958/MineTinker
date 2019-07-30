@@ -8,6 +8,7 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.Utilities.Updater;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bstats.bukkit.Metrics;
@@ -36,13 +37,15 @@ public class Main extends JavaPlugin {
         BuildersWandListener.init();
         loadConfig();
 
+        LanguageManager.reload();
+
         ModManager.instance();
 
         Commands cmd = new Commands();
         this.getCommand("minetinker").setExecutor(cmd); // must be after internals as it would throw a NullPointerException
         this.getCommand("minetinker").setTabCompleter(cmd);
 
-        ChatWriter.logInfo("Registered commands!");
+        ChatWriter.logInfo(LanguageManager.getString("StartUp.Commands"));
 
         if (getConfig().getBoolean("AllowCrafting")) {
             ConvertListener convertListener = new ConvertListener();
@@ -69,23 +72,23 @@ public class Main extends JavaPlugin {
         if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("BuildersWand.enabled")) {
             Bukkit.getPluginManager().registerEvents(new BuildersWandListener(), this);
             BuildersWandListener.reload();
-            ChatWriter.log(false, "Enabled BuildersWands!");
+            ChatWriter.log(false, LanguageManager.getString("StartUp.BuildersWands"));
         }
 
         if (getConfig().getBoolean("EasyHarvest.enabled")) {
             Bukkit.getPluginManager().registerEvents(new EasyHarvestListener(), this);
-            ChatWriter.log(false, "Enabled EasyHarvest!");
+            ChatWriter.log(false, LanguageManager.getString("StartUp.EasyHarvest"));
         }
 
-        ChatWriter.log(false, "Registered events!");
+        ChatWriter.log(false, LanguageManager.getString("StartUp.Events"));
 
         if (getConfig().getBoolean("logging.metrics")) new Metrics(this);
 
-        ChatWriter.log(false, "Loading GUIs!");
+        ChatWriter.log(false, LanguageManager.getString("StartUp.GUIs"));
         GUIs.reload();
 
-        ChatWriter.log(false, "Standard Logging is enabled. You can disable it in the config under Logging.Standard!");
-        ChatWriter.log(true, "Debug Logging is enabled. You should disable it in the config under Logging.Debug!");
+        ChatWriter.log(false, LanguageManager.getString("StartUp.StdLogging"));
+        ChatWriter.log(true, LanguageManager.getString("StartUp.DebugLogging"));
 
         for (Player current : Bukkit.getServer().getOnlinePlayers()) {
             Power.HASPOWER.computeIfAbsent(current, player -> new AtomicBoolean(false));
@@ -108,7 +111,7 @@ public class Main extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveConfig();
 
-        ChatWriter.log(false, "Config loaded!");
+        ChatWriter.log(false, "Main-Configuration loaded!");
     }
 
     public static Plugin getPlugin() { // necessary to do getConfig() in other classes

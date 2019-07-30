@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.net.URL;
 import java.net.URLConnection;
@@ -47,15 +48,27 @@ public class Updater {
      */
     public static void checkForUpdate(CommandSender sender) {
         checkOnline();
+        if (sender instanceof Player) {
+            if (onlineVersion == null) {
+                ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Updater.Unable", (Player) sender));
+            } else if (!version.equals(onlineVersion)) {
+                ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpdateAvailable", (Player) sender));
+                ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.YourVersion", (Player) sender).replaceFirst("%ver", version));
+                ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.OnlineVersion", (Player) sender).replaceFirst("%ver", onlineVersion));
+            } else {
+                ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpToDate", (Player) sender));
+            }
+            return;
+        }
 
         if (onlineVersion == null) {
-            ChatWriter.sendMessage(sender, ChatColor.RED, "Unable to check for updates!");
+            ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Updater.Unable"));
         } else if (!version.equals(onlineVersion)) {
-            ChatWriter.sendMessage(sender, ChatColor.WHITE, "There is an update available on spigotmc.org!");
-            ChatWriter.sendMessage(sender, ChatColor.WHITE, "Your version: " + version);
-            ChatWriter.sendMessage(sender, ChatColor.WHITE, "Online Version: " + onlineVersion);
+            ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpdateAvailable"));
+            ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.YourVersion").replaceFirst("%ver", version));
+            ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.OnlineVersion").replaceFirst("%ver", onlineVersion));
         } else {
-            ChatWriter.sendMessage(sender, ChatColor.WHITE, "You have the newest version of MineTinker installed!");
+            ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpToDate"));
         }
     }
 

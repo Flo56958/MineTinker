@@ -1,0 +1,9 @@
+StartUp.Commands: "Befehle registriert!"
+
+LanguageManager.Loaded: "Sprachmanager geladen!"
+
+Updater.Unable: "Suche nach Updates fehlgeschlagen!"
+Updater.UpdateAvailable: "Es ist ein Update verfügbar auf spigotmc.org!"
+Updater.YourVersion: "Ihre Version: %ver"
+Updater.OnlineVersion: "Online Version: %ver"
+Updater.UpToDate: "Sie haben die neueste Version von MineTinker!"
