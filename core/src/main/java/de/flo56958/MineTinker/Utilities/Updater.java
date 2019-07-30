@@ -48,27 +48,19 @@ public class Updater {
      */
     public static void checkForUpdate(CommandSender sender) {
         checkOnline();
+        Player p = null;
         if (sender instanceof Player) {
-            if (onlineVersion == null) {
-                ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Updater.Unable", (Player) sender));
-            } else if (!version.equals(onlineVersion)) {
-                ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpdateAvailable", (Player) sender));
-                ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.YourVersion", (Player) sender).replaceFirst("%ver", version));
-                ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.OnlineVersion", (Player) sender).replaceFirst("%ver", onlineVersion));
-            } else {
-                ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpToDate", (Player) sender));
-            }
-            return;
+            p = (Player) sender;
         }
 
         if (onlineVersion == null) {
-            ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Updater.Unable"));
+            ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Updater.Unable", p));
         } else if (!version.equals(onlineVersion)) {
-            ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpdateAvailable"));
-            ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.YourVersion").replaceFirst("%ver", version));
-            ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.OnlineVersion").replaceFirst("%ver", onlineVersion));
+            ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpdateAvailable", p));
+            ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.YourVersion", p).replaceFirst("%ver", version));
+            ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.OnlineVersion", p).replaceFirst("%ver", onlineVersion));
         } else {
-            ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpToDate"));
+            ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpToDate", p));
         }
     }
 

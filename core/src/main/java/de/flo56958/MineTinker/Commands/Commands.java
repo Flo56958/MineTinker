@@ -95,8 +95,8 @@ public class Commands implements TabExecutor {
                         case "info":
                         case "i":
                             if (p.hasPermission("minetinker.commands.info")) {
-                                ChatWriter.sendMessage(p, ChatColor.WHITE, "MineTinker (" + Main.getPlugin().getDescription().getVersion() + ") is a Plugin made by Flo56958.");
-                                ChatWriter.sendMessage(p, ChatColor.WHITE, "It is inspired by different mods (e.g. TinkersConstruct)");
+                                ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.Info.Line1", p).replaceFirst("%ver", Main.getPlugin().getDescription().getVersion()));
+                                ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.Info.Line2", p));
                             } else noPerm(p);
                             break;
                         case "itemstatistics":
@@ -153,8 +153,8 @@ public class Commands implements TabExecutor {
                         break;
                     case "info":
                     case "i":
-                        sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + "MineTinker (" + Main.getPlugin().getDescription().getVersion() + ") is a Plugin made by Flo56958.");
-                        sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + "It is inspired by different mods (e.g. TinkersConstruct)");
+                        sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + LanguageManager.getString("Commands.Info.Line1").replaceFirst("%ver", Main.getPlugin().getDescription().getVersion()));
+                        sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + LanguageManager.getString("Commands.Info.Line2"));
                         break;
                     case "modifiers":
                     case "mods":
@@ -180,7 +180,7 @@ public class Commands implements TabExecutor {
      * @param player The player to send the message to
      */
     static void invalidArgs(Player player) {
-        ChatWriter.sendMessage(player, ChatColor.RED, config.getString("Language.Commands.InvalidArguments"));
+        ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("Commands.InvalidArguments", player));
     }
 
     /**
@@ -189,7 +189,7 @@ public class Commands implements TabExecutor {
      * @param sender The sender to send the message to
      */
     static void invalidArgs(CommandSender sender) {
-        ChatWriter.sendMessage(sender, ChatColor.RED, config.getString("Language.Commands.InvalidArguments"));
+        ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.InvalidArguments"));
     }
 
     /**
@@ -198,7 +198,7 @@ public class Commands implements TabExecutor {
      * @param player The player to send the message to
      */
     static void invalidTool(Player player) {
-        ChatWriter.sendMessage(player, ChatColor.RED, config.getString("Language.Commands.InvalidTool"));
+        ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("Commands.InvalidTool", player));
     }
 
     /**
@@ -207,7 +207,7 @@ public class Commands implements TabExecutor {
      * @param player The player to send the message to
      */
     private void noPerm(Player player) {
-        ChatWriter.sendMessage(player, ChatColor.RED, config.getString("Language.Commands.NoPermission"));
+        ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("Commands.NoPermission", player));
     }
 
     /**
@@ -262,9 +262,9 @@ public class Commands implements TabExecutor {
             ChatWriter.sendMessage(player, ChatColor.WHITE, index + ". SetDurability (sd)");
         }
 
-        ChatWriter.sendMessage(player, ChatColor.WHITE, "For more indepth help visit: ");
+        ChatWriter.sendMessage(player, ChatColor.WHITE, LanguageManager.getString("Commands.Help.Website", player));
         ChatWriter.sendMessage(player, ChatColor.GOLD, "https://flo56958.github.io/MineTinker");
-        ChatWriter.sendMessage(player, ChatColor.WHITE, "Or ask on the official MineTinker-Discordserver: ");
+        ChatWriter.sendMessage(player, ChatColor.WHITE, LanguageManager.getString("Commands.Help.Discord", player));
         ChatWriter.sendMessage(player, ChatColor.GOLD, "http://discord.gg/ZEVNKhN");
     }
 
@@ -281,9 +281,9 @@ public class Commands implements TabExecutor {
         sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + index++ + ". Modifiers (mods)");
         sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + index + ". reload (r)");
 
-        ChatWriter.sendMessage(sender, ChatColor.GRAY, "For more indepth help visit: ");
+        ChatWriter.sendMessage(sender, ChatColor.GRAY, LanguageManager.getString("Commands.Help.Website"));
         ChatWriter.sendMessage(sender, ChatColor.GOLD, "https://flo56958.github.io/MineTinker");
-        ChatWriter.sendMessage(sender, ChatColor.GRAY, "Or ask on the official MineTinker-Discordserver: ");
+        ChatWriter.sendMessage(sender, ChatColor.GRAY, LanguageManager.getString("Commands.Help.Discord"));
         ChatWriter.sendMessage(sender, ChatColor.GOLD, "http://discord.gg/ZEVNKhN");
     }
 
@@ -293,10 +293,14 @@ public class Commands implements TabExecutor {
      * @param sender The sender to send the message to
      */
     private void reload(CommandSender sender) {
-        ChatWriter.sendMessage(sender, ChatColor.RED, "NOTE: It is possible that the plugin will not work correctly after reload!");
-        ChatWriter.sendMessage(sender, ChatColor.RED, "NOTE: Builderswands need a complete restart to function correctly on the new configurations!");
+        Player player = null;
+        if (sender instanceof Player) {
+            player = (Player) sender;
+        }
+        ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.Reload.Note1", player));
+        ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.Reload.Note2", player));
 
-        ChatWriter.sendMessage(sender, ChatColor.WHITE, "Clearing recipes!");
+        ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Reload.Recipes", player));
 
         Iterator<Recipe> it = Main.getPlugin().getServer().recipeIterator(); //TODO: Better algorithm for removing recipes from modifiers
 
@@ -317,22 +321,22 @@ public class Commands implements TabExecutor {
 
         ModManager.instance().recipe_Namespaces.clear();
 
-        ChatWriter.sendMessage(sender, ChatColor.WHITE, "Reloading Config!");
+        ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Reload.Configs", player));
         Main.getPlugin().reloadConfig();
         ConfigurationManager.reload();
 
         LanguageManager.reload();
 
-        ChatWriter.sendMessage(sender, ChatColor.WHITE, "Reloading ModManager!");
+        ChatWriter.sendMessage(sender, ChatColor.WHITE,  LanguageManager.getString("Commands.Reload.ModManager", player));
         modManager.reload();
 
-        ChatWriter.sendMessage(sender, ChatColor.WHITE, "Reloading Builderswands!");
+        ChatWriter.sendMessage(sender, ChatColor.WHITE,  LanguageManager.getString("Commands.Reload.Builderswands", player));
         BuildersWandListener.reload();
 
-        ChatWriter.sendMessage(sender, ChatColor.WHITE, "Reloading GUIs!");
+        ChatWriter.sendMessage(sender, ChatColor.WHITE,  LanguageManager.getString("Commands.Reload.GUIs", player));
         GUIs.reload();
 
-        ChatWriter.sendMessage(sender, ChatColor.WHITE, "Done reloading!");
+        ChatWriter.sendMessage(sender, ChatColor.WHITE,  LanguageManager.getString("Commands.Reload.Finish", player));
 
         if (config.getBoolean("CheckForUpdates")) {
             Bukkit.getScheduler().scheduleAsyncDelayedTask(Main.getPlugin(), Updater::checkForUpdate, 20);

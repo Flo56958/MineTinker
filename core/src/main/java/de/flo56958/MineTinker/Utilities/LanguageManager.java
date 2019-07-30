@@ -42,7 +42,8 @@ public class LanguageManager {
     }
 
     @NotNull
-    public static String getString (@NotNull String path, @NotNull Player player) {
+    public static String getString (@NotNull String path, Player player) {
+        if (player == null) return getString(path);
         if (!player.getLocale().equals(Main.getPlugin().getConfig().getString("Language"))) {
             YamlConfiguration langFile = loadLanguage(player.getLocale());
             if (langFile != null) {

@@ -6,6 +6,7 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.Utilities.Updater;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
@@ -34,7 +35,7 @@ class Functions {
             return;
         }
 
-        ChatWriter.sendMessage(sender, ChatColor.GOLD, "Possible Modifiers:");
+        ChatWriter.sendMessage(sender, ChatColor.GOLD,  LanguageManager.getString("Commands.ModList"));
 
         int index = 1;
 
@@ -169,13 +170,13 @@ class Functions {
                         if (dura <= tool.getType().getMaxDurability()) {
                             damageable.setDamage(tool.getType().getMaxDurability() - dura);
                         } else {
-                            ChatWriter.sendMessage(player, ChatColor.RED, "Please enter a valid number or 'full'!");
+                            ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("Commands.SetDurability.InvalidInput", player));
                         }
                     } catch (Exception e) {
                         if (args[1].toLowerCase().equals("full") || args[1].toLowerCase().equals("f")) {
                             damageable.setDamage(0);
                         } else {
-                            ChatWriter.sendMessage(player, ChatColor.RED, "Please enter a valid number or 'full'!");
+                            ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("Commands.SetDurability.InvalidInput", player));
                         }
                     }
                 }
@@ -260,7 +261,11 @@ class Functions {
                             Player temp = Bukkit.getServer().getPlayer(args[3]);
 
                             if (temp == null) {
-                                ChatWriter.sendMessage(sender, ChatColor.RED, "Player " + args[3] + " not found or not online!");
+                                Player player = null;
+                                if (sender instanceof Player) {
+                                    player = (Player) sender;
+                                }
+                                ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.GiveModifierItem.PlayerNotFound", player).replaceFirst("%player", args[3]));
                                 return;
                             }
 
@@ -294,8 +299,12 @@ class Functions {
     }
 
     static void checkUpdate(CommandSender sender) {
+        Player player = null;
+        if (sender instanceof Player) {
+            player = (Player) sender;
+        }
         if (config.getBoolean("CheckForUpdates")) {
-            ChatWriter.sendMessage(sender, ChatColor.WHITE, "Checking for Updates...");
+            ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.CheckUpdate.Start", player));
 
             new BukkitRunnable() {
                 @Override
@@ -304,7 +313,7 @@ class Functions {
                 }
             }.runTaskLater(Main.getPlugin(), 20);
         } else {
-            ChatWriter.sendMessage(sender, ChatColor.RED, "Checking for updates is disabled by the server admin!");
+            ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.CheckUpdate.Disabled", player));
         }
     }
 
@@ -312,11 +321,13 @@ class Functions {
         ItemStack is = p.getInventory().getItemInMainHand();
         if (!(modManager.isToolViable(is) || modManager.isArmorViable(is))) return;
 
-        ChatWriter.sendMessage(p, ChatColor.WHITE, "Item-Statistics for " + ItemGenerator.getDisplayName(is));
-        ChatWriter.sendMessage(p, ChatColor.WHITE, "Level: " + modManager.getLevel(is));
-        ChatWriter.sendMessage(p, ChatColor.WHITE, "Exp: " + modManager.getExp(is) + "/" + modManager.getNextLevelReq(modManager.getLevel(is)));
-        ChatWriter.sendMessage(p, ChatColor.WHITE, "Free Modifier Slots: " + modManager.getFreeSlots(is));
-        ChatWriter.sendMessage(p, ChatColor.WHITE, "Modifiers:");
+        ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Head", p).replaceFirst("%toolname", ItemGenerator.getDisplayName(is)));
+        ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Level", p).replaceFirst("%level", "" + modManager.getLevel(is)));
+        ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Exp", p)
+                                                                    .replaceFirst( "%current", "" + modManager.getExp(is))
+                                                                    .replaceFirst("%nextlevel", "" + modManager.getNextLevelReq(modManager.getLevel(is))));
+        ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.FreeSlots", p).replaceFirst("%slots", "" + modManager.getFreeSlots(is)));
+        ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Modifiers", p));
 
         for (Modifier mod : modManager.getAllowedMods()) {
             if (NBTUtils.getHandler().hasTag(is, mod.getNBTKey())) {
