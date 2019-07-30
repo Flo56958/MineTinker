@@ -23,11 +23,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Webbed extends Modifier implements Listener {
 
@@ -61,43 +57,36 @@ public class Webbed extends Modifier implements Listener {
     public void reload() {
         FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Webbed";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Compressed Cobweb");
-        config.addDefault(key + ".modifier_item", "COBWEB"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Slowes down enemies!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Webbed-Modifier");
-        config.addDefault(key + ".Color", "%WHITE%");
-        config.addDefault(key + ".MaxLevel", 3);
-    	config.addDefault(key + ".Duration", 60); //ticks (20 ticks ~ 1 sec)
-    	config.addDefault(key + ".Sound", true);
-    	config.addDefault(key + ".DurationMultiplier", 1.2);//Duration * (Multiplier^Level)
-    	config.addDefault(key + ".EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
 
-        config.addDefault(key + ".Recipe.Enabled", true);
-    	config.addDefault(key + ".Recipe.Top", "WWW");
-    	config.addDefault(key + ".Recipe.Middle", "WWW");
-    	config.addDefault(key + ".Recipe.Bottom", "WWW");
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Webbed");
+    	config.addDefault("ModifierItemName", "Compressed Cobweb");
+        config.addDefault("Description", "Slowes down enemies!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Webbed-Modifier");
+        config.addDefault("Color", "%WHITE%");
+        config.addDefault("MaxLevel", 3);
+    	config.addDefault("Duration", 60); //ticks (20 ticks ~ 1 sec)
+    	config.addDefault("DurationMultiplier", 1.2);//Duration * (Multiplier^Level)
+    	config.addDefault("EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
+
+        config.addDefault("Recipe.Enabled", true);
+    	config.addDefault("Recipe.Top", "WWW");
+    	config.addDefault("Recipe.Middle", "WWW");
+    	config.addDefault("Recipe.Bottom", "WWW");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("W", "COBWEB");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
         
-        init(getConfig().getString(key + ".name"),
-                "[" + getConfig().getString(key + ".name_modifier") + "] \u200B" + getConfig().getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                getConfig().getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.COBWEB, true);
         
-        this.duration = config.getInt(key + ".Duration");
-        this.durationMultiplier = config.getDouble(key + ".DurationMultiplier");
-        this.effectAmplifier = config.getInt(key + ".EffectAmplifier");
+        this.duration = config.getInt("Duration", 60);
+        this.durationMultiplier = config.getDouble("DurationMultiplier", 1.2);
+        this.effectAmplifier = config.getInt("EffectAmplifier", 2);
     }
 
     @Override
@@ -138,15 +127,5 @@ public class Webbed extends Modifier implements Listener {
         ((LivingEntity) ent).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration, amplifier, false, false));
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Webbed on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Webbed", "Modifier_Webbed");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Webbed.allowed");
     }
 }

@@ -60,7 +60,7 @@ public class ExtraModifier extends Modifier {
 
         init(Material.getMaterial(config.getString("ModifierItem", "NETHER_STAR")), false);
         
-        this.gain = config.getInt("ExtraModifierGain");
+        this.gain = config.getInt("ExtraModifierGain", 1);
     }
 
     @Override

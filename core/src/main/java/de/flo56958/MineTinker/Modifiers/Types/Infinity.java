@@ -70,7 +70,7 @@ public class Infinity extends Modifier implements Enchantable {
     	
         init(Material.ARROW, true);
         
-        this.compatibleWithEnder = ConfigurationManager.getConfig(Ender.instance()).getBoolean("CompatibleWithInfinity");
+        this.compatibleWithEnder = ConfigurationManager.getConfig(Ender.instance()).getBoolean("CompatibleWithInfinity", true);
     }
 
     @Override

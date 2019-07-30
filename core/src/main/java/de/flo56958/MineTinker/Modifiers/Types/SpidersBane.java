@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,11 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SpidersBane extends Modifier {
 
@@ -55,43 +50,36 @@ public class SpidersBane extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Spiders-Bane";
-        config.addDefault(key + ".allowed", true);
-        config.addDefault(key + ".name", "Spider's-Bane");
-        config.addDefault(key + ".name_modifier", "Cleansed Spider Eye");
-        config.addDefault(key + ".modifier_item", "FERMENTED_SPIDER_EYE"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Weapon does additional damage to Spiders!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Spider's-Bane-Modifier");
-        config.addDefault(key + ".Color", "%RED%");
-        config.addDefault(key + ".MaxLevel", 5);
+        config.addDefault("Allowed", true);
+        config.addDefault("Name", "Spider's-Bane");
+        config.addDefault("ModifierItemName", "Cleansed Spider Eye");
+        config.addDefault("Description", "Weapon does additional damage to Spiders!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Spider's-Bane-Modifier");
+        config.addDefault("Color", "%RED%");
+        config.addDefault("MaxLevel", 5);
 
-        config.addDefault(key + ".CompatibleWithSmite", false);
-        config.addDefault(key + ".CompatibleWithSharpness", false);
-        config.addDefault(key + ".Recipe.Enabled", true);
+        config.addDefault("CompatibleWithSmite", false);
+        config.addDefault("CompatibleWithSharpness", false);
+        config.addDefault("Recipe.Enabled", true);
 
-        config.addDefault(key + ".Recipe.Top", "ESE");
-        config.addDefault(key + ".Recipe.Middle", "SFS");
-        config.addDefault(key + ".Recipe.Bottom", "ESE");
+        config.addDefault("Recipe.Top", "ESE");
+        config.addDefault("Recipe.Middle", "SFS");
+        config.addDefault("Recipe.Bottom", "ESE");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("E", "SPIDER_EYE");
         recipeMaterials.put("S", "STRING");
         recipeMaterials.put("F", "FERMENTED_SPIDER_EYE");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
-                ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
-                ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.FERMENTED_SPIDER_EYE, true);
 
-        this.compatibleWithSmite = config.getBoolean(key + ".CompatibleWithSmite");
-        this.compatibleWithSharpness = config.getBoolean(key + ".CompatibleWithSharpness");
+        this.compatibleWithSmite = config.getBoolean("CompatibleWithSmite", false);
+        this.compatibleWithSharpness = config.getBoolean("CompatibleWithSharpness", false);
     }
 
     @Override
@@ -140,15 +128,5 @@ public class SpidersBane extends Modifier {
 
             tool.setItemMeta(meta);
         }
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "SpidersBane", "Modifier_SpidersBane");
-    }
-
-    @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Spiders-Bane.allowed");
     }
 }

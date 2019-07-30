@@ -87,9 +87,9 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
         
         init(Material.MOSSY_COBBLESTONE, true);
         
-        this.percentagePerLevel = config.getInt("PercentagePerLevel");
-        this.healthRepair = config.getInt("HealthRepair");
-        this.useMending = config.getBoolean("UseMending");
+        this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
+        this.healthRepair = config.getInt("HealthRepair", 2);
+        this.useMending = config.getBoolean("UseMending", false);
     }
 
     @Override

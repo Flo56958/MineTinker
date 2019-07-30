@@ -81,13 +81,13 @@ public abstract class Modifier {
      */
     protected void init(Material m, boolean customItem) {
         FileConfiguration config = getConfig();
-        this.name = config.getString("Name");
-        this.description = ChatWriter.addColors(config.getString("Description"));
+        this.name = config.getString("Name", "");
+        this.description = ChatWriter.addColors(config.getString("Description", ""));
         this.color = ChatWriter.getColor(config.getString("Color", "%WHITE%"));
         this.maxLvl = config.getInt("MaxLevel");
         if (customItem) {
-            this.modItem = modManager.createModifierItem(m, ChatWriter.getColor(config.getString("Color")) + config.getString("ModifierItemName"),
-                    ChatWriter.addColors(config.getString("DescriptionModifierItem")), this);
+            this.modItem = modManager.createModifierItem(m, this.color + config.getString("ModifierItemName", ""),
+                    ChatWriter.addColors(config.getString("DescriptionModifierItem", "")), this);
         } else {
             this.modItem = new ItemStack(m, 1);
         }
@@ -180,7 +180,7 @@ public abstract class Modifier {
         FileConfiguration config = getConfig();
         if (config.getBoolean("Recipe.Enabled")) {
             try {
-                NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Modifier_" + this.nbtTag);
+                NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Modifier_" + this.nbtTag.replace('\'', '-')); //for Spider'sBane
                 ShapedRecipe newRecipe = new ShapedRecipe(nkey, this.getModItem()); //reload recipe
                 String top = config.getString("Recipe.Top");
                 String middle = config.getString("Recipe.Middle");

@@ -53,11 +53,6 @@ public class Soulbound extends Modifier implements Listener {
     }
 
     @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Soulbound", "Modifier_Soulbound");
-    }
-
-    @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
         return checkAndAdd(p, tool, this, "soulbound", isCommand);
     }
@@ -70,43 +65,37 @@ public class Soulbound extends Modifier implements Listener {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Soulbound";
-        config.addDefault(key + ".allowed", true);
-        config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Powerinfused Beacon");
-        config.addDefault(key + ".modifier_item", "BEACON"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Do not lose the tool when dying.");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Soulbound-Modifier");
-        config.addDefault(key + ".Color", "%GRAY%");
-        config.addDefault(key + ".MaxLevel", 1);
-        config.addDefault(key + ".PercentagePerLevel", 100);
-        config.addDefault(key + ".DecrementModLevelOnUse", false);
-        config.addDefault(key + ".ToolDropable", true);
+        config.addDefault("Allowed", true);
+        config.addDefault("Name", "Soulbound");
+        config.addDefault("ModifierItemName", "Powerinfused Beacon");
+        config.addDefault("Description", "Do not lose the tool when dying.");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Soulbound-Modifier");
+        config.addDefault("Color", "%GRAY%");
+        config.addDefault("MaxLevel", 1);
+        config.addDefault("PercentagePerLevel", 100);
+        config.addDefault("DecrementModLevelOnUse", false);
+        config.addDefault("ToolDropable", true);
 
-        config.addDefault(key + ".Recipe.Enabled", true);
-        config.addDefault(key + ".Recipe.Top", "BLB");
-        config.addDefault(key + ".Recipe.Middle", "LNL");
-        config.addDefault(key + ".Recipe.Bottom", "BLB");
+        config.addDefault("Recipe.Enabled", true);
+        config.addDefault("Recipe.Top", "BLB");
+        config.addDefault("Recipe.Middle", "LNL");
+        config.addDefault("Recipe.Bottom", "BLB");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("B", "BLAZE_ROD");
         recipeMaterials.put("L", "LAVA_BUCKET");
         recipeMaterials.put("N", "NETHER_STAR");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                getConfig().getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.BEACON, true);
 
-        this.toolDropable = config.getBoolean(key + ".ToolDropable");
-        this.decrementModLevelOnUse = config.getBoolean(key + ".DecrementModLevelOnUse");
-        this.percentagePerLevel = config.getInt(key + ".PercentagePerLevel");
+        this.toolDropable = config.getBoolean("ToolDropable", true);
+        this.decrementModLevelOnUse = config.getBoolean("DecrementModLevelOnUse", false);
+        this.percentagePerLevel = config.getInt("PercentagePerLevel", 100);
     }
 
     public boolean getDropable(ItemStack is) {
@@ -179,10 +168,5 @@ public class Soulbound extends Modifier implements Listener {
         if (toolDropable) return;
 
         e.setCancelled(true);
-    }
-
-    @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Soulbound.allowed");
     }
 }

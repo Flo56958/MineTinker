@@ -75,7 +75,7 @@ public class Piercing extends Modifier {
 
         init(Material.ARROW, true);
 
-        this.compatibleWithMultishot = ConfigurationManager.getConfig(Melting.instance()).getBoolean("CompatibleWithPiercing");
+        this.compatibleWithMultishot = ConfigurationManager.getConfig(Melting.instance()).getBoolean("CompatibleWithPiercing", false);
     }
 
     @Override

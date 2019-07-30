@@ -74,8 +74,8 @@ public class Experienced extends Modifier implements Listener {
     	
         init(Material.EXPERIENCE_BOTTLE, false);
         
-        this.percentagePerLevel = config.getInt("PercentagePerLevel");
-        this.amount = config.getInt("Amount");
+        this.percentagePerLevel = config.getInt("PercentagePerLevel", 2);
+        this.amount = config.getInt("Amount", 1);
     }
 
     @Override

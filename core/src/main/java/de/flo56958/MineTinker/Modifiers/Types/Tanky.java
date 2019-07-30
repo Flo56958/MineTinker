@@ -3,7 +3,6 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -45,9 +44,9 @@ public class Tanky extends Modifier {
         ItemMeta meta = tool.getItemMeta();
         if (meta == null) return false;
 
-        if (meta.getAttributeModifiers(Attribute.GENERIC_ARMOR) == null || meta.getAttributeModifiers(Attribute.GENERIC_ARMOR).isEmpty()) modManager.addArmorAttributes(tool);
-
         Collection<AttributeModifier> healthModifiers = meta.getAttributeModifiers(Attribute.GENERIC_MAX_HEALTH);
+        if (healthModifiers == null || healthModifiers.isEmpty()) modManager.addArmorAttributes(tool);
+
         double healthOnItem = 0.0D;
         if (!(healthModifiers == null || healthModifiers.isEmpty())) {
             HashSet<String> names = new HashSet<>();
@@ -83,39 +82,33 @@ public class Tanky extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Tanky";
-        config.addDefault(key + ".allowed", true);
-        config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Bloodinfused Obsidian");
-        config.addDefault(key + ".modifier_item", "OBSIDIAN"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Makes you extra tanky!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Tanky-Modifier");
-        config.addDefault(key + ".Color", "%DARK_GRAY%");
-        config.addDefault(key + ".MaxLevel", 5);
-        config.addDefault(key + ".HealthPerLevel", 3);
+        config.addDefault("Allowed", true);
+        config.addDefault("Name", "Tanky");
+        config.addDefault("ModifierItemName", "Bloodinfused Obsidian");
+        config.addDefault("Description", "Makes you extra tanky!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Tanky-Modifier");
+        config.addDefault("Color", "%DARK_GRAY%");
+        config.addDefault("MaxLevel", 5);
+        config.addDefault("HealthPerLevel", 3);
 
-        config.addDefault(key + ".Recipe.Enabled", true);
-        config.addDefault(key + ".Recipe.Top", "RBR");
-        config.addDefault(key + ".Recipe.Middle", "BOB");
-        config.addDefault(key + ".Recipe.Bottom", "RBR");
+        config.addDefault("Recipe.Enabled", true);
+        config.addDefault("Recipe.Top", "RBR");
+        config.addDefault("Recipe.Middle", "BOB");
+        config.addDefault("Recipe.Bottom", "RBR");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("B", "BONE");
         recipeMaterials.put("O", "OBSIDIAN");
         recipeMaterials.put("R", "ROTTEN_FLESH");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        this.healthPerLevel = config.getInt(key + ".HealthPerLevel");
+        this.healthPerLevel = config.getInt("HealthPerLevel", 3);
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.OBSIDIAN, true);
     }
 
     @Override
@@ -126,17 +119,7 @@ public class Tanky extends Modifier {
     }
 
     @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Tanky.allowed");
-    }
-
-    @Override
     public List<Enchantment> getAppliedEnchantments() {
         return new ArrayList<>();
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Tanky", "Modifier_Tanky");
     }
 }

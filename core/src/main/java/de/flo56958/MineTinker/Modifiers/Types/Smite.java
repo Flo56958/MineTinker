@@ -54,7 +54,7 @@ public class Smite extends Modifier {
         config.addDefault("Name", "Smite");
         config.addDefault("ModifierItemName", "Holy Bone");
         config.addDefault("Description", "Weapon does additional damage towards the Undead!");
-        config.addDefault("Description_modifier", "%YELLOW%Modifier-Item for the Smite-Modifier");
+        config.addDefault("DescriptionModifierItem", "%YELLOW%Modifier-Item for the Smite-Modifier");
         config.addDefault("Color", "%YELLOW%");
         config.addDefault("MaxLevel", 5);
 

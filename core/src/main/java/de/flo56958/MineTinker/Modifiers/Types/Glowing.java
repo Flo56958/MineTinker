@@ -57,8 +57,8 @@ public class Glowing extends Modifier implements Listener {
     	config.addDefault("Allowed", true);
     	config.addDefault("Name", "Glowing");
     	config.addDefault("ModifierItemName", "Ender-Glowstone");
-        config.addDefault("description", "Makes Enemies glow!");
-        config.addDefault("description_modifier", "%WHITE%Modifier-Item for the Glowing-Modifier");
+        config.addDefault("Description", "Makes Enemies glow!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Glowing-Modifier");
         config.addDefault("Color", "%YELLOW%");
         config.addDefault("MaxLevel", 3);
     	config.addDefault("Duration", 200); //ticks INTEGER (20 ticks ~ 1 sec)

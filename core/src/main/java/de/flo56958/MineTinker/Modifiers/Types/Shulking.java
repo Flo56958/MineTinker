@@ -61,7 +61,7 @@ public class Shulking extends Modifier implements Listener {
     	config.addDefault("Name", "Shulking"); //wingardium leviosa
     	config.addDefault("ModifierItemName", "Enhanced Shulkershell");
         config.addDefault("Description", "Makes enemies levitate!");
-        config.addDefault("Description_modifier", "%WHITE%Modifier-Item for the Shulking-Modifier");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Shulking-Modifier");
         config.addDefault("Color", "%LIGHT_PURPLE%");
         config.addDefault("MaxLevel", 10);
     	config.addDefault("Duration", 20); //ticks (20 ticks ~ 1 sec)
@@ -83,8 +83,8 @@ public class Shulking extends Modifier implements Listener {
         
         init(Material.SHULKER_SHELL, true);
     
-        this.duration = config.getInt("Shulking.Duration", 20);
-        this.effectAmplifier = config.getInt("Shulking.EffectAmplifier", 2);
+        this.duration = config.getInt("Duration", 20);
+        this.effectAmplifier = config.getInt("EffectAmplifier", 2);
     }
 
     @Override

@@ -103,7 +103,7 @@ public class Power extends Modifier implements Enchantable, Listener {
 
         init(Material.EMERALD, true);
 
-        this.lv1_vertical = config.getBoolean("Lv1Vertical");
+        this.lv1_vertical = config.getBoolean("Lv1Vertical", false);
 
         blacklist = new ArrayList<>();
 

@@ -4,7 +4,6 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -50,27 +49,21 @@ public class Sweeping extends Modifier implements Enchantable {
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Sweeping";
-    	config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Enchanted Iron Ingot");
-        config.addDefault(key + ".modifier_item", "IRON_INGOT"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "More damage over a greater area!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Sweeping-Modifier");
-        config.addDefault(key + ".Color", "%RED%");
-        config.addDefault(key + ".MaxLevel", 5);
-    	config.addDefault(key + ".EnchantCost", 10);
-    	config.addDefault(key + ".Recipe.Enabled", false);
+
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Sweeping");
+    	config.addDefault("ModifierItemName", "Enchanted Iron Ingot");
+        config.addDefault("Description", "More damage over a greater area!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Sweeping-Modifier");
+        config.addDefault("Color", "%RED%");
+        config.addDefault("MaxLevel", 5);
+    	config.addDefault("EnchantCost", 10);
+    	config.addDefault("Recipe.Enabled", false);
     	
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
         
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.IRON_INGOT, true);
     }
 
     @Override
@@ -100,16 +93,6 @@ public class Sweeping extends Modifier implements Enchantable {
     @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.sweeping.craft")) return;
-        _createModifierItem(getConfig(), p, this, "Sweeping");
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Sweeping", "Modifier_Sweeping");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Sweeping.allowed");
+        _createModifierItem(getConfig(), p, this);
     }
 }

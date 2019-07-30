@@ -71,8 +71,8 @@ public class Reinforced extends Modifier {
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-    	this.applyUnbreakableOnMaxLevel = config.getBoolean("ApplyUnbreakableOnMaxLevel");
-    	this.hideUnbreakableFlag = config.getBoolean("HideUnbreakableFlag");
+    	this.applyUnbreakableOnMaxLevel = config.getBoolean("ApplyUnbreakableOnMaxLevel", false);
+    	this.hideUnbreakableFlag = config.getBoolean("HideUnbreakableFlag", true);
     	
         init(Material.OBSIDIAN, true);
     }
