@@ -1,6 +1,12 @@
 StartUp.Commands: "Befehle registriert!"
+StartUp.BuildersWands: "BuildersWands aktiviert!"
+StartUp.EasyHarvest: "EasyHarvest aktiviert!"
+StartUp.Events: "Events registriert!"
+StartUp.GUIs: "Lade GUIs!"
+StartUp.StdLogging: "Standard Logging ist aktiviert. Sie können es in der Konfigurationsdatei unter Logging.Standard deaktivieren!"
+StartUp.DebugLogging: "Debug Logging ist aktiviert. Sie sollten es in der Konfigurationsdatei unter Logging.Debug deaktivieren!"
 
-LanguageManager.Loaded: "Sprachmanager geladen!"
+LanguageManager.LoadedLanguage: "Sprachmanager hat Sprache %lang erfolgreich geladen!"
 
 Updater.Unable: "Suche nach Updates fehlgeschlagen!"
 Updater.UpdateAvailable: "Es ist ein Update verfügbar auf spigotmc.org!"
