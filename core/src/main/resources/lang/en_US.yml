@@ -1,3 +1,5 @@
+Alert.OnItemBreak: "%RED%Looks like your tool broke! Giving it back with 1 durability."
+
 StartUp.Commands: "Registered commands!"
 StartUp.BuildersWands: "Enabled BuildersWands!"
 StartUp.EasyHarvest: "Enabled EasyHarvest!"
@@ -5,6 +7,19 @@ StartUp.Events: "Registered Events!"
 StartUp.GUIs: "Loading GUIs!"
 StartUp.StdLogging: "Standard Logging is enabled. You can disable it in the config under Logging.Standard!"
 StartUp.DebugLogging: "Debug Logging is enabled. You should disable it in the config under Logging.Debug!"
+
+Builderswand.NameWood: "Wooden Builderswand"
+Builderswand.NameStone: "Stone Builderswand"
+Builderswand.NameIron: "Iron Builderswand"
+Builderswand.NameGold: "Golden Builderswand"
+Builderswand.NameDiamond: "Diamond Builderswand"
+Builderswand.Description: "%WHITE%MineTinker-Builderswand"
+Builderswand.Error.CraftWood: "Could not register recipe for the Wooden Builderswand!"
+Builderswand.Error.CraftStone: "Could not register recipe for the Stone Builderswand!"
+Builderswand.Error.CraftIron: "Could not register recipe for the Iron Builderswand!"
+Builderswand.Error.CraftGold: "Could not register recipe for the Golden Builderswand!"
+Builderswand.Error.CraftDiamond: "Could not register recipe for the Diamond Builderswand!"
+
 
 Commands.Info.Line1: "MineTinker (%ver) is a Plugin made by Flo56958."
 Commands.Info.Line2: "It is inspired by different mods (e.g. TinkersConstruct)"
@@ -36,6 +51,13 @@ GUIs.Forward: "Forward"
 GUIs.Back: "Back"
 GUIs.Modifiers.Title: "MineTinker-Modifiers, %pageNo"
 GUIs.Modifiers.MaxLevel: "Max Level: %maxLevel"
+
+ModifierFailCause.IncompatibleModifiers: "Incompatible Modifiers!"
+ModifierFailCause.InvalidToolType: "Invalid ToolType!"
+ModifierFailCause.MaximumSlotsReached: "Maximum Amount of Slots reached!"
+ModifierFailCause.ModMaxLevel: "Modifier is already max Level!"
+ModifierFailCause.NoFreeSlots: "No free Slots on Item!"
+ModifierFailCause.NoPermission: "No Permission!"
 
 LanguageManager.LoadedLanguage: "LanguageManager loaded %lang successfully!"
 

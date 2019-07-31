@@ -5,8 +5,8 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Modifiers.Types.Soulbound;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -151,9 +151,7 @@ public class ItemListener implements Listener {
         }
 
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.AlertPlayerOnBreak")) {
-            e.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&cLooks like your tool broke! Giving it back with 1 durability."
-            ));
+            p.sendMessage(LanguageManager.getString("Alert.OnItemBreak", p));
         }
 
         ItemMeta meta = item.getItemMeta();
