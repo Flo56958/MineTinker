@@ -69,22 +69,53 @@ public class AnvilListener implements Listener {
         if (!modManager.isModifierItem(modifier)) { //upgrade
             if (tool.getType().equals(newTool.getType())) return; //Not an upgrade
 
+            //TODO: Items should not be stackable but could be with certain plugins
             // ------ upgrade
-            if (e.isShiftClick()) {
-                if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
-                    e.setCancelled(true); //cancels the event if the player has a full inventory
-                    return;
-                } // no else as it gets added in if-clause
+//            if (e.isShiftClick()) {
+//                if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
+//                    e.setCancelled(true); //cancels the event if the player has a full inventory
+//                    return;
+//                } // no else as it gets added in if-clause
+//
+//                inv.clear();
+//
+//                return;
+//            }
 
+            //TODO: TEST NEW UPGRADE IMPLEMENTATION
+
+            int usedAmountItem = -1;
+
+            if (ToolType.SHOVEL.contains(tool.getType()))
+                usedAmountItem = 1;
+            else if (ToolType.SWORD.contains(tool.getType()) || ToolType.HOE.contains(tool.getType()))
+                usedAmountItem = 2;
+            else if (ToolType.AXE.contains(tool.getType()) || ToolType.PICKAXE.contains(tool.getType()))
+                usedAmountItem = 3;
+            else if (ToolType.BOOTS.contains(tool.getType()))
+                usedAmountItem = 4;
+            else if (ToolType.HELMET.contains(tool.getType()))
+                usedAmountItem = 5;
+            else if (ToolType.LEGGINGS.contains(tool.getType()))
+                usedAmountItem = 7;
+            else if (ToolType.CHESTPLATE.contains(tool.getType()))
+                usedAmountItem = 8;
+
+            if(usedAmountItem >= 0) {
+                player.setItemOnCursor(newTool);
                 inv.clear();
 
-                return;
+                if(modifier.getAmount() > usedAmountItem) {
+                    modifier.setAmount(modifier.getAmount() - usedAmountItem);
+                    inv.setItem(1, modifier);
+                }
+            } else {
+                Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, true));
+
+                player.setItemOnCursor(newTool);
+                inv.clear();
             }
 
-            Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, true));
-
-            player.setItemOnCursor(newTool);
-            inv.clear();
         } else { //is modifier
             Modifier mod = modManager.getModifierFromItem(modifier);
 
@@ -179,55 +210,105 @@ public class AnvilListener implements Listener {
 
                 if (item != null) {
                     switch (item.getAmount()) {
-                        case 1:
-                            if (ToolType.SHOVEL.contains(tool.getType())) {
-                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
-                                e.setResult(newTool);
-                                i.setRepairCost(0);
-                            }
-                            break;
-                        case 2:
-                            if (ToolType.SWORD.contains(tool.getType()) || ToolType.HOE.contains(tool.getType())) {
-                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
-                                e.setResult(newTool);
-                                i.setRepairCost(0);
-                            }
-                            break;
-                        case 3:
-                            if (ToolType.AXE.contains(tool.getType()) || ToolType.PICKAXE.contains(tool.getType())) {
-                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
-                                e.setResult(newTool);
-                                i.setRepairCost(0);
-                            }
-                            break;
-                        case 4:
-                            if (ToolType.BOOTS.contains(tool.getType())) {
-                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
-                                e.setResult(newTool);
-                                i.setRepairCost(0);
-                            }
-                            break;
-                        case 5:
-                            if (ToolType.HELMET.contains(tool.getType())) {
-                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
-                                e.setResult(newTool);
-                                i.setRepairCost(0);
-                            }
-                            break;
-                        case 7:
-                            if (ToolType.LEGGINGS.contains(tool.getType())) {
-                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
-                                e.setResult(newTool);
-                                i.setRepairCost(0);
-                            }
-                            break;
+                        case 64:
+                        case 63:
+                        case 62:
+                        case 61:
+                        case 60:
+                        case 59:
+                        case 58:
+                        case 57:
+                        case 56:
+                        case 55:
+                        case 54:
+                        case 53:
+                        case 52:
+                        case 51:
+                        case 50:
+                        case 49:
+                        case 48:
+                        case 47:
+                        case 46:
+                        case 45:
+                        case 44:
+                        case 43:
+                        case 42:
+                        case 41:
+                        case 40:
+                        case 39:
+                        case 38:
+                        case 37:
+                        case 36:
+                        case 35:
+                        case 34:
+                        case 33:
+                        case 32:
+                        case 31:
+                        case 30:
+                        case 29:
+                        case 28:
+                        case 27:
+                        case 26:
+                        case 25:
+                        case 24:
+                        case 23:
+                        case 22:
+                        case 21:
+                        case 20:
+                        case 19:
+                        case 18:
+                        case 17:
+                        case 16:
+                        case 15:
+                        case 14:
+                        case 13:
+                        case 12:
+                        case 11:
+                        case 10:
+                        case 9:
                         case 8:
                             if (ToolType.CHESTPLATE.contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
                                 e.setResult(newTool);
                                 i.setRepairCost(0);
                             }
-                            break;
+                        case 7:
+                            if (ToolType.LEGGINGS.contains(tool.getType())) {
+                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
+                            }
+                        case 6:
+                        case 5:
+                            if (ToolType.HELMET.contains(tool.getType())) {
+                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
+                            }
+                        case 4:
+                            if (ToolType.BOOTS.contains(tool.getType())) {
+                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
+                            }
+                        case 3:
+                            if (ToolType.AXE.contains(tool.getType()) || ToolType.PICKAXE.contains(tool.getType())) {
+                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
+                            }
+                        case 2:
+                            if (ToolType.SWORD.contains(tool.getType()) || ToolType.HOE.contains(tool.getType())) {
+                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
+                            }
+                        case 1:
+                            if (ToolType.SHOVEL.contains(tool.getType())) {
+                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
+                            }
                     }
                 }
             }
