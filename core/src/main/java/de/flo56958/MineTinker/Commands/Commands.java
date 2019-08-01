@@ -150,6 +150,10 @@ public class Commands implements TabExecutor {
                     case "cu":
                         Functions.checkUpdate(sender);
                         break;
+                    case "givemodifieritem":
+                    case "gm":
+                        Functions.giveModifierItem(sender, args);
+                        break;
                     case "info":
                     case "i":
                         sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + "MineTinker (" + Main.getPlugin().getDescription().getVersion() + ") is a Plugin made by Flo56958.");

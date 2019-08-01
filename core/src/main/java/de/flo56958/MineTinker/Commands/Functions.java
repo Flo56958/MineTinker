@@ -278,7 +278,7 @@ class Functions {
                                 } // no else as it gets added in if
                             }
                         }
-                    } else if (sender instanceof Player){
+                    } else if (sender instanceof Player) {
                         Player player = (Player)sender;
 
                         for (int i = 0; i < amount; i++) {
