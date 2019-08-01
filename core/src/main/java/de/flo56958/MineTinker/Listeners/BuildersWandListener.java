@@ -355,9 +355,8 @@ public class BuildersWandListener implements Listener {
 
                         Location loc = l.clone().subtract(v.clone().multiply(-1));
 
-                        // TODO: Fix, meta id Damageable, not the tool
-                        if (wand instanceof Damageable) {
-                            Damageable damageable = (Damageable) wand;
+                        if (wand.getItemMeta() instanceof Damageable) {
+                            Damageable damageable = (Damageable)wand.getItemMeta();
 
                             if (wand.getType().getMaxDurability() - damageable.getDamage() <= 1) {
                                 break loop;
@@ -386,6 +385,7 @@ public class BuildersWandListener implements Listener {
                                 break loop;
                             }
 
+                            wand.setItemMeta((ItemMeta)damageable);
                             e.setCancelled(true);
                         }
                     }

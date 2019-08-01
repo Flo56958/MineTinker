@@ -193,7 +193,6 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
         int n = rand.nextInt(100);
 
         if (n <= this.percentagePerLevel * level) {
-            // TODO: Fix, meta id Damageable, not the tool
             if (tool.getItemMeta() instanceof Damageable) {
                 Damageable damageable = (Damageable) tool.getItemMeta();
                 int dura = damageable.getDamage() - this.healthRepair;

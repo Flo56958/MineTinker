@@ -159,15 +159,14 @@ class Functions {
             ItemStack tool = player.getInventory().getItemInMainHand();
 
             if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
-                // TODO: Fix, meta id Damageable, not the tool
-                if (tool instanceof Damageable) {
-                    Damageable damageable = (Damageable)tool;
+                if (tool.getItemMeta() instanceof Damageable) {
+                    Damageable damageable = (Damageable)tool.getItemMeta();
 
                     try {
-                        int dura = Integer.parseInt(args[1]);
+                        int durability = Integer.parseInt(args[1]);
 
-                        if (dura <= tool.getType().getMaxDurability()) {
-                            damageable.setDamage(tool.getType().getMaxDurability() - dura);
+                        if (durability <= tool.getType().getMaxDurability()) {
+                            damageable.setDamage(tool.getType().getMaxDurability() - durability);
                         } else {
                             ChatWriter.sendMessage(player, ChatColor.RED, "Please enter a valid number or 'full'!");
                         }
@@ -178,6 +177,8 @@ class Functions {
                             ChatWriter.sendMessage(player, ChatColor.RED, "Please enter a valid number or 'full'!");
                         }
                     }
+
+                    tool.setItemMeta((ItemMeta)damageable);
                 }
             } else {
                 Commands.invalidTool(player);
