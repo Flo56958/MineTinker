@@ -178,21 +178,12 @@ public class Commands implements TabExecutor {
     }
 
     /**
-     * Outputs the error message "Invalid Arguments" in the Players chat
-     *
-     * @param player The player to send the message to
-     */
-    static void invalidArgs(Player player) {
-        ChatWriter.sendMessage(player, ChatColor.RED, config.getString("Language.Commands.InvalidArguments"));
-    }
-
-    /**
      * Outputs the error message "Invalid Arguments" to the CommandSender
      *
      * @param sender The sender to send the message to
      */
     static void invalidArgs(CommandSender sender) {
-        ChatWriter.sendMessage(sender, ChatColor.RED, config.getString("Language.Commands.InvalidArguments"));
+        ChatWriter.sendMessage(sender, ChatColor.RED, "Invalid Arguments");
     }
 
     /**
@@ -201,7 +192,7 @@ public class Commands implements TabExecutor {
      * @param player The player to send the message to
      */
     static void invalidTool(Player player) {
-        ChatWriter.sendMessage(player, ChatColor.RED, config.getString("Language.Commands.InvalidTool"));
+        ChatWriter.sendMessage(player, ChatColor.RED, "Invalid Item in Main Hand!");
     }
 
     /**
@@ -210,7 +201,7 @@ public class Commands implements TabExecutor {
      * @param player The player to send the message to
      */
     private void noPerm(Player player) {
-        ChatWriter.sendMessage(player, ChatColor.RED, config.getString("Language.Commands.NoPermission"));
+        ChatWriter.sendMessage(player, ChatColor.RED, "No Permission!");
     }
 
     /**

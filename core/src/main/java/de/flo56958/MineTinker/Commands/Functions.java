@@ -242,54 +242,52 @@ class Functions {
 
         if (args.length >= 2) {
             for (Modifier mod : modManager.getAllowedMods()) {
-                if (mod.getName().equalsIgnoreCase(args[1])) {
-                    int amount = 1;
+                if (!mod.getName().equalsIgnoreCase(args[1])) continue;
+                int amount = 1;
 
-                    if (args.length >= 3) {
-                        try {
-                            amount = Integer.parseInt(args[2]);
-                        } catch (Exception e) {
-                            Commands.invalidArgs(sender);
+                if (args.length >= 3) {
+                    try {
+                        amount = Integer.parseInt(args[2]);
+                    } catch (Exception e) {
+                        Commands.invalidArgs(sender);
+                        return;
+                    }
+                }
+
+                if (args.length >= 4) {
+                    if (args[3].equalsIgnoreCase("*")) {
+                        allOnline = true;
+                    } else {
+                        Player temp = Bukkit.getServer().getPlayer(args[3]);
+
+                        if (temp == null) {
+                            ChatWriter.sendMessage(sender, ChatColor.RED, "Player " + args[3] + " not found or not online!");
                             return;
                         }
+
+                        sender = temp;
                     }
 
-                    if (args.length >= 4) {
-                        if (args[3].equalsIgnoreCase("*")) {
-                            allOnline = true;
-                        } else {
-                            Player temp = Bukkit.getServer().getPlayer(args[3]);
+                }
 
-                            if (temp == null) {
-                                ChatWriter.sendMessage(sender, ChatColor.RED, "Player " + args[3] + " not found or not online!");
-                                return;
-                            }
-
-                            sender = temp;
-                        }
-
-                    }
-
-                    if (allOnline) {
-                        for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
-                            for (int i = 0; i < amount; i++) {
-                                if (onlinePlayer.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
-                                    onlinePlayer.getWorld().dropItem(onlinePlayer.getLocation(), mod.getModItem());
-                                } // no else as it gets added in if
-                            }
-                        }
-                    } else if (sender instanceof Player) {
-                        Player player = (Player)sender;
-
+                if (allOnline) {
+                    for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
                         for (int i = 0; i < amount; i++) {
-                            if (player.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
-                                player.getWorld().dropItem(player.getLocation(), mod.getModItem());
+                            if (onlinePlayer.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
+                                onlinePlayer.getWorld().dropItem(onlinePlayer.getLocation(), mod.getModItem());
                             } // no else as it gets added in if
                         }
                     }
+                } else if (sender instanceof Player) {
+                    Player player = (Player) sender;
 
-                    break;
+                    for (int i = 0; i < amount; i++) {
+                        if (player.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
+                            player.getWorld().dropItem(player.getLocation(), mod.getModItem());
+                        } // no else as it gets added in if
+                    }
                 }
+                break;
             }
         }
     }
