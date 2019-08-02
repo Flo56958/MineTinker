@@ -73,6 +73,7 @@ public class CreateToolListener implements Listener {
             return;
         }
 
-        modManager.convertItemStack(e.getInventory().getResult());
+        currentItem.setAmount(1);
+        modManager.convertItemStack(currentItem);
     }
 }

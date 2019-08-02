@@ -62,13 +62,16 @@ public class ConvertToolListener implements Listener {
             }
         }
 
-        if (recipeItems == 1 && lastItem.getType() == event.getInventory().getResult().getType()) {
+        ItemStack result = event.getInventory().getResult();
+
+        if (recipeItems == 1 && lastItem.getType() == result.getType()) {
             if (modManager.isArmorViable(lastItem) || modManager.isToolViable(lastItem) || modManager.isWandViable(lastItem)) {
                 event.getInventory().setResult(new ItemStack(Material.AIR, 1));
                 return;
             }
 
-            ModManager.instance().convertItemStack(event.getInventory().getResult());
+            ModManager.instance().convertItemStack(result);
+            result.setAmount(1);
         }
     }
 }
