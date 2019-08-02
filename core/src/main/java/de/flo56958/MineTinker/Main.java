@@ -45,17 +45,20 @@ public class Main extends JavaPlugin {
         ChatWriter.logInfo("Registered commands!");
 
         if (getConfig().getBoolean("AllowCrafting")) {
-            ConvertListener convertListener = new ConvertListener();
-            convertListener.register();
-            Bukkit.getPluginManager().registerEvents(convertListener, this);
+            Bukkit.getPluginManager().registerEvents(new CreateToolListener(), this);
         }
 
-        Bukkit.getPluginManager().registerEvents(new BlockListener(), this);
+        if (getConfig().getBoolean("AllowConverting")) {
+            Bukkit.getPluginManager().registerEvents(new ConvertToolListener(), this);
+        }
+
         Bukkit.getPluginManager().registerEvents(new AnvilListener(), this);
         Bukkit.getPluginManager().registerEvents(new ArmorListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BlockListener(), this);
+        Bukkit.getPluginManager().registerEvents(new CraftItemListener(), this);
+        Bukkit.getPluginManager().registerEvents(new EntityListener(), this);
         Bukkit.getPluginManager().registerEvents(new ItemListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityListener(), this);
         Bukkit.getPluginManager().registerEvents(new TinkerListener(), this);
         Bukkit.getPluginManager().registerEvents(new TridentListener(), this);
 
