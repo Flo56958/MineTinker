@@ -27,14 +27,16 @@ public class Directing extends Modifier implements Listener {
 
     public static Directing instance() {
         synchronized (Directing.class) {
-            if (instance == null) instance = new Directing();
+            if (instance == null) {
+                instance = new Directing();
+            }
         }
+
         return instance;
     }
 
     private Directing() {
-        super("Directing", "Directing.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT)),
+        super("Directing", "Directing.yml", new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }

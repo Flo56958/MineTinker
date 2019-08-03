@@ -28,8 +28,11 @@ public class Insulating extends Modifier {
 
     public static Insulating instance() {
         synchronized (Insulating.class) {
-            if (instance == null) instance = new Insulating();
+            if (instance == null) {
+                instance = new Insulating();
+            }
         }
+
         return instance;
     }
 

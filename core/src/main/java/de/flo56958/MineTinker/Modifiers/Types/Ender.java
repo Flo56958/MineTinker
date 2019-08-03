@@ -37,15 +37,16 @@ public class Ender extends Modifier implements Listener {
 
     public static Ender instance() {
         synchronized (Ender.class) {
-            if (instance == null) instance = new Ender();
+            if (instance == null) {
+                instance = new Ender();
+            }
         }
+
         return instance;
     }
 
     private Ender() {
-        super("Ender", "Ender.yml",
-                new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.CROSSBOW, ToolType.TRIDENT)),
-                Main.getPlugin());
+        super("Ender", "Ender.yml", new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.CROSSBOW, ToolType.TRIDENT)), Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
 

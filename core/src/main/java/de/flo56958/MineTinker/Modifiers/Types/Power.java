@@ -49,13 +49,13 @@ public class Power extends Modifier implements Listener {
             if (instance == null)
                 instance = new Power();
         }
+
         return instance;
     }
 
     private Power() {
         super("Power", "Power.yml",
-                new ArrayList<>(
-                        Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }

@@ -28,15 +28,16 @@ public class Freezing extends Modifier {
 
     public static Freezing instance() {
         synchronized (Freezing.class) {
-            if (instance == null) instance = new Freezing();
+            if (instance == null) {
+                instance = new Freezing();
+            }
         }
+
         return instance;
     }
 
     private Freezing() {
-        super("Freezing", "Freezing.yml",
-                new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
-                Main.getPlugin());
+        super("Freezing", "Freezing.yml", new ArrayList<>(Collections.singletonList(ToolType.BOOTS)), Main.getPlugin());
     }
 
     @Override

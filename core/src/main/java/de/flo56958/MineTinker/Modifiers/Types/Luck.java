@@ -37,7 +37,9 @@ public class Luck extends Modifier {
 
     public static Luck instance() {
         synchronized (Luck.class) {
-            if (instance == null) instance = new Luck();
+            if (instance == null) {
+                instance = new Luck();
+            }
         }
 
         return instance;

@@ -25,15 +25,16 @@ public class Fiery extends Modifier {
 
     public static Fiery instance() {
         synchronized (Fiery.class) {
-            if (instance == null) instance = new Fiery();
+            if (instance == null) {
+                instance = new Fiery();
+            }
         }
+
         return instance;
     }
 
     private Fiery() {
-        super("Fiery", "Fiery.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)),
-                Main.getPlugin());
+        super("Fiery", "Fiery.yml", new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)), Main.getPlugin());
     }
 
     @Override

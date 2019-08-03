@@ -24,15 +24,16 @@ public class Knockback extends Modifier {
 
     public static Knockback instance() {
         synchronized (Knockback.class) {
-            if (instance == null) instance = new Knockback();
+            if (instance == null) {
+                instance = new Knockback();
+            }
         }
+
         return instance;
     }
 
     private Knockback() {
-        super("Knockback", "Knockback.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)),
-                Main.getPlugin());
+        super("Knockback", "Knockback.yml", new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT)), Main.getPlugin());
     }
 
     @Override

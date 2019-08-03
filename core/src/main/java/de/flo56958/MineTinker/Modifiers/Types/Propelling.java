@@ -38,15 +38,16 @@ public class Propelling extends Modifier implements Listener {
 
     public static Propelling instance() {
         synchronized (Propelling.class) {
-            if (instance == null) instance = new Propelling();
+            if (instance == null) {
+                instance = new Propelling();
+            }
         }
+
         return instance;
     }
 
     private Propelling() {
-        super("Propelling", "Propelling.yml",
-                new ArrayList<>(Arrays.asList(ToolType.ELYTRA, ToolType.TRIDENT)),
-                Main.getPlugin());
+        super("Propelling", "Propelling.yml", new ArrayList<>(Arrays.asList(ToolType.ELYTRA, ToolType.TRIDENT)), Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
 

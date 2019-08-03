@@ -35,8 +35,11 @@ public class Lifesteal extends Modifier implements Listener {
 
     public static Lifesteal instance() {
         synchronized (Lifesteal.class) {
-            if (instance == null) instance = new Lifesteal();
+            if (instance == null) {
+                instance = new Lifesteal();
+            }
         }
+
         return instance;
     }
 

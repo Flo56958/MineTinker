@@ -31,15 +31,17 @@ public class Melting extends Modifier implements Listener {
 
     public static Melting instance() {
         synchronized (Melting.class) {
-            if (instance == null) instance = new Melting();
+            if (instance == null) {
+                instance = new Melting();
+            }
         }
+
         return instance;
     }
 
     private Melting() {
         super("Melting", "Melting.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD,
-                                                ToolType.CHESTPLATE, ToolType.LEGGINGS)),
+                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.CHESTPLATE, ToolType.LEGGINGS)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }

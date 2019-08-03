@@ -24,8 +24,11 @@ public class ExtraModifier extends Modifier {
 
     public static ExtraModifier instance() {
         synchronized (ExtraModifier.class) {
-            if (instance == null) instance = new ExtraModifier();
+            if (instance == null) {
+                instance = new ExtraModifier();
+            }
         }
+
         return instance;
     }
 

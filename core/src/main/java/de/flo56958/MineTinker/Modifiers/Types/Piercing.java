@@ -30,8 +30,11 @@ public class Piercing extends Modifier {
 
     public static Piercing instance() {
         synchronized (Piercing.class) {
-            if (instance == null) instance = new Piercing();
+            if (instance == null) {
+                instance = new Piercing();
+            }
         }
+
         return instance;
     }
 

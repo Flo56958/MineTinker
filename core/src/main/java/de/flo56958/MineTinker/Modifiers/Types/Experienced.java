@@ -33,8 +33,11 @@ public class Experienced extends Modifier implements Listener {
 
     public static Experienced instance() {
         synchronized (Experienced.class) {
-            if (instance == null) instance = new Experienced();
+            if (instance == null) {
+                instance = new Experienced();
+            }
         }
+
         return instance;
     }
 

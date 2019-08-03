@@ -24,15 +24,16 @@ public class LightWeight extends Modifier {
 
     public static LightWeight instance() {
         synchronized (LightWeight.class) {
-            if (instance == null) instance = new LightWeight();
+            if (instance == null) {
+                instance = new LightWeight();
+            }
         }
+
         return instance;
     }
 
     private LightWeight() {
-        super("Light-Weight", "Light-Weight.yml",
-                new ArrayList<>(Collections.singletonList(ToolType.BOOTS)),
-                Main.getPlugin());
+        super("Light-Weight", "Light-Weight.yml", new ArrayList<>(Collections.singletonList(ToolType.BOOTS)), Main.getPlugin());
     }
 
     @Override

@@ -27,8 +27,11 @@ public class Haste extends Modifier {
 
     public static Haste instance() {
         synchronized (Haste.class) {
-            if (instance == null) instance = new Haste();
+            if (instance == null) {
+                instance = new Haste();
+            }
         }
+
         return instance;
     }
 

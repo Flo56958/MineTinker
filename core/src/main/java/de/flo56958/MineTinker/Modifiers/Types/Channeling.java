@@ -35,9 +35,7 @@ public class Channeling extends Modifier {
     }
 
     private Channeling() {
-        super("Channeling", "Channeling.yml",
-                new ArrayList<>(Collections.singletonList(ToolType.TRIDENT)),
-                Main.getPlugin());
+        super("Channeling", "Channeling.yml", new ArrayList<>(Collections.singletonList(ToolType.TRIDENT)), Main.getPlugin());
     }
 
     @Override

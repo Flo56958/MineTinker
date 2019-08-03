@@ -26,15 +26,16 @@ public class MultiShot extends Modifier {
 
     public static MultiShot instance() {
         synchronized (MultiShot.class) {
-            if (instance == null) instance = new MultiShot();
+            if (instance == null) {
+                instance = new MultiShot();
+            }
         }
+
         return instance;
     }
 
     private MultiShot() {
-        super("Multishot", "Multishot.yml",
-                new ArrayList<>(Collections.singletonList(ToolType.CROSSBOW)),
-                Main.getPlugin());
+        super("Multishot", "Multishot.yml", new ArrayList<>(Collections.singletonList(ToolType.CROSSBOW)), Main.getPlugin());
     }
 
     @Override

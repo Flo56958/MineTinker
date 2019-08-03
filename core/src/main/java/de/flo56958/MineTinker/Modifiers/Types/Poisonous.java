@@ -37,8 +37,11 @@ public class Poisonous extends Modifier implements Listener {
 
     public static Poisonous instance() {
         synchronized (Poisonous.class) {
-            if (instance == null) instance = new Poisonous();
+            if (instance == null) {
+                instance = new Poisonous();
+            }
         }
+
         return instance;
     }
 

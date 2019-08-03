@@ -41,6 +41,7 @@ public class Webbed extends Modifier implements Listener {
                 instance = new Webbed();
             }
         }
+
         return instance;
     }
 

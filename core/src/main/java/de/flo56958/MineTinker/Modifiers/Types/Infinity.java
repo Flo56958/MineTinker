@@ -28,16 +28,17 @@ public class Infinity extends Modifier {
 
     public static Infinity instance() {
         synchronized (Infinity.class) {
-            if (instance == null) instance = new Infinity();
+            if (instance == null) {
+                instance = new Infinity();
+            }
         }
+
         return instance;
     }
 
     //Infinity does not work on crossbows
     private Infinity() {
-        super("Infinity", "Infinity.yml",
-                new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.TRIDENT)),
-                Main.getPlugin());
+        super("Infinity", "Infinity.yml", new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.TRIDENT)), Main.getPlugin());
     }
 
     @Override

@@ -34,8 +34,11 @@ public class Glowing extends Modifier implements Listener {
 
     public static Glowing instance() {
         synchronized (Glowing.class) {
-            if (instance == null) instance = new Glowing();
+            if (instance == null) {
+                instance = new Glowing();
+            }
         }
+
         return instance;
     }
 
