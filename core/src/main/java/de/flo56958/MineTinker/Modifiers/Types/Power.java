@@ -176,6 +176,12 @@ public class Power extends Modifier implements Listener {
             return;
         }
 
+        boolean isVertical = lv1_vertical;
+
+        if (player.hasPermission("minetinker.modifiers.power.invert")) {
+            isVertical = !isVertical;
+        }
+
         ChatWriter.log(false, player.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool)
                 + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 
@@ -184,7 +190,7 @@ public class Power extends Modifier implements Listener {
         int level = modManager.getModLevel(tool, this);
 
         if (level == 1) {
-            if (lv1_vertical) {
+            if (isVertical) {
                 if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
                     if (PlayerInfo.getFacingDirection(player).equals("N") || PlayerInfo.getFacingDirection(player).equals("S")) {
                         Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
@@ -292,8 +298,15 @@ public class Power extends Modifier implements Listener {
         int level = modManager.getModLevel(tool, this);
         Block b = e.getClickedBlock();
 
-        if (b == null)
+        if (b == null) {
             return;
+        }
+
+        boolean isVertical = lv1_vertical;
+
+        if (event.getPlayer().hasPermission("minetinker.modifiers.power.invert")) {
+            isVertical = !isVertical;
+        }
 
         if (level == 1) {
             if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
@@ -301,7 +314,7 @@ public class Power extends Modifier implements Listener {
                 Block b2;
 
                 if ((PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S"))) {
-                    if (this.lv1_vertical) {
+                    if (isVertical) {
                         b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
                         b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
                     } else {
@@ -310,7 +323,7 @@ public class Power extends Modifier implements Listener {
                     }
                 } else if (PlayerInfo.getFacingDirection(p).equals("W")
                         || PlayerInfo.getFacingDirection(p).equals("E")) {
-                    if (this.lv1_vertical) {
+                    if (isVertical) {
                         b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
                         b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
                     } else {
