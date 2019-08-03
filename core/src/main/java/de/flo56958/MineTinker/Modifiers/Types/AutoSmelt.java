@@ -202,14 +202,14 @@ public class AutoSmelt extends Modifier implements Listener {
             return;
         }
 
-        Player p = event.getPlayer();
+        Player player = event.getPlayer();
         ItemStack tool = event.getTool();
-        Block b = event.getBlock();
-        BlockBreakEvent e = event.getEvent();
+        Block block = event.getBlock();
+        BlockBreakEvent breakEvent = event.getEvent();
 
     	//FileConfiguration config = getConfig();
     	
-        if (!p.hasPermission("minetinker.modifiers.autosmelt.use")) {
+        if (!player.hasPermission("minetinker.modifiers.autosmelt.use")) {
             return; //TODO: Think about more blocks for Auto-Smelt
         }
 
@@ -218,15 +218,15 @@ public class AutoSmelt extends Modifier implements Listener {
         }
 
         if (!worksUnderWater) {
-            if (p.isSwimming() || p.getWorld().getBlockAt(p.getLocation()).getType() == Material.WATER) {
+            if (player.isSwimming() || player.getWorld().getBlockAt(player.getLocation()).getType() == Material.WATER) {
                 return;
             }
         }
 
-        boolean allowLuck = luckMaterials.contains(b.getType());
+        boolean allowLuck = luckMaterials.contains(block.getType());
         int amount = 1;
 
-        Material loot = conversions.get(b.getType());
+        Material loot = conversions.get(block.getType());
 
         if (loot == null) {
             return;
@@ -235,7 +235,7 @@ public class AutoSmelt extends Modifier implements Listener {
         Random rand = new Random();
         int n = rand.nextInt(100);
 
-        if (n <= this.percentagePerLevel * modManager.getModLevel(tool, this) && b.getLocation().getWorld() != null) {
+        if (n <= this.percentagePerLevel * modManager.getModLevel(tool, this) && block.getLocation().getWorld() != null) {
             if (allowLuck) {
                 int level = modManager.getModLevel(tool, Luck.instance());
 
@@ -246,21 +246,21 @@ public class AutoSmelt extends Modifier implements Listener {
 
             if (loot != Material.AIR) {
                 ItemStack items = new ItemStack(loot, amount);
-                b.getLocation().getWorld().dropItemNaturally(b.getLocation(), items);
+                block.getLocation().getWorld().dropItemNaturally(block.getLocation(), items);
             }
 
-            e.setDropItems(false);
+            breakEvent.setDropItems(false);
 
             if (this.hasParticles) {
-                b.getLocation().getWorld().spawnParticle(Particle.FLAME, b.getLocation(), 5);
+                block.getLocation().getWorld().spawnParticle(Particle.FLAME, block.getLocation(), 5);
             }
 
             if (this.hasSound) {
-                b.getLocation().getWorld().playSound(b.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
+                block.getLocation().getWorld().playSound(block.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
             }
 
-            ChatWriter.log(false, p.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY +
-                    " (" + tool.getType().toString() + ") while mining " + e.getBlock().getType().toString() + "!");
+            ChatWriter.log(false, player.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY +
+                    " (" + tool.getType().toString() + ") while mining " + breakEvent.getBlock().getType().toString() + "!");
         }
     }
 

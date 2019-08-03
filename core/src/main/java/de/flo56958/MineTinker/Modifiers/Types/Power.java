@@ -300,13 +300,13 @@ public class Power extends Modifier implements Listener {
             return;
         }
 
-        PlayerInteractEvent e = event.getEvent();
+        PlayerInteractEvent interactEvent = event.getEvent();
 
         if (!checkPower(player, tool)) {
             return;
         }
 
-        Block b = e.getClickedBlock();
+        Block b = interactEvent.getClickedBlock();
 
         if (b == null) {
             return;

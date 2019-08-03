@@ -26,22 +26,22 @@ public class EasyHarvestListener implements Listener {
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     @EventHandler
-    public void onHarvestTry(PlayerInteractEvent e) {
-        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
+    public void onHarvestTry(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
 
-        Player p = e.getPlayer();
+        Player player = event.getPlayer();
 
-        if (Lists.WORLDS_EASYHARVEST.contains(p.getWorld().getName())) {
+        if (Lists.WORLDS_EASYHARVEST.contains(player.getWorld().getName())) {
             return;
         }
 
-        if (!(p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE)) {
+        if (!(player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
             return;
         }
 
-        ItemStack tool = p.getInventory().getItemInMainHand();
+        ItemStack tool = player.getInventory().getItemInMainHand();
 
         if (!ToolType.HOE.contains(tool.getType())) {
             return;
@@ -51,22 +51,22 @@ public class EasyHarvestListener implements Listener {
             return;
         }
 
-        if (e.getClickedBlock() == null) {
+        if (event.getClickedBlock() == null) {
             return;
         }
 
-        if (e.getItem() == null) {
+        if (event.getItem() == null) {
             return;
         }
 
-        Block b = e.getClickedBlock();
+        Block block = event.getClickedBlock();
 
-        if (!(b.getState().getBlockData() instanceof Ageable)) {
+        if (!(block.getState().getBlockData() instanceof Ageable)) {
             return;
         }
 
         //triggers a pseudoevent to find out if the Player can build
-        BlockPlaceEvent placeEvent = new BlockPlaceEvent(b, b.getState(), b, e.getItem(), p, true, EquipmentSlot.HAND);
+        BlockPlaceEvent placeEvent = new BlockPlaceEvent(block, block.getState(), block, event.getItem(), player, true, EquipmentSlot.HAND);
         Bukkit.getPluginManager().callEvent(placeEvent);
 
         //check the pseudoevent
@@ -74,31 +74,31 @@ public class EasyHarvestListener implements Listener {
             return;
         }
 
-        harvestCrops(p, tool, b);
+        harvestCrops(player, tool, block);
     }
 
-    private static void harvestCrops(Player p, ItemStack tool, Block b) {
-        Ageable ageable = (Ageable)b.getState().getBlockData();
+    private static void harvestCrops(Player player, ItemStack tool, Block block) {
+        Ageable ageable = (Ageable)block.getState().getBlockData();
 
         if (ageable.getAge() == ageable.getMaximumAge()) {
-            breakCrops(p, tool, b);
-            playSound(b);
+            breakCrops(player, tool, block);
+            playSound(block);
         }
     }
 
-    private static void breakCrops(Player p, ItemStack tool, Block b) {
-        Power.HASPOWER.get(p).set(true);
-        Material m = b.getType();
+    private static void breakCrops(Player player, ItemStack tool, Block block) {
+        Power.HASPOWER.get(player).set(true);
+        Material type = block.getType();
 
-        String direction = PlayerInfo.getFacingDirection(p);
-        Location location = b.getLocation();
+        String direction = PlayerInfo.getFacingDirection(player);
+        Location location = block.getLocation();
         World world = location.getWorld();
 
         if (world == null) {
             return;
         }
 
-        if (!p.isSneaking() && modManager.hasMod(tool, Power.instance())) {
+        if (!player.isSneaking() && modManager.hasMod(tool, Power.instance())) {
             int level = modManager.getModLevel(tool, Power.instance());
 
             if (level == 1) {
@@ -126,26 +126,26 @@ public class EasyHarvestListener implements Listener {
                 }
 
                 Ageable blockOneAgeable = (Ageable)b1.getState().getBlockData();
-                if (b1.getType().equals(b.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
-                    breakBlock(b1, p);
-                    replantCrops(p, b1, m);
+                if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
+                    breakBlock(b1, player);
+                    replantCrops(player, b1, type);
                 }
 
                 Ageable blockTwoAgeable = (Ageable)b1.getState().getBlockData();
-                if (b2.getType().equals(b.getType()) && (blockTwoAgeable.getAge() == blockTwoAgeable.getMaximumAge())) {
-                    breakBlock(b2, p);
-                    replantCrops(p, b2, m);
+                if (b2.getType().equals(block.getType()) && (blockTwoAgeable.getAge() == blockTwoAgeable.getMaximumAge())) {
+                    breakBlock(b2, player);
+                    replantCrops(player, b2, type);
                 }
             } else {
                 for (int x = -(level - 1); x <= (level - 1); x++) {
                     for (int z = -(level - 1); z <= (level - 1); z++) {
                         if (!(x == 0 && z == 0)) {
-                            Block b1 = b.getWorld().getBlockAt(b.getLocation().add(x, 0, z));
+                            Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
                             Ageable blockOneAgeable = (Ageable)b1.getState().getBlockData();
 
-                            if (b1.getType().equals(b.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
-                                breakBlock(b1, p);
-                                replantCrops(p, b1, m);
+                            if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
+                                breakBlock(b1, player);
+                                replantCrops(player, b1, type);
                             }
                         }
                     }
@@ -153,10 +153,10 @@ public class EasyHarvestListener implements Listener {
             }
         }
 
-        breakBlock(b, p);
-        replantCrops(p, b, m);
+        breakBlock(block, player);
+        replantCrops(player, block, type);
 
-        Power.HASPOWER.get(p).set(false);
+        Power.HASPOWER.get(player).set(false);
     }
 
     private static void replantCrops(Player p, Block b, Material m) {

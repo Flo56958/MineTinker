@@ -25,8 +25,8 @@ public class ItemListener implements Listener {
     private final ModManager modManager = ModManager.instance();
 
     @EventHandler(ignoreCancelled = true)
-    public void onDespawn(ItemDespawnEvent e) {
-        Item item = e.getEntity();
+    public void onDespawn(ItemDespawnEvent event) {
+        Item item = event.getEntity();
         ItemStack is = item.getItemStack();
 
         if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) {
@@ -34,18 +34,18 @@ public class ItemListener implements Listener {
         }
 
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetPersistent")) {
-            e.setCancelled(true);
+            event.setCancelled(true);
             item.setTicksLived(1);
         }
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onItemDrop(PlayerDropItemEvent e) {
+    public void onItemDrop(PlayerDropItemEvent event) {
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
             return;
         }
 
-        Item item = e.getItemDrop();
+        Item item = event.getItemDrop();
         ItemStack is = item.getItemStack();
 
         boolean isMineTinker = false;
@@ -84,34 +84,34 @@ public class ItemListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent e) {
-        if (e.getKeepInventory()) {
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        if (event.getKeepInventory()) {
             return;
         }
 
-        Player p = e.getEntity();
-        Inventory inv = p.getInventory();
+        Player player = event.getEntity();
+        Inventory inventory = player.getInventory();
 
-        for (ItemStack is : inv.getContents()) {
-            if (is == null) {
+        for (ItemStack itemStack : inventory.getContents()) {
+            if (itemStack == null) {
                 continue; // More consistent nullability in NotNull fields
             }
 
             boolean isMineTinker = false;
 
             if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) { //Modifieritems
-                ItemStack modifierTester = is.clone();
+                ItemStack modifierTester = itemStack.clone();
                 modifierTester.setAmount(1);
 
-                for (Modifier m : modManager.getAllowedMods()) {
-                    if (m.getModItem().equals(modifierTester)) {
+                for (Modifier modifier : modManager.getAllowedMods()) {
+                    if (modifier.getModItem().equals(modifierTester)) {
                         isMineTinker = true;
                         break;
                     }
                 }
             }
 
-            if (modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is)) {
+            if (modManager.isArmorViable(itemStack) || modManager.isToolViable(itemStack) || modManager.isWandViable(itemStack)) {
                 isMineTinker = true;
             }
 
@@ -119,26 +119,26 @@ public class ItemListener implements Listener {
                 continue;
             }
 
-            if (Soulbound.instance().effect(p, is)) {
-                is.setAmount(0);
+            if (Soulbound.instance().effect(player, itemStack)) {
+                itemStack.setAmount(0);
                 continue;
             } //workaround as inv.remove(is) does not work insteads duplicates item
 
             if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
-                PlayerDropItemEvent event = new PlayerDropItemEvent(p, p.getWorld().dropItem(p.getLocation(), is));
-                Bukkit.getPluginManager().callEvent(event); //To trigger item behaviour
-                is.setAmount(0);
+                PlayerDropItemEvent dropItemEvent = new PlayerDropItemEvent(player, player.getWorld().dropItem(player.getLocation(), itemStack));
+                Bukkit.getPluginManager().callEvent(dropItemEvent); //To trigger item behaviour
+                itemStack.setAmount(0);
             }
         }
     }
 
     //TODO: Crossbow gets destroyed non the less
     @EventHandler
-    public void onItemBreak(PlayerItemBreakEvent e) {
-        Player p = e.getPlayer();
-        ItemStack item = e.getBrokenItem();
+    public void onItemBreak(PlayerItemBreakEvent event) {
+        Player player = event.getPlayer();
+        ItemStack item = event.getBrokenItem();
 
-        if (Lists.WORLDS.contains(p.getWorld().getName())) {
+        if (Lists.WORLDS.contains(player.getWorld().getName())) {
             return;
         }
 
@@ -151,7 +151,7 @@ public class ItemListener implements Listener {
         }
 
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.AlertPlayerOnBreak")) {
-            e.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&',
+            event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&cLooks like your tool broke! Giving it back with 1 durability."
             ));
         }
@@ -163,6 +163,6 @@ public class ItemListener implements Listener {
             item.setItemMeta(meta);
         }
 
-        p.getInventory().addItem(item);
+        player.getInventory().addItem(item);
     }
 }

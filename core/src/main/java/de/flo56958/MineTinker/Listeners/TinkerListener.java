@@ -33,58 +33,58 @@ public class TinkerListener implements Listener {
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     @EventHandler
-    public void onToolUpgrade(ToolUpgradeEvent e) {
-        Player p = e.getPlayer();
-        ItemStack tool = e.getTool();
+    public void onToolUpgrade(ToolUpgradeEvent event) {
+        Player player = event.getPlayer();
+        ItemStack tool = event.getTool();
 
-        if (e.isSuccessful()) {
+        if (event.isSuccessful()) {
             if (config.getBoolean("Sound.OnUpgrade")) {
-                p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
             }
 
-            ChatWriter.sendActionBar(p, ItemGenerator.getDisplayName(tool) + " is now " + tool.getType().toString().split("_")[0] + "!");
-            ChatWriter.log(false, p.getDisplayName() + " upgraded " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ") to " + tool.getType().toString() + "!");
+            ChatWriter.sendActionBar(player, ItemGenerator.getDisplayName(tool) + " is now " + tool.getType().toString().split("_")[0] + "!");
+            ChatWriter.log(false, player.getDisplayName() + " upgraded " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ") to " + tool.getType().toString() + "!");
         } else {
             if (config.getBoolean("Sound.OnUpgrade")) {
-                p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
             }
         }
     }
 
     @EventHandler
-    public void onModifierApply(ModifierApplyEvent e) {
-        Player p = e.getPlayer();
-        ItemStack tool = e.getTool();
-        Modifier mod = e.getMod();
+    public void onModifierApply(ModifierApplyEvent event) {
+        Player player = event.getPlayer();
+        ItemStack tool = event.getTool();
+        Modifier mod = event.getMod();
 
         if (config.getBoolean("Sound.OnModding")) {
-            p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
+            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
         }
 
-        ChatWriter.sendActionBar(p, ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " has now " + mod.getColor() + mod.getName() + ChatColor.WHITE + " and " + e.getSlotsRemaining() + " free Slots remaining!");
-        ChatWriter.log(false, p.getDisplayName() + " modded " + ItemGenerator.getDisplayName(tool) +  ChatColor.GRAY + " (" + tool.getType().toString() + ") with " + mod.getColor() + mod.getName() + ChatColor.GRAY + " " + modManager.getModLevel(tool, mod) + "!");
+        ChatWriter.sendActionBar(player, ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " has now " + mod.getColor() + mod.getName() + ChatColor.WHITE + " and " + event.getSlotsRemaining() + " free Slots remaining!");
+        ChatWriter.log(false, player.getDisplayName() + " modded " + ItemGenerator.getDisplayName(tool) +  ChatColor.GRAY + " (" + tool.getType().toString() + ") with " + mod.getColor() + mod.getName() + ChatColor.GRAY + " " + modManager.getModLevel(tool, mod) + "!");
     }
 
     @EventHandler
-    public void onModifierFail(ModifierFailEvent e) {
-        Player p = e.getPlayer();
-        ItemStack tool = e.getTool();
-        Modifier mod = e.getMod();
+    public void onModifierFail(ModifierFailEvent event) {
+        Player player = event.getPlayer();
+        ItemStack tool = event.getTool();
+        Modifier mod = event.getMod();
 
         if (config.getBoolean("Sound.OnFail")) {
-            p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
+            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
         }
 
-        if (!e.isCommand()) {
-            ChatWriter.sendActionBar(p, "Failed to apply " + mod.getColor() + mod.getName() + ChatColor.WHITE + " on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + e.getFailCause().toString() + ")");
-            ChatWriter.log(false, p.getDisplayName() + " failed to apply " + mod.getColor() + mod.getName() + ChatColor.GRAY + " " + (modManager.getModLevel(tool, mod) + 1) + " on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") (" + e.getFailCause().toString() + ")");
+        if (!event.isCommand()) {
+            ChatWriter.sendActionBar(player, "Failed to apply " + mod.getColor() + mod.getName() + ChatColor.WHITE + " on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + event.getFailCause().toString() + ")");
+            ChatWriter.log(false, player.getDisplayName() + " failed to apply " + mod.getColor() + mod.getName() + ChatColor.GRAY + " " + (modManager.getModLevel(tool, mod) + 1) + " on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") (" + event.getFailCause().toString() + ")");
         }
     }
 
 	@EventHandler
-    public void onToolLevelUp(ToolLevelUpEvent e) {
-        Player p = e.getPlayer();
-        ItemStack tool = e.getTool();
+    public void onToolLevelUp(ToolLevelUpEvent event) {
+        Player player = event.getPlayer();
+        ItemStack tool = event.getTool();
 
         boolean appliedRandomMod = false;
 
@@ -117,8 +117,8 @@ public class TinkerListener implements Listener {
 
                         ItemStack drop = new ItemStack(m, amount);
 
-                        if (p.getInventory().addItem(drop).size() != 0) { //adds items to (full) inventory
-                            p.getWorld().dropItem(p.getLocation(), drop); //drops item when inventory is full
+                        if (player.getInventory().addItem(drop).size() != 0) { //adds items to (full) inventory
+                            player.getWorld().dropItem(player.getLocation(), drop); //drops item when inventory is full
                         } // no else as it gets added in if
                     }
                 }
@@ -128,8 +128,8 @@ public class TinkerListener implements Listener {
                 int n = rand.nextInt(100);
 
                 if (n <= config.getInt("LevelUpEvents.RandomModifier.percentage")) {
-                    for (int i = 0; i < p.getInventory().getSize(); i++) { //getting the inventory slot of the tool
-                        if (p.getInventory().getItem(i) != null && p.getInventory().getItem(i).equals(tool)) {  //Can be NULL!
+                    for (int i = 0; i < player.getInventory().getSize(); i++) { //getting the inventory slot of the tool
+                        if (player.getInventory().getItem(i) != null && player.getInventory().getItem(i).equals(tool)) {  //Can be NULL!
                             for (int j = 0; j < config.getInt("LevelUpEvents.RandomModifier.AmountOfModifiers"); j++) {
 
                                 List<Modifier> mods = new ArrayList<>(modManager.getAllowedMods()); //necessary as the failed modifiers get removed from the list (so a copy is in order)
@@ -142,7 +142,7 @@ public class TinkerListener implements Listener {
 
                                 do {
                                     index = new Random().nextInt(mods.size());
-                                    appliedRandomMod = mods.get(index).applyMod(p, tool, true);
+                                    appliedRandomMod = mods.get(index).applyMod(player, tool, true);
 
                                     if (!appliedRandomMod) {
                                         mods.remove(index); //Remove the failed modifier from the the list of the possibles
@@ -163,7 +163,7 @@ public class TinkerListener implements Listener {
                 int n = rand.nextInt(100);
 
                 if (n <= config.getInt("LevelUpEvents.DropXP.percentage")) {
-                    ExperienceOrb orb = p.getWorld().spawn(p.getLocation(), ExperienceOrb.class);
+                    ExperienceOrb orb = player.getWorld().spawn(player.getLocation(), ExperienceOrb.class);
                     orb.setExperience(config.getInt("LevelUpEvents.DropXP.amount"));
                 }
             }
@@ -172,7 +172,7 @@ public class TinkerListener implements Listener {
         //------------------------------------------------------------------------------------------------------------------------
 
         if (config.getBoolean("Sound.OnLevelUp")) {
-            p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.5F);
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.5F);
         }
 
         if (config.getInt("AddModifierSlotsPerLevel") > 0 && !(config.getBoolean("LevelUpEvents.RandomModifier.DisableAddingNewSlots") && appliedRandomMod)) {
@@ -187,7 +187,7 @@ public class TinkerListener implements Listener {
             modManager.setFreeSlots(tool, slots);
         }
 
-        ChatWriter.sendActionBar(p, ItemGenerator.getDisplayName(tool) + ChatColor.GOLD + " just got a Level-Up!");
-        ChatWriter.log(false, p.getDisplayName() + " leveled up " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
+        ChatWriter.sendActionBar(player, ItemGenerator.getDisplayName(tool) + ChatColor.GOLD + " just got a Level-Up!");
+        ChatWriter.log(false, player.getDisplayName() + " leveled up " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
     }
 }

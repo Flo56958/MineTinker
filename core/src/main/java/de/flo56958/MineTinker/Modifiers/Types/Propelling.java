@@ -124,22 +124,22 @@ public class Propelling extends Modifier implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onElytraSneak(PlayerToggleSneakEvent e) {
-        Player p = e.getPlayer();
+    public void onElytraSneak(PlayerToggleSneakEvent event) {
+        Player player = event.getPlayer();
 
-        if (e.isSneaking()) {
+        if (event.isSneaking()) {
             return;
         }
 
-        if (!p.isGliding()) {
+        if (!player.isGliding()) {
             return;
         }
 
-        if (!p.hasPermission("minetinker.modifiers.propelling.use")) {
+        if (!player.hasPermission("minetinker.modifiers.propelling.use")) {
             return;
         }
 
-        ItemStack elytra = p.getInventory().getChestplate();
+        ItemStack elytra = player.getInventory().getChestplate();
 
         if (!(modManager.isArmorViable(elytra) && ToolType.ELYTRA.contains(elytra.getType()))) {
             return;
@@ -156,7 +156,7 @@ public class Propelling extends Modifier implements Listener {
             Damageable dam = (Damageable) meta;
 
             if (maxDamage <= dam.getDamage() + durabilityLoss + 1) {
-                p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
+                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
                 return;
             }
 
@@ -165,16 +165,16 @@ public class Propelling extends Modifier implements Listener {
         }
 
         int level = modManager.getModLevel(elytra, this);
-        Location loc = p.getLocation();
+        Location loc = player.getLocation();
         Vector dir = loc.getDirection().normalize();
 
-        p.setVelocity(p.getVelocity().add(dir.multiply(1 + speedPerLevel * level)));
+        player.setVelocity(player.getVelocity().add(dir.multiply(1 + speedPerLevel * level)));
 
         if (sound && loc.getWorld() != null) {
             loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
         }
 
-        if (particles) p.playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
+        if (particles) player.playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
     }
 
     @Override

@@ -29,15 +29,15 @@ public class BlockListener implements Listener {
     private static final ModManager modManager = ModManager.instance();
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockBreak(BlockBreakEvent e) {
-        Player p = e.getPlayer();
+    public void onBlockBreak(BlockBreakEvent event) {
+        Player p = event.getPlayer();
         ItemStack tool = p.getInventory().getItemInMainHand();
 
         if (Lists.WORLDS.contains(p.getWorld().getName())) {
             return;
         }
 
-        if (e.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS || ToolType.HOE.contains(tool.getType()))) {
+        if (event.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS || ToolType.HOE.contains(tool.getType()))) {
             return;
         }
 
@@ -48,32 +48,32 @@ public class BlockListener implements Listener {
         if (!modManager.isToolViable(tool)) {
             return;
         }
-        if (!modManager.durabilityCheck(e, p, tool)) {
+        if (!modManager.durabilityCheck(event, p, tool)) {
             return;
         }
 
         int expAmount = config.getInt("ExpPerBlockBreak");
-        expAmount += config.getInt("ExtraExpPerBlock." + e.getBlock().getType().toString()); //adds 0 if not in found in config (negative values are also fine)
+        expAmount += config.getInt("ExtraExpPerBlock." + event.getBlock().getType().toString()); //adds 0 if not in found in config (negative values are also fine)
 
         modManager.addExp(p, tool, expAmount);
 
         //-------------------------------------------POWERCHECK---------------------------------------------
         if (Power.HASPOWER.get(p).get() && !ToolType.PICKAXE.contains(tool.getType())
-                && e.getBlock().getDrops(tool).isEmpty()
-                && e.getBlock().getType() != Material.NETHER_WART) { //Necessary for EasyHarvest NetherWard-Break
+                && event.getBlock().getDrops(tool).isEmpty()
+                && event.getBlock().getType() != Material.NETHER_WART) { //Necessary for EasyHarvest NetherWard-Break
 
-            e.setCancelled(true);
+            event.setCancelled(true);
             return;
         }
 
-        MTBlockBreakEvent event = new MTBlockBreakEvent(tool, e);
-        Bukkit.getPluginManager().callEvent(event); //Event-Trigger for Modifiers
+        MTBlockBreakEvent breakEvent = new MTBlockBreakEvent(tool, event);
+        Bukkit.getPluginManager().callEvent(breakEvent); //Event-Trigger for Modifiers
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onClick(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
-        Block b = e.getClickedBlock();
+    public void onClick(PlayerInteractEvent event) {
+        Player p = event.getPlayer();
+        Block b = event.getClickedBlock();
 
         if (b == null) {
             return;
@@ -85,11 +85,11 @@ public class BlockListener implements Listener {
             return;
         }
 
-        if (e.getAction() == Action.RIGHT_CLICK_AIR) {
+        if (event.getAction() == Action.RIGHT_CLICK_AIR) {
             if (Ender.instance().getModItem().equals(norm)) {
-                e.setCancelled(true);
+                event.setCancelled(true);
             }
-        } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+        } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (!p.isSneaking()) {
                 Material type = b.getType();
 
@@ -109,7 +109,7 @@ public class BlockListener implements Listener {
             for (Modifier m : modManager.getAllowedMods()) {
                 if (m.getModItem().equals(norm)) {
                     norm.setAmount(temp);
-                    e.setCancelled(true);
+                    event.setCancelled(true);
 
                     return;
                 }
@@ -123,7 +123,7 @@ public class BlockListener implements Listener {
                 for (Modifier m : modManager.getAllMods()) {
                     if (m.getModItem().getType().equals(item.getType())) {
                         m.enchantItem(p, item);
-                        e.setCancelled(true);
+                        event.setCancelled(true);
                     }
                 }
             }
@@ -131,18 +131,18 @@ public class BlockListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public static void onHoeUse(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
+    public static void onHoeUse(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
 
-        if (Lists.WORLDS.contains(p.getWorld().getName())) {
+        if (Lists.WORLDS.contains(player.getWorld().getName())) {
             return;
         }
 
-        if (!(p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE)) {
+        if (!(player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
             return;
         }
 
-        ItemStack tool = p.getInventory().getItemInMainHand();
+        ItemStack tool = player.getInventory().getItemInMainHand();
 
         if (!ToolType.HOE.contains(tool.getType())) {
             return;
@@ -152,15 +152,15 @@ public class BlockListener implements Listener {
             return;
         }
 
-        Block b = e.getClickedBlock();
+        Block block = event.getClickedBlock();
 
         boolean apply = false;
 
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK && b != null) {
-            if (b.getType() == Material.GRASS_BLOCK || b.getType() == Material.DIRT)
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block != null) {
+            if (block.getType() == Material.GRASS_BLOCK || block.getType() == Material.DIRT)
                 apply = true;
 
-            if (p.getWorld().getBlockAt(b.getLocation().add(0, 1, 0)).getType() != Material.AIR) //Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
+            if (player.getWorld().getBlockAt(block.getLocation().add(0, 1, 0)).getType() != Material.AIR) //Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
                 apply = false;
         }
 
@@ -168,29 +168,29 @@ public class BlockListener implements Listener {
             return;
         }
 
-        if (!modManager.durabilityCheck(e, p, tool)) {
+        if (!modManager.durabilityCheck(event, player, tool)) {
             return;
         }
 
-        modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
+        modManager.addExp(player, tool, config.getInt("ExpPerBlockBreak"));
 
-        MTPlayerInteractEvent event = new MTPlayerInteractEvent(tool, e);
-        Bukkit.getPluginManager().callEvent(event);
+        MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
+        Bukkit.getPluginManager().callEvent(interactEvent);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public static void onAxeUse(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
+    public static void onAxeUse(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
 
-        if (Lists.WORLDS.contains(p.getWorld().getName())) {
+        if (Lists.WORLDS.contains(player.getWorld().getName())) {
             return;
         }
 
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) {
+        if (!(player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE))) {
             return;
         }
 
-        ItemStack tool = p.getInventory().getItemInMainHand();
+        ItemStack tool = player.getInventory().getItemInMainHand();
 
         if (!ToolType.AXE.contains(tool.getType())) {
             return;
@@ -202,10 +202,10 @@ public class BlockListener implements Listener {
 
         boolean apply = false;
 
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock() != null) {
-            if (Lists.getWoodLogs().contains(e.getClickedBlock().getType()))
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null) {
+            if (Lists.getWoodLogs().contains(event.getClickedBlock().getType()))
                 apply = true;
-            else if (Lists.getWoodWood().contains(e.getClickedBlock().getType()))
+            else if (Lists.getWoodWood().contains(event.getClickedBlock().getType()))
                 apply = true;
         }
 
@@ -213,29 +213,29 @@ public class BlockListener implements Listener {
             return;
         }
 
-        if (!modManager.durabilityCheck(e, p, tool)) {
+        if (!modManager.durabilityCheck(event, player, tool)) {
             return;
         }
 
-        modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
+        modManager.addExp(player, tool, config.getInt("ExpPerBlockBreak"));
 
-        MTPlayerInteractEvent event = new MTPlayerInteractEvent(tool, e);
-        Bukkit.getPluginManager().callEvent(event);
+        MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
+        Bukkit.getPluginManager().callEvent(interactEvent);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public static void onShovelUse(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
+    public static void onShovelUse(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
 
-        if (Lists.WORLDS.contains(p.getWorld().getName())) {
+        if (Lists.WORLDS.contains(player.getWorld().getName())) {
             return;
         }
 
-        if (!(p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE)) {
+        if (!(player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
             return;
         }
 
-        ItemStack tool = p.getInventory().getItemInMainHand();
+        ItemStack tool = player.getInventory().getItemInMainHand();
 
         if (!ToolType.SHOVEL.contains(tool.getType())) {
             return;
@@ -247,8 +247,8 @@ public class BlockListener implements Listener {
 
         boolean apply = false;
 
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock() != null) {
-            if (e.getClickedBlock().getType() == Material.GRASS_BLOCK) {
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null) {
+            if (event.getClickedBlock().getType() == Material.GRASS_BLOCK) {
                 apply = true;
             }
         }
@@ -257,13 +257,13 @@ public class BlockListener implements Listener {
             return;
         }
 
-        if (!modManager.durabilityCheck(e, p, tool)) {
+        if (!modManager.durabilityCheck(event, player, tool)) {
             return;
         }
 
-        modManager.addExp(p, tool, config.getInt("ExpPerBlockBreak"));
+        modManager.addExp(player, tool, config.getInt("ExpPerBlockBreak"));
 
-        MTPlayerInteractEvent event = new MTPlayerInteractEvent(tool, e);
-        Bukkit.getPluginManager().callEvent(event);
+        MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
+        Bukkit.getPluginManager().callEvent(interactEvent);
     }
 }

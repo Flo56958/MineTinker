@@ -182,22 +182,25 @@ public class ChatWriter {
             return "0";
         }
 
-        int l =  map.floorKey(number);
-        if ( number == l ) {
+        int floorKey =  map.floorKey(number);
+
+        if (number == floorKey) {
             return map.get(number);
         }
-        return map.get(l) + toRomanNumerals(number-l);
+
+        return map.get(floorKey) + toRomanNumerals(number-floorKey);
     }
 
     public static List<String> splitString(String msg, int lineSize) {
         List<String> res = new ArrayList<>();
 
-        Pattern p = Pattern.compile("\\b.+" + (lineSize-1) + "}\\b\\W?");
-        Matcher m = p.matcher(msg);
+        Pattern pattern = Pattern.compile("\\b.+" + (lineSize-1) + "}\\b\\W?");
+        Matcher matcher = pattern.matcher(msg);
 
-        while(m.find()) {
-            res.add(m.group());
+        while(matcher.find()) {
+            res.add(matcher.group());
         }
+
         return res;
     }
 }

@@ -44,103 +44,103 @@ public class Commands implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
-            Player p = (Player) sender;
+            Player player = (Player) sender;
             if (sender.hasPermission("minetinker.commands.main")) {
                 if (args.length > 0) {
                     switch (args[0].toLowerCase()) { //first argument is the specifier for the command
                         case "addexp":
                         case "ae":
-                            if (p.hasPermission("minetinker.commands.addexp")) {
-                                Functions.addExp(p, args);
-                            } else noPerm(p);
+                            if (player.hasPermission("minetinker.commands.addexp")) {
+                                Functions.addExp(player, args);
+                            } else noPerm(player);
                             break;
                         case "addmod":
                         case "am":
-                            if (p.hasPermission("minetinker.commands.addmod")) {
-                                Functions.addMod(p, args);
-                            } else noPerm(p);
+                            if (player.hasPermission("minetinker.commands.addmod")) {
+                                Functions.addMod(player, args);
+                            } else noPerm(player);
                             break;
                         case "checkupdate":
                         case "cu":
-                            if (p.hasPermission("minetinker.commands.checkupdate")) {
-                                Functions.checkUpdate(p);
-                            } else noPerm(p);
+                            if (player.hasPermission("minetinker.commands.checkupdate")) {
+                                Functions.checkUpdate(player);
+                            } else noPerm(player);
                             break;
                         case "convert":
                         case "c":
-                            if (p.hasPermission("minetinker.commands.convert")) {
-                                Functions.convert(p, args);
-                            } else noPerm(p);
+                            if (player.hasPermission("minetinker.commands.convert")) {
+                                Functions.convert(player, args);
+                            } else noPerm(player);
                             break;
                         case "give":
                         case "g":
-                            if (p.hasPermission("minetinker.commands.give")) {
-                                Functions.give(p, args);
-                            } else noPerm(p);
+                            if (player.hasPermission("minetinker.commands.give")) {
+                                Functions.give(player, args);
+                            } else noPerm(player);
                             break;
                         case "givemodifieritem":
                         case "gm":
-                            if (p.hasPermission("minetinker.commands.givemodifieritem")) {
-                                Functions.giveModifierItem(p, args);
-                            } else noPerm(p);
+                            if (player.hasPermission("minetinker.commands.givemodifieritem")) {
+                                Functions.giveModifierItem(player, args);
+                            } else noPerm(player);
                             break;
                         case "help":
                         case "?":
                         case "h":
-                            if (p.hasPermission("minetinker.commands.help")) {
-                                onHelp(p);
-                            } else noPerm(p);
+                            if (player.hasPermission("minetinker.commands.help")) {
+                                onHelp(player);
+                            } else noPerm(player);
                             break;
                         case "info":
                         case "i":
-                            if (p.hasPermission("minetinker.commands.info")) {
-                                ChatWriter.sendMessage(p, ChatColor.WHITE, "MineTinker (" + Main.getPlugin().getDescription().getVersion() + ") is a Plugin made by Flo56958.");
-                                ChatWriter.sendMessage(p, ChatColor.WHITE, "It is inspired by different mods (e.g. TinkersConstruct)");
-                            } else noPerm(p);
+                            if (player.hasPermission("minetinker.commands.info")) {
+                                ChatWriter.sendMessage(player, ChatColor.WHITE, "MineTinker (" + Main.getPlugin().getDescription().getVersion() + ") is a Plugin made by Flo56958.");
+                                ChatWriter.sendMessage(player, ChatColor.WHITE, "It is inspired by different mods (e.g. TinkersConstruct)");
+                            } else noPerm(player);
                             break;
                         case "itemstatistics":
                         case "is":
-                            if (p.hasPermission("minetinker.commands.itemstatistics")) {
-                                Functions.itemStatistics(p);
-                            } else noPerm(p);
+                            if (player.hasPermission("minetinker.commands.itemstatistics")) {
+                                Functions.itemStatistics(player);
+                            } else noPerm(player);
                             break;
                         case "modifiers":
                         case "mods":
-                            if (p.hasPermission("minetinker.commands.modifiers")) {
-                                Functions.modList(p);
-                            } else noPerm(p);
+                            if (player.hasPermission("minetinker.commands.modifiers")) {
+                                Functions.modList(player);
+                            } else noPerm(player);
                             break;
                         case "name":
                         case "n":
-                            if (p.hasPermission("minetinker.commands.name")) {
-                                Functions.name(p, args);
-                            } else noPerm(p);
+                            if (player.hasPermission("minetinker.commands.name")) {
+                                Functions.name(player, args);
+                            } else noPerm(player);
                             break;
                         case "reload":
                         case "r":
-                            if (p.hasPermission("minetinker.commands.reload")) {
-                                reload(p);
-                            } else noPerm(p);
+                            if (player.hasPermission("minetinker.commands.reload")) {
+                                reload(player);
+                            } else noPerm(player);
                             break;
                         case "removemod":
                         case "rm":
-                            if (p.hasPermission("minetinker.commands.removemod")) {
-                                Functions.removeMod(p, args);
-                            } else noPerm(p);
+                            if (player.hasPermission("minetinker.commands.removemod")) {
+                                Functions.removeMod(player, args);
+                            } else noPerm(player);
                             break;
                         case "setdurability":
                         case "sd":
-                            if (p.hasPermission("minetinker.commands.setdurability")) {
-                                Functions.setDurability(p, args);
-                            } else noPerm(p);
+                            if (player.hasPermission("minetinker.commands.setdurability")) {
+                                Functions.setDurability(player, args);
+                            } else noPerm(player);
                             break;
                         default:
-                            invalidArgs(p);
-                            ChatWriter.sendMessage(p, ChatColor.WHITE, "Possible arguments are:");
-                            onHelp(p);
+                            invalidArgs(player);
+                            ChatWriter.sendMessage(player, ChatColor.WHITE, "Possible arguments are:");
+                            onHelp(player);
                     }
                 } else {
-                    onHelp(p);
+                    onHelp(player);
                 }
             }
         } else {
@@ -397,8 +397,8 @@ public class Commands implements TabExecutor {
                 switch (args[0]) {
                     case "givemodifieritem":
                     case "gm":
-                        for (Player p : Bukkit.getOnlinePlayers()) {
-                            result.add(p.getName());
+                        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                            result.add(onlinePlayer.getName());
                         }
                         break;
                 }

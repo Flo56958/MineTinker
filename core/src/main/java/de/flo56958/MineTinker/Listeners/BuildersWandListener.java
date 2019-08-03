@@ -237,31 +237,31 @@ public class BuildersWandListener implements Listener {
     }
 
 	@EventHandler(ignoreCancelled = true)
-    public void onClick (PlayerInteractEvent e) {
-        if (Lists.WORLDS_BUILDERSWANDS.contains(e.getPlayer().getWorld().getName())) {
+    public void onClick (PlayerInteractEvent event) {
+        if (Lists.WORLDS_BUILDERSWANDS.contains(event.getPlayer().getWorld().getName())) {
             return;
         }
 
-        ItemStack wand = e.getPlayer().getInventory().getItemInMainHand();
+        ItemStack wand = event.getPlayer().getInventory().getItemInMainHand();
 
         if (!modManager.isWandViable(wand)) {
             return;
         }
 
-        e.setCancelled(true);
+        event.setCancelled(true);
 
-        if (!e.getPlayer().hasPermission("minetinker.builderswands.use")) {
+        if (!event.getPlayer().hasPermission("minetinker.builderswands.use")) {
             return;
         }
 
-        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
 
         int _u = 0;
         int _w = 0;
 
-        Player p = e.getPlayer();
+        Player p = event.getPlayer();
 
         if (!p.isSneaking()) {
             switch (wand.getType()) {  //TODO: custom Builderswand sizes
@@ -283,16 +283,16 @@ public class BuildersWandListener implements Listener {
             }
         }
 
-        Block b = e.getClickedBlock();
-        BlockFace bf = e.getBlockFace();
+        Block block = event.getClickedBlock();
+        BlockFace face = event.getBlockFace();
         ItemStack[] inv = p.getInventory().getContents();
 
         Vector u = new Vector(0, 0, 0);
         Vector v = new Vector(0, 0, 0);
         Vector w = new Vector(0, 0, 0);
 
-        if (bf.equals(BlockFace.UP) || bf.equals(BlockFace.DOWN)) {
-            if (bf.equals(BlockFace.UP)) {
+        if (face.equals(BlockFace.UP) || face.equals(BlockFace.DOWN)) {
+            if (face.equals(BlockFace.UP)) {
                 v = new Vector(0, 1, 0);
             } else {
                 v = new Vector(0, -1, 0);
@@ -314,30 +314,30 @@ public class BuildersWandListener implements Listener {
             }
 
             u = v.getCrossProduct(w);
-        } else if (bf.equals(BlockFace.NORTH)) {
+        } else if (face.equals(BlockFace.NORTH)) {
             v = new Vector(0, 0, -1);
             w = new Vector(-1, 0, 0);
             u = new Vector(0, -1, 0);
-        } else if (bf.equals(BlockFace.EAST)) {
+        } else if (face.equals(BlockFace.EAST)) {
             v = new Vector(1, 0, 0);
             w = new Vector(0, 0, -1);
             u = new Vector(0, 1, 0);
-        } else if (bf.equals(BlockFace.SOUTH)) {
+        } else if (face.equals(BlockFace.SOUTH)) {
             v = new Vector(0, 0, 1);
             w = new Vector(1, 0, 0);
             u = new Vector(0, 1, 0);
-        } else if (bf.equals(BlockFace.WEST)) {
+        } else if (face.equals(BlockFace.WEST)) {
             v = new Vector(-1, 0, 0);
             w = new Vector(0, 0, 1);
             u = new Vector(0, -1, 0);
         }
-        if ((p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE) && b != null) {
+        if ((p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE) && block != null) {
             for (ItemStack current : inv) {
                 if (current == null) {
                     continue;
                 }
 
-                if (!current.getType().equals(b.getType())) {
+                if (!current.getType().equals(block.getType())) {
                     continue;
                 }
 
@@ -348,7 +348,7 @@ public class BuildersWandListener implements Listener {
                 loop:
                 for (int i = -_w; i <= _w; i++) {
                     for (int j = -_u; j <= _u; j++) {
-                        Location l = b.getLocation().clone();
+                        Location l = block.getLocation().clone();
 
                         l.subtract(w.clone().multiply(i));
                         l.subtract(u.clone().multiply(j));
@@ -362,12 +362,12 @@ public class BuildersWandListener implements Listener {
                                 break loop;
                             }
 
-                            if (!placeBlock(b, p, l, loc, current, v)) {
+                            if (!placeBlock(block, p, l, loc, current, v)) {
                                 continue;
                             }
 
                             int amountPlaced = 1;
-                            BlockData behindData = b.getWorld().getBlockAt(loc.subtract(v)).getBlockData();
+                            BlockData behindData = block.getWorld().getBlockAt(loc.subtract(v)).getBlockData();
 
                             if (behindData instanceof Slab && ((Slab) behindData).getType().equals(Slab.Type.DOUBLE)) {
                                 amountPlaced = 2; //Special case for slabs as you place two slabs at once
@@ -386,30 +386,30 @@ public class BuildersWandListener implements Listener {
                             }
 
                             wand.setItemMeta((ItemMeta)damageable);
-                            e.setCancelled(true);
+                            event.setCancelled(true);
                         }
                     }
                 }
 
                 break;
             }
-        } else if (p.getGameMode() == GameMode.CREATIVE && b != null) {
+        } else if (p.getGameMode() == GameMode.CREATIVE && block != null) {
             for (int i = -_w; i <= _w; i++) {
                 for (int j = -_u; j <= _u; j++) {
-                    Location l = b.getLocation().clone();
+                    Location l = block.getLocation().clone();
 
                     l.subtract(w.clone().multiply(i));
                     l.subtract(u.clone().multiply(j));
 
                     Location loc = l.clone().subtract(v.clone().multiply(-1));
 
-                    placeBlock(b, p, l, loc, new ItemStack(b.getType(), 64), v);
+                    placeBlock(block, p, l, loc, new ItemStack(block.getType(), 64), v);
                 }
             }
         }
     }
 
-    private boolean placeBlock(Block b, Player p, Location l, Location loc, ItemStack item, Vector v) {
+    private boolean placeBlock(Block b, Player player, Location l, Location loc, ItemStack item, Vector vector) {
         if (!b.getWorld().getBlockAt(l).getType().equals(b.getType())) {
             return false;
         }
@@ -426,7 +426,7 @@ public class BuildersWandListener implements Listener {
         //triggers a pseudoevent to find out if the Player can build
         Block block = b.getWorld().getBlockAt(loc);
 
-        BlockPlaceEvent placeEvent = new BlockPlaceEvent(block, block.getState(), b, item, p, true, EquipmentSlot.HAND);
+        BlockPlaceEvent placeEvent = new BlockPlaceEvent(block, block.getState(), b, item, player, true, EquipmentSlot.HAND);
         Bukkit.getPluginManager().callEvent(placeEvent);
 
         //check the pseudoevent
@@ -435,7 +435,7 @@ public class BuildersWandListener implements Listener {
         }
 
         Block nb = b.getWorld().getBlockAt(loc);
-        Block behind = nb.getWorld().getBlockAt(loc.clone().subtract(v));
+        Block behind = nb.getWorld().getBlockAt(loc.clone().subtract(vector));
         if (behind.getBlockData() instanceof Slab) {
             if (((Slab) behind.getBlockData()).getType().equals(Slab.Type.DOUBLE)) {
                 if (item.getAmount() - 2 < 0) {

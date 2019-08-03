@@ -166,42 +166,42 @@ public class Soulbound extends Modifier implements Listener {
      * Effect if a player respawns
      */
     @EventHandler
-    public void effect(PlayerRespawnEvent e) {
-        Player p = e.getPlayer();
+    public void effect(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
 
-        if (!p.hasPermission("minetinker.modifiers.soulbound.use")) {
+        if (!player.hasPermission("minetinker.modifiers.soulbound.use")) {
             return;
         }
 
-        if (!storedItemStacks.containsKey(p)) {
+        if (!storedItemStacks.containsKey(player)) {
             return;
         }
 
-        ArrayList<ItemStack> stored = storedItemStacks.get(p);
+        ArrayList<ItemStack> stored = storedItemStacks.get(player);
 
         for (ItemStack is : stored) {
-            if (p.getInventory().addItem(is).size() != 0) { //adds items to (full) inventory
-                p.getWorld().dropItem(p.getLocation(), is);
+            if (player.getInventory().addItem(is).size() != 0) { //adds items to (full) inventory
+                player.getWorld().dropItem(player.getLocation(), is);
             } // no else as it gets added in if
         }
 
-        storedItemStacks.remove(p);
+        storedItemStacks.remove(player);
     }
 
     /**
      * Effect if a player drops an item
-     * @param e
+     * @param event
      */
     @EventHandler(ignoreCancelled = true)
-    public void effect(PlayerDropItemEvent e) {
-        Item item = e.getItemDrop();
-        ItemStack is = item.getItemStack();
+    public void effect(PlayerDropItemEvent event) {
+        Item item = event.getItemDrop();
+        ItemStack tool = item.getItemStack();
 
-        if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) {
+        if (!(modManager.isArmorViable(tool) || modManager.isToolViable(tool) || modManager.isWandViable(tool))) {
             return;
         }
 
-        if (!modManager.hasMod(is, this)) {
+        if (!modManager.hasMod(tool, this)) {
             return;
         }
 
@@ -209,7 +209,7 @@ public class Soulbound extends Modifier implements Listener {
             return;
         }
 
-        e.setCancelled(true);
+        event.setCancelled(true);
     }
 
     @Override

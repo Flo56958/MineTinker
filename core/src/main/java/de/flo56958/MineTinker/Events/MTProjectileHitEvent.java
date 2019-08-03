@@ -23,12 +23,12 @@ public class MTProjectileHitEvent extends Event {
     /**
      * Event constructor
      * @param tool The ItemStack (MUST be a MineTinker-Tool)
-     * @param e    The BlockBreakEvent from which it was called
+     * @param event    The BlockBreakEvent from which it was called
      */
-    public MTProjectileHitEvent(@NotNull Player p, @NotNull ItemStack tool, @NotNull ProjectileHitEvent e) {
+    public MTProjectileHitEvent(@NotNull Player p, @NotNull ItemStack tool, @NotNull ProjectileHitEvent event) {
         this.player = p;
         this.tool = tool;
-        this.event = e;
+        this.event = event;
     }
 
     public Player getPlayer() {

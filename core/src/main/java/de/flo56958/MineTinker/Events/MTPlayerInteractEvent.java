@@ -24,12 +24,12 @@ public class MTPlayerInteractEvent extends Event implements Cancellable {
     /**
      * Event constructor
      * @param tool The ItemStack (MUST be a MineTinker-Tool)
-     * @param e The PlayerInteractEvent from which it was called
+     * @param event The PlayerInteractEvent from which it was called
      */
-    public MTPlayerInteractEvent(@NotNull ItemStack tool, @NotNull PlayerInteractEvent e) {
-        this.player = e.getPlayer();
+    public MTPlayerInteractEvent(@NotNull ItemStack tool, @NotNull PlayerInteractEvent event) {
+        this.player = event.getPlayer();
         this.tool = tool;
-        this.event = e;
+        this.event = event;
     }
 
     public Player getPlayer() {

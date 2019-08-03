@@ -25,12 +25,12 @@ public class MTBlockBreakEvent extends Event implements Cancellable {
     /**
      * Event constructor
      * @param tool The ItemStack (MUST be a MineTinker-Tool)
-     * @param e The BlockBreakEvent from which it was called
+     * @param event The BlockBreakEvent from which it was called
      */
-    public MTBlockBreakEvent(@NotNull ItemStack tool, @NotNull BlockBreakEvent e) {
-        this.player = e.getPlayer();
+    public MTBlockBreakEvent(@NotNull ItemStack tool, @NotNull BlockBreakEvent event) {
+        this.player = event.getPlayer();
         this.tool = tool;
-        this.event = e;
+        this.event = event;
     }
 
     public Player getPlayer() {

@@ -161,63 +161,63 @@ public class GUI implements Listener {
     //<------------------------------------Events------------------------------------------->
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onClick(InventoryClickEvent e) {
-        Window w = getWindowFromInventory(e.getClickedInventory());
+    public void onClick(InventoryClickEvent event) {
+        Window w = getWindowFromInventory(event.getClickedInventory());
 
         if (w == null) {
             return;
         }
 
-        e.setCancelled(true);
+        event.setCancelled(true);
 
-        Window.Button clickedButton = w.getButtonFromSlot(e.getSlot());
+        Window.Button clickedButton = w.getButtonFromSlot(event.getSlot());
 
         if (clickedButton != null) {
-            clickedButton.executeAction(e);
+            clickedButton.executeAction(event);
         }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onDrag(InventoryDragEvent e) {
-        Window w = getWindowFromInventory(e.getInventory());
+    public void onDrag(InventoryDragEvent event) {
+        Window w = getWindowFromInventory(event.getInventory());
 
         if (w == null) {
             return;
         }
 
-        e.setCancelled(true);
+        event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onMove(InventoryMoveItemEvent e) {
-        Window w = getWindowFromInventory(e.getDestination());
+    public void onMove(InventoryMoveItemEvent event) {
+        Window w = getWindowFromInventory(event.getDestination());
 
         if (w == null) {
             return;
         }
 
-        w = getWindowFromInventory(e.getInitiator());
+        w = getWindowFromInventory(event.getInitiator());
         if (w == null) {
             return;
         }
 
-        w = getWindowFromInventory(e.getSource());
+        w = getWindowFromInventory(event.getSource());
         if (w == null) {
             return;
         }
 
-        e.setCancelled(true);
+        event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onEvent(InventoryInteractEvent e) {
-        Window w = getWindowFromInventory(e.getInventory());
+    public void onEvent(InventoryInteractEvent event) {
+        Window w = getWindowFromInventory(event.getInventory());
 
         if (w == null) {
             return;
         }
 
-        e.setCancelled(true);
+        event.setCancelled(true);
     }
 
     //<------------------------------------Events------------------------------------------->

@@ -16,14 +16,14 @@ public class CreateToolListener implements Listener {
     private static final ModManager modManager = ModManager.instance();
 
     @EventHandler
-    public void PrepareCraft(PrepareItemCraftEvent e) {
-        if (e.getRecipe() == null) {
+    public void PrepareCraft(PrepareItemCraftEvent event) {
+        if (event.getRecipe() == null) {
             return;
         }
 
         Player player = null;
 
-        for (HumanEntity humans : e.getViewers()) {
+        for (HumanEntity humans : event.getViewers()) {
             if (humans instanceof Player) {
                 player = (Player) humans;
             }
@@ -41,7 +41,7 @@ public class CreateToolListener implements Listener {
             return;
         }
 
-        ItemStack currentItem = e.getInventory().getResult();
+        ItemStack currentItem = event.getInventory().getResult();
 
         if (currentItem == null) {
             return;
@@ -50,7 +50,7 @@ public class CreateToolListener implements Listener {
         int totalItems = 0;
         ItemStack lastItem = null;
 
-        for (ItemStack item : e.getInventory().getMatrix()) {
+        for (ItemStack item : event.getInventory().getMatrix()) {
             // Keep this null check, it says it's NotNull but bukkit is lying :(
             if (item != null && item.getType() != Material.AIR) {
                 totalItems += 1;

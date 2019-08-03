@@ -125,15 +125,15 @@ public class Melting extends Modifier implements Listener {
             The melting effect, if the Player is the Damager
              */
             if (event.getEvent().getEntity() instanceof LivingEntity) {
-                LivingEntity e = (LivingEntity) event.getEvent().getEntity();
+                LivingEntity entity = (LivingEntity) event.getEvent().getEntity();
 
-                if (e.isDead()) {
+                if (entity.isDead()) {
                     return;
                 }
 
                 int level = modManager.getModLevel(tool, this);
 
-                if (e.getFireTicks() == 0) {
+                if (entity.getFireTicks() == 0) {
                     return;
                 }
 

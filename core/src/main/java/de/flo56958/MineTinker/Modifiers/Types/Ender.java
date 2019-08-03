@@ -173,18 +173,18 @@ public class Ender extends Modifier implements Listener {
             return;
         }
 
-        Player p = event.getPlayer();
-        Entity e = event.getEvent().getEntity();
+        Player player = event.getPlayer();
+        Entity entity = event.getEvent().getEntity();
 
-        if (!p.isSneaking()) {
+        if (!player.isSneaking()) {
             return;
         }
 
-        if (p.equals(event.getEvent().getEntity())) {
+        if (player.equals(event.getEvent().getEntity())) {
             return;
         }
 
-        if (!p.hasPermission("minetinker.modifiers.ender.use")) {
+        if (!player.hasPermission("minetinker.modifiers.ender.use")) {
             return;
         }
 
@@ -199,39 +199,39 @@ public class Ender extends Modifier implements Listener {
         }
 
         // e
-        Location loc = e.getLocation().clone();
-        e.teleport(p.getLocation());
+        Location loc = entity.getLocation().clone();
+        entity.teleport(player.getLocation());
 
-        spawnParticles(p, loc);
+        spawnParticles(player, loc);
 
-        p.teleport(loc);
+        player.teleport(loc);
 
         if (this.hasSound) {
-            p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F); //Sound at Players position
-            p.getWorld().playSound(event.getEvent().getEntity().getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F); //Sound at Entity's position
+            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F); //Sound at Players position
+            player.getWorld().playSound(event.getEvent().getEntity().getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F); //Sound at Entity's position
         }
 
         if (this.giveNauseaOnUse) {
-            p.removePotionEffect(PotionEffectType.CONFUSION);
-            p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, this.nauseaDuration, 0, false, false));
+            player.removePotionEffect(PotionEffectType.CONFUSION);
+            player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, this.nauseaDuration, 0, false, false));
 
-            if (e instanceof LivingEntity) {
-                ((LivingEntity) e).removePotionEffect(PotionEffectType.CONFUSION);
-                ((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, this.nauseaDuration, 0, false, false));
+            if (entity instanceof LivingEntity) {
+                ((LivingEntity) entity).removePotionEffect(PotionEffectType.CONFUSION);
+                ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, this.nauseaDuration, 0, false, false));
             }
         }
 
         if (this.giveBlindnessOnUse) {
-            p.removePotionEffect(PotionEffectType.BLINDNESS);
-            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, this.blindnessDuration, 0, false, false));
+            player.removePotionEffect(PotionEffectType.BLINDNESS);
+            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, this.blindnessDuration, 0, false, false));
 
-            if (e instanceof LivingEntity) {
-                ((LivingEntity) e).removePotionEffect(PotionEffectType.BLINDNESS);
-                ((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, this.blindnessDuration, 0, false, false));
+            if (entity instanceof LivingEntity) {
+                ((LivingEntity) entity).removePotionEffect(PotionEffectType.BLINDNESS);
+                ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, this.blindnessDuration, 0, false, false));
             }
         }
 
-        ChatWriter.log(false, p.getDisplayName() + " triggered Ender on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+        ChatWriter.log(false, player.getDisplayName() + " triggered Ender on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
     }
 
     private void spawnParticles(Player p, Location oldLoc) {

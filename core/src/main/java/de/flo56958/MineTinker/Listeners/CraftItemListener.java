@@ -18,12 +18,12 @@ public class CraftItemListener implements Listener {
     private static final ModManager modManager = ModManager.instance();
 	
 	@EventHandler(ignoreCancelled = true)
-    public void onCraft(CraftItemEvent e) {
-        if (!(e.getWhoClicked() instanceof Player)) {
+    public void onCraft(CraftItemEvent event) {
+        if (!(event.getWhoClicked() instanceof Player)) {
         	return;
 		}
 
-        Player player = (Player) e.getWhoClicked();
+        Player player = (Player) event.getWhoClicked();
         
         if (config.getBoolean("Sound.OnEveryCrafting")) {
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
@@ -31,7 +31,7 @@ public class CraftItemListener implements Listener {
             return;
         }
         
-        ItemStack tool = e.getInventory().getResult();
+        ItemStack tool = event.getInventory().getResult();
         
         if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool) || modManager.isWandViable(tool))) {
         	return;
