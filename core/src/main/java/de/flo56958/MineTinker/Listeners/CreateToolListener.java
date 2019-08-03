@@ -51,6 +51,7 @@ public class CreateToolListener implements Listener {
         ItemStack lastItem = null;
 
         for (ItemStack item : e.getInventory().getMatrix()) {
+            // Keep this null check, it says it's NotNull but bukkit is lying :(
             if (item != null && item.getType() != Material.AIR) {
                 totalItems += 1;
                 lastItem = item;

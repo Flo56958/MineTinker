@@ -47,6 +47,7 @@ HideAttributes: true                  #Should the attributes be hidden on the to
 DurabilityPercentageRepair: 0.34      #How much durability (relative to maximum durability) should the tool recover per item
 ConvertBookToModifier: false          #Should right clicking a bookshelf with an enchanted book convert enchantments to modifier items
 EnableLore: true                      #Should the Item have lore to display all Stats on the Tool (like Modifiers, Exp, Level, etc.)
+ConvertEnchantmentsOnEnchant: false   #Should (new) enchantments be converted to modifiers when tools are enchanted
 
 #---------------ITEMBEHAVIOUR--------------
 ItemBehaviour:
