@@ -113,7 +113,7 @@ public class ArmorListener implements Listener {
             return;
         }
 
-        if (!e.getItem().getType().equals(Material.ELYTRA)) {
+        if (e.getItem().getType() != Material.ELYTRA) {
             return;
         }
 

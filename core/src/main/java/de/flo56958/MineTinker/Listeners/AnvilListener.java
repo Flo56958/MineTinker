@@ -62,7 +62,7 @@ public class AnvilListener implements Listener {
         }
 
         //boolean deleteAllItems = false;
-        if (e.getCursor() != null && !e.getCursor().getType().equals(Material.AIR)) {
+        if (e.getCursor() != null && !(e.getCursor().getType() == Material.AIR)) {
             return;
         }
 
@@ -181,7 +181,7 @@ public class AnvilListener implements Listener {
             return;
         }
 
-        if (modifier.getType().equals(Material.ENCHANTED_BOOK)) { //So no Tools can be enchanted via books, if enchanting is disabled
+        if (modifier.getType() == Material.ENCHANTED_BOOK) { //So no Tools can be enchanted via books, if enchanting is disabled
             if (config.getBoolean("AllowEnchanting")) {
                 // If enchanting is allowed, don't do anything
                 return;

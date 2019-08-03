@@ -141,9 +141,10 @@ public class Timber extends Modifier implements Listener {
                 loc.setY(dy);
 
                 Material mat = p.getWorld().getBlockAt(loc).getType();
+
                 if (Lists.getWoodLeaves().contains(mat)) {
                     isTreeTop = true;
-                } else if (mat.equals(Material.AIR) || mat.equals(Material.CAVE_AIR)) {
+                } else if (mat == Material.AIR || mat == Material.CAVE_AIR) {
                     airgap++;
                     continue;
                 }

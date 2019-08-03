@@ -160,23 +160,23 @@ public class EasyHarvestListener implements Listener {
                     continue;
                 }
 
-                if (m.equals(Material.BEETROOTS) && is.getType().equals(Material.BEETROOT_SEEDS)) {
+                if (m == Material.BEETROOTS && is.getType() == Material.BEETROOT_SEEDS) {
                     is.setAmount(is.getAmount() - 1);
                     b.setType(m);
                     break;
-                } else if (m.equals(Material.CARROTS) && is.getType().equals(Material.CARROT)) {
+                } else if (m == Material.CARROTS && is.getType() == Material.CARROT) {
                     is.setAmount(is.getAmount() - 1);
                     b.setType(m);
                     break;
-                } else if (m.equals(Material.POTATOES) && is.getType().equals(Material.POTATO)) {
+                } else if (m == Material.POTATOES && is.getType() == Material.POTATO) {
                     is.setAmount(is.getAmount() - 1);
                     b.setType(m);
                     break;
-                } else if (m.equals(Material.WHEAT) && is.getType().equals(Material.WHEAT_SEEDS)) {
+                } else if (m == Material.WHEAT && is.getType() == Material.WHEAT_SEEDS) {
                     is.setAmount(is.getAmount() - 1);
                     b.setType(m);
                     break;
-                } else if (m.equals(Material.NETHER_WART) && is.getType().equals(Material.NETHER_WART)) {
+                } else if (m == Material.NETHER_WART && is.getType() == Material.NETHER_WART) {
                     is.setAmount(is.getAmount() - 1);
                     b.setType(m);
                     break;

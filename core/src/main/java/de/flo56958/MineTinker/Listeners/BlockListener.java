@@ -60,7 +60,9 @@ public class BlockListener implements Listener {
 
         //-------------------------------------------POWERCHECK---------------------------------------------
         if (Power.HASPOWER.get(p).get() && !ToolType.PICKAXE.contains(tool.getType())
-                && e.getBlock().getDrops(tool).isEmpty() && !e.getBlock().getType().equals(Material.NETHER_WART)) { //Necessary for EasyHarvest NetherWard-Break
+                && e.getBlock().getDrops(tool).isEmpty()
+                && e.getBlock().getType() != Material.NETHER_WART) { //Necessary for EasyHarvest NetherWard-Break
+
             e.setCancelled(true);
             return;
         }
@@ -80,7 +82,7 @@ public class BlockListener implements Listener {
 
         ItemStack norm = p.getInventory().getItemInMainHand();
 
-        if (norm.getType().equals(Material.EXPERIENCE_BOTTLE)) {
+        if (norm.getType() == Material.EXPERIENCE_BOTTLE) {
             return;
         }
 
@@ -90,16 +92,13 @@ public class BlockListener implements Listener {
             }
         } else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             if (!p.isSneaking()) {
-                if (b.getType().equals(Material.ANVIL)
-                    || b.getType().equals(Material.CRAFTING_TABLE)
-                    || b.getType().equals(Material.CHEST)
-                    || b.getType().equals(Material.ENDER_CHEST)
-                    || b.getType().equals(Material.DROPPER)
-                    || b.getType().equals(Material.HOPPER)
-                    || b.getType().equals(Material.DISPENSER)
-                    || b.getType().equals(Material.TRAPPED_CHEST)
-                    || b.getType().equals(Material.FURNACE)
-                    || b.getType().equals(Material.ENCHANTING_TABLE)) {
+                Material type = b.getType();
+
+                if (type == Material.ANVIL || type == Material.CRAFTING_TABLE
+                    || type == Material.CHEST || type == Material.ENDER_CHEST
+                    || type == Material.DROPPER || type == Material.HOPPER
+                    || type == Material.DISPENSER || type == Material.TRAPPED_CHEST
+                    || type == Material.FURNACE || type == Material.ENCHANTING_TABLE) {
 
                     return;
                 }
@@ -119,7 +118,7 @@ public class BlockListener implements Listener {
 
             norm.setAmount(temp);
 
-            if (b.getType().equals(Material.getMaterial(config.getString("BlockToEnchantModifiers")))) {
+            if (b.getType() == Material.getMaterial(config.getString("BlockToEnchantModifiers"))) {
                 ItemStack item = p.getInventory().getItemInMainHand();
 
                 for (Modifier m : modManager.getEnchantableMods()) {
@@ -158,11 +157,11 @@ public class BlockListener implements Listener {
 
         boolean apply = false;
 
-        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && b != null) {
-            if (b.getType().equals(Material.GRASS_BLOCK) || b.getType().equals(Material.DIRT))
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK && b != null) {
+            if (b.getType() == Material.GRASS_BLOCK || b.getType() == Material.DIRT)
                 apply = true;
 
-            if (!p.getWorld().getBlockAt(b.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) //Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
+            if (p.getWorld().getBlockAt(b.getLocation().add(0, 1, 0)).getType() != Material.AIR) //Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
                 apply = false;
         }
 
@@ -233,7 +232,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) {
+        if (!(p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE)) {
             return;
         }
 
@@ -250,7 +249,7 @@ public class BlockListener implements Listener {
         boolean apply = false;
 
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null) {
-            if (e.getClickedBlock().getType().equals(Material.GRASS_BLOCK)) {
+            if (e.getClickedBlock().getType() == Material.GRASS_BLOCK) {
                 apply = true;
             }
         }

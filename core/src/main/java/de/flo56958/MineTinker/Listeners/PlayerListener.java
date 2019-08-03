@@ -75,55 +75,55 @@ public class PlayerListener implements Listener {
                 }
                 break;
             case "stone":
-                if (repair.getType().equals(Material.COBBLESTONE) || repair.getType().equals(Material.STONE)) {
+                if (repair.getType() == Material.COBBLESTONE || repair.getType() == Material.STONE) {
                     eligible = true;
                 }
                 break;
             case "shears":
             case "iron":
-                if (repair.getType().equals(Material.IRON_INGOT)) {
+                if (repair.getType() == Material.IRON_INGOT) {
                     eligible = true;
                 }
                 break;
             case "golden":
-                if (repair.getType().equals(Material.GOLD_INGOT)) {
+                if (repair.getType() == Material.GOLD_INGOT) {
                     eligible = true;
                 }
                 break;
             case "diamond":
-                if (repair.getType().equals(Material.DIAMOND)) {
+                if (repair.getType() == Material.DIAMOND) {
                     eligible = true;
                 }
                 break;
             case "bow":
             case "crossbow":
             case "fishing":
-                if (repair.getType().equals(Material.STICK) || repair.getType().equals(Material.STRING)) {
+                if (repair.getType() == Material.STICK || repair.getType() == Material.STRING) {
                     eligible = true;
                 }
                 break;
             case "leather":
-                if (repair.getType().equals(Material.LEATHER)) {
+                if (repair.getType() == Material.LEATHER) {
                     eligible = true;
                 }
                 break;
             case "chainmail":
-                if (repair.getType().equals(Material.IRON_BARS)) {
+                if (repair.getType() == Material.IRON_BARS) {
                     eligible = true;
                 }
                 break;
             case "elytra":
-                if (repair.getType().equals(Material.PHANTOM_MEMBRANE)) {
+                if (repair.getType() == Material.PHANTOM_MEMBRANE) {
                     eligible = true;
                 }
                 break;
             case "trident":
-                if (repair.getType().equals(Material.PRISMARINE_SHARD)) {
+                if (repair.getType() == Material.PRISMARINE_SHARD) {
                     eligible = true;
                 }
                 break;
             case "turtle":
-                if (repair.getType().equals(Material.SCUTE)) {
+                if (repair.getType() == Material.SCUTE) {
                     eligible = true;
                 }
                 break;

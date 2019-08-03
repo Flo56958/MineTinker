@@ -414,12 +414,11 @@ public class BuildersWandListener implements Listener {
             return false;
         }
 
-        if (!(b.getWorld().getBlockAt(loc).getType().equals(Material.AIR) ||
-                b.getWorld().getBlockAt(loc).getType().equals(Material.CAVE_AIR) ||
-                b.getWorld().getBlockAt(loc).getType().equals(Material.WATER) ||
-                b.getWorld().getBlockAt(loc).getType().equals(Material.BUBBLE_COLUMN) ||
-                b.getWorld().getBlockAt(loc).getType().equals(Material.LAVA) ||
-                b.getWorld().getBlockAt(loc).getType().equals(Material.GRASS))) {
+        Material type = b.getWorld().getBlockAt(loc).getType();
+
+        if (!(type == Material.AIR || type == Material.CAVE_AIR ||
+                type == Material.WATER || type == Material.BUBBLE_COLUMN ||
+                type == Material.LAVA || type == Material.GRASS)) {
 
             return false;
         }

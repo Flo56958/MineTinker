@@ -142,7 +142,7 @@ public class AutoSmelt extends Modifier implements Listener {
         if (!modManager.hasMod(tool, this)) return;
 
         if (!worksUnderWater) {
-            if (p.isSwimming() || p.getWorld().getBlockAt(p.getLocation()).getType().equals(Material.WATER)) return;
+            if (p.isSwimming() || p.getWorld().getBlockAt(p.getLocation()).getType() == Material.WATER) return;
         }
 
         boolean allowLuck = false;
@@ -324,7 +324,7 @@ public class AutoSmelt extends Modifier implements Listener {
                 }
             }
 
-            if (!loot.equals(Material.AIR)) {
+            if (loot != Material.AIR) {
                 ItemStack items = new ItemStack(loot, amount);
                 b.getLocation().getWorld().dropItemNaturally(b.getLocation(), items);
             }
