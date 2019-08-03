@@ -51,7 +51,7 @@ public class EntityListener implements Listener {
             Trident trident = (Trident) e.getDamager();
             ProjectileSource source = trident.getShooter();
 
-            if (source instanceof Player){
+            if (source instanceof Player) {
                 p = (Player) source;
             } else {
                 return;

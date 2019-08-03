@@ -57,7 +57,7 @@ public class TinkerListener implements Listener {
         ItemStack tool = e.getTool();
         Modifier mod = e.getMod();
 
-        if (config.getBoolean("Sound.OnModding")){
+        if (config.getBoolean("Sound.OnModding")) {
             p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
         }
 

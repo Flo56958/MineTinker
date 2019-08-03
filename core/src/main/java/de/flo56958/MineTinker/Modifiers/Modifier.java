@@ -64,7 +64,7 @@ public abstract class Modifier {
         return modItem;
     }
 
-    protected ArrayList<ToolType> getAllowedTools(){
+    protected ArrayList<ToolType> getAllowedTools() {
         return allowedTools;
     }
 

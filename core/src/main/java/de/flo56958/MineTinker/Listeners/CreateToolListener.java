@@ -23,7 +23,7 @@ public class CreateToolListener implements Listener {
 
         Player player = null;
 
-        for (HumanEntity humans : e.getViewers()){
+        for (HumanEntity humans : e.getViewers()) {
             if (humans instanceof Player) {
                 player = (Player) humans;
             }

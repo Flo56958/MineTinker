@@ -160,17 +160,21 @@ public class Power extends Modifier implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void effect(MTBlockBreakEvent event) {
-        if (!this.isAllowed())
+        if (!this.isAllowed()) {
             return;
+        }
 
         Player player = event.getPlayer();
         ItemStack tool = event.getTool();
         Block block = event.getBlock();
 
-        if (!checkPower(player, tool))
+        if (!checkPower(player, tool)) {
             return;
-        if (ToolType.HOE.contains(tool.getType()))
+        }
+
+        if (ToolType.HOE.contains(tool.getType())) {
             return;
+        }
 
         ChatWriter.log(false, player.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool)
                 + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
