@@ -52,11 +52,12 @@ public class Directing extends Modifier implements Listener {
         config.addDefault(key + ".modifier_item", "COMPASS"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Loot goes directly into Inventory!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Directing-Modifier");
+        config.addDefault(key + ".Color", "%GRAY%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 1);
         config.addDefault(key + ".worksOnXP", true);
         config.addDefault(key + ".minimumLevelToGetXP", 1); //Modifier-Level to give Player XP
         config.addDefault(key + ".workinpvp", true);
-        config.addDefault(key + ".Color", "%GRAY%");
 
         config.addDefault(key + ".Recipe.Enabled", true);
     	config.addDefault(key + ".Recipe.Top", "ECE");

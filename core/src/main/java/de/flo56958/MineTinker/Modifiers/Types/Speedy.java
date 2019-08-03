@@ -109,6 +109,7 @@ public class Speedy extends Modifier {
         config.addDefault(key + ".description", "Gotta go fast!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Speedy-Modifier");
         config.addDefault(key + ".Color", "%BLUE%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 5);
         config.addDefault(key + ".SpeedPerLevel", 0.01);
 

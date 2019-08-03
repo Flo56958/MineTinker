@@ -7,7 +7,6 @@ import de.flo56958.MineTinker.Events.MTBlockBreakEvent;
 import de.flo56958.MineTinker.Events.MTPlayerInteractEvent;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
@@ -20,7 +19,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,12 +31,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Power extends Modifier implements Enchantable, Listener {
+public class Power extends Modifier implements Listener {
 
     public static final ConcurrentHashMap<Player, AtomicBoolean> HASPOWER = new ConcurrentHashMap<>();
 
@@ -373,15 +370,6 @@ public class Power extends Modifier implements Enchantable, Listener {
                                               // Tool-Damage)
             }
         }
-    }
-
-    @Override
-    public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.power.craft")){
-            return;
-        }
-
-        _createModifierItem(getConfig(), p, this, "Power");
     }
 
     @Override

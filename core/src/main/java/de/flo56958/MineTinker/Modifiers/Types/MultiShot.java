@@ -55,6 +55,7 @@ public class MultiShot extends Modifier {
         config.addDefault(key + ".description", "Shoot more Arrows per shot!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Multishot-Modifier");
         config.addDefault(key + ".Color", "%YELLOW%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 1);
 
         config.addDefault(key + ".CompatibleWithPiercing", false);

@@ -59,6 +59,7 @@ public class AntiArrowPlating extends Modifier {
         config.addDefault(key + ".description", "Armor mitigates projectile damage!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Anti-Arrow-Plating-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 5);
 
         config.addDefault(key + ".CompatibleWithProtecting", false);

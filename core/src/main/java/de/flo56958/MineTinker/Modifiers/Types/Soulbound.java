@@ -73,6 +73,7 @@ public class Soulbound extends Modifier implements Listener {
         config.addDefault(key + ".description", "Do not lose the tool when dying.");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Soulbound-Modifier");
         config.addDefault(key + ".Color", "%GRAY%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 1);
         config.addDefault(key + ".PercentagePerLevel", 100);
         config.addDefault(key + ".DecrementModLevelOnUse", false);

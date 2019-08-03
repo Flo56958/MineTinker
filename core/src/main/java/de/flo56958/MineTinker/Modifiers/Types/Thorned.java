@@ -56,6 +56,7 @@ public class Thorned extends Modifier {
         config.addDefault(key + ".description", "Your armor harms others when they damage you!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Thorned-Modifier");
         config.addDefault(key + ".Color", "%DARK_GREEN%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 3);
 
         config.addDefault(key + ".Recipe.Enabled", true);

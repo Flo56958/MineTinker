@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTBlockBreakEvent;
 import de.flo56958.MineTinker.Events.MTPlayerInteractEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Modifiers.Types.Ender;
@@ -121,9 +120,9 @@ public class BlockListener implements Listener {
             if (b.getType() == Material.getMaterial(config.getString("BlockToEnchantModifiers"))) {
                 ItemStack item = p.getInventory().getItemInMainHand();
 
-                for (Modifier m : modManager.getEnchantableMods()) {
+                for (Modifier m : modManager.getAllMods()) {
                     if (m.getModItem().getType().equals(item.getType())) {
-                        ((Enchantable) m).enchantItem(p, item);
+                        m.enchantItem(p, item);
                         e.setCancelled(true);
                     }
                 }

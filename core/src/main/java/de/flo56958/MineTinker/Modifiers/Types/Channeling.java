@@ -58,6 +58,7 @@ public class Channeling extends Modifier {
         config.addDefault(key + ".description", "Summons lightning when weapon is thrown at mobs!");
         config.addDefault(key + ".description_modifier", "%GRAY%Modifier-Item for the Channeling-Modifier");
         config.addDefault(key + ".Color", "%GRAY%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 1);
 
         config.addDefault(key + ".Recipe.Enabled", true);

@@ -56,6 +56,7 @@ public class SpidersBane extends Modifier {
         config.addDefault(key + ".description", "Weapon does additional damage to Spiders!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Spider's-Bane-Modifier");
         config.addDefault(key + ".Color", "%RED%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 5);
 
         config.addDefault(key + ".CompatibleWithSmite", false);

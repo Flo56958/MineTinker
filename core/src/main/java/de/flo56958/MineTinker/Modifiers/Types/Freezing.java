@@ -57,6 +57,7 @@ public class Freezing extends Modifier {
         config.addDefault(key + ".description", "It is freezing around you.");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Freezing-Modifier");
         config.addDefault(key + ".Color", "%AQUA%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 3);
 
         config.addDefault(key + ".Recipe.Enabled", true);

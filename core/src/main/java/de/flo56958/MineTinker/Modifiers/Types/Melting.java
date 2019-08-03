@@ -4,7 +4,6 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Events.MTEntityDamageEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
@@ -13,7 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,10 +21,8 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
-public class Melting extends Modifier implements Enchantable, Listener {
+public class Melting extends Modifier implements Listener {
 
     private double bonusMultiplier;
     private boolean cancelBurning;
@@ -171,15 +167,6 @@ public class Melting extends Modifier implements Enchantable, Listener {
         }
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
-    }
-
-    @Override
-    public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.melting.craft")) {
-            return;
-        }
-
-        _createModifierItem(getConfig(), p, this, "Melting");
     }
 
     @Override

@@ -57,6 +57,7 @@ public class Protecting extends Modifier {
         config.addDefault(key + ".description", "Your armor protects you better against all damage!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Protecting-Modifier");
         config.addDefault(key + ".Color", "%GRAY%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 5);
 
      	config.addDefault(key + ".Recipe.Enabled", true);

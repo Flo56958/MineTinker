@@ -64,11 +64,6 @@ public class ModManager {
      */
     private final ArrayList<Modifier> mods = new ArrayList<>();
 
-    /**
-     * sublist of mods which contains all modifiers that are crafted through the bookshelf
-     */
-    private final ArrayList<Modifier> enchantableMods = new ArrayList<>();
-
     private static ModManager instance;
 
     private List<String> loreScheme;
@@ -126,14 +121,7 @@ public class ModManager {
     	allMods.sort(Comparator.comparing(Modifier::getName));
         mods.sort(Comparator.comparing(Modifier::getName));
 
-
-        this.enchantableMods.clear();
-    	
     	for (Modifier m : this.mods) {
-            if (m instanceof Enchantable) {
-                this.enchantableMods.add(m);
-            }
-
             m.registerCraftingRecipe();
         }
 
@@ -252,15 +240,6 @@ public class ModManager {
 
     public List<Modifier> getAllMods() {
         return this.allMods;
-    }
-
-    /**
-     * get all the enchantable modifiers in the list
-     *
-     * @return the enchantable modifier list
-     */
-    public List<Modifier> getEnchantableMods() {
-        return this.enchantableMods;
     }
 
     /**

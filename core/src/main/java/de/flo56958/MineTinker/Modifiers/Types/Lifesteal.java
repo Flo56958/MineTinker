@@ -63,6 +63,7 @@ public class Lifesteal extends Modifier implements Listener {
         config.addDefault(key + ".description", "Get HP when hitting enemies!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Lifesteal-Modifier");
         config.addDefault(key + ".Color", "%DARK_RED%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 3);
         config.addDefault(key + ".PercentToTrigger", 50);
         config.addDefault(key + ".PercentOfDamagePerLevel", 10);

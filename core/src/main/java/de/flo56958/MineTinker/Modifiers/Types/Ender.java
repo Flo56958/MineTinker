@@ -63,6 +63,7 @@ public class Ender extends Modifier implements Listener {
         config.addDefault(key + ".description", "Teleports you while sneaking to the arrow location!");
     	config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Ender-Modifier");
         config.addDefault(key + ".Color", "%DARK_GREEN%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 2);
         config.addDefault(key + ".Sound", true); //#Enderman-Teleport-Sound
         config.addDefault(key + ".Particles", true);

@@ -59,6 +59,7 @@ public class Timber extends Modifier implements Listener {
         config.addDefault(key + ".description", "Chop down trees in an instant!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Timber-Modifier");
         config.addDefault(key + ".Color", "%GREEN%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaximumBlocksPerSwing", -1);
 
     	config.addDefault(key + ".Recipe.Enabled", true);

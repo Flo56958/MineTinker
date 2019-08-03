@@ -4,7 +4,6 @@ import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Infinity extends Modifier implements Enchantable {
+public class Infinity extends Modifier {
 
     private boolean compatibleWithEnder;
 
@@ -118,15 +117,6 @@ public class Infinity extends Modifier implements Enchantable {
 
 
         return true;
-    }
-
-    @Override
-    public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.infinity.craft")) {
-            return;
-        }
-
-        _createModifierItem(getConfig(), p, this, "Infinity");
     }
 
     @Override

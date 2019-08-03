@@ -64,6 +64,7 @@ public class Haste extends Modifier {
         config.addDefault(key + ".description", "Tool can destroy blocks faster!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Haste-Modifier");
         config.addDefault(key + ".Color", "%DARK_RED%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 5);
 
     	config.addDefault(key + ".Recipe.Enabled", true);

@@ -2,7 +2,6 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Sweeping extends Modifier implements Enchantable {
+public class Sweeping extends Modifier {
 
     //TODO: Make active right-click ability to push entities away
     //has cooldown
@@ -91,15 +90,6 @@ public class Sweeping extends Modifier implements Enchantable {
         }
 
         return true;
-    }
-
-    @Override
-    public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.sweeping.craft")) {
-            return;
-        }
-
-        _createModifierItem(getConfig(), p, this, "Sweeping");
     }
 
     @Override

@@ -4,7 +4,6 @@ import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
@@ -27,7 +26,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Propelling extends Modifier implements Enchantable, Listener {
+public class Propelling extends Modifier implements Listener {
 
     private int durabilityLoss;
     private double speedPerLevel;
@@ -91,15 +90,6 @@ public class Propelling extends Modifier implements Enchantable, Listener {
 
         sound = config.getBoolean(key + ".Elytra.Sound");
         particles = config.getBoolean(key + ".Elytra.Particles");
-    }
-
-    @Override
-    public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.propelling.craft")) {
-            return;
-        }
-
-        _createModifierItem(getConfig(), p, this, "Propelling");
     }
 
     @Override

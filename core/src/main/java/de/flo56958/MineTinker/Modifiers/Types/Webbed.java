@@ -67,6 +67,7 @@ public class Webbed extends Modifier implements Listener {
         config.addDefault(key + ".description", "Slowes down enemies!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Webbed-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 3);
     	config.addDefault(key + ".Duration", 60); //ticks (20 ticks ~ 1 sec)
     	config.addDefault(key + ".Sound", true);

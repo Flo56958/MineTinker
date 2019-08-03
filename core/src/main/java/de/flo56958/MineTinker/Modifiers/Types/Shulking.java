@@ -65,6 +65,7 @@ public class Shulking extends Modifier implements Listener {
         config.addDefault(key + ".description", "Makes enemies levitate!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Shulking-Modifier");
         config.addDefault(key + ".Color", "%LIGHT_PURPLE%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 10);
     	config.addDefault(key + ".Duration", 20); //ticks (20 ticks ~ 1 sec)
     	config.addDefault(key + ".EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)

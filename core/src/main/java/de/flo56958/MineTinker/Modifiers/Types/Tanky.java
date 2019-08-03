@@ -104,6 +104,7 @@ public class Tanky extends Modifier {
         config.addDefault(key + ".description", "Makes you extra tanky!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Tanky-Modifier");
         config.addDefault(key + ".Color", "%DARK_GRAY%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 5);
         config.addDefault(key + ".HealthPerLevel", 3);
 

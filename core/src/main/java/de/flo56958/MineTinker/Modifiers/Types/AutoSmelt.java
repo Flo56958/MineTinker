@@ -70,6 +70,7 @@ public class AutoSmelt extends Modifier implements Listener {
         config.addDefault(key + ".description", "Chance to smelt ore when mined!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Auto-Smelt-Modifier");
     	config.addDefault(key + ".Color", "%YELLOW%");
+        config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".MaxLevel", 5);
     	config.addDefault(key + ".PercentagePerLevel", 20);
     	config.addDefault(key + ".Sound", true); //Auto-Smelt makes a sound

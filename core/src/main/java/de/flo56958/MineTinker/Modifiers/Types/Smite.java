@@ -61,6 +61,7 @@ public class Smite extends Modifier {
         config.addDefault(key + ".description", "Weapon does additional damage towards the Undead!");
         config.addDefault(key + ".description_modifier", "%YELLOW%Modifier-Item for the Smite-Modifier");
         config.addDefault(key + ".Color", "%YELLOW%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 5);
 
         config.addDefault(key + ".CompatibleWithSharpness", false);

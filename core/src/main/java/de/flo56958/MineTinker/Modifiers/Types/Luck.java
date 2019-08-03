@@ -74,6 +74,7 @@ public class Luck extends Modifier {
         config.addDefault(key + ".description", "Get more loot from enemies and blocks!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Luck-Modifier");
         config.addDefault(key + ".Color", "%BLUE%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 3);
 
     	config.addDefault(key + ".Recipe.Enabled", true);

@@ -2,7 +2,6 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.Enchantable;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Fiery extends Modifier implements Enchantable {
+public class Fiery extends Modifier {
 
     //TODO: Add Particle effect
     private static Fiery instance;
@@ -98,15 +97,6 @@ public class Fiery extends Modifier implements Enchantable {
         }
 
         return true;
-    }
-
-    @Override
-    public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.fiery.craft")) {
-            return;
-        }
-
-        _createModifierItem(getConfig(), p, this, "Fiery");
     }
 
     @Override

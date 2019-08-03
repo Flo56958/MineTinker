@@ -62,6 +62,7 @@ public class Glowing extends Modifier implements Listener {
         config.addDefault(key + ".description", "Makes Enemies glow!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Glowing-Modifier");
         config.addDefault(key + ".Color", "%YELLOW%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 3);
     	config.addDefault(key + ".Duration", 200); //ticks INTEGER (20 ticks ~ 1 sec)
     	config.addDefault(key + ".DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE

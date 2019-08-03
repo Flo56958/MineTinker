@@ -60,6 +60,7 @@ public class Reinforced extends Modifier {
         config.addDefault(key + ".description", "Chance to not use durability when using the tool/armor!");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Reinforced-Modifier");
         config.addDefault(key + ".Color", "%DARK_GRAY%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 3);
         config.addDefault(key + ".ApplyUnbreakableOnMaxLevel", false);
         config.addDefault(key + ".HideUnbreakableFlag", true);

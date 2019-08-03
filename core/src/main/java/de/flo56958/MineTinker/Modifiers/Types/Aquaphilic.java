@@ -63,6 +63,7 @@ public class Aquaphilic extends Modifier {
         config.addDefault(key + ".description", "Make the water your friend");
         config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Aquaphilic-Modifier");
         config.addDefault(key + ".Color", "%AQUA%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 3); //higher will have no effect on depth strider
 
         config.addDefault(key + ".Recipe.Enabled", true);

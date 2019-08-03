@@ -57,6 +57,7 @@ public class Piercing extends Modifier {
         config.addDefault(key + ".description", "Passes through enemies!");
         config.addDefault(key + ".description_modifier", "%GRAY%Modifier-Item for the Piercing-Modifier");
         config.addDefault(key + ".Color", "%GRAY%");
+        config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 4);
 
         config.addDefault(key + ".CompatibleWithMultishot", false);
