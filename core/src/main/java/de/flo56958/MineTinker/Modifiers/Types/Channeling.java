@@ -106,16 +106,6 @@ public class Channeling extends Modifier {
     }
 
     @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.CHANNELING);
-            tool.setItemMeta(meta);
-        }
-    }
-
-    @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Channeling", "Modifier_Channeling");
     }

@@ -104,16 +104,6 @@ public class Protecting extends Modifier {
     }
 
     @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.PROTECTION_ENVIRONMENTAL);
-            tool.setItemMeta(meta);
-        }
-    }
-
-    @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Protecting", "Modifier_Protecting");
     }

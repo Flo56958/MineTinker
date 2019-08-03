@@ -99,9 +99,6 @@ public class Poisonous extends Modifier implements Enchantable, Listener {
         return checkAndAdd(p, tool, this, "poisonous", isCommand);
     }
 
-    @Override
-    public void removeMod(ItemStack tool) { }
-
     @EventHandler(ignoreCancelled = true)
     public void effect(MTEntityDamageByEntityEvent event) {
         if (!this.isAllowed()) return;

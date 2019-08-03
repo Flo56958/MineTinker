@@ -120,9 +120,6 @@ public class Ender extends Modifier implements Listener {
         return Modifier.checkAndAdd(p, tool, this, "ender", isCommand);
     }
 
-    @Override
-    public void removeMod(ItemStack tool) { }
-
     /**
      * The Effect for the ProjectileHitEvent
      * @param event the Event

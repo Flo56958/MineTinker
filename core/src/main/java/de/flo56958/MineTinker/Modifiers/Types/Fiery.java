@@ -99,17 +99,6 @@ public class Fiery extends Modifier implements Enchantable {
     }
 
     @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.FIRE_ASPECT);
-            meta.removeEnchant(Enchantment.ARROW_FIRE);
-            tool.setItemMeta(meta);
-        }
-    }
-
-    @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.fiery.craft")) return;
         _createModifierItem(getConfig(), p, this, "Fiery");

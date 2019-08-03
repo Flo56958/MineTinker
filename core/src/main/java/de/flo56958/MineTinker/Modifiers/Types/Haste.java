@@ -110,18 +110,6 @@ public class Haste extends Modifier {
     }
 
     @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta == null) return;
-
-        meta.removeEnchant(Enchantment.DIG_SPEED);
-        meta.removeEnchant(Enchantment.LURE);
-        if (NBTUtils.isOneFourteenCompatible()) meta.removeEnchant(Enchantment.QUICK_CHARGE);
-        tool.setItemMeta(meta);
-    }
-
-    @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Haste", "Modifier_Haste");
     }

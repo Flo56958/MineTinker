@@ -116,16 +116,6 @@ public class MultiShot extends Modifier {
     }
 
     @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.MULTISHOT);
-            tool.setItemMeta(meta);
-        }
-    }
-
-    @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Multishot", "Modifier_Multishot");
     }

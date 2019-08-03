@@ -99,9 +99,6 @@ public class Glowing extends Modifier implements Listener {
         return Modifier.checkAndAdd(p, tool, this, "glowing", isCommand);
     }
 
-    @Override
-    public void removeMod(ItemStack tool) { }
-
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;

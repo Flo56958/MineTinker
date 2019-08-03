@@ -89,9 +89,6 @@ public class Beheading extends Modifier implements Enchantable, Listener {
         return checkAndAdd(p, tool, this, "beheading", isCommand);
     }
 
-    @Override
-    public void removeMod(ItemStack tool) { }
-
     /**
      * Effect for getting the mob heads
      */

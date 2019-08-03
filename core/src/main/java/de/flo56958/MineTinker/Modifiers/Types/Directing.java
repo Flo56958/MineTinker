@@ -94,9 +94,6 @@ public class Directing extends Modifier implements Listener {
         return Modifier.checkAndAdd(p, tool, this, "directing", isCommand);
     }
 
-    @Override
-    public void removeMod(ItemStack tool) { }
-
     @EventHandler
     public void effect(MTEntityDeathEvent event) {
         if (!this.isAllowed()) return;

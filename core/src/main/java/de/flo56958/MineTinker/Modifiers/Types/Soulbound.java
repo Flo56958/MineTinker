@@ -110,6 +110,8 @@ public class Soulbound extends Modifier implements Listener {
     }
 
     public boolean getDropable(ItemStack is) {
+        // TODO: Maybe remove this?
+        // Not sure what this does
         if (!modManager.hasMod(is, this)) { return true; }
         return toolDropable;
     }

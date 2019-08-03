@@ -140,17 +140,6 @@ public class Insulating extends Modifier {
     }
 
     @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.PROTECTION_FIRE);
-
-            tool.setItemMeta(meta);
-        }
-    }
-
-    @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Insulating", "Modifier_Insulating");
     }

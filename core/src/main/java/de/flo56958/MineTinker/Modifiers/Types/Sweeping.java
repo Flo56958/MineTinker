@@ -95,9 +95,6 @@ public class Sweeping extends Modifier implements Enchantable {
     }
 
     @Override
-    public void removeMod(ItemStack tool) { }
-
-    @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.sweeping.craft")) return;
         _createModifierItem(getConfig(), p, this, "Sweeping");

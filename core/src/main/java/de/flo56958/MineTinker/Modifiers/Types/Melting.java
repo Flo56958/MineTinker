@@ -89,9 +89,6 @@ public class Melting extends Modifier implements Enchantable, Listener {
         return checkAndAdd(p, tool, this, "melting", isCommand);
     }
 
-    @Override
-    public void removeMod(ItemStack tool) { }
-
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;

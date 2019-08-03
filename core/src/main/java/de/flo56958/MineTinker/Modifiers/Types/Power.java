@@ -146,10 +146,6 @@ public class Power extends Modifier implements Enchantable, Listener {
         return Modifier.checkAndAdd(p, tool, this, "power", isCommand);
     }
 
-    @Override
-    public void removeMod(ItemStack tool) {
-    }
-
     private boolean checkPower(Player p, ItemStack tool) {
         if (!p.hasPermission("minetinker.modifiers.power.use")) {
             return false;

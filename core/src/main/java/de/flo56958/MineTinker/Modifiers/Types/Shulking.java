@@ -102,9 +102,6 @@ public class Shulking extends Modifier implements Listener {
         return Modifier.checkAndAdd(p, tool, this, "shulking", isCommand);
     }
 
-    @Override
-    public void removeMod(ItemStack tool) { }
-
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;

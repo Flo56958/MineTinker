@@ -99,17 +99,6 @@ public class Knockback extends Modifier implements Enchantable {
     }
 
     @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.KNOCKBACK);
-            meta.removeEnchant(Enchantment.ARROW_KNOCKBACK);
-            tool.setItemMeta(meta);
-        }
-    }
-
-    @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.knockback.craft")) return;
         _createModifierItem(getConfig(), p, this, "Knockback");

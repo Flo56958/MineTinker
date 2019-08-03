@@ -137,19 +137,6 @@ public class Sharpness extends Modifier {
     }
 
     @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.DAMAGE_ALL);
-            meta.removeEnchant(Enchantment.ARROW_DAMAGE);
-            meta.removeEnchant(Enchantment.IMPALING);
-
-            tool.setItemMeta(meta);
-        }
-    }
-
-    @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Sharpness", "Modifier_Sharpness");
     }

@@ -140,9 +140,6 @@ public class Lifesteal extends Modifier implements Listener {
     }
 
     @Override
-    public void removeMod(ItemStack tool) { }
-
-    @Override
     public boolean isAllowed() {
         return getConfig().getBoolean("Lifesteal.allowed");
     }

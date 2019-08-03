@@ -95,9 +95,6 @@ public class ExtraModifier extends Modifier {
     }
 
     @Override
-    public void removeMod(ItemStack tool) { }
-
-    @Override
     public void registerCraftingRecipe() {
         // no recipe
     }

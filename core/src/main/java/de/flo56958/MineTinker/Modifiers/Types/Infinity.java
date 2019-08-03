@@ -119,17 +119,6 @@ public class Infinity extends Modifier implements Enchantable {
     }
 
     @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.ARROW_INFINITE);
-            meta.removeEnchant(Enchantment.LOYALTY);
-            tool.setItemMeta(meta);
-        }
-    }
-
-    @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.infinity.craft")) return;
         _createModifierItem(getConfig(), p, this, "Infinity");

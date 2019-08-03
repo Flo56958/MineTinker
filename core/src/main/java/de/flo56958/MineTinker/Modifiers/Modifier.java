@@ -19,6 +19,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
@@ -105,7 +106,17 @@ public abstract class Modifier {
      * what should be done to the Tool if the Modifier gets removed
      * @param tool the Tool
      */
-    public abstract void removeMod(ItemStack tool);
+    public void removeMod(ItemStack tool) {
+        ItemMeta meta = tool.getItemMeta();
+
+        if (meta != null) {
+            for (Enchantment enchantment : getAppliedEnchantments()) {
+                meta.removeEnchant(enchantment);
+            }
+
+            tool.setItemMeta(meta);
+        }
+    }
 
     /**
      * reloads the settings of the Modifier

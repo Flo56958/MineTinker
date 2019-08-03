@@ -105,16 +105,6 @@ public class SilkTouch extends Modifier implements Enchantable {
     }
 
     @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.SILK_TOUCH);
-            tool.setItemMeta(meta);
-        }
-    }
-
-    @Override
     public void enchantItem(Player p, ItemStack item) {
         if (!p.hasPermission("minetinker.modifiers.silktouch.craft")) return;
         _createModifierItem(getConfig(), p, this, "Silk-Touch");

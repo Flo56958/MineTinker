@@ -105,9 +105,6 @@ public class Webbed extends Modifier implements Listener {
         return Modifier.checkAndAdd(p, tool, this, "webbed", isCommand);
     }
 
-    @Override
-    public void removeMod(ItemStack tool) { }
-
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
         if (event.isCancelled() || !this.isAllowed()) return;

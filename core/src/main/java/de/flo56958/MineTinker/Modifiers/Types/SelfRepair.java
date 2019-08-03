@@ -120,16 +120,6 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
         return true;
     }
 
-    @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.MENDING);
-            tool.setItemMeta(meta);
-        }
-    }
-
     //------------------------------------------------------
 
     @EventHandler

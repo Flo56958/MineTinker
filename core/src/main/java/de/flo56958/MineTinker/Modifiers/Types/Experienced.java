@@ -88,9 +88,6 @@ public class Experienced extends Modifier implements Listener {
         return Modifier.checkAndAdd(p, tool, this, "experienced", isCommand);
     }
 
-    @Override
-    public void removeMod(ItemStack tool) { }
-
     //----------------------------------------------------------
 
     @EventHandler

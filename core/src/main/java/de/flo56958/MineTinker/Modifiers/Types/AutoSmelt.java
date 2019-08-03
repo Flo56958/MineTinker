@@ -120,9 +120,6 @@ public class AutoSmelt extends Modifier implements Listener {
         return Modifier.checkAndAdd(p, tool, this, "autosmelt", isCommand);
     }
 
-    @Override
-    public void removeMod(ItemStack tool) { }
-
     /**
      * The Effect for the BlockBreak-Listener
      * @param event the Event

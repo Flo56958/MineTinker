@@ -110,16 +110,6 @@ public class Freezing extends Modifier {
     }
 
     @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.FROST_WALKER);
-            tool.setItemMeta(meta);
-        }
-    }
-
-    @Override
     public boolean isAllowed() {
         return getConfig().getBoolean("Freezing.allowed");
     }

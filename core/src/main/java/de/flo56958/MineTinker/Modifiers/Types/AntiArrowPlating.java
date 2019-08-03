@@ -140,18 +140,7 @@ public class AntiArrowPlating extends Modifier {
 
         return true;
     }
-
-    @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.PROTECTION_PROJECTILE);
-
-            tool.setItemMeta(meta);
-        }
-    }
-
+    
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Anti-Arrow-Plating", "Modifier_AntiArrowPlating");

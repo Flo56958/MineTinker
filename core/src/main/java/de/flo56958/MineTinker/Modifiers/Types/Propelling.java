@@ -129,16 +129,6 @@ public class Propelling extends Modifier implements Enchantable, Listener {
         return true;
     }
 
-    @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.RIPTIDE);
-            tool.setItemMeta(meta);
-        }
-    }
-
     @EventHandler(ignoreCancelled = true)
     public void onElytraSneak(PlayerToggleSneakEvent e) {
         Player p = e.getPlayer();

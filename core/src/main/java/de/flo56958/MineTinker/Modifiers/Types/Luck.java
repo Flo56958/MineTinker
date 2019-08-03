@@ -124,18 +124,6 @@ public class Luck extends Modifier {
     }
 
     @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.LOOT_BONUS_BLOCKS);
-            meta.removeEnchant(Enchantment.LOOT_BONUS_MOBS);
-            meta.removeEnchant(Enchantment.LUCK);
-            tool.setItemMeta(meta);
-        }
-    }
-
-    @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Luck", "Modifier_Luck");
     }

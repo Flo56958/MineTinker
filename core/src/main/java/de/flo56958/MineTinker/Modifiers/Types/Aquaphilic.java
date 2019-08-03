@@ -120,19 +120,6 @@ public class Aquaphilic extends Modifier {
     }
 
     @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.DEPTH_STRIDER);
-            meta.removeEnchant(Enchantment.OXYGEN);
-            meta.removeEnchant(Enchantment.WATER_WORKER);
-
-            tool.setItemMeta(meta);
-        }
-    }
-
-    @Override
     public boolean isAllowed() {
         return getConfig().getBoolean("Aquaphilic.allowed");
     }
