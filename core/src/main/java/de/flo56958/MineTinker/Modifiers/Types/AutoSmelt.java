@@ -23,6 +23,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,13 +32,13 @@ import java.util.Random;
 
 public class AutoSmelt extends Modifier implements Listener {
 
+    private EnumMap<Material, Material> conversions = new EnumMap<>(Material.class);
+    private List<Material> luckMaterials = new ArrayList<>();
+
     private int percentagePerLevel;
     private boolean hasSound;
     private boolean hasParticles;
     private boolean worksUnderWater;
-    private boolean smeltStone;
-    private boolean smeltTerracotta;
-    private boolean burnCoal;
 
     private static AutoSmelt instance;
 
@@ -75,9 +77,6 @@ public class AutoSmelt extends Modifier implements Listener {
     	config.addDefault(key + ".PercentagePerLevel", 20);
     	config.addDefault(key + ".Sound", true); //Auto-Smelt makes a sound
     	config.addDefault(key + ".Particles", true); //Auto-Smelt will create a particle effect when triggered
-    	config.addDefault(key + ".smelt_stone", false);
-    	config.addDefault(key + ".smelt_terracotta", false);
-    	config.addDefault(key + ".burn_coal", true);
     	config.addDefault(key + ".works_under_water", true);
 
     	config.addDefault(key + ".Recipe.Enabled", true);
@@ -91,6 +90,85 @@ public class AutoSmelt extends Modifier implements Listener {
 
         config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
+        conversions.put(Material.STONE, Material.STONE);
+        conversions.put(Material.COBBLESTONE, Material.STONE);
+        conversions.put(Material.SAND, Material.GLASS);
+        conversions.put(Material.SNOW, Material.AIR);
+        conversions.put(Material.SNOW_BLOCK, Material.COBBLESTONE);
+        conversions.put(Material.RED_SAND, Material.RED_STAINED_GLASS);
+        conversions.put(Material.WHITE_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
+        conversions.put(Material.ORANGE_TERRACOTTA, Material.ORANGE_GLAZED_TERRACOTTA);
+        conversions.put(Material.MAGENTA_TERRACOTTA, Material.MAGENTA_GLAZED_TERRACOTTA);
+        conversions.put(Material.LIGHT_BLUE_TERRACOTTA, Material.LIGHT_BLUE_GLAZED_TERRACOTTA);
+        conversions.put(Material.YELLOW_TERRACOTTA, Material.YELLOW_GLAZED_TERRACOTTA);
+        conversions.put(Material.LIME_TERRACOTTA, Material.LIME_GLAZED_TERRACOTTA);
+        conversions.put(Material.PINK_TERRACOTTA, Material.PINK_GLAZED_TERRACOTTA);
+        conversions.put(Material.GRAY_TERRACOTTA, Material.GRAY_GLAZED_TERRACOTTA);
+        conversions.put(Material.LIGHT_GRAY_TERRACOTTA, Material.LIGHT_GRAY_GLAZED_TERRACOTTA);
+        conversions.put(Material.CYAN_TERRACOTTA, Material.CYAN_GLAZED_TERRACOTTA);
+        conversions.put(Material.PURPLE_TERRACOTTA, Material.PURPLE_GLAZED_TERRACOTTA);
+        conversions.put(Material.BLUE_TERRACOTTA, Material.BLUE_GLAZED_TERRACOTTA);
+        conversions.put(Material.BROWN_TERRACOTTA, Material.BROWN_GLAZED_TERRACOTTA);
+        conversions.put(Material.GREEN_TERRACOTTA, Material.GREEN_GLAZED_TERRACOTTA);
+        conversions.put(Material.RED_TERRACOTTA, Material.RED_GLAZED_TERRACOTTA);
+        conversions.put(Material.BLACK_TERRACOTTA, Material.BLACK_GLAZED_TERRACOTTA);
+        conversions.put(Material.ACACIA_LOG, Material.CHARCOAL);
+        conversions.put(Material.BIRCH_LOG, Material.CHARCOAL);
+        conversions.put(Material.DARK_OAK_LOG, Material.CHARCOAL);
+        conversions.put(Material.JUNGLE_LOG, Material.CHARCOAL);
+        conversions.put(Material.OAK_LOG, Material.CHARCOAL);
+        conversions.put(Material.SPRUCE_LOG, Material.CHARCOAL);
+        conversions.put(Material.STRIPPED_ACACIA_LOG, Material.CHARCOAL);
+        conversions.put(Material.STRIPPED_BIRCH_LOG, Material.CHARCOAL);
+        conversions.put(Material.STRIPPED_DARK_OAK_LOG, Material.CHARCOAL);
+        conversions.put(Material.STRIPPED_JUNGLE_LOG, Material.CHARCOAL);
+        conversions.put(Material.STRIPPED_OAK_LOG, Material.CHARCOAL);
+        conversions.put(Material.STRIPPED_SPRUCE_LOG, Material.CHARCOAL);
+        conversions.put(Material.ACACIA_WOOD, Material.CHARCOAL);
+        conversions.put(Material.BIRCH_WOOD, Material.CHARCOAL);
+        conversions.put(Material.DARK_OAK_WOOD, Material.CHARCOAL);
+        conversions.put(Material.JUNGLE_WOOD, Material.CHARCOAL);
+        conversions.put(Material.OAK_WOOD, Material.CHARCOAL);
+        conversions.put(Material.SPRUCE_WOOD, Material.CHARCOAL);
+        conversions.put(Material.STRIPPED_ACACIA_WOOD, Material.CHARCOAL);
+        conversions.put(Material.STRIPPED_BIRCH_WOOD, Material.CHARCOAL);
+        conversions.put(Material.STRIPPED_DARK_OAK_WOOD, Material.CHARCOAL);
+        conversions.put(Material.STRIPPED_JUNGLE_WOOD, Material.CHARCOAL);
+        conversions.put(Material.STRIPPED_OAK_WOOD, Material.CHARCOAL);
+        conversions.put(Material.STRIPPED_SPRUCE_WOOD, Material.CHARCOAL);
+        conversions.put(Material.ACACIA_LEAVES, Material.STICK);
+        conversions.put(Material.BIRCH_LEAVES, Material.STICK);
+        conversions.put(Material.DARK_OAK_LEAVES, Material.STICK);
+        conversions.put(Material.JUNGLE_LEAVES, Material.STICK);
+        conversions.put(Material.OAK_LEAVES, Material.STICK);
+        conversions.put(Material.SPRUCE_LEAVES, Material.STICK);
+
+        conversions.put(Material.IRON_ORE, Material.IRON_INGOT);
+        conversions.put(Material.GOLD_ORE, Material.GOLD_INGOT);
+        conversions.put(Material.NETHERRACK, Material.NETHER_BRICK);
+        conversions.put(Material.KELP_PLANT, Material.DRIED_KELP);
+        conversions.put(Material.WET_SPONGE, Material.SPONGE);
+        conversions.put(Material.COAL_ORE, Material.AIR);
+        conversions.put(Material.COAL_BLOCK, Material.AIR);
+        conversions.put(Material.CLAY, Material.BRICK);
+
+        config.addDefault(key + ".Conversions", conversions);
+
+        conversions.clear();
+
+        luckMaterials.add(Material.STRIPPED_ACACIA_WOOD);
+        luckMaterials.add(Material.STRIPPED_BIRCH_WOOD);
+        luckMaterials.add(Material.STRIPPED_DARK_OAK_WOOD);
+        luckMaterials.add(Material.STRIPPED_JUNGLE_WOOD);
+        luckMaterials.add(Material.STRIPPED_OAK_WOOD);
+        luckMaterials.add(Material.IRON_ORE);
+        luckMaterials.add(Material.GOLD_ORE);
+        luckMaterials.add(Material.NETHERRACK);
+
+        config.addDefault(key + ".AllowLuck", luckMaterials);
+
+        luckMaterials.clear();
+        
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
@@ -105,9 +183,9 @@ public class AutoSmelt extends Modifier implements Listener {
         this.hasSound = config.getBoolean(key + ".Sound");
         this.hasParticles = config.getBoolean(key + ".Particles");
         this.worksUnderWater = config.getBoolean(key + ".works_under_water");
-        this.smeltStone = config.getBoolean(key + ".smelt_stone");
-        this.burnCoal = config.getBoolean(key + ".burn_coal");
-        this.smeltTerracotta = config.getBoolean(key + ".smelt_terracotta");
+
+        // TODO: Load autosmelt conversions here
+        // TODO: Load luck allowances here
     }
     
     @Override
@@ -151,209 +229,13 @@ public class AutoSmelt extends Modifier implements Listener {
             }
         }
 
-        boolean allowLuck = false;
+        boolean allowLuck = luckMaterials.contains(b.getType());
         int amount = 1;
 
-        Material loot;
+        Material loot = conversions.get(b.getType());
 
-        //TODO: CHANGE TO CHECK CONFIG FOR WHAT OUTPUT A BLOCK HAS INSTEAD OF SWITCH CASE
-        switch (b.getType()) {
-            case STONE:
-                if (!smeltStone) {
-                    return;
-                }
-            case COBBLESTONE:
-                loot = Material.STONE;
-                break;
-
-            case SAND:
-                loot = Material.GLASS;
-                break;
-
-            case SNOW:
-            case SNOW_BLOCK:
-                loot = Material.AIR;
-                break;
-
-            case RED_SAND:
-                loot = Material.RED_STAINED_GLASS;
-                break;
-
-            case WHITE_TERRACOTTA:
-                if (!smeltTerracotta) {
-                    return;
-                }
-                loot = Material.WHITE_GLAZED_TERRACOTTA;
-                break;
-            case ORANGE_TERRACOTTA:
-                if (!smeltTerracotta) {
-                    return;
-                }
-                loot = Material.ORANGE_GLAZED_TERRACOTTA;
-                break;
-            case MAGENTA_TERRACOTTA:
-                if (!smeltTerracotta) {
-                    return;
-                }
-                loot = Material.MAGENTA_GLAZED_TERRACOTTA;
-                break;
-            case LIGHT_BLUE_TERRACOTTA:
-                if (!smeltTerracotta) {
-                    return;
-                }
-                loot = Material.LIGHT_BLUE_GLAZED_TERRACOTTA;
-                break;
-            case YELLOW_TERRACOTTA:
-                if (!smeltTerracotta) {
-                    return;
-                }
-                loot = Material.YELLOW_GLAZED_TERRACOTTA;
-                break;
-            case LIME_TERRACOTTA:
-                if (!smeltTerracotta) {
-                    return;
-                }
-                loot = Material.LIME_GLAZED_TERRACOTTA;
-                break;
-            case PINK_TERRACOTTA:
-                if (!smeltTerracotta) {
-                    return;
-                }
-                loot = Material.PINK_GLAZED_TERRACOTTA;
-                break;
-            case GRAY_TERRACOTTA:
-                if (!smeltTerracotta) {
-                    return;
-                }
-                loot = Material.GRAY_GLAZED_TERRACOTTA;
-                break;
-            case LIGHT_GRAY_TERRACOTTA:
-                if (!smeltTerracotta) {
-                    return;
-                }
-                loot = Material.LIGHT_GRAY_GLAZED_TERRACOTTA;
-                break;
-            case CYAN_TERRACOTTA:
-                if (!smeltTerracotta) {
-                    return;
-                }
-                loot = Material.CYAN_GLAZED_TERRACOTTA;
-                break;
-            case PURPLE_TERRACOTTA:
-                if (!smeltTerracotta) {
-                    return;
-                }
-                loot = Material.PURPLE_GLAZED_TERRACOTTA;
-                break;
-            case BLUE_TERRACOTTA:
-                if (!smeltTerracotta) {
-                    return;
-                }
-                loot = Material.BLUE_GLAZED_TERRACOTTA;
-                break;
-            case BROWN_TERRACOTTA:
-                if (!smeltTerracotta) {
-                    return;
-                }
-                loot = Material.BROWN_GLAZED_TERRACOTTA;
-                break;
-            case GREEN_TERRACOTTA:
-                if (!smeltTerracotta) {
-                    return;
-                }
-                loot = Material.GREEN_GLAZED_TERRACOTTA;
-                break;
-            case RED_TERRACOTTA:
-                if (!smeltTerracotta) {
-                    return;
-                }
-                loot = Material.RED_GLAZED_TERRACOTTA;
-                break;
-            case BLACK_TERRACOTTA:
-                if (!smeltTerracotta) {
-                    return;
-                }
-                loot = Material.BLACK_GLAZED_TERRACOTTA;
-                break;
-
-            case ACACIA_LOG:
-            case BIRCH_LOG:
-            case DARK_OAK_LOG:
-            case JUNGLE_LOG:
-            case OAK_LOG:
-            case SPRUCE_LOG:
-
-            case STRIPPED_ACACIA_LOG:
-            case STRIPPED_BIRCH_LOG:
-            case STRIPPED_DARK_OAK_LOG:
-            case STRIPPED_JUNGLE_LOG:
-            case STRIPPED_OAK_LOG:
-            case STRIPPED_SPRUCE_LOG:
-
-            case ACACIA_WOOD:
-            case BIRCH_WOOD:
-            case DARK_OAK_WOOD:
-            case JUNGLE_WOOD:
-            case OAK_WOOD:
-            case SPRUCE_WOOD:
-
-            case STRIPPED_ACACIA_WOOD:
-            case STRIPPED_BIRCH_WOOD:
-            case STRIPPED_DARK_OAK_WOOD:
-            case STRIPPED_JUNGLE_WOOD:
-            case STRIPPED_OAK_WOOD:
-            case STRIPPED_SPRUCE_WOOD:
-                allowLuck = true;
-                loot = Material.CHARCOAL;
-                break;
-
-            case ACACIA_LEAVES:
-            case BIRCH_LEAVES:
-            case DARK_OAK_LEAVES:
-            case JUNGLE_LEAVES:
-            case OAK_LEAVES:
-            case SPRUCE_LEAVES:
-                loot = Material.STICK;
-                break;
-
-            case IRON_ORE:
-                allowLuck = true;
-                loot = Material.IRON_INGOT;
-                break;
-
-            case GOLD_ORE:
-                allowLuck = true;
-                loot = Material.GOLD_INGOT;
-                break;
-
-            case NETHERRACK:
-                allowLuck = true;
-                loot = Material.NETHER_BRICK;
-                break;
-
-            case KELP_PLANT:
-                loot = Material.DRIED_KELP;
-                break;
-
-            case WET_SPONGE:
-                loot = Material.SPONGE;
-                break;
-
-            case COAL_ORE:
-            case COAL_BLOCK:
-                if (!burnCoal) {
-                    return;
-                }
-                loot = Material.AIR;
-                break;
-
-            case CLAY:
-                loot = Material.BRICK;
-                amount = 4;
-                break;
-
-            default:
-                return;
+        if (loot == null) {
+            return;
         }
 
         Random rand = new Random();
