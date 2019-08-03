@@ -96,9 +96,9 @@ public class Glowing extends Modifier implements Listener {
         return Modifier.checkAndAdd(p, tool, this, "glowing", isCommand);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) {
+        if (!this.isAllowed()) {
             return;
         }
 

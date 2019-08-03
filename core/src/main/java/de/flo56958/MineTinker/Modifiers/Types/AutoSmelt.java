@@ -196,9 +196,9 @@ public class AutoSmelt extends Modifier implements Listener {
      * The Effect for the BlockBreak-Listener
      * @param event the Event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void effect(MTBlockBreakEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) {
+        if (!this.isAllowed()) {
             return;
         }
 

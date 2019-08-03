@@ -83,9 +83,9 @@ public class Melting extends Modifier implements Listener {
         return checkAndAdd(p, tool, this, "melting", isCommand);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) {
+        if (!this.isAllowed()) {
             return;
         }
 
@@ -147,9 +147,9 @@ public class Melting extends Modifier implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void effect(MTEntityDamageEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) {
+        if (!this.isAllowed()) {
             return;
         }
 

@@ -93,9 +93,9 @@ public class Lifesteal extends Modifier implements Listener {
         this.percentToTrigger = config.getInt(key + ".PercentToTrigger");
     }
 
-    @EventHandler(priority = EventPriority.HIGH) //because of Melting
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH) //because of Melting
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) {
+        if (!this.isAllowed()) {
             return;
         }
 

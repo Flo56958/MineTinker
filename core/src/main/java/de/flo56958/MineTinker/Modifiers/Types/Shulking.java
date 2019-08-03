@@ -99,9 +99,9 @@ public class Shulking extends Modifier implements Listener {
         return Modifier.checkAndAdd(p, tool, this, "shulking", isCommand);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) {
+        if (!this.isAllowed()) {
             return;
         }
 
@@ -115,7 +115,7 @@ public class Shulking extends Modifier implements Listener {
         effect(p, tool, event.getEntity());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void effect(MTProjectileHitEvent event) {
         if (!this.isAllowed()) {
             return;

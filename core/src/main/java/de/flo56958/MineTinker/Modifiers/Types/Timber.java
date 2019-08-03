@@ -93,9 +93,9 @@ public class Timber extends Modifier implements Listener {
         return Modifier.checkAndAdd(p, tool, this, "timber", isCommand);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void effect(MTBlockBreakEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) {
+        if (!this.isAllowed()) {
             return;
         }
 

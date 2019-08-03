@@ -167,9 +167,9 @@ public class Ender extends Modifier implements Listener {
      * The Effect for the EntityDamageByEntityEvent
      * @param event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) {
+        if (!this.isAllowed()) {
             return;
         }
 

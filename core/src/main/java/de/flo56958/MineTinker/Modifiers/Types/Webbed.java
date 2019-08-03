@@ -102,9 +102,9 @@ public class Webbed extends Modifier implements Listener {
         return Modifier.checkAndAdd(p, tool, this, "webbed", isCommand);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) {
+        if (!this.isAllowed()) {
             return;
         }
 

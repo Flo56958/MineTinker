@@ -86,18 +86,18 @@ public class Experienced extends Modifier implements Listener {
 
     //----------------------------------------------------------
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void effect(MTBlockBreakEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) {
+        if (!this.isAllowed()) {
             return;
         }
 
         effect(event.getPlayer(), event.getTool());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) {
+        if (!this.isAllowed()) {
             return;
         }
 
@@ -112,18 +112,18 @@ public class Experienced extends Modifier implements Listener {
         effect(event.getPlayer(), event.getTool());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void effect(MTEntityDamageEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) {
+        if (!this.isAllowed()) {
             return;
         }
 
         effect(event.getPlayer(), event.getTool());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void effect(MTPlayerInteractEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) {
+        if (!this.isAllowed()) {
             return;
         }
 
