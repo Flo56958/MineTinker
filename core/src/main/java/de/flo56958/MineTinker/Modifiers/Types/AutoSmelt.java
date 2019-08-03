@@ -12,7 +12,6 @@ import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,9 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumMap;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -168,7 +165,7 @@ public class AutoSmelt extends Modifier implements Listener {
         config.addDefault(key + ".AllowLuck", luckMaterials);
 
         luckMaterials.clear();
-        
+
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
@@ -183,9 +180,6 @@ public class AutoSmelt extends Modifier implements Listener {
         this.hasSound = config.getBoolean(key + ".Sound");
         this.hasParticles = config.getBoolean(key + ".Particles");
         this.worksUnderWater = config.getBoolean(key + ".works_under_water");
-
-        // TODO: Load autosmelt conversions here
-        // TODO: Load luck allowances here
     }
     
     @Override
