@@ -41,7 +41,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) {
+        if (!(p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE)) {
             return;
         }
 
@@ -85,11 +85,11 @@ public class BlockListener implements Listener {
             return;
         }
 
-        if (e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+        if (e.getAction() == Action.RIGHT_CLICK_AIR) {
             if (Ender.instance().getModItem().equals(norm)) {
                 e.setCancelled(true);
             }
-        } else if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (!p.isSneaking()) {
                 Material type = b.getType();
 
@@ -138,7 +138,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) {
+        if (!(p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE)) {
             return;
         }
 
@@ -202,7 +202,7 @@ public class BlockListener implements Listener {
 
         boolean apply = false;
 
-        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null) {
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock() != null) {
             if (Lists.getWoodLogs().contains(e.getClickedBlock().getType()))
                 apply = true;
             else if (Lists.getWoodWood().contains(e.getClickedBlock().getType()))
@@ -247,7 +247,7 @@ public class BlockListener implements Listener {
 
         boolean apply = false;
 
-        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null) {
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock() != null) {
             if (e.getClickedBlock().getType() == Material.GRASS_BLOCK) {
                 apply = true;
             }

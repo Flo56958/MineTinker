@@ -254,7 +254,7 @@ public class BuildersWandListener implements Listener {
             return;
         }
 
-        if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
 
@@ -331,7 +331,7 @@ public class BuildersWandListener implements Listener {
             w = new Vector(0, 0, 1);
             u = new Vector(0, -1, 0);
         }
-        if ((p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE)) && b != null) {
+        if ((p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE) && b != null) {
             for (ItemStack current : inv) {
                 if (current == null) {
                     continue;
@@ -393,7 +393,7 @@ public class BuildersWandListener implements Listener {
 
                 break;
             }
-        } else if (p.getGameMode().equals(GameMode.CREATIVE) && b != null) {
+        } else if (p.getGameMode() == GameMode.CREATIVE && b != null) {
             for (int i = -_w; i <= _w; i++) {
                 for (int j = -_u; j <= _u; j++) {
                     Location l = b.getLocation().clone();

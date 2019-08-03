@@ -27,7 +27,7 @@ public class EasyHarvestListener implements Listener {
 
     @EventHandler
     public void onHarvestTry(PlayerInteractEvent e) {
-        if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
 
@@ -37,7 +37,7 @@ public class EasyHarvestListener implements Listener {
             return;
         }
 
-        if (!(p.getGameMode().equals(GameMode.SURVIVAL) || p.getGameMode().equals(GameMode.ADVENTURE))) {
+        if (!(p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE)) {
             return;
         }
 
@@ -98,7 +98,7 @@ public class EasyHarvestListener implements Listener {
             return;
         }
 
-        if (modManager.hasMod(tool, Power.instance()) && !p.isSneaking()) {
+        if (!p.isSneaking() && modManager.hasMod(tool, Power.instance())) {
             int level = modManager.getModLevel(tool, Power.instance());
 
             if (level == 1) {
