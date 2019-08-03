@@ -90,6 +90,14 @@ public class EasyHarvestListener implements Listener {
         Power.HASPOWER.get(p).set(true);
         Material m = b.getType();
 
+        String direction = PlayerInfo.getFacingDirection(p);
+        Location location = b.getLocation();
+        World world = location.getWorld();
+
+        if (world == null) {
+            return;
+        }
+
         if (modManager.hasMod(tool, Power.instance()) && !p.isSneaking()) {
             int level = modManager.getModLevel(tool, Power.instance());
 
@@ -97,21 +105,21 @@ public class EasyHarvestListener implements Listener {
                 Block b1;
                 Block b2;
 
-                if (PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S")) {
+                if (direction.equals("N") || direction.equals("S")) {
                     if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
-                        b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
-                        b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
+                        b1 = world.getBlockAt(location.add(0, 0, 1));
+                        b2 = world.getBlockAt(location.add(0, 0, -1));
                     } else {
-                        b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
-                        b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
+                        b1 = world.getBlockAt(location.add(1, 0, 0));
+                        b2 = world.getBlockAt(location.add(-1, 0, 0));
                     }
-                } else if (PlayerInfo.getFacingDirection(p).equals("W") || PlayerInfo.getFacingDirection(p).equals("E")) {
+                } else if (direction.equals("W") || direction.equals("E")) {
                     if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
-                        b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
-                        b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
+                        b1 = world.getBlockAt(location.add(1, 0, 0));
+                        b2 = world.getBlockAt(location.add(-1, 0, 0));
                     } else {
-                        b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
-                        b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
+                        b1 = world.getBlockAt(location.add(0, 0, 1));
+                        b2 = world.getBlockAt(location.add(0, 0, -1));
                     }
                 } else {
                     return;
