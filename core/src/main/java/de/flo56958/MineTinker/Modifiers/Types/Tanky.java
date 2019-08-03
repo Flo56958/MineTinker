@@ -26,15 +26,16 @@ public class Tanky extends Modifier {
 
     public static Tanky instance() {
         synchronized (Tanky.class) {
-            if (instance == null) instance = new Tanky();
+            if (instance == null) {
+                instance = new Tanky();
+            }
         }
+
         return instance;
     }
 
     private Tanky() {
-        super("Tanky", "Tanky.yml",
-                new ArrayList<>(Arrays.asList(ToolType.CHESTPLATE, ToolType.LEGGINGS)),
-                Main.getPlugin());
+        super("Tanky", "Tanky.yml", new ArrayList<>(Arrays.asList(ToolType.CHESTPLATE, ToolType.LEGGINGS)), Main.getPlugin());
     }
 
     @Override

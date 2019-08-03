@@ -27,8 +27,11 @@ public class Thorned extends Modifier {
 
     public static Thorned instance() {
         synchronized (Thorned.class) {
-            if (instance == null) instance = new Thorned();
+            if (instance == null) {
+                instance = new Thorned();
+            }
         }
+
         return instance;
     }
 

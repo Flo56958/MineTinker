@@ -26,15 +26,16 @@ public class Speedy extends Modifier {
 
     public static Speedy instance() {
         synchronized (Speedy.class) {
-            if (instance == null) instance = new Speedy();
+            if (instance == null) {
+                instance = new Speedy();
+            }
         }
+
         return instance;
     }
 
     private Speedy() {
-        super("Speedy", "Speedy.yml",
-                new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS)),
-                Main.getPlugin());
+        super("Speedy", "Speedy.yml", new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS)), Main.getPlugin());
     }
 
     @Override

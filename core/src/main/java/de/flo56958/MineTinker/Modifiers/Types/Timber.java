@@ -33,15 +33,16 @@ public class Timber extends Modifier implements Listener {
 
     public static Timber instance() {
         synchronized (Timber.class) {
-            if (instance == null) instance = new Timber();
+            if (instance == null) {
+                instance = new Timber();
+            }
         }
+
         return instance;
     }
 
     private Timber() {
-        super("Timber", "Timber.yml",
-                new ArrayList<>(Collections.singletonList(ToolType.AXE)),
-                Main.getPlugin());
+        super("Timber", "Timber.yml", new ArrayList<>(Collections.singletonList(ToolType.AXE)), Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
 

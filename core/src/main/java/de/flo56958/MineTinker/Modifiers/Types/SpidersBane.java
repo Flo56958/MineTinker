@@ -27,15 +27,16 @@ public class SpidersBane extends Modifier {
 
     public static SpidersBane instance() {
         synchronized (SpidersBane.class) {
-            if (instance == null) instance = new SpidersBane();
+            if (instance == null) {
+                instance = new SpidersBane();
+            }
         }
+
         return instance;
     }
 
     private SpidersBane() {
-        super("Spider's-Bane", "Spiders-Bane.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.SWORD)),
-                Main.getPlugin());
+        super("Spider's-Bane", "Spiders-Bane.yml", new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.SWORD)), Main.getPlugin());
     }
 
     @Override

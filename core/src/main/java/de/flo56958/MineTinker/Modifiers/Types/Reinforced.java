@@ -29,8 +29,11 @@ public class Reinforced extends Modifier {
 
     public static Reinforced instance() {
         synchronized (Reinforced.class) {
-            if (instance == null) instance = new Reinforced();
+            if (instance == null) {
+                instance = new Reinforced();
+            }
         }
+
         return instance;
     }
 

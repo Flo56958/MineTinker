@@ -32,8 +32,11 @@ public class Soulbound extends Modifier implements Listener {
 
     public static Soulbound instance() {
         synchronized (Soulbound.class) {
-            if (instance == null) instance = new Soulbound();
+            if (instance == null) {
+                instance = new Soulbound();
+            }
         }
+
         return instance;
     }
 

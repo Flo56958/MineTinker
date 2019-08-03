@@ -32,15 +32,16 @@ public class Smite extends Modifier {
 
     public static Smite instance() {
         synchronized (Smite.class) {
-            if (instance == null) instance = new Smite();
+            if (instance == null) {
+                instance = new Smite();
+            }
         }
+
         return instance;
     }
 
     private Smite() {
-        super("Smite", "Smite.yml",
-                new ArrayList<>(Arrays.asList(ToolType.SWORD, ToolType.AXE)),
-                Main.getPlugin());
+        super("Smite", "Smite.yml", new ArrayList<>(Arrays.asList(ToolType.SWORD, ToolType.AXE)), Main.getPlugin());
     }
 
     @Override

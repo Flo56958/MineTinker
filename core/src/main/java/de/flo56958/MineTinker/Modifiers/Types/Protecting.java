@@ -27,8 +27,11 @@ public class Protecting extends Modifier {
 
     public static Protecting instance() {
         synchronized (Protecting.class) {
-            if (instance == null) instance = new Protecting();
+            if (instance == null) {
+                instance = new Protecting();
+            }
         }
+
         return instance;
     }
 

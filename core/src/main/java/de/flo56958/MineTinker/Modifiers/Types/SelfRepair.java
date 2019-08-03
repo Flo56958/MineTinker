@@ -42,8 +42,11 @@ public class SelfRepair extends Modifier implements Listener {
 
     public static SelfRepair instance() {
         synchronized (SelfRepair.class) {
-            if (instance == null) instance = new SelfRepair();
+            if (instance == null) {
+                instance = new SelfRepair();
+            }
         }
+
         return instance;
     }
 

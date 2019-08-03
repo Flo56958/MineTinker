@@ -27,8 +27,11 @@ public class SilkTouch extends Modifier {
 
     public static SilkTouch instance() {
         synchronized (SilkTouch.class) {
-            if (instance == null) instance = new SilkTouch();
+            if (instance == null) {
+                instance = new SilkTouch();
+            }
         }
+
         return instance;
     }
 

@@ -26,15 +26,16 @@ public class Sweeping extends Modifier {
 
     public static Sweeping instance() {
         synchronized (Sweeping.class) {
-            if (instance == null) instance = new Sweeping();
+            if (instance == null) {
+                instance = new Sweeping();
+            }
         }
+
         return instance;
     }
 
     private Sweeping() {
-        super("Sweeping", "Sweeping.yml",
-                new ArrayList<>(Collections.singletonList(ToolType.SWORD)),
-                Main.getPlugin());
+        super("Sweeping", "Sweeping.yml", new ArrayList<>(Collections.singletonList(ToolType.SWORD)), Main.getPlugin());
     }
 
     @Override

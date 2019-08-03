@@ -36,8 +36,11 @@ public class Shulking extends Modifier implements Listener {
 
     public static Shulking instance() {
         synchronized (Shulking.class) {
-            if (instance == null) instance = new Shulking();
+            if (instance == null) {
+                instance = new Shulking();
+            }
         }
+
         return instance;
     }
 
