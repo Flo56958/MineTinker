@@ -16,6 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,10 +40,7 @@ public class Thorned extends Modifier {
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.THORNS);
-
-        return enchantments;
+        return Collections.singletonList(Enchantment.THORNS);
     }
 
     @Override

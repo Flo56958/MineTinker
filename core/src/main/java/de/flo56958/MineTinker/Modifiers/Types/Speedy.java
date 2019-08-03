@@ -130,11 +130,6 @@ public class Speedy extends Modifier {
     }
 
     @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return new ArrayList<>();
-    }
-
-    @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Speedy", "Modifier_Speedy");
     }

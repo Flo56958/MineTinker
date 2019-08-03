@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,10 +45,7 @@ public class Smite extends Modifier {
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.DAMAGE_UNDEAD);
-
-        return enchantments;
+        return Collections.singletonList(Enchantment.DAMAGE_UNDEAD);
     }
 
     @Override

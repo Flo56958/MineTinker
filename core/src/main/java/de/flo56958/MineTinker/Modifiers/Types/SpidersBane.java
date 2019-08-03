@@ -40,10 +40,7 @@ public class SpidersBane extends Modifier {
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.DAMAGE_ARTHROPODS);
-
-        return enchantments;
+        return Collections.singletonList(Enchantment.DAMAGE_ARTHROPODS);
     }
 
     @Override

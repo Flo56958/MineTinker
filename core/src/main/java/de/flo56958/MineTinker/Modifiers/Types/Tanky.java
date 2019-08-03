@@ -131,11 +131,6 @@ public class Tanky extends Modifier {
     }
 
     @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return new ArrayList<>();
-    }
-
-    @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Tanky", "Modifier_Tanky");
     }

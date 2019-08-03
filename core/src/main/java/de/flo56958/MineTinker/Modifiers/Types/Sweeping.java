@@ -40,10 +40,7 @@ public class Sweeping extends Modifier implements Enchantable {
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.SWEEPING_EDGE);
-
-        return enchantments;
+        return Collections.singletonList(Enchantment.SWEEPING_EDGE);
     }
 
     @Override
