@@ -31,37 +31,37 @@ public class ItemGenerator {
         // TODO: Fix this fuckery
 
         ItemMeta meta = tool.getItemMeta();
-        String[] name = tool.getType().toString().split("_");
+        String name = tool.getType().toString().split("_")[0].toLowerCase();
 
-        if (name[0].toLowerCase().equals("wooden") && (
-                upgrade.getType().equals(Material.ACACIA_PLANKS) ||
-                upgrade.getType().equals(Material.BIRCH_PLANKS) ||
-                upgrade.getType().equals(Material.DARK_OAK_PLANKS) ||
-                upgrade.getType().equals(Material.JUNGLE_PLANKS) ||
-                upgrade.getType().equals(Material.OAK_PLANKS) ||
-                upgrade.getType().equals(Material.SPRUCE_PLANKS))) {
+        if (name.equals("wooden") && (
+                upgrade.getType() == Material.ACACIA_PLANKS ||
+                upgrade.getType() == Material.BIRCH_PLANKS ||
+                upgrade.getType() == Material.DARK_OAK_PLANKS ||
+                upgrade.getType() == Material.JUNGLE_PLANKS ||
+                upgrade.getType() == Material.OAK_PLANKS ||
+                upgrade.getType() == Material.SPRUCE_PLANKS)) {
 
             pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
-        } else if (name[0].toLowerCase().equals("stone") && upgrade.getType().equals(Material.COBBLESTONE)) {
+        } else if (name.equals("stone") && upgrade.getType() == Material.COBBLESTONE) {
             pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
-        } else if (name[0].toLowerCase().equals("iron") && upgrade.getType().equals(Material.IRON_INGOT)) {
+        } else if (name.equals("iron") && upgrade.getType() == Material.IRON_INGOT) {
             pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
-        } else if (name[0].toLowerCase().equals("gold") && upgrade.getType().equals(Material.GOLD_INGOT)) {
+        } else if (name.equals("gold") && upgrade.getType() == Material.GOLD_INGOT) {
             pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
-        } else if (name[0].toLowerCase().equals("diamond") && upgrade.getType().equals(Material.DIAMOND)) {
+        } else if (name.equals("diamond") && upgrade.getType() == Material.DIAMOND) {
             pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
-        } else if (name[0].toLowerCase().equals("leather") && upgrade.getType().equals(Material.LEATHER)) {
+        } else if (name.equals("leather") && upgrade.getType() == Material.LEATHER) {
             pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
-        } else if (name[0].toLowerCase().equals("turtle") && upgrade.getType().equals(Material.SCUTE)) {
+        } else if (name.equals("turtle") && upgrade.getType() == Material.SCUTE) {
             pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
-        } else if (name[0].toLowerCase().equals("chainmail") && upgrade.getType().equals(Material.IRON_BARS)) {
+        } else if (name.equals("chainmail") && upgrade.getType() == Material.IRON_BARS) {
             pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
             return null;
         }
