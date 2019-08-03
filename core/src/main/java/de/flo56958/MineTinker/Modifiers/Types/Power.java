@@ -15,11 +15,14 @@ import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -167,6 +170,14 @@ public class Power extends Modifier implements Listener {
         Player player = event.getPlayer();
         ItemStack tool = event.getTool();
         Block block = event.getBlock();
+        Location location = block.getLocation();
+        World world = location.getWorld();
+        BlockFace face = Lists.BLOCKFACE.get(player);
+        String direction = PlayerInfo.getFacingDirection(player);
+
+        if (world == null) {
+            return;
+        }
 
         if (!checkPower(player, tool)) {
             return;
@@ -191,77 +202,78 @@ public class Power extends Modifier implements Listener {
 
         if (level == 1) {
             if (isVertical) {
-                if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
-                    if (PlayerInfo.getFacingDirection(player).equals("N") || PlayerInfo.getFacingDirection(player).equals("S")) {
-                        Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
-                        Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
+                if (face == BlockFace.DOWN || face == BlockFace.UP) {
+                    if (direction.equals("N") || direction.equals("S")) {
+                        Block b1 = world.getBlockAt(location.add(0, 0, 1));
+                        Block b2 = world.getBlockAt(location.add(0, 0, -1));
+
                         powerBlockBreak(b1, block, player);
                         powerBlockBreak(b2, block, player);
-                    } else if (PlayerInfo.getFacingDirection(player).equals("W")
-                            || PlayerInfo.getFacingDirection(player).equals("E")) {
-                        Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
-                        Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
+                    } else if (direction.equals("W") || direction.equals("E")) {
+                        Block b1 = world.getBlockAt(location.add(1, 0, 0));
+                        Block b2 = world.getBlockAt(location.add(-1, 0, 0));
+
                         powerBlockBreak(b1, block, player);
                         powerBlockBreak(b2, block, player);
                     }
                 } else {
-                    Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
-                    Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, -1, 0));
+                    Block b1 = world.getBlockAt(location.add(0, 1, 0));
+                    Block b2 = world.getBlockAt(location.add(0, -1, 0));
                     powerBlockBreak(b1, block, player);
                     powerBlockBreak(b2, block, player);
                 }
-            } else if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
-                if (PlayerInfo.getFacingDirection(player).equals("N") || PlayerInfo.getFacingDirection(player).equals("S")) {
-                    Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
-                    Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
+            } else if (face == BlockFace.DOWN || face == BlockFace.UP) {
+                if (direction.equals("N") || direction.equals("S")) {
+                    Block b1 = world.getBlockAt(location.add(1, 0, 0));
+                    Block b2 = world.getBlockAt(location.add(-1, 0, 0));
+
                     powerBlockBreak(b1, block, player);
                     powerBlockBreak(b2, block, player);
-                } else if (PlayerInfo.getFacingDirection(player).equals("W")
-                        || PlayerInfo.getFacingDirection(player).equals("E")) {
-                    Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
-                    Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
+                } else if (direction.equals("W") || direction.equals("E")) {
+                    Block b1 = world.getBlockAt(location.add(0, 0, 1));
+                    Block b2 = world.getBlockAt(location.add(0, 0, -1));
                     powerBlockBreak(b1, block, player);
                     powerBlockBreak(b2, block, player);
                 }
-            } else if (Lists.BLOCKFACE.get(player).equals(BlockFace.NORTH)
-                    || Lists.BLOCKFACE.get(player).equals(BlockFace.SOUTH)) {
-                Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
-                Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
+            } else if (face == BlockFace.NORTH || face == BlockFace.SOUTH) {
+                Block b1 = world.getBlockAt(location.add(1, 0, 0));
+                Block b2 = world.getBlockAt(location.add(-1, 0, 0));
+
                 powerBlockBreak(b1, block, player);
                 powerBlockBreak(b2, block, player);
-            } else if (Lists.BLOCKFACE.get(player).equals(BlockFace.WEST) || Lists.BLOCKFACE.get(player).equals(BlockFace.EAST)) {
-                Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
-                Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
+            } else if (face == BlockFace.WEST || face == BlockFace.EAST) {
+                Block b1 = world.getBlockAt(location.add(0, 0, 1));
+                Block b2 = world.getBlockAt(location.add(0, 0, -1));
+
                 powerBlockBreak(b1, block, player);
                 powerBlockBreak(b2, block, player);
             }
         } else {
             HASPOWER.get(player).set(true);
 
-            if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
+            if (face == BlockFace.DOWN || face == BlockFace.UP) {
                 for (int x = -(level - 1); x <= (level - 1); x++) {
                     for (int z = -(level - 1); z <= (level - 1); z++) {
                         if (!(x == 0 && z == 0)) {
-                            Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
+                            Block b1 = world.getBlockAt(location.add(x, 0, z));
                             powerBlockBreak(b1, block, player);
                         }
                     }
                 }
-            } else if (Lists.BLOCKFACE.get(player).equals(BlockFace.NORTH)
-                    || Lists.BLOCKFACE.get(player).equals(BlockFace.SOUTH)) {
+            } else if (face == BlockFace.NORTH || face == BlockFace.SOUTH) {
                 for (int x = -(level - 1); x <= (level - 1); x++) {
                     for (int y = -(level - 1); y <= (level - 1); y++) {
                         if (!(x == 0 && y == 0)) {
-                            Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, y, 0));
+                            Block b1 = world.getBlockAt(location.add(x, y, 0));
                             powerBlockBreak(b1, block, player);
                         }
                     }
                 }
-            } else if (Lists.BLOCKFACE.get(player).equals(BlockFace.EAST) || Lists.BLOCKFACE.get(player).equals(BlockFace.WEST)) {
+            } else if (face == BlockFace.EAST || face == BlockFace.WEST) {
                 for (int z = -(level - 1); z <= (level - 1); z++) {
                     for (int y = -(level - 1); y <= (level - 1); y++) {
                         if (!(z == 0 && y == 0)) {
-                            Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, y, z));
+                            Block b1 = world.getBlockAt(location.add(0, y, z));
                             powerBlockBreak(b1, block, player);
                         }
                     }
@@ -277,30 +289,44 @@ public class Power extends Modifier implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void effect(MTPlayerInteractEvent event) {
-        if (!this.isAllowed())
+        if (!this.isAllowed()) {
             return;
+        }
 
-        Player p = event.getPlayer();
+        Player player = event.getPlayer();
         ItemStack tool = event.getTool();
 
-        if (!ToolType.HOE.contains(tool.getType()))
+        if (!ToolType.HOE.contains(tool.getType())) {
             return;
+        }
 
         PlayerInteractEvent e = event.getEvent();
-        if (!checkPower(p, tool))
+
+        if (!checkPower(player, tool)) {
             return;
+        }
 
-        ChatWriter.log(false, p.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool)
-                + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
-
-        HASPOWER.get(p).set(true);
-
-        int level = modManager.getModLevel(tool, this);
         Block b = e.getClickedBlock();
 
         if (b == null) {
             return;
         }
+
+        Location location = b.getLocation();
+        World world = location.getWorld();
+        BlockFace face = Lists.BLOCKFACE.get(event.getPlayer());
+        String direction = PlayerInfo.getFacingDirection(event.getPlayer());
+
+        if (world == null) {
+            return;
+        }
+
+        ChatWriter.log(false, player.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool)
+                + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+
+        HASPOWER.get(player).set(true);
+
+        int level = modManager.getModLevel(tool, this);
 
         boolean isVertical = lv1_vertical;
 
@@ -309,49 +335,48 @@ public class Power extends Modifier implements Listener {
         }
 
         if (level == 1) {
-            if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
+            if (face == BlockFace.DOWN || face == BlockFace.UP) {
                 Block b1;
                 Block b2;
 
-                if ((PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S"))) {
+                if ((direction.equals("N") || direction.equals("S"))) {
                     if (isVertical) {
-                        b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
-                        b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
+                        b1 = world.getBlockAt(location.add(0, 0, 1));
+                        b2 = world.getBlockAt(location.add(0, 0, -1));
                     } else {
-                        b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
-                        b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
+                        b1 = world.getBlockAt(location.add(1, 0, 0));
+                        b2 = world.getBlockAt(location.add(-1, 0, 0));
                     }
-                } else if (PlayerInfo.getFacingDirection(p).equals("W")
-                        || PlayerInfo.getFacingDirection(p).equals("E")) {
+                } else if (direction.equals("W") || direction.equals("E")) {
                     if (isVertical) {
-                        b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
-                        b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
+                        b1 = world.getBlockAt(location.add(1, 0, 0));
+                        b2 = world.getBlockAt(location.add(-1, 0, 0));
                     } else {
-                        b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
-                        b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
+                        b1 = world.getBlockAt(location.add(0, 0, 1));
+                        b2 = world.getBlockAt(location.add(0, 0, -1));
                     }
                 } else {
                     b1 = b;
                     b2 = b;
                 }
 
-                powerCreateFarmland(p, tool, b1);
-                powerCreateFarmland(p, tool, b2);
+                powerCreateFarmland(player, tool, b1);
+                powerCreateFarmland(player, tool, b2);
             }
         } else {
-            if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
+            if (face == BlockFace.DOWN || face == BlockFace.UP) {
                 for (int x = -(level - 1); x <= (level - 1); x++) {
                     for (int z = -(level - 1); z <= (level - 1); z++) {
                         if (!(x == 0 && z == 0)) {
-                            Block b_ = p.getWorld().getBlockAt(b.getLocation().add(x, 0, z));
-                            powerCreateFarmland(p, tool, b_);
+                            Block b_ = world.getBlockAt(location.add(x, 0, z));
+                            powerCreateFarmland(player, tool, b_);
                         }
                     }
                 }
             }
         }
 
-        HASPOWER.get(p).set(false);
+        HASPOWER.get(player).set(false);
     }
 
     private void powerBlockBreak(Block b, Block centralBlock, Player p) {
@@ -383,8 +408,10 @@ public class Power extends Modifier implements Listener {
                 PlayerInteractEvent event = new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, tool, b, BlockFace.UP);
                 Bukkit.getPluginManager().callEvent(event);
 
-                b.setType(Material.FARMLAND); // Event only does Plugin event (no vanilla conversion to Farmland and
-                                              // Tool-Damage)
+                // This is experimental, might not work, might work.
+                if (!event.isCancelled() && event.useItemInHand() == Event.Result.ALLOW) {
+                    b.setType(Material.FARMLAND); // Event only does Plugin event (no vanilla conversion to Farmland and Tool-Damage)
+                }
             }
         }
     }
