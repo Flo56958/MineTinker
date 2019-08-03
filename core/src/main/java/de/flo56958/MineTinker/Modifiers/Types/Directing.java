@@ -91,13 +91,24 @@ public class Directing extends Modifier implements Listener {
 
     @EventHandler
     public void effect(MTEntityDeathEvent event) {
-        if (!this.isAllowed()) return;
-        if (!this.workInPVP && event.getEvent().getEntity() instanceof Player) return;
+        if (!this.isAllowed()) {
+            return;
+        }
+
+        if (!this.workInPVP && event.getEvent().getEntity() instanceof Player) {
+            return;
+        }
+
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
 
-        if (!p.hasPermission("minetinker.modifiers.directing.use")) return;
-        if (!modManager.hasMod(tool, this)) return;
+        if (!p.hasPermission("minetinker.modifiers.directing.use")) {
+            return;
+        }
+
+        if (!modManager.hasMod(tool, this)) {
+            return;
+        }
 
         List<ItemStack> drops = event.getEvent().getDrops();
 

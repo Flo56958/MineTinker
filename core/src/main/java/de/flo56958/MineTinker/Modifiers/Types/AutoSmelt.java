@@ -42,15 +42,18 @@ public class AutoSmelt extends Modifier implements Listener {
 
     public static AutoSmelt instance() {
         synchronized (AutoSmelt.class) {
-            if (instance == null) instance = new AutoSmelt();
+            if (instance == null) {
+                instance = new AutoSmelt();
+            }
         }
+
         return instance;
     }
 
     private AutoSmelt() {
-        super("Auto-Smelt", "Auto-Smelt.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
+        super("Auto-Smelt", "Auto-Smelt.yml", new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
                 Main.getPlugin());
+
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
 
@@ -122,7 +125,9 @@ public class AutoSmelt extends Modifier implements Listener {
      */
     @EventHandler
     public void effect(MTBlockBreakEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
@@ -131,11 +136,18 @@ public class AutoSmelt extends Modifier implements Listener {
 
     	//FileConfiguration config = getConfig();
     	
-        if (!p.hasPermission("minetinker.modifiers.autosmelt.use")) return; //TODO: Think about more blocks for Auto-Smelt
-        if (!modManager.hasMod(tool, this)) return;
+        if (!p.hasPermission("minetinker.modifiers.autosmelt.use")) {
+            return; //TODO: Think about more blocks for Auto-Smelt
+        }
+
+        if (!modManager.hasMod(tool, this)) {
+            return;
+        }
 
         if (!worksUnderWater) {
-            if (p.isSwimming() || p.getWorld().getBlockAt(p.getLocation()).getType() == Material.WATER) return;
+            if (p.isSwimming() || p.getWorld().getBlockAt(p.getLocation()).getType() == Material.WATER) {
+                return;
+            }
         }
 
         boolean allowLuck = false;
@@ -146,7 +158,9 @@ public class AutoSmelt extends Modifier implements Listener {
         //TODO: CHANGE TO CHECK CONFIG FOR WHAT OUTPUT A BLOCK HAS INSTEAD OF SWITCH CASE
         switch (b.getType()) {
             case STONE:
-                if (!smeltStone) return;
+                if (!smeltStone) {
+                    return;
+                }
             case COBBLESTONE:
                 loot = Material.STONE;
                 break;
@@ -165,67 +179,99 @@ public class AutoSmelt extends Modifier implements Listener {
                 break;
 
             case WHITE_TERRACOTTA:
-                if (!smeltTerracotta) return;
+                if (!smeltTerracotta) {
+                    return;
+                }
                 loot = Material.WHITE_GLAZED_TERRACOTTA;
                 break;
             case ORANGE_TERRACOTTA:
-                if (!smeltTerracotta) return;
+                if (!smeltTerracotta) {
+                    return;
+                }
                 loot = Material.ORANGE_GLAZED_TERRACOTTA;
                 break;
             case MAGENTA_TERRACOTTA:
-                if (!smeltTerracotta) return;
+                if (!smeltTerracotta) {
+                    return;
+                }
                 loot = Material.MAGENTA_GLAZED_TERRACOTTA;
                 break;
             case LIGHT_BLUE_TERRACOTTA:
-                if (!smeltTerracotta) return;
+                if (!smeltTerracotta) {
+                    return;
+                }
                 loot = Material.LIGHT_BLUE_GLAZED_TERRACOTTA;
                 break;
             case YELLOW_TERRACOTTA:
-                if (!smeltTerracotta) return;
+                if (!smeltTerracotta) {
+                    return;
+                }
                 loot = Material.YELLOW_GLAZED_TERRACOTTA;
                 break;
             case LIME_TERRACOTTA:
-                if (!smeltTerracotta) return;
+                if (!smeltTerracotta) {
+                    return;
+                }
                 loot = Material.LIME_GLAZED_TERRACOTTA;
                 break;
             case PINK_TERRACOTTA:
-                if (!smeltTerracotta) return;
+                if (!smeltTerracotta) {
+                    return;
+                }
                 loot = Material.PINK_GLAZED_TERRACOTTA;
                 break;
             case GRAY_TERRACOTTA:
-                if (!smeltTerracotta) return;
+                if (!smeltTerracotta) {
+                    return;
+                }
                 loot = Material.GRAY_GLAZED_TERRACOTTA;
                 break;
             case LIGHT_GRAY_TERRACOTTA:
-                if (!smeltTerracotta) return;
+                if (!smeltTerracotta) {
+                    return;
+                }
                 loot = Material.LIGHT_GRAY_GLAZED_TERRACOTTA;
                 break;
             case CYAN_TERRACOTTA:
-                if (!smeltTerracotta) return;
+                if (!smeltTerracotta) {
+                    return;
+                }
                 loot = Material.CYAN_GLAZED_TERRACOTTA;
                 break;
             case PURPLE_TERRACOTTA:
-                if (!smeltTerracotta) return;
+                if (!smeltTerracotta) {
+                    return;
+                }
                 loot = Material.PURPLE_GLAZED_TERRACOTTA;
                 break;
             case BLUE_TERRACOTTA:
-                if (!smeltTerracotta) return;
+                if (!smeltTerracotta) {
+                    return;
+                }
                 loot = Material.BLUE_GLAZED_TERRACOTTA;
                 break;
             case BROWN_TERRACOTTA:
-                if (!smeltTerracotta) return;
+                if (!smeltTerracotta) {
+                    return;
+                }
                 loot = Material.BROWN_GLAZED_TERRACOTTA;
                 break;
             case GREEN_TERRACOTTA:
-                if (!smeltTerracotta) return;
+                if (!smeltTerracotta) {
+                    return;
+                }
                 loot = Material.GREEN_GLAZED_TERRACOTTA;
                 break;
             case RED_TERRACOTTA:
-                if (!smeltTerracotta) return;
+                if (!smeltTerracotta) {
+                    return;
+                }
                 loot = Material.RED_GLAZED_TERRACOTTA;
                 break;
             case BLACK_TERRACOTTA:
-                if (!smeltTerracotta) return;
+                if (!smeltTerracotta) {
+                    return;
+                }
                 loot = Material.BLACK_GLAZED_TERRACOTTA;
                 break;
 
@@ -294,7 +340,9 @@ public class AutoSmelt extends Modifier implements Listener {
 
             case COAL_ORE:
             case COAL_BLOCK:
-                if (!burnCoal) return;
+                if (!burnCoal) {
+                    return;
+                }
                 loot = Material.AIR;
                 break;
 
@@ -309,9 +357,11 @@ public class AutoSmelt extends Modifier implements Listener {
 
         Random rand = new Random();
         int n = rand.nextInt(100);
+
         if (n <= this.percentagePerLevel * modManager.getModLevel(tool, this) && b.getLocation().getWorld() != null) {
             if (allowLuck) {
                 int level = modManager.getModLevel(tool, Luck.instance());
+
                 if (level > 0) {
                     amount = amount + rand.nextInt(level) * amount; //Times amount is for clay as it drops 4 per block
                 }
@@ -321,10 +371,16 @@ public class AutoSmelt extends Modifier implements Listener {
                 ItemStack items = new ItemStack(loot, amount);
                 b.getLocation().getWorld().dropItemNaturally(b.getLocation(), items);
             }
+
             e.setDropItems(false);
 
-            if (this.hasParticles) { b.getLocation().getWorld().spawnParticle(Particle.FLAME, b.getLocation(), 5); }
-            if (this.hasSound) { b.getLocation().getWorld().playSound(b.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F); }
+            if (this.hasParticles) {
+                b.getLocation().getWorld().spawnParticle(Particle.FLAME, b.getLocation(), 5);
+            }
+
+            if (this.hasSound) {
+                b.getLocation().getWorld().playSound(b.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
+            }
 
             ChatWriter.log(false, p.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY +
                     " (" + tool.getType().toString() + ") while mining " + e.getBlock().getType().toString() + "!");

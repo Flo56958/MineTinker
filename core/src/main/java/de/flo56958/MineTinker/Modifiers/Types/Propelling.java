@@ -95,7 +95,10 @@ public class Propelling extends Modifier implements Enchantable, Listener {
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.propelling.craft")) return;
+        if (!p.hasPermission("minetinker.modifiers.propelling.craft")) {
+            return;
+        }
+
         _createModifierItem(getConfig(), p, this, "Propelling");
     }
 
@@ -106,7 +109,9 @@ public class Propelling extends Modifier implements Enchantable, Listener {
             return false;
         }
 
-        if (!Modifier.checkAndAdd(p, tool, this, "propelling", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "propelling", isCommand)) {
+            return false;
+        }
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -131,14 +136,27 @@ public class Propelling extends Modifier implements Enchantable, Listener {
     public void onElytraSneak(PlayerToggleSneakEvent e) {
         Player p = e.getPlayer();
 
-        if (e.isSneaking()) return;
-        if (!p.isGliding()) return;
-        if (!p.hasPermission("minetinker.modifiers.propelling.use")) return;
+        if (e.isSneaking()) {
+            return;
+        }
+
+        if (!p.isGliding()) {
+            return;
+        }
+
+        if (!p.hasPermission("minetinker.modifiers.propelling.use")) {
+            return;
+        }
 
         ItemStack elytra = p.getInventory().getChestplate();
 
-        if (!(modManager.isArmorViable(elytra) && ToolType.ELYTRA.contains(elytra.getType()))) return;
-        if (!modManager.hasMod(elytra, this)) return;
+        if (!(modManager.isArmorViable(elytra) && ToolType.ELYTRA.contains(elytra.getType()))) {
+            return;
+        }
+
+        if (!modManager.hasMod(elytra, this)) {
+            return;
+        }
 
         int maxDamage = elytra.getType().getMaxDurability();
         ItemMeta meta = elytra.getItemMeta();
@@ -161,7 +179,10 @@ public class Propelling extends Modifier implements Enchantable, Listener {
 
         p.setVelocity(p.getVelocity().add(dir.multiply(1 + speedPerLevel * level)));
 
-        if (sound && loc.getWorld() != null) loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
+        if (sound && loc.getWorld() != null) {
+            loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
+        }
+
         if (particles) p.playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
     }
 

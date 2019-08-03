@@ -94,17 +94,30 @@ public class Lifesteal extends Modifier implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH) //because of Melting
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
-        if (event.getPlayer().equals(event.getEvent().getEntity())) return; //when event was triggered by the armor
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
+
+        if (event.getPlayer().equals(event.getEvent().getEntity())) {
+            return; //when event was triggered by the armor
+        }
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
 
-        if (!p.hasPermission("minetinker.modifiers.lifesteal.use")) return;
-        if (!modManager.hasMod(tool, this)) return;
+        if (!p.hasPermission("minetinker.modifiers.lifesteal.use")) {
+            return;
+        }
+
+        if (!modManager.hasMod(tool, this)) {
+            return;
+        }
 
         Random rand = new Random();
-        if (rand.nextInt(100) > this.percentToTrigger) return;
+
+        if (rand.nextInt(100) > this.percentToTrigger) {
+            return;
+        }
 
         int level = modManager.getModLevel(tool, this);
         double damage = event.getEvent().getDamage();

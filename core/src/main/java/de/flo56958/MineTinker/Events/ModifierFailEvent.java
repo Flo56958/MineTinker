@@ -66,7 +66,9 @@ public class ModifierFailEvent extends Event {
         return failCause;
     }
 
-    public boolean isCommand() { return isCommand; }
+    public boolean isCommand() {
+        return isCommand;
+    }
 
     @NotNull
     @Override

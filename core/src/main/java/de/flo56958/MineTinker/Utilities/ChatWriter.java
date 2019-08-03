@@ -99,8 +99,13 @@ public class ChatWriter {
      * @param message
      */
     public static void sendActionBar(Player player, String message) { //Extract from the source code of the Actionbar-API (altered)
-        if (!Main.getPlugin().getConfig().getBoolean("actionbar-messages")) return;
-        if (!player.isOnline()) return; // Player may have logged out
+        if (!Main.getPlugin().getConfig().getBoolean("actionbar-messages")) {
+            return;
+        }
+
+        if (!player.isOnline()) {
+            return; // Player may have logged out, unlikely but possible?
+        }
 
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
     }

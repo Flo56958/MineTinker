@@ -51,6 +51,11 @@ public class NBTUtils {
         return handler;
     }
 
-    public static boolean isOneThirteenCompatible() { return oneThirteenCompatible; }
-    public static boolean isOneFourteenCompatible() { return oneFourteenCompatible; }
+    public static boolean isOneThirteenCompatible() {
+        return oneThirteenCompatible;
+    }
+
+    public static boolean isOneFourteenCompatible() {
+        return oneFourteenCompatible;
+    }
 }

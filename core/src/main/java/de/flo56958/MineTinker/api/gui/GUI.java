@@ -180,7 +180,10 @@ public class GUI implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onDrag(InventoryDragEvent e) {
         Window w = getWindowFromInventory(e.getInventory());
-        if (w == null) return;
+
+        if (w == null) {
+            return;
+        }
 
         e.setCancelled(true);
     }
@@ -188,6 +191,7 @@ public class GUI implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onMove(InventoryMoveItemEvent e) {
         Window w = getWindowFromInventory(e.getDestination());
+
         if (w == null) {
             return;
         }

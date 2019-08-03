@@ -36,9 +36,7 @@ public class Piercing extends Modifier {
     }
 
     private Piercing() {
-        super("Piercing", "Piercing.yml",
-                new ArrayList<>(Collections.singletonList(ToolType.CROSSBOW)),
-                Main.getPlugin());
+        super("Piercing", "Piercing.yml", new ArrayList<>(Collections.singletonList(ToolType.CROSSBOW)), Main.getPlugin());
     }
 
     @Override
@@ -90,7 +88,9 @@ public class Piercing extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "piercing", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "piercing", isCommand)) {
+            return false;
+        }
 
         ItemMeta meta = tool.getItemMeta();
 

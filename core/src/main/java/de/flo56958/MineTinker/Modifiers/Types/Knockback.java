@@ -74,7 +74,9 @@ public class Knockback extends Modifier implements Enchantable {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "knockback", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "knockback", isCommand)) {
+            return false;
+        }
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -100,7 +102,9 @@ public class Knockback extends Modifier implements Enchantable {
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.knockback.craft")) return;
+        if (!p.hasPermission("minetinker.modifiers.knockback.craft")) {
+            return;
+        }
         _createModifierItem(getConfig(), p, this, "Knockback");
     }
 

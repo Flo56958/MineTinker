@@ -87,20 +87,30 @@ public class Melting extends Modifier implements Enchantable, Listener {
 
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
 
-        if (!p.hasPermission("minetinker.modifiers.melting.use")) return;
-        if (!modManager.hasMod(tool, this)) return;
+        if (!p.hasPermission("minetinker.modifiers.melting.use")) {
+            return;
+        }
+
+        if (!modManager.hasMod(tool, this)) {
+            return;
+        }
 
         if (event.getPlayer().equals(event.getEvent().getEntity())) {
             /*
             The melting effect if the Player gets damaged. getTool = Armor piece
              */
             int level = modManager.getModLevel(tool, this);
-            if (p.getFireTicks() <= 0) return;
+
+            if (p.getFireTicks() <= 0) {
+                return;
+            }
 
             if (p.getFireTicks() > 0 && cancelBurning) {
                 p.setFireTicks(0);
@@ -119,9 +129,15 @@ public class Melting extends Modifier implements Enchantable, Listener {
             if (event.getEvent().getEntity() instanceof LivingEntity) {
                 LivingEntity e = (LivingEntity) event.getEvent().getEntity();
 
-                if (e.isDead()) return;
+                if (e.isDead()) {
+                    return;
+                }
+
                 int level = modManager.getModLevel(tool, this);
-                if (e.getFireTicks() == 0) return;
+
+                if (e.getFireTicks() == 0) {
+                    return;
+                }
 
                 double damage = event.getEvent().getDamage();
                 damage = damage * (1 + this.bonusMultiplier * level);
@@ -135,13 +151,20 @@ public class Melting extends Modifier implements Enchantable, Listener {
 
     @EventHandler
     public void effect(MTEntityDamageEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
 
-        if (!p.hasPermission("minetinker.modifiers.melting.use")) return;
-        if (!modManager.hasMod(tool, this)) return;
+        if (!p.hasPermission("minetinker.modifiers.melting.use")) {
+            return;
+        }
+
+        if (!modManager.hasMod(tool, this)) {
+            return;
+        }
 
         if (p.getFireTicks() > 0 && cancelBurning) {
             p.setFireTicks(0);
@@ -152,7 +175,10 @@ public class Melting extends Modifier implements Enchantable, Listener {
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.melting.craft")) return;
+        if (!p.hasPermission("minetinker.modifiers.melting.craft")) {
+            return;
+        }
+
         _createModifierItem(getConfig(), p, this, "Melting");
     }
 

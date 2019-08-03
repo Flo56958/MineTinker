@@ -121,14 +121,24 @@ public class Ender extends Modifier implements Listener {
      */
     @EventHandler
     public void effect(MTProjectileHitEvent event) {
-        if (!this.isAllowed()) return;
+        if (!this.isAllowed()) {
+            return;
+        }
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
 
-        if (!p.hasPermission("minetinker.modifiers.ender.use")) return;
-        if (!modManager.hasMod(tool, this)) return;
-        if (!p.isSneaking()) return;
+        if (!p.hasPermission("minetinker.modifiers.ender.use")) {
+            return;
+        }
+
+        if (!modManager.hasMod(tool, this)) {
+            return;
+        }
+
+        if (!p.isSneaking()) {
+            return;
+        }
 
         Location loc = event.getEvent().getEntity().getLocation().clone(); //Location of the Arrow
         Location oldLoc = p.getLocation();
@@ -158,18 +168,36 @@ public class Ender extends Modifier implements Listener {
      */
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
 
         Player p = event.getPlayer();
         Entity e = event.getEvent().getEntity();
-        if (!p.isSneaking()) return;
-        if (p.equals(event.getEvent().getEntity())) return;
-        if (!p.hasPermission("minetinker.modifiers.ender.use")) return;
+
+        if (!p.isSneaking()) {
+            return;
+        }
+
+        if (p.equals(event.getEvent().getEntity())) {
+            return;
+        }
+
+        if (!p.hasPermission("minetinker.modifiers.ender.use")) {
+            return;
+        }
 
         ItemStack tool = event.getTool();
-        if (!modManager.hasMod(tool, this)) return; //No check needed, as Ender can only be applied on the Bow
-        if (modManager.getModLevel(tool, this) < 2) return;
 
+        if (!modManager.hasMod(tool, this)) {
+            return; //No check needed, as Ender can only be applied on the Bow
+        }
+
+        if (modManager.getModLevel(tool, this) < 2) {
+            return;
+        }
+
+        // e
         Location loc = e.getLocation().clone();
         e.teleport(p.getLocation());
 
@@ -185,6 +213,7 @@ public class Ender extends Modifier implements Listener {
         if (this.giveNauseaOnUse) {
             p.removePotionEffect(PotionEffectType.CONFUSION);
             p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, this.nauseaDuration, 0, false, false));
+
             if (e instanceof LivingEntity) {
                 ((LivingEntity) e).removePotionEffect(PotionEffectType.CONFUSION);
                 ((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, this.nauseaDuration, 0, false, false));
@@ -194,6 +223,7 @@ public class Ender extends Modifier implements Listener {
         if (this.giveBlindnessOnUse) {
             p.removePotionEffect(PotionEffectType.BLINDNESS);
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, this.blindnessDuration, 0, false, false));
+
             if (e instanceof LivingEntity) {
                 ((LivingEntity) e).removePotionEffect(PotionEffectType.BLINDNESS);
                 ((LivingEntity) e).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, this.blindnessDuration, 0, false, false));

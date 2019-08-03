@@ -70,7 +70,9 @@ public class LightWeight extends Modifier implements Enchantable {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "lightweight", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "lightweight", isCommand)) {
+            return false;
+        }
 
         ItemMeta meta = tool.getItemMeta();
 
@@ -90,7 +92,10 @@ public class LightWeight extends Modifier implements Enchantable {
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.lightweight.craft")) return;
+        if (!p.hasPermission("minetinker.modifiers.lightweight.craft")) {
+            return;
+        }
+
         _createModifierItem(getConfig(), p, this, "Light-Weight");
     }
 

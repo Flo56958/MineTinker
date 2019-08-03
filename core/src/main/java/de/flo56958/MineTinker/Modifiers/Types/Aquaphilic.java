@@ -28,15 +28,16 @@ public class Aquaphilic extends Modifier {
 
     public static Aquaphilic instance() {
         synchronized (Aquaphilic.class) {
-            if (instance == null) instance = new Aquaphilic();
+            if (instance == null) {
+                instance = new Aquaphilic();
+            }
         }
+
         return instance;
     }
 
     private Aquaphilic() {
-        super("Aquaphilic", "Aquaphilic.yml",
-                new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.HELMET)),
-                Main.getPlugin());
+        super("Aquaphilic", "Aquaphilic.yml", new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.HELMET)), Main.getPlugin());
     }
 
     @Override
@@ -94,7 +95,9 @@ public class Aquaphilic extends Modifier {
             return false;
         }
 
-        if (!Modifier.checkAndAdd(p, tool, this, "aquaphilic", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "aquaphilic", isCommand)) {
+            return false;
+        }
 
         ItemMeta meta = tool.getItemMeta();
 

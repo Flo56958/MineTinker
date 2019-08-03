@@ -39,18 +39,33 @@ public class Speedy extends Modifier {
     }
 
     @Override
+    public List<Attribute> getAppliedAttributes() {
+        return Collections.singletonList(Attribute.GENERIC_MOVEMENT_SPEED);
+    }
+
+    @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "speedy", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "speedy", isCommand)) {
+            return false;
+        }
 
         ItemMeta meta = tool.getItemMeta();
-        if (meta == null) return false;
 
-        if (meta.getAttributeModifiers(Attribute.GENERIC_ARMOR) == null || meta.getAttributeModifiers(Attribute.GENERIC_ARMOR).isEmpty()) modManager.addArmorAttributes(tool);
+        if (meta == null) {
+            return false;
+        }
+
+        if (meta.getAttributeModifiers(Attribute.GENERIC_ARMOR) == null || meta.getAttributeModifiers(Attribute.GENERIC_ARMOR).isEmpty()) {
+            modManager.addArmorAttributes(tool);
+        }
+
         Collection<AttributeModifier> speedModifiers = meta.getAttributeModifiers(Attribute.GENERIC_MOVEMENT_SPEED);
         double speedOnItem = 0.0D;
+
         if (!(speedModifiers == null || speedModifiers.isEmpty())) {
             HashSet<String> names = new HashSet<>();
-            for(AttributeModifier am : speedModifiers) {
+
+            for (AttributeModifier am : speedModifiers) {
                 if(names.add(am.getName())) speedOnItem += am.getAmount();
             }
         }
@@ -72,7 +87,10 @@ public class Speedy extends Modifier {
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        if (meta == null) return;
+
+        if (meta == null) {
+            return;
+        }
 
         meta.removeAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED);
         tool.setItemMeta(meta);
@@ -120,13 +138,6 @@ public class Speedy extends Modifier {
     @Override
     public boolean isAllowed() {
         return getConfig().getBoolean("Speedy.allowed");
-    }
-
-    @Override
-    public List<Attribute> getAppliedAttributes() {
-        List<Attribute> attributes = new ArrayList<>();
-        attributes.add(Attribute.GENERIC_MOVEMENT_SPEED);
-        return attributes;
     }
 
     @Override

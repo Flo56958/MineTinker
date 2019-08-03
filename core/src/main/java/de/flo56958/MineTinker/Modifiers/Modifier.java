@@ -39,19 +39,21 @@ public abstract class Modifier {
     private final ArrayList<ToolType> allowedTools;
     private final Plugin source;
 
-    private final ArrayList<Attribute> emptyArrayList = new ArrayList<>();
-
     public String getName() {
         return name;
     }
 
-    public String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
 
     public ChatColor getColor() {
         return color;
     }
 
-    public int getMaxLvl() { return maxLvl; }
+    public int getMaxLvl() {
+        return maxLvl;
+    }
 
     public ItemStack getModItem() {
         return modItem;
@@ -64,7 +66,9 @@ public abstract class Modifier {
     private final String nbtTag;
     private final String fileName;
 
-    Plugin getSource() { return source; } //for other Plugins/Addons that register Modifiers
+    Plugin getSource() {
+        return source;
+    } //for other Plugins/Addons that register Modifiers
 
     /**
      * Class constructor
@@ -148,7 +152,7 @@ public abstract class Modifier {
      * @return a list of attributes that may be applied when the modifier is applied
      */
     public List<Attribute> getAppliedAttributes() {
-        return emptyArrayList;
+        return Collections.emptyList();
     }
 
     public static boolean checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand) {

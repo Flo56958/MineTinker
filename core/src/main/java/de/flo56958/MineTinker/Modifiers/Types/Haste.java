@@ -43,7 +43,10 @@ public class Haste extends Modifier {
         List<Enchantment> enchantments = new ArrayList<>();
         enchantments.add(Enchantment.LURE);
         enchantments.add(Enchantment.DIG_SPEED);
-        if(NBTUtils.isOneFourteenCompatible()) enchantments.add(Enchantment.QUICK_CHARGE);
+
+        if (NBTUtils.isOneFourteenCompatible()) {
+            enchantments.add(Enchantment.QUICK_CHARGE);
+        }
 
         return enchantments;
     }
@@ -85,7 +88,9 @@ public class Haste extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "haste", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "haste", isCommand)) {
+            return false;
+        }
 
         ItemMeta meta = tool.getItemMeta();
 

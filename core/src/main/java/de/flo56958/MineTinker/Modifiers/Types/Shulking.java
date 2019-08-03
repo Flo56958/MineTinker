@@ -100,8 +100,13 @@ public class Shulking extends Modifier implements Listener {
 
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
-        if (!(event.getEntity() instanceof LivingEntity)) return;
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
+
+        if (!(event.getEntity() instanceof LivingEntity)) {
+            return;
+        }
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
@@ -111,20 +116,32 @@ public class Shulking extends Modifier implements Listener {
 
     @EventHandler
     public void effect(MTProjectileHitEvent event) {
-        if (!this.isAllowed()) return;
-        if (!(event.getEvent().getHitEntity() instanceof LivingEntity)) return;
+        if (!this.isAllowed()) {
+            return;
+        }
+
+        if (!(event.getEvent().getHitEntity() instanceof LivingEntity)) {
+            return;
+        }
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
 
-        if (!ToolType.FISHINGROD.contains(tool.getType())) return;
+        if (!ToolType.FISHINGROD.contains(tool.getType())) {
+            return;
+        }
 
         effect(p, tool, event.getEvent().getHitEntity());
     }
 
     private void effect(Player p, ItemStack tool, Entity ent) {
-        if (!p.hasPermission("minetinker.modifiers.shulking.use")) return;
-        if (!modManager.hasMod(tool, this)) return;
+        if (!p.hasPermission("minetinker.modifiers.shulking.use")) {
+            return;
+        }
+
+        if (!modManager.hasMod(tool, this)) {
+            return;
+        }
 
         int level = modManager.getModLevel(tool, this);
         int amplifier = this.effectAmplifier * (level - 1);

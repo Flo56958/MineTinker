@@ -28,16 +28,24 @@ public class ToolUpgradeEvent extends Event {
 
     @NotNull
     @Override
-    public HandlerList getHandlers() { return handlers; }
+    public HandlerList getHandlers() {
+        return handlers;
+    }
 
     public static HandlerList getHandlerList() {
         return handlers;
     }
 
-    public Player getPlayer() { return player; }
+    public Player getPlayer() {
+        return player;
+    }
 
-    public ItemStack getTool() { return tool; }
+    public ItemStack getTool() {
+        return tool;
+    }
 
-    public boolean isSuccessful() { return wasSuccessful; }
+    public boolean isSuccessful() {
+        return wasSuccessful;
+    }
 
 }

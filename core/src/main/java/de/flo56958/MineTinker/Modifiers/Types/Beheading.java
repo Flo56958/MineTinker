@@ -38,8 +38,11 @@ public class Beheading extends Modifier implements Enchantable, Listener {
 
     public static Beheading instance() {
         synchronized (Beheading.class) {
-            if (instance == null) instance = new Beheading();
+            if (instance == null) {
+                instance = new Beheading();
+            }
         }
+
         return instance;
     }
 
@@ -90,7 +93,9 @@ public class Beheading extends Modifier implements Enchantable, Listener {
      */
     @EventHandler(priority = EventPriority.LOW) //For Directing
     public void effect(MTEntityDeathEvent event) {
-        if (!this.isAllowed()) return;
+        if (!this.isAllowed()) {
+            return;
+        }
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
@@ -136,7 +141,10 @@ public class Beheading extends Modifier implements Enchantable, Listener {
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.beheading.craft")) return;
+        if (!p.hasPermission("minetinker.modifiers.beheading.craft")) {
+            return;
+        }
+
         _createModifierItem(getConfig(), p, this, "Beheading");
     }
 

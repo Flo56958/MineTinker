@@ -28,15 +28,17 @@ public class AntiArrowPlating extends Modifier {
 
     public static AntiArrowPlating instance() {
         synchronized (AntiArrowPlating.class) {
-            if (instance == null) instance = new AntiArrowPlating();
+            if (instance == null) {
+                instance = new AntiArrowPlating();
+            }
         }
+
         return instance;
     }
 
     private AntiArrowPlating() {
         super("Anti-Arrow-Plating", "Anti-Arrow-Plating.yml",
-                new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS, ToolType.CHESTPLATE, ToolType.HELMET)),
-                Main.getPlugin());
+                new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS, ToolType.CHESTPLATE, ToolType.HELMET)), Main.getPlugin());
     }
 
     @Override
@@ -94,7 +96,9 @@ public class AntiArrowPlating extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "antiarrowplating", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "antiarrowplating", isCommand)) {
+            return false;
+        }
 
         ItemMeta meta = tool.getItemMeta();
 

@@ -20,13 +20,28 @@ import java.util.*;
 
 public class Luck extends Modifier {
 
+    private static EnumMap<ToolType, List<Enchantment>> applicableEnchants = new EnumMap<>(ToolType.class);
+
     private static Luck instance;
+
+    static {
+        applicableEnchants.put(ToolType.AXE, new ArrayList<Enchantment>() {{ add(Enchantment.LOOT_BONUS_BLOCKS); add(Enchantment.LOOT_BONUS_MOBS); }});
+        applicableEnchants.put(ToolType.BOW, Collections.singletonList(Enchantment.LOOT_BONUS_MOBS));
+        applicableEnchants.put(ToolType.HOE, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
+        applicableEnchants.put(ToolType.PICKAXE, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
+        applicableEnchants.put(ToolType.SHOVEL, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
+        applicableEnchants.put(ToolType.SWORD, Collections.singletonList(Enchantment.LOOT_BONUS_MOBS));
+        applicableEnchants.put(ToolType.SHEARS, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
+        applicableEnchants.put(ToolType.FISHINGROD, Collections.singletonList(Enchantment.LUCK));
+    }
 
     public static Luck instance() {
         synchronized (Luck.class) {
             if (instance == null) instance = new Luck();
         }
+
         return instance;
+
     }
 
     private Luck() {
@@ -87,28 +102,15 @@ public class Luck extends Modifier {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
             return false;
         }
-        if (!Modifier.checkAndAdd(p, tool, this, "luck", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "luck", isCommand)) {
+            return false;
+        }
 
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (ToolType.AXE.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
-                meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.BOW.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.HOE.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.PICKAXE.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.SHOVEL.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.SWORD.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.SHEARS.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.FISHINGROD.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.LUCK, modManager.getModLevel(tool, this), true);
+            for (Enchantment enchantment : applicableEnchants.get(ToolType.get(tool.getType()))) {
+                meta.addEnchant(enchantment, modManager.getModLevel(tool, this), true);
             }
 
             if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {

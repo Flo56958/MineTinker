@@ -107,7 +107,11 @@ public class Soulbound extends Modifier implements Listener {
     public boolean getDropable(ItemStack is) {
         // TODO: Maybe remove this?
         // Not sure what this does
-        if (!modManager.hasMod(is, this)) { return true; }
+
+        if (!modManager.hasMod(is, this)) {
+            return true;
+        }
+
         return toolDropable;
     }
 
@@ -118,23 +122,37 @@ public class Soulbound extends Modifier implements Listener {
      * @return true if soulbound has success
      */
     public boolean effect(Player p, ItemStack is) {
-        if (!p.hasPermission("minetinker.modifiers.soulbound.use")) { return false; }
-        if (!modManager.hasMod(is, this)) { return false; }
+        if (!p.hasPermission("minetinker.modifiers.soulbound.use")) {
+            return false;
+        }
+
+        if (!modManager.hasMod(is, this)) {
+            return false;
+        }
 
         Random rand = new Random();
-        if (rand.nextInt(100) > modManager.getModLevel(is, this) * percentagePerLevel) { return false; }
+        if (rand.nextInt(100) > modManager.getModLevel(is, this) * percentagePerLevel) {
+            return false;
+        }
 
-        storedItemStacks.computeIfAbsent(p, k -> new ArrayList<>());
+        storedItemStacks.computeIfAbsent(p, k -> new ArrayList<>()); // ?
 
         ArrayList<ItemStack> stored = storedItemStacks.get(p);
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Soulbound on " + ItemGenerator.getDisplayName(is) + ChatColor.GRAY + " (" + is.getType().toString() + ")!");
-        if (stored.contains(is)) { return true; }
+
+        if (stored.contains(is)) {
+            return true;
+        }
 
         if (decrementModLevelOnUse) {
             int newLevel = modManager.getModLevel(is, this) - 1;
-            if (newLevel == 0) { modManager.removeMod(is, this); }
-            else { modManager.getNBTHandler().setInt(is, this.getNBTKey(), modManager.getModLevel(is, this) - 1); }
+
+            if (newLevel == 0) {
+                modManager.removeMod(is, this);
+            } else {
+                modManager.getNBTHandler().setInt(is, this.getNBTKey(), modManager.getModLevel(is, this) - 1);
+            }
         }
 
         stored.add(is.clone());
@@ -148,8 +166,13 @@ public class Soulbound extends Modifier implements Listener {
     public void effect(PlayerRespawnEvent e) {
         Player p = e.getPlayer();
 
-        if (!p.hasPermission("minetinker.modifiers.soulbound.use")) return;
-        if (!storedItemStacks.containsKey(p)) return;
+        if (!p.hasPermission("minetinker.modifiers.soulbound.use")) {
+            return;
+        }
+
+        if (!storedItemStacks.containsKey(p)) {
+            return;
+        }
 
         ArrayList<ItemStack> stored = storedItemStacks.get(p);
 
@@ -171,9 +194,17 @@ public class Soulbound extends Modifier implements Listener {
         Item item = e.getItemDrop();
         ItemStack is = item.getItemStack();
 
-        if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) return;
-        if (!modManager.hasMod(is, this)) return;
-        if (toolDropable) return;
+        if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) {
+            return;
+        }
+
+        if (!modManager.hasMod(is, this)) {
+            return;
+        }
+
+        if (toolDropable) {
+            return;
+        }
 
         e.setCancelled(true);
     }

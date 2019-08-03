@@ -489,7 +489,9 @@ public class ModManager {
             }
         }
 
-        if (index == -1) return;
+        if (index == -1) {
+            return;
+        }
 
         lore.remove(index);
 

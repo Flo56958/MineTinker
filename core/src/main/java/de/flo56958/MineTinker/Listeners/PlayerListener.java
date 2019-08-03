@@ -131,7 +131,10 @@ public class PlayerListener implements Listener {
 
         if (eligible) {
             Damageable meta = (Damageable) tool.getItemMeta();
-            if (meta == null) return;
+
+            if (meta == null) {
+                return;
+            }
 
             int dura = meta.getDamage();
             short maxDura = tool.getType().getMaxDurability();

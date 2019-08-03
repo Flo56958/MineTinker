@@ -39,11 +39,21 @@ public class Tanky extends Modifier {
     }
 
     @Override
+    public List<Attribute> getAppliedAttributes() {
+        return Collections.singletonList(Attribute.GENERIC_MAX_HEALTH);
+    }
+
+    @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "tanky", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "tanky", isCommand)) {
+            return false;
+        }
 
         ItemMeta meta = tool.getItemMeta();
-        if (meta == null) return false;
+
+        if (meta == null) {
+            return false;
+        }
 
         if (meta.getAttributeModifiers(Attribute.GENERIC_ARMOR) == null || meta.getAttributeModifiers(Attribute.GENERIC_ARMOR).isEmpty()) modManager.addArmorAttributes(tool);
 
@@ -72,7 +82,10 @@ public class Tanky extends Modifier {
     @Override
     public void removeMod(ItemStack tool) {
         ItemMeta meta = tool.getItemMeta();
-        if (meta == null) return;
+
+        if (meta == null) {
+            return;
+        }
 
         meta.removeAttributeModifier(Attribute.GENERIC_MAX_HEALTH);
         tool.setItemMeta(meta);
@@ -116,13 +129,6 @@ public class Tanky extends Modifier {
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
-    }
-
-    @Override
-    public List<Attribute> getAppliedAttributes() {
-        List<Attribute> attributes = new ArrayList<>();
-        attributes.add(Attribute.GENERIC_MAX_HEALTH);
-        return attributes;
     }
 
     @Override

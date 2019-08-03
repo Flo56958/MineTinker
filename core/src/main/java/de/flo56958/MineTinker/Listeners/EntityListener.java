@@ -63,10 +63,12 @@ public class EntityListener implements Listener {
             return;
         }
 
-        /*
-        if (e.getEntity() instanceof Player) {
-            if (((Player) e.getEntity()).isBlocking()) return;
-        } */
+
+//        if (e.getEntity() instanceof Player) {
+//            if (((Player) e.getEntity()).isBlocking()) {
+//                return;
+//            }
+//        }
 
         ItemStack tool = p.getInventory().getItemInMainHand();
 

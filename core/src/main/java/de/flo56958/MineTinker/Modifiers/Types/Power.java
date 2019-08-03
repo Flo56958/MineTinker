@@ -341,10 +341,18 @@ public class Power extends Modifier implements Enchantable, Listener {
     }
 
     private void powerBlockBreak(Block b, Block centralBlock, Player p) {
-        if (blacklist.contains(b.getType())) return;
+        if (blacklist.contains(b.getType())) {
+            return;
+        }
 
-        if (b.getDrops(p.getInventory().getItemInMainHand()).isEmpty()) return;
-        if (b.getType().getHardness() > centralBlock.getType().getHardness() + 2) return; //So Obsidian can not be mined using Cobblestone and Power
+        if (b.getDrops(p.getInventory().getItemInMainHand()).isEmpty()) {
+            return;
+        }
+
+        if (b.getType().getHardness() > centralBlock.getType().getHardness() + 2) {
+            return; //So Obsidian can not be mined using Cobblestone and Power
+        }
+
         NBTUtils.getHandler().playerBreakBlock(p, b);
     }
 
@@ -369,8 +377,10 @@ public class Power extends Modifier implements Enchantable, Listener {
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.power.craft"))
+        if (!p.hasPermission("minetinker.modifiers.power.craft")){
             return;
+        }
+
         _createModifierItem(getConfig(), p, this, "Power");
     }
 

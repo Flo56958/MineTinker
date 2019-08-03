@@ -67,7 +67,9 @@ public class AnvilListener implements Listener {
         }
 
         if (!modManager.isModifierItem(modifier)) { //upgrade
-            if (tool.getType().equals(newTool.getType())) return; //Not an upgrade
+            if (tool.getType().equals(newTool.getType())) {
+                return; //Not an upgrade
+            }
 
             //TODO: Items should not be stackable but could be with certain plugins
             // ------ upgrade

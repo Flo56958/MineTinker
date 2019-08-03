@@ -242,7 +242,10 @@ class Functions {
 
         if (args.length >= 2) {
             for (Modifier mod : modManager.getAllowedMods()) {
-                if (!mod.getName().equalsIgnoreCase(args[1])) continue;
+                if (!mod.getName().equalsIgnoreCase(args[1])) {
+                    continue;
+                }
+
                 int amount = 1;
 
                 if (args.length >= 3) {
@@ -309,7 +312,9 @@ class Functions {
 
     static void itemStatistics(Player p) {
         ItemStack is = p.getInventory().getItemInMainHand();
-        if (!(modManager.isToolViable(is) || modManager.isArmorViable(is))) return;
+        if (!(modManager.isToolViable(is) || modManager.isArmorViable(is))) {
+            return;
+        }
 
         ChatWriter.sendMessage(p, ChatColor.WHITE, "Item-Statistics for " + ItemGenerator.getDisplayName(is));
         ChatWriter.sendMessage(p, ChatColor.WHITE, "Level: " + modManager.getLevel(is));

@@ -26,7 +26,10 @@ public class Updater {
      * tries to get the newest MineTinker-Version number from api.spigotmc.org
      */
     private static void checkOnline() {
-        if (hasUpdate()) return;
+        if (hasUpdate()) {
+            return;
+        }
+
         try {
             URL url = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + 58940);
             URLConnection connection = url.openConnection();
@@ -37,8 +40,7 @@ public class Updater {
             }
 
             scan.close();
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) { }
     }
 
     /**

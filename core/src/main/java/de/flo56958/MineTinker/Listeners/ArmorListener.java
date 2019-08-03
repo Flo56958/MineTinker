@@ -41,7 +41,9 @@ public class ArmorListener implements Listener {
 
         Player p = (Player) e.getEntity();
 
-        //if (p.isBlocking()) return; //does not really work
+//        if (p.isBlocking()) {
+//            return; // Doesn't work, should implement and find a fix later
+//        }
 
         Entity ent = e.getDamager();
 

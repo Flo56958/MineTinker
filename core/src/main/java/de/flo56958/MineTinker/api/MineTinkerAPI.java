@@ -87,5 +87,7 @@ public class MineTinkerAPI {
         return Main.getPlugin();
     }
 
-    public NBTHandler getNBTHandler() { return NBTUtils.getHandler(); }
+    public NBTHandler getNBTHandler() {
+        return NBTUtils.getHandler();
+    }
 }

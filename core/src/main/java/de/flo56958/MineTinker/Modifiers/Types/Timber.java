@@ -114,7 +114,9 @@ public class Timber extends Modifier implements Listener {
         allowed.addAll(Lists.getWoodLogs());
         allowed.addAll(Lists.getWoodWood());
 
-        if (!allowed.contains(b.getType())) return;
+        if (!allowed.contains(b.getType())) {
+            return;
+        }
 
         boolean isTreeBottom = false; //checks for Grass or Dirt under Log
         boolean isTreeTop = false; //checks for Leaves above Log
@@ -181,7 +183,11 @@ public class Timber extends Modifier implements Listener {
                         continue;
                     }
 
-                    if (getConfig().getInt("Timber.MaximumBlocksPerSwing") > 0 && locs.size() >= getConfig().getInt("Timber.MaximumBlocksPerSwing")) return;
+                    int maxBlocks = getConfig().getInt("Timber.MaximumBlocksPerSwing");
+
+                    if (maxBlocks > 0 && locs.size() >= maxBlocks) {
+                        return;
+                    }
 
                     locs.add(loc);
 

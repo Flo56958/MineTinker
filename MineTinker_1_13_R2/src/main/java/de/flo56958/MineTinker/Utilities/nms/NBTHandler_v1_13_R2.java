@@ -16,7 +16,9 @@ class NBTHandler_v1_13_R2 extends NBTHandler {
         ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 
         NBTTagCompound comp = nmsItem.getTag();
-        if (comp == null) return null;
+        if (comp == null) {
+            return null;
+        }
 
         return comp.get(key);
     }
@@ -25,7 +27,9 @@ class NBTHandler_v1_13_R2 extends NBTHandler {
         ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
         NBTTagCompound comp = nmsItem.getTag();
 
-        if (comp == null) comp = new NBTTagCompound();
+        if (comp == null) {
+            comp = new NBTTagCompound();
+        }
 
         comp.set(key, base);
         nmsItem.setTag(comp);
@@ -37,7 +41,10 @@ class NBTHandler_v1_13_R2 extends NBTHandler {
     @Override
     public int getInt(org.bukkit.inventory.ItemStack item, String key) {
         NBTBase base = getBase(item, key);
-        if (!(base instanceof NBTTagInt)) return 0;
+
+        if (!(base instanceof NBTTagInt)) {
+            return 0;
+        }
 
         return ((NBTTagInt)base).asInt();
     }
@@ -45,7 +52,10 @@ class NBTHandler_v1_13_R2 extends NBTHandler {
     @Override
     public long getLong(org.bukkit.inventory.ItemStack item, String key) {
         NBTBase base = getBase(item, key);
-        if (!(base instanceof NBTTagLong)) return 0;
+
+        if (!(base instanceof NBTTagLong)) {
+            return 0;
+        }
 
         return ((NBTTagLong)base).asLong();
     }
@@ -53,7 +63,10 @@ class NBTHandler_v1_13_R2 extends NBTHandler {
     @Override
     public String getString(org.bukkit.inventory.ItemStack item, String key) {
         NBTBase base = getBase(item, key);
-        if (!(base instanceof NBTTagString)) return null;
+
+        if (!(base instanceof NBTTagString)) {
+            return null;
+        }
 
         return base.asString();
     }
@@ -61,7 +74,10 @@ class NBTHandler_v1_13_R2 extends NBTHandler {
     @Override
     public List<String> getStringList(org.bukkit.inventory.ItemStack item, String key) {
         NBTBase base = getBase(item, key);
-        if (!(base instanceof NBTTagList)) return null;
+
+        if (!(base instanceof NBTTagList)) {
+            return null;
+        }
 
         String[] values = (String[])((NBTTagList) base).toArray();
 
@@ -87,12 +103,16 @@ class NBTHandler_v1_13_R2 extends NBTHandler {
     public void setStringList(org.bukkit.inventory.ItemStack item, String key, String... value) {
         NBTTagList list = new NBTTagList();
 
-        for (String val : value) list.add(new NBTTagString(val));
+        for (String val : value) {
+            list.add(new NBTTagString(val));
+        }
 
         ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
         NBTTagCompound comp = nmsItem.getTag();
 
-        if (comp == null) comp = new NBTTagCompound();
+        if (comp == null) {
+            comp = new NBTTagCompound();
+        }
 
         comp.set(key, list);
         nmsItem.setTag(comp);
@@ -106,7 +126,9 @@ class NBTHandler_v1_13_R2 extends NBTHandler {
         ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
         NBTTagCompound comp = nmsItem.getTag();
 
-        if (comp == null) return false;
+        if (comp == null) {
+            return false;
+        }
 
         return comp.get(key) != null;
     }
@@ -116,7 +138,9 @@ class NBTHandler_v1_13_R2 extends NBTHandler {
         ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
         NBTTagCompound comp = nmsItem.getTag();
 
-        if (comp == null) comp = new NBTTagCompound();
+        if (comp == null) {
+            comp = new NBTTagCompound();
+        }
 
         comp.remove(key);
         nmsItem.setTag(comp);
@@ -127,6 +151,7 @@ class NBTHandler_v1_13_R2 extends NBTHandler {
 
     @Override
     public void playerBreakBlock(Player p, Block block) {
+
         ((CraftPlayer) p).getHandle().playerInteractManager.breakBlock(new BlockPosition(block.getX(), block.getY(), block.getZ()));
     }
 }

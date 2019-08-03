@@ -88,32 +88,44 @@ public class Experienced extends Modifier implements Listener {
 
     @EventHandler
     public void effect(MTBlockBreakEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
+
         effect(event.getPlayer(), event.getTool());
     }
 
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
 
         if (ToolType.BOOTS.contains(event.getTool().getType())
             || ToolType.LEGGINGS.contains(event.getTool().getType())
             || ToolType.CHESTPLATE.contains(event.getTool().getType())
-            || ToolType.HELMET.contains(event.getTool().getType())) return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
+            || ToolType.HELMET.contains(event.getTool().getType())) {
+
+            return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
+        }
 
         effect(event.getPlayer(), event.getTool());
     }
 
     @EventHandler
     public void effect(MTEntityDamageEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
 
         effect(event.getPlayer(), event.getTool());
     }
 
     @EventHandler
     public void effect(MTPlayerInteractEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
 
         effect(event.getPlayer(), event.getTool());
     }
@@ -124,8 +136,13 @@ public class Experienced extends Modifier implements Listener {
      * @param tool the Tool
      */
     private void effect(Player p, ItemStack tool) {
-        if (!p.hasPermission("minetinker.modifiers.experienced.use")) return;
-        if (!modManager.hasMod(tool, this)) return;
+        if (!p.hasPermission("minetinker.modifiers.experienced.use")) {
+            return;
+        }
+
+        if (!modManager.hasMod(tool, this)) {
+            return;
+        }
 
         int level = modManager.getModLevel(tool, this);
 

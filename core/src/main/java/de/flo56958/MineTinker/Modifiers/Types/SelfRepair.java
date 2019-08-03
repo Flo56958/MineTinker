@@ -49,6 +49,8 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
     }
 
     private SelfRepair() {
+        // TODO: Implement a way to just say every tooltype works?
+
         super("Self-Repair", "Self-Repair.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL, ToolType.SWORD,
                                                 ToolType.TRIDENT, ToolType.FISHINGROD,
@@ -100,7 +102,9 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "selfrepair", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "selfrepair", isCommand)) {
+            return false;
+        }
 
         if (useMending) {
             ItemMeta meta = tool.getItemMeta();
@@ -124,47 +128,68 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
 
     @EventHandler
     public void effect(MTBlockBreakEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
+
         effect(event.getPlayer(), event.getTool());
     }
 
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
 
         if (ToolType.BOOTS.contains(event.getTool().getType())
                 || ToolType.LEGGINGS.contains(event.getTool().getType())
                 || ToolType.CHESTPLATE.contains(event.getTool().getType())
-                || ToolType.HELMET.contains(event.getTool().getType())) return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
+                || ToolType.HELMET.contains(event.getTool().getType())) {
+
+            return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
+        }
 
         effect(event.getPlayer(), event.getTool());
     }
 
     @EventHandler
     public void effect(MTEntityDamageEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
+
         effect(event.getPlayer(), event.getTool());
     }
 
     @EventHandler
     public void effect(MTPlayerInteractEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
+
         effect(event.getPlayer(), event.getTool());
     }
 
     @EventHandler
     public void onShear(PlayerShearEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
 
         ItemStack tool = event.getPlayer().getInventory().getItemInMainHand();
 
-        if (!(modManager.isToolViable(tool) && ToolType.SHEARS.contains(tool.getType()))) return;
+        if (!(modManager.isToolViable(tool) && ToolType.SHEARS.contains(tool.getType()))) {
+            return;
+        }
 
         effect(event.getPlayer(), tool);
     }
 
     public void effectElytra(Player p, ItemStack elytra) {
-        if (!this.isAllowed()) return;
+        if (!this.isAllowed()) {
+            return;
+        }
+
         effect(p, elytra);
     }
 
@@ -174,9 +199,17 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
      * @param tool the Tool
      */
 	private void effect(Player p, ItemStack tool) {
-        if (useMending) return;
-        if (!p.hasPermission("minetinker.modifiers.selfrepair.use")) return;
-        if (!modManager.hasMod(tool, this)) return;
+        if (useMending) {
+            return;
+        }
+        
+        if (!p.hasPermission("minetinker.modifiers.selfrepair.use")) {
+            return;
+        }
+
+        if (!modManager.hasMod(tool, this)) {
+            return;
+        }
 
         int level = modManager.getModLevel(tool, this);
         Random rand = new Random();
@@ -204,7 +237,10 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.selfrepair.craft")) return;
+        if (!p.hasPermission("minetinker.modifiers.selfrepair.craft")) {
+            return;
+        }
+
         _createModifierItem(getConfig(), p, this, "Self-Repair");
     }
 

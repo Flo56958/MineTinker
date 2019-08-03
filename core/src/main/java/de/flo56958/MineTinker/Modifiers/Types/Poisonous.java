@@ -96,14 +96,24 @@ public class Poisonous extends Modifier implements Enchantable, Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (!this.isAllowed()) return;
-        if (!(event.getEntity() instanceof LivingEntity)) return;
+        if (!this.isAllowed()) {
+            return;
+        }
+
+        if (!(event.getEntity() instanceof LivingEntity)) {
+            return;
+        }
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
 
-        if (!p.hasPermission("minetinker.modifiers.poisonous.use")) return;
-        if (!modManager.hasMod(tool, this)) return;
+        if (!p.hasPermission("minetinker.modifiers.poisonous.use")) {
+            return;
+        }
+
+        if (!modManager.hasMod(tool, this)) {
+            return;
+        }
 
         int level = modManager.getModLevel(tool, this);
 
@@ -115,13 +125,20 @@ public class Poisonous extends Modifier implements Enchantable, Listener {
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        if (!dropPoisonedMeat) return;
+        if (!dropPoisonedMeat) {
+            return;
+        }
 
         LivingEntity mob = event.getEntity();
         Player p = mob.getKiller();
 
-        if (p == null) return;
-        if (Lists.WORLDS.contains(p.getWorld().getName())) return;
+        if (p == null) {
+            return;
+        }
+
+        if (Lists.WORLDS.contains(p.getWorld().getName())) {
+            return;
+        }
 
         boolean isPoisoned = false;
 
@@ -132,7 +149,9 @@ public class Poisonous extends Modifier implements Enchantable, Listener {
             }
         }
 
-        if (!isPoisoned) return;
+        if (!isPoisoned) {
+            return;
+        }
 
         int numberOfMeat = 0;
         int numberOfPotatoes = 0;
@@ -173,7 +192,10 @@ public class Poisonous extends Modifier implements Enchantable, Listener {
 
     @Override
     public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.poisonous.craft")) return;
+        if (!p.hasPermission("minetinker.modifiers.poisonous.craft")) {
+            return;
+        }
+
         _createModifierItem(getConfig(), p, this, "Poisonous");
     }
 

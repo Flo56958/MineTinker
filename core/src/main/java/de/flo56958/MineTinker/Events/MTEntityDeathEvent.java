@@ -42,7 +42,9 @@ public class MTEntityDeathEvent extends Event {
     /**
      * @return The original EntityDeathEvent
      */
-    public EntityDeathEvent getEvent() { return event; }
+    public EntityDeathEvent getEvent() {
+        return event;
+    }
 
     @NotNull
     @Override

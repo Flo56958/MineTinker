@@ -44,7 +44,9 @@ public class MTBlockBreakEvent extends Event implements Cancellable {
     /**
      * @return The original BlockBreakEvent
      */
-    public BlockBreakEvent getEvent() { return event; }
+    public BlockBreakEvent getEvent() {
+        return event;
+    }
 
     @NotNull
     @Override

@@ -33,8 +33,11 @@ public class AntiBlastPlating extends Modifier {
 
     public static AntiBlastPlating instance() {
         synchronized (AntiBlastPlating.class) {
-            if (instance == null) instance = new AntiBlastPlating();
+            if (instance == null) {
+                instance = new AntiBlastPlating();
+            }
         }
+
         return instance;
     }
 
@@ -97,7 +100,9 @@ public class AntiBlastPlating extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "antiblastplating", isCommand)) return false;
+        if (!Modifier.checkAndAdd(p, tool, this, "antiblastplating", isCommand)) {
+            return false;
+        }
 
         ItemMeta meta = tool.getItemMeta();
 
