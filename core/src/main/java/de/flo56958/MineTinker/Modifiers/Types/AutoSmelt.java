@@ -22,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,11 +52,6 @@ public class AutoSmelt extends Modifier implements Listener {
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
-    }
-
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return new ArrayList<>();
     }
 
     @Override

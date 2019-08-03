@@ -38,10 +38,7 @@ public class LightWeight extends Modifier implements Enchantable {
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.PROTECTION_FALL);
-
-        return enchantments;
+        return Collections.singletonList(Enchantment.PROTECTION_FALL);
     }
 
     @Override

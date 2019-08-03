@@ -41,11 +41,6 @@ public class Directing extends Modifier implements Listener {
     }
 
     @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return new ArrayList<>();
-    }
-
-    @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);

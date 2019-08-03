@@ -23,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Melting extends Modifier implements Enchantable, Listener {
@@ -45,11 +46,6 @@ public class Melting extends Modifier implements Enchantable, Listener {
                                                 ToolType.CHESTPLATE, ToolType.LEGGINGS)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
-    }
-
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return new ArrayList<>();
     }
 
     @Override

@@ -39,10 +39,7 @@ public class MultiShot extends Modifier {
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.MULTISHOT);
-
-        return enchantments;
+        return Collections.singletonList(Enchantment.MULTISHOT);
     }
 
     @Override

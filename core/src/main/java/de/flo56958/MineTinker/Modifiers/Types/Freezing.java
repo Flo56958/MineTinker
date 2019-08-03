@@ -41,10 +41,7 @@ public class Freezing extends Modifier {
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.FROST_WALKER);
-
-        return enchantments;
+        return Collections.singletonList(Enchantment.FROST_WALKER);
     }
 
     @Override

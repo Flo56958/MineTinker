@@ -47,11 +47,6 @@ public class Timber extends Modifier implements Listener {
     }
 
     @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return new ArrayList<>();
-    }
-
-    @Override
     public void reload() {
         FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
@@ -99,14 +94,21 @@ public class Timber extends Modifier implements Listener {
 
     @EventHandler
     public void effect(MTBlockBreakEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
         Block b = event.getBlock();
 
-        if (Power.HASPOWER.get(p).get() || p.isSneaking()) return;
-        if (!modManager.hasMod(tool, this)) return;
+        if (Power.HASPOWER.get(p).get() || p.isSneaking()) {
+            return;
+        }
+
+        if (!modManager.hasMod(tool, this)) {
+            return;
+        }
 
         ArrayList<Material> allowed = new ArrayList<>();
         allowed.addAll(Lists.getWoodLogs());
@@ -149,7 +151,9 @@ public class Timber extends Modifier implements Listener {
             }
         }
 
-        if (!isTreeBottom || !isTreeTop) return; //TODO: Improve tree check
+        if (!isTreeBottom || !isTreeTop) {
+            return; //TODO: Improve tree check
+        }
 
         Power.HASPOWER.get(p).set(true);
         locs.add(b.getLocation());
@@ -166,11 +170,16 @@ public class Timber extends Modifier implements Listener {
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
                 for (int dz = -1; dz <= 1; dz++) {
-                    if (dx == 0 && dy == 0 && dz == 0) continue;
+                    if (dx == 0 && dy == 0 && dz == 0) {
+                        continue;
+                    }
+
                     Location loc = b.getLocation().clone();
                     loc.add(dx, dy, dz);
 
-                    if (locs.contains(loc)) { continue; }
+                    if (locs.contains(loc)) {
+                        continue;
+                    }
 
                     if (getConfig().getInt("Timber.MaximumBlocksPerSwing") > 0 && locs.size() >= getConfig().getInt("Timber.MaximumBlocksPerSwing")) return;
 

@@ -28,6 +28,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -58,10 +59,9 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.MENDING);
+        // This may be an issue if (like by default) Self-Repair doesn't apply mending
+        return Collections.singletonList(Enchantment.MENDING);
 
-        return enchantments;
     }
 
     @Override

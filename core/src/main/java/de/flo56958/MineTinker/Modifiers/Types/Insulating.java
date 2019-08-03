@@ -41,10 +41,7 @@ public class Insulating extends Modifier {
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.PROTECTION_FIRE);
-
-        return enchantments;
+        return Collections.singletonList(Enchantment.PROTECTION_FIRE);
     }
 
     @Override

@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ExtraModifier extends Modifier {
@@ -37,11 +38,6 @@ public class ExtraModifier extends Modifier {
                                                 ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT,
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
-    }
-
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return new ArrayList<>();
     }
 
     @Override

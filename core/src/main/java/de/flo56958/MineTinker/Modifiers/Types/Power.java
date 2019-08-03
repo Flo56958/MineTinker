@@ -33,6 +33,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -60,11 +61,6 @@ public class Power extends Modifier implements Enchantable, Listener {
                         Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
-    }
-
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return new ArrayList<>();
     }
 
     @Override

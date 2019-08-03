@@ -25,6 +25,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,11 +50,6 @@ public class Shulking extends Modifier implements Listener {
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
-    }
-
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return new ArrayList<>();
     }
 
     @Override

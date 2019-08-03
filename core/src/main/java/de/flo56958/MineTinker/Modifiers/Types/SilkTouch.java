@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class SilkTouch extends Modifier implements Enchantable {
@@ -40,10 +41,7 @@ public class SilkTouch extends Modifier implements Enchantable {
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.SILK_TOUCH);
-
-        return enchantments;
+        return Collections.singletonList(Enchantment.SILK_TOUCH);
     }
 
     @Override

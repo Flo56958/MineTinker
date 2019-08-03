@@ -43,10 +43,7 @@ public class Piercing extends Modifier {
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.PIERCING);
-
-        return enchantments;
+        return Collections.singletonList(Enchantment.PIERCING);
     }
 
     @Override

@@ -24,6 +24,7 @@ import org.bukkit.util.Vector;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Propelling extends Modifier implements Enchantable, Listener {
@@ -52,10 +53,7 @@ public class Propelling extends Modifier implements Enchantable, Listener {
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.RIPTIDE);
-
-        return enchantments;
+        return Collections.singletonList(Enchantment.RIPTIDE);
     }
 
     @Override

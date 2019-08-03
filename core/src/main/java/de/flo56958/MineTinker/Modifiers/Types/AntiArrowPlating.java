@@ -41,10 +41,7 @@ public class AntiArrowPlating extends Modifier {
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.PROTECTION_PROJECTILE);
-
-        return enchantments;
+        return Collections.singletonList(Enchantment.PROTECTION_ENVIRONMENTAL);
     }
 
     @Override
@@ -140,7 +137,7 @@ public class AntiArrowPlating extends Modifier {
 
         return true;
     }
-    
+
     @Override
     public void registerCraftingRecipe() {
         _registerCraftingRecipe(getConfig(), this, "Anti-Arrow-Plating", "Modifier_AntiArrowPlating");

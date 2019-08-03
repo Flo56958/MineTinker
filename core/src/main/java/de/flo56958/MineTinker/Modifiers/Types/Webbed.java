@@ -39,7 +39,9 @@ public class Webbed extends Modifier implements Listener {
 
     public static Webbed instance() {
         synchronized (Webbed.class) {
-            if (instance == null) instance = new Webbed();
+            if (instance == null) {
+                instance = new Webbed();
+            }
         }
         return instance;
     }
@@ -50,11 +52,6 @@ public class Webbed extends Modifier implements Listener {
                                                 ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
                 Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
-    }
-
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return new ArrayList<>();
     }
 
     @Override
@@ -107,25 +104,46 @@ public class Webbed extends Modifier implements Listener {
 
     @EventHandler
     public void effect(MTEntityDamageByEntityEvent event) {
-        if (event.isCancelled() || !this.isAllowed()) return;
-        if (!(event.getEntity() instanceof LivingEntity)) return;
+        if (event.isCancelled() || !this.isAllowed()) {
+            return;
+        }
+
+        if (!(event.getEntity() instanceof LivingEntity)) {
+            return;
+        }
 
         effect(event.getPlayer(), event.getTool(), event.getEntity());
     }
 
     @EventHandler
     public void effect(MTProjectileHitEvent event) {
-        if (!this.isAllowed()) return;
-        if (!(event.getEvent().getHitEntity() instanceof LivingEntity)) return;
-        if (!ToolType.FISHINGROD.contains(event.getTool().getType())) return;
+        if (!this.isAllowed()) {
+            // Maybe change this to cancellable and ignoreCancelled?
+            return;
+        }
+        if (!(event.getEvent().getHitEntity() instanceof LivingEntity)) {
+            return;
+        }
+
+        if (!ToolType.FISHINGROD.contains(event.getTool().getType())) {
+            return;
+        }
 
         effect(event.getPlayer(), event.getTool(), event.getEvent().getHitEntity());
     }
 
     private void effect(Player p, ItemStack tool, Entity ent) {
-        if (!p.hasPermission("minetinker.modifiers.webbed.use")) return;
-        if (ent.isDead()) return;
-        if (!modManager.hasMod(tool, this)) return;
+        if (!p.hasPermission("minetinker.modifiers.webbed.use")) {
+            return;
+        }
+
+        if (ent.isDead()) {
+            return;
+        }
+
+        if (!modManager.hasMod(tool, this)) {
+            return;
+        }
 
         int level = modManager.getModLevel(tool, this);
 

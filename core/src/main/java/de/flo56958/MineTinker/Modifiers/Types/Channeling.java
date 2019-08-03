@@ -39,10 +39,7 @@ public class Channeling extends Modifier {
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.CHANNELING);
-
-        return enchantments;
+        return Collections.singletonList(Enchantment.CHANNELING);
     }
 
     @Override

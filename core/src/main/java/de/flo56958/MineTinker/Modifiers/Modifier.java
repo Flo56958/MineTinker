@@ -24,6 +24,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class Modifier {
@@ -139,7 +140,9 @@ public abstract class Modifier {
     /**
      * @return a list of enchantments that may be applied when the modifier is applied
      */
-    public abstract List<Enchantment> getAppliedEnchantments();
+    public List<Enchantment> getAppliedEnchantments() {
+        return Collections.emptyList();
+    }
 
     /**
      * @return a list of attributes that may be applied when the modifier is applied
