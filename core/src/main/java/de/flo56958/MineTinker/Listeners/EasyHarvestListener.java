@@ -61,7 +61,7 @@ public class EasyHarvestListener implements Listener {
 
         Block block = event.getClickedBlock();
 
-        if (!(block.getState().getBlockData() instanceof Ageable)) {
+        if (!(block.getBlockData() instanceof Ageable)) {
             return;
         }
 
@@ -78,7 +78,7 @@ public class EasyHarvestListener implements Listener {
     }
 
     private static void harvestCrops(Player player, ItemStack tool, Block block) {
-        Ageable ageable = (Ageable)block.getState().getBlockData();
+        Ageable ageable = (Ageable)block.getBlockData();
 
         if (ageable.getAge() == ageable.getMaximumAge()) {
             breakCrops(player, tool, block);
@@ -125,13 +125,13 @@ public class EasyHarvestListener implements Listener {
                     return;
                 }
 
-                Ageable blockOneAgeable = (Ageable)b1.getState().getBlockData();
+                Ageable blockOneAgeable = (Ageable)b1.getBlockData();
                 if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
                     breakBlock(b1, player);
                     replantCrops(player, b1, type);
                 }
 
-                Ageable blockTwoAgeable = (Ageable)b1.getState().getBlockData();
+                Ageable blockTwoAgeable = (Ageable)b1.getBlockData();
                 if (b2.getType().equals(block.getType()) && (blockTwoAgeable.getAge() == blockTwoAgeable.getMaximumAge())) {
                     breakBlock(b2, player);
                     replantCrops(player, b2, type);
@@ -141,7 +141,12 @@ public class EasyHarvestListener implements Listener {
                     for (int z = -(level - 1); z <= (level - 1); z++) {
                         if (!(x == 0 && z == 0)) {
                             Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
-                            Ageable blockOneAgeable = (Ageable)b1.getState().getBlockData();
+
+                            if (!(b1.getBlockData() instanceof Ageable)) {
+                                continue;
+                            }
+
+                            Ageable blockOneAgeable = (Ageable)b1.getBlockData();
 
                             if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
                                 breakBlock(b1, player);
