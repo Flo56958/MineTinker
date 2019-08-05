@@ -34,8 +34,18 @@ public class Speedy extends Modifier {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Speedy";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS);
+    }
+
     private Speedy() {
-        super("Speedy", "Speedy.yml", new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS)), Main.getPlugin());
+        super(Main.getPlugin());
     }
 
     @Override
@@ -85,29 +95,18 @@ public class Speedy extends Modifier {
     }
 
     @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta == null) {
-            return;
-        }
-
-        meta.removeAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED);
-        tool.setItemMeta(meta);
-    }
-
-    @Override
     public void reload() {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Speedy";
+        String key = getKey();
+
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Enhanced Rabbithide");
         config.addDefault(key + ".modifier_item", "RABBIT_HIDE"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Gotta go fast!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Speedy-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%BLUE%");
         config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 5);
@@ -129,20 +128,9 @@ public class Speedy extends Modifier {
 
         this.speedPerLevel = config.getDouble(key + ".SpeedPerLevel");
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
-    }
-
-    @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Speedy.allowed");
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Speedy", "Modifier_Speedy");
     }
 }

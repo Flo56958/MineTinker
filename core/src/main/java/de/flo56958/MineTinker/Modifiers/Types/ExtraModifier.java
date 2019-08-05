@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ExtraModifier extends Modifier {
 
@@ -32,21 +33,30 @@ public class ExtraModifier extends Modifier {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Extra-Modifier";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.FISHINGROD,
+                ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT,
+                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA);
+    }
+
     private ExtraModifier() {
-        super("Extra-Modifier", "Extra-Modifier.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.FISHINGROD,
-                                                ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT,
-                                                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
-                Main.getPlugin());
+        super(Main.getPlugin());
     }
 
     @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Extra-Modifier";
-    	config.addDefault(key + ".allowed", true);
+
+        String key = getKey();
+
+        config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
         config.addDefault(key + ".modifier_item", "NETHER_STAR"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Adds a additional Modifiers-Slot to the tool!");
@@ -56,8 +66,7 @@ public class ExtraModifier extends Modifier {
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".modifier_item")+ "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".modifier_item")+ "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 -1,
                 new ItemStack(Material.getMaterial(config.getString(key + ".modifier_item")), 1));
@@ -88,15 +97,5 @@ public class ExtraModifier extends Modifier {
         modManager.setFreeSlots(tool, amount);
 
         return true;
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        // no recipe
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Extra-Modifier.allowed");
     }
 }

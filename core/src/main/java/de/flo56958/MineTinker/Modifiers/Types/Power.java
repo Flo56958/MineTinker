@@ -56,10 +56,18 @@ public class Power extends Modifier implements Listener {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Power";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS);
+    }
+
     private Power() {
-        super("Power", "Power.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
-                Main.getPlugin());
+        super(Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
 
@@ -68,13 +76,14 @@ public class Power extends Modifier implements Listener {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Power";
+        String key = getKey();
+
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Enchanted Emerald");
         config.addDefault(key + ".modifier_item", "EMERALD"); // Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Tool can destroy more blocks per swing!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Power-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%GREEN%");
         config.addDefault(key + ".lv1_vertical", false); // Should the 3x1 at level 1 be horizontal (false) or vertical
                                                          // (true)
@@ -100,8 +109,7 @@ public class Power extends Modifier implements Listener {
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString("Power.name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString("Power.name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
                         ChatWriter.getColor(config.getString(key + ".Color"))
@@ -414,15 +422,5 @@ public class Power extends Modifier implements Listener {
                 }
             }
         }
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Power", "Modifier_Power");
-    }
-
-    @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Power.allowed");
     }
 }

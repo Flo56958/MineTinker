@@ -33,31 +33,38 @@ public class Fiery extends Modifier {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Fiery";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD);
+    }
+
     private Fiery() {
-        super("Fiery", "Fiery.yml", new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD)), Main.getPlugin());
+        super(Main.getPlugin());
     }
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.ARROW_FIRE);
-        enchantments.add(Enchantment.FIRE_ASPECT);
-
-        return enchantments;
+        return Arrays.asList(Enchantment.ARROW_FIRE, Enchantment.FIRE_ASPECT);
     }
 
     @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Fiery";
-    	config.addDefault(key + ".allowed", true);
+
+        String key = getKey();
+
+        config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted Blaze-Rod");
         config.addDefault(key + ".modifier_item", "BLAZE_ROD"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Inflames enemies!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Fiery-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%YELLOW%");
         config.addDefault(key + ".MaxLevel", 2);
     	config.addDefault(key + ".EnchantCost", 10);
@@ -66,8 +73,7 @@ public class Fiery extends Modifier {
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
@@ -98,15 +104,5 @@ public class Fiery extends Modifier {
         }
 
         return true;
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Fiery", "Modifier_Fiery");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Fiery.allowed");
     }
 }

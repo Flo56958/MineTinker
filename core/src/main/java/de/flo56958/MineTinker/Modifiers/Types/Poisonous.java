@@ -25,6 +25,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 public class Poisonous extends Modifier implements Listener {
 	
@@ -45,11 +46,19 @@ public class Poisonous extends Modifier implements Listener {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Poisonous";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT,
+                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA);
+    }
+
     private Poisonous() {
-        super("Poisonous", "Poisonous.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT,
-                                                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
-                Main.getPlugin());
+        super(Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
 
@@ -57,14 +66,15 @@ public class Poisonous extends Modifier implements Listener {
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Poisonous";
-    	config.addDefault(key + ".allowed", true);
+
+        String key = getKey();
+
+        config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enhanced Rotten Flesh");
         config.addDefault(key + ".modifier_item", "ROTTEN_FLESH"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Poisons enemies!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Poisonous-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%DARK_GREEN%");
         config.addDefault(key + ".MaxLevel", 5);
     	config.addDefault(key + ".EnchantCost", 10);
@@ -77,8 +87,7 @@ public class Poisonous extends Modifier implements Listener {
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
         
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
@@ -188,15 +197,5 @@ public class Poisonous extends Modifier implements Listener {
             default:
                 return false;
         }
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Poisonous", "Modifier_Poisonous");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Poisonous.allowed");
     }
 }

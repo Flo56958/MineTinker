@@ -49,9 +49,18 @@ public class AutoSmelt extends Modifier implements Listener {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Auto-Smelt";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS);
+    }
+
     private AutoSmelt() {
-        super("Auto-Smelt", "Auto-Smelt.yml", new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
-                Main.getPlugin());
+        super(Main.getPlugin());
 
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
@@ -60,14 +69,15 @@ public class AutoSmelt extends Modifier implements Listener {
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Auto-Smelt";
-    	config.addDefault(key + ".allowed", true);
+
+        String key = getKey();
+
+        config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enhanced Furnace");
         config.addDefault(key + ".modifier_item", "FURNACE"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Chance to smelt ore when mined!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Auto-Smelt-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
     	config.addDefault(key + ".Color", "%YELLOW%");
         config.addDefault(key + ".EnchantCost", 10);
     	config.addDefault(key + ".MaxLevel", 5);
@@ -169,8 +179,7 @@ public class AutoSmelt extends Modifier implements Listener {
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-    	init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+    	init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
                 ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
@@ -262,15 +271,5 @@ public class AutoSmelt extends Modifier implements Listener {
             ChatWriter.log(false, player.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY +
                     " (" + tool.getType().toString() + ") while mining " + breakEvent.getBlock().getType().toString() + "!");
         }
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Auto-Smelt", "Modifier_Autosmelt");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Auto-Smelt.allowed");
     }
 }

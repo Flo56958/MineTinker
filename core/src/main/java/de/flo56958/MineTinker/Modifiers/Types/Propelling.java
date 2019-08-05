@@ -46,8 +46,19 @@ public class Propelling extends Modifier implements Listener {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Propelling";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.ELYTRA, ToolType.TRIDENT);
+    }
+
     private Propelling() {
-        super("Propelling", "Propelling.yml", new ArrayList<>(Arrays.asList(ToolType.ELYTRA, ToolType.TRIDENT)), Main.getPlugin());
+        super(Main.getPlugin());
+
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
 
@@ -61,13 +72,14 @@ public class Propelling extends Modifier implements Listener {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Propelling";
+        String key = getKey();
+
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Enchanted Fireworkstar");
         config.addDefault(key + ".modifier_item", "FIREWORK_STAR"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Propel yourself through the air.");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Propelling-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%GOLD%");
         config.addDefault(key + ".MaxLevel", 3);
         config.addDefault(key + ".EnchantCost", 10);
@@ -80,8 +92,7 @@ public class Propelling extends Modifier implements Listener {
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
@@ -175,15 +186,5 @@ public class Propelling extends Modifier implements Listener {
         }
 
         if (particles) player.playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
-    }
-
-    @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Propelling.allowed");
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Propelling", "Modifier_Propelling");
     }
 }

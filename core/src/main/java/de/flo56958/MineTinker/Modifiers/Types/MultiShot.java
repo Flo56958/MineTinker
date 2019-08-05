@@ -34,8 +34,18 @@ public class MultiShot extends Modifier {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Multishot";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Collections.singletonList(ToolType.CROSSBOW);
+    }
+
     private MultiShot() {
-        super("Multishot", "Multishot.yml", new ArrayList<>(Collections.singletonList(ToolType.CROSSBOW)), Main.getPlugin());
+        super(Main.getPlugin());
     }
 
     @Override
@@ -48,13 +58,14 @@ public class MultiShot extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Multishot";
+        String key = getKey();
+
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Multi-Arrow");
         config.addDefault(key + ".modifier_item", "ARROW"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Shoot more Arrows per shot!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Multishot-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%YELLOW%");
         config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 1);
@@ -75,8 +86,7 @@ public class MultiShot extends Modifier {
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
@@ -114,15 +124,5 @@ public class MultiShot extends Modifier {
         }
 
         return false;
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Multishot", "Modifier_Multishot");
-    }
-
-    @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Multishot.allowed");
     }
 }

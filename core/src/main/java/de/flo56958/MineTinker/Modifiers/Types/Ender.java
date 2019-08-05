@@ -45,8 +45,19 @@ public class Ender extends Modifier implements Listener {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Ender";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.BOW, ToolType.CROSSBOW, ToolType.TRIDENT);
+    }
+
     private Ender() {
-        super("Ender", "Ender.yml", new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.CROSSBOW, ToolType.TRIDENT)), Main.getPlugin());
+        super(Main.getPlugin());
+
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
 
@@ -54,14 +65,15 @@ public class Ender extends Modifier implements Listener {
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Ender";
-    	config.addDefault(key + ".allowed", true);
+
+        String key = getKey();
+
+        config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Special Endereye");
         config.addDefault(key + ".modifier_item", "ENDER_EYE"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Teleports you while sneaking to the arrow location!");
-    	config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Ender-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%DARK_GREEN%");
         config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 2);
@@ -88,8 +100,7 @@ public class Ender extends Modifier implements Listener {
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
                 ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
@@ -250,15 +261,5 @@ public class Ender extends Modifier implements Listener {
             cloud2.setColor(Color.GREEN);
             cloud2.getLocation().setPitch(90);
         }
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Ender", "Modifier_Ender");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Ender.allowed");
     }
 }

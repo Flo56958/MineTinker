@@ -323,8 +323,8 @@ class Functions {
         ChatWriter.sendMessage(p, ChatColor.WHITE, "Modifiers:");
 
         for (Modifier mod : modManager.getAllowedMods()) {
-            if (NBTUtils.getHandler().hasTag(is, mod.getNBTKey())) {
-                ChatWriter.sendMessage(p, ChatColor.WHITE, mod.getColor() + mod.getName() + ChatColor.WHITE + " " + NBTUtils.getHandler().getInt(is, mod.getNBTKey()));
+            if (NBTUtils.getHandler().hasTag(is, mod.getKey())) {
+                ChatWriter.sendMessage(p, ChatColor.WHITE, mod.getColor() + mod.getName() + ChatColor.WHITE + " " + NBTUtils.getHandler().getInt(is, mod.getKey()));
             }
         }
     }

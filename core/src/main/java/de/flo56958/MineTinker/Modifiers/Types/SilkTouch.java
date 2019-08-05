@@ -35,10 +35,18 @@ public class SilkTouch extends Modifier {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Silk-Touch";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS);
+    }
+
     private SilkTouch() {
-        super("Silk-Touch", "Silk-Touch.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS)),
-                Main.getPlugin());
+        super(Main.getPlugin());
     }
 
     @Override
@@ -50,14 +58,15 @@ public class SilkTouch extends Modifier {
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Silk-Touch";
-    	config.addDefault(key + ".allowed", true);
+
+        String key = getKey();
+
+        config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enhanced Cobweb");
         config.addDefault(key + ".modifier_item", "COBWEB"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Applies Silk-Touch!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Silk-Touch-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");
         config.addDefault(key + ".MaxLevel", 1); //IF 2 Epic Spawners work with MT-SilkTouch
     	config.addDefault(key + ".EnchantCost", 10);
@@ -66,8 +75,7 @@ public class SilkTouch extends Modifier {
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
     	
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
@@ -104,15 +112,5 @@ public class SilkTouch extends Modifier {
         }
 
         return true;
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Silk-Touch", "Modifier_SilkTouch");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Silk-Touch.allowed");
     }
 }

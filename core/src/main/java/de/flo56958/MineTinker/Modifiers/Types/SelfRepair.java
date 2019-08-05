@@ -50,14 +50,23 @@ public class SelfRepair extends Modifier implements Listener {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Self-Repair";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL, ToolType.SWORD,
+                ToolType.TRIDENT, ToolType.FISHINGROD,
+                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA);
+    }
+
     private SelfRepair() {
         // TODO: Implement a way to just say every tooltype works?
+        // Maybe a "ToolType.ALL"?
+        super(Main.getPlugin());
 
-        super("Self-Repair", "Self-Repair.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL, ToolType.SWORD,
-                                                ToolType.TRIDENT, ToolType.FISHINGROD,
-                                                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
-                Main.getPlugin());
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
 
@@ -65,21 +74,21 @@ public class SelfRepair extends Modifier implements Listener {
     public List<Enchantment> getAppliedEnchantments() {
         // This may be an issue if (like by default) Self-Repair doesn't apply mending
         return Collections.singletonList(Enchantment.MENDING);
-
     }
 
     @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Self-Repair";
-    	config.addDefault(key + ".allowed", true);
+
+        String key = getKey();
+
+        config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted mossy Cobblestone");
         config.addDefault(key + ".modifier_item", "MOSSY_COBBLESTONE"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Chance to repair the tool / armor while using it!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Self-Repair-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%GREEN%");
         config.addDefault(key + ".MaxLevel", 10);
     	config.addDefault(key + ".EnchantCost", 10);
@@ -91,8 +100,7 @@ public class SelfRepair extends Modifier implements Listener {
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
         
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
@@ -233,26 +241,5 @@ public class SelfRepair extends Modifier implements Listener {
                 ChatWriter.log(false, p.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
             }
         }
-    }
-
-    //----------------------------------------------------------
-
-    @Override
-    public void enchantItem(Player p, ItemStack item) {
-        if (!p.hasPermission("minetinker.modifiers.selfrepair.craft")) {
-            return;
-        }
-
-        _createModifierItem(getConfig(), p, this, "Self-Repair");
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Self-Repair", "Modifier_SelfRepair");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Self-Repair.allowed");
     }
 }

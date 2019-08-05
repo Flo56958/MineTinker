@@ -36,16 +36,20 @@ public abstract class Modifier {
     protected static final ModManager modManager = ModManager.instance();
     protected static final PluginManager pluginManager = Bukkit.getPluginManager();
 
-    private String name;
     private String description;
     private ChatColor color;
     private int maxLvl;
     private ItemStack modItem;
-    private final ArrayList<ToolType> allowedTools;
     private final Plugin source;
 
-    public String getName() {
-        return name;
+    public abstract String getKey();
+
+    public abstract List<ToolType> getAllowedTools();
+
+    public String getRecipeKey() {
+        String key = getKey().toLowerCase().replace("-", "");
+
+        return "Modifier_" + key.substring(0, 1).toUpperCase() + key.substring(1);
     }
 
     public String getDescription() {
@@ -64,39 +68,37 @@ public abstract class Modifier {
         return modItem;
     }
 
-    protected ArrayList<ToolType> getAllowedTools() {
-        return allowedTools;
+    public boolean hasRecipe() {
+        return true;
     }
 
-    private final String nbtTag;
     private final String fileName;
 
     Plugin getSource() {
         return source;
     } //for other Plugins/Addons that register Modifiers
 
+    public String getName() {
+        return getConfig().getString(getKey() + ".name");
+    }
+
     /**
      * Class constructor
-     * @param allowedTools Lists of ToolTypes where the Modifier is allowed on
      * @param source The Plugin that registered the Modifier
      */
-    protected Modifier(String nbtTag, String fileName, ArrayList<ToolType> allowedTools, Plugin source) {
-        this.nbtTag = nbtTag;
-        this.fileName = fileName;
-        this.allowedTools = allowedTools;
+    protected Modifier(Plugin source) {
+        this.fileName = getName().replace("'", "") + ".yml";
         this.source = source;
     }
 
     /**
      * changes the core settings of the Modifier (like a secondary constructor)
-     * @param name Name of the Modifier
      * @param description Description of the Modifier
      * @param color Color of the Modifier
      * @param maxLvl Maximum Level cap of the Modifier
      * @param modItem ItemStack that is required to craft the Modifier
      */
-    protected void init(String name, String description, ChatColor color, int maxLvl, ItemStack modItem) {
-        this.name = name;
+    protected void init(String description, ChatColor color, int maxLvl, ItemStack modItem) {
         this.description = ChatWriter.addColors(description);
         this.color = color;
         this.maxLvl = maxLvl;
@@ -124,6 +126,10 @@ public abstract class Modifier {
                 meta.removeEnchant(enchantment);
             }
 
+            for (Attribute attribute : getAppliedAttributes()) {
+                meta.removeAttributeModifier(attribute);
+            }
+
             tool.setItemMeta(meta);
         }
     }
@@ -136,10 +142,8 @@ public abstract class Modifier {
     /**
      * @return is the modifier allowed
      */
-    public abstract boolean isAllowed();
-
-    public String getNBTKey() {
-        return nbtTag;
+    public boolean isAllowed() {
+        return getConfig().getBoolean(getKey() + ".allowed");
     }
 
     public String getFileName() {
@@ -195,13 +199,20 @@ public abstract class Modifier {
         return true;
     }
 
-    public abstract void registerCraftingRecipe();
-
     protected FileConfiguration getConfig() {
         return ConfigurationManager.getConfig(this.getFileName());
     }
 
-    protected void _registerCraftingRecipe(FileConfiguration config, Modifier mod, String name, String keyName) {
+    protected void registerCraftingRecipe() {
+        if (!hasRecipe()) {
+            return;
+        }
+
+        Modifier mod = this;
+        FileConfiguration config = getConfig();
+        String keyName = getRecipeKey();
+        String name = getKey().replace("'", "");
+
         if (config.getBoolean(name + ".Recipe.Enabled")) {
             try {
                 NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), keyName);
@@ -225,7 +236,7 @@ public abstract class Modifier {
                         Material material = Material.getMaterial(materialName);
 
                         if (material == null) {
-                            ChatWriter.log(false, "Material [" + materialName + "] is null for mod [" + mod.name + "]");
+                            ChatWriter.log(false, "Material [" + materialName + "] is null for mod [" + getName() + "]");
                             return;
                         } else {
                             newRecipe.setIngredient(key.charAt(0), material);

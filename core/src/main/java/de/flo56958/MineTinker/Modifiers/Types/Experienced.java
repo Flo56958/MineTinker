@@ -20,8 +20,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Experienced extends Modifier implements Listener {
@@ -41,12 +41,25 @@ public class Experienced extends Modifier implements Listener {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Experienced";
+    }
+
+    @Override
+    public boolean hasRecipe() {
+        return false;
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL,
+                ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
+                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA);
+    }
+
     private Experienced() {
-        super("Experienced", "Experienced.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL,
-                                                ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
-                                                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
-                Main.getPlugin());
+        super(Main.getPlugin());
 
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
@@ -55,9 +68,10 @@ public class Experienced extends Modifier implements Listener {
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Experienced";
-    	config.addDefault(key + ".allowed", true);
+
+        String key = getKey();
+
+        config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".description", "Tool has the chance to drop XP while using it!");
         config.addDefault(key + ".Color", "%GREEN%");
@@ -69,8 +83,7 @@ public class Experienced extends Modifier implements Listener {
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
     	
-        init(config.getString(key + ".name"),
-                "[Bottle o' Experience] \u200B" + config.getString(key + ".description"),
+        init("[Bottle o' Experience] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 new ItemStack(Material.EXPERIENCE_BOTTLE, 1));
@@ -153,17 +166,5 @@ public class Experienced extends Modifier implements Listener {
             p.giveExp(this.amount);
             ChatWriter.log(false, p.getDisplayName() + " triggered Experienced on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
         }
-    }
-
-    //-------------------------------------------------------------
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Experienced", "Modifier_Experienced");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Experienced.allowed");
     }
 }

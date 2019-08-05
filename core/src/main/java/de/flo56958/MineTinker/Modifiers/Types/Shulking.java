@@ -25,6 +25,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Shulking extends Modifier implements Listener {
@@ -44,11 +45,20 @@ public class Shulking extends Modifier implements Listener {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Shulking";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
+                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA);
+    }
+
     private Shulking() {
-        super("Shulking", "Shulking.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
-                                                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
-                Main.getPlugin());
+        super(Main.getPlugin());
+
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
 
@@ -56,14 +66,15 @@ public class Shulking extends Modifier implements Listener {
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Shulking";
-    	config.addDefault(key + ".allowed", true);
+
+        String key = getKey();
+
+        config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key); //wingardium leviosa
     	config.addDefault(key + ".name_modifier", "Enhanced Shulkershell");
         config.addDefault(key + ".modifier_item", "SHULKER_SHELL"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Makes enemies levitate!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Shulking-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%LIGHT_PURPLE%");
         config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 10);
@@ -84,8 +95,7 @@ public class Shulking extends Modifier implements Listener {
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
         
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
@@ -151,15 +161,5 @@ public class Shulking extends Modifier implements Listener {
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Shulking on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Shulking", "Modifier_Shulking");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Shulking.allowed");
     }
 }

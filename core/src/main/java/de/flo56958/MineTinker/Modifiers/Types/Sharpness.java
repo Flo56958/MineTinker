@@ -39,34 +39,38 @@ public class Sharpness extends Modifier {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Sharpness";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT);
+    }
+
     private Sharpness() {
-        super("Sharpness", "Sharpness.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT)),
-                Main.getPlugin());
+        super(Main.getPlugin());
     }
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.DAMAGE_ALL);
-        enchantments.add(Enchantment.ARROW_DAMAGE);
-        enchantments.add(Enchantment.IMPALING);
-
-        return enchantments;
+        return Arrays.asList(Enchantment.DAMAGE_ALL, Enchantment.ARROW_DAMAGE, Enchantment.IMPALING);
     }
 
     @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Sharpness";
-    	config.addDefault(key + ".allowed", true);
+
+        String key = getKey();
+
+        config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Compressed Quartzblock");
         config.addDefault(key + ".modifier_item", "QUARTZ_BLOCK"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Weapon does additional damage!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Sharpness-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");
         config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 5);
@@ -87,8 +91,7 @@ public class Sharpness extends Modifier {
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
     	
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
                 ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
@@ -140,15 +143,5 @@ public class Sharpness extends Modifier {
         }
 
         return true;
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Sharpness", "Modifier_Sharpness");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Sharpness.allowed");
     }
 }

@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -38,8 +39,18 @@ public class Piercing extends Modifier {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Piercing";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Collections.singletonList(ToolType.CROSSBOW);
+    }
+
     private Piercing() {
-        super("Piercing", "Piercing.yml", new ArrayList<>(Collections.singletonList(ToolType.CROSSBOW)), Main.getPlugin());
+        super(Main.getPlugin());
     }
 
     @Override
@@ -52,13 +63,14 @@ public class Piercing extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Piercing";
+        String key = getKey();
+
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Bodkin Point");
         config.addDefault(key + ".modifier_item", "ARROW"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Passes through enemies!");
-        config.addDefault(key + ".description_modifier", "%GRAY%Modifier-Item for the Piercing-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%GRAY%");
         config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 4);
@@ -81,8 +93,7 @@ public class Piercing extends Modifier {
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
@@ -120,15 +131,5 @@ public class Piercing extends Modifier {
         }
 
         return true;
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Piercing", "Modifier_Piercing");
-    }
-
-    @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Piercing.allowed");
     }
 }

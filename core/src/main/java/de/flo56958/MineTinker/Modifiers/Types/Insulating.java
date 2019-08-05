@@ -36,10 +36,18 @@ public class Insulating extends Modifier {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Insulating";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS, ToolType.CHESTPLATE, ToolType.HELMET);
+    }
+
     private Insulating() {
-        super("Insulating", "Insulating.yml",
-                new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS, ToolType.CHESTPLATE, ToolType.HELMET)),
-                Main.getPlugin());
+        super(Main.getPlugin());
     }
 
     @Override
@@ -52,13 +60,14 @@ public class Insulating extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Insulating";
+        String key = getKey();
+
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Heat Resistant Alloy");
         config.addDefault(key + ".modifier_item", "MAGMA_CREAM"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Armor mitigates heat damage!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Anti-Fire-Plating-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");
         config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 5);
@@ -82,8 +91,7 @@ public class Insulating extends Modifier {
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
                         ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
@@ -140,15 +148,5 @@ public class Insulating extends Modifier {
         }
 
         return true;
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Insulating", "Modifier_Insulating");
-    }
-
-    @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Insulating.allowed");
     }
 }

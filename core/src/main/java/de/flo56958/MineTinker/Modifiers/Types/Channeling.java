@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -34,8 +35,18 @@ public class Channeling extends Modifier {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Channeling";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Collections.singletonList(ToolType.TRIDENT);
+    }
+
     private Channeling() {
-        super("Channeling", "Channeling.yml", new ArrayList<>(Collections.singletonList(ToolType.TRIDENT)), Main.getPlugin());
+        super(Main.getPlugin());
     }
 
     @Override
@@ -48,13 +59,14 @@ public class Channeling extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Channeling";
+        String key = getKey();
+
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Lightning Infused Shard");
         config.addDefault(key + ".modifier_item", "PRISMARINE_SHARD"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Summons lightning when weapon is thrown at mobs!");
-        config.addDefault(key + ".description_modifier", "%GRAY%Modifier-Item for the Channeling-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%GRAY%");
         config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 1);
@@ -74,8 +86,7 @@ public class Channeling extends Modifier {
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
@@ -104,15 +115,5 @@ public class Channeling extends Modifier {
         }
 
         return true;
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Channeling", "Modifier_Channeling");
-    }
-
-    @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Channeling.allowed");
     }
 }

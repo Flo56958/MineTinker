@@ -249,7 +249,7 @@ public class ModManager {
      * @param mod the modifier to add
      */
     void addMod(ItemStack is, Modifier mod) {
-        nbt.setInt(is, mod.getNBTKey(), getModLevel(is, mod) + 1);
+        nbt.setInt(is, mod.getKey(), getModLevel(is, mod) + 1);
         rewriteLore(is);
     }
 
@@ -260,7 +260,7 @@ public class ModManager {
      * @param mod the modifier
      */
     public int getModLevel(ItemStack is, Modifier mod) {
-        return nbt.getInt(is, mod.getNBTKey());
+        return nbt.getInt(is, mod.getKey());
     }
 
     /**
@@ -270,7 +270,7 @@ public class ModManager {
      * @param mod the modifier to remove
      */
     public void removeMod(ItemStack is, Modifier mod) {
-        nbt.removeTag(is, mod.getNBTKey());
+        nbt.removeTag(is, mod.getKey());
         mod.removeMod(is);
         rewriteLore(is);
     }
@@ -336,7 +336,7 @@ public class ModManager {
      * @return if the tool has the mod
      */
     public boolean hasMod(ItemStack tool, Modifier mod) {
-        return mod.isAllowed() && nbt.hasTag(tool, mod.getNBTKey());
+        return mod.isAllowed() && nbt.hasTag(tool, mod.getKey());
     }
 
     /**
@@ -475,7 +475,7 @@ public class ModManager {
         lore.remove(index);
 
         for (Modifier m : this.mods) {
-            if (nbt.hasTag(is, m.getNBTKey())) {
+            if (nbt.hasTag(is, m.getKey())) {
                 int modLevel = getModLevel(is, m);
                 String modLevel_ = layout.getBoolean("UseRomans.ModifierLevels") ? ChatWriter.toRomanNumerals(modLevel) : String.valueOf(modLevel);
 
@@ -678,7 +678,7 @@ public class ModManager {
             is.setItemMeta(meta);
         }
 
-        nbt.setString(is, "modifierItem", mod.getNBTKey());
+        nbt.setString(is, "modifierItem", mod.getKey());
         nbt.setStringList(is, "CanPlaceOn", "minecraft:air");
 
         return is;
@@ -717,7 +717,7 @@ public class ModManager {
         String name = Objects.requireNonNull(nbt.getString(item, "modifierItem"));
 
         for (Modifier m : mods) {
-            if (m.getNBTKey() != null && m.getNBTKey().equals(name)) {
+            if (m.getKey().equals(name)) {
                 return m;
             }
         }

@@ -34,8 +34,18 @@ public class Tanky extends Modifier {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Tanky";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.CHESTPLATE, ToolType.LEGGINGS);
+    }
+
     private Tanky() {
-        super("Tanky", "Tanky.yml", new ArrayList<>(Arrays.asList(ToolType.CHESTPLATE, ToolType.LEGGINGS)), Main.getPlugin());
+        super(Main.getPlugin());
     }
 
     @Override
@@ -80,29 +90,18 @@ public class Tanky extends Modifier {
     }
 
     @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
-
-        if (meta == null) {
-            return;
-        }
-
-        meta.removeAttributeModifier(Attribute.GENERIC_MAX_HEALTH);
-        tool.setItemMeta(meta);
-    }
-
-    @Override
     public void reload() {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Tanky";
+        String key = getKey();
+
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Bloodinfused Obsidian");
         config.addDefault(key + ".modifier_item", "OBSIDIAN"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Makes you extra tanky!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Tanky-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%DARK_GRAY%");
         config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 5);
@@ -125,20 +124,9 @@ public class Tanky extends Modifier {
 
         this.healthPerLevel = config.getInt(key + ".HealthPerLevel");
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
-    }
-
-    @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Tanky.allowed");
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Tanky", "Modifier_Tanky");
     }
 }

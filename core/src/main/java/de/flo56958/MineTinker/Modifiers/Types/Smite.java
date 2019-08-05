@@ -40,8 +40,18 @@ public class Smite extends Modifier {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Smite";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.SWORD, ToolType.AXE);
+    }
+
     private Smite() {
-        super("Smite", "Smite.yml", new ArrayList<>(Arrays.asList(ToolType.SWORD, ToolType.AXE)), Main.getPlugin());
+        super(Main.getPlugin());
     }
 
     @Override
@@ -54,13 +64,14 @@ public class Smite extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Smite";
+        String key = getKey();
+
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Holy Bone");
         config.addDefault(key + ".modifier_item", "BONE"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Weapon does additional damage towards the Undead!");
-        config.addDefault(key + ".description_modifier", "%YELLOW%Modifier-Item for the Smite-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%YELLOW%");
         config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 5);
@@ -83,8 +94,7 @@ public class Smite extends Modifier {
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
                 ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
@@ -131,15 +141,5 @@ public class Smite extends Modifier {
         }
 
         return true;
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Smite", "Modifier_Smite");
-    }
-
-    @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Smite.allowed");
     }
 }

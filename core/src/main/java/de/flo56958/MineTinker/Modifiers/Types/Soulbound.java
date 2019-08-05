@@ -40,18 +40,22 @@ public class Soulbound extends Modifier implements Listener {
         return instance;
     }
 
-    private Soulbound() {
-        super("Soulbound", "Soulbound.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL,
-                                                ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
-                                                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
-                Main.getPlugin());
-        Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+    @Override
+    public String getKey() {
+        return "Soulbound";
     }
 
     @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Soulbound", "Modifier_Soulbound");
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL,
+                ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
+                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA);
+    }
+
+    private Soulbound() {
+        super(Main.getPlugin());
+
+        Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
 
     @Override
@@ -60,20 +64,18 @@ public class Soulbound extends Modifier implements Listener {
     }
 
     @Override
-    public void removeMod(ItemStack tool) { }
-
-    @Override
     public void reload() {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Soulbound";
+        String key = getKey();
+
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Powerinfused Beacon");
         config.addDefault(key + ".modifier_item", "BEACON"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Do not lose the tool when dying.");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Soulbound-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%GRAY%");
         config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 1);
@@ -96,8 +98,7 @@ public class Soulbound extends Modifier implements Listener {
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 getConfig().getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
@@ -105,17 +106,6 @@ public class Soulbound extends Modifier implements Listener {
         this.toolDropable = config.getBoolean(key + ".ToolDropable");
         this.decrementModLevelOnUse = config.getBoolean(key + ".DecrementModLevelOnUse");
         this.percentagePerLevel = config.getInt(key + ".PercentagePerLevel");
-    }
-
-    public boolean getDropable(ItemStack is) {
-        // TODO: Maybe remove this?
-        // Not sure what this does
-
-        if (!modManager.hasMod(is, this)) {
-            return true;
-        }
-
-        return toolDropable;
     }
 
     /**
@@ -154,7 +144,7 @@ public class Soulbound extends Modifier implements Listener {
             if (newLevel == 0) {
                 modManager.removeMod(is, this);
             } else {
-                modManager.getNBTHandler().setInt(is, this.getNBTKey(), modManager.getModLevel(is, this) - 1);
+                modManager.getNBTHandler().setInt(is, getKey(), modManager.getModLevel(is, this) - 1);
             }
         }
 
@@ -210,10 +200,5 @@ public class Soulbound extends Modifier implements Listener {
         }
 
         event.setCancelled(true);
-    }
-
-    @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Soulbound.allowed");
     }
 }

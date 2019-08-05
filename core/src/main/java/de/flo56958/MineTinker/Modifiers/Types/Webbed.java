@@ -25,6 +25,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Webbed extends Modifier implements Listener {
@@ -45,11 +46,20 @@ public class Webbed extends Modifier implements Listener {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Webbed";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
+                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA);
+    }
+
     private Webbed() {
-        super("Webbed", "Webbed.yml",
-                new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
-                                                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA)),
-                Main.getPlugin());
+        super(Main.getPlugin());
+
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
     }
 
@@ -57,14 +67,15 @@ public class Webbed extends Modifier implements Listener {
     public void reload() {
         FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Webbed";
-    	config.addDefault(key + ".allowed", true);
+
+        String key = getKey();
+
+        config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Compressed Cobweb");
         config.addDefault(key + ".modifier_item", "COBWEB"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Slowes down enemies!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Webbed-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");
         config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 3);
@@ -86,8 +97,7 @@ public class Webbed extends Modifier implements Listener {
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
         
-        init(getConfig().getString(key + ".name"),
-                "[" + getConfig().getString(key + ".name_modifier") + "] \u200B" + getConfig().getString(key + ".description"),
+        init("[" + getConfig().getString(key + ".name_modifier") + "] \u200B" + getConfig().getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 getConfig().getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
@@ -121,6 +131,7 @@ public class Webbed extends Modifier implements Listener {
             // Maybe change this to cancellable and ignoreCancelled?
             return;
         }
+
         if (!(event.getEvent().getHitEntity() instanceof LivingEntity)) {
             return;
         }
@@ -153,15 +164,5 @@ public class Webbed extends Modifier implements Listener {
         ((LivingEntity) ent).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration, amplifier, false, false));
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Webbed on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Webbed", "Modifier_Webbed");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Webbed.allowed");
     }
 }

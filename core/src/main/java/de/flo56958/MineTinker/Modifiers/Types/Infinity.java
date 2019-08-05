@@ -36,32 +36,39 @@ public class Infinity extends Modifier {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Infinity";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.BOW, ToolType.TRIDENT);
+    }
+
     //Infinity does not work on crossbows
     private Infinity() {
-        super("Infinity", "Infinity.yml", new ArrayList<>(Arrays.asList(ToolType.BOW, ToolType.TRIDENT)), Main.getPlugin());
+        super(Main.getPlugin());
     }
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.ARROW_INFINITE);
-        enchantments.add(Enchantment.LOYALTY);
-
-        return enchantments;
+        return Arrays.asList(Enchantment.ARROW_INFINITE, Enchantment.LOYALTY);
     }
 
     @Override
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
-    	
-    	String key = "Infinity";
-    	config.addDefault(key + ".allowed", true);
+
+        String key = getKey();
+
+        config.addDefault(key + ".allowed", true);
     	config.addDefault(key + ".name", key);
     	config.addDefault(key + ".name_modifier", "Enchanted Arrow");
         config.addDefault(key + ".modifier_item", "ARROW"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "You only need one Arrow to shoot a bow and the Trident comes back!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Infinity-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".MaxLevel", 3); //higher values than 1 have no effect on Infinity
         config.addDefault(key + ".Color", "%WHITE%");
         config.addDefault(key + ".EnchantCost", 10);
@@ -71,8 +78,7 @@ public class Infinity extends Modifier {
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
     	
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
@@ -118,15 +124,5 @@ public class Infinity extends Modifier {
 
 
         return true;
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Infinity", "Modifier_Infinity");
-    }
-
-    @Override
-    public boolean isAllowed() {
-    	return getConfig().getBoolean("Infinity.allowed");
     }
 }

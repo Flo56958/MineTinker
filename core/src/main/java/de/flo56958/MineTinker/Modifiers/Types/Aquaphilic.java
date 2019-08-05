@@ -36,18 +36,23 @@ public class Aquaphilic extends Modifier {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Aquaphilic";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.HELMET));
+    }
+
     private Aquaphilic() {
-        super("Aquaphilic", "Aquaphilic.yml", new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.HELMET)), Main.getPlugin());
+        super(Main.getPlugin());
     }
 
     @Override
     public List<Enchantment> getAppliedEnchantments() {
-        List<Enchantment> enchantments = new ArrayList<>();
-        enchantments.add(Enchantment.DEPTH_STRIDER);
-        enchantments.add(Enchantment.OXYGEN);
-        enchantments.add(Enchantment.WATER_WORKER);
-
-        return enchantments;
+        return Arrays.asList(Enchantment.DEPTH_STRIDER, Enchantment.OXYGEN, Enchantment.WATER_WORKER);
     }
 
     @Override
@@ -55,13 +60,14 @@ public class Aquaphilic extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Aquaphilic";
+        String key = getKey();
+
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Pearl of the ocean");
         config.addDefault(key + ".modifier_item", "HEART_OF_THE_SEA"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Make the water your friend");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Aquaphilic-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%AQUA%");
         config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 3); //higher will have no effect on depth strider
@@ -81,8 +87,7 @@ public class Aquaphilic extends Modifier {
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")),
                 config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
@@ -121,15 +126,5 @@ public class Aquaphilic extends Modifier {
         tool.setItemMeta(meta);
 
         return true;
-    }
-
-    @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Aquaphilic.allowed");
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Aquaphilic", "Modifier_Aquaphilic");
     }
 }

@@ -35,10 +35,18 @@ public class Thorned extends Modifier {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Thorned";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS);
+    }
+
     private Thorned() {
-        super("Thorned", "Thorned.yml",
-                new ArrayList<>(Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS)),
-                Main.getPlugin());
+        super(Main.getPlugin());
     }
 
     @Override
@@ -51,13 +59,14 @@ public class Thorned extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Thorned";
+        String key = getKey();
+
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Spiked Plating");
         config.addDefault(key + ".modifier_item", "VINE"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Your armor harms others when they damage you!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Thorned-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%DARK_GREEN%");
         config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 3);
@@ -77,8 +86,7 @@ public class Thorned extends Modifier {
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
                 ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
@@ -106,15 +114,5 @@ public class Thorned extends Modifier {
         }
 
         return true;
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Thorned", "Modifier_Thorned");
-    }
-
-    @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Thorned.allowed");
     }
 }

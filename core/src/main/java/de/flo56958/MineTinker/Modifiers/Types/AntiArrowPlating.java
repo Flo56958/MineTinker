@@ -36,9 +36,18 @@ public class AntiArrowPlating extends Modifier {
         return instance;
     }
 
+    @Override
+    public String getKey() {
+        return "Anti-Arrow-Plating";
+    }
+
+    @Override
+    public List<ToolType> getAllowedTools() {
+        return Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS, ToolType.CHESTPLATE, ToolType.HELMET);
+    }
+
     private AntiArrowPlating() {
-        super("Anti-Arrow-Plating", "Anti-Arrow-Plating.yml",
-                new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS, ToolType.CHESTPLATE, ToolType.HELMET)), Main.getPlugin());
+        super(Main.getPlugin());
     }
 
     @Override
@@ -51,13 +60,14 @@ public class AntiArrowPlating extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = "Anti-Arrow-Plating";
+        String key = getName();
+
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);
         config.addDefault(key + ".name_modifier", "Pierce Resistant Metal");
         config.addDefault(key + ".modifier_item", "IRON_BLOCK"); //Needs to be a viable Material-Type
         config.addDefault(key + ".description", "Armor mitigates projectile damage!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the Anti-Arrow-Plating-Modifier");
+        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
         config.addDefault(key + ".Color", "%WHITE%");
         config.addDefault(key + ".EnchantCost", 10);
         config.addDefault(key + ".MaxLevel", 5);
@@ -83,8 +93,7 @@ public class AntiArrowPlating extends Modifier {
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
         // Initialize modifier
-        init(config.getString(key + ".name"),
-                "[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
+        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
                 ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
                 modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
                         ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
@@ -141,15 +150,5 @@ public class AntiArrowPlating extends Modifier {
         }
 
         return true;
-    }
-
-    @Override
-    public void registerCraftingRecipe() {
-        _registerCraftingRecipe(getConfig(), this, "Anti-Arrow-Plating", "Modifier_AntiArrowPlating");
-    }
-
-    @Override
-    public boolean isAllowed() {
-        return getConfig().getBoolean("Anti-Arrow-Plating.allowed");
     }
 }
