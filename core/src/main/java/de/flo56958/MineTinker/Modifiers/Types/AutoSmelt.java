@@ -11,6 +11,7 @@ import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -161,7 +162,7 @@ public class AutoSmelt extends Modifier implements Listener {
 
         config.addDefault(key + ".Conversions", conversions);
 
-        conversions.clear();
+        //conversions.clear();
 
         luckMaterials.add(Material.STRIPPED_ACACIA_WOOD);
         luckMaterials.add(Material.STRIPPED_BIRCH_WOOD);
@@ -174,7 +175,7 @@ public class AutoSmelt extends Modifier implements Listener {
 
         config.addDefault(key + ".AllowLuck", luckMaterials);
 
-        luckMaterials.clear();
+        //luckMaterials.clear();
 
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
@@ -189,6 +190,16 @@ public class AutoSmelt extends Modifier implements Listener {
         this.hasSound = config.getBoolean(key + ".Sound");
         this.hasParticles = config.getBoolean(key + ".Particles");
         this.worksUnderWater = config.getBoolean(key + ".works_under_water");
+//
+//        ConfigurationSection conversionConfig = config.getConfigurationSection(key + ".Conversions");
+//
+//        for (String sectionKey : conversionConfig.getKeys(false)) {
+//            conversions.put(Material.valueOf(sectionKey), Material.valueOf(conversionConfig.getString(sectionKey)));
+//        }
+//
+//        for (String luckEntry : config.getStringList(key + ".AllowLuck")) {
+//            luckMaterials.add(Material.valueOf(luckEntry));
+//        }
     }
     
     @Override
