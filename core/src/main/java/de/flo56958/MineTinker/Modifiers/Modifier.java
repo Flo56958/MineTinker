@@ -47,9 +47,13 @@ public abstract class Modifier {
     public abstract List<ToolType> getAllowedTools();
 
     public String getRecipeKey() {
-        String key = getKey().toLowerCase().replace("-", "");
+        StringBuilder key = new StringBuilder("Modifier_");
 
-        return "Modifier_" + key.substring(0, 1).toUpperCase() + key.substring(1);
+        for (String segment : getKey().toLowerCase().replace("'", "").split("-")) {
+            key.append(segment.substring(0, 1).toUpperCase()).append(segment.substring(1));
+        }
+
+        return key.toString();
     }
 
     public String getDescription() {
@@ -87,7 +91,7 @@ public abstract class Modifier {
      * @param source The Plugin that registered the Modifier
      */
     protected Modifier(Plugin source) {
-        this.fileName = getName().replace("'", "") + ".yml";
+        this.fileName = getKey().replace("'", "") + ".yml";
         this.source = source;
     }
 
