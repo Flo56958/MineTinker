@@ -509,7 +509,7 @@ public class ModManager {
      * converts a given ItemStack into its MineTinker equivalent
      * @param is the MineTinker equivalent
      */
-    public void convertItemStack(ItemStack is) {
+    public boolean convertItemStack(ItemStack is) {
         Material m = is.getType();
 
         if ((ToolType.AXE.contains(m)
@@ -529,7 +529,9 @@ public class ModManager {
                 || ToolType.LEGGINGS.contains(m)
                 || ToolType.ELYTRA.contains(m)) {
             nbt.setInt(is, "IdentifierArmor", 0);
-        } else return;
+        } else {
+            return false;
+        }
 
         setExp(is, 0);
         setLevel(is, 1);
@@ -556,7 +558,7 @@ public class ModManager {
             addArmorAttributes(is);
 
             if (meta.getAttributeModifiers() == null) {
-                return;
+                return true;
             }
 
             for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : meta.getAttributeModifiers().asMap().entrySet()) {
@@ -571,6 +573,8 @@ public class ModManager {
                 addMod(is, modifier);
             }
         }
+
+        return true;
     }
 
     public void addArmorAttributes(ItemStack is) {

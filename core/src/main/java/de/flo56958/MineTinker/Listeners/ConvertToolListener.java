@@ -70,8 +70,9 @@ public class ConvertToolListener implements Listener {
                 return;
             }
 
-            ModManager.instance().convertItemStack(result);
-            result.setAmount(1);
+            if (ModManager.instance().convertItemStack(result)) {
+                result.setAmount(1);
+            }
         }
     }
 }
