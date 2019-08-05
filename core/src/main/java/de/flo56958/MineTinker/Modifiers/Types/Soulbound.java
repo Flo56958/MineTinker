@@ -47,9 +47,7 @@ public class Soulbound extends Modifier implements Listener {
 
     @Override
     public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL,
-                ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
-                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA);
+        return Arrays.asList(ToolType.values());
     }
 
     private Soulbound() {

@@ -57,14 +57,10 @@ public class SelfRepair extends Modifier implements Listener {
 
     @Override
     public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS, ToolType.SHOVEL, ToolType.SWORD,
-                ToolType.TRIDENT, ToolType.FISHINGROD,
-                ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA);
+        return Arrays.asList(ToolType.values());
     }
 
     private SelfRepair() {
-        // TODO: Implement a way to just say every tooltype works?
-        // Maybe a "ToolType.ALL"?
         super(Main.getPlugin());
 
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
