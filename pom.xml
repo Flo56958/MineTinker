@@ -3,7 +3,7 @@
 
    <groupId>de.flo56958</groupId>
    <artifactId>MineTinker-Parent</artifactId>
-   <version>1.0.1</version>
+   <version>1.0.2</version>
    <packaging>pom</packaging>
 
    <url>https://flo56958.github.io/MineTinker</url>

@@ -26,7 +26,7 @@ import java.util.*;
 
 public class AutoSmelt extends Modifier implements Listener {
 
-    private static String regex = " : ";
+    private static String regex = ":";
 
     private static class Triplet {
         int amount;
