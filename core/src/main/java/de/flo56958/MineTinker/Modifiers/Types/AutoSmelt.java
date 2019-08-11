@@ -247,11 +247,9 @@ public class AutoSmelt extends Modifier implements Listener {
         ItemStack tool = event.getTool();
         Block block = event.getBlock();
         BlockBreakEvent breakEvent = event.getEvent();
-
-    	//FileConfiguration config = getConfig();
     	
         if (!player.hasPermission("minetinker.modifiers.autosmelt.use")) {
-            return; //TODO: Think about more blocks for Auto-Smelt
+            return;
         }
 
         if (!modManager.hasMod(tool, this)) {
@@ -264,47 +262,45 @@ public class AutoSmelt extends Modifier implements Listener {
             }
         }
 
+        if (!(new Random().nextInt(100) <= this.percentagePerLevel * modManager.getModLevel(tool, this) && block.getLocation().getWorld() != null)) {
+            return;
+        }
+
         Triplet conv = conversions.get(block.getType());
         if (conv == null) {
             return;
         }
 
-        boolean allowLuck = conv.luckable;
         int amount = conv.amount;
         Material loot = conv.material;
-
         if (loot == null) {
             return;
         }
 
-        int n = new Random().nextInt(100);
+        if (conv.luckable) {
+            int level = modManager.getModLevel(tool, Luck.instance());
 
-        if (n <= this.percentagePerLevel * modManager.getModLevel(tool, this) && block.getLocation().getWorld() != null) {
-            if (allowLuck) {
-                int level = modManager.getModLevel(tool, Luck.instance());
-
-                if (level > 0) {
-                    amount = amount + new Random().nextInt(level + 1) * amount; //Times amount is for clay as it drops 4 per block
-                }
+            if (level > 0) {
+                amount = amount + new Random().nextInt(level + 1) * amount; //Times amount is for clay as it drops 4 per block
             }
-
-            if (loot != Material.AIR && amount > 0) {
-                ItemStack items = new ItemStack(loot, amount);
-                block.getLocation().getWorld().dropItemNaturally(block.getLocation(), items);
-            }
-
-            breakEvent.setDropItems(false);
-
-            if (this.hasParticles) {
-                block.getLocation().getWorld().spawnParticle(Particle.FLAME, block.getLocation(), 5);
-            }
-
-            if (this.hasSound) {
-                block.getLocation().getWorld().playSound(block.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
-            }
-
-            ChatWriter.log(false, player.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY +
-                    " (" + tool.getType().toString() + ") while mining " + breakEvent.getBlock().getType().toString() + "!");
         }
+
+        if (loot != Material.AIR && amount > 0) {
+            ItemStack items = new ItemStack(loot, amount);
+            block.getLocation().getWorld().dropItemNaturally(block.getLocation(), items);
+        }
+
+        breakEvent.setDropItems(false);
+
+        if (this.hasParticles) {
+            block.getLocation().getWorld().spawnParticle(Particle.FLAME, block.getLocation(), 5);
+        }
+
+        if (this.hasSound) {
+            block.getLocation().getWorld().playSound(block.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
+        }
+
+        ChatWriter.log(false, player.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY +
+                " (" + tool.getType().toString() + ") while mining " + breakEvent.getBlock().getType().toString() + "!");
     }
 }
