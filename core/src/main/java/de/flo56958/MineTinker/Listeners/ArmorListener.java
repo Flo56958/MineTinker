@@ -39,6 +39,10 @@ public class ArmorListener implements Listener {
             return;
         }
 
+        if (event.getCause().equals(EntityDamageEvent.DamageCause.SUICIDE)) {
+            return;
+        }
+
         Player player = (Player) event.getEntity();
 
         if (event.getDamage() <= 0) {
