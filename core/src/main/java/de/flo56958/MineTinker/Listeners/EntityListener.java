@@ -35,7 +35,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (event.getCause().equals(EntityDamageEvent.DamageCause.SUICIDE)) {
+        if (event.getCause().equals(EntityDamageEvent.DamageCause.SUICIDE) || event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
             return;
         }
 

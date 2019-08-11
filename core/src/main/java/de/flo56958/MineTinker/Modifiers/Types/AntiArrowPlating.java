@@ -60,7 +60,7 @@ public class AntiArrowPlating extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = getName();
+        String key = getKey();
 
         config.addDefault(key + ".allowed", true);
         config.addDefault(key + ".name", key);

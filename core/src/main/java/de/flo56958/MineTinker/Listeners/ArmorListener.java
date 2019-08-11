@@ -39,7 +39,7 @@ public class ArmorListener implements Listener {
             return;
         }
 
-        if (event.getCause().equals(EntityDamageEvent.DamageCause.SUICIDE)) {
+        if (event.getCause().equals(EntityDamageEvent.DamageCause.SUICIDE) || event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
             return;
         }
 
@@ -89,6 +89,10 @@ public class ArmorListener implements Listener {
         }
 
         if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
+
+        if (event.getCause().equals(EntityDamageEvent.DamageCause.SUICIDE) || event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
             return;
         }
 
