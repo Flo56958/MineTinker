@@ -20,7 +20,6 @@ Builderswand.Error.CraftIron: "Could not register recipe for the Iron Builderswa
 Builderswand.Error.CraftGold: "Could not register recipe for the Golden Builderswand!"
 Builderswand.Error.CraftDiamond: "Could not register recipe for the Diamond Builderswand!"
 
-
 Commands.Info.Line1: "MineTinker (%ver) is a Plugin made by Flo56958."
 Commands.Info.Line2: "It is inspired by different mods (e.g. TinkersConstruct)"
 Commands.InvalidArguments: "You have entered invalid command arguments!"
@@ -60,6 +59,13 @@ ModifierFailCause.NoFreeSlots: "No free Slots on Item!"
 ModifierFailCause.NoPermission: "No Permission!"
 
 LanguageManager.LoadedLanguage: "LanguageManager loaded %lang successfully!"
+
+TinkerListener.ToolUpgrade: "%tool has been upgraded to %type!"
+TinkerListener.ModifierApply: "%tool has now %mod and %slots free slots remaining!"
+TinkerListener.ModifierFail: "Failed to apply %mod on %tool (%cause)!"
+TinkerListener.ToolLevelUp: "%tool has leveled up and is now Level %level!"
+
+Modifier.MaterialEntryNotFound: "Material entry not found! Aborting recipe registration for this modifier."
 
 Updater.Unable: "Unable to check for updates!"
 Updater.UpdateAvailable: "There is an update available on spigotmc.org!"

@@ -54,13 +54,14 @@ public class BlockListener implements Listener {
         }
 
         int expAmount = config.getInt("ExpPerBlockBreak");
-        expAmount += config.getInt("ExtraExpPerBlock." + e.getBlock().getType().toString()); //adds 0 if not in found in config (negative values are also fine)
+        expAmount += config.getInt("ExtraExpPerBlock." + e.getBlock().getType().toString());
+        //adds 0 if not in found in config (negative values are also fine)
 
         modManager.addExp(p, tool, expAmount);
 
         //-------------------------------------------POWERCHECK---------------------------------------------
         if (Power.HASPOWER.get(p).get() && !ToolType.PICKAXE.contains(tool.getType())
-                && e.getBlock().getDrops(tool).isEmpty() && !e.getBlock().getType().equals(Material.NETHER_WART)) { //Necessary for EasyHarvest NetherWard-Break
+                && e.getBlock().getDrops(tool).isEmpty() && !e.getBlock().getType().equals(Material.NETHER_WART)) {//Necessary for EasyHarvest NetherWard-Break
             e.setCancelled(true);
             return;
         }

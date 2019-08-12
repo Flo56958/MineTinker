@@ -8,6 +8,7 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Types.ExtraModifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -194,7 +195,7 @@ public abstract class Modifier {
                         String materialName = materials.getString(key);
 
                         if (materialName == null) {
-                            ChatWriter.logInfo("Material entry not found! Aborting recipe registration for this modifier.");
+                            ChatWriter.logInfo(LanguageManager.getString("Modifier.MaterialEntryNotFound"));
                             return;
                         }
 
