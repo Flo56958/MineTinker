@@ -71,10 +71,9 @@ public class CreateToolListener implements Listener {
         }
 
         if (totalItems == 1 && lastItem.getType() == currentItem.getType()) {
-            return;
+            currentItem.setAmount(1);
         }
 
-        currentItem.setAmount(1);
         modManager.convertItemStack(currentItem);
     }
 }
