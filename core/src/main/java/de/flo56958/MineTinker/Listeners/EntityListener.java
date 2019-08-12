@@ -35,6 +35,10 @@ public class EntityListener implements Listener {
             return;
         }
 
+        if (event.getCause().equals(EntityDamageEvent.DamageCause.SUICIDE) || event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
+            return;
+        }
+
         Player player;
 
         if (event.getDamager() instanceof Arrow && !(event.getDamager() instanceof Trident)) {

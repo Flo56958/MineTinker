@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ChatWriter {
 
@@ -194,11 +192,25 @@ public class ChatWriter {
     public static List<String> splitString(String msg, int lineSize) {
         List<String> res = new ArrayList<>();
 
+        /*
         Pattern pattern = Pattern.compile("\\b.+" + (lineSize-1) + "}\\b\\W?");
         Matcher matcher = pattern.matcher(msg);
 
         while(matcher.find()) {
             res.add(matcher.group());
+        }
+        */
+
+        String[] str = msg.split(" ");
+        int index = 0;
+        while(index < str.length) {
+            StringBuilder line = new StringBuilder();
+            do {
+                index++;
+                line.append(str[index - 1]);
+                line.append(" ");
+            } while(index < str.length && line.length() + str[index].length() < lineSize);
+            res.add(line.toString());
         }
 
         return res;

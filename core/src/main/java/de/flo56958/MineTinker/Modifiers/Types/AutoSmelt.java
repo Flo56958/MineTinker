@@ -18,20 +18,54 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class AutoSmelt extends Modifier implements Listener {
 
-    private EnumMap<Material, Material> conversions = new EnumMap<>(Material.class);
-    private List<Material> luckMaterials = new ArrayList<>();
+    private static String regex = ":";
+
+    private static class Triplet {
+        int amount;
+        Material material;
+        boolean luckable = false;
+
+        private Triplet(Material m, int amount) {
+            this.amount = amount;
+            this.material = m;
+        }
+
+        private Triplet(Material m, int amount, boolean luckable) {
+            this(m, amount);
+            this.luckable = luckable;
+        }
+
+        public String toString() {
+            return material.toString() + regex + amount + regex + luckable;
+        }
+
+        @Nullable
+        public static Triplet fromString(String input) {
+            String[] tok = input.split(regex);
+            try {
+                if (tok.length == 2) {
+                    return new Triplet(Material.valueOf(tok[0]), Integer.parseInt(tok[1]));
+                } else if (tok.length == 3) {
+                    return new Triplet(Material.valueOf(tok[0]), Integer.parseInt(tok[1]), Boolean.parseBoolean(tok[2]));
+                } else {
+                    return null;
+                }
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
+
+    private EnumMap<Material, @NotNull Triplet> conversions = new EnumMap<>(Material.class);
 
     private int percentagePerLevel;
     private boolean hasSound;
@@ -98,84 +132,73 @@ public class AutoSmelt extends Modifier implements Listener {
 
         config.addDefault(key + ".Recipe.Materials", recipeMaterials);
 
-        conversions.put(Material.STONE, Material.STONE);
-        conversions.put(Material.COBBLESTONE, Material.STONE);
-        conversions.put(Material.SAND, Material.GLASS);
-        conversions.put(Material.SNOW, Material.AIR);
-        conversions.put(Material.SNOW_BLOCK, Material.COBBLESTONE);
-        conversions.put(Material.RED_SAND, Material.RED_STAINED_GLASS);
-        conversions.put(Material.WHITE_TERRACOTTA, Material.WHITE_GLAZED_TERRACOTTA);
-        conversions.put(Material.ORANGE_TERRACOTTA, Material.ORANGE_GLAZED_TERRACOTTA);
-        conversions.put(Material.MAGENTA_TERRACOTTA, Material.MAGENTA_GLAZED_TERRACOTTA);
-        conversions.put(Material.LIGHT_BLUE_TERRACOTTA, Material.LIGHT_BLUE_GLAZED_TERRACOTTA);
-        conversions.put(Material.YELLOW_TERRACOTTA, Material.YELLOW_GLAZED_TERRACOTTA);
-        conversions.put(Material.LIME_TERRACOTTA, Material.LIME_GLAZED_TERRACOTTA);
-        conversions.put(Material.PINK_TERRACOTTA, Material.PINK_GLAZED_TERRACOTTA);
-        conversions.put(Material.GRAY_TERRACOTTA, Material.GRAY_GLAZED_TERRACOTTA);
-        conversions.put(Material.LIGHT_GRAY_TERRACOTTA, Material.LIGHT_GRAY_GLAZED_TERRACOTTA);
-        conversions.put(Material.CYAN_TERRACOTTA, Material.CYAN_GLAZED_TERRACOTTA);
-        conversions.put(Material.PURPLE_TERRACOTTA, Material.PURPLE_GLAZED_TERRACOTTA);
-        conversions.put(Material.BLUE_TERRACOTTA, Material.BLUE_GLAZED_TERRACOTTA);
-        conversions.put(Material.BROWN_TERRACOTTA, Material.BROWN_GLAZED_TERRACOTTA);
-        conversions.put(Material.GREEN_TERRACOTTA, Material.GREEN_GLAZED_TERRACOTTA);
-        conversions.put(Material.RED_TERRACOTTA, Material.RED_GLAZED_TERRACOTTA);
-        conversions.put(Material.BLACK_TERRACOTTA, Material.BLACK_GLAZED_TERRACOTTA);
-        conversions.put(Material.ACACIA_LOG, Material.CHARCOAL);
-        conversions.put(Material.BIRCH_LOG, Material.CHARCOAL);
-        conversions.put(Material.DARK_OAK_LOG, Material.CHARCOAL);
-        conversions.put(Material.JUNGLE_LOG, Material.CHARCOAL);
-        conversions.put(Material.OAK_LOG, Material.CHARCOAL);
-        conversions.put(Material.SPRUCE_LOG, Material.CHARCOAL);
-        conversions.put(Material.STRIPPED_ACACIA_LOG, Material.CHARCOAL);
-        conversions.put(Material.STRIPPED_BIRCH_LOG, Material.CHARCOAL);
-        conversions.put(Material.STRIPPED_DARK_OAK_LOG, Material.CHARCOAL);
-        conversions.put(Material.STRIPPED_JUNGLE_LOG, Material.CHARCOAL);
-        conversions.put(Material.STRIPPED_OAK_LOG, Material.CHARCOAL);
-        conversions.put(Material.STRIPPED_SPRUCE_LOG, Material.CHARCOAL);
-        conversions.put(Material.ACACIA_WOOD, Material.CHARCOAL);
-        conversions.put(Material.BIRCH_WOOD, Material.CHARCOAL);
-        conversions.put(Material.DARK_OAK_WOOD, Material.CHARCOAL);
-        conversions.put(Material.JUNGLE_WOOD, Material.CHARCOAL);
-        conversions.put(Material.OAK_WOOD, Material.CHARCOAL);
-        conversions.put(Material.SPRUCE_WOOD, Material.CHARCOAL);
-        conversions.put(Material.STRIPPED_ACACIA_WOOD, Material.CHARCOAL);
-        conversions.put(Material.STRIPPED_BIRCH_WOOD, Material.CHARCOAL);
-        conversions.put(Material.STRIPPED_DARK_OAK_WOOD, Material.CHARCOAL);
-        conversions.put(Material.STRIPPED_JUNGLE_WOOD, Material.CHARCOAL);
-        conversions.put(Material.STRIPPED_OAK_WOOD, Material.CHARCOAL);
-        conversions.put(Material.STRIPPED_SPRUCE_WOOD, Material.CHARCOAL);
-        conversions.put(Material.ACACIA_LEAVES, Material.STICK);
-        conversions.put(Material.BIRCH_LEAVES, Material.STICK);
-        conversions.put(Material.DARK_OAK_LEAVES, Material.STICK);
-        conversions.put(Material.JUNGLE_LEAVES, Material.STICK);
-        conversions.put(Material.OAK_LEAVES, Material.STICK);
-        conversions.put(Material.SPRUCE_LEAVES, Material.STICK);
+        conversions.put(Material.STONE, new Triplet(Material.STONE, 1));
+        conversions.put(Material.COBBLESTONE, new Triplet(Material.STONE, 1));
+        conversions.put(Material.SAND, new Triplet(Material.GLASS, 1));
+        conversions.put(Material.SNOW, new Triplet(Material.AIR, 0));
+        conversions.put(Material.SNOW_BLOCK, new Triplet(Material.AIR, 0));
+        conversions.put(Material.RED_SAND, new Triplet(Material.RED_STAINED_GLASS, 1));
+        conversions.put(Material.WHITE_TERRACOTTA, new Triplet(Material.WHITE_GLAZED_TERRACOTTA, 1));
+        conversions.put(Material.ORANGE_TERRACOTTA, new Triplet(Material.ORANGE_GLAZED_TERRACOTTA,1));
+        conversions.put(Material.MAGENTA_TERRACOTTA, new Triplet(Material.MAGENTA_GLAZED_TERRACOTTA,1));
+        conversions.put(Material.LIGHT_BLUE_TERRACOTTA, new Triplet(Material.LIGHT_BLUE_GLAZED_TERRACOTTA, 1));
+        conversions.put(Material.YELLOW_TERRACOTTA, new Triplet(Material.YELLOW_GLAZED_TERRACOTTA, 1));
+        conversions.put(Material.LIME_TERRACOTTA, new Triplet(Material.LIME_GLAZED_TERRACOTTA, 1));
+        conversions.put(Material.PINK_TERRACOTTA, new Triplet(Material.PINK_GLAZED_TERRACOTTA, 1));
+        conversions.put(Material.GRAY_TERRACOTTA, new Triplet(Material.GRAY_GLAZED_TERRACOTTA, 1));
+        conversions.put(Material.LIGHT_GRAY_TERRACOTTA, new Triplet(Material.LIGHT_GRAY_GLAZED_TERRACOTTA, 1));
+        conversions.put(Material.CYAN_TERRACOTTA, new Triplet(Material.CYAN_GLAZED_TERRACOTTA, 1));
+        conversions.put(Material.PURPLE_TERRACOTTA, new Triplet(Material.PURPLE_GLAZED_TERRACOTTA, 1));
+        conversions.put(Material.BLUE_TERRACOTTA, new Triplet(Material.BLUE_GLAZED_TERRACOTTA, 1));
+        conversions.put(Material.BROWN_TERRACOTTA, new Triplet(Material.BROWN_GLAZED_TERRACOTTA, 1));
+        conversions.put(Material.GREEN_TERRACOTTA, new Triplet(Material.GREEN_GLAZED_TERRACOTTA, 1));
+        conversions.put(Material.RED_TERRACOTTA, new Triplet(Material.RED_GLAZED_TERRACOTTA, 1));
+        conversions.put(Material.BLACK_TERRACOTTA, new Triplet(Material.BLACK_GLAZED_TERRACOTTA, 1));
+        conversions.put(Material.ACACIA_LOG, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.BIRCH_LOG, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.DARK_OAK_LOG, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.JUNGLE_LOG, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.OAK_LOG, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.SPRUCE_LOG, new Triplet(Material.CHARCOAL,1 ));
+        conversions.put(Material.STRIPPED_ACACIA_LOG, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.STRIPPED_BIRCH_LOG, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.STRIPPED_DARK_OAK_LOG, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.STRIPPED_JUNGLE_LOG, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.STRIPPED_OAK_LOG, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.STRIPPED_SPRUCE_LOG, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.ACACIA_WOOD, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.BIRCH_WOOD, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.DARK_OAK_WOOD, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.JUNGLE_WOOD, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.OAK_WOOD, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.SPRUCE_WOOD, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.STRIPPED_ACACIA_WOOD, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.STRIPPED_BIRCH_WOOD, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.STRIPPED_DARK_OAK_WOOD, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.STRIPPED_JUNGLE_WOOD, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.STRIPPED_OAK_WOOD, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.STRIPPED_SPRUCE_WOOD, new Triplet(Material.CHARCOAL, 1));
+        conversions.put(Material.ACACIA_LEAVES, new Triplet(Material.STICK, 1));
+        conversions.put(Material.BIRCH_LEAVES, new Triplet(Material.STICK, 1));
+        conversions.put(Material.DARK_OAK_LEAVES, new Triplet(Material.STICK, 1));
+        conversions.put(Material.JUNGLE_LEAVES, new Triplet(Material.STICK, 1));
+        conversions.put(Material.OAK_LEAVES, new Triplet(Material.STICK, 1));
+        conversions.put(Material.SPRUCE_LEAVES, new Triplet(Material.STICK, 1));
 
-        conversions.put(Material.IRON_ORE, Material.IRON_INGOT);
-        conversions.put(Material.GOLD_ORE, Material.GOLD_INGOT);
-        conversions.put(Material.NETHERRACK, Material.NETHER_BRICK);
-        conversions.put(Material.KELP_PLANT, Material.DRIED_KELP);
-        conversions.put(Material.WET_SPONGE, Material.SPONGE);
-        conversions.put(Material.COAL_ORE, Material.AIR);
-        conversions.put(Material.COAL_BLOCK, Material.AIR);
-        conversions.put(Material.CLAY, Material.BRICK);
+        conversions.put(Material.IRON_ORE, new Triplet(Material.IRON_INGOT, 1, true));
+        conversions.put(Material.GOLD_ORE, new Triplet(Material.GOLD_INGOT, 1, true));
+        conversions.put(Material.NETHERRACK, new Triplet(Material.NETHER_BRICK, 1, true));
+        conversions.put(Material.KELP_PLANT, new Triplet(Material.DRIED_KELP, 1));
+        conversions.put(Material.WET_SPONGE, new Triplet(Material.SPONGE, 1));
+        conversions.put(Material.COAL_ORE, new Triplet(Material.AIR, 0));
+        conversions.put(Material.COAL_BLOCK, new Triplet(Material.AIR, 0));
+        conversions.put(Material.CLAY, new Triplet(Material.BRICK, 4, true));
 
-        config.addDefault(key + ".Conversions", conversions);
-
-        //conversions.clear();
-
-        luckMaterials.add(Material.STRIPPED_ACACIA_WOOD);
-        luckMaterials.add(Material.STRIPPED_BIRCH_WOOD);
-        luckMaterials.add(Material.STRIPPED_DARK_OAK_WOOD);
-        luckMaterials.add(Material.STRIPPED_JUNGLE_WOOD);
-        luckMaterials.add(Material.STRIPPED_OAK_WOOD);
-        luckMaterials.add(Material.IRON_ORE);
-        luckMaterials.add(Material.GOLD_ORE);
-        luckMaterials.add(Material.NETHERRACK);
-
-        config.addDefault(key + ".AllowLuck", luckMaterials);
-
-        //luckMaterials.clear();
+        //Saving Conversions as String
+        Map<String, String> conversionsSTR = new HashMap<>();
+        conversions.forEach((k, v) -> conversionsSTR.put(k.toString(), v.toString()));
+        config.addDefault(key + ".Conversions", conversionsSTR);
+        conversions.clear();
 
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
@@ -190,16 +213,14 @@ public class AutoSmelt extends Modifier implements Listener {
         this.hasSound = config.getBoolean(key + ".Sound");
         this.hasParticles = config.getBoolean(key + ".Particles");
         this.worksUnderWater = config.getBoolean(key + ".works_under_water");
-//
-//        ConfigurationSection conversionConfig = config.getConfigurationSection(key + ".Conversions");
-//
-//        for (String sectionKey : conversionConfig.getKeys(false)) {
-//            conversions.put(Material.valueOf(sectionKey), Material.valueOf(conversionConfig.getString(sectionKey)));
-//        }
-//
-//        for (String luckEntry : config.getStringList(key + ".AllowLuck")) {
-//            luckMaterials.add(Material.valueOf(luckEntry));
-//        }
+
+        ConfigurationSection conversionConfig = config.getConfigurationSection(key + ".Conversions");
+        if (conversionConfig == null) return;
+
+        Map<String, Object> conversionValues = conversionConfig.getValues(false);
+        conversionValues.forEach((k, v) -> {
+            if (v instanceof String) conversions.put(Material.getMaterial(k), Triplet.fromString((String) v));
+        });
     }
     
     @Override
@@ -226,11 +247,9 @@ public class AutoSmelt extends Modifier implements Listener {
         ItemStack tool = event.getTool();
         Block block = event.getBlock();
         BlockBreakEvent breakEvent = event.getEvent();
-
-    	//FileConfiguration config = getConfig();
     	
         if (!player.hasPermission("minetinker.modifiers.autosmelt.use")) {
-            return; //TODO: Think about more blocks for Auto-Smelt
+            return;
         }
 
         if (!modManager.hasMod(tool, this)) {
@@ -243,44 +262,45 @@ public class AutoSmelt extends Modifier implements Listener {
             }
         }
 
-        boolean allowLuck = luckMaterials.contains(block.getType());
-        int amount = 1;
+        if (!(new Random().nextInt(100) <= this.percentagePerLevel * modManager.getModLevel(tool, this) && block.getLocation().getWorld() != null)) {
+            return;
+        }
 
-        Material loot = conversions.get(block.getType());
+        Triplet conv = conversions.get(block.getType());
+        if (conv == null) {
+            return;
+        }
 
+        int amount = conv.amount;
+        Material loot = conv.material;
         if (loot == null) {
             return;
         }
 
-        Random rand = new Random();
-        int n = rand.nextInt(100);
+        if (conv.luckable) {
+            int level = modManager.getModLevel(tool, Luck.instance());
 
-        if (n <= this.percentagePerLevel * modManager.getModLevel(tool, this) && block.getLocation().getWorld() != null) {
-            if (allowLuck) {
-                int level = modManager.getModLevel(tool, Luck.instance());
-
-                if (level > 0) {
-                    amount = amount + rand.nextInt(level) * amount; //Times amount is for clay as it drops 4 per block
-                }
+            if (level > 0) {
+                amount = amount + new Random().nextInt(level + 1) * amount; //Times amount is for clay as it drops 4 per block
             }
-
-            if (loot != Material.AIR) {
-                ItemStack items = new ItemStack(loot, amount);
-                block.getLocation().getWorld().dropItemNaturally(block.getLocation(), items);
-            }
-
-            breakEvent.setDropItems(false);
-
-            if (this.hasParticles) {
-                block.getLocation().getWorld().spawnParticle(Particle.FLAME, block.getLocation(), 5);
-            }
-
-            if (this.hasSound) {
-                block.getLocation().getWorld().playSound(block.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
-            }
-
-            ChatWriter.log(false, player.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY +
-                    " (" + tool.getType().toString() + ") while mining " + breakEvent.getBlock().getType().toString() + "!");
         }
+
+        if (loot != Material.AIR && amount > 0) {
+            ItemStack items = new ItemStack(loot, amount);
+            block.getLocation().getWorld().dropItemNaturally(block.getLocation(), items);
+        }
+
+        breakEvent.setDropItems(false);
+
+        if (this.hasParticles) {
+            block.getLocation().getWorld().spawnParticle(Particle.FLAME, block.getLocation(), 5);
+        }
+
+        if (this.hasSound) {
+            block.getLocation().getWorld().playSound(block.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
+        }
+
+        ChatWriter.log(false, player.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY +
+                " (" + tool.getType().toString() + ") while mining " + breakEvent.getBlock().getType().toString() + "!");
     }
 }
