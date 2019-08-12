@@ -36,6 +36,8 @@ public class Main extends JavaPlugin {
         BuildersWandListener.init();
         loadConfig();
 
+        ChatWriter.reload();
+
         ModManager.instance();
 
         Commands cmd = new Commands();

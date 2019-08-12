@@ -313,6 +313,7 @@ public class Commands implements TabExecutor {
 
         ChatWriter.sendMessage(sender, ChatColor.WHITE, "Reloading Config!");
         Main.getPlugin().reloadConfig();
+        ChatWriter.reload();
         ConfigurationManager.reload();
 
         ChatWriter.sendMessage(sender, ChatColor.WHITE, "Reloading ModManager!");

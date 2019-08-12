@@ -16,13 +16,11 @@ import java.util.logging.Level;
 
 public class ChatWriter {
 
-    public static final String CHAT_PREFIX;
+    public static String CHAT_PREFIX;
 
     private final static TreeMap<Integer, String> map = new TreeMap<>();
 
     static {
-    	CHAT_PREFIX = Main.getPlugin().getConfig().getString("chat-prefix");
-
         map.put(1000000, "%BOLD%%UNDERLINE%M%RESET%");
         map.put(500000, "%BOLD%%UNDERLINE%D%RESET%");
         map.put(100000, "%BOLD%%UNDERLINE%C%RESET%");
@@ -42,6 +40,10 @@ public class ChatWriter {
         map.put(5, "V");
         map.put(4, "IV");
         map.put(1, "I");
+    }
+
+    public static void reload() {
+        CHAT_PREFIX = Main.getPlugin().getConfig().getString("chat-prefix");
     }
 
     /**
@@ -210,7 +212,7 @@ public class ChatWriter {
                 line.append(str[index - 1]);
                 line.append(" ");
             } while(index < str.length && line.length() + str[index].length() < lineSize);
-            res.add(line.toString());
+            res.add(line.toString().substring(0, line.length() - 1));
         }
 
         return res;
