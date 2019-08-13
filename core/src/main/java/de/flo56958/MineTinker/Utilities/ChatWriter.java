@@ -21,6 +21,7 @@ public class ChatWriter {
     private final static TreeMap<Integer, String> map = new TreeMap<>();
 
     static {
+        CHAT_PREFIX = Main.getPlugin().getConfig().getString("chat-prefix");
         map.put(1000000, "%BOLD%%UNDERLINE%M%RESET%");
         map.put(500000, "%BOLD%%UNDERLINE%D%RESET%");
         map.put(100000, "%BOLD%%UNDERLINE%C%RESET%");
