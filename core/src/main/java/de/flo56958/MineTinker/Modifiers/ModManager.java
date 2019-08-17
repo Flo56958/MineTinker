@@ -253,6 +253,12 @@ public class ModManager {
     }
 
     public boolean addMod(Player player, ItemStack item, Modifier modifier, boolean fromCommand) {
+        if (!modifier.getKey().equals("Extra-Modifier")) {
+            if (!Modifier.checkAndAdd(player, item, modifier, modifier.getKey().toLowerCase().replace("-", ""), fromCommand)) {
+                return false;
+            }
+        }
+
         boolean success = modifier.applyMod(player, item, fromCommand);
 
         if (success) {

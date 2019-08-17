@@ -105,10 +105,6 @@ public class Propelling extends Modifier implements Listener {
             return false;
         }
 
-        if (!Modifier.checkAndAdd(p, tool, this, "propelling", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {

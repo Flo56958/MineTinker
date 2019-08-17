@@ -89,10 +89,6 @@ public class Aquaphilic extends Modifier {
             return false;
         }
 
-        if (!Modifier.checkAndAdd(p, tool, this, "aquaphilic", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {

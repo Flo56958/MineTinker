@@ -93,11 +93,6 @@ public class Poisonous extends Modifier implements Listener {
         this.dropPoisonedMeat = config.getBoolean("DropRottenMeatIfPoisoned", true);
     }
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        return checkAndAdd(p, tool, this, "poisonous", isCommand);
-    }
-
     @EventHandler(ignoreCancelled = true)
     public void effect(MTEntityDamageByEntityEvent event) {
         if (!this.isAllowed()) {

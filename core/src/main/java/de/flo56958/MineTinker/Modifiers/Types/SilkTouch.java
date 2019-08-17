@@ -88,10 +88,6 @@ public class SilkTouch extends Modifier {
             return false;
         }
 
-        if (!Modifier.checkAndAdd(p, tool, this, "silktouch", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {

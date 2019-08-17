@@ -89,11 +89,6 @@ public class Directing extends Modifier implements Listener {
         this.minimumLevelForXP = config.getInt("MinimumLevelToGetXP", 1);
     }
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        return Modifier.checkAndAdd(p, tool, this, "directing", isCommand);
-    }
-
     @EventHandler
     public void effect(MTEntityDeathEvent event) {
         if (!this.isAllowed()) {

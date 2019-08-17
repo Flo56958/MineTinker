@@ -87,11 +87,6 @@ public class Experienced extends Modifier implements Listener {
         this.amount = config.getInt("Amount", 1);
     }
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        return Modifier.checkAndAdd(p, tool, this, "experienced", isCommand);
-    }
-
     //----------------------------------------------------------
 
     @EventHandler(ignoreCancelled = true)

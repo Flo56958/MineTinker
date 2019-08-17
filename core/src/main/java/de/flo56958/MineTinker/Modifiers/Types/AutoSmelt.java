@@ -223,7 +223,7 @@ public class AutoSmelt extends Modifier implements Listener {
             return false;
         }
 
-        return Modifier.checkAndAdd(p, tool, this, "autosmelt", isCommand);
+        return true;
     }
 
     /**

@@ -83,11 +83,6 @@ public class Melting extends Modifier implements Listener {
         this.cancelBurning = config.getBoolean("CancelBurningOnArmor", true);
     }
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        return checkAndAdd(p, tool, this, "melting", isCommand);
-    }
-
     @EventHandler(ignoreCancelled = true)
     public void effect(MTEntityDamageByEntityEvent event) {
         if (!this.isAllowed()) {

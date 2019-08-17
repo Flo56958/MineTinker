@@ -103,9 +103,6 @@ public class Luck extends Modifier {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
             return false;
         }
-        if (!Modifier.checkAndAdd(p, tool, this, "luck", isCommand)) {
-            return false;
-        }
 
         ItemMeta meta = tool.getItemMeta();
 

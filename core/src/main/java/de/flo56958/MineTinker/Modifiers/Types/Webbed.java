@@ -96,11 +96,6 @@ public class Webbed extends Modifier implements Listener {
         this.effectAmplifier = config.getInt("EffectAmplifier", 2);
     }
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        return Modifier.checkAndAdd(p, tool, this, "webbed", isCommand);
-    }
-
     @EventHandler(ignoreCancelled = true)
     public void effect(MTEntityDamageByEntityEvent event) {
         if (!this.isAllowed()) {

@@ -91,11 +91,6 @@ public class Glowing extends Modifier implements Listener {
         this.durationMultiplier = config.getDouble("DurationMultiplier", 1.1);
     }
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        return Modifier.checkAndAdd(p, tool, this, "glowing", isCommand);
-    }
-
     @EventHandler(ignoreCancelled = true)
     public void effect(MTEntityDamageByEntityEvent event) {
         if (!this.isAllowed()) {

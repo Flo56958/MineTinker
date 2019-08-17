@@ -131,12 +131,11 @@ public class Power extends Modifier implements Listener {
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
         if (modManager.hasMod(tool, Timber.instance())) {
-            pluginManager.callEvent(
-                    new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
             return false;
         }
 
-        return Modifier.checkAndAdd(p, tool, this, "power", isCommand);
+        return true;
     }
 
     private boolean checkPower(Player p, ItemStack tool) {

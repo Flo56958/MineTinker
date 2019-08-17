@@ -95,7 +95,7 @@ public class Timber extends Modifier implements Listener {
             return false;
         }
 
-        return Modifier.checkAndAdd(p, tool, this, "timber", isCommand);
+        return true;
     }
 
     @EventHandler(ignoreCancelled = true)

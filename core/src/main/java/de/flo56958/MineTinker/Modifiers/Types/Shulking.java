@@ -94,11 +94,6 @@ public class Shulking extends Modifier implements Listener {
         this.effectAmplifier = config.getInt("EffectAmplifier", 2);
     }
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        return Modifier.checkAndAdd(p, tool, this, "shulking", isCommand);
-    }
-
     @EventHandler(ignoreCancelled = true)
     public void effect(MTEntityDamageByEntityEvent event) {
         if (!this.isAllowed()) {

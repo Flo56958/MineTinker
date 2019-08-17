@@ -117,7 +117,7 @@ public class Ender extends Modifier implements Listener {
             }
         }
 
-        return Modifier.checkAndAdd(p, tool, this, "ender", isCommand);
+        return true;
     }
 
     /**

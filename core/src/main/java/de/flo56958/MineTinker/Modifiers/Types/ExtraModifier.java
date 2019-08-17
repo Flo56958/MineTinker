@@ -86,6 +86,7 @@ public class ExtraModifier extends Modifier {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.MAXIMUM_SLOTS_REACHED, isCommand));
             return false;
         }
+
         int amount = slotsRemaining + gain;
 
         modManager.setFreeSlots(tool, amount);

@@ -40,16 +40,6 @@ public abstract class Modifier {
 
     public abstract List<ToolType> getAllowedTools();
 
-    public String getRecipeKey() {
-        StringBuilder key = new StringBuilder("Modifier_");
-
-        for (String segment : getKey().toLowerCase().replace("'", "").split("-")) {
-            key.append(segment.substring(0, 1).toUpperCase()).append(segment.substring(1));
-        }
-
-        return key.toString();
-    }
-
     public String getDescription() {
         return description;
     }
@@ -94,11 +84,14 @@ public abstract class Modifier {
      */
     protected void init(Material m, boolean customItem) {
         FileConfiguration config = getConfig();
+
         this.color = ChatWriter.getColor(config.getString("Color", "%WHITE%"));
         this.maxLvl = config.getInt("MaxLevel");
+
         if (config.getBoolean("OverrideLanguagesystem", false)) { //use the config values instead
             this.name = config.getString("Name", "");
             this.description = ChatWriter.addColors(config.getString("Description", ""));
+
             if (customItem) {
                 this.modItem = modManager.createModifierItem(m, this.color + config.getString("ModifierItemName", ""),
                         ChatWriter.addColors(config.getString("DescriptionModifierItem", "")), this);
@@ -107,8 +100,10 @@ public abstract class Modifier {
             }
         } else { //normal Languagesystem-Integration
             String langStart = "Modifier." + getKey();
+
             this.name = LanguageManager.getString(langStart + ".Name");
             this.description = LanguageManager.getString(langStart + ".Description");
+
             if (customItem) {
                 this.modItem = modManager.createModifierItem(m, this.color + LanguageManager.getString(langStart + ".ModifierItemName"),
                         ChatColor.WHITE + LanguageManager.getString(langStart + ".DescriptionModifierItem"), this);
@@ -125,7 +120,9 @@ public abstract class Modifier {
      * @return  true if successful
      *          false if failure
      */
-    public abstract boolean applyMod(Player p, ItemStack tool, boolean isCommand);
+    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+        return true;
+    }
 
     /**
      * what should be done to the Tool if the Modifier gets removed
@@ -220,6 +217,7 @@ public abstract class Modifier {
         if (!hasRecipe()) {
             return;
         }
+
         FileConfiguration config = getConfig();
         if (config.getBoolean("Recipe.Enabled")) {
             try {

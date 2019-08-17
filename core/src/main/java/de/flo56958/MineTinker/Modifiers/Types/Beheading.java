@@ -84,11 +84,6 @@ public class Beheading extends Modifier implements Listener {
         this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
     }
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        return checkAndAdd(p, tool, this, "beheading", isCommand);
-    }
-
     /**
      * Effect for getting the mob heads
      */

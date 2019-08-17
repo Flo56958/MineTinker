@@ -57,11 +57,6 @@ public class Soulbound extends Modifier implements Listener {
     }
 
     @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        return checkAndAdd(p, tool, this, "soulbound", isCommand);
-    }
-
-    @Override
     public void reload() {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
