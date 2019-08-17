@@ -72,6 +72,7 @@ public class GUIs {
 
                     lore.add("");
 
+                    // Description
                     if (desc.length == 2) {
                         lore.add(ChatColor.AQUA + desc[0]);
 
@@ -86,12 +87,44 @@ public class GUIs {
 
                     lore.add("");
 
+                    // Max level
                     String maxLevel = ChatColor.WHITE + ChatWriter.toRomanNumerals(m.getMaxLvl()) + ChatColor.GOLD;
                     lore.add(ChatColor.GOLD + LanguageManager.getString("GUIs.Modifiers.MaxLevel").replaceFirst("%maxLevel", maxLevel));
 
+                    lore.add("");
+
+                    // Allowed Tools
+
+                    lore.add(ChatWriter.addColors(LanguageManager.getString("GUIs.Modifiers.WorksOn")));
+
+                    StringBuilder builder = new StringBuilder();
+
+                    builder.append(ChatColor.WHITE);
+
+                    int count = 0;
+
+                    for (ToolType toolType : m.getAllowedTools()) {
+                        builder.append(toolType.name().replace("_", " ")).append(", ");
+
+                        if (++count > 2) {
+                            lore.add(builder.toString());
+
+                            builder = new StringBuilder();
+                            builder.append(ChatColor.WHITE);
+
+                            count = 0;
+                        }
+                    }
+
+                    String lastLine = builder.toString();
+
+                    lore.add(lastLine.substring(0, lastLine.length() - 2));
+
+                    // Apply lore changes
                     meta.setLore(lore);
                     item.setItemMeta(meta);
 
+                    // Setup click actions
                     GUI.Window.Button modButton = currentPage.addButton((i % 7) + 1, (i / 7) + 1, item);
                     Recipe rec = null;
 

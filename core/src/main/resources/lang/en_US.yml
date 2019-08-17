@@ -50,6 +50,7 @@ GUIs.Forward: "Forward"
 GUIs.Back: "Back"
 GUIs.Modifiers.Title: "MineTinker-Modifiers, %pageNo"
 GUIs.Modifiers.MaxLevel: "Max Level: %maxLevel"
+GUIs.Modifiers.WorksOn: "%BLUE%Works On:"
 
 ModManager.RegisterModifier: "%GREEN%Registered the %mod %GREEN%modifier from %plugin."
 ModManager.UnregisterModifier: "%GREEN%Unregistered the %mod %GREEN%modifier from %plugin."

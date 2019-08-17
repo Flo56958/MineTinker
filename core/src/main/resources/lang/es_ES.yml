@@ -20,7 +20,6 @@ Builderswand.Error.CraftIron: "¡No se puedo registrar la receta para el Bastón
 Builderswand.Error.CraftGold: "¡No se puedo registrar la receta para el Bastón constructor de Oro!"
 Builderswand.Error.CraftDiamond: "¡No se puedo registrar la receta para el Bastón constructor de Diamante!"
 
-
 Commands.Info.Line1: "MineTinker (%ver) es un plugin hecho por Flo56958."
 Commands.Info.Line2: "Está inspirado en diferentes mods (e.j. Tinkers Construct)"
 Commands.InvalidArguments: "¡Has ingresado argumentos de comando inválidos!"
@@ -51,6 +50,7 @@ GUIs.Forward: "Adelante"
 GUIs.Back: "Atrás"
 GUIs.Modifiers.Title: "Modificadores del MineTinker, %pageNo"
 GUIs.Modifiers.MaxLevel: "Nivel Máximo: %maxLevel"
+GUIs.Modifiers.WorksOn: "%BLUE%Trabaja En:"
 
 ModifierFailCause.IncompatibleModifiers: "¡Modificadores incompatibles!"
 ModifierFailCause.InvalidToolType: "¡Tipo de herramienta inválida!"

@@ -36,6 +36,7 @@ GUIs.Forward: "Avant"
 GUIs.Back: "Retour"
 GUIs.Modifiers.Title: "MineTinker-Modificateur, %pageNo"
 GUIs.Modifiers.MaxLevel: "Niveau maximum: %maxLevel"
+GUIs.Modifiers.WorksOn: "%BLUE%Travaille Sur:"
 
 LanguageManager.LoadedLanguage: "LanguageManager charger %lang successfully!"
 
