@@ -85,7 +85,10 @@ public class GUIs {
                     }
 
                     lore.add("");
-                    lore.add(ChatColor.GOLD + LanguageManager.getString("GUIs.Modifiers.MaxLevel").replaceFirst("%maxLevel", ChatColor.WHITE + ChatWriter.toRomanNumerals(m.getMaxLvl()) + ChatColor.GOLD));
+
+                    String maxLevel = ChatColor.WHITE + ChatWriter.toRomanNumerals(m.getMaxLvl()) + ChatColor.GOLD;
+                    lore.add(ChatColor.GOLD + LanguageManager.getString("GUIs.Modifiers.MaxLevel").replaceFirst("%maxLevel", maxLevel));
+
                     meta.setLore(lore);
                     item.setItemMeta(meta);
 
@@ -141,6 +144,7 @@ public class GUIs {
                     }
 
                     i++;
+
                     if (i % 28 == 0) {
                         currentPage = modGUI.addWindow(6, LanguageManager.getString("GUIs.Modifiers.Title").replaceFirst("%pageNo", "" + ++pageNo));
 
