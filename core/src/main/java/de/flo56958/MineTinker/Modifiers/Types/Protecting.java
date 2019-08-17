@@ -52,6 +52,7 @@ public class Protecting extends Modifier {
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Protecting-Modifier");
         config.addDefault("Color", "%GRAY%");
         config.addDefault("MaxLevel", 5);
+        config.addDefault("OverrideLanguagesystem", false);
 
      	config.addDefault("Recipe.Enabled", true);
      	config.addDefault("Recipe.Top", "DID");

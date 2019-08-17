@@ -59,8 +59,9 @@ public class SilkTouch extends Modifier implements Enchantable {
         config.addDefault("MaxLevel", 1); //IF 2: Epic Spawners work with MT-SilkTouch
     	config.addDefault("EnchantCost", 10);
     	config.addDefault("Recipe.Enabled", false);
-    	
-    	ConfigurationManager.saveConfig(config);
+        config.addDefault("OverrideLanguagesystem", false);
+
+        ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
     	
         init(Material.COBWEB, true);

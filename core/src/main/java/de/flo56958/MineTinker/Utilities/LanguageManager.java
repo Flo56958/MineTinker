@@ -9,11 +9,14 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 public class LanguageManager {
 
     private static YamlConfiguration langFile;
     private static YamlConfiguration langBackup;
+
+    private static boolean playerLocale;
 
     private LanguageManager() {}
 
@@ -22,6 +25,8 @@ public class LanguageManager {
 
         langFile = loadLanguage(lang);
         langBackup = loadLanguage("en_US");
+
+        playerLocale = Main.getPlugin().getConfig().getBoolean("EnablePlayerLocale", false);
 
         if(langFile == null) langFile = langBackup;
         else ChatWriter.logInfo(getString("LanguageManager.LoadedLanguage").replaceFirst("%lang", lang));
@@ -44,7 +49,7 @@ public class LanguageManager {
     @NotNull
     public static String getString (@NotNull String path, Player player) {
         if (player == null) return getString(path);
-        if (!player.getLocale().equals(Main.getPlugin().getConfig().getString("Language"))) { //TODO: Make config option to turn this off
+        if (playerLocale && !player.getLocale().equals(Main.getPlugin().getConfig().getString("Language"))) {
             YamlConfiguration langFile = loadLanguage(player.getLocale());
             if (langFile != null) {
                 String ret = langFile.getString(path);
@@ -60,7 +65,7 @@ public class LanguageManager {
     private static YamlConfiguration loadLanguage(@NotNull String lang) {
         InputStream stream = LanguageManager.class.getResourceAsStream("/lang/" + lang + ".yml");
         if (stream == null) return null;
-        InputStreamReader ir = new InputStreamReader(stream);
+        InputStreamReader ir = new InputStreamReader(stream, StandardCharsets.UTF_8);
 
         YamlConfiguration file = YamlConfiguration.loadConfiguration(ir);
         try {

@@ -57,6 +57,7 @@ public class Reinforced extends Modifier {
         config.addDefault("MaxLevel", 3);
         config.addDefault("ApplyUnbreakableOnMaxLevel", false);
         config.addDefault("HideUnbreakableFlag", true);
+        config.addDefault("OverrideLanguagesystem", false);
 
     	config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "OOO");

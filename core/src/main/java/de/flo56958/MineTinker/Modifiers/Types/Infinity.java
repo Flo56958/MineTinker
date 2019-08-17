@@ -64,8 +64,9 @@ public class Infinity extends Modifier implements Enchantable {
         config.addDefault("EnchantCost", 10);
     	config.addDefault("Recipe.Enabled", false);
     	//Check Ender.yml for Compatibility-option for Ender and Infinity
-    	
-    	ConfigurationManager.saveConfig(config);
+        config.addDefault("OverrideLanguagesystem", false);
+
+        ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
     	
         init(Material.ARROW, true);

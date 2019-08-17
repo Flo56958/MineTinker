@@ -58,6 +58,7 @@ public class AntiArrowPlating extends Modifier {
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Anti-Arrow-Plating-Modifier");
         config.addDefault("Color", "%WHITE%");
         config.addDefault("MaxLevel", 5);
+        config.addDefault("OverrideLanguagesystem", false);
 
         config.addDefault("CompatibleWithProtecting", false);
         config.addDefault("CompatibleWithAntiFire", false);

@@ -56,6 +56,7 @@ public class Aquaphilic extends Modifier {
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Aquaphilic-Modifier");
         config.addDefault("Color", "%AQUA%");
         config.addDefault("MaxLevel", 3); //higher will have no effect on depth strider
+        config.addDefault("OverrideLanguagesystem", false);
 
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "PNP");

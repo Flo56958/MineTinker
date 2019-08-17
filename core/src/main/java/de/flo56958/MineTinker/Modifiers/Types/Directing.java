@@ -59,6 +59,7 @@ public class Directing extends Modifier implements Listener {
         config.addDefault("MinimumLevelToGetXP", 1); //Modifier-Level to give Player XP
         config.addDefault("WorkInPVP", true);
         config.addDefault("Color", "%GRAY%");
+        config.addDefault("OverrideLanguagesystem", false);
 
         config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "ECE");

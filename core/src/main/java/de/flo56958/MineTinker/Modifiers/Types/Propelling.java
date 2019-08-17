@@ -75,6 +75,7 @@ public class Propelling extends Modifier implements Enchantable, Listener {
         config.addDefault("Elytra.Sound", true);
         config.addDefault("Elytra.Particles", true);
         config.addDefault("Recipe.Enabled", false);
+        config.addDefault("OverrideLanguagesystem", false);
 
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());

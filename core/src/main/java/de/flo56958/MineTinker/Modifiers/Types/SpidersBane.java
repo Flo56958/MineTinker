@@ -32,7 +32,7 @@ public class SpidersBane extends Modifier {
     }
 
     private SpidersBane() {
-        super("Spider's-Bane", "Spiders-Bane.yml",
+        super("Spiders-Bane", "Spiders-Bane.yml",
                 new ArrayList<>(Arrays.asList(ToolType.AXE, ToolType.SWORD)),
                 Main.getPlugin());
     }
@@ -57,6 +57,7 @@ public class SpidersBane extends Modifier {
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Spider's-Bane-Modifier");
         config.addDefault("Color", "%RED%");
         config.addDefault("MaxLevel", 5);
+        config.addDefault("OverrideLanguagesystem", false);
 
         config.addDefault("CompatibleWithSmite", false);
         config.addDefault("CompatibleWithSharpness", false);

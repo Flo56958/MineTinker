@@ -81,8 +81,9 @@ public class SelfRepair extends Modifier implements Enchantable, Listener {
     	config.addDefault("HealthRepair", 2); //How much durability should be repaired per trigger
         config.addDefault("UseMending", false); //Disables the plugins own system and instead uses the vanilla Mending enchantment
     	config.addDefault("Recipe.Enabled", false);
-    	
-    	ConfigurationManager.saveConfig(config);
+        config.addDefault("OverrideLanguagesystem", false);
+
+        ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
         
         init(Material.MOSSY_COBBLESTONE, true);

@@ -84,7 +84,7 @@ public abstract class Modifier {
         FileConfiguration config = getConfig();
         this.color = ChatWriter.getColor(config.getString("Color", "%WHITE%"));
         this.maxLvl = config.getInt("MaxLevel");
-        if (config.getBoolean("OverrideLanguagesytem", false)) { //use the config values instead
+        if (config.getBoolean("OverrideLanguagesystem", false)) { //use the config values instead
             this.name = config.getString("Name", "");
             this.description = ChatWriter.addColors(config.getString("Description", ""));
             if (customItem) {

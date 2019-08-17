@@ -90,6 +90,7 @@ public class Speedy extends Modifier {
         config.addDefault("Color", "%BLUE%");
         config.addDefault("MaxLevel", 5);
         config.addDefault("SpeedPerLevel", 0.01);
+        config.addDefault("OverrideLanguagesystem", false);
 
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "R R");

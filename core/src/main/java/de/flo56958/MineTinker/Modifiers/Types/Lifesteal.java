@@ -63,6 +63,7 @@ public class Lifesteal extends Modifier implements Listener {
         config.addDefault("MaxLevel", 3);
         config.addDefault("PercentToTrigger", 50);
         config.addDefault("PercentOfDamagePerLevel", 10);
+        config.addDefault("OverrideLanguagesystem", false);
 
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "SRS");

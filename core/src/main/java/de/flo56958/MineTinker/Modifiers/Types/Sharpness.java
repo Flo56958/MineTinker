@@ -55,10 +55,11 @@ public class Sharpness extends Modifier {
     	config.addDefault("Allowed", true);
     	config.addDefault("Name", "Sharpness");
     	config.addDefault("ModifierItemName", "Compressed Quartzblock");
-        config.addDefault("Description", "Weapon does additional damage!");
+        config.addDefault("Description", "Weapon does additional damage to everyone!");
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Sharpness-Modifier");
         config.addDefault("Color", "%WHITE%");
         config.addDefault("MaxLevel", 5);
+        config.addDefault("OverrideLanguagesystem", false);
 
         config.addDefault("CompatibleWithSmite", false);
         config.addDefault("CompatibleWithArthropods", false);

@@ -60,12 +60,13 @@ public class Shulking extends Modifier implements Listener {
     	config.addDefault("Allowed", true);
     	config.addDefault("Name", "Shulking"); //wingardium leviosa
     	config.addDefault("ModifierItemName", "Enhanced Shulkershell");
-        config.addDefault("Description", "Makes enemies levitate!");
+        config.addDefault("Description", "Make enemies levitate!");
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Shulking-Modifier");
         config.addDefault("Color", "%LIGHT_PURPLE%");
         config.addDefault("MaxLevel", 10);
     	config.addDefault("Duration", 20); //ticks (20 ticks ~ 1 sec)
     	config.addDefault("EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
+        config.addDefault("OverrideLanguagesystem", false);
 
         config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "S");

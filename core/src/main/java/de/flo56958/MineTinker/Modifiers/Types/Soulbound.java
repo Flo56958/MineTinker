@@ -75,6 +75,7 @@ public class Soulbound extends Modifier implements Listener {
         config.addDefault("PercentagePerLevel", 100);
         config.addDefault("DecrementModLevelOnUse", false);
         config.addDefault("ToolDropable", true);
+        config.addDefault("OverrideLanguagesystem", false);
 
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "BLB");

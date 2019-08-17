@@ -57,8 +57,9 @@ public class LightWeight extends Modifier implements Enchantable {
         config.addDefault("MaxLevel", 3);
     	config.addDefault("EnchantCost", 10);
     	config.addDefault("Recipe.Enabled", false);
-    	
-    	ConfigurationManager.saveConfig(config);
+        config.addDefault("OverrideLanguagesystem", false);
+
+        ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
     	
         init(Material.FEATHER, true);

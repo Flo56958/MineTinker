@@ -63,6 +63,7 @@ public class Glowing extends Modifier implements Listener {
         config.addDefault("MaxLevel", 3);
     	config.addDefault("Duration", 200); //ticks INTEGER (20 ticks ~ 1 sec)
     	config.addDefault("DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
+        config.addDefault("OverrideLanguagesystem", false);
 
     	config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "GGG");

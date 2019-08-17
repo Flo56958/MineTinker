@@ -79,6 +79,7 @@ public class Power extends Modifier implements Enchantable, Listener {
         config.addDefault("Color", "%GREEN%");
         config.addDefault("Lv1Vertical", false); // Should the 3x1 at level 1 be horizontal (false) or vertical
                                                          // (true)
+        config.addDefault("OverrideLanguagesystem", false);
         config.addDefault("MaxLevel", 2); // Algorithm for area of effect (except for level 1): (level * 2) - 1 x
                                                  // (level * 2) - 1
         config.addDefault("EnchantCost", 10);

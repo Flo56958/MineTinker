@@ -73,6 +73,7 @@ public class Ender extends Modifier implements Listener {
         config.addDefault("NauseaDuration", 5); //seconds
         config.addDefault("GiveBlindnessOnUse", true);
         config.addDefault("BlindnessDuration", 3); //seconds
+        config.addDefault("OverrideLanguagesystem", false);
 
         config.addDefault("CompatibleWithInfinity", true);
 

@@ -53,10 +53,11 @@ public class Luck extends Modifier {
     	config.addDefault("Allowed", true);
     	config.addDefault("Name", "Luck");
     	config.addDefault("ModifierItemName", "Compressed Lapis-Block");
-        config.addDefault("Description", "Get more loot from enemies and blocks!");
+        config.addDefault("Description", "Get more loot from mobs and blocks!");
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Luck-Modifier");
         config.addDefault("Color", "%BLUE%");
         config.addDefault("MaxLevel", 3);
+        config.addDefault("OverrideLanguagesystem", false);
 
     	config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "LLL");

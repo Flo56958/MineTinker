@@ -59,6 +59,7 @@ public class Fiery extends Modifier implements Enchantable {
         config.addDefault("MaxLevel", 2);
         config.addDefault("EnchantCost", 10);
         config.addDefault("Recipe.Enabled", false);
+        config.addDefault("OverrideLanguagesystem", false);
 
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());

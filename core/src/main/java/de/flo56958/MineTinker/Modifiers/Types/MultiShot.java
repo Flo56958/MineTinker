@@ -63,6 +63,7 @@ public class MultiShot extends Modifier {
         config.addDefault("Recipe.Top", "QQQ");
         config.addDefault("Recipe.Middle", "AAA");
         config.addDefault("Recipe.Bottom", "QQQ");
+        config.addDefault("OverrideLanguagesystem", false);
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("Q", "QUARTZ_BLOCK");

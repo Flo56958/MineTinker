@@ -54,6 +54,7 @@ public class ExtraModifier extends Modifier {
         config.addDefault("Description", "Adds a additional Modifiers-Slot to the tool!");
         config.addDefault("Color", "%WHITE%");
         config.addDefault("ExtraModifierGain", 1); //How much Slots should be added per Nether-Star
+        config.addDefault("OverrideLanguagesystem", false);
 
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());

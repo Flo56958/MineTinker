@@ -69,8 +69,9 @@ public class Beheading extends Modifier implements Enchantable, Listener {
     	config.addDefault("PercentagePerLevel", 10);  //= 100% at Level 10
     	config.addDefault("EnchantCost", 10);
     	config.addDefault("Recipe.Enabled", false);
-    	
-    	ConfigurationManager.saveConfig(config);
+        config.addDefault("OverrideLanguagesystem", false);
+
+        ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
     	
     	init(Material.WITHER_SKELETON_SKULL, true);

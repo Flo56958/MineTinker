@@ -72,6 +72,7 @@ public class AutoSmelt extends Modifier implements Listener {
     	config.addDefault("SmeltTerracotta", false);
     	config.addDefault("BurnCoal", true);
     	config.addDefault("WorksUnderWater", true);
+        config.addDefault("OverrideLanguagesystem", false);
 
     	config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "CCC");

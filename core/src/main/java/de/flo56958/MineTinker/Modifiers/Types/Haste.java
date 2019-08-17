@@ -55,6 +55,7 @@ public class Haste extends Modifier {
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Haste-Modifier");
         config.addDefault("Color", "%DARK_RED%");
         config.addDefault("MaxLevel", 5);
+        config.addDefault("OverrideLanguagesystem", false);
 
     	config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "RRR");

@@ -68,6 +68,7 @@ public class Melting extends Modifier implements Enchantable, Listener {
         config.addDefault("BonusMultiplier", 0.1); //Percent of Bonus-damage per Level or Damage-reduction on Armor
         config.addDefault("CancelBurningOnArmor", true);
         config.addDefault("Recipe.Enabled", false);
+        config.addDefault("OverrideLanguagesystem", false);
 
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());

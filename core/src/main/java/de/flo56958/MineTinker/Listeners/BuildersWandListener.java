@@ -52,7 +52,7 @@ public class BuildersWandListener implements Listener {
     	config.addDefault("name_iron", "Iron Builderswand");
     	config.addDefault("name_gold", "Golden Builderswand");
     	config.addDefault("name_diamond", "Diamond Builderswand");
-    	config.addDefault("OverwriteLanguageSettings", false);
+    	config.addDefault("OverrideLanguagesystem", false);
     	
     	List<String> list = new ArrayList<>();
     	list.add("bannedExample1");
@@ -104,7 +104,7 @@ public class BuildersWandListener implements Listener {
         config = ConfigurationManager.getConfig("BuildersWand.yml");
 
         wands.clear();
-        if (config.getBoolean("OverwriteLanguageSettings")) {
+        if (config.getBoolean("OverrideLanguagesystem")) {
             wands.add(buildersWandCreator(Material.WOODEN_SHOVEL, config.getString("name_wood")));
             wands.add(buildersWandCreator(Material.STONE_SHOVEL, config.getString("name_stone")));
             wands.add(buildersWandCreator(Material.IRON_SHOVEL, config.getString("name_iron")));
@@ -128,7 +128,7 @@ public class BuildersWandListener implements Listener {
         if (meta != null) {
             ArrayList<String> lore = new ArrayList<>();
 
-            if (config.getBoolean("OverwriteLanguageSettings")) {
+            if (config.getBoolean("OverrideLanguagesystem")) {
                 lore.add(ChatWriter.addColors(config.getString("Description")));
             } else {
                 lore.add(LanguageManager.getString("Builderswand.Description"));

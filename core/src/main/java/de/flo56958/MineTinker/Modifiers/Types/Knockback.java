@@ -58,8 +58,9 @@ public class Knockback extends Modifier implements Enchantable {
         config.addDefault("MaxLevel", 5);
      	config.addDefault("EnchantCost", 10);
      	config.addDefault("Recipe.Enabled", false);
-        
-     	ConfigurationManager.saveConfig(config);
+        config.addDefault("OverrideLanguagesystem", false);
+
+        ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
      	init(Material.TNT, true);

@@ -76,8 +76,9 @@ public class Poisonous extends Modifier implements Enchantable, Listener {
     	config.addDefault("EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...) INTEGER
         config.addDefault("DropRottenMeatIfPoisoned", true);
     	config.addDefault("Recipe.Enabled", false);
-    	
-    	ConfigurationManager.saveConfig(config);
+        config.addDefault("OverrideLanguagesystem", false);
+
+        ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
         
         init(Material.ROTTEN_FLESH, true);

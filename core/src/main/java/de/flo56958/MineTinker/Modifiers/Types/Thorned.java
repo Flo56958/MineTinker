@@ -52,6 +52,7 @@ public class Thorned extends Modifier {
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Thorned-Modifier");
         config.addDefault("Color", "%DARK_GREEN%");
         config.addDefault("MaxLevel", 3);
+        config.addDefault("OverrideLanguagesystem", false);
 
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "VAV");

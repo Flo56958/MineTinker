@@ -57,6 +57,7 @@ public class Smite extends Modifier {
         config.addDefault("DescriptionModifierItem", "%YELLOW%Modifier-Item for the Smite-Modifier");
         config.addDefault("Color", "%YELLOW%");
         config.addDefault("MaxLevel", 5);
+        config.addDefault("OverrideLanguagesystem", false);
 
         config.addDefault("CompatibleWithSharpness", false);
         config.addDefault("CompatibleWithArthropods", false);
