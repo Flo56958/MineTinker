@@ -82,17 +82,28 @@ public abstract class Modifier {
      */
     protected void init(Material m, boolean customItem) {
         FileConfiguration config = getConfig();
-        this.name = config.getString("Name", "");
-        this.description = ChatWriter.addColors(config.getString("Description", ""));
         this.color = ChatWriter.getColor(config.getString("Color", "%WHITE%"));
         this.maxLvl = config.getInt("MaxLevel");
-        if (customItem) {
-            this.modItem = modManager.createModifierItem(m, this.color + config.getString("ModifierItemName", ""),
-                    ChatWriter.addColors(config.getString("DescriptionModifierItem", "")), this);
-        } else {
-            this.modItem = new ItemStack(m, 1);
+        if (config.getBoolean("OverrideLanguagesytem", false)) { //use the config values instead
+            this.name = config.getString("Name", "");
+            this.description = ChatWriter.addColors(config.getString("Description", ""));
+            if (customItem) {
+                this.modItem = modManager.createModifierItem(m, this.color + config.getString("ModifierItemName", ""),
+                        ChatWriter.addColors(config.getString("DescriptionModifierItem", "")), this);
+            } else {
+                this.modItem = new ItemStack(m, 1);
+            }
+        } else { //normal Languagesystem-Integration
+            String langStart = "Modifier." + getNBTKey();
+            this.name = LanguageManager.getString(langStart + ".Name");
+            this.description = LanguageManager.getString(langStart + ".Description");
+            if (customItem) {
+                this.modItem = modManager.createModifierItem(m, this.color + LanguageManager.getString(langStart + ".ModifierItemName"),
+                        ChatColor.WHITE + LanguageManager.getString(langStart + ".DescriptionModifierItem"), this);
+            } else {
+                this.modItem = new ItemStack(m, 1);
+            }
         }
-
     }
 
     /**
@@ -181,7 +192,7 @@ public abstract class Modifier {
         FileConfiguration config = getConfig();
         if (config.getBoolean("Recipe.Enabled")) {
             try {
-                NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Modifier_" + this.nbtTag.replace('\'', '-')); //for Spider'sBane
+                NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Modifier_" + this.nbtTag.replace('\'', '-')); //for Spider'sBane //TODO: Change Spiders Bane NBT-Tag
                 ShapedRecipe newRecipe = new ShapedRecipe(nkey, this.getModItem()); //reload recipe
                 String top = config.getString("Recipe.Top");
                 String middle = config.getString("Recipe.Middle");

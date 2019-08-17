@@ -44,7 +44,7 @@ public class LanguageManager {
     @NotNull
     public static String getString (@NotNull String path, Player player) {
         if (player == null) return getString(path);
-        if (!player.getLocale().equals(Main.getPlugin().getConfig().getString("Language"))) {
+        if (!player.getLocale().equals(Main.getPlugin().getConfig().getString("Language"))) { //TODO: Make config option to turn this off
             YamlConfiguration langFile = loadLanguage(player.getLocale());
             if (langFile != null) {
                 String ret = langFile.getString(path);

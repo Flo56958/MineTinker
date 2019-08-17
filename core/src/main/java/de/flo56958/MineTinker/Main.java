@@ -33,11 +33,11 @@ public class Main extends JavaPlugin {
             return;
         }
 
+        loadConfig(); //load Main config
+        LanguageManager.reload(); //Load Language system
+
         ConfigurationManager.reload();
         BuildersWandListener.init();
-        loadConfig();
-
-        LanguageManager.reload();
 
         ModManager.instance();
 

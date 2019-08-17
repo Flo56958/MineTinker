@@ -51,8 +51,8 @@ public class Knockback extends Modifier implements Enchantable {
 
      	config.addDefault("Allowed", true);
      	config.addDefault("Name", "Knockback");
-     	config.addDefault("ModifierItemName", "Enhanced TNT");
-        config.addDefault("Description", "Knockbacks Enemies further!");
+     	config.addDefault("ModifierItemName", "Enchanted TNT");
+        config.addDefault("Description", "Knock back Enemies further!");
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Knockback-Modifier");
         config.addDefault("Color", "%GRAY%");
         config.addDefault("MaxLevel", 5);
