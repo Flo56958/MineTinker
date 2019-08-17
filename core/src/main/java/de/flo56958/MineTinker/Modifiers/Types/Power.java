@@ -73,21 +73,19 @@ public class Power extends Modifier implements Listener {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = getKey();
-
-        config.addDefault(key + ".allowed", true);
-        config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Enchanted Emerald");
-        config.addDefault(key + ".modifier_item", "EMERALD"); // Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Tool can destroy more blocks per swing!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
-        config.addDefault(key + ".Color", "%GREEN%");
-        config.addDefault(key + ".lv1_vertical", false); // Should the 3x1 at level 1 be horizontal (false) or vertical
+        config.addDefault("Allowed", true);
+        config.addDefault("Name", "Power");
+        config.addDefault("ModifierItemName", "Enchanted Emerald");
+        config.addDefault("Description", "Tool can destroy more blocks per swing!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Power-Modifier");
+        config.addDefault("Color", "%GREEN%");
+        config.addDefault("Lv1Vertical", false); // Should the 3x1 at level 1 be horizontal (false) or vertical
                                                          // (true)
-        config.addDefault(key + ".MaxLevel", 3); // Algorithm for area of effect (except for level 1): (level * 2) - 1 x
+        config.addDefault("OverrideLanguagesystem", false);
+        config.addDefault("MaxLevel", 2); // Algorithm for area of effect (except for level 1): (level * 2) - 1 x
                                                  // (level * 2) - 1
-        config.addDefault(key + ".EnchantCost", 10);
-        config.addDefault(key + ".Recipe.Enabled", false);
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Recipe.Enabled", false);
 
         List<String> blacklistTemp = new ArrayList<>();
 
@@ -101,23 +99,18 @@ public class Power extends Modifier implements Listener {
         blacklistTemp.add(Material.END_PORTAL_FRAME.name());
         blacklistTemp.add(Material.NETHER_PORTAL.name());
 
-        config.addDefault(key + ".Blacklist", blacklistTemp);
+        config.addDefault("Blacklist", blacklistTemp);
 
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init("[" + config.getString("Power.name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
-                        ChatWriter.getColor(config.getString(key + ".Color"))
-                                + config.getString(key + ".name_modifier"),
-                        ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.EMERALD, true);
 
-        this.lv1_vertical = config.getBoolean("Power.lv1_vertical");
+        this.lv1_vertical = config.getBoolean("Lv1Vertical", false);
 
         blacklist = new ArrayList<>();
 
-        List<String> blacklistConfig = config.getStringList(key + ".Blacklist");
+        List<String> blacklistConfig = config.getStringList("Blacklist");
 
         for (String mat : blacklistConfig) {
             try {
@@ -128,7 +121,6 @@ public class Power extends Modifier implements Listener {
                 }
 
                 blacklist.add(material);
-
             } catch (IllegalArgumentException e) {
                 Main.getPlugin().getLogger()
                         .warning("Illegal material name found when loading Power blacklist: " + mat);

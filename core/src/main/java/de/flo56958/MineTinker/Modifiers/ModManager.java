@@ -6,6 +6,7 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Types.*;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.Utilities.nms.NBTHandler;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.*;
@@ -42,6 +43,7 @@ public class ModManager {
         layout.addDefault("UseRomans.Exp", false);
         layout.addDefault("UseRomans.FreeSlots", false);
         layout.addDefault("UseRomans.ModifierLevels", true);
+        layout.addDefault("OverrideLanguagesystem", false);
 
         ArrayList<String> loreLayout = new ArrayList<>();
         loreLayout.add("%GOLD%Level %WHITE%%LEVEL%");
@@ -74,15 +76,7 @@ public class ModManager {
     /**
      * Class constructor (no parameters)
      */
-    private ModManager() {
-        this.loreScheme = layout.getStringList("LoreLayout");
-
-        for (int i = 0; i < loreScheme.size(); i++) {
-            loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
-        }
-
-        this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
-    }
+    private ModManager() { }
 
     public NBTHandler getNBTHandler() {
         return nbt;
@@ -125,10 +119,23 @@ public class ModManager {
             m.registerCraftingRecipe();
         }
 
-        this.loreScheme = layout.getStringList("LoreLayout");
+        if (layout.getBoolean("OverrideLanguagesystem", false)) {
+            this.loreScheme = layout.getStringList("LoreLayout");
 
-        for (int i = 0; i < loreScheme.size(); i++) {
-            loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
+            for (int i = 0; i < loreScheme.size(); i++) {
+                loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
+            }
+        } else {
+            this.loreScheme = new ArrayList<>();
+            this.loreScheme.add(LanguageManager.getString("Commands.ItemStatistics.Level")
+                    .replace("%level", "%LEVEL%"));
+            this.loreScheme.add(LanguageManager.getString("Commands.ItemStatistics.Exp")
+                    .replace("%current", "%EXP%")
+                    .replace("%nextlevel", "%NEXT_LEVEL_EXP%"));
+            this.loreScheme.add(LanguageManager.getString("Commands.ItemStatistics.FreeSlots")
+                    .replace("%slots", "%FREE_SLOTS%"));
+            this.loreScheme.add(LanguageManager.getString("Commands.ItemStatistics.Modifiers"));
+            this.loreScheme.add("%MODIFIERS%");
         }
 
         this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
@@ -196,13 +203,9 @@ public class ModManager {
     public void register(Modifier mod) {
     	if (!mods.contains(mod)) {
 	        mods.add(mod);
-
-	        String mes = "%GREEN%Registered the %MOD% %GREEN%modifier from %PLUGIN%.";
-	        mes = ChatWriter.addColors(mes);
-	        mes = mes.replaceAll("%MOD%", mod.getColor() + mod.getName());
-	        mes = mes.replaceAll("%PLUGIN%", Main.getPlugin().getName());
-
-	        ChatWriter.logColor(mes);
+	        ChatWriter.logColor(LanguageManager.getString("ModManager.RegisterModifier")
+                    .replace("%mod", mod.getColor() + mod.getName())
+                    .replace("%plugin", Main.getPlugin().getName()));
     	}
     }
 
@@ -211,14 +214,10 @@ public class ModManager {
      * @param mod the modifier instance
      */
     public void unregister(Modifier mod) {
-    	 mods.remove(mod);
-
-         String mes = "%GREEN%Unregistered the %MOD% %GREEN%modifier from %PLUGIN%.";
-         mes = ChatWriter.addColors(mes);
-         mes = mes.replaceAll("%MOD%", mod.getColor() + mod.getName());
-         mes = mes.replaceAll("%PLUGIN%", Main.getPlugin().getName());
-
-         ChatWriter.logColor(mes);
+        mods.remove(mod);
+        ChatWriter.logColor(LanguageManager.getString("ModManager.UnregisterModifier")
+                .replace("%mod", mod.getColor() + mod.getName())
+                .replace("%plugin", Main.getPlugin().getName()));
     }
 
     /**

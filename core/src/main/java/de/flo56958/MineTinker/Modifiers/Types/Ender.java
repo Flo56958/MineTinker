@@ -66,53 +66,46 @@ public class Ender extends Modifier implements Listener {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
 
-        String key = getKey();
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Ender");
+    	config.addDefault("ModifierItemName", "Special Endereye");
+        config.addDefault("Description", "Teleports you while sneaking to the arrow location!");
+    	config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Ender-Modifier");
+        config.addDefault("Color", "%DARK_GREEN%");
+        config.addDefault("MaxLevel", 2);
+        config.addDefault("Sound", true); //#Enderman-Teleport-Sound
+        config.addDefault("Particles", true);
+        config.addDefault("GiveNauseaOnUse", true);
+        config.addDefault("NauseaDuration", 5); //seconds
+        config.addDefault("GiveBlindnessOnUse", true);
+        config.addDefault("BlindnessDuration", 3); //seconds
+        config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Special Endereye");
-        config.addDefault(key + ".modifier_item", "ENDER_EYE"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Teleports you while sneaking to the arrow location!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
-        config.addDefault(key + ".Color", "%DARK_GREEN%");
-        config.addDefault(key + ".EnchantCost", 10);
-        config.addDefault(key + ".MaxLevel", 2);
-        config.addDefault(key + ".Sound", true); //#Enderman-Teleport-Sound
-        config.addDefault(key + ".Particles", true);
-        config.addDefault(key + ".giveNauseaOnUse", true);
-        config.addDefault(key + ".nauseaDuration", 5); //seconds
-        config.addDefault(key + ".giveBlindnessOnUse", true);
-        config.addDefault(key + ".blindnessDuration", 3); //seconds
+        config.addDefault("CompatibleWithInfinity", true);
 
-        config.addDefault(key + ".CompatibleWithInfinity", true);
-
-    	config.addDefault(key + ".Recipe.Enabled", true);
-    	config.addDefault(key + ".Recipe.Top", "PPP");
-    	config.addDefault(key + ".Recipe.Middle", "PEP");
-    	config.addDefault(key + ".Recipe.Bottom", "PPP");
+    	config.addDefault("Recipe.Enabled", true);
+    	config.addDefault("Recipe.Top", "PPP");
+    	config.addDefault("Recipe.Middle", "PEP");
+    	config.addDefault("Recipe.Bottom", "PPP");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("P", "ENDER_PEARL");
         recipeMaterials.put("E", "ENDER_EYE");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
-                ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
-                ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.ENDER_EYE, true);
         
-        this.hasSound = config.getBoolean(key + ".Sound", true);
-        this.hasParticles = config.getBoolean(key + ".Particles", true);
-        this.compatibleWithInfinity = config.getBoolean(key + ".CompatibleWithInfinity", true);
-        this.giveNauseaOnUse = config.getBoolean(key + ".giveNauseaOnUse", true);
-        this.nauseaDuration = config.getInt(key + ".nauseaDuration", 5) * 20;
-        this.giveBlindnessOnUse = config.getBoolean(key + ".giveBlindnessOnUse", true);
-        this.blindnessDuration = config.getInt(key + ".blindnessDuration", 3) * 20;
+        this.hasSound = config.getBoolean("Sound", true);
+        this.hasParticles = config.getBoolean("Particles", true);
+        this.compatibleWithInfinity = config.getBoolean("CompatibleWithInfinity", true);
+        this.giveNauseaOnUse = config.getBoolean("GiveNauseaOnUse", true);
+        this.nauseaDuration = config.getInt("NauseaDuration", 5) * 20;
+        this.giveBlindnessOnUse = config.getBoolean("GiveBlindnessOnUse", true);
+        this.blindnessDuration = config.getInt("BlindnessDuration", 3) * 20;
     }
 
     @Override

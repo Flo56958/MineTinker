@@ -3,7 +3,6 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,12 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Channeling extends Modifier {
 
@@ -59,37 +53,31 @@ public class Channeling extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = getKey();
+        config.addDefault("Allowed", true);
+        config.addDefault("Name", "Channeling");
+        config.addDefault("ModifierItemName", "Lightning Infused Shard");
+        config.addDefault("Description", "Summons lightning when weapon is thrown at mobs!");
+        config.addDefault("DescriptionModifierItem", "%GRAY%Modifier-Item for the Channeling-Modifier");
+        config.addDefault("Color", "%GRAY%");
+        config.addDefault("MaxLevel", 1);
+        config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault(key + ".allowed", true);
-        config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Lightning Infused Shard");
-        config.addDefault(key + ".modifier_item", "PRISMARINE_SHARD"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Summons lightning when weapon is thrown at mobs!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
-        config.addDefault(key + ".Color", "%GRAY%");
-        config.addDefault(key + ".EnchantCost", 10);
-        config.addDefault(key + ".MaxLevel", 1);
-
-        config.addDefault(key + ".Recipe.Enabled", true);
-        config.addDefault(key + ".Recipe.Top", "SPS");
-        config.addDefault(key + ".Recipe.Middle", "PCP");
-        config.addDefault(key + ".Recipe.Bottom", "SPS");
+        config.addDefault("Recipe.Enabled", true);
+        config.addDefault("Recipe.Top", "SPS");
+        config.addDefault("Recipe.Middle", "PCP");
+        config.addDefault("Recipe.Bottom", "SPS");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("S", "SEA_LANTERN");
         recipeMaterials.put("P", "PRISMARINE_SHARDS");
         recipeMaterials.put("C", "CREEPER_HEAD");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.PRISMARINE_SHARD, true);
     }
 
     @Override

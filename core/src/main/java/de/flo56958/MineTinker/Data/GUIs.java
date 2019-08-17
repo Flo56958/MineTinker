@@ -3,6 +3,7 @@ package de.flo56958.MineTinker.Data;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import de.flo56958.MineTinker.api.gui.ButtonAction;
 import de.flo56958.MineTinker.api.gui.GUI;
@@ -22,7 +23,6 @@ import java.util.List;
 public class GUIs {
 
     private static GUI modGUI;
-    private static GUI modRecipes;
 
     static {
         reload();
@@ -33,7 +33,7 @@ public class GUIs {
         ItemMeta forwardMeta = forwardStack.getItemMeta();
 
         if (forwardMeta != null) {
-            forwardMeta.setDisplayName(ChatColor.GREEN + "Forward");
+            forwardMeta.setDisplayName(ChatColor.GREEN + LanguageManager.getString("GUIs.Forward"));
             forwardStack.setItemMeta(forwardMeta);
         }
 
@@ -41,15 +41,15 @@ public class GUIs {
         ItemMeta backMeta = backStack.getItemMeta();
 
         if (backMeta != null) {
-            backMeta.setDisplayName(ChatColor.RED + "Back");
+            backMeta.setDisplayName(ChatColor.RED + LanguageManager.getString("GUIs.Back"));
             backStack.setItemMeta(backMeta);
         }
 
         { /*/mt mods GUIs*/
             int pageNo = 0;
             modGUI = new GUI();
-            modRecipes = new GUI();
-            GUI.Window currentPage = modGUI.addWindow(6, "MineTinker-Modifiers, " + ++pageNo);
+            GUI modRecipes = new GUI();
+            GUI.Window currentPage = modGUI.addWindow(6, LanguageManager.getString("GUIs.Modifiers.Title").replaceFirst("%pageNo", "" + ++pageNo));
 
             int i = 0;
 
@@ -85,7 +85,7 @@ public class GUIs {
                     }
 
                     lore.add("");
-                    lore.add(ChatColor.GOLD + "Max Level: " + ChatColor.WHITE + ChatWriter.toRomanNumerals(m.getMaxLvl()));
+                    lore.add(ChatColor.GOLD + LanguageManager.getString("GUIs.Modifiers.MaxLevel").replaceFirst("%maxLevel", ChatColor.WHITE + ChatWriter.toRomanNumerals(m.getMaxLvl()) + ChatColor.GOLD));
                     meta.setLore(lore);
                     item.setItemMeta(meta);
 
@@ -142,7 +142,7 @@ public class GUIs {
 
                     i++;
                     if (i % 28 == 0) {
-                        currentPage = modGUI.addWindow(6, "MineTinker-Modifiers, " + ++pageNo);
+                        currentPage = modGUI.addWindow(6, LanguageManager.getString("GUIs.Modifiers.Title").replaceFirst("%pageNo", "" + ++pageNo));
 
                         back = currentPage.addButton(0, 5, backStack.clone());
                         back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));

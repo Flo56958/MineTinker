@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -72,36 +71,31 @@ public class Propelling extends Modifier implements Listener {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = getKey();
-
-        config.addDefault(key + ".allowed", true);
-        config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Enchanted Fireworkstar");
-        config.addDefault(key + ".modifier_item", "FIREWORK_STAR"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Propel yourself through the air.");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
-        config.addDefault(key + ".Color", "%GOLD%");
-        config.addDefault(key + ".MaxLevel", 3);
-        config.addDefault(key + ".EnchantCost", 10);
-        config.addDefault(key + ".Elytra.DurabilityLoss", 10);
-        config.addDefault(key + ".Elytra.SpeedPerLevel", 0.05);
-        config.addDefault(key + ".Elytra.Sound", true);
-        config.addDefault(key + ".Elytra.Particles", true);
-        config.addDefault(key + ".Recipe.Enabled", false);
+        config.addDefault("Allowed", true);
+        config.addDefault("Name", "Propelling");
+        config.addDefault("ModifierItemName", "Enchanted Fireworkstar");
+        config.addDefault("Description", "Propel yourself through the air.");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Propelling-Modifier");
+        config.addDefault("Color", "%GOLD%");
+        config.addDefault("MaxLevel", 3);
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Elytra.DurabilityLoss", 10);
+        config.addDefault("Elytra.SpeedPerLevel", 0.05);
+        config.addDefault("Elytra.Sound", true);
+        config.addDefault("Elytra.Particles", true);
+        config.addDefault("Recipe.Enabled", false);
+        config.addDefault("OverrideLanguagesystem", false);
 
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.FIREWORK_STAR, true);
 
-        durabilityLoss = config.getInt(key + ".Elytra.DurabilityLoss");
-        speedPerLevel = config.getDouble(key + ".Elytra.SpeedPerLevel");
+        durabilityLoss = config.getInt("Elytra.DurabilityLoss", 10);
+        speedPerLevel = config.getDouble("Elytra.SpeedPerLevel", 0.05);
 
-        sound = config.getBoolean(key + ".Elytra.Sound");
-        particles = config.getBoolean(key + ".Elytra.Particles");
+        sound = config.getBoolean("Elytra.Sound", true);
+        particles = config.getBoolean("Elytra.Particles", true);
     }
 
     @Override

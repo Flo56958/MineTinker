@@ -20,11 +20,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Glowing extends Modifier implements Listener {
 
@@ -63,42 +59,36 @@ public class Glowing extends Modifier implements Listener {
     public void reload() {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
+    	
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Glowing");
+    	config.addDefault("ModifierItemName", "Ender-Glowstone");
+        config.addDefault("Description", "Makes Enemies glow!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Glowing-Modifier");
+        config.addDefault("Color", "%YELLOW%");
+        config.addDefault("MaxLevel", 3);
+    	config.addDefault("Duration", 200); //ticks INTEGER (20 ticks ~ 1 sec)
+    	config.addDefault("DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
+        config.addDefault("OverrideLanguagesystem", false);
 
-        String key = getKey();
-
-        config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Ender-Glowstone");
-        config.addDefault(key + ".modifier_item", "GLOWSTONE"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Makes Enemies glow!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
-        config.addDefault(key + ".Color", "%YELLOW%");
-        config.addDefault(key + ".EnchantCost", 10);
-        config.addDefault(key + ".MaxLevel", 3);
-    	config.addDefault(key + ".Duration", 200); //ticks INTEGER (20 ticks ~ 1 sec)
-    	config.addDefault(key + ".DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
-
-    	config.addDefault(key + ".Recipe.Enabled", true);
-    	config.addDefault(key + ".Recipe.Top", "GGG");
-    	config.addDefault(key + ".Recipe.Middle", "GEG");
-    	config.addDefault(key + ".Recipe.Bottom", "GGG");
+    	config.addDefault("Recipe.Enabled", true);
+    	config.addDefault("Recipe.Top", "GGG");
+    	config.addDefault("Recipe.Middle", "GEG");
+    	config.addDefault("Recipe.Bottom", "GGG");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("G", "GLOWSTONE_DUST");
         recipeMaterials.put("E", "ENDER_EYE");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
         
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
-        
-        this.duration = config.getInt(key + ".Duration");
-        this.durationMultiplier = config.getDouble(key + ".DurationMultiplier");
+        init(Material.GLOWSTONE, true);
+
+        this.duration = config.getInt("Duration", 200);
+        this.durationMultiplier = config.getDouble("DurationMultiplier", 1.1);
     }
 
     @Override

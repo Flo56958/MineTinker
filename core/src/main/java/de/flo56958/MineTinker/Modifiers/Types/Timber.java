@@ -62,39 +62,30 @@ public class Timber extends Modifier implements Listener {
         FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
 
-        String key = getKey();
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Timber");
+    	config.addDefault("ModifierItemName", "Wooden Emerald");
+        config.addDefault("Description", "Chop down trees in an instant!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Timber-Modifier");
+        config.addDefault("Color", "%GREEN%");
+        config.addDefault("MaximumBlocksPerSwing", 2000); //-1 to disable it
+        config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Wooden Emerald");
-        config.addDefault(key + ".modifier_item", "EMERALD"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Chop down trees in an instant!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
-        config.addDefault(key + ".Color", "%GREEN%");
-        config.addDefault(key + ".EnchantCost", 10);
-        config.addDefault(key + ".MaximumBlocksPerSwing", -1);
-
-    	config.addDefault(key + ".Recipe.Enabled", true);
-    	config.addDefault(key + ".Recipe.Top", "LLL");
-    	config.addDefault(key + ".Recipe.Middle", "LEL");
-    	config.addDefault(key + ".Recipe.Bottom", "LLL");
+    	config.addDefault("Recipe.Enabled", true);
+    	config.addDefault("Recipe.Top", "LLL");
+    	config.addDefault("Recipe.Middle", "LEL");
+    	config.addDefault("Recipe.Bottom", "LLL");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("L", "OAK_WOOD");
         recipeMaterials.put("E", "EMERALD");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                1,
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
-
-        maxBlocks = getConfig().getInt("Timber.MaximumBlocksPerSwing");
-        maxBlocks = (maxBlocks == -1) ? 3000 : maxBlocks;
+        init(Material.EMERALD, true);
     }
 
     @Override

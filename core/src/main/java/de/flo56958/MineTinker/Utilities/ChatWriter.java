@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,11 +140,11 @@ public class ChatWriter {
                 public void run() {
                     sendActionBar(player, message);
                 }
-            }.runTaskLater(Main.getPlugin(), (long) duration);
+            }.runTaskLater(Main.getPlugin(), duration);
         }
     }
 
-    public static String addColors(String input) {
+    public static String addColors(@NotNull String input) {
         input = input.replaceAll("%BLACK%", ChatColor.BLACK.toString());
         input = input.replaceAll("%DARK_BLUE%", ChatColor.DARK_BLUE.toString());
         input = input.replaceAll("%DARK_GREEN%", ChatColor.DARK_GREEN.toString());
@@ -180,7 +181,7 @@ public class ChatWriter {
         }
 
         if (number <= 0) {
-            return "0";
+            return "0"; //Roman Numbers do not have a zero (need to switch to arabic numerals)
         }
 
         int floorKey =  map.floorKey(number);

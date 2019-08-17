@@ -105,32 +105,29 @@ public class AutoSmelt extends Modifier implements Listener {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
 
-        String key = getKey();
+        config.addDefault("allowed", true);
+    	config.addDefault("Name", "Auto-Smelt");
+    	config.addDefault("ModifierItemName", "Enhanced Furnace");
+        config.addDefault("Description", "Chance to smelt ore when mined!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Auto-Smelt-Modifier");
+    	config.addDefault("Color", "%YELLOW%");
+    	config.addDefault("MaxLevel", 5);
+    	config.addDefault("PercentagePerLevel", 20);
+    	config.addDefault("Sound", true); //Auto-Smelt makes a sound
+    	config.addDefault("Particles", true); //Auto-Smelt will create a particle effect when triggered
+    	config.addDefault("WorksUnderWater", true);
+        config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Enhanced Furnace");
-        config.addDefault(key + ".modifier_item", "FURNACE"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Chance to smelt ore when mined!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
-    	config.addDefault(key + ".Color", "%YELLOW%");
-        config.addDefault(key + ".EnchantCost", 10);
-    	config.addDefault(key + ".MaxLevel", 5);
-    	config.addDefault(key + ".PercentagePerLevel", 20);
-    	config.addDefault(key + ".Sound", true); //Auto-Smelt makes a sound
-    	config.addDefault(key + ".Particles", true); //Auto-Smelt will create a particle effect when triggered
-    	config.addDefault(key + ".works_under_water", true);
-
-    	config.addDefault(key + ".Recipe.Enabled", true);
-    	config.addDefault(key + ".Recipe.Top", "CCC");
-    	config.addDefault(key + ".Recipe.Middle", "CFC");
-    	config.addDefault(key + ".Recipe.Bottom", "CCC");
+    	config.addDefault("Recipe.Enabled", true);
+    	config.addDefault("Recipe.Top", "CCC");
+    	config.addDefault("Recipe.Middle", "CFC");
+    	config.addDefault("Recipe.Bottom", "CCC");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("C", "FURNACE");
         recipeMaterials.put("F", "BLAZE_ROD");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
         conversions.put(Material.STONE, new Triplet(Material.STONE, 1));
         conversions.put(Material.COBBLESTONE, new Triplet(Material.STONE, 1));
@@ -197,22 +194,18 @@ public class AutoSmelt extends Modifier implements Listener {
         //Saving Conversions as String
         Map<String, String> conversionsSTR = new HashMap<>();
         conversions.forEach((k, v) -> conversionsSTR.put(k.toString(), v.toString()));
-        config.addDefault(key + ".Conversions", conversionsSTR);
+        config.addDefault("Conversions", conversionsSTR);
         conversions.clear();
 
     	ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-    	init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
-                ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
-                ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+    	init(Material.FURNACE, true);
         
-        this.percentagePerLevel = config.getInt(key + ".PercentagePerLevel");
-        this.hasSound = config.getBoolean(key + ".Sound");
-        this.hasParticles = config.getBoolean(key + ".Particles");
-        this.worksUnderWater = config.getBoolean(key + ".works_under_water");
+        this.percentagePerLevel = config.getInt("PercentagePerLevel", 20);
+        this.hasSound = config.getBoolean("Sound", true);
+        this.hasParticles = config.getBoolean("Particles", true);
+        this.worksUnderWater = config.getBoolean("WorksUnderWater", true);
 
         ConfigurationSection conversionConfig = config.getConfigurationSection(key + ".Conversions");
         if (conversionConfig == null) return;

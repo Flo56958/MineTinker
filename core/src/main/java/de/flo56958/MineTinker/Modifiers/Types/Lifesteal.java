@@ -20,12 +20,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class Lifesteal extends Modifier implements Listener {
 
@@ -65,42 +60,36 @@ public class Lifesteal extends Modifier implements Listener {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = getKey();
+        config.addDefault("Allowed", true);
+        config.addDefault("Name", "Lifesteal");
+        config.addDefault("ModifierItemName", "Bloodinfused Netherrack");
+        config.addDefault("Description", "Get HP when hitting enemies!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Lifesteal-Modifier");
+        config.addDefault("Color", "%DARK_RED%");
+        config.addDefault("MaxLevel", 3);
+        config.addDefault("PercentToTrigger", 50);
+        config.addDefault("PercentOfDamagePerLevel", 10);
+        config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault(key + ".allowed", true);
-        config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Bloodinfused Netherrack");
-        config.addDefault(key + ".modifier_item", "NETHERRACK"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Get HP when hitting enemies!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
-        config.addDefault(key + ".Color", "%DARK_RED%");
-        config.addDefault(key + ".EnchantCost", 10);
-        config.addDefault(key + ".MaxLevel", 3);
-        config.addDefault(key + ".PercentToTrigger", 50);
-        config.addDefault(key + ".PercentOfDamagePerLevel", 10);
-
-        config.addDefault(key + ".Recipe.Enabled", true);
-        config.addDefault(key + ".Recipe.Top", "SRS");
-        config.addDefault(key + ".Recipe.Middle", "RNR");
-        config.addDefault(key + ".Recipe.Bottom", "SRS");
+        config.addDefault("Recipe.Enabled", true);
+        config.addDefault("Recipe.Top", "SRS");
+        config.addDefault("Recipe.Middle", "RNR");
+        config.addDefault("Recipe.Bottom", "SRS");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("N", "NETHERRACK");
         recipeMaterials.put("R", "ROTTEN_FLESH");
         recipeMaterials.put("S", "SOUL_SAND");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.NETHERRACK, true);
 
-        this.percentPerLevel = config.getInt(key + ".PercentOfDamagePerLevel");
-        this.percentToTrigger = config.getInt(key + ".PercentToTrigger");
+        this.percentPerLevel = config.getInt("PercentOfDamagePerLevel", 10);
+        this.percentToTrigger = config.getInt("PercentToTrigger", 50);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH) //because of Melting

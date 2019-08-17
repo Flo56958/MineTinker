@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -60,46 +59,39 @@ public class Insulating extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = getKey();
+        config.addDefault("Allowed", true);
+        config.addDefault("Name", "Insulating");
+        config.addDefault("ModifierItemName", "Heat Resistant Alloy");
+        config.addDefault("Description", "Armor mitigates heat damage!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Anti-Fire-Plating-Modifier");
+        config.addDefault("Color", "%WHITE%");
+        config.addDefault("MaxLevel", 5);
+        config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault(key + ".allowed", true);
-        config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Heat Resistant Alloy");
-        config.addDefault(key + ".modifier_item", "MAGMA_CREAM"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Armor mitigates heat damage!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
-        config.addDefault(key + ".Color", "%WHITE%");
-        config.addDefault(key + ".EnchantCost", 10);
-        config.addDefault(key + ".MaxLevel", 5);
+        config.addDefault("CompatibleWithProtecting", false);
+        config.addDefault("CompatibleWithAntiArrow", false);
+        config.addDefault("CompatibleWithAntiBlast", false);
 
-        config.addDefault(key + ".CompatibleWithProtecting", false);
-        config.addDefault(key + ".CompatibleWithAntiArrow", false);
-        config.addDefault(key + ".CompatibleWithAntiBlast", false);
-
-        config.addDefault(key + ".Recipe.Enabled", true);
-        config.addDefault(key + ".Recipe.Top", "IMI");
-        config.addDefault(key + ".Recipe.Middle", "MDM");
-        config.addDefault(key + ".Recipe.Bottom", "IMI");
+        config.addDefault("Recipe.Enabled", true);
+        config.addDefault("Recipe.Top", "IMI");
+        config.addDefault("Recipe.Middle", "MDM");
+        config.addDefault("Recipe.Bottom", "IMI");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("I", "IRON_BLOCK");
         recipeMaterials.put("M", "MAGMA_BLOCK");
         recipeMaterials.put("D", "DIAMOND");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")), config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")),
-                        ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"),
-                        ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.MAGMA_CREAM, true);
 
-        this.compatibleWithProtecting = config.getBoolean(key + ".CompatibleWithProtecting");
-        this.compatibleWithAntiArrow = config.getBoolean(key + ".CompatibleWithAntiArrow");
-        this.compatibleWithAntiBlast = config.getBoolean(key + ".CompatibleWithAntiBlast");
+        this.compatibleWithProtecting = config.getBoolean("CompatibleWithProtecting", false);
+        this.compatibleWithAntiArrow  = config.getBoolean("CompatibleWithAntiArrow", false);
+        this.compatibleWithAntiBlast  = config.getBoolean("CompatibleWithAntiBlast", false);
     }
 
     @Override

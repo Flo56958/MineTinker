@@ -3,7 +3,6 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -70,6 +69,7 @@ public class Speedy extends Modifier {
         }
 
         Collection<AttributeModifier> speedModifiers = meta.getAttributeModifiers(Attribute.GENERIC_MOVEMENT_SPEED);
+        if (speedModifiers == null || speedModifiers.isEmpty()) modManager.addArmorAttributes(tool);
         double speedOnItem = 0.0D;
 
         if (!(speedModifiers == null || speedModifiers.isEmpty())) {
@@ -99,38 +99,44 @@ public class Speedy extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = getKey();
+        config.addDefault("Allowed", true);
+        config.addDefault("Name", "Speedy");
+        config.addDefault("ModifierItemName", "Enhanced Rabbithide");
+        config.addDefault("Description", "Gotta go fast!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Speedy-Modifier");
+        config.addDefault("Color", "%BLUE%");
+        config.addDefault("MaxLevel", 5);
+        config.addDefault("SpeedPerLevel", 0.01);
+        config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault(key + ".allowed", true);
-        config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Enhanced Rabbithide");
-        config.addDefault(key + ".modifier_item", "RABBIT_HIDE"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Gotta go fast!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
-        config.addDefault(key + ".Color", "%BLUE%");
-        config.addDefault(key + ".EnchantCost", 10);
-        config.addDefault(key + ".MaxLevel", 5);
-        config.addDefault(key + ".SpeedPerLevel", 0.01);
-
-        config.addDefault(key + ".Recipe.Enabled", true);
-        config.addDefault(key + ".Recipe.Top", "R R");
-        config.addDefault(key + ".Recipe.Middle", " H ");
-        config.addDefault(key + ".Recipe.Bottom", "R R");
+        config.addDefault("Recipe.Enabled", true);
+        config.addDefault("Recipe.Top", "R R");
+        config.addDefault("Recipe.Middle", " H ");
+        config.addDefault("Recipe.Bottom", "R R");
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("H", "RABBIT_HIDE");
         recipeMaterials.put("R", "RABBIT_FOOT");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        this.speedPerLevel = config.getDouble(key + ".SpeedPerLevel");
+        this.speedPerLevel = config.getDouble("SpeedPerLevel");
 
-        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.RABBIT_HIDE, true);
+    }
+
+    @Override
+    public List<Attribute> getAppliedAttributes() {
+        List<Attribute> attributes = new ArrayList<>();
+        attributes.add(Attribute.GENERIC_MOVEMENT_SPEED);
+        return attributes;
+    }
+
+    @Override
+    public List<Enchantment> getAppliedEnchantments() {
+        return new ArrayList<>();
     }
 }

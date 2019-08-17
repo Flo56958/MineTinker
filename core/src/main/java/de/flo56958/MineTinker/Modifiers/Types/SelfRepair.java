@@ -77,33 +77,28 @@ public class SelfRepair extends Modifier implements Listener {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
 
-        String key = getKey();
+    	config.addDefault("Allowed", true);
+    	config.addDefault("Name", "Self-Repair");
+    	config.addDefault("ModifierItemName", "Enchanted mossy Cobblestone");
+        config.addDefault("Description", "Chance to repair the tool / armor while using it!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Self-Repair-Modifier");
+        config.addDefault("Color", "%GREEN%");
+        config.addDefault("MaxLevel", 10);
+    	config.addDefault("EnchantCost", 10);
+    	config.addDefault("PercentagePerLevel", 10); //100% at Level 10 (not necessary for unbreakable tool in most cases)
+    	config.addDefault("HealthRepair", 2); //How much durability should be repaired per trigger
+        config.addDefault("UseMending", false); //Disables the plugins own system and instead uses the vanilla Mending enchantment
+    	config.addDefault("Recipe.Enabled", false);
+        config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Enchanted mossy Cobblestone");
-        config.addDefault(key + ".modifier_item", "MOSSY_COBBLESTONE"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Chance to repair the tool / armor while using it!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
-        config.addDefault(key + ".Color", "%GREEN%");
-        config.addDefault(key + ".MaxLevel", 10);
-    	config.addDefault(key + ".EnchantCost", 10);
-    	config.addDefault(key + ".PercentagePerLevel", 10); //100% at Level 10 (not necessary for unbreakable tool in most cases)
-    	config.addDefault(key + ".HealthRepair", 2); //How much durability should be repaired per trigger
-        config.addDefault(key + ".UseMending", false); //Disables the plugins own system and instead uses the vanilla Mending enchantment
-    	config.addDefault(key + ".Recipe.Enabled", false);
-    	
-    	ConfigurationManager.saveConfig(config);
+        ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
         
-        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.MOSSY_COBBLESTONE, true);
         
-        this.percentagePerLevel = config.getInt(key + ".PercentagePerLevel");
-        this.healthRepair = config.getInt(key + ".HealthRepair");
-        this.useMending = config.getBoolean(key + ".UseMending");
+        this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
+        this.healthRepair = config.getInt("HealthRepair", 2);
+        this.useMending = config.getBoolean("UseMending", false);
     }
 
     @Override

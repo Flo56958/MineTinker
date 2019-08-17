@@ -6,11 +6,13 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.Utilities.Updater;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -164,16 +166,17 @@ public class PlayerListener implements Listener {
      * @param event PlayerJoinEvent
      */
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        Lists.BLOCKFACE.put(event.getPlayer(), null);
-        Power.HASPOWER.computeIfAbsent(event.getPlayer(), player -> new AtomicBoolean(false));
+    public void onJoin(PlayerJoinEvent e) {
+        Player player = e.getPlayer();
+        Lists.BLOCKFACE.put(player, null);
+        Power.HASPOWER.computeIfAbsent(player, p -> new AtomicBoolean(false));
 
         if (Main.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
-            if (event.getPlayer().hasPermission("minetinker.update.notify")) {
+            if (player.hasPermission("minetinker.update.notify")) {
                 if (Updater.hasUpdate()) {
-                    ChatWriter.sendMessage(event.getPlayer(), ChatColor.GOLD, "There's is an update available on spigotmc.org!");
-                    ChatWriter.sendMessage(event.getPlayer(), ChatColor.WHITE, "Your version: " + Main.getPlugin().getDescription().getVersion());
-                    ChatWriter.sendMessage(event.getPlayer(), ChatColor.WHITE, "Online version: " + Updater.getOnlineVersion());
+                    ChatWriter.sendMessage(player, ChatColor.GOLD, LanguageManager.getString("Updater.UpdateAvailable", player));
+                    ChatWriter.sendMessage(player, ChatColor.WHITE, LanguageManager.getString("Updater.YourVersion", player).replace("%ver", Main.getPlugin().getDescription().getVersion()));
+                    ChatWriter.sendMessage(player, ChatColor.WHITE, LanguageManager.getString("Updater.OnlineVersion", player).replace("%ver", Updater.getOnlineVersion()));
                 }
             }
         }

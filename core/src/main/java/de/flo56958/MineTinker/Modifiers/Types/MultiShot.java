@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -58,40 +57,34 @@ public class MultiShot extends Modifier {
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        String key = getKey();
+        config.addDefault("Allowed", true);
+        config.addDefault("Name", "Multishot");
+        config.addDefault("ModifierItemName", "Multi-Arrow");
+        config.addDefault("Description", "Shoot more Arrows per shot!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Multishot-Modifier");
+        config.addDefault("Color", "%YELLOW%");
+        config.addDefault("MaxLevel", 1);
 
-        config.addDefault(key + ".allowed", true);
-        config.addDefault(key + ".name", key);
-        config.addDefault(key + ".name_modifier", "Multi-Arrow");
-        config.addDefault(key + ".modifier_item", "ARROW"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Shoot more Arrows per shot!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
-        config.addDefault(key + ".Color", "%YELLOW%");
-        config.addDefault(key + ".EnchantCost", 10);
-        config.addDefault(key + ".MaxLevel", 1);
+        config.addDefault("CompatibleWithPiercing", false);
 
-        config.addDefault(key + ".CompatibleWithPiercing", false);
-
-        config.addDefault(key + ".Recipe.Enabled", true);
-        config.addDefault(key + ".Recipe.Top", "QQQ");
-        config.addDefault(key + ".Recipe.Middle", "AAA");
-        config.addDefault(key + ".Recipe.Bottom", "QQQ");
+        config.addDefault("Recipe.Enabled", true);
+        config.addDefault("Recipe.Top", "QQQ");
+        config.addDefault("Recipe.Middle", "AAA");
+        config.addDefault("Recipe.Bottom", "QQQ");
+        config.addDefault("OverrideLanguagesystem", false);
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("Q", "QUARTZ_BLOCK");
         recipeMaterials.put("A", "ARROW");
 
-        config.addDefault(key + ".Recipe.Materials", recipeMaterials);
+        config.addDefault("Recipe.Materials", recipeMaterials);
 
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.ARROW, true);
 
-        this.compatibleWithPiercing = config.getBoolean(key + ".CompatibleWithPiercing");
+        this.compatibleWithPiercing = config.getBoolean("CompatibleWithPiercing", false);
     }
 
     @Override

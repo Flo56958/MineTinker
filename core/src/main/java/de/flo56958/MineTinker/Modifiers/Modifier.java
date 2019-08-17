@@ -8,6 +8,7 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Types.ExtraModifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -97,16 +98,31 @@ public abstract class Modifier {
 
     /**
      * changes the core settings of the Modifier (like a secondary constructor)
-     * @param description Description of the Modifier
-     * @param color Color of the Modifier
-     * @param maxLvl Maximum Level cap of the Modifier
-     * @param modItem ItemStack that is required to craft the Modifier
      */
-    protected void init(String description, ChatColor color, int maxLvl, ItemStack modItem) {
-        this.description = ChatWriter.addColors(description);
-        this.color = color;
-        this.maxLvl = maxLvl;
-        this.modItem = modItem;
+    protected void init(Material m, boolean customItem) {
+        FileConfiguration config = getConfig();
+        this.color = ChatWriter.getColor(config.getString("Color", "%WHITE%"));
+        this.maxLvl = config.getInt("MaxLevel");
+        if (config.getBoolean("OverrideLanguagesystem", false)) { //use the config values instead
+            this.name = config.getString("Name", "");
+            this.description = ChatWriter.addColors(config.getString("Description", ""));
+            if (customItem) {
+                this.modItem = modManager.createModifierItem(m, this.color + config.getString("ModifierItemName", ""),
+                        ChatWriter.addColors(config.getString("DescriptionModifierItem", "")), this);
+            } else {
+                this.modItem = new ItemStack(m, 1);
+            }
+        } else { //normal Languagesystem-Integration
+            String langStart = "Modifier." + getNBTKey();
+            this.name = LanguageManager.getString(langStart + ".Name");
+            this.description = LanguageManager.getString(langStart + ".Description");
+            if (customItem) {
+                this.modItem = modManager.createModifierItem(m, this.color + LanguageManager.getString(langStart + ".ModifierItemName"),
+                        ChatColor.WHITE + LanguageManager.getString(langStart + ".DescriptionModifierItem"), this);
+            } else {
+                this.modItem = new ItemStack(m, 1);
+            }
+        }
     }
 
     /**
@@ -147,7 +163,11 @@ public abstract class Modifier {
      * @return is the modifier allowed
      */
     public boolean isAllowed() {
-        return getConfig().getBoolean(getKey() + ".allowed");
+        return getConfig().getBoolean("Allowed", true);
+    }
+
+    public String getNBTKey() {
+        return nbtTag;
     }
 
     public String getFileName() {
@@ -211,20 +231,15 @@ public abstract class Modifier {
         if (!hasRecipe()) {
             return;
         }
-
-        Modifier mod = this;
         FileConfiguration config = getConfig();
-        String keyName = getRecipeKey();
-        String name = getKey().replace("'", "");
-
-        if (config.getBoolean(name + ".Recipe.Enabled")) {
+        if (config.getBoolean("Recipe.Enabled")) {
             try {
-                NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), keyName);
-                ShapedRecipe newRecipe = new ShapedRecipe(nkey, mod.getModItem()); //reload recipe
-                String top = config.getString(name + ".Recipe.Top");
-                String middle = config.getString(name + ".Recipe.Middle");
-                String bottom = config.getString(name + ".Recipe.Bottom");
-                ConfigurationSection materials = config.getConfigurationSection(name + ".Recipe.Materials");
+                NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Modifier_" + this.nbtTag);
+                ShapedRecipe newRecipe = new ShapedRecipe(nkey, this.getModItem()); //reload recipe
+                String top = config.getString("Recipe.Top");
+                String middle = config.getString("Recipe.Middle");
+                String bottom = config.getString("Recipe.Bottom");
+                ConfigurationSection materials = config.getConfigurationSection("Recipe.Materials");
 
                 newRecipe.shape(top, middle, bottom); //makes recipe
 
@@ -233,31 +248,31 @@ public abstract class Modifier {
                         String materialName = materials.getString(key);
 
                         if (materialName == null) {
-                            ChatWriter.logInfo("Material entry not found! Aborting recipe registration for this modifier.");
+                            ChatWriter.logInfo(LanguageManager.getString("Modifier.MaterialEntryNotFound"));
                             return;
                         }
 
                         Material material = Material.getMaterial(materialName);
 
                         if (material == null) {
-                            ChatWriter.log(false, "Material [" + materialName + "] is null for mod [" + getName() + "]");
+                            ChatWriter.log(false, "Material [" + materialName + "] is null for mod [" + this.name + "]");
                             return;
                         } else {
                             newRecipe.setIngredient(key.charAt(0), material);
                         }
                     }
                 } else {
-                    ChatWriter.logError("Could not register recipe for the " + name + "-Modifier!"); //executes if the recipe could not initialize
+                    ChatWriter.logError("Could not register recipe for the " + this.name + "-Modifier!"); //executes if the recipe could not initialize
                     ChatWriter.logError("Cause: Malformed recipe config.");
 
                     return;
                 }
 
                 Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
-                ChatWriter.log(false, "Registered recipe for the " + name + "-Modifier!");
+                ChatWriter.log(false, "Registered recipe for the " + this.name + "-Modifier!");
                 ModManager.instance().recipe_Namespaces.add(nkey);
             } catch (Exception e) {
-                ChatWriter.logError("Could not register recipe for the " + name + "-Modifier!"); //executes if the recipe could not initialize
+                ChatWriter.logError("Could not register recipe for the " + this.name + "-Modifier!"); //executes if the recipe could not initialize
                 e.printStackTrace();
             }
         }

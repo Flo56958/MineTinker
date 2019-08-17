@@ -3,7 +3,6 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -54,29 +53,24 @@ public class Fiery extends Modifier {
 
     @Override
     public void reload() {
-    	FileConfiguration config = getConfig();
-    	config.options().copyDefaults(true);
+        FileConfiguration config = getConfig();
+        config.options().copyDefaults(true);
 
-        String key = getKey();
+        config.addDefault("Allowed", true);
+        config.addDefault("Name", "Fiery");
+        config.addDefault("ModifierItemName", "Enchanted Blaze-Rod");
+        config.addDefault("Description", "Inflames enemies!");
+        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Fiery-Modifier");
+        config.addDefault("Color", "%YELLOW%");
+        config.addDefault("MaxLevel", 2);
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Recipe.Enabled", false);
+        config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault(key + ".allowed", true);
-    	config.addDefault(key + ".name", key);
-    	config.addDefault(key + ".name_modifier", "Enchanted Blaze-Rod");
-        config.addDefault(key + ".modifier_item", "BLAZE_ROD"); //Needs to be a viable Material-Type
-        config.addDefault(key + ".description", "Inflames enemies!");
-        config.addDefault(key + ".description_modifier", "%WHITE%Modifier-Item for the " + key + "-Modifier");
-        config.addDefault(key + ".Color", "%YELLOW%");
-        config.addDefault(key + ".MaxLevel", 2);
-    	config.addDefault(key + ".EnchantCost", 10);
-    	config.addDefault(key + ".Recipe.Enabled", false);
-    	
-    	ConfigurationManager.saveConfig(config);
+        ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init("[" + config.getString(key + ".name_modifier") + "] \u200B" + config.getString(key + ".description"),
-                ChatWriter.getColor(config.getString(key + ".Color")),
-                config.getInt(key + ".MaxLevel"),
-                modManager.createModifierItem(Material.getMaterial(config.getString(key + ".modifier_item")), ChatWriter.getColor(config.getString(key + ".Color")) + config.getString(key + ".name_modifier"), ChatWriter.addColors(config.getString(key + ".description_modifier")), this));
+        init(Material.BLAZE_ROD, true);
     }
 
     @Override
