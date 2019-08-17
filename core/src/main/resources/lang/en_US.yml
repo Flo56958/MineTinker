@@ -82,32 +82,32 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Anti-Blast-Plating-Modifier"
   Aquaphilic:
     Name: "Aquaphilic"
-    Description: "Make the water your friend"
+    Description: "Swim faster, dive longer and break under water more efficient"
     ModifierItemName: "Pearl of the ocean"
     DescriptionModifierItem: "Modifier-Item for the Aquaphilic-Modifier"
   Auto-Smelt:
     Name: "Auto-Smelt"
-    Description: "Chance to smelt ore when mined!"
+    Description: "Chance to smelt ore into ingots when mined!"
     ModifierItemName: "Enhanced Furnace"
     DescriptionModifierItem: "Modifier-Item for the Auto-Smelt-Modifier"
   Beheading:
     Name: "Beheading"
-    Description: "Chance to drop the head of the mob!"
+    Description: "Chance to drop the head of the killed mob!"
     ModifierItemName: "Enchanted Wither-Skull"
     DescriptionModifierItem: "Modifier-Item for the Beheading-Modifier"
   Channeling:
     Name: "Channeling"
-    Description: "Summons lightning when weapon is thrown at mobs!"
+    Description: "Summons lightning when the trident hits its foes!"
     ModifierItemName: "Lightning Infused Shard"
     DescriptionModifierItem: "Modifier-Item for the Channeling-Modifier"
   Directing:
     Name: "Directing"
-    Description: "Loot goes directly into Inventory!"
+    Description: "Loot from killed mobs goes directly into your Inventory!"
     ModifierItemName: "Enhanced Compass"
     DescriptionModifierItem: "Modifier-Item for the Directing-Modifier"
   Ender:
     Name: "Ender"
-    Description: "Teleports you while sneaking to the arrow location!"
+    Description: "Teleports you while sneaking to the arrows landing location!"
     ModifierItemName: "Special Endereye"
     DescriptionModifierItem: "Modifier-Item for the Ender-Modifier"
   Experienced:
@@ -115,30 +115,30 @@ Modifier:
     Description: "Tool has the chance to drop XP while using it!"
   Extra-Modifier:
     Name: "Extra-Modifier"
-    Description: "Adds a additional Modifiers-Slot to the tool!"
+    Description: "Adds a additional Modifier-Slot to the tool!"
   Fiery:
     Name: "Fiery"
-    Description: "Inflames enemies!"
+    Description: "One modifier to burn them all!"
     ModifierItemName: "Enchanted Blaze-Rod"
     DescriptionModifierItem: "Modifier-Item for the Fiery-Modifier"
   Freezing:
     Name: "Freezing"
-    Description: "It is freezing around you."
+    Description: "Freeze the water around you!"
     ModifierItemName: "Icy Crystal"
     DescriptionModifierItem: "Modifier-Item for the Freezing-Modifier"
   Glowing:
     Name: "Glowing"
-    Description: "Makes Enemies glow!"
+    Description: "Make enemies glow!"
     ModifierItemName: "Ender-Glowstone"
     DescriptionModifierItem: "Modifier-Item for the Glowing-Modifier"
   Haste:
     Name: "Haste"
-    Description: "Tool can destroy blocks faster!"
+    Description: "Destroy blocks and shoot crossbows faster!"
     ModifierItemName: "Compressed Redstoneblock"
     DescriptionModifierItem: "Modifier-Item for the Haste-Modifier"
   Infinity:
     Name: "Infinity"
-    Description: "You only need one Arrow to shoot a bow and the Trident comes back!"
+    Description: "You only need one Arrow to shoot a bow and the Trident comes back to you!"
     ModifierItemName: "Enchanted Arrow"
     DescriptionModifierItem: "Modifier-Item for the Infinity-Modifier"
   Insulating:
@@ -148,12 +148,12 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Anti-Fire-Plating-Modifier"
   Knockback:
     Name: "Knockback"
-    Description: "Knock back Enemies further!"
+    Description: "Knock back enemies further with every punch!"
     ModifierItemName: "Enchanted TNT"
     DescriptionModifierItem: "Modifier-Item for the Knockback-Modifier"
   Lifesteal:
     Name: "Lifesteal"
-    Description: "Get HP when hitting enemies!"
+    Description: "Heals you when damaging enemies!"
     ModifierItemName: "Bloodinfused Netherrack"
     DescriptionModifierItem: "Modifier-Item for the Lifesteal-Modifier"
   Light-Weight:
@@ -188,22 +188,22 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Poisonous-Modifier"
   Power:
     Name: "Power"
-    Description: "Your Tool can destroy more blocks per swing!"
+    Description: "Destroy more blocks per swing with your tool!!"
     ModifierItemName: "Enchanted Emerald"
     DescriptionModifierItem: "Modifier-Item for the Power-Modifier"
   Propelling:
     Name: "Propelling"
-    Description: "Propel yourself through the air!"
+    Description: "Propel yourself through the air with sneaking while gliding with the elytra or standing in water with the trident!"
     ModifierItemName: "Enchanted Fireworkstar"
     DescriptionModifierItem: "Modifier-Item for the Propelling-Modifier"
   Protecting:
     Name: "Protecting"
-    Description: "Your armor protects you better against all damage!"
+    Description: "Your armor protects you better against damage!"
     ModifierItemName: "Enriched Obsidian"
     DescriptionModifierItem: "Modifier-Item for the Protecting-Modifier"
   Reinforced:
     Name: "Reinforced"
-    Description: "Chance to not use durability when using the tool/armor!"
+    Description: "Chance to not use durability when using the tool/armor! Makes the tool more durable!"
     ModifierItemName: "Compressed Obsidian"
     DescriptionModifierItem: "Modifier-Item for the Reinforced-Modifier"
   Self-Repair:
@@ -218,7 +218,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Sharpness-Modifier"
   Shulking:
     Name: "Shulking"
-    Description: "Make enemies levitate!"
+    Description: "Make enemies levitate and immovable for a short period!"
     ModifierItemName: "Enhanced Shulkershell"
     DescriptionModifierItem: "Modifier-Item for the Shulking-Modifier"
   Silk-Touch:
@@ -228,7 +228,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Silk-Touch-Modifier"
   Smite:
     Name: "Smite"
-    Description: "Your weapon does additional damage towards the Undead!"
+    Description: "Your weapon does additional damage towards the undead!"
     ModifierItemName: "Holy Bone"
     DescriptionModifierItem: "Modifier-Item for the Smite-Modifier"
   Soulbound:
@@ -238,22 +238,22 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Soulbound-Modifier"
   Speedy:
     Name: "Speedy"
-    Description: "Gotta go fast!"
+    Description: "Gotta go fast! Makes you walk and sprint faster!"
     ModifierItemName: "Enhanced Rabbithide"
     DescriptionModifierItem: "Modifier-Item for the Speedy-Modifier"
   Spiders-Bane:
     Name: "Spider's Bane"
-    Description: "Weapon does additional damage to Spiders!"
+    Description: "Weapon does additional damage to spiders!"
     ModifierItemName: "Cleansed Spider Eye"
     DescriptionModifierItem: "Modifier-Item for the Spider's-Bane-Modifier"
   Sweeping:
     Name: "Sweeping"
-    Description: "More damage over a greater area!"
+    Description: "Deal more damage over a greater area!"
     ModifierItemName: "Enchanted Iron Ingot"
     DescriptionModifierItem: "Modifier-Item for the Sweeping-Modifier"
   Tanky:
     Name: "Tanky"
-    Description: "Make yourself extra tanky!"
+    Description: "Make yourself extra tanky with extra hearts!"
     ModifierItemName: "Bloodinfused Obsidian"
     DescriptionModifierItem: "Modifier-Item for the Tanky-Modifier"
   Thorned:
@@ -268,7 +268,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Timber-Modifier"
   Webbed:
     Name: "Webbed"
-    Description: "Slow down enemies!"
+    Description: "Slow down enemies when you hit them or they hit you!"
     ModifierItemName: "Compressed Cobweb"
     DescriptionModifierItem: "Modifier-Item for the Webbed-Modifier"
 
