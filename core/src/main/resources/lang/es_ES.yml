@@ -50,7 +50,6 @@ GUIs.Forward: "Adelante"
 GUIs.Back: "Atrás"
 GUIs.Modifiers.Title: "Modificadores del MineTinker, %pageNo"
 GUIs.Modifiers.MaxLevel: "Nivel Máximo: %maxLevel"
-GUIs.Modifiers.WorksOn: "%BLUE%Trabaja En:"
 
 ModifierFailCause.IncompatibleModifiers: "¡Modificadores incompatibles!"
 ModifierFailCause.InvalidToolType: "¡Tipo de herramienta inválida!"
