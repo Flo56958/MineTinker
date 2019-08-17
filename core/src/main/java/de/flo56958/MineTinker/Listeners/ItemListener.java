@@ -151,7 +151,7 @@ public class ItemListener implements Listener {
         }
 
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.AlertPlayerOnBreak")) {
-            p.sendMessage(LanguageManager.getString("Alert.OnItemBreak", p));
+            player.sendMessage(LanguageManager.getString("Alert.OnItemBreak", player));
         }
 
         ItemMeta meta = item.getItemMeta();

@@ -207,7 +207,7 @@ public class AutoSmelt extends Modifier implements Listener {
         this.hasParticles = config.getBoolean("Particles", true);
         this.worksUnderWater = config.getBoolean("WorksUnderWater", true);
 
-        ConfigurationSection conversionConfig = config.getConfigurationSection(key + ".Conversions");
+        ConfigurationSection conversionConfig = config.getConfigurationSection("Conversions");
         if (conversionConfig == null) return;
 
         Map<String, Object> conversionValues = conversionConfig.getValues(false);

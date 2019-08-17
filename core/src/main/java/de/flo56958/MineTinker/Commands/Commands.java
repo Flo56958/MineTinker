@@ -94,10 +94,10 @@ public class Commands implements TabExecutor {
                             break;
                         case "info":
                         case "i":
-                            if (p.hasPermission("minetinker.commands.info")) {
-                                ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.Info.Line1", p).replaceFirst("%ver", Main.getPlugin().getDescription().getVersion()));
-                                ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.Info.Line2", p));
-                            } else noPerm(p);
+                            if (player.hasPermission("minetinker.commands.info")) {
+                                ChatWriter.sendMessage(player, ChatColor.WHITE, LanguageManager.getString("Commands.Info.Line1", player).replaceFirst("%ver", Main.getPlugin().getDescription().getVersion()));
+                                ChatWriter.sendMessage(player, ChatColor.WHITE, LanguageManager.getString("Commands.Info.Line2", player));
+                            } else noPerm(player);
                             break;
                         case "itemstatistics":
                         case "is":

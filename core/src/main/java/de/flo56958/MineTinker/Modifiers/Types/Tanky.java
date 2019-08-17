@@ -122,11 +122,4 @@ public class Tanky extends Modifier {
 
         init(Material.OBSIDIAN, true);
     }
-
-    @Override
-    public List<Attribute> getAppliedAttributes() {
-        List<Attribute> attributes = new ArrayList<>();
-        attributes.add(Attribute.GENERIC_MAX_HEALTH);
-        return attributes;
-    }
 }

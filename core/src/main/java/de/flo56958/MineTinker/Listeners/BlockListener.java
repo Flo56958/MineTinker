@@ -53,7 +53,7 @@ public class BlockListener implements Listener {
         }
 
         int expAmount = config.getInt("ExpPerBlockBreak");
-        expAmount += config.getInt("ExtraExpPerBlock." + e.getBlock().getType().toString());
+        expAmount += config.getInt("ExtraExpPerBlock." + event.getBlock().getType().toString());
         //adds 0 if not in found in config (negative values are also fine)
 
         modManager.addExp(p, tool, expAmount);

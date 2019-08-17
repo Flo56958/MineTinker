@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
@@ -126,13 +127,6 @@ public class Speedy extends Modifier {
         this.speedPerLevel = config.getDouble("SpeedPerLevel");
 
         init(Material.RABBIT_HIDE, true);
-    }
-
-    @Override
-    public List<Attribute> getAppliedAttributes() {
-        List<Attribute> attributes = new ArrayList<>();
-        attributes.add(Attribute.GENERIC_MOVEMENT_SPEED);
-        return attributes;
     }
 
     @Override

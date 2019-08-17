@@ -9,14 +9,7 @@ import de.flo56958.MineTinker.Modifiers.Types.ExtraModifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -29,7 +22,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,6 +29,7 @@ public abstract class Modifier {
     protected static final ModManager modManager = ModManager.instance();
     protected static final PluginManager pluginManager = Bukkit.getPluginManager();
 
+    private String name;
     private String description;
     private ChatColor color;
     private int maxLvl;
@@ -84,7 +77,7 @@ public abstract class Modifier {
     } //for other Plugins/Addons that register Modifiers
 
     public String getName() {
-        return getConfig().getString(getKey() + ".name");
+        return this.name;
     }
 
     /**
@@ -113,7 +106,7 @@ public abstract class Modifier {
                 this.modItem = new ItemStack(m, 1);
             }
         } else { //normal Languagesystem-Integration
-            String langStart = "Modifier." + getNBTKey();
+            String langStart = "Modifier." + getKey();
             this.name = LanguageManager.getString(langStart + ".Name");
             this.description = LanguageManager.getString(langStart + ".Description");
             if (customItem) {
@@ -164,10 +157,6 @@ public abstract class Modifier {
      */
     public boolean isAllowed() {
         return getConfig().getBoolean("Allowed", true);
-    }
-
-    public String getNBTKey() {
-        return nbtTag;
     }
 
     public String getFileName() {
@@ -234,7 +223,7 @@ public abstract class Modifier {
         FileConfiguration config = getConfig();
         if (config.getBoolean("Recipe.Enabled")) {
             try {
-                NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Modifier_" + this.nbtTag);
+                NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Modifier_" + getKey());
                 ShapedRecipe newRecipe = new ShapedRecipe(nkey, this.getModItem()); //reload recipe
                 String top = config.getString("Recipe.Top");
                 String middle = config.getString("Recipe.Middle");
