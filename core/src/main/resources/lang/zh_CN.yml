@@ -1,4 +1,4 @@
-Alert.OnItemBreak: "%RED%看上去你的工具被用坏了! 已以1耐久返还"
+Alert.OnItemBreak: "%RED%看上去你的工具被用坏了! 已以1耐久返还."
 
 StartUp.Commands: "指令已注册!"
 StartUp.BuildersWands: "建造工具杖已启用!"
@@ -20,9 +20,8 @@ Builderswand.Error.CraftIron: "无法注册铁制建造杖的合成表!"
 Builderswand.Error.CraftGold: "无法注册金制建造杖的合成表!"
 Builderswand.Error.CraftDiamond: "无法注册钻石建造杖的合成表!"
 
-
 Commands.Info.Line1: "MineTinker (%ver) 是由 Flo56958 制作的插件!"
-Commands.Info.Line2: "本插件受到多个mod的启发! (如: TinkersConstruct 匠魂工艺)"
+Commands.Info.Line2: "本插件受到多个模组的启发! (如: TinkersConstruct 匠魂工艺)"
 Commands.InvalidArguments: "你输入了无效的命令参数!"
 Commands.InvalidTool: "你需要主手手持有效的工具才能执行该命令!"
 Commands.NoPermission: "你没有权限这么做!"
@@ -42,24 +41,236 @@ Commands.GiveModifierItem.PlayerNotFound: "玩家%player不存在或不在线!"
 Commands.CheckUpdate.Start: "正在检查更新..."
 Commands.CheckUpdate.Disabled: "服务器已禁止检查更新功能!"
 Commands.ItemStatistics.Head: "这是%toolname的物品数据:"
-Commands.ItemStatistics.Level: "等级: %level"
-Commands.ItemStatistics.Exp: "经验: %current/%nextlevel"
-Commands.ItemStatistics.FreeSlots: "剩余可用模块槽位: %slots"
-Commands.ItemStatistics.Modifiers: "已安装模块:"
+Commands.ItemStatistics.Level: "%GOLD%等级: %WHITE%%level"
+Commands.ItemStatistics.Exp: "%GOLD%经验: %WHITE%%current/%nextlevel"
+Commands.ItemStatistics.FreeSlots: "%GOLD%空余槽位: %WHITE%%slots"
+Commands.ItemStatistics.Modifiers: "%WHITE%模块:"
 
 GUIs.Forward: "下一页"
 GUIs.Back: "上一页"
 GUIs.Modifiers.Title: "MineTinker模块, 第%pageNo页"
 GUIs.Modifiers.MaxLevel: "最高等级: %maxLevel"
 
+ModManager.RegisterModifier: "%GREEN%已从%plugin插件注册了%mod%GREEN%模块."
+ModManager.UnregisterModifier: "%GREEN%已从%plugin插件注销了%mod%GREEN%模块."
+
 ModifierFailCause.IncompatibleModifiers: "模块冲突!"
 ModifierFailCause.InvalidToolType: "无效工具!"
 ModifierFailCause.MaximumSlotsReached: "可用槽位已达最大值!"
 ModifierFailCause.ModMaxLevel: "模块等级已满!"
-ModifierFailCause.NoFreeSlots: "无可用剩余槽位!"
+ModifierFailCause.NoFreeSlots: "无可用空余槽位!"
 ModifierFailCause.NoPermission: "没有权限!"
 
 LanguageManager.LoadedLanguage: "语言管理器已成功加载%lang语言!"
+
+TinkerListener.ToolUpgrade: "%tool已被升级到了%type!"
+TinkerListener.ModifierApply: "%tool现在被镶嵌了%mod模块, 剩余%slots空余槽位!"
+TinkerListener.ModifierFail: "无法在%tool上镶嵌%mod模块(%cause)!"
+TinkerListener.ToolLevelUp: "%tool的级别晋升到了%level!"
+
+Modifier.MaterialEntryNotFound: "模块材料未定义! 当前模块的合成配方已被取消注册."
+Modifier:
+  Anti-Arrow-Plating:
+    Name: "抗箭矢镀层"
+    Description: "护甲将削弱箭矢造成的伤害!"
+    ModifierItemName: "抗穿刺金属"
+    DescriptionModifierItem: "抗箭矢镀层模块, 适用于护甲."
+  Anti-Blast-Plating:
+    Name: "抗爆镀层"
+    Description: "护甲将削弱爆炸造成的伤害!"
+    ModifierItemName: "防爆金属"
+    DescriptionModifierItem: "抗爆镀层模块, 适用于护甲."
+  Aquaphilic:
+    Name: "亲水性"
+    Description: "让水成为你的好朋友."
+    ModifierItemName: "海洋珍珠"
+    DescriptionModifierItem: "亲水性模块, 适用于头盔与靴子."
+  Auto-Smelt:
+    Name: "自动烧炼"
+    Description: "有几率在采掘的时候自动烧炼矿物!"
+    ModifierItemName: "强化熔炉"
+    DescriptionModifierItem: "自动烧炼模块, 适用于采掘工具."
+  Beheading:
+    Name: "斩首"
+    Description: "有几率斩下生物的头颅!"
+    ModifierItemName: "附魔凋灵骷髅头颅"
+    DescriptionModifierItem: "斩首模块, 适用于任何武器."
+  Channeling:
+    Name: "引雷"
+    Description: "物品投掷到生物身上的时候将召唤雷电!"
+    ModifierItemName: "雷霆碎片"
+    DescriptionModifierItem: "引雷模块, 适用于三叉戟."
+  Directing:
+    Name: "导向"
+    Description: "生物掉落物直达背包, 无需捡起!"
+    ModifierItemName: "强化指南针"
+    DescriptionModifierItem: "导向模块, 适用于任何武器."
+  Ender:
+    Name: "末影"
+    Description: "箭矢落地时按住潜行将传送你至其落点!"
+    ModifierItemName: "特化末影之眼"
+    DescriptionModifierItem: "末影模块, 适用于远程武器."
+  Experienced:
+    Name: "经验加成"
+    Description: "使用工具时将有几率掉落更多经验! 适用于任意模块物品."
+  Extra-Modifier:
+    Name: "附加模块槽位"
+    Description: "增加一个模块槽位! 适用于任意模块物品."
+  Fiery:
+    Name: "炎上"
+    Description: "点燃敌人!"
+    ModifierItemName: "附魔烈焰棒"
+    DescriptionModifierItem: "炎上模块, 适用于任何武器(除三叉戟)."
+  Freezing:
+    Name: "霜冻"
+    Description: "你的四周尽数冰结."
+    ModifierItemName: "冰晶"
+    DescriptionModifierItem: "霜冻模块, 仅用于靴子."
+  Glowing:
+    Name: "发光"
+    Description: "让敌人亮起来吧!"
+    ModifierItemName: "末影荧石"
+    DescriptionModifierItem: "发光模块, 适用于任何武器."
+  Haste:
+    Name: "急迫"
+    Description: "工具可以更快速地破坏方块!"
+    ModifierItemName: "压缩红石块"
+    DescriptionModifierItem: "急迫模块, 适用于任何工具(包括钓竿)."
+  Infinity:
+    Name: "无限"
+    Description: "你只需一根箭就能使用弓, 三叉戟也能自动回到手中!"
+    ModifierItemName: "附魔箭矢"
+    DescriptionModifierItem: "无限模块, 仅用于弓与三叉戟."
+  Insulating:
+    Name: "绝热"
+    Description: "护甲将削弱火焰造成的伤害!"
+    ModifierItemName: "绝热合金"
+    DescriptionModifierItem: "绝热模块, 适用于护甲."
+  Knockback:
+    Name: "击退"
+    Description: "将敌人击飞更远!"
+    ModifierItemName: "强化TNT"
+    DescriptionModifierItem: "击退模块, 适用于任何武器."
+  Lifesteal:
+    Name: "生命汲取"
+    Description: "攻击敌人可以补充生命值!"
+    ModifierItemName: "浸血地狱岩"
+    DescriptionModifierItem: "生命汲取模块, 适用于任何武器."
+  Light-Weight:
+    Name: "轻量化"
+    Description: "让你宛若羽毛一样轻盈飘落, 呃, 大概..."
+    ModifierItemName: "附魔羽毛"
+    DescriptionModifierItem: "轻量化模块, 仅用于靴子."
+  Luck:
+    Name: "好运"
+    Description: "让敌人和矿物的掉落物增多!"
+    ModifierItemName: "压缩青金石块"
+    DescriptionModifierItem: "好运模块, 适用于所有武器与工具(包括钓竿)."
+  Melting:
+    Name: "炽融"
+    Description: "对着火的敌人有伤害增益并对自身着火伤害进行减免!"
+    ModifierItemName: "附魔岩浆块"
+    DescriptionModifierItem: "炽融模块, 适用于胸甲, 护腿, 近战武器与弦类远程武器."
+  Multishot:
+    Name: "多重射击"
+    Description: "让发射的箭矢集束散射!"
+    ModifierItemName: "集束箭"
+    DecriptionModifierItem: "多重射击模块, 仅用于弩."
+  Piercing:
+    Name: "穿透"
+    Description: "穿刺并透过敌人!"
+    ModifierItemName: "钉头箭"
+    DescriptionModifierItem: "穿透模块, 仅用于弩."
+  Poisonous:
+    Name: "剧毒"
+    Description: "让敌人中毒!"
+    ModifierItemName: "附魔腐肉"
+    DescriptionModifierItem: "剧毒模块, 适用于胸甲, 护腿和任何武器."
+  Power:
+    Name: "强力"
+    Description: "工具可以一次采掘更多方块!"
+    ModifierItemName: "附魔绿宝石"
+    DescriptionModifierItem: "强力模块, 适合采掘工具(包括锄头)."
+  Propelling:
+    Name: "推进"
+    Description: "在空中按下潜行键以获得推进效果."
+    ModifierItemName: "附魔烟火之星"
+    DescriptionModifierItem: "推进模块, 仅用于鞘翅."
+  Protecting:
+    Name: "保护"
+    Description: "护甲将削弱所有类型的伤害!"
+    ModifierItemName: "强化黑曜石"
+    DescriptionModifierItem: "保护模块, 适用于护甲."
+  Reinforced:
+    Name: "强化"
+    Description: "使用工具时有几率不损耗耐久!"
+    ModifierItemName: "压缩黑曜石"
+    DescriptionModifierItem: "强化模块, 适用于任意模块物品."
+  Self-Repair:
+    Name: "自我修复"
+    Description: "使用工具的时其有几率修复自身!"
+    ModifierItemName: "附魔苔石"
+    DescriptionModifierItem: "自我修复模块, 适用于任意模块物品."
+  Sharpness:
+    Name: "锋利"
+    Description: "武器将给予更多伤害!"
+    ModifierItemName: "压缩石英块"
+    DescriptionModifierItem: "锋利模块, 适用于任意武器."
+  Shulking:
+    Name: "浮影"
+    Description: "让敌人浮空!"
+    ModifierItemName: "强化潜影贝壳"
+    DescriptionModifierItem: "浮影模块, 适用于任意武器, 着装与钓竿."
+  Silk-Touch:
+    Name: "丝绸之触"
+    Description: "精准采集!"
+    ModifierItemName: "附魔蛛网"
+    DescriptionModifierItem: "丝绸之触模块, 适用于采掘工具."
+  Smite:
+    Name: "亡灵杀手"
+    Description: "武器对亡灵生物有伤害加成!"
+    ModifierItemName: "圣灵亡骨"
+    DescriptionModifierItem: "亡灵杀手模块, 适用于近战类武器."
+  Soulbound:
+    Name: "灵魂绑定"
+    Description: "死亡时不掉落该装备."
+    ModifierItemName: "蕴能信标"
+    DescriptionModifierItem: "灵魂绑定模块, 适用于任意模块物品."
+  Speedy:
+    Name: "加速"
+    Description: "冲冲冲!"
+    ModifierItemName: "强化兔子皮"
+    DescriptionModifierItem: "加速模块, 仅用于靴子."
+  Spiders-Bane:
+    Name: "节肢杀手"
+    Description: "武器对节肢生物有伤害加成!"
+    ModifierItemName: "洁净蜘蛛眼"
+    DescriptionModifierItem: "节肢杀手模块, 适用于近战类武器."
+  Sweeping:
+    Name: "横扫"
+    Description: "横扫覆盖面积更广!"
+    ModifierItemName: "附魔铁锭"
+    DescriptionModifierItem: "横扫模块, 仅用于剑."
+  Tanky:
+    Name: "肉盾"
+    Description: "增加血量上限!"
+    ModifierItemName: "浸血黑曜石"
+    DescriptionModifierItem: "肉盾模块, 适用于护甲."
+  Thorned:
+    Name: "荆棘"
+    Description: "你的护甲将反击伤害你的敌人!"
+    ModifierItemName: "镶刺镀层"
+    DescriptionModifierItem: "荆棘模块, 适用于护甲."
+  Timber:
+    Name: "伐木"
+    Description: "瞬间伐倒树木!"
+    ModifierItemName: "镶木绿宝石"
+    DescriptionModifierItem: "伐木模块, 仅用于斧头."
+  Webbed:
+    Name: "缠网"
+    Description: "拖慢敌人!"
+    ModifierItemName: "压缩蛛网"
+    DescriptionModifierItem: "压缩蛛网"
 
 Updater.Unable: "检查更新出错!"
 Updater.UpdateAvailable: "spigotmc.org 上有可用更新!"
