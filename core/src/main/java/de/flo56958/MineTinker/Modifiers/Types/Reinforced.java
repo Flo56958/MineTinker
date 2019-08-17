@@ -97,15 +97,9 @@ public class Reinforced extends Modifier {
         if (meta != null) {
             meta.addEnchant(Enchantment.DURABILITY, modManager.getModLevel(tool, this), true);
 
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-
             if (modManager.getModLevel(tool, this) == this.getMaxLvl() && this.applyUnbreakableOnMaxLevel) {
                 meta.setUnbreakable(true);
-                if(hideUnbreakableFlag) {
+                if (hideUnbreakableFlag) {
                     meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
                 }
             }
