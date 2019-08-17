@@ -29,8 +29,12 @@ public class ArmorListener implements Listener {
     private static final ModManager modManager = ModManager.instance();
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
+        if (event.getDamage() <= 0) {
+            return;
+        }
+
         if (Lists.WORLDS.contains(event.getEntity().getWorld().getName())) {
             return;
         }
@@ -44,10 +48,6 @@ public class ArmorListener implements Listener {
         }
 
         Player player = (Player) event.getEntity();
-
-        if (event.getDamage() <= 0) {
-            return;
-        }
 
         Entity entity = event.getDamager();
 
