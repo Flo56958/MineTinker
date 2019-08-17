@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ExtraModifier extends Modifier {
@@ -39,7 +40,7 @@ public class ExtraModifier extends Modifier {
 
     @Override
     public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.values());
+        return Collections.singletonList(ToolType.ALL);
     }
 
     private ExtraModifier() {

@@ -38,7 +38,7 @@ public class Reinforced extends Modifier {
 
     @Override
     public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.values());
+        return Collections.singletonList(ToolType.ALL);
     }
 
     private Reinforced() {

@@ -47,7 +47,7 @@ public class Soulbound extends Modifier implements Listener {
 
     @Override
     public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.values());
+        return Collections.singletonList(ToolType.ALL);
     }
 
     private Soulbound() {
