@@ -64,6 +64,7 @@ public class AntiBlastPlating extends Modifier {
         config.addDefault("ModifierItemName", "Blast Resistant Metal");
         config.addDefault("Description", "Armor mitigates explosion damage!");
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Anti-Blast-Plating-Modifier");
+        config.addDefault("MaxLevel", 5);
         config.addDefault("Color", "%WHITE%");
         config.addDefault("OverrideLanguagesystem", false);
 
