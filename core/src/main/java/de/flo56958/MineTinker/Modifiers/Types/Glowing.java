@@ -71,6 +71,9 @@ public class Glowing extends Modifier implements Listener {
     	config.addDefault("DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
     	config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "GGG");
     	config.addDefault("Recipe.Middle", "GEG");

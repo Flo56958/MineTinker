@@ -24,10 +24,7 @@ public class Luck extends Modifier {
     private static Luck instance;
 
     static {
-        applicableEnchants.put(ToolType.AXE, new ArrayList<Enchantment>() {{
-            add(Enchantment.LOOT_BONUS_BLOCKS);
-            add(Enchantment.LOOT_BONUS_MOBS);
-        }});
+        applicableEnchants.put(ToolType.AXE, Arrays.asList(Enchantment.LOOT_BONUS_BLOCKS, Enchantment.LOOT_BONUS_MOBS));
         applicableEnchants.put(ToolType.BOW, Collections.singletonList(Enchantment.LOOT_BONUS_MOBS));
         applicableEnchants.put(ToolType.HOE, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
         applicableEnchants.put(ToolType.PICKAXE, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
@@ -80,6 +77,9 @@ public class Luck extends Modifier {
         config.addDefault("Color", "%BLUE%");
         config.addDefault("MaxLevel", 3);
         config.addDefault("OverrideLanguagesystem", false);
+
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", true);
 
     	config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "LLL");

@@ -70,6 +70,9 @@ public class Smite extends Modifier {
         config.addDefault("CompatibleWithSharpness", false);
         config.addDefault("CompatibleWithArthropods", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "BMB");
         config.addDefault("Recipe.Middle", "MIM");

@@ -98,6 +98,9 @@ public class Tanky extends Modifier {
         config.addDefault("MaxLevel", 5);
         config.addDefault("HealthPerLevel", 3);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "RBR");
         config.addDefault("Recipe.Middle", "BOB");

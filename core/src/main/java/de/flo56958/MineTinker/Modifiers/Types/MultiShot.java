@@ -67,6 +67,9 @@ public class MultiShot extends Modifier {
 
         config.addDefault("CompatibleWithPiercing", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "QQQ");
         config.addDefault("Recipe.Middle", "AAA");

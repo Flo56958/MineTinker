@@ -83,8 +83,10 @@ public class Power extends Modifier implements Listener {
                                                          // (true)
         config.addDefault("OverrideLanguagesystem", false);
         config.addDefault("MaxLevel", 2); // Algorithm for area of effect (except for level 1): (level * 2) - 1 x
-                                                 // (level * 2) - 1
+
         config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", true);
+
         config.addDefault("Recipe.Enabled", false);
 
         List<String> blacklistTemp = new ArrayList<>();

@@ -70,6 +70,9 @@ public class Sharpness extends Modifier {
         config.addDefault("CompatibleWithSmite", false);
         config.addDefault("CompatibleWithArthropods", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "QQQ");
     	config.addDefault("Recipe.Middle", "QQQ");

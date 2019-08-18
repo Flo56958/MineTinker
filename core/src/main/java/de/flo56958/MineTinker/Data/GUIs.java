@@ -93,6 +93,14 @@ public class GUIs {
 
                     lore.add("");
 
+                    // Enchant Cost
+                    if (m.isEnchantable()) {
+                        String cost = ChatWriter.addColors(LanguageManager.getString("GUIs.Modifiers.EnchantCost"));
+                        lore.add(cost.replaceFirst("%enchantCost", ChatWriter.toRomanNumerals(m.getEnchantCost())));
+
+                        lore.add("");
+                    }
+
                     // Allowed Tools
                     lore.add(ChatWriter.addColors(LanguageManager.getString("GUIs.Modifiers.WorksOn")));
 

@@ -64,6 +64,9 @@ public class Freezing extends Modifier {
         config.addDefault("MaxLevel", 3);
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "BBB");
         config.addDefault("Recipe.Middle", "BDB");

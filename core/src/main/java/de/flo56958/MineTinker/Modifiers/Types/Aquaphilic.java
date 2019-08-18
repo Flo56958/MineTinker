@@ -64,6 +64,9 @@ public class Aquaphilic extends Modifier {
         config.addDefault("MaxLevel", 3); //higher will have no effect on depth strider
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "PNP");
         config.addDefault("Recipe.Middle", "NHN");

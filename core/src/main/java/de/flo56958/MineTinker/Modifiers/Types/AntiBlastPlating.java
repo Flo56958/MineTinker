@@ -65,12 +65,14 @@ public class AntiBlastPlating extends Modifier {
         config.addDefault("Description", "Armor mitigates explosion damage!");
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Anti-Blast-Plating-Modifier");
         config.addDefault("Color", "%WHITE%");
-        config.addDefault("MaxLevel", 5);
         config.addDefault("OverrideLanguagesystem", false);
 
         config.addDefault("CompatibleWithProtecting", false);
         config.addDefault("CompatibleWithInsulating", false);
         config.addDefault("CompatibleWithAntiArrow", false);
+
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
 
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "IMI");

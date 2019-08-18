@@ -118,6 +118,9 @@ public class AutoSmelt extends Modifier implements Listener {
     	config.addDefault("WorksUnderWater", true);
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
     	config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "CCC");
     	config.addDefault("Recipe.Middle", "CFC");

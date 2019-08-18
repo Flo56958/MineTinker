@@ -74,6 +74,9 @@ public class Shulking extends Modifier implements Listener {
     	config.addDefault("EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "S");
     	config.addDefault("Recipe.Middle", "C");

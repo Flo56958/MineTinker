@@ -78,11 +78,14 @@ public class Propelling extends Modifier implements Listener {
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Propelling-Modifier");
         config.addDefault("Color", "%GOLD%");
         config.addDefault("MaxLevel", 3);
-        config.addDefault("EnchantCost", 10);
         config.addDefault("Elytra.DurabilityLoss", 10);
         config.addDefault("Elytra.SpeedPerLevel", 0.05);
         config.addDefault("Elytra.Sound", true);
         config.addDefault("Elytra.Particles", true);
+
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", true);
+
         config.addDefault("Recipe.Enabled", false);
         config.addDefault("OverrideLanguagesystem", false);
 

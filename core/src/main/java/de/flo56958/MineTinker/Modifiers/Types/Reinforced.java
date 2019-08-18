@@ -67,6 +67,9 @@ public class Reinforced extends Modifier {
         config.addDefault("HideUnbreakableFlag", true);
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
     	config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "OOO");
     	config.addDefault("Recipe.Middle", "OOO");

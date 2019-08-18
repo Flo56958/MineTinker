@@ -63,6 +63,9 @@ public class Protecting extends Modifier {
         config.addDefault("MaxLevel", 5);
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", true);
+
      	config.addDefault("Recipe.Enabled", true);
      	config.addDefault("Recipe.Top", "DID");
      	config.addDefault("Recipe.Middle", "IOI");

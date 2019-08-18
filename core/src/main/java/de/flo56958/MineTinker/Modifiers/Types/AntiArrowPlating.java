@@ -72,6 +72,9 @@ public class AntiArrowPlating extends Modifier {
         config.addDefault("CompatibleWithAntiFire", false);
         config.addDefault("CompatibleWithAntiBlast", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "IAI");
         config.addDefault("Recipe.Middle", "ADA");

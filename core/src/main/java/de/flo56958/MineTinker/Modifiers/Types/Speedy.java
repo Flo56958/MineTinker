@@ -106,6 +106,9 @@ public class Speedy extends Modifier {
         config.addDefault("SpeedPerLevel", 0.01);
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "R R");
         config.addDefault("Recipe.Middle", " H ");

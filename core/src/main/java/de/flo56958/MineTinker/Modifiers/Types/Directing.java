@@ -67,6 +67,9 @@ public class Directing extends Modifier implements Listener {
         config.addDefault("Color", "%GRAY%");
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "ECE");
     	config.addDefault("Recipe.Middle", "CIC");

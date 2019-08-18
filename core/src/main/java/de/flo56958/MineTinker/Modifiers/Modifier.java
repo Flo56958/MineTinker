@@ -70,6 +70,14 @@ public abstract class Modifier {
         return this.name;
     }
 
+    public int getEnchantCost() {
+        return getConfig().getInt("EnchantCost");
+    }
+
+    public boolean isEnchantable() {
+        return getConfig().getBoolean("Enchantable");
+    }
+
     /**
      * Class constructor
      * @param source The Plugin that registered the Modifier
@@ -268,6 +276,10 @@ public abstract class Modifier {
     // ---------------------- Enchantable Stuff ----------------------
 
     public void enchantItem(Player p, ItemStack item) {
+        if (!isEnchantable()) {
+            return;
+        }
+
         if (!p.hasPermission("minetinker.modifiers." + getName().replace("-", "").toLowerCase() + ".craft")) {
             return;
         }

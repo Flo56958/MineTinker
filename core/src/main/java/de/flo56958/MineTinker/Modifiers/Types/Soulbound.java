@@ -73,6 +73,9 @@ public class Soulbound extends Modifier implements Listener {
         config.addDefault("ToolDropable", true);
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "BLB");
         config.addDefault("Recipe.Middle", "LNL");

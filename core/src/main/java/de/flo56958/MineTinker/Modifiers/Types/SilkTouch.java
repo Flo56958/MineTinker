@@ -65,8 +65,11 @@ public class SilkTouch extends Modifier {
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Silk-Touch-Modifier");
         config.addDefault("Color", "%WHITE%");
         config.addDefault("MaxLevel", 1); //IF 2: Epic Spawners work with MT-SilkTouch
-    	config.addDefault("EnchantCost", 10);
-    	config.addDefault("Recipe.Enabled", false);
+
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", true);
+
+        config.addDefault("Recipe.Enabled", false);
         config.addDefault("OverrideLanguagesystem", false);
 
         ConfigurationManager.saveConfig(config);

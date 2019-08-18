@@ -62,6 +62,9 @@ public class Channeling extends Modifier {
         config.addDefault("MaxLevel", 1);
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "SPS");
         config.addDefault("Recipe.Middle", "PCP");

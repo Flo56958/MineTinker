@@ -71,6 +71,9 @@ public class Lifesteal extends Modifier implements Listener {
         config.addDefault("PercentOfDamagePerLevel", 10);
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "SRS");
         config.addDefault("Recipe.Middle", "RNR");

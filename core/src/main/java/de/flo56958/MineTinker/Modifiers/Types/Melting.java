@@ -68,9 +68,12 @@ public class Melting extends Modifier implements Listener {
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Melting-Modifier");
         config.addDefault("Color", "%GOLD%");
         config.addDefault("MaxLevel", 3);
-        config.addDefault("EnchantCost", 10);
         config.addDefault("BonusMultiplier", 0.1); //Percent of Bonus-damage per Level or Damage-reduction on Armor
         config.addDefault("CancelBurningOnArmor", true);
+
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", true);
+
         config.addDefault("Recipe.Enabled", false);
         config.addDefault("OverrideLanguagesystem", false);
 

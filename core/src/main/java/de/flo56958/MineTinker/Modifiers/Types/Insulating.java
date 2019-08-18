@@ -72,6 +72,9 @@ public class Insulating extends Modifier {
         config.addDefault("CompatibleWithAntiArrow", false);
         config.addDefault("CompatibleWithAntiBlast", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "IMI");
         config.addDefault("Recipe.Middle", "MDM");

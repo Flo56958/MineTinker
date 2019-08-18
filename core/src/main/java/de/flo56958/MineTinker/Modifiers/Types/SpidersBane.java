@@ -69,8 +69,11 @@ public class SpidersBane extends Modifier {
 
         config.addDefault("CompatibleWithSmite", false);
         config.addDefault("CompatibleWithSharpness", false);
-        config.addDefault("Recipe.Enabled", true);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
+        config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "ESE");
         config.addDefault("Recipe.Middle", "SFS");
         config.addDefault("Recipe.Bottom", "ESE");

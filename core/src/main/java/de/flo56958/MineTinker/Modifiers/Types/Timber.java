@@ -71,6 +71,9 @@ public class Timber extends Modifier implements Listener {
         config.addDefault("MaximumBlocksPerSwing", 2000); //-1 to disable it
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
     	config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "LLL");
     	config.addDefault("Recipe.Middle", "LEL");
