@@ -94,7 +94,6 @@ public class GUIs {
                     lore.add("");
 
                     // Allowed Tools
-
                     lore.add(ChatWriter.addColors(LanguageManager.getString("GUIs.Modifiers.WorksOn")));
 
                     StringBuilder builder = new StringBuilder();
@@ -104,7 +103,7 @@ public class GUIs {
                     int count = 0;
 
                     for (ToolType toolType : m.getAllowedTools()) {
-                        builder.append(toolType.name().replace("_", " ")).append(", ");
+                        builder.append(LanguageManager.getString("ToolType." + toolType.name()) + ", ");
 
                         if (++count > 2) {
                             lore.add(builder.toString());
