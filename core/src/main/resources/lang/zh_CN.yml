@@ -272,7 +272,7 @@ Modifier:
     Name: "缠网"
     Description: "拖慢敌人!"
     ModifierItemName: "压缩蛛网"
-    DescriptionModifierItem: "压缩蛛网"
+    DescriptionModifierItem: "缠网模块, 适用于任何武器, 着装与钓竿."
 
 ToolType.ALL: "所有物品"
 ToolType.AXE: "斧子"
