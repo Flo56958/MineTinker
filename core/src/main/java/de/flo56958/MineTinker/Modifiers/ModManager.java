@@ -672,7 +672,10 @@ public class ModManager {
         if (meta != null) {
             meta.setDisplayName(name);
 
-            ArrayList<String> lore = new ArrayList<>(ChatWriter.splitString(description, 30));
+            ArrayList<String> lore = new ArrayList<>();
+            for (String descPart : ChatWriter.splitString(description, 40)) {
+                lore.add(ChatColor.WHITE + descPart);
+            }
             meta.setLore(lore);
 
             meta.addItemFlags(ItemFlag.HIDE_PLACED_ON);

@@ -84,6 +84,8 @@ public class Experienced extends Modifier implements Listener {
         
         this.percentagePerLevel = config.getInt("PercentagePerLevel", 2);
         this.amount = config.getInt("Amount", 1);
+        this.description = this.description.replace("%chance", "" + this.percentagePerLevel)
+                .replace("%amount", "" + this.amount);
     }
 
     @Override

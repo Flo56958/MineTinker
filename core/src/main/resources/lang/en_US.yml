@@ -87,12 +87,12 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Aquaphilic-Modifier"
   Auto-Smelt:
     Name: "Auto-Smelt"
-    Description: "Chance to smelt ore into ingots when mined!"
+    Description: "Smelt ores and other blocks while mining! %chance% chance to activate per level."
     ModifierItemName: "Enhanced Furnace"
     DescriptionModifierItem: "Modifier-Item for the Auto-Smelt-Modifier"
   Beheading:
     Name: "Beheading"
-    Description: "Chance to drop the head of the killed mob!"
+    Description: "%chance% chance to drop the head of the killed mob per level."
     ModifierItemName: "Enchanted Wither-Skull"
     DescriptionModifierItem: "Modifier-Item for the Beheading-Modifier"
   Channeling:
@@ -112,10 +112,10 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Ender-Modifier"
   Experienced:
     Name: "Experienced"
-    Description: "Tool has the chance to drop XP while using it!"
+    Description: "Tool has the %chance% chance per level to drop %amount XP while using it!"
   Extra-Modifier:
     Name: "Extra-Modifier"
-    Description: "Adds a additional Modifier-Slot to the tool!"
+    Description: "Adds %amount additional Modifier-Slots to the tool!"
   Fiery:
     Name: "Fiery"
     Description: "One modifier to burn them all!"
@@ -153,7 +153,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Knockback-Modifier"
   Lifesteal:
     Name: "Lifesteal"
-    Description: "Heals you when damaging enemies!"
+    Description: "Heals you %amount% of the dealt damage. %chance% to trigger.!"
     ModifierItemName: "Bloodinfused Netherrack"
     DescriptionModifierItem: "Modifier-Item for the Lifesteal-Modifier"
   Light-Weight:
@@ -168,7 +168,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Luck-Modifier"
   Melting:
     Name: "Melting"
-    Description: "Extra damage against burning enemies and less damage taken while on fire!"
+    Description: "%amount% extra damage against burning enemies and %amount% less damage taken while on fire!"
     ModifierItemName: "Enchanted Magma Block"
     DescriptionModifierItem: "Modifier-Item for the Melting-Modifier"
   Multishot:
@@ -183,7 +183,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Piercing-Modifier"
   Poisonous:
     Name: "Poisonous"
-    Description: "Poisons enemies!"
+    Description: "Poisons the target for %duration Ticks * %multiplier per level!"
     ModifierItemName: "Enchanted Rotten Flesh"
     DescriptionModifierItem: "Modifier-Item for the Poisonous-Modifier"
   Power:
@@ -208,7 +208,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Reinforced-Modifier"
   Self-Repair:
     Name: "Self-Repair"
-    Description: "Chance to repair the tool / armor while using it!"
+    Description: "%chance% chance to repair the tool / armor with %amount durability while using it or applies Mending!"
     ModifierItemName: "Enchanted mossy Cobblestone"
     DescriptionModifierItem: "Modifier-Item for the Self-Repair-Modifier"
   Sharpness:
@@ -218,7 +218,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Sharpness-Modifier"
   Shulking:
     Name: "Shulking"
-    Description: "Make enemies levitate and immovable for a short period!"
+    Description: "Make enemies levitate and immovable for %duration Ticks!"
     ModifierItemName: "Enhanced Shulkershell"
     DescriptionModifierItem: "Modifier-Item for the Shulking-Modifier"
   Silk-Touch:
@@ -238,7 +238,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Soulbound-Modifier"
   Speedy:
     Name: "Speedy"
-    Description: "Gotta go fast! Makes you walk and sprint faster!"
+    Description: "Gotta go fast! Makes you walk and sprint %amount% faster per level!"
     ModifierItemName: "Enhanced Rabbithide"
     DescriptionModifierItem: "Modifier-Item for the Speedy-Modifier"
   Spiders-Bane:
@@ -253,7 +253,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Sweeping-Modifier"
   Tanky:
     Name: "Tanky"
-    Description: "Make yourself extra tanky with extra hearts!"
+    Description: "Make yourself extra tanky with %amount extra hearts per level!"
     ModifierItemName: "Bloodinfused Obsidian"
     DescriptionModifierItem: "Modifier-Item for the Tanky-Modifier"
   Thorned:
@@ -268,7 +268,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Timber-Modifier"
   Webbed:
     Name: "Webbed"
-    Description: "Slow down enemies when you hit them or they hit you!"
+    Description: "Slow down enemies when you hit them or they hit you for %duration Ticks * %multiplier per level!"
     ModifierItemName: "Compressed Cobweb"
     DescriptionModifierItem: "Modifier-Item for the Webbed-Modifier"
 
