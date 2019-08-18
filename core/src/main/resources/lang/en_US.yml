@@ -208,7 +208,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Reinforced-Modifier"
   Self-Repair:
     Name: "Self-Repair"
-    Description: "%chance% chance to repair the tool / armor with %amount durability while using it or applies Mending!"
+    Description: "%chance% chance per level to repair the tool / armor with %amount durability while using it or applies Mending!"
     ModifierItemName: "Enchanted mossy Cobblestone"
     DescriptionModifierItem: "Modifier-Item for the Self-Repair-Modifier"
   Sharpness:
@@ -218,7 +218,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Sharpness-Modifier"
   Shulking:
     Name: "Shulking"
-    Description: "Make enemies levitate and immovable for %duration Ticks!"
+    Description: "Make enemies levitate and immovable for %duration Ticks! The effect gets stronger with each level."
     ModifierItemName: "Enhanced Shulkershell"
     DescriptionModifierItem: "Modifier-Item for the Shulking-Modifier"
   Silk-Touch:
