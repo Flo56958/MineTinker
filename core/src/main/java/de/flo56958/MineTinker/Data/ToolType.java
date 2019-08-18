@@ -93,6 +93,10 @@ public enum ToolType {
 	 */
 	public static ToolType get(Material material) {
 		for (ToolType type : values()) {
+			if (type == ToolType.ALL) {
+				continue;
+			}
+
 			if (getTools().get(type).contains(material)) {
 				return type;
 			}
