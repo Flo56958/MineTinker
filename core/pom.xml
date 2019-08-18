@@ -10,14 +10,14 @@
     </properties>
 
     <artifactId>MineTinker-Core</artifactId>
-    <version>1.0.2</version>
+    <version>1.1</version>
     <description>A TinkersConstruct (and other mods) inspired server plugin</description>
     <url>https://flo56958.github.io/MineTinker</url>
 
     <parent>
         <groupId>de.flo56958</groupId>
         <artifactId>MineTinker-Parent</artifactId>
-        <version>1.0.2</version>
+        <version>1.1</version>
     </parent>
 
     <developers>
@@ -60,19 +60,19 @@
         <dependency>
             <groupId>de.flo56958</groupId>
             <artifactId>MineTinker-1.14</artifactId>
-            <version>1.0.2</version>
+            <version>1.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>de.flo56958</groupId>
             <artifactId>MineTinker-1.13</artifactId>
-            <version>1.0.2</version>
+            <version>1.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>de.flo56958</groupId>
             <artifactId>MineTinker-1.13.2</artifactId>
-            <version>1.0.2</version>
+            <version>1.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

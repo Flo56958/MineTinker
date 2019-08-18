@@ -25,7 +25,6 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -102,6 +101,8 @@ public class SelfRepair extends Modifier implements Listener {
         this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
         this.healthRepair = config.getInt("HealthRepair", 2);
         this.useMending = config.getBoolean("UseMending", false);
+
+        this.description = this.description.replace("%amount", "" + this.healthRepair).replace("%chance", "" + this.percentagePerLevel);
     }
 
     @Override

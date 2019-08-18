@@ -30,7 +30,7 @@ public abstract class Modifier {
     protected static final PluginManager pluginManager = Bukkit.getPluginManager();
 
     private String name;
-    private String description;
+    protected String description;
     private ChatColor color;
     private int maxLvl;
     private ItemStack modItem;

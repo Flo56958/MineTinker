@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class GUIs {
 
@@ -65,24 +66,14 @@ public class GUIs {
 
                 if (meta != null) {
                     meta.setDisplayName(m.getColor() + m.getName());
-
-                    String[] desc = m.getDescription().split("\u200B");
-
                     ArrayList<String> lore = new ArrayList<>();
 
+                    lore.add(Objects.requireNonNull(m.getModItem().getItemMeta()).getDisplayName());
                     lore.add("");
 
-                    // Description
-                    if (desc.length == 2) {
-                        lore.add(ChatColor.AQUA + desc[0]);
-
-                        List<String> descList = ChatWriter.splitString(desc[1], 30);
-
-                        for (String descPart : descList) {
-                            lore.add(ChatColor.WHITE + descPart);
-                        }
-                    } else {
-                        lore.add(ChatColor.WHITE + m.getDescription());
+                    List<String> descList = ChatWriter.splitString(m.getDescription(), 30);
+                    for (String descPart : descList) {
+                        lore.add(ChatColor.WHITE + descPart);
                     }
 
                     lore.add("");

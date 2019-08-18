@@ -126,6 +126,8 @@ public class Speedy extends Modifier {
         this.speedPerLevel = config.getDouble("SpeedPerLevel");
 
         init(Material.RABBIT_HIDE, true);
+
+        this.description = this.description.replace("%amount", "" + (int) (this.speedPerLevel * 100));
     }
 
     @Override

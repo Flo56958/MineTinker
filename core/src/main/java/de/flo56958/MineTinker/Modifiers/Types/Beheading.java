@@ -22,7 +22,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -85,6 +84,7 @@ public class Beheading extends Modifier implements Listener {
     	init(Material.WITHER_SKELETON_SKULL, true);
 
         this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
+        this.description = this.description.replace("%chance", "" + this.percentagePerLevel);
     }
 
     /**

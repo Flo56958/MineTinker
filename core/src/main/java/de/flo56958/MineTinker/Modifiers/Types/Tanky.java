@@ -120,5 +120,7 @@ public class Tanky extends Modifier {
         this.healthPerLevel = config.getInt("HealthPerLevel", 3);
 
         init(Material.OBSIDIAN, true);
+
+        this.description = this.description.replace("%amount", "" + this.healthPerLevel / 2.0);
     }
 }

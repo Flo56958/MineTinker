@@ -22,7 +22,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Shulking extends Modifier implements Listener {
 
@@ -95,6 +98,8 @@ public class Shulking extends Modifier implements Listener {
     
         this.duration = config.getInt("Duration", 20);
         this.effectAmplifier = config.getInt("EffectAmplifier", 2);
+
+        this.description = this.description.replace("%duration", "" + this.duration);
     }
 
     @EventHandler(ignoreCancelled = true)

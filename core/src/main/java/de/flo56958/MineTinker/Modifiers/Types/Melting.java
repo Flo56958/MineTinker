@@ -19,7 +19,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -84,6 +83,8 @@ public class Melting extends Modifier implements Listener {
 
         this.bonusMultiplier = config.getDouble("BonusMultiplier", 0.1);
         this.cancelBurning = config.getBoolean("CancelBurningOnArmor", true);
+
+        this.description = this.description.replaceAll("%amount", "" + (int) (this.bonusMultiplier * 100));
     }
 
     @EventHandler(ignoreCancelled = true)

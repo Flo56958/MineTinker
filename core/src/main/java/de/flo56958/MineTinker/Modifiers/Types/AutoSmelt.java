@@ -26,9 +26,9 @@ import java.util.*;
 
 public class AutoSmelt extends Modifier implements Listener {
 
-    private static String regex = ":";
-
     private static class Triplet {
+        private static String regex = ":";
+
         int amount;
         Material material;
         boolean luckable = false;
@@ -48,7 +48,7 @@ public class AutoSmelt extends Modifier implements Listener {
         }
 
         @Nullable
-        public static Triplet fromString(String input) {
+        static Triplet fromString(String input) {
             String[] tok = input.split(regex);
             try {
                 if (tok.length == 2) {
@@ -105,7 +105,7 @@ public class AutoSmelt extends Modifier implements Listener {
     	FileConfiguration config = getConfig();
     	config.options().copyDefaults(true);
 
-        config.addDefault("allowed", true);
+        config.addDefault("Allowed", true);
     	config.addDefault("Name", "Auto-Smelt");
     	config.addDefault("ModifierItemName", "Enhanced Furnace");
         config.addDefault("Description", "Chance to smelt ore when mined!");
@@ -217,6 +217,8 @@ public class AutoSmelt extends Modifier implements Listener {
         conversionValues.forEach((k, v) -> {
             if (v instanceof String) conversions.put(Material.getMaterial(k), Triplet.fromString((String) v));
         });
+
+        this.description = this.description.replace("%chance", "" + this.percentagePerLevel);
     }
     
     @Override

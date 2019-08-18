@@ -22,7 +22,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -94,6 +93,8 @@ public class Poisonous extends Modifier implements Listener {
         this.durationMultiplier = config.getDouble("DurationMultiplier", 1.1);
         this.effectAmplifier = config.getInt("EffectAmplifier", 2);
         this.dropPoisonedMeat = config.getBoolean("DropRottenMeatIfPoisoned", true);
+
+        this.description = this.description.replace("%duration", "" + this.duration).replace("%multiplier", "" + this.durationMultiplier);
     }
 
     @EventHandler(ignoreCancelled = true)
