@@ -68,7 +68,7 @@ public class GUIs {
                     meta.setDisplayName(m.getColor() + m.getName());
                     ArrayList<String> lore = new ArrayList<>();
 
-                    lore.add(Objects.requireNonNull(m.getModItem().getItemMeta()).getDisplayName());
+                    lore.add(ChatColor.WHITE + Objects.requireNonNull(m.getModItem().getItemMeta()).getDisplayName());
                     lore.add("");
 
                     List<String> descList = ChatWriter.splitString(m.getDescription(), 30);
