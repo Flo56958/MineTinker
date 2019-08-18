@@ -38,7 +38,7 @@ public class Reinforced extends Modifier {
 
     @Override
     public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.values());
+        return Collections.singletonList(ToolType.ALL);
     }
 
     private Reinforced() {
@@ -67,6 +67,9 @@ public class Reinforced extends Modifier {
         config.addDefault("HideUnbreakableFlag", true);
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
     	config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "OOO");
     	config.addDefault("Recipe.Middle", "OOO");
@@ -88,24 +91,14 @@ public class Reinforced extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "reinforced", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
             meta.addEnchant(Enchantment.DURABILITY, modManager.getModLevel(tool, this), true);
 
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-
             if (modManager.getModLevel(tool, this) == this.getMaxLvl() && this.applyUnbreakableOnMaxLevel) {
                 meta.setUnbreakable(true);
-                if(hideUnbreakableFlag) {
+                if (hideUnbreakableFlag) {
                     meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
                 }
             }

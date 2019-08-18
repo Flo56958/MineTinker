@@ -54,10 +54,6 @@ public class Tanky extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "tanky", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta == null) {
@@ -101,6 +97,9 @@ public class Tanky extends Modifier {
         config.addDefault("Color", "%DARK_GRAY%");
         config.addDefault("MaxLevel", 5);
         config.addDefault("HealthPerLevel", 3);
+
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
 
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "RBR");

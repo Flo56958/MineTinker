@@ -21,6 +21,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 public class BlockListener implements Listener {
@@ -77,6 +78,10 @@ public class BlockListener implements Listener {
         Block b = event.getClickedBlock();
 
         if (b == null) {
+            return;
+        }
+
+        if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }
 
@@ -161,7 +166,8 @@ public class BlockListener implements Listener {
             if (block.getType() == Material.GRASS_BLOCK || block.getType() == Material.DIRT)
                 apply = true;
 
-            if (player.getWorld().getBlockAt(block.getLocation().add(0, 1, 0)).getType() != Material.AIR) //Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
+            Block b = player.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
+            if (b.getType() != Material.AIR && b.getType() != Material.CAVE_AIR) //Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
                 apply = false;
         }
 
@@ -249,9 +255,12 @@ public class BlockListener implements Listener {
         boolean apply = false;
 
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null) {
-            if (event.getClickedBlock().getType() == Material.GRASS_BLOCK) {
+            if (event.getClickedBlock().getType() == Material.GRASS_BLOCK)
                 apply = true;
-            }
+
+            Block b = player.getWorld().getBlockAt(event.getClickedBlock().getLocation().add(0, 1, 0));
+            if (b.getType() != Material.AIR && b.getType() != Material.CAVE_AIR) //Case Block is on top of clicked Block -> No Path created -> no Exp
+                apply = false;
         }
 
         if (!apply) {

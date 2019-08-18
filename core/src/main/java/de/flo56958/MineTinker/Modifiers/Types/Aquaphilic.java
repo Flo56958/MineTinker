@@ -64,6 +64,9 @@ public class Aquaphilic extends Modifier {
         config.addDefault("MaxLevel", 3); //higher will have no effect on depth strider
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "PNP");
         config.addDefault("Recipe.Middle", "NHN");
@@ -89,10 +92,6 @@ public class Aquaphilic extends Modifier {
             return false;
         }
 
-        if (!Modifier.checkAndAdd(p, tool, this, "aquaphilic", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
@@ -103,15 +102,9 @@ public class Aquaphilic extends Modifier {
                 meta.addEnchant(Enchantment.WATER_WORKER, modManager.getModLevel(tool, this), true);
             }
 
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-
+            tool.setItemMeta(meta);
         }
 
-        tool.setItemMeta(meta);
 
         return true;
     }

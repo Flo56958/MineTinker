@@ -24,10 +24,7 @@ public class Luck extends Modifier {
     private static Luck instance;
 
     static {
-        applicableEnchants.put(ToolType.AXE, new ArrayList<Enchantment>() {{
-            add(Enchantment.LOOT_BONUS_BLOCKS);
-            add(Enchantment.LOOT_BONUS_MOBS);
-        }});
+        applicableEnchants.put(ToolType.AXE, Arrays.asList(Enchantment.LOOT_BONUS_BLOCKS, Enchantment.LOOT_BONUS_MOBS));
         applicableEnchants.put(ToolType.BOW, Collections.singletonList(Enchantment.LOOT_BONUS_MOBS));
         applicableEnchants.put(ToolType.HOE, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
         applicableEnchants.put(ToolType.PICKAXE, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
@@ -81,6 +78,9 @@ public class Luck extends Modifier {
         config.addDefault("MaxLevel", 3);
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", true);
+
     	config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "LLL");
     	config.addDefault("Recipe.Middle", "LLL");
@@ -103,21 +103,12 @@ public class Luck extends Modifier {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
             return false;
         }
-        if (!Modifier.checkAndAdd(p, tool, this, "luck", isCommand)) {
-            return false;
-        }
 
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
             for (Enchantment enchantment : applicableEnchants.get(ToolType.get(tool.getType()))) {
                 meta.addEnchant(enchantment, modManager.getModLevel(tool, this), true);
-            }
-
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
 
             tool.setItemMeta(meta);

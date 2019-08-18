@@ -252,6 +252,32 @@ public class ModManager {
         rewriteLore(is);
     }
 
+    public boolean addMod(Player player, ItemStack item, Modifier modifier, boolean fromCommand) {
+        if (!modifier.getKey().equals("Extra-Modifier")) {
+            if (!Modifier.checkAndAdd(player, item, modifier, modifier.getKey().toLowerCase().replace("-", ""), fromCommand)) {
+                return false;
+            }
+        }
+
+        boolean success = modifier.applyMod(player, item, fromCommand);
+
+        if (success) {
+            ItemMeta meta = item.getItemMeta();
+
+            if (meta != null) {
+                if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                } else {
+                    meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+                }
+
+                item.setItemMeta(meta);
+            }
+        }
+
+        return success;
+    }
+
     /**
      * get the level of a specified modifier on a tool
      *

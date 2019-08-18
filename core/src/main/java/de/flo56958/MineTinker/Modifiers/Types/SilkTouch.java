@@ -65,8 +65,11 @@ public class SilkTouch extends Modifier {
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Silk-Touch-Modifier");
         config.addDefault("Color", "%WHITE%");
         config.addDefault("MaxLevel", 1); //IF 2: Epic Spawners work with MT-SilkTouch
-    	config.addDefault("EnchantCost", 10);
-    	config.addDefault("Recipe.Enabled", false);
+
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", true);
+
+        config.addDefault("Recipe.Enabled", false);
         config.addDefault("OverrideLanguagesystem", false);
 
         ConfigurationManager.saveConfig(config);
@@ -88,19 +91,10 @@ public class SilkTouch extends Modifier {
             return false;
         }
 
-        if (!Modifier.checkAndAdd(p, tool, this, "silktouch", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
             meta.addEnchant(Enchantment.SILK_TOUCH, modManager.getModLevel(tool, this), true);
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
 
             tool.setItemMeta(meta);
         }

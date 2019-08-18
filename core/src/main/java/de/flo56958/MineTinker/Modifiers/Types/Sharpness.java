@@ -70,6 +70,9 @@ public class Sharpness extends Modifier {
         config.addDefault("CompatibleWithSmite", false);
         config.addDefault("CompatibleWithArthropods", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "QQQ");
     	config.addDefault("Recipe.Middle", "QQQ");
@@ -91,10 +94,6 @@ public class Sharpness extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "sharpness", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
@@ -119,12 +118,6 @@ public class Sharpness extends Modifier {
             } else if (ToolType.TRIDENT.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
                 meta.addEnchant(Enchantment.IMPALING, modManager.getModLevel(tool, this), true);
-            }
-
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
 
             tool.setItemMeta(meta);

@@ -195,7 +195,7 @@ public class AnvilListener implements Listener {
 
         if (mod != null) {
             newTool = tool.clone();
-            if (!mod.applyMod(player, newTool, false)) {
+            if (!modManager.addMod(player, newTool, mod, false)) {
                 return;
             }
 

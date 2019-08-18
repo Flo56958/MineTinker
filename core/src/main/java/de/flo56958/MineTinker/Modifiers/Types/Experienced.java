@@ -20,7 +20,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -53,7 +53,7 @@ public class Experienced extends Modifier implements Listener {
 
     @Override
     public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.values());
+        return Collections.singletonList(ToolType.ALL);
     }
 
     private Experienced() {
@@ -86,11 +86,6 @@ public class Experienced extends Modifier implements Listener {
         this.amount = config.getInt("Amount", 1);
         this.description = this.description.replace("%chance", "" + this.percentagePerLevel)
                 .replace("%amount", "" + this.amount);
-    }
-
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        return Modifier.checkAndAdd(p, tool, this, "experienced", isCommand);
     }
 
     //----------------------------------------------------------

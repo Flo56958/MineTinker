@@ -68,7 +68,7 @@ public class GUIs {
                     meta.setDisplayName(m.getColor() + m.getName());
                     ArrayList<String> lore = new ArrayList<>();
 
-                    lore.add(Objects.requireNonNull(m.getModItem().getItemMeta()).getDisplayName());
+                    lore.add(ChatColor.WHITE + Objects.requireNonNull(m.getModItem().getItemMeta()).getDisplayName());
                     lore.add("");
 
                     List<String> descList = ChatWriter.splitString(m.getDescription(), 30);
@@ -77,10 +77,52 @@ public class GUIs {
                     }
 
                     lore.add("");
-                    lore.add(ChatColor.GOLD + LanguageManager.getString("GUIs.Modifiers.MaxLevel").replaceFirst("%maxLevel", ChatColor.WHITE + ChatWriter.toRomanNumerals(m.getMaxLvl()) + ChatColor.GOLD));
+
+                    // Max level
+                    String maxLevel = ChatColor.WHITE + ChatWriter.toRomanNumerals(m.getMaxLvl()) + ChatColor.GOLD;
+                    lore.add(ChatColor.GOLD + LanguageManager.getString("GUIs.Modifiers.MaxLevel").replaceFirst("%maxLevel", maxLevel));
+
+                    lore.add("");
+
+                    // Enchant Cost
+                    if (m.isEnchantable()) {
+                        String cost = ChatWriter.addColors(LanguageManager.getString("GUIs.Modifiers.EnchantCost"));
+                        lore.add(cost.replaceFirst("%enchantCost", ChatWriter.toRomanNumerals(m.getEnchantCost())));
+
+                        lore.add("");
+                    }
+
+                    // Allowed Tools
+                    lore.add(ChatWriter.addColors(LanguageManager.getString("GUIs.Modifiers.WorksOn")));
+
+                    StringBuilder builder = new StringBuilder();
+
+                    builder.append(ChatColor.WHITE);
+
+                    int count = 0;
+
+                    for (ToolType toolType : m.getAllowedTools()) {
+                        builder.append(LanguageManager.getString("ToolType." + toolType.name()) + ", ");
+
+                        if (++count > 2) {
+                            lore.add(builder.toString());
+
+                            builder = new StringBuilder();
+                            builder.append(ChatColor.WHITE);
+
+                            count = 0;
+                        }
+                    }
+
+                    String lastLine = builder.toString();
+
+                    lore.add(lastLine.substring(0, lastLine.length() - 2));
+
+                    // Apply lore changes
                     meta.setLore(lore);
                     item.setItemMeta(meta);
 
+                    // Setup click actions
                     GUI.Window.Button modButton = currentPage.addButton((i % 7) + 1, (i / 7) + 1, item);
                     Recipe rec = null;
 
@@ -133,6 +175,7 @@ public class GUIs {
                     }
 
                     i++;
+
                     if (i % 28 == 0) {
                         currentPage = modGUI.addWindow(6, LanguageManager.getString("GUIs.Modifiers.Title").replaceFirst("%pageNo", "" + ++pageNo));
 

@@ -67,6 +67,9 @@ public class Haste extends Modifier {
         config.addDefault("MaxLevel", 5);
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
     	config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "RRR");
     	config.addDefault("Recipe.Middle", "RRR");
@@ -85,10 +88,6 @@ public class Haste extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "haste", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
@@ -100,11 +99,6 @@ public class Haste extends Modifier {
                 meta.addEnchant(Enchantment.DIG_SPEED, modManager.getModLevel(tool, this), true);
             }
 
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
             tool.setItemMeta(meta);
         }
 

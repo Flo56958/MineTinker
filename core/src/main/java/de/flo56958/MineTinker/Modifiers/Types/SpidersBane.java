@@ -69,8 +69,11 @@ public class SpidersBane extends Modifier {
 
         config.addDefault("CompatibleWithSmite", false);
         config.addDefault("CompatibleWithSharpness", false);
-        config.addDefault("Recipe.Enabled", true);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
+        config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "ESE");
         config.addDefault("Recipe.Middle", "SFS");
         config.addDefault("Recipe.Bottom", "ESE");
@@ -93,10 +96,6 @@ public class SpidersBane extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "spidersbane", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
@@ -116,12 +115,6 @@ public class SpidersBane extends Modifier {
                 }
 
                 meta.addEnchant(Enchantment.DAMAGE_ARTHROPODS, modManager.getModLevel(tool, this), true);
-            }
-
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
 
             tool.setItemMeta(meta);

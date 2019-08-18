@@ -7,6 +7,7 @@ import java.util.*;
 
 public enum ToolType {
 
+	ALL,
 	AXE,
 	BOOTS,
 	BOW,
@@ -57,6 +58,8 @@ public enum ToolType {
 		tools.put(ToolType.INVALID, Collections.emptyList());
 
 		ToolType.getTools().values().forEach(toolMaterials::addAll);
+
+		tools.put(ToolType.ALL, getAllToolMaterials());
 	}
 
 	public static EnumMap<ToolType, List<Material>> getTools() {

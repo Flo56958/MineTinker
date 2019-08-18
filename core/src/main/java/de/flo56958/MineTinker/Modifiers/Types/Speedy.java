@@ -55,10 +55,6 @@ public class Speedy extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "speedy", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta == null) {
@@ -109,6 +105,9 @@ public class Speedy extends Modifier {
         config.addDefault("MaxLevel", 5);
         config.addDefault("SpeedPerLevel", 0.01);
         config.addDefault("OverrideLanguagesystem", false);
+
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
 
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "R R");
