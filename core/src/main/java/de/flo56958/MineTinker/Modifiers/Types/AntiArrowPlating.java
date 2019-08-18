@@ -72,6 +72,9 @@ public class AntiArrowPlating extends Modifier {
         config.addDefault("CompatibleWithAntiFire", false);
         config.addDefault("CompatibleWithAntiBlast", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "IAI");
         config.addDefault("Recipe.Middle", "ADA");
@@ -98,10 +101,6 @@ public class AntiArrowPlating extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "antiarrowplating", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
@@ -130,12 +129,6 @@ public class AntiArrowPlating extends Modifier {
                 }
 
                 meta.addEnchant(Enchantment.PROTECTION_PROJECTILE, modManager.getModLevel(tool, this), true);
-            }
-
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
 
             tool.setItemMeta(meta);

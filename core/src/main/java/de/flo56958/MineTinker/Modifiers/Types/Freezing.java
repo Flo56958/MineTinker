@@ -64,6 +64,9 @@ public class Freezing extends Modifier {
         config.addDefault("MaxLevel", 3);
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "BBB");
         config.addDefault("Recipe.Middle", "BDB");
@@ -88,23 +91,14 @@ public class Freezing extends Modifier {
             return false;
         }
 
-        if (!Modifier.checkAndAdd(p, tool, this, "freezing", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
             meta.addEnchant(Enchantment.FROST_WALKER, modManager.getModLevel(tool, this), true);
 
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
+            tool.setItemMeta(meta);
         }
 
-        tool.setItemMeta(meta);
         return true;
     }
 }

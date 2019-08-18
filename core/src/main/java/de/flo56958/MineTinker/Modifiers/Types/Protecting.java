@@ -63,6 +63,9 @@ public class Protecting extends Modifier {
         config.addDefault("MaxLevel", 5);
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", true);
+
      	config.addDefault("Recipe.Enabled", true);
      	config.addDefault("Recipe.Top", "DID");
      	config.addDefault("Recipe.Middle", "IOI");
@@ -83,20 +86,10 @@ public class Protecting extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "protecting", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
             meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, modManager.getModLevel(tool, this), true);
-
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
 
             tool.setItemMeta(meta);
         }

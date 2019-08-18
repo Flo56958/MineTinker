@@ -83,6 +83,9 @@ public class Ender extends Modifier implements Listener {
 
         config.addDefault("CompatibleWithInfinity", true);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
     	config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "PPP");
     	config.addDefault("Recipe.Middle", "PEP");
@@ -117,7 +120,7 @@ public class Ender extends Modifier implements Listener {
             }
         }
 
-        return Modifier.checkAndAdd(p, tool, this, "ender", isCommand);
+        return true;
     }
 
     /**

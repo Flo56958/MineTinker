@@ -63,8 +63,11 @@ public class LightWeight extends Modifier {
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Light-Weight-Modifier");
         config.addDefault("Color", "%GRAY%");
         config.addDefault("MaxLevel", 3);
-    	config.addDefault("EnchantCost", 10);
-    	config.addDefault("Recipe.Enabled", false);
+
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", true);
+
+        config.addDefault("Recipe.Enabled", false);
         config.addDefault("OverrideLanguagesystem", false);
 
         ConfigurationManager.saveConfig(config);
@@ -75,19 +78,10 @@ public class LightWeight extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "lightweight", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
             meta.addEnchant(Enchantment.PROTECTION_FALL, modManager.getModLevel(tool, this), true);
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
 
             tool.setItemMeta(meta);
         }

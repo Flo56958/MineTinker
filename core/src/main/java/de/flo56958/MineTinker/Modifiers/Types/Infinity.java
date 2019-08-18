@@ -67,8 +67,11 @@ public class Infinity extends Modifier {
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Infinity-Modifier");
         config.addDefault("MaxLevel", 3); //higher values than 1 have no effect on Infinity
         config.addDefault("Color", "%WHITE%");
+
         config.addDefault("EnchantCost", 10);
-    	config.addDefault("Recipe.Enabled", false);
+        config.addDefault("Enchantable", true);
+
+        config.addDefault("Recipe.Enabled", false);
     	//Check Ender.yml for Compatibility-option for Ender and Infinity
         config.addDefault("OverrideLanguagesystem", false);
 
@@ -94,10 +97,6 @@ public class Infinity extends Modifier {
             return false;
         }
 
-        if (!Modifier.checkAndAdd(p, tool, this, "infinity", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
@@ -105,12 +104,6 @@ public class Infinity extends Modifier {
                 meta.addEnchant(Enchantment.ARROW_INFINITE, modManager.getModLevel(tool, this), true);
             } else if (ToolType.TRIDENT.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.LOYALTY, modManager.getModLevel(tool, this), true);
-            }
-
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
 
             tool.setItemMeta(meta);

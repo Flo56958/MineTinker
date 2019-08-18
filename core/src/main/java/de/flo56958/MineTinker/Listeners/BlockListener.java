@@ -21,6 +21,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 public class BlockListener implements Listener {
@@ -77,6 +78,10 @@ public class BlockListener implements Listener {
         Block b = event.getClickedBlock();
 
         if (b == null) {
+            return;
+        }
+
+        if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }
 

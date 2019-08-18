@@ -72,6 +72,9 @@ public class Insulating extends Modifier {
         config.addDefault("CompatibleWithAntiArrow", false);
         config.addDefault("CompatibleWithAntiBlast", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "IMI");
         config.addDefault("Recipe.Middle", "MDM");
@@ -96,10 +99,6 @@ public class Insulating extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "insulating", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
@@ -128,12 +127,6 @@ public class Insulating extends Modifier {
                 }
 
                 meta.addEnchant(Enchantment.PROTECTION_FIRE, modManager.getModLevel(tool, this), true);
-            }
-
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
 
             tool.setItemMeta(meta);

@@ -62,6 +62,9 @@ public class Channeling extends Modifier {
         config.addDefault("MaxLevel", 1);
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "SPS");
         config.addDefault("Recipe.Middle", "PCP");
@@ -82,21 +85,11 @@ public class Channeling extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "channeling", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
             if (ToolType.TRIDENT.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.CHANNELING, modManager.getModLevel(tool, this), true);
-            }
-
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
 
             tool.setItemMeta(meta);

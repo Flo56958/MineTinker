@@ -67,6 +67,9 @@ public class Directing extends Modifier implements Listener {
         config.addDefault("Color", "%GRAY%");
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
     	config.addDefault("Recipe.Top", "ECE");
     	config.addDefault("Recipe.Middle", "CIC");
@@ -87,11 +90,6 @@ public class Directing extends Modifier implements Listener {
         this.workInPVP = config.getBoolean("WorkInPVP", true);
         this.workOnXP = config.getBoolean("WorksOnXP", true);
         this.minimumLevelForXP = config.getInt("MinimumLevelToGetXP", 1);
-    }
-
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        return Modifier.checkAndAdd(p, tool, this, "directing", isCommand);
     }
 
     @EventHandler

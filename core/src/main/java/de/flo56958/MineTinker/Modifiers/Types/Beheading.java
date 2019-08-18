@@ -71,7 +71,10 @@ public class Beheading extends Modifier implements Listener {
     	config.addDefault("Color", "%DARK_GRAY%");
     	config.addDefault("MaxLevel", 10);
     	config.addDefault("PercentagePerLevel", 10);  //= 100% at Level 10
-    	config.addDefault("EnchantCost", 10);
+
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", true);
+
     	config.addDefault("Recipe.Enabled", false);
         config.addDefault("OverrideLanguagesystem", false);
 
@@ -82,11 +85,6 @@ public class Beheading extends Modifier implements Listener {
 
         this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
         this.description = this.description.replace("%chance", "" + this.percentagePerLevel);
-    }
-
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        return checkAndAdd(p, tool, this, "beheading", isCommand);
     }
 
     /**

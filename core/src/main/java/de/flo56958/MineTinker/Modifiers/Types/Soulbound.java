@@ -47,18 +47,13 @@ public class Soulbound extends Modifier implements Listener {
 
     @Override
     public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.values());
+        return Collections.singletonList(ToolType.ALL);
     }
 
     private Soulbound() {
         super(Main.getPlugin());
 
         Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
-    }
-
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        return checkAndAdd(p, tool, this, "soulbound", isCommand);
     }
 
     @Override
@@ -77,6 +72,9 @@ public class Soulbound extends Modifier implements Listener {
         config.addDefault("DecrementModLevelOnUse", false);
         config.addDefault("ToolDropable", true);
         config.addDefault("OverrideLanguagesystem", false);
+
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
 
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "BLB");

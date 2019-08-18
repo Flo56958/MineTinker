@@ -70,6 +70,9 @@ public class Smite extends Modifier {
         config.addDefault("CompatibleWithSharpness", false);
         config.addDefault("CompatibleWithArthropods", false);
 
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", false);
+
         config.addDefault("Recipe.Enabled", true);
         config.addDefault("Recipe.Top", "BMB");
         config.addDefault("Recipe.Middle", "MIM");
@@ -93,10 +96,6 @@ public class Smite extends Modifier {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "smite", isCommand)) {
-            return false;
-        }
-
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
@@ -116,12 +115,6 @@ public class Smite extends Modifier {
                 }
 
                 meta.addEnchant(Enchantment.DAMAGE_UNDEAD, modManager.getModLevel(tool, this), true);
-            }
-
-            if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            } else {
-                meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
 
             tool.setItemMeta(meta);

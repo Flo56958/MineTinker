@@ -154,7 +154,7 @@ public class TinkerListener implements Listener {
 
                                 do {
                                     index = new Random().nextInt(mods.size());
-                                    appliedRandomMod = mods.get(index).applyMod(player, tool, true);
+                                    appliedRandomMod = modManager.addMod(player, tool, mods.get(index), true);
 
                                     if (!appliedRandomMod) {
                                         mods.remove(index); //Remove the failed modifier from the the list of the possibles

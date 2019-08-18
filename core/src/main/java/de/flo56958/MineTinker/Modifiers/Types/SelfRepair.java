@@ -56,7 +56,7 @@ public class SelfRepair extends Modifier implements Listener {
 
     @Override
     public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.values());
+        return Collections.singletonList(ToolType.ALL);
     }
 
     private SelfRepair() {
@@ -83,10 +83,13 @@ public class SelfRepair extends Modifier implements Listener {
         config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Self-Repair-Modifier");
         config.addDefault("Color", "%GREEN%");
         config.addDefault("MaxLevel", 10);
-    	config.addDefault("EnchantCost", 10);
     	config.addDefault("PercentagePerLevel", 10); //100% at Level 10 (not necessary for unbreakable tool in most cases)
     	config.addDefault("HealthRepair", 2); //How much durability should be repaired per trigger
         config.addDefault("UseMending", false); //Disables the plugins own system and instead uses the vanilla Mending enchantment
+
+        config.addDefault("EnchantCost", 10);
+        config.addDefault("Enchantable", true);
+
     	config.addDefault("Recipe.Enabled", false);
         config.addDefault("OverrideLanguagesystem", false);
 
@@ -104,21 +107,11 @@ public class SelfRepair extends Modifier implements Listener {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!Modifier.checkAndAdd(p, tool, this, "selfrepair", isCommand)) {
-            return false;
-        }
-
         if (useMending) {
             ItemMeta meta = tool.getItemMeta();
 
             if (meta != null) {
                 meta.addEnchant(Enchantment.MENDING, modManager.getModLevel(tool, this), true);
-
-                if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
-                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                } else {
-                    meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-                }
 
                 tool.setItemMeta(meta);
             }
