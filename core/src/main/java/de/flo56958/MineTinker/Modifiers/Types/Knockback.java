@@ -21,6 +21,8 @@ public class Knockback extends Modifier {
 
     private static Knockback instance;
 
+    private boolean worksOnShields = false;
+
     public static Knockback instance() {
         synchronized (Knockback.class) {
             if (instance == null) {
@@ -38,7 +40,11 @@ public class Knockback extends Modifier {
 
     @Override
     public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT);
+        if (worksOnShields) {
+            return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.SHIELD, ToolType.TRIDENT);
+        } else {
+            return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT);
+        }
     }
 
     private Knockback() {
@@ -69,10 +75,14 @@ public class Knockback extends Modifier {
         config.addDefault("Recipe.Enabled", false);
         config.addDefault("OverrideLanguagesystem", false);
 
+        config.addDefault("WorksOnShields", false);
+
         ConfigurationManager.saveConfig(config);
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
      	init(Material.TNT, true);
+
+     	this.worksOnShields = config.getBoolean("WorksOnShields");
     }
 
     @Override
@@ -80,12 +90,12 @@ public class Knockback extends Modifier {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (ToolType.AXE.contains(tool.getType())) {
+            if (ToolType.AXE.contains(tool.getType()) || ToolType.AXE.contains(tool.getType())) {
+                meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);
+            } else if (ToolType.SHIELD.contains(tool.getType()) && worksOnShields) {
                 meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);
             } else if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.ARROW_KNOCKBACK, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.SWORD.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);
             }
 
             tool.setItemMeta(meta);
