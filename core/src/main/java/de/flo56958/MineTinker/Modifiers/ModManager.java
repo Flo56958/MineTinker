@@ -546,6 +546,7 @@ public class ModManager {
                 || ToolType.SWORD.contains(m)
                 || ToolType.TRIDENT.contains(m)
                 || ToolType.SHEARS.contains(m)
+                || ToolType.SHIELD.contains(m)
                 || ToolType.FISHINGROD.contains(m)) && !isWandViable(is)) {
             nbt.setInt(is, "IdentifierTool", 0);
         } else if (ToolType.BOOTS.contains(m)
