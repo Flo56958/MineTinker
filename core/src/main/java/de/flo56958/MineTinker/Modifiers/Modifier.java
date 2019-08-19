@@ -182,6 +182,16 @@ public abstract class Modifier {
         return Collections.emptyList();
     }
 
+    public boolean isMaterialCompatible(Material material) {
+        for (ToolType toolType : getAllowedTools()) {
+            if (toolType.contains(material)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static boolean checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand) {
         if ((modManager.getFreeSlots(tool) < 1 && !mod.equals(ExtraModifier.instance())) && !isCommand) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_FREE_SLOTS, isCommand));
@@ -193,7 +203,7 @@ public abstract class Modifier {
             return false;
         }
 
-        if (!mod.getAllowedTools().contains(ToolType.get(tool.getType()))) {
+        if (!mod.isMaterialCompatible(tool.getType())) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
             return false;
         }

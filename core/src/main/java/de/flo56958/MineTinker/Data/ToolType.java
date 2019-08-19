@@ -78,6 +78,10 @@ public enum ToolType {
 		return getToolMaterials().contains(material);
 	}
 
+	public static boolean isMaterialCompatible(Material material) {
+		return ToolType.ALL.contains(material);
+	}
+
 	/**
 	 * get the tooltype from a string
 	 *

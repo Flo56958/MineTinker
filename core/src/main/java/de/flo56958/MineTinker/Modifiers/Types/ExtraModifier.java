@@ -75,7 +75,7 @@ public class ExtraModifier extends Modifier {
             return false;
         }
 
-        if (!getAllowedTools().contains(ToolType.get(tool.getType()))) {
+        if (!isMaterialCompatible(tool.getType())) {
             pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
             return false;
         }
