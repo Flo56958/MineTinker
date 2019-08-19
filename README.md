@@ -2,6 +2,7 @@
 
 # MineTinker
 [![CodeFactor](https://www.codefactor.io/repository/github/flo56958/minetinker/badge)](https://www.codefactor.io/repository/github/flo56958/minetinker)
+[![Build Status](https://travis-ci.org/Flo56958/MineTinker.svg?branch=alpha)](https://travis-ci.org/Flo56958/MineTinker)
 
 A Tinker's Construct inspired Spigot plugin. It currently has over 40 modifiers with more planned. Almost everything is configurable: recipes, level caps, which modifiers are enabled, etc.
 
@@ -23,7 +24,7 @@ There are several options for contributing:
 - Reporting bugs via Issues on GitHub (or less preferably on Discord)
 - Forking this repository and adding your own features and bug fixes (Feel free to send a pull request or get in touch with us if you have any questions or problems)</br>
 **Note:** _Every pull request and code change will be carefully examinend and may not be accepted without further code change from our side or requests to the creator of the pull request_
-
+- If you can speak a language other than english you can help us translate MineTinker to different languages. For easy translation overview go to: [Transifex](https://www.transifex.com/flo56958/minetinker/dashboard/)
 ***
 
 ## How to configure MineTinker on a server:
