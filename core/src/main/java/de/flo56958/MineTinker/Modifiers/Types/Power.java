@@ -268,18 +268,22 @@ public class Power extends Modifier implements Listener {
      */
     @EventHandler
     public void effect(MTPlayerInteractEvent event) {
-        if (!event.isCancelled() || !this.isAllowed())
+        if (event.isCancelled() || !this.isAllowed()) {
             return;
+        }
 
         Player p = event.getPlayer();
         ItemStack tool = event.getTool();
 
-        if (!ToolType.HOE.contains(tool.getType()))
+        if (!ToolType.HOE.contains(tool.getType())) {
             return;
+        }
 
         PlayerInteractEvent e = event.getEvent();
-        if (!checkPower(p, tool))
+
+        if (!checkPower(p, tool)) {
             return;
+        }
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool)
                 + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
@@ -289,8 +293,9 @@ public class Power extends Modifier implements Listener {
         int level = modManager.getModLevel(tool, this);
         Block b = e.getClickedBlock();
 
-        if (b == null)
+        if (b == null) {
             return;
+        }
 
         if (level == 1) {
             if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
@@ -339,17 +344,24 @@ public class Power extends Modifier implements Listener {
     }
 
     private void powerBlockBreak(Block b, Block centralBlock, Player p) {
-        if (blacklist.contains(b.getType())) return;
+        if (blacklist.contains(b.getType())) {
+            return;
+        }
 
-        if (b.getDrops(p.getInventory().getItemInMainHand()).isEmpty()) return;
-        if (b.getType().getHardness() > centralBlock.getType().getHardness() + 2) return; //So Obsidian can not be mined using Cobblestone and Power
+        if (b.getDrops(p.getInventory().getItemInMainHand()).isEmpty()) {
+            return;
+        }
+
+        if (b.getType().getHardness() > centralBlock.getType().getHardness() + 2) {
+            return; //So Obsidian can not be mined using Cobblestone and Power
+        }
+
         NBTUtils.getHandler().playerBreakBlock(p, b);
     }
 
     private static void powerCreateFarmland(Player p, ItemStack tool, Block b) {
         if (b.getType().equals(Material.GRASS_BLOCK) || b.getType().equals(Material.DIRT)) {
             if (b.getWorld().getBlockAt(b.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
-
                 if (tool.getItemMeta() instanceof Damageable) {
                     Damageable damageable = (Damageable) tool.getItemMeta();
                     damageable.setDamage(damageable.getDamage() + 1);
