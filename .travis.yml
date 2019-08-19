@@ -1,0 +1,21 @@
+# Use new container infrastructure to enable caching
+sudo: false
+
+# Use Maven
+language: java
+
+# Caching so the next build will be fast too.
+cache:
+  directories:
+    - $HOME/.m2
+
+# Only re-download spigot if we don't have spigot in the repo
+before_install:
+  - chmod +x installSpigot.sh
+  - if [ ! -d "$HOME/.m2/repository/org/spigotmc/spigot/1.13-R0.1-SNAPSHOT" ]; then ./installSpigot.sh 1.13 ; else echo "Not compiling Spigot 1.13 because it is already in our maven" ; fi
+  - if [ ! -d "$HOME/.m2/repository/org/spigotmc/spigot/1.13.2-R0.1-SNAPSHOT" ]; then ./installSpigot.sh 1.13.2 ; else echo "Not compiling Spigot 1.13.2 because it is already in our maven" ; fi
+  - if [ ! -d "$HOME/.m2/repository/org/spigotmc/spigot/1.14.4-R0.1-SNAPSHOT" ]; then ./installSpigot.sh 1.14.4 ; else echo "Not compiling Spigot 1.14.4 because it is already in our maven" ; fi
+
+# Set the final name using pom-fu
+install:
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V

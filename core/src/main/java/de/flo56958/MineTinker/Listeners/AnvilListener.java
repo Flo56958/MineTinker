@@ -29,7 +29,217 @@ public class AnvilListener implements Listener {
 
     private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = ModManager.instance();
-    
+
+    //<--- code from 27.07.2019 --->
+    //reverted due to bugs in new implementation; newer implementation is commented out below
+    //TODO: Test if old code works with new modifier rework
+    //changed method applyMod() to addMod() due to modifier rework
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onInventoryClick(InventoryClickEvent e) {
+        HumanEntity he = e.getWhoClicked();
+
+        if (!(he instanceof Player && e.getClickedInventory() instanceof AnvilInventory)) {
+            return;
+        }
+
+        AnvilInventory inv = (AnvilInventory) e.getClickedInventory();
+        Player player = (Player) he;
+
+        ItemStack tool = inv.getItem(0);
+        ItemStack modifier = inv.getItem(1);
+        ItemStack newTool = inv.getItem(2);
+
+        if (tool == null || modifier == null || newTool == null) {
+            return;
+        }
+
+        if (e.getSlot() != 2) {
+            return;
+        }
+
+        if (Lists.WORLDS.contains(player.getWorld().getName())) {
+            return;
+        }
+
+        if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) {
+            return;
+        }
+
+        //boolean deleteAllItems = false;
+        if (e.getCursor() != null && !e.getCursor().getType().equals(Material.AIR)) {
+            return;
+        }
+
+        if (!modManager.isModifierItem(modifier)) { //upgrade
+            if (tool.getType().equals(newTool.getType())) return; //Not an upgrade
+
+            // ------ upgrade
+            if (e.isShiftClick()) {
+                if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
+                    e.setCancelled(true); //cancels the event if the player has a full inventory
+                    return;
+                } // no else as it gets added in if-clause
+
+                inv.clear();
+
+                return;
+            }
+
+            Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, true));
+
+            player.setItemOnCursor(newTool);
+            inv.clear();
+        } else { //is modifier
+            Modifier mod = modManager.getModifierFromItem(modifier);
+
+            if (mod == null) {
+                return;
+            }
+
+            modifier.setAmount(modifier.getAmount() - 1);
+            Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
+
+            if (e.isShiftClick()) {
+                if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
+                    e.setCancelled(true); //cancels the event if the player has a full inventory
+                    return;
+                } // no else as it gets added in if-clause
+
+                inv.clear();
+                inv.setItem(1, modifier);
+
+                return;
+            }
+
+            player.setItemOnCursor(newTool);
+
+            inv.clear();
+            inv.setItem(1, modifier);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onAnvilPrepare(PrepareAnvilEvent e) {
+        AnvilInventory i = e.getInventory();
+        ItemStack tool = i.getItem(0);
+        ItemStack modifier = i.getItem(1);
+
+        if (tool == null || modifier == null) {
+            return;
+        }
+
+        //-----
+        Player player = null;
+
+        List<HumanEntity> listHumans = e.getViewers();
+
+        for (HumanEntity he : listHumans) {
+            if (he instanceof Player) {
+                player = (Player) he;
+                break;
+            }
+        }
+
+        if (player == null) {
+            return;
+        }
+
+        //-----
+
+        if (Lists.WORLDS.contains(player.getWorld().getName())) {
+            return;
+        }
+
+        if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) {
+            return;
+        }
+
+        if (modifier.getType().equals(Material.ENCHANTED_BOOK)) { //So no Tools can be enchanted via books, if enchanting is disabled
+            if (config.getBoolean("AllowEnchanting")) {
+                // If enchanting is allowed, don't do anything
+                return;
+            } else {
+                // Otherwise, set the resulting item to AIR to negate the enchant
+                e.setResult(new ItemStack(Material.AIR, 0)); //sets ghostitem by client
+                return;
+            }
+        }
+
+        Modifier mod = modManager.getModifierFromItem(modifier);
+
+        ItemStack newTool;
+
+        if (mod != null) {
+            newTool = tool.clone();
+            if (!modManager.addMod(player, newTool, mod, false)) {
+                return;
+            }
+
+            e.setResult(newTool);
+            i.setRepairCost(0);
+        } else {
+            if (config.getBoolean("Upgradeable") && player.hasPermission("minetinker.tool.upgrade")) {
+                ItemStack item = i.getItem(1);
+
+                if (item != null) {
+                    switch (item.getAmount()) {
+                        case 1:
+                            if (ToolType.SHOVEL.contains(tool.getType())) {
+                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
+                            }
+                            break;
+                        case 2:
+                            if (ToolType.SWORD.contains(tool.getType()) || ToolType.HOE.contains(tool.getType())) {
+                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
+                            }
+                            break;
+                        case 3:
+                            if (ToolType.AXE.contains(tool.getType()) || ToolType.PICKAXE.contains(tool.getType())) {
+                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
+                            }
+                            break;
+                        case 4:
+                            if (ToolType.BOOTS.contains(tool.getType())) {
+                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
+                            }
+                            break;
+                        case 5:
+                            if (ToolType.HELMET.contains(tool.getType())) {
+                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
+                            }
+                            break;
+                        case 7:
+                            if (ToolType.LEGGINGS.contains(tool.getType())) {
+                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
+                            }
+                            break;
+                        case 8:
+                            if (ToolType.CHESTPLATE.contains(tool.getType())) {
+                                newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+                                e.setResult(newTool);
+                                i.setRepairCost(0);
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
+    /* <--- newer buggy code; needs fixing or rework --->
+    // Code is from
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onInventoryClick(InventoryClickEvent event) {
 		HumanEntity entity = event.getWhoClicked();
@@ -310,10 +520,10 @@ public class AnvilListener implements Listener {
                 }
             }
         }
-
     }
+    */
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onGrind(InventoryClickEvent event) {
 	    if (!NBTUtils.isOneFourteenCompatible()) {
 	        return;

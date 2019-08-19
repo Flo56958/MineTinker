@@ -800,10 +800,10 @@ public class ModManager {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta instanceof Damageable) {
-            if (tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2 && config.getBoolean("UnbreakableTools")) {
+            if (config.getBoolean("UnbreakableTools", true) && tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2) {
                 e.setCancelled(true);
 
-                if (config.getBoolean("Sound.OnBreaking")) {
+                if (config.getBoolean("Sound.OnBreaking", true)) {
                     p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
                 }
 
