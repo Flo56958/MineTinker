@@ -72,7 +72,7 @@ public class Channeling extends Modifier {
 
         Map<String, String> recipeMaterials = new HashMap<>();
         recipeMaterials.put("S", "SEA_LANTERN");
-        recipeMaterials.put("P", "PRISMARINE_SHARDS");
+        recipeMaterials.put("P", "PRISMARINE_SHARD");
         recipeMaterials.put("C", "CREEPER_HEAD");
 
         config.addDefault("Recipe.Materials", recipeMaterials);
