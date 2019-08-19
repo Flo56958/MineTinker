@@ -29,6 +29,18 @@ public class BlockListener implements Listener {
     private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = ModManager.instance();
 
+    //To cancel event if Tool would be broken so other plugins can react faster to MineTinker (e.g. PyroMining)
+    //onBlockBreak() has priority highest as it needs to wait on WorldGuard and other plugins to cancel event if necessary
+    //TODO: Replace if Issue #111 is implemented
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onBlockBreak_DurabilityCheck(BlockBreakEvent event) {
+        Player p = event.getPlayer();
+        ItemStack tool = p.getInventory().getItemInMainHand();
+        if (modManager.isToolViable(tool)) {
+            modManager.durabilityCheck(event, p, tool);
+        }
+    }
+
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         Player p = event.getPlayer();
@@ -47,9 +59,6 @@ public class BlockListener implements Listener {
         }
 
         if (!modManager.isToolViable(tool)) {
-            return;
-        }
-        if (!modManager.durabilityCheck(event, p, tool)) {
             return;
         }
 
