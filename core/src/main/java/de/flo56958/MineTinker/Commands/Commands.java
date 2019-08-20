@@ -138,7 +138,7 @@ public class Commands implements TabExecutor {
                         case "ec":
                         case "editconfig":
                             if (player.hasPermission("minetinker.commands.editconfig")) {
-                                GUIs.getMainConfigSettings().show(player);
+                                GUIs.getConfigurationsGUI().show(player);
                             } else noPerm(player);
                             break;
                         default:

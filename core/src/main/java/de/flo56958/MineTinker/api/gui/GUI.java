@@ -81,6 +81,11 @@ public class GUI implements Listener {
         return null;
     }
 
+    @Nullable
+    public Window getWindow(final int i) {
+        return windows.get(i);
+    }
+
     /**
      * shows the first page of the GUI to the specified Player
      * @param p the Player

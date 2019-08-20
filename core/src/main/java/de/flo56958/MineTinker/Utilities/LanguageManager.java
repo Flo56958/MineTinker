@@ -37,6 +37,11 @@ public class LanguageManager {
         langBackup = null;
     }
 
+    /**
+     * @param path the Path to the Strings location
+     * @return "" on failure
+     *         the requested String on success
+     */
     @NotNull
     public static String getString(@NotNull String path) {
         String ret = langFile.getString(path);

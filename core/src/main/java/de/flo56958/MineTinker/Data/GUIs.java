@@ -1,9 +1,9 @@
 package de.flo56958.MineTinker.Data;
 
-import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import de.flo56958.MineTinker.api.gui.ButtonAction;
@@ -18,20 +18,19 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class GUIs {
 
     private static GUI modGUI;
 
-    private static GUI mainConfigSettings;
+    private static GUI configurationsGUI;
 
     private static ItemStack forwardStack;
     private static ItemStack backStack;
+    private static ItemStack backOtherMenuStack;
 
     static {
         forwardStack = new ItemStack(Material.GREEN_STAINED_GLASS_PANE, 1);
@@ -48,6 +47,14 @@ public class GUIs {
         if (backMeta != null) {
             backMeta.setDisplayName(ChatColor.RED + LanguageManager.getString("GUIs.Back"));
             backStack.setItemMeta(backMeta);
+        }
+
+        backOtherMenuStack = new ItemStack(Material.YELLOW_STAINED_GLASS_PANE, 1);
+        ItemMeta backOtherMenuMeta = backOtherMenuStack.getItemMeta();
+
+        if (backOtherMenuMeta != null) {
+            backOtherMenuMeta.setDisplayName(ChatColor.YELLOW + LanguageManager.getString("GUIs.BackOtherMenu"));
+            backOtherMenuStack.setItemMeta(backOtherMenuMeta);
         }
 
         reload();
@@ -201,152 +208,229 @@ public class GUIs {
         }
         /* Main Configuration Manager*/
         {
-            //TODO: Simplify and shorten code
-            //TODO: Implement LanguageSystem
-            //TODO: Implement other object types
-            //TODO: Implement Broadcast changes to console and OPs
-            //TODO: Polish interface
-            //TODO: Add HashMap to have explanations to the configuration options
-            FileConfiguration config = Main.getPlugin().getConfig();
-            ConfigurationSection defaultSection = config.getDefaultSection();
-            if (defaultSection != null) {
-                mainConfigSettings = new GUI();
-                //GUI childrenSettings = new GUI();
-                int pageNo = 1;
-                GUI.Window currentPage = mainConfigSettings.addWindow(6, "Main Configuration, Page" + pageNo++);
-                GUI.Window.Button back = currentPage.addButton(0, 5, backStack.clone());
-                back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
-                GUI.Window.Button forward = currentPage.addButton(8, 5, forwardStack.clone());
-                forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
+            configurationsGUI = new GUI();
+            int pageNo = 1;
+            GUI.Window currentPage = configurationsGUI.addWindow(6, "Configuration Manager, Page " + pageNo++);
+            GUI.Window.Button back = currentPage.addButton(0, 5, backStack.clone());
+            back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
+            GUI.Window.Button forward = currentPage.addButton(8, 5, forwardStack.clone());
+            forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
 
-                ArrayList<String> keys = new ArrayList<>(defaultSection.getKeys(true));
-                keys.sort(String::compareToIgnoreCase);
-                int i = 0;
-                for (String key : keys) {
-                    ItemStack buttonStack = new ItemStack(Material.DIRT, 1);
-                    ItemMeta buttonStackMeta = buttonStack.getItemMeta();
-                    if (buttonStackMeta == null) continue;
-                    buttonStackMeta.setDisplayName(ChatColor.RESET + "" + ChatColor.BOLD + key);
-                    List<String> buttonStackLore = buttonStackMeta.getLore();
-                    if (buttonStackLore == null) buttonStackLore = new ArrayList<>();
-                    GUI.Window.Button currentButton = currentPage.addButton(i, buttonStack);
-                    buttonStack = currentButton.getItemStack(); //needs to be updated
+            int i = 0;
+            ArrayList<String> names = new ArrayList<>(ConfigurationManager.getAllConfigNames());
+            names.sort(String::compareToIgnoreCase);
+            for (String name : names) {
+                ItemStack buttonStack = new ItemStack(Material.WHITE_WOOL, 1);
+                ItemMeta buttonMeta = buttonStack.getItemMeta();
 
-                    ConfigurationSection configurationSection = defaultSection.getConfigurationSection(key);
-                    if (configurationSection == null) {
-                        Object value = config.get(key);
-                        final ItemStack buttonStackForRunnable = buttonStack;
-
-                        if (value instanceof Boolean) {
-                            buttonStackLore.add(ChatColor.WHITE + "Type: Boolean");
-                            buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);
-
-                            if ((boolean) value) {
-                                buttonStack.setType(Material.GREEN_WOOL);
-                            } else {
-                                buttonStack.setType(Material.RED_WOOL);
-                            }
-
-                            Runnable buttonRunnable = () -> {
-                                //Boolean-Toggle
-                                config.set(key, !config.getBoolean(key));
-                                boolean newValue = config.getBoolean(key);
-
-                                if (newValue) {
-                                    buttonStackForRunnable.setType(Material.GREEN_WOOL);
-                                } else {
-                                    buttonStackForRunnable.setType(Material.RED_WOOL);
-                                }
-                                Main.getPlugin().saveConfig();
-                                ItemMeta meta = buttonStackForRunnable.getItemMeta();
-                                List<String> lore = meta.getLore();
-                                lore.set(1, ChatColor.WHITE + "Value: " + ChatColor.GOLD + newValue);
-                                meta.setLore(lore);
-                                buttonStackForRunnable.setItemMeta(meta);
-                            };
-                            currentButton.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, buttonRunnable));
-                        } else if (value instanceof Integer) {
-                            buttonStackLore.add(ChatColor.WHITE + "Type: Integer");
-                            buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);
-                            buttonStackLore.add("");
-                            buttonStackLore.add(ChatColor.WHITE + "Left Click to increment by 1 (with shift +10)!");
-                            buttonStackLore.add(ChatColor.WHITE + "Right Click to decrement by 1 (with shift -10)!");
-                            buttonStackLore.add(ChatColor.WHITE + "Middle Click to insert new value!");
-                            buttonStack.setType(Material.COBBLESTONE);
-                            if ((int) value > 0) {
-                                buttonStack.setAmount((int) value);
-                            } else {
-                                buttonStack.setAmount(1);
-                            }
-
-                            class intRunnables {
-                                private Runnable getRunnable(int i) {
-                                    return () -> {
-                                        config.set(key, config.getInt(key) + i);
-                                        int newValue = config.getInt(key);
-
-                                        Main.getPlugin().saveConfig();
-                                        ItemMeta meta = buttonStackForRunnable.getItemMeta();
-                                        List<String> lore = meta.getLore();
-                                        lore.set(1, ChatColor.WHITE + "Value: " + ChatColor.GOLD + newValue);
-                                        meta.setLore(lore);
-                                        buttonStackForRunnable.setItemMeta(meta);
-                                        if (newValue > 0) {
-                                            buttonStackForRunnable.setAmount(newValue);
-                                        } else {
-                                            buttonStackForRunnable.setAmount(1);
-                                        }
-                                    };
-                                }
-                            }
-                            currentButton.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, new intRunnables().getRunnable(1)));
-                            currentButton.addAction(ClickType.RIGHT, new ButtonAction.RUN_RUNNABLE(currentButton, new intRunnables().getRunnable(-1)));
-
-                            currentButton.addAction(ClickType.SHIFT_LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, new intRunnables().getRunnable(10)));
-                            currentButton.addAction(ClickType.SHIFT_RIGHT, new ButtonAction.RUN_RUNNABLE(currentButton, new intRunnables().getRunnable(-10)));
-
-                            //TODO: Middle click action
-                        } else if (value instanceof Double) {
-                            buttonStackLore.add(ChatColor.WHITE + "Type: Double");
-                            buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);
-
-                            buttonStack.setType(Material.STONE);
-                            //TODO: Action to change Double
-                        } else if (value instanceof String) {
-                            buttonStackLore.add(ChatColor.WHITE + "Type: String");
-                            buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);
-
-                            buttonStack.setType(Material.WHITE_WOOL);
-                            //TODO: Action to change String
-                        }
-                    } else {
-                        continue;
+                for (Modifier mod : ModManager.instance().getAllMods()) {
+                    if (mod.getKey().equals(name.replace(".yml", ""))) {
+                        buttonStack = mod.getModItem().clone();
+                        buttonMeta = buttonStack.getItemMeta();
                     }
-                    buttonStackMeta.setLore(buttonStackLore);
-                    buttonStack.setItemMeta(buttonStackMeta);
+                }
 
-                    i++;
-                    if (i >= 45) {
-                        currentPage = mainConfigSettings.addWindow(6, "Main config #" + pageNo++);
+                if (buttonMeta == null) continue;
+                buttonMeta.setDisplayName(ChatColor.RESET + "" + ChatColor.WHITE + "" + ChatColor.BOLD + name);
+                buttonMeta.setLore(new ArrayList<>());
+                buttonStack.setItemMeta(buttonMeta);
 
-                        back = currentPage.addButton(0, 5, backStack.clone());
-                        back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
+                GUI.Window.Button button = currentPage.addButton(i, buttonStack);
+                button.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(button, getGUIforConfig(name, currentPage).getWindow(0)));
 
-                        forward = currentPage.addButton(8, 5, forwardStack.clone());
-                        forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
+                i++;
+                if (i >= 45) {
+                    currentPage = configurationsGUI.addWindow(6, "Configuration Manager, Page " + pageNo++);
 
-                        i = 0;
-                    }
+                    back = currentPage.addButton(0, 5, backStack.clone());
+                    back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
+
+                    forward = currentPage.addButton(8, 5, forwardStack.clone());
+                    forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
+
+                    i = 0;
                 }
             }
         }
+    }
+
+    @NotNull
+    private static GUI getGUIforConfig(String configName, GUI.Window backPage) {
+        FileConfiguration config = ConfigurationManager.getConfig(configName);
+        GUI configGUI = new GUI();
+        int pageNo = 1;
+        GUI.Window currentPage = configGUI.addWindow(6, configName + ", Page " + pageNo++);
+        if (config != null) {
+            GUI.Window.Button back = currentPage.addButton(0, 5, backStack.clone());
+            back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
+            GUI.Window.Button forward = currentPage.addButton(8, 5, forwardStack.clone());
+            forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
+
+            GUI.Window.Button backConfig = currentPage.addButton(4, 5, backOtherMenuStack.clone());
+            backConfig.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(backConfig, backPage));
+
+            ArrayList<String> keys = new ArrayList<>(config.getKeys(true));
+            keys.sort(String::compareToIgnoreCase);
+
+            HashMap<String, String> explanations = getExplanations(config, configName.replace(".yml", ""));
+            int i = 0;
+            for (String key : keys) {
+                ItemStack buttonStack = new ItemStack(Material.DIRT, 1);
+                ItemMeta buttonStackMeta = buttonStack.getItemMeta();
+                if (buttonStackMeta == null) continue;
+                buttonStackMeta.setDisplayName(ChatColor.RESET + "" + ChatColor.BOLD + key);
+                List<String> buttonStackLore = buttonStackMeta.getLore();
+                if (buttonStackLore == null) buttonStackLore = new ArrayList<>();
+                GUI.Window.Button currentButton = currentPage.addButton(i, buttonStack);
+                buttonStack = currentButton.getItemStack(); //needs to be updated as it gets changed when added to the inventory
+
+                ConfigurationSection configurationSection = config.getConfigurationSection(key);
+                if (configurationSection == null) {
+                    Object value = config.get(key);
+                    final ItemStack buttonStackForRunnable = buttonStack;
+
+                    if (value instanceof Boolean) {
+                        buttonStackLore.add(ChatColor.WHITE + "Type: Boolean");
+                        buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);
+
+                        if ((boolean) value) {
+                            buttonStack.setType(Material.GREEN_WOOL);
+                        } else {
+                            buttonStack.setType(Material.RED_WOOL);
+                        }
+
+                        Runnable buttonRunnable = () -> {
+                            //Boolean-Toggle
+                            config.set(key, !config.getBoolean(key));
+                            boolean newValue = config.getBoolean(key);
+
+                            if (newValue) {
+                                buttonStackForRunnable.setType(Material.GREEN_WOOL);
+                            } else {
+                                buttonStackForRunnable.setType(Material.RED_WOOL);
+                            }
+
+                            ConfigurationManager.saveConfig(config);
+                            ItemMeta meta = buttonStackForRunnable.getItemMeta();
+                            List<String> lore = meta.getLore();
+                            lore.set(1, ChatColor.WHITE + "Value: " + ChatColor.GOLD + newValue);
+                            meta.setLore(lore);
+                            buttonStackForRunnable.setItemMeta(meta);
+                        };
+                        currentButton.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, buttonRunnable));
+                    } else if (value instanceof Integer) {
+                        buttonStackLore.add(ChatColor.WHITE + "Type: Integer");
+                        buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);
+                        buttonStackLore.add("");
+                        buttonStackLore.add(ChatColor.WHITE + "Left Click to increment by 1 (with shift +10)!");
+                        buttonStackLore.add(ChatColor.WHITE + "Right Click to decrement by 1 (with shift -10)!");
+                        buttonStackLore.add(ChatColor.WHITE + "Middle Click to insert new value!");
+                        buttonStack.setType(Material.COBBLESTONE);
+                        if ((int) value > 0) {
+                            buttonStack.setAmount((int) value);
+                        } else {
+                            buttonStack.setAmount(1);
+                        }
+
+                        class intRunnables {
+                            private Runnable getRunnable(int i) {
+                                return () -> {
+                                    config.set(key, config.getInt(key) + i);
+                                    int newValue = config.getInt(key);
+
+                                    ConfigurationManager.saveConfig(config);
+                                    ItemMeta meta = buttonStackForRunnable.getItemMeta();
+                                    List<String> lore = meta.getLore();
+                                    lore.set(1, ChatColor.WHITE + "Value: " + ChatColor.GOLD + newValue);
+                                    meta.setLore(lore);
+                                    buttonStackForRunnable.setItemMeta(meta);
+                                    if (newValue > 0) {
+                                        buttonStackForRunnable.setAmount(newValue);
+                                    } else {
+                                        buttonStackForRunnable.setAmount(1);
+                                    }
+                                };
+                            }
+                        }
+                        currentButton.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, new intRunnables().getRunnable(1)));
+                        currentButton.addAction(ClickType.RIGHT, new ButtonAction.RUN_RUNNABLE(currentButton, new intRunnables().getRunnable(-1)));
+
+                        currentButton.addAction(ClickType.SHIFT_LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, new intRunnables().getRunnable(10)));
+                        currentButton.addAction(ClickType.SHIFT_RIGHT, new ButtonAction.RUN_RUNNABLE(currentButton, new intRunnables().getRunnable(-10)));
+
+                        //TODO: Middle click action
+                    } else if (value instanceof Double) {
+                        buttonStackLore.add(ChatColor.WHITE + "Type: Double");
+                        buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);
+
+                        buttonStack.setType(Material.STONE);
+                        //TODO: Action to edit Double
+                    } else if (value instanceof String) {
+                        buttonStackLore.add(ChatColor.WHITE + "Type: String");
+                        buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);
+
+                        buttonStack.setType(Material.WHITE_WOOL);
+                        //TODO: Action to edit String
+                    } else if (value instanceof List) {
+                        buttonStackLore.add(ChatColor.WHITE + "Type: List<UNKNOWN>");
+                        buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);
+                        for (String line : ChatWriter.splitString("For now this Type is unsupported and can neither be viewed or edited!", 30)) {
+                            buttonStackLore.add(ChatColor.RED + line);
+                        }
+
+                        buttonStack.setType(Material.BEDROCK);
+                        //TODO: Action to edit List
+                    }
+                    buttonStackLore.add("");
+                    for (String line : ChatWriter.splitString(explanations.get(key), 50)) {
+                        buttonStackLore.add(ChatColor.WHITE + line);
+                    }
+
+                } else { //got a configuration section that contains children, skipping as children will also be iterated over
+                    continue;
+                }
+                buttonStackMeta.setLore(buttonStackLore);
+                buttonStack.setItemMeta(buttonStackMeta);
+
+                i++;
+                if (i >= 45) {
+                    currentPage = configGUI.addWindow(6, configName + ", Page " + pageNo++);
+
+                    back = currentPage.addButton(0, 5, backStack.clone());
+                    back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
+
+                    forward = currentPage.addButton(8, 5, forwardStack.clone());
+                    forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
+
+                    backConfig = currentPage.addButton(4, 5, backOtherMenuStack.clone());
+                    backConfig.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(backConfig, backPage));
+
+                    i = 0;
+                }
+            }
+        }
+        return configGUI;
+    }
+
+    private static HashMap<String, String> getExplanations(FileConfiguration root, String config) {
+        HashMap<String, String> explanations = new HashMap<>();
+        String start = "GUIs.ConfigurationEditor." + config + ".";
+
+        for (String key : root.getKeys(true)) {
+            String explanation = LanguageManager.getString(start + key);
+            if (!explanation.equals("")) {
+                explanations.put(key, explanation);
+            }
+        }
+
+        return explanations;
     }
 
     public static GUI getModGUI() {
         return modGUI;
     }
 
-    public static GUI getMainConfigSettings() {
-        return mainConfigSettings;
+    public static GUI getConfigurationsGUI() {
+        return configurationsGUI;
     }
 }

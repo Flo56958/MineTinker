@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Set;
 
 public class ConfigurationManager {
 	private ConfigurationManager() {}
@@ -39,6 +40,10 @@ public class ConfigurationManager {
     }
 
     public static void reload() {
+        //clean up before reload
+        configs.clear();
+        configsFolder.clear();
+
         loadConfig("", "layout.yml");
 
         loadConfig("", "BuildersWand.yml");
@@ -53,10 +58,14 @@ public class ConfigurationManager {
 
             loadConfig("Modifiers" + File.separator, modifier.getFileName());
         }
+
+        //importing Main configuration into system
+        configs.put("config.yml", Main.getPlugin().getConfig());
+        configsFolder.put(Main.getPlugin().getConfig(), new File(Main.getPlugin().getDataFolder(), "config.yml"));
     }
 
     /**
-     * creates a config file in the specifid folder
+     * creates a config file in the specified folder
      * @param folder The name of the folder
      * @param file The name of the file
      */
@@ -80,5 +89,9 @@ public class ConfigurationManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+    }
+
+    public static Set<String> getAllConfigNames() {
+        return configs.keySet();
     }
 }
