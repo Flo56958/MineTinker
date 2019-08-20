@@ -13,11 +13,13 @@ import de.flo56958.MineTinker.Utilities.Updater;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Main extends JavaPlugin {
@@ -42,6 +44,10 @@ public class Main extends JavaPlugin {
         ChatWriter.reload();
 
         ModManager.instance();
+
+        if (getConfig().getBoolean("PluginIncompatibility.Check")) {
+            incompatibilityCheck();
+        }
 
         Commands cmd = new Commands();
         this.getCommand("minetinker").setExecutor(cmd); // must be after internals as it would throw a NullPointerException
@@ -109,6 +115,26 @@ public class Main extends JavaPlugin {
         if (getConfig().getBoolean("CheckForUpdates")) {
             Bukkit.getScheduler().scheduleAsyncDelayedTask(this, Updater::checkForUpdate, 20);
         }
+    }
+
+    /**
+     * Method for searching for known incompatibilities with other Plugins and fixing them if possible automatically (e.g. disable Lore for certain plugins)
+     */
+    private void incompatibilityCheck() {
+        ChatWriter.logInfo(LanguageManager.getString("StartUp.Incompatible.Start"));
+        List<String> skipped = getConfig().getStringList("PluginIncompatibility.SkippedPlugins");
+
+        Zenchantments: {
+            String name = "Zenchantments";
+            if (skipped.contains(name)) break Zenchantments;
+            if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
+                ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
+                getConfig().set("EnableLore", false);
+                ChatWriter.logColor(ChatColor.WHITE + " - EnableLore -> false");
+            }
+        }
+
+        saveConfig();
     }
 
     public void onDisable() {
