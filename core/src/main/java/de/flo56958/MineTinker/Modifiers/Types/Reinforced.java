@@ -76,7 +76,7 @@ public class Reinforced extends Modifier {
     	config.addDefault("Recipe.Bottom", "OOO");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("O", "OBSIDIAN");
+        recipeMaterials.put("O", Material.OBSIDIAN.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

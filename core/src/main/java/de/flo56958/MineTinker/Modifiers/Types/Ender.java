@@ -92,8 +92,8 @@ public class Ender extends Modifier implements Listener {
     	config.addDefault("Recipe.Bottom", "PPP");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("P", "ENDER_PEARL");
-        recipeMaterials.put("E", "ENDER_EYE");
+        recipeMaterials.put("P", Material.ENDER_PEARL.name());
+        recipeMaterials.put("E", Material.ENDER_EYE.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

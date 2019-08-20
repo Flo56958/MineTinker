@@ -77,8 +77,8 @@ public class MultiShot extends Modifier {
         config.addDefault("OverrideLanguagesystem", false);
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("Q", "QUARTZ_BLOCK");
-        recipeMaterials.put("A", "ARROW");
+        recipeMaterials.put("Q", Material.QUARTZ_BLOCK.name());
+        recipeMaterials.put("A", Material.ARROW.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

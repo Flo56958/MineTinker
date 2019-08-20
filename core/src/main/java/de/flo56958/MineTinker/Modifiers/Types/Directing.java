@@ -76,9 +76,9 @@ public class Directing extends Modifier implements Listener {
     	config.addDefault("Recipe.Bottom", "ECE");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("C", "COMPASS");
-        recipeMaterials.put("E", "ENDER_PEARL");
-        recipeMaterials.put("I", "IRON_BLOCK");
+        recipeMaterials.put("C", Material.COMPASS.name());
+        recipeMaterials.put("E", Material.ENDER_PEARL.name());
+        recipeMaterials.put("I", Material.IRON_BLOCK.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
     	

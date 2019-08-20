@@ -80,8 +80,8 @@ public class Glowing extends Modifier implements Listener {
     	config.addDefault("Recipe.Bottom", "GGG");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("G", "GLOWSTONE_DUST");
-        recipeMaterials.put("E", "ENDER_EYE");
+        recipeMaterials.put("G", Material.GLOWSTONE_DUST.name());
+        recipeMaterials.put("E", Material.ENDER_EYE.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
         

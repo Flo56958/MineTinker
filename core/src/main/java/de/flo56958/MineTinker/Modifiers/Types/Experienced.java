@@ -74,6 +74,7 @@ public class Experienced extends Modifier implements Listener {
         config.addDefault("MaxLevel", 10);
     	config.addDefault("PercentagePerLevel", 2); //= 20% at Level 10 -> every 5th hit / block will trigger Experienced
     	config.addDefault("Amount", 1); //How much XP should be dropped when triggered
+
     	config.addDefault("Recipe.Enabled", false);
         config.addDefault("OverrideLanguagesystem", false);
 

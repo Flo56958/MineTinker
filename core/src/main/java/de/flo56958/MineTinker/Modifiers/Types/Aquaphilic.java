@@ -73,9 +73,9 @@ public class Aquaphilic extends Modifier {
         config.addDefault("Recipe.Bottom", "PNP");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("H", "HEART_OF_THE_SEA");
-        recipeMaterials.put("N", "NAUTILUS_SHELL");
-        recipeMaterials.put("P", "PRISMARINE_SHARD");
+        recipeMaterials.put("H", Material.HEART_OF_THE_SEA.name());
+        recipeMaterials.put("N", Material.NAUTILUS_SHELL.name());
+        recipeMaterials.put("P", Material.PRISMARINE_SHARD.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

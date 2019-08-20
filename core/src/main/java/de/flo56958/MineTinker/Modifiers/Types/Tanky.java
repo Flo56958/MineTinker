@@ -108,9 +108,9 @@ public class Tanky extends Modifier {
         config.addDefault("OverrideLanguagesystem", false);
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("B", "BONE");
-        recipeMaterials.put("O", "OBSIDIAN");
-        recipeMaterials.put("R", "ROTTEN_FLESH");
+        recipeMaterials.put("B", Material.BONE.name());
+        recipeMaterials.put("O", Material.OBSIDIAN.name());
+        recipeMaterials.put("R", Material.ROTTEN_FLESH.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

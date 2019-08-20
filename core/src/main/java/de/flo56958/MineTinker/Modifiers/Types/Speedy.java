@@ -115,8 +115,8 @@ public class Speedy extends Modifier {
         config.addDefault("Recipe.Bottom", "R R");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("H", "RABBIT_HIDE");
-        recipeMaterials.put("R", "RABBIT_FOOT");
+        recipeMaterials.put("H", Material.RABBIT_HIDE.name());
+        recipeMaterials.put("R", Material.RABBIT_FOOT.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

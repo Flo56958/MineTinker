@@ -81,9 +81,9 @@ public class AntiArrowPlating extends Modifier {
         config.addDefault("Recipe.Bottom", "IAI");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("I", "IRON_BLOCK");
-        recipeMaterials.put("A", "ARROW");
-        recipeMaterials.put("D", "DIAMOND");
+        recipeMaterials.put("I", Material.IRON_BLOCK.name());
+        recipeMaterials.put("A", Material.ARROW.name());
+        recipeMaterials.put("D", Material.DIAMOND.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

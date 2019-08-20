@@ -79,7 +79,7 @@ public class Sharpness extends Modifier {
     	config.addDefault("Recipe.Bottom", "QQQ");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("Q", "QUARTZ_BLOCK");
+        recipeMaterials.put("Q", Material.QUARTZ_BLOCK.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

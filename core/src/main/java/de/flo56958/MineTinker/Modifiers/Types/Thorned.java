@@ -71,9 +71,9 @@ public class Thorned extends Modifier {
         config.addDefault("Recipe.Bottom", "VAV");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("V", "VINE");
-        recipeMaterials.put("A", "ARROW");
-        recipeMaterials.put("S", "SLIME_BALL");
+        recipeMaterials.put("V", Material.VINE.name());
+        recipeMaterials.put("A", Material.ARROW.name());
+        recipeMaterials.put("S", Material.SLIME_BALL.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

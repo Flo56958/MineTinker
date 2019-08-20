@@ -75,10 +75,10 @@ public class Piercing extends Modifier {
         config.addDefault("Recipe.Bottom", "FIF");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("F", "FLINT");
-        recipeMaterials.put("I", "IRON_INGOT");
-        recipeMaterials.put("O", "OAK_PLANKS");
-        recipeMaterials.put("A", "ARROW");
+        recipeMaterials.put("F", Material.FLINT.name());
+        recipeMaterials.put("I", Material.IRON_INGOT.name());
+        recipeMaterials.put("O", Material.OAK_PLANKS.name());
+        recipeMaterials.put("A", Material.ARROW.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

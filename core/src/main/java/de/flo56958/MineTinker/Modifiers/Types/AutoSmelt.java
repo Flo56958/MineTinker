@@ -127,8 +127,8 @@ public class AutoSmelt extends Modifier implements Listener {
     	config.addDefault("Recipe.Bottom", "CCC");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("C", "FURNACE");
-        recipeMaterials.put("F", "BLAZE_ROD");
+        recipeMaterials.put("C", Material.FURNACE.name());
+        recipeMaterials.put("F", Material.BLAZE_ROD.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

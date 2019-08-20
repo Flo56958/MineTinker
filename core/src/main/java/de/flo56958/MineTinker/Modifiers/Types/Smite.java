@@ -79,9 +79,9 @@ public class Smite extends Modifier {
         config.addDefault("Recipe.Bottom", "BMB");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("B", "BONE");
-        recipeMaterials.put("M", "BONE_MEAL");
-        recipeMaterials.put("I", "IRON_INGOT");
+        recipeMaterials.put("B", Material.BONE.name());
+        recipeMaterials.put("M", Material.BONE_MEAL.name());
+        recipeMaterials.put("I", Material.IRON_INGOT.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

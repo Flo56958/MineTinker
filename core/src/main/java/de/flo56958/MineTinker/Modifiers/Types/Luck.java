@@ -87,7 +87,7 @@ public class Luck extends Modifier {
     	config.addDefault("Recipe.Bottom", "LLL");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("L", "LAPIS_BLOCK");
+        recipeMaterials.put("L", Material.LAPIS_BLOCK.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

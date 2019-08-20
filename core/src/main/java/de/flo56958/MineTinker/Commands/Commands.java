@@ -298,9 +298,11 @@ public class Commands implements TabExecutor {
      */
     private void reload(CommandSender sender) {
         Player player = null;
+
         if (sender instanceof Player) {
             player = (Player) sender;
         }
+
         ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.Reload.Note1", player));
         ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.Reload.Note2", player));
 

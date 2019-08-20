@@ -72,9 +72,9 @@ public class Protecting extends Modifier {
      	config.addDefault("Recipe.Bottom", "DID");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("D", "DIAMOND");
-        recipeMaterials.put("I", "IRON_INGOT");
-        recipeMaterials.put("O", "OBSIDIAN");
+        recipeMaterials.put("D", Material.DIAMOND.name());
+        recipeMaterials.put("I", Material.IRON_INGOT.name());
+        recipeMaterials.put("O", Material.OBSIDIAN.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
          

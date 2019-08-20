@@ -86,8 +86,8 @@ public class Shulking extends Modifier implements Listener {
     	config.addDefault("Recipe.Bottom", "S");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("S", "SHULKER_SHELL");
-        recipeMaterials.put("C", "CHORUS_FRUIT");
+        recipeMaterials.put("S", Material.SHULKER_SHELL.name());
+        recipeMaterials.put("C", Material.CHORUS_FRUIT.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
     	

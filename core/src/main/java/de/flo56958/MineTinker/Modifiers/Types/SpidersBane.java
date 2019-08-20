@@ -79,9 +79,9 @@ public class SpidersBane extends Modifier {
         config.addDefault("Recipe.Bottom", "ESE");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("E", "SPIDER_EYE");
-        recipeMaterials.put("S", "STRING");
-        recipeMaterials.put("F", "FERMENTED_SPIDER_EYE");
+        recipeMaterials.put("E", Material.SPIDER_EYE.name());
+        recipeMaterials.put("S", Material.STRING.name());
+        recipeMaterials.put("F", Material.FERMENTED_SPIDER_EYE.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

@@ -73,8 +73,8 @@ public class Freezing extends Modifier {
         config.addDefault("Recipe.Bottom", "BBB");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("B", "BLUE_ICE");
-        recipeMaterials.put("D", "DIAMOND");
+        recipeMaterials.put("B", Material.BLUE_ICE.name());
+        recipeMaterials.put("D", Material.DIAMOND.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

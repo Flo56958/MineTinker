@@ -81,9 +81,9 @@ public class Insulating extends Modifier {
         config.addDefault("Recipe.Bottom", "IMI");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("I", "IRON_BLOCK");
-        recipeMaterials.put("M", "MAGMA_BLOCK");
-        recipeMaterials.put("D", "DIAMOND");
+        recipeMaterials.put("I", Material.IRON_BLOCK.name());
+        recipeMaterials.put("M", Material.MAGMA_BLOCK.name());
+        recipeMaterials.put("D", Material.DIAMOND.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

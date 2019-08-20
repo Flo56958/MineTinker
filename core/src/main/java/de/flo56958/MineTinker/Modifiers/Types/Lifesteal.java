@@ -80,9 +80,9 @@ public class Lifesteal extends Modifier implements Listener {
         config.addDefault("Recipe.Bottom", "SRS");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("N", "NETHERRACK");
-        recipeMaterials.put("R", "ROTTEN_FLESH");
-        recipeMaterials.put("S", "SOUL_SAND");
+        recipeMaterials.put("N", Material.NETHERRACK.name());
+        recipeMaterials.put("R", Material.ROTTEN_FLESH.name());
+        recipeMaterials.put("S", Material.SOUL_SAND.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

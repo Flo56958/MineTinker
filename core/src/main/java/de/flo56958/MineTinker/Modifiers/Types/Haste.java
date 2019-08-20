@@ -76,7 +76,7 @@ public class Haste extends Modifier {
     	config.addDefault("Recipe.Bottom", "RRR");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("R", "REDSTONE_BLOCK");
+        recipeMaterials.put("R", Material.REDSTONE_BLOCK.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

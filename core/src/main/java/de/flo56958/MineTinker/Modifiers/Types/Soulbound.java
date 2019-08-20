@@ -82,9 +82,9 @@ public class Soulbound extends Modifier implements Listener {
         config.addDefault("Recipe.Bottom", "BLB");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("B", "BLAZE_ROD");
-        recipeMaterials.put("L", "LAVA_BUCKET");
-        recipeMaterials.put("N", "NETHER_STAR");
+        recipeMaterials.put("B", Material.BLAZE_ROD.name());
+        recipeMaterials.put("L", Material.LAVA_BUCKET.name());
+        recipeMaterials.put("N", Material.NETHER_STAR.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

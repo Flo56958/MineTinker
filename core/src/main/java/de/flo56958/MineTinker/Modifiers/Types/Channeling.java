@@ -71,9 +71,9 @@ public class Channeling extends Modifier {
         config.addDefault("Recipe.Bottom", "SPS");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("S", "SEA_LANTERN");
-        recipeMaterials.put("P", "PRISMARINE_SHARD");
-        recipeMaterials.put("C", "CREEPER_HEAD");
+        recipeMaterials.put("S", Material.SEA_LANTERN.name());
+        recipeMaterials.put("P", Material.PRISMARINE_SHARD.name());
+        recipeMaterials.put("C", Material.CREEPER_HEAD.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 

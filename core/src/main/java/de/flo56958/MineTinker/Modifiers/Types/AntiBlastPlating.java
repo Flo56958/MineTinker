@@ -81,9 +81,9 @@ public class AntiBlastPlating extends Modifier {
         config.addDefault("Recipe.Bottom", "IMI");
 
         Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("I", "IRON_BLOCK");
-        recipeMaterials.put("M", "TNT");
-        recipeMaterials.put("D", "DIAMOND");
+        recipeMaterials.put("I", Material.IRON_BLOCK.name());
+        recipeMaterials.put("M", Material.TNT.name());
+        recipeMaterials.put("D", Material.DIAMOND.name());
 
         config.addDefault("Recipe.Materials", recipeMaterials);
 
