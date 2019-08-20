@@ -7,6 +7,9 @@ StartUp.Events: "事件已注册!"
 StartUp.GUIs: "正在加载用户界面!"
 StartUp.StdLogging: "标准信息日志已启用. 你可以在配置文件中的Logging.Standard一栏禁用!"
 StartUp.DebugLogging: "调试信息日志已启用. 你应该在在配置文件中的Logging.Debug一栏禁用!"
+StartUp.Incompatible:
+  Start: "正在搜索%RED%不兼容%WHITE%插件... 你可以在配置文件中关闭这一功能!"
+  Found: "%plugin插件已找到. 正在调整MineTinker以获得最佳兼容性!"
 
 Builderswand.NameWood: "木制建造杖"
 Builderswand.NameStone: "石制建造杖"
