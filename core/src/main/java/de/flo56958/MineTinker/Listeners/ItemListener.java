@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -83,7 +84,7 @@ public class ItemListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event) {
         if (event.getKeepInventory()) {
             return;
@@ -91,6 +92,11 @@ public class ItemListener implements Listener {
 
         Player player = event.getEntity();
         Inventory inventory = player.getInventory();
+
+        if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ApplyOnPlayerDeath", true)) { //For DeadSouls and other Grave-Plugins //
+            // TODO: Try to find better handling of this Event or with these Plugins
+            return;
+        }
 
         for (ItemStack itemStack : inventory.getContents()) {
             if (itemStack == null) {
