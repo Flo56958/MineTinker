@@ -1,5 +1,5 @@
 #---------------MAIN-PLUGIN-SETTINGS--------------
-chat-prefix: [MineTinker]
+chat-prefix: "[MineTinker]"
 CheckForUpdates: true                 #Checks for updates on startup
 Language: en_US                       #Changes the Plugins Language
 PluginIncompatibility:

@@ -90,6 +90,20 @@ public abstract class ButtonAction {
             gui.show(player, pageNo);
         }
     }
+
+    public static class RUN_RUNNABLE extends ButtonAction {
+        private final Runnable runnable;
+
+        public RUN_RUNNABLE(GUI.Window.Button button, Runnable runnable) {
+            super(button);
+            this.runnable = runnable;
+        }
+
+        @Override
+        public void run() {
+            runnable.run();
+        }
+    }
 }
 
 interface PlayerAction {
