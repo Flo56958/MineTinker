@@ -49,6 +49,8 @@ Commands.ItemStatistics.Exp: "%GOLD%Exp: %WHITE%%current / %nextlevel"
 Commands.ItemStatistics.FreeSlots: "%GOLD%Free Modifier Slots: %WHITE%%slots"
 Commands.ItemStatistics.Modifiers: "%WHITE%Modifiers:"
 
+GUI.ButtonAction.REQUEST_INPUT: "Your Input is needed for %data. The next chat message you send will be caught by MineTinker and will be your input."
+
 GUIs:
   Forward: "Forward"
   Back: "Back"

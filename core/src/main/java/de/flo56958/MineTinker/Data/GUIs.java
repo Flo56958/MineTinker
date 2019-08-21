@@ -13,6 +13,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -326,8 +327,10 @@ public class GUIs {
                         buttonStackLore.add(ChatColor.WHITE + "Right Click to decrement by 1 (with shift -10)!");
                         buttonStackLore.add(ChatColor.WHITE + "Middle Click to insert new value!");
                         buttonStack.setType(Material.COBBLESTONE);
-                        if ((int) value > 0) {
+                        if ((int) value > 0 && (int) value <= 64) {
                             buttonStack.setAmount((int) value);
+                        } else if ((int) value > 64) {
+                            buttonStack.setAmount(64);
                         } else {
                             buttonStack.setAmount(1);
                         }
@@ -344,8 +347,10 @@ public class GUIs {
                                     lore.set(1, ChatColor.WHITE + "Value: " + ChatColor.GOLD + newValue);
                                     meta.setLore(lore);
                                     buttonStackForRunnable.setItemMeta(meta);
-                                    if (newValue > 0) {
+                                    if (newValue > 0 && newValue <= 64) {
                                         buttonStackForRunnable.setAmount(newValue);
+                                    } else if (newValue > 64) {
+                                        buttonStackForRunnable.setAmount(64);
                                     } else {
                                         buttonStackForRunnable.setAmount(1);
                                     }
@@ -358,19 +363,85 @@ public class GUIs {
                         currentButton.addAction(ClickType.SHIFT_LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, new intRunnables().getRunnable(10)));
                         currentButton.addAction(ClickType.SHIFT_RIGHT, new ButtonAction.RUN_RUNNABLE(currentButton, new intRunnables().getRunnable(-10)));
 
-                        //TODO: Middle click action
+                        ButtonAction.REQUEST_INPUT.PlayerRunnable pRun = new ButtonAction.REQUEST_INPUT.PlayerRunnable() {
+                            @Override
+                            public void run(Player player, String input) {
+                                try {
+                                    int in = Integer.parseInt(input);
+                                    config.set(key, in);
+
+                                    ConfigurationManager.saveConfig(config);
+                                    ItemMeta meta = buttonStackForRunnable.getItemMeta();
+                                    List<String> lore = meta.getLore();
+                                    lore.set(1, ChatColor.WHITE + "Value: " + ChatColor.GOLD + in);
+                                    meta.setLore(lore);
+                                    buttonStackForRunnable.setItemMeta(meta);
+                                    if (in > 0 && in <= 64) {
+                                        buttonStackForRunnable.setAmount(in);
+                                    } else if (in > 64) {
+                                        buttonStackForRunnable.setAmount(64);
+                                    } else {
+                                        buttonStackForRunnable.setAmount(1);
+                                    }
+                                } catch (NumberFormatException e) {
+                                    ChatWriter.sendMessage(player, ChatColor.RED, "Your input was not correct! Expected an int, got " + input);
+                                }
+                            }
+                        };
+
+                        currentButton.addAction(ClickType.MIDDLE, new ButtonAction.REQUEST_INPUT(currentButton, pRun, ChatColor.WHITE + configName + ":" + key));
                     } else if (value instanceof Double) {
                         buttonStackLore.add(ChatColor.WHITE + "Type: Double");
                         buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);
+                        buttonStackLore.add("");
+                        buttonStackLore.add(ChatColor.WHITE + "Left-Click to insert new value!");
 
                         buttonStack.setType(Material.STONE);
-                        //TODO: Action to edit Double
+
+                        ButtonAction.REQUEST_INPUT.PlayerRunnable pRun = new ButtonAction.REQUEST_INPUT.PlayerRunnable() {
+                            @Override
+                            public void run(Player player, String input) {
+                                try {
+                                    double in = Double.parseDouble(input);
+                                    config.set(key, in);
+
+                                    ConfigurationManager.saveConfig(config);
+                                    ItemMeta meta = buttonStackForRunnable.getItemMeta();
+                                    List<String> lore = meta.getLore();
+                                    lore.set(1, ChatColor.WHITE + "Value: " + ChatColor.GOLD + in);
+                                    meta.setLore(lore);
+                                    buttonStackForRunnable.setItemMeta(meta);
+                                } catch (NumberFormatException e) {
+                                    ChatWriter.sendMessage(player, ChatColor.RED, "Your input was not correct! Expected an double, got " + input);
+                                }
+                            }
+                        };
+
+                        currentButton.addAction(ClickType.LEFT, new ButtonAction.REQUEST_INPUT(currentButton, pRun, ChatColor.WHITE + configName + ":" + key));
                     } else if (value instanceof String) {
                         buttonStackLore.add(ChatColor.WHITE + "Type: String");
                         buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);
+                        buttonStackLore.add("");
+                        buttonStackLore.add(ChatColor.WHITE + "Left-Click to insert new value!");
 
                         buttonStack.setType(Material.WHITE_WOOL);
-                        //TODO: Action to edit String
+
+                        ButtonAction.REQUEST_INPUT.PlayerRunnable pRun = new ButtonAction.REQUEST_INPUT.PlayerRunnable() {
+                            @Override
+                            public void run(Player player, String input) {
+                                input = ChatWriter.addColors(input);
+                                config.set(key, input);
+
+                                ConfigurationManager.saveConfig(config);
+                                ItemMeta meta = buttonStackForRunnable.getItemMeta();
+                                List<String> lore = meta.getLore();
+                                lore.set(1, ChatColor.WHITE + "Value: " + ChatColor.GOLD + input);
+                                meta.setLore(lore);
+                                buttonStackForRunnable.setItemMeta(meta);
+                            }
+                        };
+
+                        currentButton.addAction(ClickType.LEFT, new ButtonAction.REQUEST_INPUT(currentButton, pRun, ChatColor.WHITE + configName + ":" + key));
                     } else if (value instanceof List) {
                         buttonStackLore.add(ChatColor.WHITE + "Type: List<UNKNOWN>");
                         buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);

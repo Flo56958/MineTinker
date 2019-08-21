@@ -49,7 +49,6 @@ public class ConfigurationManager {
         loadConfig("", "BuildersWand.yml");
 
         loadConfig("", "Elytra.yml");
-        loadConfig("", "Trident.yml");
 
         for (Modifier modifier : ModManager.instance().getAllMods()) {
             if (modifier.getFileName().isEmpty()) {
