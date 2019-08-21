@@ -29,9 +29,9 @@ public class GUIs {
 
     private static GUI configurationsGUI;
 
-    private static ItemStack forwardStack;
-    private static ItemStack backStack;
-    private static ItemStack backOtherMenuStack;
+    private final static ItemStack forwardStack;
+    private final static ItemStack backStack;
+    private final static ItemStack backOtherMenuStack;
 
     static {
         forwardStack = new ItemStack(Material.GREEN_STAINED_GLASS_PANE, 1);
@@ -71,11 +71,7 @@ public class GUIs {
 
             int i = 0;
 
-            GUI.Window.Button back = currentPage.addButton(0, 5, backStack.clone());
-            back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
-
-            GUI.Window.Button forward = currentPage.addButton(8, 5, forwardStack.clone());
-            forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
+            addNavigationButtons(currentPage);
 
             for (Modifier m : ModManager.instance().getAllowedMods()) {
                 ItemStack item = m.getModItem().clone();
@@ -196,12 +192,7 @@ public class GUIs {
                     if (i % 28 == 0) {
                         currentPage = modGUI.addWindow(6, LanguageManager.getString("GUIs.Modifiers.Title").replaceFirst("%pageNo", "" + ++pageNo));
 
-                        back = currentPage.addButton(0, 5, backStack.clone());
-                        back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
-
-                        forward = currentPage.addButton(8, 5, forwardStack.clone());
-                        forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
-
+                        addNavigationButtons(currentPage);
                         i = 0;
                     }
                 }
@@ -211,11 +202,8 @@ public class GUIs {
         {
             configurationsGUI = new GUI();
             int pageNo = 1;
-            GUI.Window currentPage = configurationsGUI.addWindow(6, "Configuration Manager, Page " + pageNo++);
-            GUI.Window.Button back = currentPage.addButton(0, 5, backStack.clone());
-            back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
-            GUI.Window.Button forward = currentPage.addButton(8, 5, forwardStack.clone());
-            forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
+            GUI.Window currentPage = configurationsGUI.addWindow(6, LanguageManager.getString("GUIs.ConfigurationEditor.Title").replace("%pageNo", "" + pageNo++));
+            addNavigationButtons(currentPage);
 
             int i = 0;
             ArrayList<String> names = new ArrayList<>(ConfigurationManager.getAllConfigNames());
@@ -224,11 +212,24 @@ public class GUIs {
                 ItemStack buttonStack = new ItemStack(Material.WHITE_WOOL, 1);
                 ItemMeta buttonMeta = buttonStack.getItemMeta();
 
-                for (Modifier mod : ModManager.instance().getAllMods()) {
-                    if (mod.getKey().equals(name.replace(".yml", ""))) {
-                        buttonStack = mod.getModItem().clone();
-                        buttonMeta = buttonStack.getItemMeta();
-                    }
+                switch (name) {
+                    case "config.yml":
+                        buttonStack.setType(Material.DIAMOND_PICKAXE);
+                        break;
+                    case "Elytra.yml":
+                        buttonStack.setType(Material.ELYTRA);
+                        break;
+                    case "BuildersWand.yml":
+                        buttonStack.setType(Material.DIAMOND_SHOVEL);
+                        break;
+                    default:
+                        for (Modifier mod : ModManager.instance().getAllMods()) {
+                            if (mod.getKey().equals(name.replace(".yml", ""))) {
+                                buttonStack = mod.getModItem().clone();
+                                buttonMeta = buttonStack.getItemMeta();
+                            }
+                        }
+                        break;
                 }
 
                 if (buttonMeta == null) continue;
@@ -241,18 +242,21 @@ public class GUIs {
 
                 i++;
                 if (i >= 45) {
-                    currentPage = configurationsGUI.addWindow(6, "Configuration Manager, Page " + pageNo++);
+                    currentPage = configurationsGUI.addWindow(6, LanguageManager.getString("GUIs.ConfigurationEditor.Title").replace("%pageNo", "" + pageNo++));
 
-                    back = currentPage.addButton(0, 5, backStack.clone());
-                    back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
-
-                    forward = currentPage.addButton(8, 5, forwardStack.clone());
-                    forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
-
+                    addNavigationButtons(currentPage);
                     i = 0;
                 }
             }
         }
+    }
+
+    private static void addNavigationButtons(GUI.Window currentPage) {
+        GUI.Window.Button back = currentPage.addButton(0, 5, backStack.clone());
+        back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
+
+        GUI.Window.Button forward = currentPage.addButton(8, 5, forwardStack.clone());
+        forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
     }
 
     @NotNull
@@ -260,12 +264,9 @@ public class GUIs {
         FileConfiguration config = ConfigurationManager.getConfig(configName);
         GUI configGUI = new GUI();
         int pageNo = 1;
-        GUI.Window currentPage = configGUI.addWindow(6, configName + ", Page " + pageNo++);
+        GUI.Window currentPage = configGUI.addWindow(6, LanguageManager.getString("GUIs.ConfigurationEditor.TitleConfigs").replace("%pageNo", "" + pageNo++).replace("%config", configName));
         if (config != null) {
-            GUI.Window.Button back = currentPage.addButton(0, 5, backStack.clone());
-            back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
-            GUI.Window.Button forward = currentPage.addButton(8, 5, forwardStack.clone());
-            forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
+            addNavigationButtons(currentPage);
 
             GUI.Window.Button backConfig = currentPage.addButton(4, 5, backOtherMenuStack.clone());
             backConfig.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(backConfig, backPage));
@@ -291,8 +292,8 @@ public class GUIs {
                     final ItemStack buttonStackForRunnable = buttonStack;
 
                     if (value instanceof Boolean) {
-                        buttonStackLore.add(ChatColor.WHITE + "Type: Boolean");
-                        buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);
+                        buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type").replace("%type", "Boolean"));
+                        buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value").replace("%value", "" + value));
 
                         if ((boolean) value) {
                             buttonStack.setType(Material.GREEN_WOOL);
@@ -301,6 +302,9 @@ public class GUIs {
                         }
 
                         Runnable buttonRunnable = () -> {
+                            ItemMeta meta = buttonStackForRunnable.getItemMeta();
+                            if (meta == null) return;
+
                             //Boolean-Toggle
                             config.set(key, !config.getBoolean(key));
                             boolean newValue = config.getBoolean(key);
@@ -312,56 +316,72 @@ public class GUIs {
                             }
 
                             ConfigurationManager.saveConfig(config);
-                            ItemMeta meta = buttonStackForRunnable.getItemMeta();
-                            List<String> lore = meta.getLore();
+
+                            List<String> lore;
+                            if (meta.hasLore()) {
+                                lore = meta.getLore();
+                            } else {
+                                lore = new LinkedList<>();
+                            }
+
                             lore.set(1, ChatColor.WHITE + "Value: " + ChatColor.GOLD + newValue);
                             meta.setLore(lore);
                             buttonStackForRunnable.setItemMeta(meta);
                         };
                         currentButton.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, buttonRunnable));
                     } else if (value instanceof Integer) {
-                        buttonStackLore.add(ChatColor.WHITE + "Type: Integer");
-                        buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);
+                        buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type").replace("%type", "Integer"));
+                        buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value").replace("%value", "" + value));
                         buttonStackLore.add("");
                         buttonStackLore.add(ChatColor.WHITE + "Left Click to increment by 1 (with shift +10)!");
                         buttonStackLore.add(ChatColor.WHITE + "Right Click to decrement by 1 (with shift -10)!");
                         buttonStackLore.add(ChatColor.WHITE + "Middle Click to insert new value!");
                         buttonStack.setType(Material.COBBLESTONE);
-                        if ((int) value > 0 && (int) value <= 64) {
-                            buttonStack.setAmount((int) value);
-                        } else if ((int) value > 64) {
-                            buttonStack.setAmount(64);
-                        } else {
-                            buttonStack.setAmount(1);
-                        }
 
-                        class intRunnables {
+                        class intHelper {
+                            private void setAmount(ItemStack stack, int amount) {
+                                if (amount > 0 && amount <= 64) {
+                                    stack.setAmount(amount);
+                                } else if (amount > 64) {
+                                    stack.setAmount(64);
+                                } else {
+                                    stack.setAmount(1);
+                                }
+                            }
+                            private void saveInt(int newValue) {
+                                ConfigurationManager.saveConfig(config);
+                                ItemMeta meta = buttonStackForRunnable.getItemMeta();
+                                if (meta == null) return;
+
+                                List<String> lore;
+                                if (meta.hasLore()) {
+                                    lore = meta.getLore();
+                                } else {
+                                    lore = new LinkedList<>();
+                                }
+
+                                lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value").replace("%value", "" + newValue));
+                                meta.setLore(lore);
+                                buttonStackForRunnable.setItemMeta(meta);
+                            }
                             private Runnable getRunnable(int i) {
                                 return () -> {
                                     config.set(key, config.getInt(key) + i);
                                     int newValue = config.getInt(key);
-
-                                    ConfigurationManager.saveConfig(config);
-                                    ItemMeta meta = buttonStackForRunnable.getItemMeta();
-                                    List<String> lore = meta.getLore();
-                                    lore.set(1, ChatColor.WHITE + "Value: " + ChatColor.GOLD + newValue);
-                                    meta.setLore(lore);
-                                    buttonStackForRunnable.setItemMeta(meta);
-                                    if (newValue > 0 && newValue <= 64) {
-                                        buttonStackForRunnable.setAmount(newValue);
-                                    } else if (newValue > 64) {
-                                        buttonStackForRunnable.setAmount(64);
-                                    } else {
-                                        buttonStackForRunnable.setAmount(1);
-                                    }
+                                    saveInt(newValue);
+                                    setAmount(buttonStackForRunnable, newValue);
                                 };
                             }
                         }
-                        currentButton.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, new intRunnables().getRunnable(1)));
-                        currentButton.addAction(ClickType.RIGHT, new ButtonAction.RUN_RUNNABLE(currentButton, new intRunnables().getRunnable(-1)));
 
-                        currentButton.addAction(ClickType.SHIFT_LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, new intRunnables().getRunnable(10)));
-                        currentButton.addAction(ClickType.SHIFT_RIGHT, new ButtonAction.RUN_RUNNABLE(currentButton, new intRunnables().getRunnable(-10)));
+                        intHelper helper = new intHelper();
+                        helper.setAmount(buttonStack, (int) value);
+
+                        currentButton.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, helper.getRunnable(1)));
+                        currentButton.addAction(ClickType.RIGHT, new ButtonAction.RUN_RUNNABLE(currentButton, helper.getRunnable(-1)));
+
+                        currentButton.addAction(ClickType.SHIFT_LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, helper.getRunnable(10)));
+                        currentButton.addAction(ClickType.SHIFT_RIGHT, new ButtonAction.RUN_RUNNABLE(currentButton, helper.getRunnable(-10)));
 
                         ButtonAction.REQUEST_INPUT.PlayerRunnable pRun = new ButtonAction.REQUEST_INPUT.PlayerRunnable() {
                             @Override
@@ -370,29 +390,18 @@ public class GUIs {
                                     int in = Integer.parseInt(input);
                                     config.set(key, in);
 
-                                    ConfigurationManager.saveConfig(config);
-                                    ItemMeta meta = buttonStackForRunnable.getItemMeta();
-                                    List<String> lore = meta.getLore();
-                                    lore.set(1, ChatColor.WHITE + "Value: " + ChatColor.GOLD + in);
-                                    meta.setLore(lore);
-                                    buttonStackForRunnable.setItemMeta(meta);
-                                    if (in > 0 && in <= 64) {
-                                        buttonStackForRunnable.setAmount(in);
-                                    } else if (in > 64) {
-                                        buttonStackForRunnable.setAmount(64);
-                                    } else {
-                                        buttonStackForRunnable.setAmount(1);
-                                    }
+                                    helper.saveInt(in);
+                                    helper.setAmount(buttonStackForRunnable, in);
                                 } catch (NumberFormatException e) {
-                                    ChatWriter.sendMessage(player, ChatColor.RED, "Your input was not correct! Expected an int, got " + input);
+                                    ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUIs.ConfigurationEditor.WrongInput").replace("%type", "Integer").replace("%input", input));
                                 }
                             }
                         };
 
                         currentButton.addAction(ClickType.MIDDLE, new ButtonAction.REQUEST_INPUT(currentButton, pRun, ChatColor.WHITE + configName + ":" + key));
                     } else if (value instanceof Double) {
-                        buttonStackLore.add(ChatColor.WHITE + "Type: Double");
-                        buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);
+                        buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type").replace("%type", "Double"));
+                        buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value").replace("%value", "" + value));
                         buttonStackLore.add("");
                         buttonStackLore.add(ChatColor.WHITE + "Left-Click to insert new value!");
 
@@ -402,25 +411,34 @@ public class GUIs {
                             @Override
                             public void run(Player player, String input) {
                                 try {
+                                    ItemMeta meta = buttonStackForRunnable.getItemMeta();
+                                    if (meta == null) return;
+
                                     double in = Double.parseDouble(input);
                                     config.set(key, in);
 
                                     ConfigurationManager.saveConfig(config);
-                                    ItemMeta meta = buttonStackForRunnable.getItemMeta();
-                                    List<String> lore = meta.getLore();
-                                    lore.set(1, ChatColor.WHITE + "Value: " + ChatColor.GOLD + in);
+
+                                    List<String> lore;
+                                    if (meta.hasLore()) {
+                                        lore = meta.getLore();
+                                    } else {
+                                        lore = new LinkedList<>();
+                                    }
+
+                                    lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value").replace("%value", "" + in));
                                     meta.setLore(lore);
                                     buttonStackForRunnable.setItemMeta(meta);
                                 } catch (NumberFormatException e) {
-                                    ChatWriter.sendMessage(player, ChatColor.RED, "Your input was not correct! Expected an double, got " + input);
+                                    ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUIs.ConfigurationEditor.WrongInput").replace("%type", "Double").replace("%input", input));
                                 }
                             }
                         };
 
                         currentButton.addAction(ClickType.LEFT, new ButtonAction.REQUEST_INPUT(currentButton, pRun, ChatColor.WHITE + configName + ":" + key));
                     } else if (value instanceof String) {
-                        buttonStackLore.add(ChatColor.WHITE + "Type: String");
-                        buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);
+                        buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type").replace("%type", "String"));
+                        buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value").replace("%value", "" + value));
                         buttonStackLore.add("");
                         buttonStackLore.add(ChatColor.WHITE + "Left-Click to insert new value!");
 
@@ -429,13 +447,21 @@ public class GUIs {
                         ButtonAction.REQUEST_INPUT.PlayerRunnable pRun = new ButtonAction.REQUEST_INPUT.PlayerRunnable() {
                             @Override
                             public void run(Player player, String input) {
+                                ItemMeta meta = buttonStackForRunnable.getItemMeta();
+                                if (meta == null) return;
+
                                 input = ChatWriter.addColors(input);
                                 config.set(key, input);
 
                                 ConfigurationManager.saveConfig(config);
-                                ItemMeta meta = buttonStackForRunnable.getItemMeta();
-                                List<String> lore = meta.getLore();
-                                lore.set(1, ChatColor.WHITE + "Value: " + ChatColor.GOLD + input);
+
+                                List<String> lore;
+                                if (meta.hasLore()) {
+                                    lore = meta.getLore();
+                                } else {
+                                    lore = new LinkedList<>();
+                                }
+                                lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value").replace("%value", "" + input));
                                 meta.setLore(lore);
                                 buttonStackForRunnable.setItemMeta(meta);
                             }
@@ -443,9 +469,9 @@ public class GUIs {
 
                         currentButton.addAction(ClickType.LEFT, new ButtonAction.REQUEST_INPUT(currentButton, pRun, ChatColor.WHITE + configName + ":" + key));
                     } else if (value instanceof List) {
-                        buttonStackLore.add(ChatColor.WHITE + "Type: List<UNKNOWN>");
-                        buttonStackLore.add(ChatColor.WHITE + "Value: " + ChatColor.GOLD + value);
-                        for (String line : ChatWriter.splitString("For now this Type is unsupported and can neither be viewed or edited!", 30)) {
+                        buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type").replace("%type", "List"));
+                        buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value").replace("%value", "" + value));
+                        for (String line : ChatWriter.splitString(LanguageManager.getString("GUIs.ConfigurationEditor.UnsupportedType"), 30)) {
                             buttonStackLore.add(ChatColor.RED + line);
                         }
 
@@ -465,13 +491,9 @@ public class GUIs {
 
                 i++;
                 if (i >= 45) {
-                    currentPage = configGUI.addWindow(6, configName + ", Page " + pageNo++);
+                    currentPage = configGUI.addWindow(6, LanguageManager.getString("GUIs.ConfigurationEditor.TitleConfigs").replace("%pageNo", "" + pageNo++).replace("%config", configName));
 
-                    back = currentPage.addButton(0, 5, backStack.clone());
-                    back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
-
-                    forward = currentPage.addButton(8, 5, forwardStack.clone());
-                    forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
+                    addNavigationButtons(currentPage);
 
                     backConfig = currentPage.addButton(4, 5, backOtherMenuStack.clone());
                     backConfig.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(backConfig, backPage));

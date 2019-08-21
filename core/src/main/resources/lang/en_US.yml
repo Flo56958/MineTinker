@@ -61,10 +61,21 @@ GUIs:
     WorksOn: "%BLUE%Works On:"
     EnchantCost: "%YELLOW%Enchant Cost: %WHITE%%enchantCost"
   ConfigurationEditor:
+    Type: "Type: %type"
+    Value: "Value: %GOLD%%value"
+    UnsupportedType: "This type is currently unsupported and can not be edited!"
+    WrongInput: "Your input was not correct! Expected %type, got %input!"
+    Title: "Configuration Manager, Page %pageNo"
+    TitleConfigs: "%config, Page %pageNo"
     config:
       PluginIncompatibility:
         Check: "Enables the search for incompatible plugins and MineTinker tries to react accordingly (e.g. change config settings)"
         SkippedPlugins: "Disables searching for specified Plugins in this List"
+      CheckForUpdates: "Checks for updates on startup and reload"
+      chat-messages: "Enable ChatMessages (like Command Output)"
+      LevelStep: "value *(LevelFactor^LevelOfTool) [EXPONENTIAL]; *(LevelFactor*LevelOfTool) [LINEAR]"
+      ProgressionIsLinear: "false: exponential, true: linear"
+      ResetAtVarOverflow: "Resets Level and Exp at Integer.MAX_VALUE or Long.MAX_VALUE with 1 and 0. false: no more Exp gain"
 
 ModManager.RegisterModifier: "%GREEN%Registered the %mod %GREEN%modifier from %plugin."
 ModManager.UnregisterModifier: "%GREEN%Unregistered the %mod %GREEN%modifier from %plugin."
