@@ -115,7 +115,7 @@ class Functions {
             }
 
             for (Modifier m : modManager.getAllMods()) {
-                if (args[1].equals(m.getName())) {
+                if (args[1].equalsIgnoreCase(m.getName())) {
                     modManager.removeMod(player.getInventory().getItemInMainHand(), m);
                     return;
                 }
@@ -161,7 +161,7 @@ class Functions {
 
             if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
                 if (tool.getItemMeta() instanceof Damageable) {
-                    Damageable damageable = (Damageable)tool.getItemMeta();
+                    Damageable damageable = (Damageable) tool.getItemMeta();
 
                     try {
                         int durability = Integer.parseInt(args[1]);
