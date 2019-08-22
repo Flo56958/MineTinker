@@ -61,6 +61,7 @@ GUIs:
     WorksOn: "%BLUE%Works On:"
     EnchantCost: "%YELLOW%Enchant Cost: %WHITE%%enchantCost"
   ConfigurationEditor:
+    Change: "Changed %key from %old to %new!"
     Type: "Type: %type"
     Value: "Value: %GOLD%%value"
     UnsupportedType: "This type is currently unsupported and can not be edited!"

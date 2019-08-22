@@ -62,6 +62,7 @@ permissions:
       minetinker.commands.convert: true
       minetinker.commands.checkupdate: true
       minetinker.commands.editconfig: true
+      minetinker.commands.editconfigbroadcast: true
       minetinker.commands.reload: true
 
   minetinker.commands.main:
@@ -122,6 +123,10 @@ permissions:
 
   minetinker.commands.editconfig:
     description: Allows the player to edit the configurations of MineTinker through an interface
+    default: op
+
+  minetinker.commands.editconfigbroadcast:
+    description: Allows the player to get notifications when configurations of MineTinker change through /mt editconfig
     default: op
 
   minetinker.commands.reload:

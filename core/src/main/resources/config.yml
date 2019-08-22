@@ -17,6 +17,7 @@ logging:
 chat-messages: true                   #Will turn off command output
 actionbar-messages: true
 actionbar-on-exp-gain: false
+BroadcastConfigChanges: true
 
 #---------------EXP-SETTINGS--------------
 LevelStep: 100                        #*(LevelFactor^LevelOfTool) [EXPONENTIAL]; *(LevelFactor*LevelOfTool) [LINEAR]
