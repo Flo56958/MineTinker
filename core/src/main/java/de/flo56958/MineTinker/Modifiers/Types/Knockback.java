@@ -90,7 +90,7 @@ public class Knockback extends Modifier {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta != null) {
-            if (ToolType.AXE.contains(tool.getType()) || ToolType.AXE.contains(tool.getType())) {
+            if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType()) || ToolType.TRIDENT.contains(tool.getType())) {
                 meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);
             } else if (ToolType.SHIELD.contains(tool.getType()) && worksOnShields) {
                 meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);
