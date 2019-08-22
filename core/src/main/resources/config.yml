@@ -64,6 +64,7 @@ ItemBehaviour:
   DisableDroppingBehaviour: false     #Disables the Itembehaviours for droping them and drop on death - every option above - for plugin compatibility
   StopBreakEvent: true                #If the item breaks due to a bug, give the item back to the player with 1 durability
   AlertPlayerOnBreak: false           #If the item breaks due to a bug, alert the player
+  ApplyOnPlayerDeath: true            #Applies ItemBehaviour on PlayerDeath, set false if another plugin controls keepInventory on deaths
 
 #---------------LEVELUP-EVENTS--------------
 LevelUpEvents:                        #Events that happen when a MT-Item gets a Level-Up (chancebased)

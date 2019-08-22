@@ -133,12 +133,22 @@ public class Main extends JavaPlugin {
                 ChatWriter.logColor(ChatColor.WHITE + " - EnableLore -> false");
             }
         }
+        DeadSouls: {
+            String name = "DeadSouls";
+            if (skipped.contains(name)) break DeadSouls;
+            if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
+                ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
+                getConfig().set("ItemBehaviour.ApplyOnPlayerDeath", false);
+                ChatWriter.logColor(ChatColor.WHITE + " - ItemBehaviour.ApplyOnPlayerDeath -> false");
+            }
+        }
 
         saveConfig();
     }
 
     public void onDisable() {
         ChatWriter.logInfo("Shutting down!");
+        LanguageManager.cleanup();
     }
 
     /**
