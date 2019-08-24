@@ -366,7 +366,7 @@ public class Commands implements TabExecutor {
             case 1: //top level command
                 if (sender instanceof Player) {
                     for (String s : cmds) {
-                        if (sender.hasPermission("minetinker.commmands." + s)) {
+                        if (sender.hasPermission("minetinker.commands." + s)) {
                             result.add(s);
                         }
                     }
