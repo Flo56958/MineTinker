@@ -1,8 +1,6 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
@@ -10,17 +8,16 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MultiShot extends Modifier {
-
-    private boolean compatibleWithPiercing;
-
     private static MultiShot instance;
 
     public static MultiShot instance() {
@@ -65,8 +62,6 @@ public class MultiShot extends Modifier {
         config.addDefault("Color", "%YELLOW%");
         config.addDefault("MaxLevel", 1);
 
-        config.addDefault("CompatibleWithPiercing", false);
-
         config.addDefault("EnchantCost", 10);
         config.addDefault("Enchantable", false);
 
@@ -86,8 +81,6 @@ public class MultiShot extends Modifier {
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
         init(Material.ARROW, true);
-
-        this.compatibleWithPiercing = config.getBoolean("CompatibleWithPiercing", false);
     }
 
     @Override
@@ -96,13 +89,6 @@ public class MultiShot extends Modifier {
 
         if (meta != null) {
             if (ToolType.CROSSBOW.contains(tool.getType())) {
-                if (!this.compatibleWithPiercing) {
-                    if (modManager.hasMod(tool, Piercing.instance()) || meta.hasEnchant(Enchantment.PIERCING)) {
-                        pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return false;
-                    }
-                }
-
                 meta.addEnchant(Enchantment.MULTISHOT, modManager.getModLevel(tool, this), true);
             }
 

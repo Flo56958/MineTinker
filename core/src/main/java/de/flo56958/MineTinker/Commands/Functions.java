@@ -139,7 +139,7 @@ class Functions {
                     ItemStack tool = player.getInventory().getItemInMainHand();
 
                     if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
-                        modManager.addMod(player, tool, m, true);
+                        modManager.addMod(player, tool, m, true, false);
                     }
 
                     break;

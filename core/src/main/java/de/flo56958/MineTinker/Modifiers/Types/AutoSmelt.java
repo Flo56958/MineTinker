@@ -1,9 +1,7 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTBlockBreakEvent;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -219,16 +217,6 @@ public class AutoSmelt extends Modifier implements Listener {
         });
 
         this.description = this.description.replace("%chance", "" + this.percentagePerLevel);
-    }
-    
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.hasMod(tool, SilkTouch.instance())) {
-            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-            return false;
-        }
-
-        return true;
     }
 
     /**

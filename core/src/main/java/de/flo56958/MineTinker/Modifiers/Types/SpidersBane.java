@@ -1,8 +1,6 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
@@ -10,7 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -18,9 +15,6 @@ import java.io.File;
 import java.util.*;
 
 public class SpidersBane extends Modifier {
-
-    private boolean compatibleWithSmite;
-    private boolean compatibleWithSharpness;
 
     private static SpidersBane instance;
 
@@ -67,9 +61,6 @@ public class SpidersBane extends Modifier {
         config.addDefault("MaxLevel", 5);
         config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault("CompatibleWithSmite", false);
-        config.addDefault("CompatibleWithSharpness", false);
-
         config.addDefault("EnchantCost", 10);
         config.addDefault("Enchantable", false);
 
@@ -89,9 +80,6 @@ public class SpidersBane extends Modifier {
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
         init(Material.FERMENTED_SPIDER_EYE, true);
-
-        this.compatibleWithSmite = config.getBoolean("CompatibleWithSmite", false);
-        this.compatibleWithSharpness = config.getBoolean("CompatibleWithSharpness", false);
     }
 
     @Override
@@ -100,20 +88,6 @@ public class SpidersBane extends Modifier {
 
         if (meta != null) {
             if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType())) {
-                if (!this.compatibleWithSmite) {
-                    if (modManager.hasMod(tool, Smite.instance()) || meta.hasEnchant(Enchantment.DAMAGE_UNDEAD)) {
-                        pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return false;
-                    }
-                }
-
-                if (!this.compatibleWithSharpness) {
-                    if (modManager.hasMod(tool, Sharpness.instance()) || meta.hasEnchant(Enchantment.DAMAGE_ALL)) {
-                        pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return false;
-                    }
-                }
-
                 meta.addEnchant(Enchantment.DAMAGE_ARTHROPODS, modManager.getModLevel(tool, this), true);
             }
 

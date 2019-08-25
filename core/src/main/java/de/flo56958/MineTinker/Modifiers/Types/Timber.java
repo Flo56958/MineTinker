@@ -1,10 +1,8 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.Lists;
-import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTBlockBreakEvent;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -96,11 +94,6 @@ public class Timber extends Modifier implements Listener {
 
     @Override
     public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (modManager.hasMod(tool, Power.instance())) {
-            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-            return false;
-        }
-
         return true;
     }
 

@@ -1,8 +1,6 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
@@ -10,7 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -18,10 +15,6 @@ import java.io.File;
 import java.util.*;
 
 public class Insulating extends Modifier {
-
-    private boolean compatibleWithProtecting;
-    private boolean compatibleWithAntiArrow;
-    private boolean compatibleWithAntiBlast;
 
     private static Insulating instance;
 
@@ -68,10 +61,6 @@ public class Insulating extends Modifier {
         config.addDefault("MaxLevel", 5);
         config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault("CompatibleWithProtecting", false);
-        config.addDefault("CompatibleWithAntiArrow", false);
-        config.addDefault("CompatibleWithAntiBlast", false);
-
         config.addDefault("EnchantCost", 10);
         config.addDefault("Enchantable", false);
 
@@ -91,10 +80,6 @@ public class Insulating extends Modifier {
         ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
         init(Material.MAGMA_CREAM, true);
-
-        this.compatibleWithProtecting = config.getBoolean("CompatibleWithProtecting", false);
-        this.compatibleWithAntiArrow  = config.getBoolean("CompatibleWithAntiArrow", false);
-        this.compatibleWithAntiBlast  = config.getBoolean("CompatibleWithAntiBlast", false);
     }
 
     @Override
@@ -104,27 +89,6 @@ public class Insulating extends Modifier {
         if (meta != null) {
             if (ToolType.HELMET.contains(tool.getType()) || ToolType.CHESTPLATE.contains(tool.getType())
                     || ToolType.LEGGINGS.contains(tool.getType()) || ToolType.BOOTS.contains(tool.getType())) {
-
-                if (!this.compatibleWithProtecting) {
-                    if (modManager.hasMod(tool, Protecting.instance()) || meta.hasEnchant(Enchantment.PROTECTION_ENVIRONMENTAL)) {
-                        pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return false;
-                    }
-                }
-
-                if (!this.compatibleWithAntiArrow) {
-                    if (modManager.hasMod(tool, AntiArrowPlating.instance()) || meta.hasEnchant(Enchantment.PROTECTION_PROJECTILE)) {
-                        pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return false;
-                    }
-                }
-
-                if (!this.compatibleWithAntiBlast) {
-                    if (modManager.hasMod(tool, AntiBlastPlating.instance()) || meta.hasEnchant(Enchantment.PROTECTION_EXPLOSIONS)) {
-                        pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                        return false;
-                    }
-                }
 
                 meta.addEnchant(Enchantment.PROTECTION_FIRE, modManager.getModLevel(tool, this), true);
             }

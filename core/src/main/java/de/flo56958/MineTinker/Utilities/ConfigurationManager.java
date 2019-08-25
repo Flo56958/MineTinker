@@ -46,6 +46,8 @@ public class ConfigurationManager {
         loadConfig("", "Elytra.yml");
         loadConfig("", "Trident.yml");
 
+        loadConfig("", "Modifiers.yml");
+
         for (Modifier modifier : ModManager.instance().getAllMods()) {
             if (modifier.getFileName().isEmpty()) {
                 continue;

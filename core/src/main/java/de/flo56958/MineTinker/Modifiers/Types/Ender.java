@@ -1,10 +1,8 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
-import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Events.MTProjectileHitEvent;
-import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -21,7 +19,10 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Ender extends Modifier implements Listener {
 
@@ -81,8 +82,6 @@ public class Ender extends Modifier implements Listener {
         config.addDefault("BlindnessDuration", 3); //seconds
         config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault("CompatibleWithInfinity", true);
-
         config.addDefault("EnchantCost", 10);
         config.addDefault("Enchantable", false);
 
@@ -104,23 +103,10 @@ public class Ender extends Modifier implements Listener {
         
         this.hasSound = config.getBoolean("Sound", true);
         this.hasParticles = config.getBoolean("Particles", true);
-        this.compatibleWithInfinity = config.getBoolean("CompatibleWithInfinity", true);
         this.giveNauseaOnUse = config.getBoolean("GiveNauseaOnUse", true);
         this.nauseaDuration = config.getInt("NauseaDuration", 5) * 20;
         this.giveBlindnessOnUse = config.getBoolean("GiveBlindnessOnUse", true);
         this.blindnessDuration = config.getInt("BlindnessDuration", 3) * 20;
-    }
-
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!this.compatibleWithInfinity) {
-            if (modManager.hasMod(tool, Infinity.instance())) {
-                pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /**

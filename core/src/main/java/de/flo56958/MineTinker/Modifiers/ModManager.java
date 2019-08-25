@@ -29,6 +29,8 @@ public class ModManager {
     //TODO: AUTO-DISCOVER RECIPES
     public final ArrayList<NamespacedKey> recipe_Namespaces = new ArrayList<>();
 
+    private final HashMap<Modifier, Set<Modifier>> incompatibilities = new HashMap<>();
+
     private static FileConfiguration config;
     private static FileConfiguration layout;
     private final static NBTHandler nbt;
@@ -119,6 +121,72 @@ public class ModManager {
             m.registerCraftingRecipe();
         }
 
+    	//get Modifier incompatibilities
+        //TODO: Add error messages for wrong syntax
+        incompatibilities.clear();
+        for (Modifier m : this.allMods) {
+    	    incompatibilities.put(m, new HashSet<>());
+        }
+        FileConfiguration modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
+        modifierconfig.options().copyDefaults(true);
+
+        List<String> incompatibilityList = new ArrayList<>();
+        incompatibilityList.add(SelfRepair.instance().getKey() + ":" + Infinity.instance().getKey());
+        incompatibilityList.add(Ender.instance().getKey() + ":" + Infinity.instance().getKey());
+        incompatibilityList.add(AutoSmelt.instance().getKey() + ":" + SilkTouch.instance().getKey());
+        incompatibilityList.add(Luck.instance().getKey() + ":" + SilkTouch.instance().getKey());
+        incompatibilityList.add(Protecting.instance().getKey() + ":" + AntiArrowPlating.instance().getKey());
+        incompatibilityList.add(Protecting.instance().getKey() + ":" + AntiBlastPlating.instance().getKey());
+        incompatibilityList.add(Protecting.instance().getKey() + ":" + Insulating.instance().getKey());
+        incompatibilityList.add(AntiBlastPlating.instance().getKey() + ":" + AntiArrowPlating.instance().getKey());
+        incompatibilityList.add(AntiBlastPlating.instance().getKey() + ":" + Insulating.instance().getKey());
+        incompatibilityList.add(AntiArrowPlating.instance().getKey() + ":" + Insulating.instance().getKey());
+        incompatibilityList.add(Sharpness.instance().getKey() + ":" + Smite.instance().getKey());
+        incompatibilityList.add(Sharpness.instance().getKey() + ":" + SpidersBane.instance().getKey());
+        incompatibilityList.add(SpidersBane.instance().getKey() + ":" + Smite.instance().getKey());
+        incompatibilityList.add(Aquaphilic.instance().getKey() + ":" + Freezing.instance().getKey());
+        incompatibilityList.add(Infinity.instance().getKey() + ":" + Propelling.instance().getKey());
+        incompatibilityList.add(MultiShot.instance().getKey() + ":" + Piercing.instance().getKey());
+        incompatibilityList.add(Power.instance().getKey() + ":" + Timber.instance().getKey());
+        incompatibilityList.sort(String::compareToIgnoreCase);
+
+        modifierconfig.addDefault("Incompatibilities", incompatibilityList);
+        modifierconfig.addDefault("IncompatibilitiesConsiderEnchants", true);
+        modifierconfig.addDefault("CommandIgnoresIncompatibilities",  true);
+        modifierconfig.addDefault("CommandIgnoresToolTypes",  false);
+        modifierconfig.addDefault("CommandIgnoresMaxLevel",  false);
+        modifierconfig.addDefault("IgnoreIncompatibilityIfModifierAlreadyApplied", true);
+
+        List<String> possibleKeys = new ArrayList<>();
+        possibleKeys.add("Do not edit this list; just for documentation of what Keys can be used under Incompatibilities");
+        for (Modifier m : this.allMods) {
+            possibleKeys.add(m.getKey());
+        }
+        modifierconfig.set("PossibleKeys", possibleKeys);
+        ConfigurationManager.saveConfig(modifierconfig);
+        ConfigurationManager.loadConfig("", "Modifiers.yml");
+
+        modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
+        incompatibilityList = modifierconfig.getStringList("Incompatibilities");
+        for (String s : incompatibilityList) {
+            String[] splits = s.split(":");
+            if (splits.length != 2) continue;
+            Modifier mod1 = null;
+            Modifier mod2 = null;
+            for (Modifier m : this.allMods) {
+                if (m.getKey().equals(splits[0])) {
+                    mod1 = m;
+                }
+                if (m.getKey().equals(splits[1])) {
+                    mod2 = m;
+                }
+            }
+            if (mod1 == null || mod2 == null) continue;
+
+            incompatibilities.get(mod1).add(mod2);
+            incompatibilities.get(mod2).add(mod1);
+        }
+
         if (layout.getBoolean("OverrideLanguagesystem", false)) {
             this.loreScheme = layout.getStringList("LoreLayout");
 
@@ -140,6 +208,10 @@ public class ModManager {
 
         this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
         this.allowBookConvert = config.getBoolean("ConvertBookToModifier");
+    }
+
+    public Set<Modifier> getIncompatibilities(Modifier m) {
+        return new HashSet<>(incompatibilities.get(m));
     }
 
     /**
@@ -252,9 +324,9 @@ public class ModManager {
         rewriteLore(is);
     }
 
-    public boolean addMod(Player player, ItemStack item, Modifier modifier, boolean fromCommand) {
-        if (!modifier.getKey().equals("Extra-Modifier")) {
-            if (!Modifier.checkAndAdd(player, item, modifier, modifier.getKey().toLowerCase().replace("-", ""), fromCommand)) {
+    public boolean addMod(Player player, ItemStack item, Modifier modifier, boolean fromCommand, boolean fromRandom) {
+        if (!modifier.getKey().equals(ExtraModifier.instance().getKey())) {
+            if (!Modifier.checkAndAdd(player, item, modifier, modifier.getKey().toLowerCase().replace("-", ""), fromCommand, fromRandom)) {
                 return false;
             }
         }
