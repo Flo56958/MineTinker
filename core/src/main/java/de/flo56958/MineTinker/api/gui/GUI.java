@@ -15,8 +15,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class is for all User-Interfaces and Items within them.
@@ -79,6 +79,11 @@ public class GUI implements Listener {
         }
 
         return null;
+    }
+
+    @Nullable
+    public Window getWindow(final int i) {
+        return windows.get(i);
     }
 
     /**
@@ -261,6 +266,8 @@ public class GUI implements Listener {
             buttonMap[slot] = b;
             inventory.setItem(slot, b.item);
 
+            b.item = inventory.getItem(slot); //Update item as it gets changed during inventory.setItem();
+
             return b;
         }
 
@@ -322,10 +329,10 @@ public class GUI implements Listener {
          * This class is a Button for the Window. The button can be clicked by the User to trigger certain methods.
          */
         public static class Button {
-            private final ItemStack item;
+            private ItemStack item;
             private final Window window;
 
-            private ConcurrentHashMap<ClickType, ButtonAction> actions = new ConcurrentHashMap<>();
+            private EnumMap<ClickType, ButtonAction> actions = new EnumMap<>(ClickType.class);
 
             /**
              * creates a Button with no actions
@@ -352,6 +359,10 @@ public class GUI implements Listener {
                 if (action instanceof PlayerAction && event.getWhoClicked() instanceof Player) {
                     ((PlayerAction) action).run((Player) event.getWhoClicked());
                 }
+            }
+
+            public ItemStack getItemStack() {
+                return this.item;
             }
 
             @NotNull

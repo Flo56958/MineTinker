@@ -35,7 +35,7 @@ public class Commands implements TabExecutor {
      * all commands
      */
     private static final String[] cmds = {"addexp", "addmod", "checkupdate",
-            "convert", "give", "givemodifieritem", "help", "info", "itemstatistics", "modifiers",
+            "convert", "editconfig", "give", "givemodifieritem", "help", "info", "itemstatistics", "modifiers",
             "name", "reload", "removemod", "setdurability"};
     /**
      * all console commands
@@ -133,6 +133,12 @@ public class Commands implements TabExecutor {
                         case "sd":
                             if (player.hasPermission("minetinker.commands.setdurability")) {
                                 Functions.setDurability(player, args);
+                            } else noPerm(player);
+                            break;
+                        case "ec":
+                        case "editconfig":
+                            if (player.hasPermission("minetinker.commands.editconfig")) {
+                                GUIs.getConfigurationsGUI().show(player);
                             } else noPerm(player);
                             break;
                         default:
@@ -235,6 +241,9 @@ public class Commands implements TabExecutor {
         if (player.hasPermission("minetinker.commands.convert")) {
             ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". Convert (c)");
         }
+        if (player.hasPermission("minetinker.commands.editconfig")) {
+            ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". EditConfig (ec)");
+        }
         if (player.hasPermission("minetinker.commands.give")) {
             ChatWriter.sendMessage(player, ChatColor.WHITE, index++ + ". Give (g)");
         }
@@ -283,7 +292,7 @@ public class Commands implements TabExecutor {
         sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + index++ + ". GiveModifierItem (gm)");
         sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + index++ + ". Info (i)");
         sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + index++ + ". Modifiers (mods)");
-        sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + index + ". reload (r)");
+        sender.sendMessage(ChatWriter.CHAT_PREFIX + " " + index + ". Reload (r)");
 
         ChatWriter.sendMessage(sender, ChatColor.GRAY, LanguageManager.getString("Commands.Help.Website"));
         ChatWriter.sendMessage(sender, ChatColor.GOLD, "https://flo56958.github.io/MineTinker");

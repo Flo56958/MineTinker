@@ -1,9 +1,24 @@
 package de.flo56958.MineTinker.api.gui;
 
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 public abstract class ButtonAction {
+
+    static {
+        Bukkit.getPluginManager().registerEvents(new ChatListener(), Main.getPlugin());
+    }
 
     protected GUI.Window.Button button;
 
@@ -11,7 +26,7 @@ public abstract class ButtonAction {
         this.button = button;
     }
 
-    public abstract void run();
+    public void run() {}
 
     public static class NOTHING extends ButtonAction {
 
@@ -27,9 +42,6 @@ public abstract class ButtonAction {
             }
             return instance;
         }
-
-        @Override
-        public void run() {}
     }
 
     public static class PAGE_UP extends ButtonAction implements PlayerAction {
@@ -53,9 +65,6 @@ public abstract class ButtonAction {
         public PAGE_DOWN(@NotNull GUI.Window.Button button) {
             super(button);
         }
-
-        @Override
-        public void run() {}
 
         public void run(Player player) {
             GUI gui = this.button.getWindow().getGUI();
@@ -81,14 +90,68 @@ public abstract class ButtonAction {
             this.page = -1;
         }
 
-        @Override
-        public void run() {}
-
         public void run(Player player) {
             GUI gui = (window != null) ? window.getGUI() : button.getWindow().getGUI();
             int pageNo = (window != null) ? gui.getWindowNumber(window) : page;
             gui.show(player, pageNo);
         }
+    }
+
+    public static class RUN_RUNNABLE extends ButtonAction {
+        private final Runnable runnable;
+
+        public RUN_RUNNABLE(GUI.Window.Button button, Runnable runnable) {
+            super(button);
+            this.runnable = runnable;
+        }
+
+        @Override
+        public void run() {
+            runnable.run();
+        }
+    }
+
+    public static class REQUEST_INPUT extends ButtonAction implements PlayerAction {
+
+        private static ConcurrentHashMap<Player, REQUEST_INPUT> playerToAction = new ConcurrentHashMap<>();
+
+        private PlayerRunnable runnable;
+        private String data;
+
+        public REQUEST_INPUT(GUI.Window.Button button, PlayerRunnable runnable, String data) {
+            super(button);
+            this.runnable = runnable;
+            this.data = data;
+        }
+
+        @Override
+        public void run(Player p) {
+            playerToAction.put(p, this);
+            p.closeInventory();
+            ChatWriter.sendMessage(p, ChatColor.RED, LanguageManager.getString("GUI.ButtonAction.REQUEST_INPUT").replace("%data", data + ChatColor.RESET + "" + ChatColor.RED));
+        }
+
+        private void afterRun(Player p) {
+            Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> button.getWindow().getGUI().show(p, button.getWindow()), 10);
+        }
+
+        public abstract static class PlayerRunnable {
+            public abstract void run(Player player, String input);
+        }
+    }
+
+    private static class ChatListener implements Listener {
+
+        @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+        public static void onChat(AsyncPlayerChatEvent e) {
+            REQUEST_INPUT ri = REQUEST_INPUT.playerToAction.remove(e.getPlayer());
+            if (ri == null) return;
+            e.setCancelled(true);
+
+            ri.runnable.run(e.getPlayer(), e.getMessage());
+            ri.afterRun(e.getPlayer());
+        }
+
     }
 }
 

@@ -194,6 +194,7 @@ public class ChatWriter {
     }
 
     public static List<String> splitString(String msg, int lineSize) {
+        if (msg == null) return new ArrayList<>();
         List<String> res = new ArrayList<>();
 
         /*
