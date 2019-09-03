@@ -303,6 +303,9 @@ public class GUIs {
                                 .replace("%type", "Boolean"));
                         buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
                                 .replace("%value", "" + value));
+                        buttonStackLore.add("");
+                        buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.ToggleValue")
+                                .replace("%key", LanguageManager.getString("GUIs.LeftClick")));
 
                         if ((boolean) value) {
                             buttonStack.setType(Material.GREEN_WOOL);
@@ -347,9 +350,14 @@ public class GUIs {
                         buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
                                 .replace("%value", "" + value));
                         buttonStackLore.add("");
-                        buttonStackLore.add(ChatColor.WHITE + "Left Click to increment by 1 (with shift +10)!");
-                        buttonStackLore.add(ChatColor.WHITE + "Right Click to decrement by 1 (with shift -10)!");
-                        buttonStackLore.add(ChatColor.WHITE + "Middle Click to insert new value!");
+                        buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.IncrementValueClick")
+                                .replace("%key", LanguageManager.getString("GUIs.LeftClick"))
+                                .replace("%amount", "1 (shift +10)"));
+                        buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.DecrementValueClick")
+                                .replace("%key", LanguageManager.getString("GUIs.RightClick"))
+                                .replace("%amount", "1 (shift -10)"));
+                        buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.InsertValue")
+                                .replace("%key", LanguageManager.getString("GUIs.MiddleClick")));
                         buttonStack.setType(Material.COBBLESTONE);
 
                         class intHelper {
@@ -427,7 +435,8 @@ public class GUIs {
                         buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
                                 .replace("%value", "" + value));
                         buttonStackLore.add("");
-                        buttonStackLore.add(ChatColor.WHITE + "Left-Click to insert new value!");
+                        buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.InsertValue")
+                                .replace("%key", LanguageManager.getString("GUIs.LeftClick")));
 
                         buttonStack.setType(Material.STONE);
 
@@ -472,7 +481,8 @@ public class GUIs {
                         buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
                                 .replace("%value", "" + value));
                         buttonStackLore.add("");
-                        buttonStackLore.add(ChatColor.WHITE + "Left-Click to insert new value!");
+                        buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.InsertValue")
+                                .replace("%key", LanguageManager.getString("GUIs.LeftClick")));
 
                         buttonStack.setType(Material.WHITE_WOOL);
 
