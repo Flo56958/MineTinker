@@ -1,7 +1,7 @@
 Alert.OnItemBreak: "%RED%Looks like your tool broke! Giving it back with 1 durability."
 
 StartUp.Commands: "Registered commands!"
-StartUp.BuildersWands: "Enabled BuildersWands!"
+StartUp.BuildersWands: "Enabled Builderswands!"
 StartUp.EasyHarvest: "Enabled EasyHarvest!"
 StartUp.Events: "Registered Events!"
 StartUp.GUIs: "Loading GUIs!"
