@@ -26,11 +26,14 @@ import java.util.List;
  */
 public class GUI implements Listener {
 
+    public static List<GUI> guis = Collections.synchronizedList(new ArrayList<>());
+
     private List<Window> windows = Collections.synchronizedList(new ArrayList<>());
 
     private volatile boolean isClosed = true;
 
     public GUI() {
+        guis.add(this);
         open();
     }
 
@@ -370,27 +373,5 @@ public class GUI implements Listener {
                 return window;
             }
         }
-
-        /**
-         * Every action a Button can do on a Click
-         */
-        /*
-        public enum ButtonAction {
-            //TODO: Implement actions
-            PAGE_UP, --DONE                   //go to next Page (in the ArrayList)
-            PAGE_DOWN,    --DONE              //go to prior Page (in the ArrayList)
-            PAGE_GOTO,    --DONE              //go to specific Page (index in ArrayList)
-
-            RUN_TASK,                   //run a Runnable-Task
-            RUN_BUKKITTASK,             //run a Bukkit-Runnable-Task
-            RUN_FUTURE,                 //run a Future-Object
-            RUN_COMMAND,                //run a server command with permission check
-            RUN_COMMAND_WO_PERMCHECK,   //run a server command with out permission check
-
-            CHANGE_ITEM,                //Change the Item of the Button to another Item
-
-            NOTHING                     //do nothing on click
-        }
-        */
     }
 }

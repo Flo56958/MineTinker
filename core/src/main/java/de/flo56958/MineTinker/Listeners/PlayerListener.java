@@ -163,7 +163,7 @@ public class PlayerListener implements Listener {
 
     /**
      * Adds the Player to the HashMaps BLOCKFACE and HASPOWER
-     * @param event PlayerJoinEvent
+     * @param e PlayerJoinEvent
      */
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {

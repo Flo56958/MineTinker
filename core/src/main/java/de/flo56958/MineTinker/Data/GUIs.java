@@ -63,6 +63,9 @@ public class GUIs {
     }
 
     public static void reload() {
+        GUI.guis.forEach(GUI::close);
+        GUI.guis.clear(); //TODO: Remove if GUI-class is part of public API
+
         /*/mt mods GUIs*/
         {
             int pageNo = 0;

@@ -8,8 +8,11 @@ import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 
 public class CraftItemListener implements Listener {
@@ -44,5 +47,18 @@ public class CraftItemListener implements Listener {
         if (tool != null) {
 			ChatWriter.log(false, player.getName() + " crafted " + ItemGenerator.getDisplayName(tool) + "! It is now a MineTinker-Item!");
 		}
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPrepare(PrepareItemCraftEvent event) {
+	    if (config.getBoolean("ModifiersCanBeUsedForCrafting")) return;
+        CraftingInventory inv = event.getInventory();
+        for (ItemStack is : inv.getMatrix()) {
+            if (is == null) continue;
+            if (modManager.isModifierItem(is)) {
+                inv.setResult(null);
+                break;
+            }
+        }
     }
 }

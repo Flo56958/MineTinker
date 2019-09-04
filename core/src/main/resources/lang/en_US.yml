@@ -80,6 +80,9 @@ GUIs.ConfigurationEditor.config.chat-messages: "Enable ChatMessages (like Comman
 GUIs.ConfigurationEditor.config.LevelStep: "value *(LevelFactor^LevelOfTool) [EXPONENTIAL]; *(LevelFactor*LevelOfTool) [LINEAR]"
 GUIs.ConfigurationEditor.config.ProgressionIsLinear: "false: exponential, true: linear"
 GUIs.ConfigurationEditor.config.ResetAtVarOverflow: "Resets Level and Exp at Integer.MAX_VALUE or Long.MAX_VALUE with 1 and 0. false: no more Exp gain"
+GUIs.ConfigurationEditor.config.logging.standard: "logs important player activities with MineTinker"
+GUIs.ConfigurationEditor.config.logging.debug: "even more information is printed in the console"
+GUIs.ConfigurationEditor.config.logging.metrics: "bStats-Metrics for anonymous statistics about the use of MineTinker"
 
 ModManager.RegisterModifier: "%GREEN%Registered the %mod %GREEN%modifier from %plugin."
 ModManager.UnregisterModifier: "%GREEN%Unregistered the %mod %GREEN%modifier from %plugin."
