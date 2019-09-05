@@ -99,7 +99,10 @@ public class Main extends JavaPlugin {
 
         ChatWriter.log(false, LanguageManager.getString("StartUp.Events"));
 
-        if (getConfig().getBoolean("logging.metrics")) new Metrics(this);
+        if (getConfig().getBoolean("logging.metrics")) {
+            Metrics met = new Metrics(this);
+            met.addCustomChart(new Metrics.SimplePie("used_language", () -> getConfig().getString("Language", "en_US")));
+        }
 
         ChatWriter.log(false, LanguageManager.getString("StartUp.GUIs"));
         GUIs.reload();

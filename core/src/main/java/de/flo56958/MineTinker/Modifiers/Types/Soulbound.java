@@ -23,7 +23,8 @@ import java.util.*;
 
 public class Soulbound extends Modifier implements Listener {
 
-    private final HashMap<Player, ArrayList<ItemStack>> storedItemStacks = new HashMap<>(); //saves ItemStacks untill reload (if the player does not respawn instantly)
+    //Can't you the Player-Object here as it gets newly created if the player leaves without respawning
+    private final HashMap<UUID, ArrayList<ItemStack>> storedItemStacks = new HashMap<>(); //saves ItemStacks until reload (if the player does not respawn instantly)
     private boolean toolDropable;
     private boolean decrementModLevelOnUse;
     private int percentagePerLevel;
@@ -118,9 +119,9 @@ public class Soulbound extends Modifier implements Listener {
             return false;
         }
 
-        storedItemStacks.computeIfAbsent(p, k -> new ArrayList<>()); // ?
+        storedItemStacks.computeIfAbsent(p.getUniqueId(), k -> new ArrayList<>()); // ?
 
-        ArrayList<ItemStack> stored = storedItemStacks.get(p);
+        ArrayList<ItemStack> stored = storedItemStacks.get(p.getUniqueId());
 
         ChatWriter.log(false, p.getDisplayName() + " triggered Soulbound on " + ItemGenerator.getDisplayName(is) + ChatColor.GRAY + " (" + is.getType().toString() + ")!");
 
@@ -153,11 +154,11 @@ public class Soulbound extends Modifier implements Listener {
             return;
         }
 
-        if (!storedItemStacks.containsKey(player)) {
+        if (!storedItemStacks.containsKey(player.getUniqueId())) {
             return;
         }
 
-        ArrayList<ItemStack> stored = storedItemStacks.get(player);
+        ArrayList<ItemStack> stored = storedItemStacks.get(player.getUniqueId());
 
         for (ItemStack is : stored) {
             if (player.getInventory().addItem(is).size() != 0) { //adds items to (full) inventory
@@ -165,12 +166,12 @@ public class Soulbound extends Modifier implements Listener {
             } // no else as it gets added in if
         }
 
-        storedItemStacks.remove(player);
+        storedItemStacks.remove(player.getUniqueId());
     }
 
     /**
      * Effect if a player drops an item
-     * @param event
+     * @param event the event
      */
     @EventHandler(ignoreCancelled = true)
     public void effect(PlayerDropItemEvent event) {

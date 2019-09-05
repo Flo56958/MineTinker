@@ -369,10 +369,12 @@ public class BuildersWandListener implements Listener {
                         Location loc = l.clone().subtract(v.clone().multiply(-1));
 
                         if (wand.getItemMeta() instanceof Damageable) {
-                            Damageable damageable = (Damageable)wand.getItemMeta();
+                            Damageable damageable = (Damageable) wand.getItemMeta();
 
-                            if (wand.getType().getMaxDurability() - damageable.getDamage() <= 1) {
-                                break loop;
+                            if (!wand.getItemMeta().isUnbreakable()) {
+                                if (wand.getType().getMaxDurability() - damageable.getDamage() <= 1) {
+                                    break loop;
+                                }
                             }
 
                             if (!placeBlock(block, p, l, loc, current, v)) {
@@ -390,7 +392,9 @@ public class BuildersWandListener implements Listener {
 
                             if (config.getBoolean("BuildersWand.useDurability")) {
                                 //TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
-                                damageable.setDamage((short) (damageable.getDamage() + 1));
+                                if (!wand.getItemMeta().isUnbreakable()) {
+                                    damageable.setDamage(damageable.getDamage() + 1);
+                                }
                             }
 
                             if (current.getAmount() == 0) {
