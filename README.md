@@ -16,8 +16,6 @@
         <img src="https://www.codefactor.io/repository/github/flo56958/minetinker/badge" /></a>
     <a href="https://travis-ci.org/Flo56958/MineTinker" alt="Build Status">
         <img src="https://travis-ci.org/Flo56958/MineTinker.svg?branch=alpha" /></a>
-    <a href="https://circleci.com/gh/badges/shields/tree/master">
-        <img src="https://img.shields.io/circleci/project/github/badges/shields/master" alt="build status"></a>
     <a href="https://discord.gg/ZEVNKhN">
         <img src="https://img.shields.io/discord/493806232784732181?logo=discord"
             alt="chat on Discord"></a>
