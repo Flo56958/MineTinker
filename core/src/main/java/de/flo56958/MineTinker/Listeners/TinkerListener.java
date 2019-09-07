@@ -31,12 +31,13 @@ import java.util.Random;
 public class TinkerListener implements Listener {
 
     private static final ModManager modManager = ModManager.instance();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     @EventHandler
     public void onToolUpgrade(ToolUpgradeEvent event) {
         Player player = event.getPlayer();
         ItemStack tool = event.getTool();
+
+        FileConfiguration config = Main.getPlugin().getConfig();
 
         if (event.isSuccessful()) {
             if (config.getBoolean("Sound.OnUpgrade")) {
@@ -61,7 +62,7 @@ public class TinkerListener implements Listener {
         ItemStack tool = event.getTool();
         Modifier mod = event.getMod();
 
-        if (config.getBoolean("Sound.OnModding")) {
+        if (Main.getPlugin().getConfig().getBoolean("Sound.OnModding")) {
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
         }
 
@@ -79,7 +80,7 @@ public class TinkerListener implements Listener {
         ItemStack tool = event.getTool();
         Modifier mod = event.getMod();
 
-        if (config.getBoolean("Sound.OnFail")) {
+        if (Main.getPlugin().getConfig().getBoolean("Sound.OnFail")) {
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
         }
 
@@ -97,6 +98,8 @@ public class TinkerListener implements Listener {
     public void onToolLevelUp(ToolLevelUpEvent event) {
         Player player = event.getPlayer();
         ItemStack tool = event.getTool();
+
+        FileConfiguration config = Main.getPlugin().getConfig();
 
         boolean appliedRandomMod = false;
 

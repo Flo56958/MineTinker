@@ -27,7 +27,6 @@ import org.bukkit.projectiles.ProjectileSource;
 public class EntityListener implements Listener {
 
     private static final ModManager modManager = ModManager.instance();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent event) {
@@ -95,6 +94,8 @@ public class EntityListener implements Listener {
             return;
         }
 
+        FileConfiguration config = Main.getPlugin().getConfig();
+
         int amount = config.getInt("ExpPerEntityHit");
 
         MTEntityDamageByEntityEvent damageByEntityEvent = new MTEntityDamageByEntityEvent(player, tool, event.getEntity(), event);
@@ -131,7 +132,7 @@ public class EntityListener implements Listener {
         MTEntityDeathEvent deathEvent = new MTEntityDeathEvent(player, tool, event);
         Bukkit.getPluginManager().callEvent(deathEvent);
 
-        modManager.addExp(player, tool, config.getInt("ExtraExpPerEntityDeath." + event.getEntity().getType().toString())); //adds 0 if not in found in config (negative values are also fine)
+        modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExtraExpPerEntityDeath." + event.getEntity().getType().toString())); //adds 0 if not in found in config (negative values are also fine)
     }
 
     @EventHandler
@@ -199,7 +200,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        modManager.addExp(player, tool, config.getInt("ExpPerArrowShot"));
+        modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerArrowShot"));
 
         /*
         Self-Repair and Experienced will no longer trigger on bowfire

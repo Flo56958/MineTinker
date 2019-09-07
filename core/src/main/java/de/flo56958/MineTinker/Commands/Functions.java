@@ -13,7 +13,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -23,16 +22,17 @@ import org.bukkit.scheduler.BukkitRunnable;
 class Functions {
 
     private static final ModManager modManager = ModManager.instance();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     /**
      * Outputs all available mods to the command sender chat
      * @param sender The sender to send the mod list to
      */
-    static void modList(CommandSender sender) {
+    static void modList(CommandSender sender, String[] args) {
         if (sender instanceof Player) {
-            GUIs.getModGUI().show((Player) sender);
-            return;
+            if (!(args.length >= 2 && args[1].equalsIgnoreCase("-t"))) {
+                GUIs.getModGUI().show((Player) sender);
+                return;
+            }
         }
 
         ChatWriter.sendMessage(sender, ChatColor.GOLD,  LanguageManager.getString("Commands.ModList"));
@@ -169,13 +169,15 @@ class Functions {
                         if (durability <= tool.getType().getMaxDurability()) {
                             damageable.setDamage(tool.getType().getMaxDurability() - durability);
                         } else {
-                            ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("Commands.SetDurability.InvalidInput", player));
+                            ChatWriter.sendMessage(player, ChatColor.RED,
+                                    LanguageManager.getString("Commands.SetDurability.InvalidInput", player));
                         }
                     } catch (Exception e) {
                         if (args[1].toLowerCase().equals("full") || args[1].toLowerCase().equals("f")) {
                             damageable.setDamage(0);
                         } else {
-                            ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("Commands.SetDurability.InvalidInput", player));
+                            ChatWriter.sendMessage(player, ChatColor.RED,
+                                    LanguageManager.getString("Commands.SetDurability.InvalidInput", player));
                         }
                     }
 
@@ -216,12 +218,9 @@ class Functions {
         ItemStack tool = new ItemStack(material, 1);
         modManager.convertItemStack(tool);
 
-        if (player.getInventory().addItem(tool).size() != 0) {
-            //adds items to (full) inventory
+        if (player.getInventory().addItem(tool).size() != 0) { //adds items to (full) inventory
             player.getWorld().dropItem(player.getLocation(), tool);
-        }
-
-        // no else as it gets added in if
+        } // no else as it gets added in if
     }
 
     /**
@@ -303,7 +302,7 @@ class Functions {
         if (sender instanceof Player) {
             player = (Player) sender;
         }
-        if (config.getBoolean("CheckForUpdates")) {
+        if (Main.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
             ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.CheckUpdate.Start", player));
 
             new BukkitRunnable() {
@@ -323,12 +322,15 @@ class Functions {
             return;
         }
 
-        ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Head", p).replaceFirst("%toolname", ItemGenerator.getDisplayName(is)));
-        ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Level", p).replaceFirst("%level", "" + modManager.getLevel(is)));
+        ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Head", p)
+                                                                    .replaceFirst("%toolname", ItemGenerator.getDisplayName(is)));
+        ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Level", p)
+                                                                    .replaceFirst("%level", "" + modManager.getLevel(is)));
         ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Exp", p)
                                                                     .replaceFirst( "%current", "" + modManager.getExp(is))
                                                                     .replaceFirst("%nextlevel", "" + modManager.getNextLevelReq(modManager.getLevel(is))));
-        ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.FreeSlots", p).replaceFirst("%slots", "" + modManager.getFreeSlots(is)));
+        ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.FreeSlots", p)
+                                                                    .replaceFirst("%slots", "" + modManager.getFreeSlots(is)));
         ChatWriter.sendMessage(p, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Modifiers", p));
 
         for (Modifier mod : modManager.getAllowedMods()) {

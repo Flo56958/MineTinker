@@ -30,8 +30,8 @@ public class ItemListener implements Listener {
         Item item = event.getEntity();
         ItemStack is = item.getItemStack();
 
-        if (!(modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))) {
-            return; //TODO: Consider Modifier-Items
+        if (!((modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is)) || (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems") && modManager.isModifierItem(is)))) {
+            return;
         }
 
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetPersistent")) {

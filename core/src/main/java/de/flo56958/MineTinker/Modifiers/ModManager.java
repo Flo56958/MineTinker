@@ -326,7 +326,8 @@ public class ModManager {
 
     public boolean addMod(Player player, ItemStack item, Modifier modifier, boolean fromCommand, boolean fromRandom) {
         if (!modifier.getKey().equals(ExtraModifier.instance().getKey())) {
-            if (!Modifier.checkAndAdd(player, item, modifier, modifier.getKey().toLowerCase().replace("-", ""), fromCommand, fromRandom)) {
+            if (!Modifier.checkAndAdd(player, item, modifier,
+                    modifier.getKey().toLowerCase().replace("-", ""), fromCommand, fromRandom)) {
                 return false;
             }
         }
@@ -337,10 +338,16 @@ public class ModManager {
             ItemMeta meta = item.getItemMeta();
 
             if (meta != null) {
-                if (Main.getPlugin().getConfig().getBoolean("HideEnchants")) {
+                if (Main.getPlugin().getConfig().getBoolean("HideEnchants", true)) {
                     meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 } else {
                     meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+                }
+
+                if (Main.getPlugin().getConfig().getBoolean("HideAttributes", true)) {
+                    meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                } else {
+                    meta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                 }
 
                 item.setItemMeta(meta);
@@ -443,9 +450,11 @@ public class ModManager {
      */
     public long getNextLevelReq(int level) {
         if (config.getBoolean("ProgressionIsLinear")) {
-            return (long) (Main.getPlugin().getConfig().getInt("LevelStep") * Main.getPlugin().getConfig().getDouble("LevelFactor") * (level - 1));
+            return Math.round(Main.getPlugin().getConfig().getInt("LevelStep")
+                    * Main.getPlugin().getConfig().getDouble("LevelFactor") * (level - 1));
         } else {
-            return (long) (Main.getPlugin().getConfig().getInt("LevelStep") * Math.pow(Main.getPlugin().getConfig().getDouble("LevelFactor"), (double) (level - 1)));
+            return Math.round(Main.getPlugin().getConfig().getInt("LevelStep")
+                    * Math.pow(Main.getPlugin().getConfig().getDouble("LevelFactor"), level - 1));
         }
     }
 
@@ -793,7 +802,9 @@ public class ModManager {
      * @return if the ItemStack is viable as MineTinker-Modifier-Item
      */
     public boolean isModifierItem(ItemStack item) {
-        return nbt.hasTag(item, "modifierItem") || item.getType().equals(Experienced.instance().getModItem().getType()) || item.getType().equals(ExtraModifier.instance().getModItem().getType());
+        return nbt.hasTag(item, "modifierItem")
+                || item.getType().equals(Experienced.instance().getModItem().getType())
+                || item.getType().equals(ExtraModifier.instance().getModItem().getType());
     }
 
     /**
@@ -872,7 +883,8 @@ public class ModManager {
         ItemMeta meta = tool.getItemMeta();
 
         if (meta instanceof Damageable) {
-            if (config.getBoolean("UnbreakableTools", true) && tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2) {
+            if (config.getBoolean("UnbreakableTools", true)
+                    && tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2) {
                 e.setCancelled(true);
 
                 if (config.getBoolean("Sound.OnBreaking", true)) {

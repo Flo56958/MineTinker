@@ -15,12 +15,21 @@ public class Lists {
 
     private static final FileConfiguration config = Main.getPlugin().getConfig();
 
-    public static final List<String> WORLDS = config.getStringList("BannedWorlds");
-    public static final List<String> WORLDS_BUILDERSWANDS = ConfigurationManager.getConfig("BuildersWand.yml").getStringList("BuildersWand.BannedWorlds");
-    public static final List<String> WORLDS_EASYHARVEST = config.getStringList("EasyHarvest.BannedWorlds");
+    public static List<String> WORLDS;
+    public static List<String> WORLDS_BUILDERSWANDS;
+    public static List<String> WORLDS_EASYHARVEST;
 
     public static final HashMap<Player, BlockFace> BLOCKFACE = new HashMap<>();
 
+    static {
+        reload();
+    }
+
+    public static void reload() {
+        WORLDS = config.getStringList("BannedWorlds");
+        WORLDS_BUILDERSWANDS = ConfigurationManager.getConfig("BuildersWand.yml").getStringList("BuildersWand.BannedWorlds");
+        WORLDS_EASYHARVEST = config.getStringList("EasyHarvest.BannedWorlds");
+    }
 
     /**
      * @return All Leaf Type

@@ -10,7 +10,6 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -74,11 +73,6 @@ public class Tanky extends Modifier {
         meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(), "generic.maxHealth", healthOnItem + this.healthPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
         meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(), "generic.maxHealth", healthOnItem + this.healthPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
 
-        if (Main.getPlugin().getConfig().getBoolean("HideAttributes")) {
-            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        } else {
-            meta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        }
         tool.setItemMeta(meta);
 
         return true;

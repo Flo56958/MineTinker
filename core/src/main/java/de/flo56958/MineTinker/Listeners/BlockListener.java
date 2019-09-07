@@ -26,7 +26,6 @@ import org.bukkit.inventory.ItemStack;
 
 public class BlockListener implements Listener {
 
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = ModManager.instance();
 
     //To cancel event if Tool would be broken so other plugins can react faster to MineTinker (e.g. PyroMining)
@@ -61,6 +60,8 @@ public class BlockListener implements Listener {
         if (!modManager.isToolViable(tool)) {
             return;
         }
+
+        FileConfiguration config = Main.getPlugin().getConfig();
 
         int expAmount = config.getInt("ExpPerBlockBreak");
         expAmount += config.getInt("ExtraExpPerBlock." + event.getBlock().getType().toString());
@@ -132,7 +133,7 @@ public class BlockListener implements Listener {
 
             norm.setAmount(temp);
 
-            if (b.getType() == Material.getMaterial(config.getString("BlockToEnchantModifiers"))) {
+            if (b.getType() == Material.getMaterial(Main.getPlugin().getConfig().getString("BlockToEnchantModifiers"))) {
                 ItemStack item = p.getInventory().getItemInMainHand();
 
                 for (Modifier m : modManager.getAllMods()) {
@@ -188,7 +189,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        modManager.addExp(player, tool, config.getInt("ExpPerBlockBreak"));
+        modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
 
         MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
         Bukkit.getPluginManager().callEvent(interactEvent);
@@ -233,7 +234,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        modManager.addExp(player, tool, config.getInt("ExpPerBlockBreak"));
+        modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
 
         MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
         Bukkit.getPluginManager().callEvent(interactEvent);
@@ -280,7 +281,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        modManager.addExp(player, tool, config.getInt("ExpPerBlockBreak"));
+        modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
 
         MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
         Bukkit.getPluginManager().callEvent(interactEvent);

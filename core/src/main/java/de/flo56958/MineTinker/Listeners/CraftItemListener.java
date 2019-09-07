@@ -17,7 +17,6 @@ import org.bukkit.inventory.ItemStack;
 
 public class CraftItemListener implements Listener {
 
-	private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = ModManager.instance();
 	
 	@EventHandler(ignoreCancelled = true)
@@ -27,7 +26,8 @@ public class CraftItemListener implements Listener {
 		}
 
         Player player = (Player) event.getWhoClicked();
-        
+        FileConfiguration config = Main.getPlugin().getConfig();
+
         if (config.getBoolean("Sound.OnEveryCrafting")) {
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
 
@@ -51,7 +51,7 @@ public class CraftItemListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPrepare(PrepareItemCraftEvent event) {
-	    if (config.getBoolean("ModifiersCanBeUsedForCrafting")) return;
+	    if (Main.getPlugin().getConfig().getBoolean("ModifiersCanBeUsedForCrafting")) return;
         CraftingInventory inv = event.getInventory();
         for (ItemStack is : inv.getMatrix()) {
             if (is == null) continue;

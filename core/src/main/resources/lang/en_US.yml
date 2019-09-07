@@ -103,6 +103,8 @@ TinkerListener.ToolLevelUp: "%tool has leveled up and is now Level %level!"
 
 Modifier.MaterialEntryNotFound: "Material entry not found! Aborting recipe registration for this modifier."
 Modifier:
+  Enchantable:
+    LevelsRequired: "%amount Levels required!"
   Anti-Arrow-Plating:
     Name: "Anti-Arrow-Plating"
     Description: "Armor mitigates projectile damage!"

@@ -11,7 +11,6 @@ import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,12 +26,10 @@ import java.util.List;
 
 public class AnvilListener implements Listener {
 
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = ModManager.instance();
 
     //<--- code from 27.07.2019 --->
     //reverted due to bugs in new implementation; newer implementation is commented out below
-    //TODO: Test if old code works with new modifier rework
     //changed method applyMod() to addMod() due to modifier rework
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent e) {
@@ -155,7 +152,7 @@ public class AnvilListener implements Listener {
         }
 
         if (modifier.getType().equals(Material.ENCHANTED_BOOK)) { //So no Tools can be enchanted via books, if enchanting is disabled
-            if (config.getBoolean("AllowEnchanting")) {
+            if (Main.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
                 // If enchanting is allowed, don't do anything
                 return;
             } else {
@@ -178,7 +175,7 @@ public class AnvilListener implements Listener {
             e.setResult(newTool);
             i.setRepairCost(0);
         } else {
-            if (config.getBoolean("Upgradeable") && player.hasPermission("minetinker.tool.upgrade")) {
+            if (Main.getPlugin().getConfig().getBoolean("Upgradeable") && player.hasPermission("minetinker.tool.upgrade")) {
                 ItemStack item = i.getItem(1);
 
                 if (item != null) {

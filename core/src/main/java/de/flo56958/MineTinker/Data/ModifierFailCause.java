@@ -14,7 +14,7 @@ public enum ModifierFailCause {
     NO_FREE_SLOTS;
 
     @Override
-    public String toString() { //TODO: relocate to Lang-config
+    public String toString() {
         return toString(null);
     }
 

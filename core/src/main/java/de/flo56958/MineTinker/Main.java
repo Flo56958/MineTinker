@@ -78,10 +78,6 @@ public class Main extends JavaPlugin {
         elytraConf.addDefault("Elytra.ExpChanceWhileFlying", 10);
         ConfigurationManager.saveConfig(elytraConf);
 
-        if (!getConfig().getBoolean("AllowEnchanting")) {
-            Bukkit.getPluginManager().registerEvents(new EnchantingTableListener(), this);
-        }
-
         if (getConfig().getBoolean("ConvertEnchantmentsOnEnchant")) {
             Bukkit.getPluginManager().registerEvents(new EnchantingListener(), this);
         }

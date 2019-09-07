@@ -9,8 +9,8 @@ import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,7 +23,6 @@ import org.bukkit.inventory.ItemStack;
 public class EasyHarvestListener implements Listener {
 
     private static final ModManager modManager = ModManager.instance();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     @EventHandler
     public void onHarvestTry(PlayerInteractEvent event) {
@@ -93,6 +92,8 @@ public class EasyHarvestListener implements Listener {
         String direction = PlayerInfo.getFacingDirection(player);
         Location location = block.getLocation();
         World world = location.getWorld();
+
+        FileConfiguration config = Main.getPlugin().getConfig();
 
         if (world == null) {
             return;
@@ -165,7 +166,7 @@ public class EasyHarvestListener implements Listener {
     }
 
     private static void replantCrops(Player p, Block b, Material m) {
-        if (config.getBoolean("EasyHarvest.replant")) {
+        if (Main.getPlugin().getConfig().getBoolean("EasyHarvest.replant")) {
             for (ItemStack is : p.getInventory().getContents()) {
 
                 if (is == null)  {
@@ -199,7 +200,7 @@ public class EasyHarvestListener implements Listener {
     }
 
     private static void playSound(Block b) {
-        if (config.getBoolean("EasyHarvest.Sound")) {
+        if (Main.getPlugin().getConfig().getBoolean("EasyHarvest.Sound")) {
             b.getWorld().playSound(b.getLocation(), Sound.ITEM_HOE_TILL, 1.0F, 0.5F);
         }
     }

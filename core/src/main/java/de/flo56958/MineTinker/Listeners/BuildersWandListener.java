@@ -38,7 +38,6 @@ public class BuildersWandListener implements Listener {
     private static FileConfiguration config;
     private static final ArrayList<ItemStack> wands = new ArrayList<>();
 
-    //TODO: MAKE CONFIG-RELOADABLE
     static {
     	modManager = ModManager.instance();
     	config = ConfigurationManager.getConfig("BuildersWand.yml");

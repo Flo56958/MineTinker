@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker.Commands;
 
 import de.flo56958.MineTinker.Data.GUIs;
+import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Listeners.BuildersWandListener;
 import de.flo56958.MineTinker.Main;
@@ -16,7 +17,6 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Recipe;
 import org.jetbrains.annotations.NotNull;
@@ -28,8 +28,15 @@ import java.util.List;
 
 public class Commands implements TabExecutor {
 
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
     private static final ModManager modManager = ModManager.instance();
+
+    private static ArrayList<String> numbers = new ArrayList<>();
+
+    static {
+        for (int i = 0; i < 10; i++) {
+            numbers.add(Integer.toString(i));
+        }
+    }
 
     /**
      * all commands
@@ -44,6 +51,7 @@ public class Commands implements TabExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
+        //TODO: Consider HashMap for Commands and Functions
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (sender.hasPermission("minetinker.commands.main")) {
@@ -108,7 +116,7 @@ public class Commands implements TabExecutor {
                         case "modifiers":
                         case "mods":
                             if (player.hasPermission("minetinker.commands.modifiers")) {
-                                Functions.modList(player);
+                                Functions.modList(player, args);
                             } else noPerm(player);
                             break;
                         case "name":
@@ -168,7 +176,7 @@ public class Commands implements TabExecutor {
                         break;
                     case "modifiers":
                     case "mods":
-                        Functions.modList(sender);
+                        Functions.modList(sender, args);
                         break;
                     case "reload":
                     case "r":
@@ -340,6 +348,7 @@ public class Commands implements TabExecutor {
         Main.getPlugin().reloadConfig();
         ChatWriter.reload();
         ConfigurationManager.reload();
+        Lists.reload();
 
         LanguageManager.reload();
 
@@ -354,7 +363,7 @@ public class Commands implements TabExecutor {
 
         ChatWriter.sendMessage(sender, ChatColor.WHITE,  LanguageManager.getString("Commands.Reload.Finish", player));
 
-        if (config.getBoolean("CheckForUpdates")) {
+        if (Main.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
             Bukkit.getScheduler().scheduleAsyncDelayedTask(Main.getPlugin(), Updater::checkForUpdate, 20);
         }
 
@@ -363,11 +372,6 @@ public class Commands implements TabExecutor {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         ArrayList<String> result = new ArrayList<>();
-        ArrayList<String> numbers = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            numbers.add(Integer.toString(i));
-        }
 
         switch (args.length) {
             case 0:
@@ -391,42 +395,62 @@ public class Commands implements TabExecutor {
                     case "givemodifieritem":
                     case "gm":
                         if (sender instanceof Player) {
-                            for (Modifier mod : modManager.getAllowedMods()) {
-                                result.add(mod.getName());
+                            if (sender.hasPermission("minetinker.commands." + args[0])) {
+                                for (Modifier mod : modManager.getAllowedMods()) {
+                                    result.add(mod.getName());
+                                }
                             }
                         }
                         break;
                     case "removemod":
                     case "rm":
                         if (sender instanceof Player) {
-                            for (Modifier mod : modManager.getAllowedMods()) {
-                                if (modManager.hasMod(((Player) sender).getInventory().getItemInMainHand(), mod)) {
-                                    result.add(mod.getName());
+                            if (sender.hasPermission("minetinker.commands." + args[0])) {
+                                for (Modifier mod : modManager.getAllowedMods()) {
+                                    if (modManager.hasMod(((Player) sender).getInventory().getItemInMainHand(), mod)) {
+                                        result.add(mod.getName());
+                                    }
                                 }
                             }
                         }
                         break;
                     case "give":
                     case "g":
-                        for (ToolType type : ToolType.values()) {
-                            for (Material mat : type.getToolMaterials()) {
-                                result.add(mat.toString());
+                        if (sender.hasPermission("minetinker.commands." + args[0])) {
+                            for (ToolType type : ToolType.values()) {
+                                for (Material mat : type.getToolMaterials()) {
+                                    result.add(mat.toString());
+                                }
                             }
                         }
+                        break;
+                    case "addexp":
+                    case "ae":
+                        if (sender.hasPermission("minetinker.commands." + args[0])) {
+                            result.addAll(numbers);
+                        }
+                        break;
                 }
                 break;
+
             case 3:
                 switch (args[0]) {
                     case "givemodifieritem":
                     case "gm":
-                        result.addAll(numbers);
+                        if (sender.hasPermission("minetinker.commands." + args[0])) {
+                            result.addAll(numbers);
+                        }
                 }
+                break;
+
             case 4:
                 switch (args[0]) {
                     case "givemodifieritem":
                     case "gm":
-                        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                            result.add(onlinePlayer.getName());
+                        if (sender.hasPermission("minetinker.commands." + args[0])) {
+                            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                                result.add(onlinePlayer.getName());
+                            }
                         }
                         break;
                 }

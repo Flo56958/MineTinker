@@ -27,7 +27,6 @@ import java.util.Random;
 public class ArmorListener implements Listener {
 
     private static final ModManager modManager = ModManager.instance();
-    private static final FileConfiguration config = Main.getPlugin().getConfig();
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
@@ -72,6 +71,8 @@ public class ArmorListener implements Listener {
             MTEntityDamageByEntityEvent damageByEntityEvent = new MTEntityDamageByEntityEvent(player, piece, entity, event);
             Bukkit.getPluginManager().callEvent(damageByEntityEvent);
 
+            FileConfiguration config = Main.getPlugin().getConfig();
+
             int amount = config.getInt("ExpPerEntityHit");
 
             if (config.getBoolean("EnableDamageExp")) {
@@ -107,6 +108,8 @@ public class ArmorListener implements Listener {
 
             Bukkit.getPluginManager().callEvent(new MTEntityDamageEvent(p, piece, event));
 
+            FileConfiguration config = Main.getPlugin().getConfig();
+
             int amount = config.getInt("ExpPerEntityHit") / 2;
 
             if (config.getBoolean("EnableDamageExp")) {
@@ -135,7 +138,7 @@ public class ArmorListener implements Listener {
         int chance = rand.nextInt(100);
 
         if (chance < ConfigurationManager.getConfig("Elytra.yml").getInt("Elytra.ExpChanceWhileFlying")) {
-            modManager.addExp(event.getPlayer(), event.getItem(), config.getInt("ExpPerEntityHit"));
+            modManager.addExp(event.getPlayer(), event.getItem(), Main.getPlugin().getConfig().getInt("ExpPerEntityHit"));
         }
 
         SelfRepair.instance().effectElytra(event.getPlayer(), event.getItem());

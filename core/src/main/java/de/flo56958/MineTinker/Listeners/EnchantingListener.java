@@ -1,5 +1,7 @@
 package de.flo56958.MineTinker.Listeners;
 
+import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import org.bukkit.Material;
@@ -18,7 +20,7 @@ import java.util.Map;
 
 public class EnchantingListener implements Listener {
 
-    ModManager modManager = ModManager.instance();
+    private ModManager modManager = ModManager.instance();
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onTableEnchant(EnchantItemEvent event) {
@@ -50,6 +52,23 @@ public class EnchantingListener implements Listener {
 
         // The enchants should be added when calling applyMod
         event.getEnchantsToAdd().clear();
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onEnchant(EnchantItemEvent event) {
+        if (Lists.WORLDS.contains(event.getEnchanter().getWorld().getName())) {
+            return;
+        }
+
+        if (Main.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
+            return;
+        }
+
+        ItemStack tool = event.getItem();
+
+        if (modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool)) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
@@ -91,6 +110,5 @@ public class EnchantingListener implements Listener {
         }
 
         // TODO: Refund enchantment levels lost due to removeEnchantment and addMod
-        // TODO: Have the resulting item actually show the modifiers
     }
 }

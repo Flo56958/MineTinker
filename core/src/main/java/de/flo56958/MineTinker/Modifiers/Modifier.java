@@ -321,7 +321,7 @@ public abstract class Modifier {
         _createModifierItem(getConfig(), p, this, getName());
     }
 
-    public void _createModifierItem(FileConfiguration config, Player p, Modifier mod, String modifier) {
+    private void _createModifierItem(FileConfiguration config, Player p, Modifier mod, String modifier) {
         if (config.getBoolean(modifier + ".Recipe.Enabled")) {
             return;
         }
@@ -359,7 +359,7 @@ public abstract class Modifier {
 
             ChatWriter.log(false, p.getDisplayName() + " created a " + mod.getName() + "-Modifiers!");
         } else {
-            ChatWriter.sendActionBar(p, ChatColor.RED + "" + config.getInt(modifier + ".EnchantCost") + " levels required!");
+            ChatWriter.sendActionBar(p, ChatColor.RED + LanguageManager.getString("Modifier.Enchantable.LevelsRequired", p).replace("%amount", "" + config.getInt(modifier + ".EnchantCost")));
             ChatWriter.log(false, p.getDisplayName() + " tried to create a " + mod.getName() + "-Modifiers but had not enough levels!");
         }
 
