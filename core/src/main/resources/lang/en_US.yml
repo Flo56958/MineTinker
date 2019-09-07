@@ -186,7 +186,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Knockback-Modifier"
   Lifesteal:
     Name: "Lifesteal"
-    Description: "Heals you %amount% of the dealt damage. %chance% to trigger.!"
+    Description: "Heals you %amount% of the dealt damage. %chance% to trigger."
     ModifierItemName: "Bloodinfused Netherrack"
     DescriptionModifierItem: "Modifier-Item for the Lifesteal-Modifier"
   Light-Weight:
@@ -221,7 +221,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Poisonous-Modifier"
   Power:
     Name: "Power"
-    Description: "Destroy more blocks per swing with your tool!!"
+    Description: "Destroy more blocks per swing with your tool!"
     ModifierItemName: "Enchanted Emerald"
     DescriptionModifierItem: "Modifier-Item for the Power-Modifier"
   Propelling:
@@ -266,7 +266,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Smite-Modifier"
   Soulbound:
     Name: "Soulbound"
-    Description: "Do not lose your tool when dying."
+    Description: "Do not lose your items when dying."
     ModifierItemName: "Powerinfused Beacon"
     DescriptionModifierItem: "Modifier-Item for the Soulbound-Modifier"
   Speedy:
