@@ -309,20 +309,20 @@ public abstract class Modifier {
 
     // ---------------------- Enchantable Stuff ----------------------
 
-    public void enchantItem(Player p, ItemStack item) {
+    public void enchantItem(Player p) {
         if (!isEnchantable()) {
             return;
         }
 
-        if (!p.hasPermission("minetinker.modifiers." + getName().replace("-", "").toLowerCase() + ".craft")) {
+        if (!p.hasPermission("minetinker.modifiers." + getKey().replace("-", "").toLowerCase() + ".craft")) {
             return;
         }
 
-        _createModifierItem(getConfig(), p, this, getName());
+        _createModifierItem(p);
     }
 
-    private void _createModifierItem(FileConfiguration config, Player p, Modifier mod, String modifier) {
-        if (config.getBoolean(modifier + ".Recipe.Enabled")) {
+    private void _createModifierItem(Player p) {
+        if (getConfig().getBoolean("Recipe.Enabled")) {
             return;
         }
 
@@ -335,32 +335,34 @@ public abstract class Modifier {
         }
 
         if (p.getGameMode() == GameMode.CREATIVE) {
-            world.dropItemNaturally(location, mod.getModItem());
-
-            if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-                p.playSound(location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
-            }
-
-            ChatWriter.log(false, p.getDisplayName() + " created a " + mod.getName() + "-Modifiers in Creative!");
-        } else if (p.getLevel() >= config.getInt(modifier + ".EnchantCost")) {
-            int amount = inventory.getItemInMainHand().getAmount();
-            int newLevel = p.getLevel() - config.getInt(modifier + ".EnchantCost");
-
-            p.setLevel(newLevel);
-            inventory.getItemInMainHand().setAmount(amount - 1);
-
-            if (inventory.addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
-                world.dropItem(location, mod.getModItem());
+            if (inventory.addItem(getModItem()).size() != 0) { //adds items to (full) inventory
+                world.dropItem(location, getModItem());
             } // no else as it gets added in if
 
             if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
                 p.playSound(location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
             }
 
-            ChatWriter.log(false, p.getDisplayName() + " created a " + mod.getName() + "-Modifiers!");
+            ChatWriter.log(false, p.getDisplayName() + " created a " + getName() + "-Modifiers in Creative!");
+        } else if (p.getLevel() >= getEnchantCost()) {
+            int amount = inventory.getItemInMainHand().getAmount();
+            int newLevel = p.getLevel() - getEnchantCost();
+
+            p.setLevel(newLevel);
+            inventory.getItemInMainHand().setAmount(amount - 1);
+
+            if (inventory.addItem(getModItem()).size() != 0) { //adds items to (full) inventory
+                world.dropItem(location, getModItem());
+            } // no else as it gets added in if
+
+            if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
+                p.playSound(location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+            }
+
+            ChatWriter.log(false, p.getDisplayName() + " created a " + getName() + "-Modifiers!");
         } else {
-            ChatWriter.sendActionBar(p, ChatColor.RED + LanguageManager.getString("Modifier.Enchantable.LevelsRequired", p).replace("%amount", "" + config.getInt(modifier + ".EnchantCost")));
-            ChatWriter.log(false, p.getDisplayName() + " tried to create a " + mod.getName() + "-Modifiers but had not enough levels!");
+            ChatWriter.sendActionBar(p, ChatColor.RED + LanguageManager.getString("Modifier.Enchantable.LevelsRequired", p).replace("%amount", "" + getEnchantCost()));
+            ChatWriter.log(false, p.getDisplayName() + " tried to create a " + getName() + "-Modifiers but had not enough levels!");
         }
 
     }

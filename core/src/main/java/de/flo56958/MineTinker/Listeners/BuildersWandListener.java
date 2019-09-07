@@ -168,6 +168,7 @@ public class BuildersWandListener implements Listener {
             ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
             ChatWriter.logError(LanguageManager.getString("Builderswand.Error.CraftWood")); //executes if the recipe could not initialize
+            e.printStackTrace();
         }
         try {
             NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Stone");
@@ -188,6 +189,7 @@ public class BuildersWandListener implements Listener {
             ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
             ChatWriter.logError(LanguageManager.getString("Builderswand.Error.CraftStone")); //executes if the recipe could not initialize
+            e.printStackTrace();
         }
         try {
             NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Iron");
@@ -207,6 +209,7 @@ public class BuildersWandListener implements Listener {
             ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
             ChatWriter.logError(LanguageManager.getString("Builderswand.Error.CraftIron")); //executes if the recipe could not initialize
+            e.printStackTrace();
         }
         try {
             NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Gold");
@@ -227,6 +230,7 @@ public class BuildersWandListener implements Listener {
             ModManager.instance().recipe_Namespaces.add(nkey);
         } catch (Exception e) {
             ChatWriter.logError(LanguageManager.getString("Builderswand.Error.CraftGold")); //executes if the recipe could not initialize
+            e.printStackTrace();
         }
         try {
             NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Diamond");

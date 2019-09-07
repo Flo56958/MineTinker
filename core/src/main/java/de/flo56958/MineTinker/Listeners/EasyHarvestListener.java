@@ -125,17 +125,20 @@ public class EasyHarvestListener implements Listener {
                 } else {
                     return;
                 }
-
-                Ageable blockOneAgeable = (Ageable)b1.getBlockData();
-                if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
-                    breakBlock(b1, player);
-                    replantCrops(player, b1, type);
+                if (b1.getBlockData() instanceof Ageable) {
+                    Ageable blockOneAgeable = (Ageable) b1.getBlockData();
+                    if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
+                        breakBlock(b1, player);
+                        replantCrops(player, b1, type);
+                    }
                 }
 
-                Ageable blockTwoAgeable = (Ageable)b1.getBlockData();
-                if (b2.getType().equals(block.getType()) && (blockTwoAgeable.getAge() == blockTwoAgeable.getMaximumAge())) {
-                    breakBlock(b2, player);
-                    replantCrops(player, b2, type);
+                if (b2.getBlockData() instanceof Ageable) {
+                    Ageable blockTwoAgeable = (Ageable) b2.getBlockData();
+                    if (b2.getType().equals(block.getType()) && (blockTwoAgeable.getAge() == blockTwoAgeable.getMaximumAge())) {
+                        breakBlock(b2, player);
+                        replantCrops(player, b2, type);
+                    }
                 }
             } else {
                 for (int x = -(level - 1); x <= (level - 1); x++) {
@@ -147,7 +150,7 @@ public class EasyHarvestListener implements Listener {
                                 continue;
                             }
 
-                            Ageable blockOneAgeable = (Ageable)b1.getBlockData();
+                            Ageable blockOneAgeable = (Ageable) b1.getBlockData();
 
                             if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
                                 breakBlock(b1, player);

@@ -14,7 +14,6 @@ Commands.NoPermission: "Vous n'avez pas la permission pour effectuer cette actio
 Commands.Help.Website: "Pour plus d'aide visiter:"
 Commands.Help.Discord: "Ou demander sur le serveur discord MineTinker"
 Commands.Reload.Note1: "Note: Il est possible que le plugin ne fonctionne pas correctement après le rechargement! Il est recommandé de redémarrer le serveur!"
-Commands.Reload.Note2: "Note: Les Builderswands ont besoin d'un redémarrage complet pour fonctionner correctement sur les nouvelles configurations!"
 Commands.Reload.Recipes: "Recettes effacer!"
 Commands.Reload.Configs: "Configuration recharger!"
 Commands.Reload.ModManager: "ModManager recharger!"

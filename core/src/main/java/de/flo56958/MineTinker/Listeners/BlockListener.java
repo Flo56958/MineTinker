@@ -119,27 +119,19 @@ public class BlockListener implements Listener {
                 }
             }
 
-            int temp = norm.getAmount();
-            norm.setAmount(1);
-
-            for (Modifier m : modManager.getAllowedMods()) {
-                if (m.getModItem().equals(norm)) {
-                    norm.setAmount(temp);
-                    event.setCancelled(true);
-
-                    return;
-                }
+            if (modManager.isModifierItem(norm)) {
+                event.setCancelled(true);
+                return;
             }
-
-            norm.setAmount(temp);
 
             if (b.getType() == Material.getMaterial(Main.getPlugin().getConfig().getString("BlockToEnchantModifiers"))) {
                 ItemStack item = p.getInventory().getItemInMainHand();
 
                 for (Modifier m : modManager.getAllMods()) {
                     if (m.getModItem().getType().equals(item.getType())) {
-                        m.enchantItem(p, item);
+                        m.enchantItem(p);
                         event.setCancelled(true);
+                        break;
                     }
                 }
             }
@@ -147,7 +139,7 @@ public class BlockListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public static void onHoeUse(PlayerInteractEvent event) {
+    public void onHoeUse(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
         if (Lists.WORLDS.contains(player.getWorld().getName())) {
@@ -241,7 +233,7 @@ public class BlockListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public static void onShovelUse(PlayerInteractEvent event) {
+    public void onShovelUse(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
         if (Lists.WORLDS.contains(player.getWorld().getName())) {

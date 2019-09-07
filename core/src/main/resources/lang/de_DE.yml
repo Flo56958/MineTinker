@@ -31,7 +31,6 @@ Commands.NoPermission: "Du hast nicht die erforderlichen Befugnisse, um diese Ak
 Commands.Help.Website: "Für mehr tiefgründige Hilfe besuche:"
 Commands.Help.Discord: "Oder frage auf dem offiziellen MineTinker-Discordserver nach:"
 Commands.Reload.Note1: "BEACHTE: Es ist möglich, dass das Plugin nach einem Neuladen nicht mehr richtig funktioniert und es zu Fehlern kommen könnte. Ein Neustarten des Servers ist empfohlen!"
-Commands.Reload.Note2: "BEACHTE: Die Stäbe der Erbauer brauchen einen kompletten Neustart, um mit der neuen Konfiguration richtig zu funktionieren!"
 Commands.Reload.Recipes: "Entfernen der Crafting Rezepte!"
 Commands.Reload.Configs: "Neuladen der Konfigurationen!"
 Commands.Reload.ModManager: "Neuladen des Modifikationsmanagers!"

@@ -18,6 +18,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.jetbrains.annotations.NotNull;
 
@@ -321,24 +322,24 @@ public class Commands implements TabExecutor {
         }
 
         ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.Reload.Note1", player));
-        ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.Reload.Note2", player));
 
         ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Reload.Recipes", player));
 
-        Iterator<Recipe> it = Main.getPlugin().getServer().recipeIterator(); //TODO: Better algorithm for removing recipes from modifiers
+        Iterator<Recipe> it = Main.getPlugin().getServer().recipeIterator(); //TODO: Find a different way to remove recipes! Bukkit is bugged atm
 
         while (it.hasNext()) {
-            Recipe rec = it.next();
+            ItemStack result = it.next().getResult();
 
-            for (Modifier mod : modManager.getAllMods()) {
-                if (mod.getModItem().equals(rec.getResult())) {
+            if (result.getType() != Material.EXPERIENCE_BOTTLE && result.getType() == Material.NETHER_STAR) {
+                //Modifieritems
+                if (modManager.isModifierItem(result)) {
                     it.remove();
-                    break;
                 }
-            }
 
-            if (BuildersWandListener.getWands().contains(rec.getResult())) {
-                it.remove();
+                //Builderswands
+                else if (modManager.isWandViable(result)) {
+                    it.remove();
+                }
             }
         }
 
