@@ -1,7 +1,7 @@
 Alert.OnItemBreak: "%RED%Görünüşe göre aletin kırılmış! 1 sağlamlıkla geri veriyorum."
 
 StartUp.Commands: "Kayıtlı komutlar!"
-StartUp.BuildersWands: "İnşaatçıAsaları etkinleştirildi!"
+StartUp.BuildersWands: "İnşaatçı Asaları etkinleştirildi!"
 StartUp.EasyHarvest: "KolayHasat etkinleştirildi!"
 StartUp.Events: "Kayıtlı Etkinlikler!"
 StartUp.GUIs: "GUIler yükleniyor!"
@@ -48,12 +48,40 @@ Commands.ItemStatistics.Exp: "%GOLD%Deneyim: %WHITE%%current / %nextlevel"
 Commands.ItemStatistics.FreeSlots: "%GOLD%Boşta modifikasyon yuvaları: %WHITE%%slots"
 Commands.ItemStatistics.Modifiers: "%WHITE%Modifikasyonlar:"
 
+GUI.ButtonAction.REQUEST_INPUT: "Girişiniz %data için gerekiyor. Sonraki sohbet mesajınız MineTinker tarafından yakalanacak ve girişiniz olacak."
+
 GUIs.Forward: "İleri"
 GUIs.Back: "Geri"
+GUIs.LeftClick: "Sol-Tıklama"
+GUIs.RightClick: "Sağ-Tıklama"
+GUIs.MiddleClick: "Orta-Tıklama"
+GUIs.BackOtherMenu: "Diğer Menüye dönün"
 GUIs.Modifiers.Title: "MineTinker-Modifikasyonları, %pageNo"
 GUIs.Modifiers.MaxLevel: "Maks. Seviye: %maxLevel"
 GUIs.Modifiers.WorksOn: "%BLUE%Şunlarda Çalışır:"
 GUIs.Modifiers.EnchantCost: "%YELLOW%Büyüleme Ücreti: %WHITE%%enchantCost"
+GUIs.ConfigurationEditor.Change: "%key artık %old değil, %new!"
+GUIs.ConfigurationEditor.Type: "Çeşit: %type"
+GUIs.ConfigurationEditor.Value: "Değer: %GOLD%%value"
+GUIs.ConfigurationEditor.UnsupportedType: "Bu çeşit desteklenmiyor ve değiştirilemez!"
+GUIs.ConfigurationEditor.WrongInput: "Girdiniz doğru değildi! %type beklerken, %input buldum!"
+GUIs.ConfigurationEditor.Title: "Ayarlar Yöneticisi, Sayfa %pageNo"
+GUIs.ConfigurationEditor.TitleConfigs: "%config, %pageNo. sayfa"
+GUIs.ConfigurationEditor.IncrementValueClick: "%key ile %amount arttırın!"
+GUIs.ConfigurationEditor.DecrementValueClick: "%key ile %amount azaltın!"
+GUIs.ConfigurationEditor.InsertValue: "%key ile yeni bir değer girin!"
+GUIs.ConfigurationEditor.ToggleValue: "%key ile kapatıp açın!"
+
+GUIs.ConfigurationEditor.config.PluginIncompatibility.Check: "Uyumsuz eklentiler için aramayı etkinleştirir ve MineTinker düzgün bir şekilde davranmaya çalışır (mesela ayarları değiştirerek)"
+GUIs.ConfigurationEditor.config.PluginIncompatibility.SkippedPlugins: "Listede belirtilen eklentiler için aramayı kapatır."
+GUIs.ConfigurationEditor.config.CheckForUpdates: "Başlatmada ve yeniden yüklemelerde güncellemeleri kontrol eder"
+GUIs.ConfigurationEditor.config.chat-messages: "SohbetMesajları'nı (örn. Komut çıktıları) etkinleştir "
+GUIs.ConfigurationEditor.config.LevelStep: "değer *( SeviyeFaktörü^AletSeviyesi) [Üslü]; *(SeviyeFaktörü * AletSeviyesi) [Düz]"
+GUIs.ConfigurationEditor.config.ProgressionIsLinear: "false:Üslü, true:Düz"
+GUIs.ConfigurationEditor.config.ResetAtVarOverflow: "Deneyimi ve seviyeyi Integer.MAX_VALUE de veya Long.MAX_VALUE de 0 ve 1 ile sıfırlar. false: Deneyim artık kazanılmaz"
+GUIs.ConfigurationEditor.config.logging.standard: "önemli oyuncu aktivitelerini MineTinker ile günlükler"
+GUIs.ConfigurationEditor.config.logging.debug: "daha da fazla bilgi konsola yazdırılır"
+GUIs.ConfigurationEditor.config.logging.metrics: "MineTinker'ın anonim kullanım istatistikleri için bStats-Ölçümleri"
 
 ModManager.RegisterModifier: "%mod %GREEN%modifikasyonu %plugin %GREEN%tarafından kaydedildi."
 ModManager.UnregisterModifier: "%mod %GREEN%modifikasyonu %plugin %GREEN%tarafından kaldırıldı."
@@ -74,6 +102,8 @@ TinkerListener.ToolLevelUp: "%tool seviye atladı ve artık Seviye %level!"
 
 Modifier.MaterialEntryNotFound: "Materyal girişi bulunamadı! Bu modifikasyon için tarif kayıtı iptal ediliyor."
 Modifier:
+  Enchantable:
+    LevelsRequired: "%amount seviye gerekli!"
   Anti-Arrow-Plating:
     Name: "Anti-Ok-Plaka"
     Description: "Zırhınız atılan cisimlerin hasarını azaltır!"
@@ -157,7 +187,7 @@ Modifier:
     DescriptionModifierItem: "Geri-Tepme-Modifikasyonu için Modifikasyon-Eşyası"
   Lifesteal:
     Name: "Kan-Emici"
-    Description: "Verilen hasarın %amount% kadarı canını doldurur. %chance% ihtimalle tetiklenir."
+    Description: "Verilen hasarın %amount% kadarıyla canını doldurur. %chance% ihtimalle tetiklenir."
     ModifierItemName: "Kanlı Nether Taşı"
     DescriptionModifierItem: "Kan-Emici-Modifikasyonu için Modifikasyon-Eşyası"
   Light-Weight:
@@ -192,7 +222,7 @@ Modifier:
     DescriptionModifierItem: "Zehirli-Modifikasyonu için Modifikasyon-Eşyası"
   Power:
     Name: "Güç"
-    Description: "Eşyanı her sallayışında daha fazla blok kır!"
+    Description: "Aletini her sallayışında daha fazla blok kır!"
     ModifierItemName: "Büyülü Zümrüt"
     DescriptionModifierItem: "Güç-Modifikasyonu için Modifikasyon-Eşyası"
   Propelling:
