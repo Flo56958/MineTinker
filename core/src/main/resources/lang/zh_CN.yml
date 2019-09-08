@@ -209,7 +209,7 @@ Modifier:
     Name: "多重射击"
     Description: "让发射的箭矢集束散射!"
     ModifierItemName: "集束箭"
-    DecriptionModifierItem: "多重射击模块"
+    DescriptionModifierItem: "多重射击模块"
   Piercing:
     Name: "穿透"
     Description: "穿刺并透过敌人!"

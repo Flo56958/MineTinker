@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MultiShot extends Modifier {
+
     private static MultiShot instance;
 
     public static MultiShot instance() {
@@ -95,6 +96,6 @@ public class MultiShot extends Modifier {
             tool.setItemMeta(meta);
         }
 
-        return false;
+        return true;
     }
 }

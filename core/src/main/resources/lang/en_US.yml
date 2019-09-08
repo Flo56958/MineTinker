@@ -209,7 +209,7 @@ Modifier:
     Name: "Multishot"
     Description: "Shoot more Arrows per shot!"
     ModifierItemName: "Multi-Arrow"
-    DecriptionModifierItem: "Modifier-Item for the Multishot-Modifier"
+    DescriptionModifierItem: "Modifier-Item for the Multishot-Modifier"
   Piercing:
     Name: "Piercing"
     Description: "Arrows pass through multiple enemies!"

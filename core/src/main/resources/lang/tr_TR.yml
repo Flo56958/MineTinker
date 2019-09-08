@@ -209,7 +209,7 @@ Modifier:
     Name: "Çoklu-Sıkım"
     Description: "Her kullanışınızda daha fazla ok sıkın!"
     ModifierItemName: "Çoklu-Ok"
-    DecriptionModifierItem: "Çoklu-Sıkım-Modifikasyonu için Modifikasyon-Eşyası"
+    DescriptionModifierItem: "Çoklu-Sıkım-Modifikasyonu için Modifikasyon-Eşyası"
   Piercing:
     Name: "Delici"
     Description: "Oklar düşmanları delip geçer!"

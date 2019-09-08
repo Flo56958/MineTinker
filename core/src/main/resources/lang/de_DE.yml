@@ -209,7 +209,7 @@ Modifier:
     Name: "Multischuss"
     Description: "Schieße mehr Pfeile pro Schuss!"
     ModifierItemName: "Multi-Pfeil"
-    DecriptionModifierItem: "Modifizierungs-Item für die Multischuss-Modifikation"
+    DescriptionModifierItem: "Modifizierungs-Item für die Multischuss-Modifikation"
   Piercing:
     Name: "Durchbohrend"
     Description: "Pfeile durchbohren mehrere Gegner!"
