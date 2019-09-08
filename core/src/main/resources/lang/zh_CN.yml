@@ -1,7 +1,7 @@
 Alert.OnItemBreak: "%RED%看上去你的工具被用坏了! 已以1耐久返还."
 
 StartUp.Commands: "指令已注册!"
-StartUp.BuildersWands: "建造工具杖已启用!"
+StartUp.BuildersWands: "已启用建造工具杖!"
 StartUp.EasyHarvest: "简易农作物收割已启用!"
 StartUp.Events: "事件已注册!"
 StartUp.GUIs: "正在加载用户界面!"
@@ -48,12 +48,40 @@ Commands.ItemStatistics.Exp: "%GOLD%经验: %WHITE%%current/%nextlevel"
 Commands.ItemStatistics.FreeSlots: "%GOLD%空余槽位: %WHITE%%slots"
 Commands.ItemStatistics.Modifiers: "%WHITE%模块:"
 
+GUI.ButtonAction.REQUEST_INPUT: "你需要手动为%data键入信息. 你在聊天框中发送的下一个消息会被MineTinker截取作为信息录入."
+
 GUIs.Forward: "下一页"
 GUIs.Back: "上一页"
+GUIs.LeftClick: "鼠标左键单击"
+GUIs.RightClick: "鼠标右键单击"
+GUIs.MiddleClick: "鼠标中键单击"
+GUIs.BackOtherMenu: "返回其他菜单"
 GUIs.Modifiers.Title: "MineTinker模块, 第%pageNo页"
 GUIs.Modifiers.MaxLevel: "最高等级: %maxLevel"
 GUIs.Modifiers.WorksOn: "%BLUE%适用于:"
 GUIs.Modifiers.EnchantCost: "%YELLOW%所需经验: %WHITE%%enchantCost"
+GUIs.ConfigurationEditor.Change: "已将%key从%old更改为%new!"
+GUIs.ConfigurationEditor.Type: "种类: %type"
+GUIs.ConfigurationEditor.Value: "键值: %GOLD%%value"
+GUIs.ConfigurationEditor.UnsupportedType: "目前尚不支持该种类, 无法编辑!"
+GUIs.ConfigurationEditor.WrongInput: "输入值错误! 需要%type, 但键入的是%input!"
+GUIs.ConfigurationEditor.Title: "配置文件管理器, 第%pageNo页"
+GUIs.ConfigurationEditor.TitleConfigs: "%config, 第%pageNo页"
+GUIs.ConfigurationEditor.IncrementValueClick: "%key以增加%amount!"
+GUIs.ConfigurationEditor.DecrementValueClick: "%key以减少%amount!"
+GUIs.ConfigurationEditor.InsertValue: "%key以手动键入新值!"
+GUIs.ConfigurationEditor.ToggleValue: "%key以调整开关!"
+
+GUIs.ConfigurationEditor.config.PluginIncompatibility.Check: "开启MineTinker搜索不兼容插件并尝试主动应对的功能 (如: 主动更改配置文件设定.)"
+GUIs.ConfigurationEditor.config.PluginIncompatibility.SkippedPlugins: "禁用对该列表内插件的搜索"
+GUIs.ConfigurationEditor.config.CheckForUpdates: "插件启动/重载时检查更新"
+GUIs.ConfigurationEditor.config.chat-messages: "启用聊天栏信息(如命令输出信息)"
+GUIs.ConfigurationEditor.config.LevelStep: "初始值 * (等级因数^工具等级) [指数式升级]; *(等级因数*工具等级) [线性式升级]"
+GUIs.ConfigurationEditor.config.ProgressionIsLinear: "false为指数式, true则为线性式"
+GUIs.ConfigurationEditor.config.ResetAtVarOverflow: "在等级和经验达到整型数值最大值(2147483647)或长整型数值最大值(9223372036854775807)时重置为初始等级. false: 不进行重置, 锁定在最大值."
+GUIs.ConfigurationEditor.config.logging.standard: "记录重要的玩家活动."
+GUIs.ConfigurationEditor.config.logging.debug: "在控制台中打印更多信息"
+GUIs.ConfigurationEditor.config.logging.metrics: "使用bStats进行匿名统计, 以采集MineTinker相关数据."
 
 ModManager.RegisterModifier: "%GREEN%已从%plugin插件注册了%mod%GREEN%模块."
 ModManager.UnregisterModifier: "%GREEN%已从%plugin插件注销了%mod%GREEN%模块."
@@ -74,6 +102,8 @@ TinkerListener.ToolLevelUp: "%tool的级别晋升到了%level!"
 
 Modifier.MaterialEntryNotFound: "模块材料未定义! 当前模块的合成配方已被取消注册."
 Modifier:
+  Enchantable:
+    LevelsRequired: "需要%amount级经验!"
   Anti-Arrow-Plating:
     Name: "抗箭矢镀层"
     Description: "护甲将削弱箭矢造成的伤害!"
@@ -157,7 +187,7 @@ Modifier:
     DescriptionModifierItem: "击退模块"
   Lifesteal:
     Name: "生命汲取"
-    Description: "攻击敌人可以补充生命值!"
+    Description: "按照你造成伤害的%amount%对你进行治愈. 触发几率为%chance%."
     ModifierItemName: "浸血地狱岩"
     DescriptionModifierItem: "生命汲取模块"
   Light-Weight:
@@ -192,9 +222,9 @@ Modifier:
     DescriptionModifierItem: "剧毒模块"
   Power:
     Name: "强力"
-    Description: "工具可以一次采掘更多方块!"
+    Description: "工具可以一次性采掘更多方块!"
     ModifierItemName: "附魔绿宝石"
-    DescriptionModifierItem: "强力模块, 适合采掘工具(包括锄头)."
+    DescriptionModifierItem: "强力模块"
   Propelling:
     Name: "推进"
     Description: "在空中按下潜行键以获得推进效果."
@@ -237,7 +267,7 @@ Modifier:
     DescriptionModifierItem: "亡灵杀手模块"
   Soulbound:
     Name: "灵魂绑定"
-    Description: "死亡时不掉落该装备."
+    Description: "死亡时不掉落物品."
     ModifierItemName: "蕴能信标"
     DescriptionModifierItem: "灵魂绑定模块"
   Speedy:
