@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -49,12 +50,13 @@ public class CraftItemListener implements Listener {
 		}
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPrepare(PrepareItemCraftEvent event) {
 	    if (Main.getPlugin().getConfig().getBoolean("ModifiersCanBeUsedForCrafting")) return;
         CraftingInventory inv = event.getInventory();
         for (ItemStack is : inv.getMatrix()) {
             if (is == null) continue;
+            if (is.getType() == Material.EXPERIENCE_BOTTLE || is.getType() == Material.NETHER_STAR) continue;
             if (modManager.isModifierItem(is)) {
                 inv.setResult(null);
                 break;
