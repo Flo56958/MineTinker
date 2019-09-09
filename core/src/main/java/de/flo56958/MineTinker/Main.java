@@ -82,7 +82,7 @@ public class Main extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new EnchantingListener(), this);
         }
 
-        if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("BuildersWand.enabled")) {
+        if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("enabled")) {
             Bukkit.getPluginManager().registerEvents(new BuildersWandListener(), this);
             BuildersWandListener.reload();
             ChatWriter.log(false, LanguageManager.getString("StartUp.BuildersWands"));

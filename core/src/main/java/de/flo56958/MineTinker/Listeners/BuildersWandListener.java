@@ -152,10 +152,10 @@ public class BuildersWandListener implements Listener {
         try {
             NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Wood");
             ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(0)); //init recipe
-            String top = config.getString("BuildersWand.Recipes.Wood.Top");
-            String middle = config.getString("BuildersWand.Recipes.Wood.Middle");
-            String bottom = config.getString("BuildersWand.Recipes.Wood.Bottom");
-            ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Wood.Materials");
+            String top = config.getString("Recipes.Wood.Top");
+            String middle = config.getString("Recipes.Wood.Middle");
+            String bottom = config.getString("Recipes.Wood.Bottom");
+            ConfigurationSection materials = config.getConfigurationSection("Recipes.Wood.Materials");
 
             // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
@@ -173,10 +173,10 @@ public class BuildersWandListener implements Listener {
         try {
             NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Stone");
             ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(1)); //init recipe
-            String top = config.getString("BuildersWand.Recipes.Stone.Top");
-            String middle = config.getString("BuildersWand.Recipes.Stone.Middle");
-            String bottom = config.getString("BuildersWand.Recipes.Stone.Bottom");
-            ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Stone.Materials");
+            String top = config.getString("Recipes.Stone.Top");
+            String middle = config.getString("Recipes.Stone.Middle");
+            String bottom = config.getString("Recipes.Stone.Bottom");
+            ConfigurationSection materials = config.getConfigurationSection("Recipes.Stone.Materials");
 
             // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
@@ -194,10 +194,10 @@ public class BuildersWandListener implements Listener {
         try {
             NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Iron");
             ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(2)); //init recipe
-            String top = config.getString("BuildersWand.Recipes.Iron.Top");
-            String middle = config.getString("BuildersWand.Recipes.Iron.Middle");
-            String bottom = config.getString("BuildersWand.Recipes.Iron.Bottom");
-            ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Iron.Materials");
+            String top = config.getString("Recipes.Iron.Top");
+            String middle = config.getString("Recipes.Iron.Middle");
+            String bottom = config.getString("Recipes.Iron.Bottom");
+            ConfigurationSection materials = config.getConfigurationSection("Recipes.Iron.Materials");
 
             newRecipe.shape(top, middle, bottom); //makes recipe
 
@@ -214,10 +214,10 @@ public class BuildersWandListener implements Listener {
         try {
             NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Gold");
             ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(3)); //init recipe
-            String top = config.getString("BuildersWand.Recipes.Gold.Top");
-            String middle = config.getString("BuildersWand.Recipes.Gold.Middle");
-            String bottom = config.getString("BuildersWand.Recipes.Gold.Bottom");
-            ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Gold.Materials");
+            String top = config.getString("Recipes.Gold.Top");
+            String middle = config.getString("Recipes.Gold.Middle");
+            String bottom = config.getString("Recipes.Gold.Bottom");
+            ConfigurationSection materials = config.getConfigurationSection("Recipes.Gold.Materials");
 
             // TODO: Make safe
             newRecipe.shape(top, middle, bottom); //makes recipe
@@ -235,10 +235,10 @@ public class BuildersWandListener implements Listener {
         try {
             NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Diamond");
             ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(4)); //init recipe
-            String top = config.getString("BuildersWand.Recipes.Diamond.Top");
-            String middle = config.getString("BuildersWand.Recipes.Diamond.Middle");
-            String bottom = config.getString("BuildersWand.Recipes.Diamond.Bottom");
-            ConfigurationSection materials = config.getConfigurationSection("BuildersWand.Recipes.Diamond.Materials");
+            String top = config.getString("Recipes.Diamond.Top");
+            String middle = config.getString("Recipes.Diamond.Middle");
+            String bottom = config.getString("Recipes.Diamond.Bottom");
+            ConfigurationSection materials = config.getConfigurationSection("Recipes.Diamond.Materials");
 
             newRecipe.shape(top, middle, bottom); //makes recipe
 
