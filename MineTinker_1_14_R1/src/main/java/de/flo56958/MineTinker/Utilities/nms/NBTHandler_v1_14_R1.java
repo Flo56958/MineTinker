@@ -5,9 +5,11 @@ import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 class NBTHandler_v1_14_R1 extends NBTHandler {
@@ -153,5 +155,10 @@ class NBTHandler_v1_14_R1 extends NBTHandler {
     @Override
     public void playerBreakBlock(Player p, Block block) {
         ((CraftPlayer) p).getHandle().playerInteractManager.breakBlock(new BlockPosition(block.getX(), block.getY(), block.getZ()));
+    }
+
+    @Override
+    public Iterator<Recipe> getRecipeIterator() {
+        return new RecipeIterator_v1_14_R1();
     }
 }

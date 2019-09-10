@@ -11,6 +11,7 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.Utilities.Updater;
+import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -322,22 +323,22 @@ public class Commands implements TabExecutor {
         }
 
         ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.Reload.Note1", player));
-
         ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Reload.Recipes", player));
 
-        Iterator<Recipe> it = Main.getPlugin().getServer().recipeIterator(); //TODO: Find a different way to remove recipes! Bukkit is bugged atm
+        Iterator<Recipe> it = NBTUtils.getHandler().getRecipeIterator(); //TODO: Find a different way to remove recipes! Bukkit is bugged atm
 
         while (it.hasNext()) {
             ItemStack result = it.next().getResult();
 
-            if (result.getType() != Material.EXPERIENCE_BOTTLE && result.getType() == Material.NETHER_STAR) {
+            if (result.getType() != Material.EXPERIENCE_BOTTLE && result.getType() != Material.NETHER_STAR) {
                 //Modifieritems
                 if (modManager.isModifierItem(result)) {
                     it.remove();
+                    continue;
                 }
 
                 //Builderswands
-                else if (modManager.isWandViable(result)) {
+                if (modManager.isWandViable(result)) {
                     it.remove();
                 }
             }

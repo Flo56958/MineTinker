@@ -3,7 +3,9 @@ package de.flo56958.MineTinker.Utilities.nms;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 
+import java.util.Iterator;
 import java.util.List;
 
 public abstract class NBTHandler {
@@ -21,4 +23,6 @@ public abstract class NBTHandler {
     public abstract void removeTag(ItemStack item, String key);
 
     public abstract void playerBreakBlock(Player p, Block block);
+
+    public abstract Iterator<Recipe> getRecipeIterator();
 }
