@@ -35,6 +35,9 @@ public class ModManager {
     private static FileConfiguration layout;
     private final static NBTHandler nbt;
 
+    private String ToolIdentifier;
+    private String ArmorIdentifier;
+
     static {
         nbt = NBTUtils.getHandler();
         config = Main.getPlugin().getConfig();
@@ -116,6 +119,9 @@ public class ModManager {
 
     	allMods.sort(Comparator.comparing(Modifier::getName));
         mods.sort(Comparator.comparing(Modifier::getName));
+
+        this.ToolIdentifier = config.getString("ToolIdentifier");
+        this.ArmorIdentifier = config.getString("ArmorIdentifier");
 
     	for (Modifier m : this.mods) {
             m.registerCraftingRecipe();
@@ -513,7 +519,7 @@ public class ModManager {
      * @return if the ItemStack is viable as MineTinker-Armor
      */
     public boolean isArmorViable(ItemStack armor) {
-        return armor != null && nbt.hasTag(armor, "IdentifierArmor");
+        return armor != null && nbt.hasTag(armor, this.ArmorIdentifier);
     }
 
     /**
@@ -521,7 +527,7 @@ public class ModManager {
      * @return if the ItemStack is viable as MineTinker-Tool
      */
     public boolean isToolViable(ItemStack tool) {
-        return tool != null && nbt.hasTag(tool, "IdentifierTool");
+        return tool != null && nbt.hasTag(tool, this.ToolIdentifier);
     }
 
     /**
@@ -561,6 +567,7 @@ public class ModManager {
             s = s.replaceAll("%NEXT_LEVEL_EXP%", "" + nextLevelReq_);
             s = s.replaceAll("%FREE_SLOTS%", "" + freeSlots_);
 
+            s = ChatColor.WHITE + s;
             lore.set(i, s);
         }
 
@@ -629,13 +636,13 @@ public class ModManager {
                 || ToolType.SHEARS.contains(m)
                 || ToolType.SHIELD.contains(m)
                 || ToolType.FISHINGROD.contains(m)) && !isWandViable(is)) {
-            nbt.setInt(is, "IdentifierTool", 0);
+            nbt.setInt(is, this.ToolIdentifier, 0);
         } else if (ToolType.BOOTS.contains(m)
                 || ToolType.CHESTPLATE.contains(m)
                 || ToolType.HELMET.contains(m)
                 || ToolType.LEGGINGS.contains(m)
                 || ToolType.ELYTRA.contains(m)) {
-            nbt.setInt(is, "IdentifierArmor", 0);
+            nbt.setInt(is, this.ArmorIdentifier, 0);
         } else {
             return false;
         }
@@ -644,41 +651,53 @@ public class ModManager {
         setLevel(is, 1);
         setFreeSlots(is, config.getInt("StartingModifierSlots"));
         rewriteLore(is);
-
         ItemMeta meta = is.getItemMeta();
 
         if (meta != null) {
-            for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
-                Modifier modifier = getModifierFromEnchantment(entry.getKey());
+            if (Main.getPlugin().getConfig().getBoolean("ConvertEnchantsAndAttributes")) {
 
-                if (modifier == null) {
-                    continue;
+                for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
+                    Modifier modifier = getModifierFromEnchantment(entry.getKey());
+
+                    if (modifier == null) {
+                        continue;
+                    }
+
+                    meta.removeEnchant(entry.getKey());
+
+                    for (int i = 0; i < entry.getValue(); i++) {
+                        addMod(is, modifier);
+                    }
                 }
 
-                meta.removeEnchant(entry.getKey());
+                if (meta.getAttributeModifiers() == null) {
+                    return true;
+                }
 
-                for (int i = 0; i < entry.getValue(); i++) {
+                for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : meta.getAttributeModifiers().asMap().entrySet()) {
+                    Modifier modifier = getModifierFromAttribute(entry.getKey());
+
+                    if (modifier == null) {
+                        continue;
+                    }
+
+                    meta.removeAttributeModifier(entry.getKey());
+
                     addMod(is, modifier);
                 }
-            }
 
-            addArmorAttributes(is);
-
-            if (meta.getAttributeModifiers() == null) {
-                return true;
-            }
-
-            for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : meta.getAttributeModifiers().asMap().entrySet()) {
-                Modifier modifier = getModifierFromAttribute(entry.getKey());
-
-                if (modifier == null) {
-                    continue;
+            } else {
+                for (Enchantment enchantment : Enchantment.values()) {
+                    meta.removeEnchant(enchantment);
                 }
 
-                meta.removeAttributeModifier(entry.getKey());
+                for (Attribute attribute : Attribute.values()) {
+                    meta.removeAttributeModifier(attribute);
+                }
 
-                addMod(is, modifier);
+                is.setItemMeta(meta);
             }
+            addArmorAttributes(is);
         }
 
         return true;
