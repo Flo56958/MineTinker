@@ -380,9 +380,12 @@ public class ModManager {
      * @param mod the modifier to remove
      */
     public void removeMod(ItemStack is, Modifier mod) {
-        nbt.removeTag(is, mod.getKey());
-        mod.removeMod(is);
-        rewriteLore(is);
+        if (hasMod(is, mod)) {
+            nbt.removeTag(is, mod.getKey());
+            mod.removeMod(is);
+            rewriteLore(is);
+            System.out.println("Done " + mod.getKey());
+        }
     }
 
     /**
@@ -624,6 +627,10 @@ public class ModManager {
      */
     public boolean convertItemStack(ItemStack is) {
         Material m = is.getType();
+        int damage = 0;
+        if (is.getItemMeta() instanceof Damageable) {
+            damage = ((Damageable) is.getItemMeta()).getDamage();
+        }
 
         if ((ToolType.AXE.contains(m)
                 || ToolType.BOW.contains(m)
@@ -647,6 +654,14 @@ public class ModManager {
             return false;
         }
 
+        if (!Main.getPlugin().getConfig().getBoolean("ConvertEnchantsAndAttributes")) {
+            ItemMeta meta = new ItemStack(is.getType(), is.getAmount()).getItemMeta();
+            if (meta instanceof Damageable) {
+                ((Damageable) meta).setDamage(damage);
+            }
+            is.setItemMeta(meta);
+        }
+
         setExp(is, 0);
         setLevel(is, 1);
         setFreeSlots(is, config.getInt("StartingModifierSlots"));
@@ -666,7 +681,9 @@ public class ModManager {
                     meta.removeEnchant(entry.getKey());
 
                     for (int i = 0; i < entry.getValue(); i++) {
-                        addMod(is, modifier);
+                        if (!hasMod(is, modifier)) { //else: already "applied"
+                            addMod(is, modifier);
+                        }
                     }
                 }
 
@@ -683,27 +700,13 @@ public class ModManager {
 
                     meta.removeAttributeModifier(entry.getKey());
 
-                    addMod(is, modifier);
+                    if (!hasMod(is, modifier)) { //else: already "applied"
+                        addMod(is, modifier);
+                    }
                 }
-
-            } else {
-                for (Enchantment enchantment : Enchantment.values()) {
-                    meta.removeEnchant(enchantment);
-                }
-
-                for (Attribute attribute : Attribute.values()) {
-                    meta.removeAttributeModifier(attribute);
-                }
-
-                for (Modifier mod : allMods) {
-                    NBTUtils.getHandler().removeTag(is, mod.getKey());
-                }
-
-                is.setItemMeta(meta);
             }
             addArmorAttributes(is);
         }
-
         return true;
     }
 

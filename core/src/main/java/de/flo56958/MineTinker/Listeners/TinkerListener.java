@@ -174,16 +174,16 @@ public class TinkerListener implements Listener {
                                 int index;
 
                                 do {
+                                    if (mods.isEmpty()) {
+                                        break;
+                                    } //Secures that the while will terminate after some time (if all modifiers were removed)
+
                                     index = new Random().nextInt(mods.size());
                                     appliedRandomMod = modManager.addMod(player, tool, mods.get(index), true, true);
 
                                     if (!appliedRandomMod) {
                                         mods.remove(index); //Remove the failed modifier from the the list of the possibles
                                     }
-
-                                    if (mods.isEmpty()) {
-                                        break;
-                                    } //Secures that the while will terminate after some time (if all modifiers were removed)
                                 } while (!appliedRandomMod);
                             }
                             break;
@@ -208,11 +208,13 @@ public class TinkerListener implements Listener {
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.5F);
         }
 
-        if (config.getInt("AddModifierSlotsPerLevel") > 0 && !(config.getBoolean("LevelUpEvents.RandomModifier.DisableAddingNewSlots") && appliedRandomMod)) {
+        int amount = config.getInt("AddModifierSlotsPerLevel");
+
+        if (amount > 0 && !(config.getBoolean("LevelUpEvents.RandomModifier.DisableAddingNewSlots") && appliedRandomMod)) {
             int slots = modManager.getFreeSlots(tool);
 
             if (!(slots == Integer.MAX_VALUE || slots < 0)) {
-                slots += config.getInt("AddModifierSlotsPerLevel");
+                slots += amount;
             } else {
                 slots = Integer.MAX_VALUE;
             }
