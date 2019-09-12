@@ -10,6 +10,7 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Modifiers.Types.ExtraModifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
 import org.bukkit.ChatColor;
@@ -99,7 +100,7 @@ public class TinkerListener implements Listener {
         Player player = event.getPlayer();
         ItemStack tool = event.getTool();
 
-        FileConfiguration config = Main.getPlugin().getConfig();
+        FileConfiguration config = ConfigurationManager.getConfig("config.yml");
 
         boolean appliedRandomMod = false;
 
@@ -127,8 +128,25 @@ public class TinkerListener implements Listener {
                     Material m = Material.getMaterial(Lists.DROPLOOT.get(index));
 
                     if (m != null) {
-                        int amount = rand.nextInt(config.getInt("LevelUpEvents.DropLoot.maximumDrop") - config.getInt("LevelUpEvents.DropLoot.minimumDrop"));
-                        amount = amount + config.getInt("LevelUpEvents.DropLoot.minimumDrop");
+                        int max = config.getInt("LevelUpEvents.DropLoot.maximumDrop");
+                        int min = config.getInt("LevelUpEvents.DropLoot.minimumDrop");
+                        int amount = 0;
+
+                        if (max == min) {
+                            amount = min;
+                        } else if (max < min) { //if the user has configured the options wrongly
+                            config.set("LevelUpEvents.DropLoot.maximumDrop", min);
+                            config.set("LevelUpEvents.DropLoot.minimumDrop", max);
+                            ConfigurationManager.saveConfig(config);
+
+                            int temp = min;
+                            min = max;
+                            max = temp;
+                        }
+
+                        if (amount == 0 && max - min > 0) {
+                            amount = rand.nextInt(max - min) + min;
+                        }
 
                         ItemStack drop = new ItemStack(m, amount);
 

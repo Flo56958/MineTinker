@@ -695,6 +695,10 @@ public class ModManager {
                     meta.removeAttributeModifier(attribute);
                 }
 
+                for (Modifier mod : allMods) {
+                    NBTUtils.getHandler().removeTag(is, mod.getKey());
+                }
+
                 is.setItemMeta(meta);
             }
             addArmorAttributes(is);
