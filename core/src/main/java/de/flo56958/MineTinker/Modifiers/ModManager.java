@@ -595,15 +595,37 @@ public class ModManager {
 
         ItemMeta meta = is.getItemMeta();
 
-        /*
-         * For mcMMO-Superbreaker and other Skills
-         */
-
         if (meta != null) {
             ArrayList<String> oldLore = (ArrayList<String>) meta.getLore();
 
-            if (oldLore != null && oldLore.size() > 0 && oldLore.get(oldLore.size() - 1).equals("mcMMO Ability Tool")) {
-                lore.add("mcMMO Ability Tool");
+            if (oldLore != null) {
+                //clean up lore from old MineTinker-Lore
+                ArrayList<String> toRemove = new ArrayList<>();
+                for (String s : oldLore) {
+                    boolean removed = false;
+                    for (String m : this.loreScheme) {
+                        if (s.matches("[§f]{0,2}" +
+                                m.replace("%LEVEL%", "[a-zA-Z0-9&§]+?")
+                                        .replace("%EXP%", "[a-zA-Z0-9&§]+?")
+                                        .replace("%FREE_SLOTS%", "[a-zA-Z0-9&§]+?")
+                                        .replace("%NEXT_LEVEL_EXP%", "[a-zA-Z0-9&§]+?"))) {
+                            toRemove.add(s);
+                            removed = true;
+                            break;
+                        }
+                    }
+                    if (removed) continue;
+                    for (Modifier m : this.mods) {
+                        if (s.contains(m.getColor() + m.getName())) {
+                            toRemove.add(s);
+                            removed = true;
+                            break;
+                        }
+                    }
+                }
+                oldLore.removeAll(toRemove);
+                //add not MineTinker-Lore
+                lore.addAll(oldLore);
             }
 
             meta.setLore(lore);
