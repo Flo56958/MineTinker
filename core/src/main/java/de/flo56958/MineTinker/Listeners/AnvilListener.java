@@ -142,14 +142,18 @@ public class AnvilListener implements Listener {
         }
 
         //-----
+        System.out.println("1.");
 
         if (Lists.WORLDS.contains(player.getWorld().getName())) {
             return;
         }
 
+        System.out.println("1.5");
+
         if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) {
             return;
         }
+        System.out.println("2.");
 
         if (modifier.getType().equals(Material.ENCHANTED_BOOK)) { //So no Tools can be enchanted via books, if enchanting is disabled
             if (Main.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
@@ -164,16 +168,16 @@ public class AnvilListener implements Listener {
 
         Modifier mod = modManager.getModifierFromItem(modifier);
 
-        ItemStack newTool;
+        ItemStack newTool = null;
+        System.out.println("3.");
 
         if (mod != null) {
             newTool = tool.clone();
+            System.out.println("4.");
             if (!modManager.addMod(player, newTool, mod, false, false)) {
                 return;
             }
-
-            e.setResult(newTool);
-            i.setRepairCost(0);
+            System.out.println("5.");
         } else {
             if (Main.getPlugin().getConfig().getBoolean("Upgradeable") && player.hasPermission("minetinker.tool.upgrade")) {
                 ItemStack item = i.getItem(1);
@@ -183,55 +187,48 @@ public class AnvilListener implements Listener {
                         case 1:
                             if (ToolType.SHOVEL.contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
-                                e.setResult(newTool);
-                                i.setRepairCost(0);
                             }
                             break;
                         case 2:
                             if (ToolType.SWORD.contains(tool.getType()) || ToolType.HOE.contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
-                                e.setResult(newTool);
-                                i.setRepairCost(0);
                             }
                             break;
                         case 3:
                             if (ToolType.AXE.contains(tool.getType()) || ToolType.PICKAXE.contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
-                                e.setResult(newTool);
-                                i.setRepairCost(0);
                             }
                             break;
                         case 4:
                             if (ToolType.BOOTS.contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
-                                e.setResult(newTool);
-                                i.setRepairCost(0);
                             }
                             break;
                         case 5:
                             if (ToolType.HELMET.contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
-                                e.setResult(newTool);
-                                i.setRepairCost(0);
                             }
                             break;
                         case 7:
                             if (ToolType.LEGGINGS.contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
-                                e.setResult(newTool);
-                                i.setRepairCost(0);
                             }
                             break;
                         case 8:
                             if (ToolType.CHESTPLATE.contains(tool.getType())) {
                                 newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
-                                e.setResult(newTool);
-                                i.setRepairCost(0);
                             }
                             break;
                     }
                 }
             }
+        }
+        System.out.println("6.");
+
+        if (newTool != null) {
+            System.out.println("7.");
+            e.setResult(newTool);
+            i.setRepairCost(0);
         }
     }
 

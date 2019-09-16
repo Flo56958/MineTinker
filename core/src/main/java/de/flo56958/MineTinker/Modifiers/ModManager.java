@@ -530,6 +530,7 @@ public class ModManager {
      * @return if the ItemStack is viable as MineTinker-Tool
      */
     public boolean isToolViable(ItemStack tool) {
+        System.out.println("Saved " + this.ToolIdentifier);
         return tool != null && nbt.hasTag(tool, this.ToolIdentifier);
     }
 
