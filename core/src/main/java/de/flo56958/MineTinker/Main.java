@@ -123,6 +123,7 @@ public class Main extends JavaPlugin {
         ChatWriter.logInfo(LanguageManager.getString("StartUp.Incompatible.Start"));
         List<String> skipped = getConfig().getStringList("PluginIncompatibility.SkippedPlugins");
 
+        //TODO: Change to UsePatternMatcher
         Zenchantments: {
             String name = "Zenchantments";
             if (skipped.contains(name)) break Zenchantments;

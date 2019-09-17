@@ -46,6 +46,7 @@ public class ModManager {
         layout.addDefault("UseRomans.FreeSlots", false);
         layout.addDefault("UseRomans.ModifierLevels", true);
         layout.addDefault("OverrideLanguagesystem", false);
+        layout.addDefault("UsePatternMatcher", false); //for plugin compatibility
 
         ArrayList<String> loreLayout = new ArrayList<>();
         loreLayout.add("%GOLD%Level %WHITE%%LEVEL%");
@@ -596,36 +597,47 @@ public class ModManager {
         ItemMeta meta = is.getItemMeta();
 
         if (meta != null) {
-            ArrayList<String> oldLore = (ArrayList<String>) meta.getLore();
+            if (layout.getBoolean("UsePatternMatcher", false)) {
+                List<String> oldLore = meta.getLore();
+                if (oldLore != null) {
+                    //clean up lore from old MineTinker-Lore
+                    ArrayList<String> toRemove = new ArrayList<>();
+                    for (String s : oldLore) {
+                        boolean removed = false;
+                        for (String m : this.loreScheme) {
+                            if (s.matches("[§f]{0,2}" +
+                                    m.replace("%LEVEL%", "[a-zA-Z0-9&§]+?")
+                                            .replace("%EXP%", "[a-zA-Z0-9&§]+?")
+                                            .replace("%FREE_SLOTS%", "[a-zA-Z0-9&§]+?")
+                                            .replace("%NEXT_LEVEL_EXP%", "[a-zA-Z0-9&§]+?"))) {
+                                toRemove.add(s);
+                                removed = true;
+                                break;
+                            }
+                        }
+                        if (removed) continue;
+                        for (Modifier m : this.mods) {
+                            if (s.contains(m.getColor() + m.getName())) {
+                                toRemove.add(s);
+                                removed = true;
+                                break;
+                            }
+                        }
+                    }
 
-            if (oldLore != null) {
-                //clean up lore from old MineTinker-Lore
-                ArrayList<String> toRemove = new ArrayList<>();
-                for (String s : oldLore) {
-                    boolean removed = false;
-                    for (String m : this.loreScheme) {
-                        if (s.matches("[§f]{0,2}" +
-                                m.replace("%LEVEL%", "[a-zA-Z0-9&§]+?")
-                                        .replace("%EXP%", "[a-zA-Z0-9&§]+?")
-                                        .replace("%FREE_SLOTS%", "[a-zA-Z0-9&§]+?")
-                                        .replace("%NEXT_LEVEL_EXP%", "[a-zA-Z0-9&§]+?"))) {
-                            toRemove.add(s);
-                            removed = true;
-                            break;
+                    if(toRemove.size() > 0) {
+                        int startIndex = oldLore.indexOf(toRemove.get(0));
+                        //add Lore that was before MineTinker in front of it again
+                        for (int i = 0; i < startIndex; i++) {
+                            lore.add(i, oldLore.get(0));
+                            oldLore.remove(0);
                         }
+                        oldLore.removeAll(toRemove);
                     }
-                    if (removed) continue;
-                    for (Modifier m : this.mods) {
-                        if (s.contains(m.getColor() + m.getName())) {
-                            toRemove.add(s);
-                            removed = true;
-                            break;
-                        }
-                    }
+
+                    //add not MineTinker-Lore
+                    lore.addAll(oldLore);
                 }
-                oldLore.removeAll(toRemove);
-                //add not MineTinker-Lore
-                lore.addAll(oldLore);
             }
 
             meta.setLore(lore);
