@@ -384,7 +384,6 @@ public class ModManager {
             nbt.removeTag(is, mod.getKey());
             mod.removeMod(is);
             rewriteLore(is);
-            System.out.println("Done " + mod.getKey());
         }
     }
 
@@ -530,7 +529,6 @@ public class ModManager {
      * @return if the ItemStack is viable as MineTinker-Tool
      */
     public boolean isToolViable(ItemStack tool) {
-        System.out.println("Saved " + this.ToolIdentifier);
         return tool != null && nbt.hasTag(tool, this.ToolIdentifier);
     }
 
@@ -633,6 +631,14 @@ public class ModManager {
             damage = ((Damageable) is.getItemMeta()).getDamage();
         }
 
+        if (!Main.getPlugin().getConfig().getBoolean("ConvertEnchantsAndAttributes")) {
+            ItemMeta meta = new ItemStack(is.getType(), is.getAmount()).getItemMeta();
+            if (meta instanceof Damageable) {
+                ((Damageable) meta).setDamage(damage);
+            }
+            is.setItemMeta(meta);
+        }
+
         if ((ToolType.AXE.contains(m)
                 || ToolType.BOW.contains(m)
                 || ToolType.CROSSBOW.contains(m)
@@ -653,14 +659,6 @@ public class ModManager {
             nbt.setInt(is, this.ArmorIdentifier, 0);
         } else {
             return false;
-        }
-
-        if (!Main.getPlugin().getConfig().getBoolean("ConvertEnchantsAndAttributes")) {
-            ItemMeta meta = new ItemStack(is.getType(), is.getAmount()).getItemMeta();
-            if (meta instanceof Damageable) {
-                ((Damageable) meta).setDamage(damage);
-            }
-            is.setItemMeta(meta);
         }
 
         setExp(is, 0);

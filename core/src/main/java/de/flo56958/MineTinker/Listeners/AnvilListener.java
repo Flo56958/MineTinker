@@ -142,18 +142,13 @@ public class AnvilListener implements Listener {
         }
 
         //-----
-        System.out.println("1.");
-
         if (Lists.WORLDS.contains(player.getWorld().getName())) {
             return;
         }
 
-        System.out.println("1.5");
-
         if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) {
             return;
         }
-        System.out.println("2.");
 
         if (modifier.getType().equals(Material.ENCHANTED_BOOK)) { //So no Tools can be enchanted via books, if enchanting is disabled
             if (Main.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
@@ -169,15 +164,12 @@ public class AnvilListener implements Listener {
         Modifier mod = modManager.getModifierFromItem(modifier);
 
         ItemStack newTool = null;
-        System.out.println("3.");
 
         if (mod != null) {
             newTool = tool.clone();
-            System.out.println("4.");
             if (!modManager.addMod(player, newTool, mod, false, false)) {
                 return;
             }
-            System.out.println("5.");
         } else {
             if (Main.getPlugin().getConfig().getBoolean("Upgradeable") && player.hasPermission("minetinker.tool.upgrade")) {
                 ItemStack item = i.getItem(1);
@@ -223,10 +215,8 @@ public class AnvilListener implements Listener {
                 }
             }
         }
-        System.out.println("6.");
 
         if (newTool != null) {
-            System.out.println("7.");
             e.setResult(newTool);
             i.setRepairCost(0);
         }
