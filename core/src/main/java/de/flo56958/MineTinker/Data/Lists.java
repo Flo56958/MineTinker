@@ -31,6 +31,17 @@ public class Lists {
         WORLDS_EASYHARVEST = config.getStringList("EasyHarvest.BannedWorlds");
     }
 
+    public static ArrayList<Material> getLetherArmor() {
+        ArrayList<Material> mats = new ArrayList<>();
+
+        mats.add(Material.LEATHER_CHESTPLATE);
+        mats.add(Material.LEATHER_HELMET);
+        mats.add(Material.LEATHER_BOOTS);
+        mats.add(Material.LEATHER_LEGGINGS);
+
+        return mats;
+    }
+
     /**
      * @return All Leaf Type
      */

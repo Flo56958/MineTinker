@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 public class CreateToolListener implements Listener {
 
@@ -19,6 +20,21 @@ public class CreateToolListener implements Listener {
     public void PrepareCraft(PrepareItemCraftEvent event) {
         if (event.getRecipe() == null) {
             return;
+        }
+
+        //checking for dye process
+        for (ItemStack item : event.getInventory().getMatrix()) {
+            if (item == null) continue;
+            if (item.getType() == Material.AIR) continue;
+            if (!Lists.getLetherArmor().contains(item.getType())) continue; //not leather armor
+            if (item.getType() != event.getInventory().getResult().getType()) break; //Not a dye process
+
+            ItemMeta gridMeta = item.getItemMeta();
+            ItemMeta resultMeta = event.getInventory().getResult().getItemMeta();
+            if (gridMeta instanceof LeatherArmorMeta && resultMeta instanceof LeatherArmorMeta) {
+                if (!((LeatherArmorMeta) gridMeta).getColor().equals(((LeatherArmorMeta) resultMeta).getColor())) return; //dye process - abort converting
+            }
+            break;
         }
 
         Player player = null;

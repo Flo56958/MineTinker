@@ -7,6 +7,7 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Modifiers.Types.Soulbound;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,7 +31,9 @@ public class ItemListener implements Listener {
         Item item = event.getEntity();
         ItemStack is = item.getItemStack();
 
-        if (!((modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is)) || (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems") && modManager.isModifierItem(is)))) {
+        if (!((modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))
+                || (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems") && modManager.isModifierItem(is)
+                    && !(is.getType() == Material.NETHER_STAR || is.getType() == Material.EXPERIENCE_BOTTLE)))) {
             return;
         }
 
