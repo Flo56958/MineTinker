@@ -170,15 +170,18 @@ public class GUI implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onClick(InventoryClickEvent event) {
-        Window w = getWindowFromInventory(event.getClickedInventory());
+        Window w1 = getWindowFromInventory(event.getClickedInventory());
+        Window w2 = getWindowFromInventory(event.getWhoClicked().getOpenInventory().getTopInventory());
 
-        if (w == null) {
+        if (w1 == null && w2 == null) {
             return;
         }
 
         event.setCancelled(true);
 
-        Window.Button clickedButton = w.getButtonFromSlot(event.getSlot());
+        if (w1 == null) return;
+
+        Window.Button clickedButton = w1.getButtonFromSlot(event.getSlot());
 
         if (clickedButton != null) {
             clickedButton.executeAction(event);
@@ -198,21 +201,13 @@ public class GUI implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onMove(InventoryMoveItemEvent event) {
-        Window w = getWindowFromInventory(event.getDestination());
+        Window w1 = getWindowFromInventory(event.getDestination());
 
-        if (w == null) {
-            return;
-        }
+        Window w2 = getWindowFromInventory(event.getInitiator());
 
-        w = getWindowFromInventory(event.getInitiator());
-        if (w == null) {
-            return;
-        }
+        Window w3 = getWindowFromInventory(event.getSource());
 
-        w = getWindowFromInventory(event.getSource());
-        if (w == null) {
-            return;
-        }
+        if (w1 == null && w2 == null && w3 == null) return;
 
         event.setCancelled(true);
     }

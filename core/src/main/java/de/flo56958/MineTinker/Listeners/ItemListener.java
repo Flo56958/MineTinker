@@ -55,15 +55,17 @@ public class ItemListener implements Listener {
         boolean isMineTinker = false;
 
         if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) {
-            ItemStack modifierTester = is.clone();
-            modifierTester.setAmount(1);
+        	if (!(is.getType() == Material.NETHER_STAR || is.getType() == Material.EXPERIENCE_BOTTLE)) {
+				ItemStack modifierTester = is.clone();
+				modifierTester.setAmount(1);
 
-            for (Modifier m : modManager.getAllowedMods()) {
-                if (m.getModItem().equals(modifierTester)) {
-                    isMineTinker = true;
-                    break;
-                }
-            }
+				for (Modifier m : modManager.getAllowedMods()) {
+					if (m.getModItem().equals(modifierTester)) {
+						isMineTinker = true;
+						break;
+					}
+				}
+			}
         }
         if (modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is)) {
             isMineTinker = true;
