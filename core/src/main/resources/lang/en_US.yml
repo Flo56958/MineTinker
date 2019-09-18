@@ -210,6 +210,11 @@ Modifier:
     Description: "Shoot more Arrows per shot!"
     ModifierItemName: "Multi-Arrow"
     DescriptionModifierItem: "Modifier-Item for the Multishot-Modifier"
+  Photosynthesis:
+    Name: "Photosynthesis"
+    Description: "Repair your item with %amount durability per level every %ticks Ticks when standing still while the sun shines. The longer you stand still the faster it repairs. (%multiplier%)"
+    ModifierItemName: "Extracted Chlorophyll"
+    DescriptionModifierItem: "%WHITE%Modifier-Item for the Photosynthesis-Modifier"
   Piercing:
     Name: "Piercing"
     Description: "Arrows pass through multiple enemies!"

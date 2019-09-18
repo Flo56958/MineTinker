@@ -155,6 +155,7 @@ public class ModManager {
         incompatibilityList.add(Infinity.instance().getKey() + ":" + Propelling.instance().getKey());
         incompatibilityList.add(MultiShot.instance().getKey() + ":" + Piercing.instance().getKey());
         incompatibilityList.add(Power.instance().getKey() + ":" + Timber.instance().getKey());
+        incompatibilityList.add(SelfRepair.instance().getKey() + ":" + Photosynthesis.instance().getKey());
         incompatibilityList.sort(String::compareToIgnoreCase);
 
         modifierconfig.addDefault("Incompatibilities", incompatibilityList);
@@ -246,6 +247,7 @@ public class ModManager {
     	allMods.add(LightWeight.instance());
         allMods.add(Luck.instance());
         allMods.add(Melting.instance());
+        allMods.add(Photosynthesis.instance());
         allMods.add(Poisonous.instance());
         allMods.add(Power.instance());
         allMods.add(Propelling.instance());
