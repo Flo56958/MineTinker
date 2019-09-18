@@ -399,7 +399,7 @@ public class Commands implements TabExecutor {
                         if (sender instanceof Player) {
                             if (sender.hasPermission("minetinker.commands." + args[0])) {
                                 for (Modifier mod : modManager.getAllowedMods()) {
-                                    result.add(mod.getName());
+                                    result.add(mod.getName().replaceAll(" ", "_"));
                                 }
                             }
                         }
@@ -410,7 +410,7 @@ public class Commands implements TabExecutor {
                             if (sender.hasPermission("minetinker.commands." + args[0])) {
                                 for (Modifier mod : modManager.getAllowedMods()) {
                                     if (modManager.hasMod(((Player) sender).getInventory().getItemInMainHand(), mod)) {
-                                        result.add(mod.getName());
+                                        result.add(mod.getName().replaceAll(" ", "_"));
                                     }
                                 }
                             }

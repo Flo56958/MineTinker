@@ -135,7 +135,7 @@ class Functions {
     static void addMod(Player player, String[] args) {
         if (args.length == 2) {
             for (Modifier m : modManager.getAllowedMods()) {
-                if (m.getName().equalsIgnoreCase(args[1])) {
+                if (m.getName().equalsIgnoreCase(args[1].replaceAll("_", " "))) {
                     ItemStack tool = player.getInventory().getItemInMainHand();
 
                     if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
@@ -242,7 +242,7 @@ class Functions {
 
         if (args.length >= 2) {
             for (Modifier mod : modManager.getAllowedMods()) {
-                if (!mod.getName().equalsIgnoreCase(args[1])) {
+                if (!mod.getName().equalsIgnoreCase(args[1].replaceAll("_", " "))) {
                     continue;
                 }
 
