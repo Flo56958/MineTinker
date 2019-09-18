@@ -21,6 +21,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -169,9 +170,19 @@ public class Photosynthesis extends Modifier implements Listener {
 		config.addDefault("FullEffectAtNoon", true); //if false: full effect always in daylight
 
 		config.addDefault("EnchantCost", 10);
-		config.addDefault("Enchantable", true);
+		config.addDefault("Enchantable", false);
 
-		config.addDefault("Recipe.Enabled", false);
+		config.addDefault("Recipe.Enabled", true);
+		config.addDefault("Recipe.Top", "DGD");
+		config.addDefault("Recipe.Middle", "GVG");
+		config.addDefault("Recipe.Bottom", "DGD");
+
+		HashMap<String, String> recipeMaterials = new HashMap<>();
+		recipeMaterials.put("D", Material.DAYLIGHT_DETECTOR.name());
+		recipeMaterials.put("G", Material.GRASS_BLOCK.name());
+		recipeMaterials.put("V", Material.VINE.name());
+		config.addDefault("Recipe.Materials", recipeMaterials);
+
 		config.addDefault("OverrideLanguagesystem", false);
 
 		ConfigurationManager.saveConfig(config);
@@ -192,7 +203,7 @@ public class Photosynthesis extends Modifier implements Listener {
 		if (isAllowed()) {
 			data.clear();
 			for (Player p : Bukkit.getOnlinePlayers()) {
-				data.put(p.getUniqueId(), new Tupel(p.getLocation(), System.currentTimeMillis(), false));
+				data.putIfAbsent(p.getUniqueId(), new Tupel(p.getLocation(), System.currentTimeMillis(), false));
 			}
 			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), this.runnable, 5 * 20L, this.tickTime);
 		} else {
@@ -212,7 +223,7 @@ public class Photosynthesis extends Modifier implements Listener {
 		data.remove(e.getPlayer().getUniqueId());
 	}
 
-	private class Tupel {
+	private static class Tupel {
 		private Location loc;
 		private long time; //in ms
 		private boolean isAboveGround;
