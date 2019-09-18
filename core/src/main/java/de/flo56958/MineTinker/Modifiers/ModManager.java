@@ -16,6 +16,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -26,17 +28,10 @@ import java.util.*;
 
 public class ModManager {
 
-    //TODO: AUTO-DISCOVER RECIPES
-    public final ArrayList<NamespacedKey> recipe_Namespaces = new ArrayList<>();
-
-    private final HashMap<Modifier, Set<Modifier>> incompatibilities = new HashMap<>();
-
+    private final static NBTHandler nbt;
     private static FileConfiguration config;
     private static FileConfiguration layout;
-    private final static NBTHandler nbt;
-
-    private String ToolIdentifier;
-    private String ArmorIdentifier;
+    private static ModManager instance;
 
     static {
         nbt = NBTUtils.getHandler();
@@ -63,6 +58,10 @@ public class ModManager {
 
         ConfigurationManager.saveConfig(layout);
     }
+
+    //TODO: AUTO-DISCOVER RECIPES
+    public final ArrayList<NamespacedKey> recipe_Namespaces = new ArrayList<>();
+    private final HashMap<Modifier, Set<Modifier>> incompatibilities = new HashMap<>();
     /**
      * stores the list of all MineTinker modifiers
      */
@@ -71,9 +70,8 @@ public class ModManager {
      * stores the list of allowed modifiers
      */
     private final ArrayList<Modifier> mods = new ArrayList<>();
-
-    private static ModManager instance;
-
+    private String ToolIdentifier;
+    private String ArmorIdentifier;
     private List<String> loreScheme;
     private String modifierLayout;
 
@@ -83,10 +81,6 @@ public class ModManager {
      * Class constructor (no parameters)
      */
     private ModManager() { }
-
-    public NBTHandler getNBTHandler() {
-        return nbt;
-    }
 
     /**
      * get the instance that contains the modifier list (VERY IMPORTANT)
@@ -102,6 +96,10 @@ public class ModManager {
         }
 
         return instance;
+    }
+
+    public NBTHandler getNBTHandler() {
+        return nbt;
     }
 
     public void reload() {
@@ -294,6 +292,9 @@ public class ModManager {
      */
     public void unregister(Modifier mod) {
         mods.remove(mod);
+        if (mod instanceof Listener) {
+            HandlerList.unregisterAll((Listener) mod);
+        }
         ChatWriter.logColor(LanguageManager.getString("ModManager.UnregisterModifier")
                 .replace("%mod", mod.getColor() + mod.getName())
                 .replace("%plugin", Main.getPlugin().getName()));
