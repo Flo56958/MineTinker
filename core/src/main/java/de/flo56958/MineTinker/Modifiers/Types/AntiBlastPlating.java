@@ -16,86 +16,86 @@ import java.util.*;
 
 public class AntiBlastPlating extends Modifier {
 
-    private static AntiBlastPlating instance;
+	private static AntiBlastPlating instance;
 
-    public static AntiBlastPlating instance() {
-        synchronized (AntiBlastPlating.class) {
-            if (instance == null) {
-                instance = new AntiBlastPlating();
-            }
-        }
+	private AntiBlastPlating() {
+		super(Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static AntiBlastPlating instance() {
+		synchronized (AntiBlastPlating.class) {
+			if (instance == null) {
+				instance = new AntiBlastPlating();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Anti-Blast-Plating";
-    }
+		return instance;
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS, ToolType.CHESTPLATE, ToolType.HELMET);
-    }
+	@Override
+	public String getKey() {
+		return "Anti-Blast-Plating";
+	}
 
-    private AntiBlastPlating() {
-        super(Main.getPlugin());
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Arrays.asList(ToolType.BOOTS, ToolType.LEGGINGS, ToolType.CHESTPLATE, ToolType.HELMET);
+	}
 
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return Collections.singletonList(Enchantment.PROTECTION_EXPLOSIONS);
-    }
+	@Override
+	public List<Enchantment> getAppliedEnchantments() {
+		return Collections.singletonList(Enchantment.PROTECTION_EXPLOSIONS);
+	}
 
-    @Override
-    public void reload() {
-        FileConfiguration config = getConfig();
-        config.options().copyDefaults(true);
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-        config.addDefault("Allowed", true);
-        config.addDefault("Name", "Anti-Blast-Plating");
-        config.addDefault("ModifierItemName", "Blast Resistant Metal");
-        config.addDefault("Description", "Armor mitigates explosion damage!");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Anti-Blast-Plating-Modifier");
-        config.addDefault("MaxLevel", 5);
-        config.addDefault("Color", "%WHITE%");
-        config.addDefault("OverrideLanguagesystem", false);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Anti-Blast-Plating");
+		config.addDefault("ModifierItemName", "Blast Resistant Metal");
+		config.addDefault("Description", "Armor mitigates explosion damage!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Anti-Blast-Plating-Modifier");
+		config.addDefault("MaxLevel", 5);
+		config.addDefault("Color", "%WHITE%");
+		config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", false);
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", false);
 
-        config.addDefault("Recipe.Enabled", true);
-        config.addDefault("Recipe.Top", "IMI");
-        config.addDefault("Recipe.Middle", "MDM");
-        config.addDefault("Recipe.Bottom", "IMI");
+		config.addDefault("Recipe.Enabled", true);
+		config.addDefault("Recipe.Top", "IMI");
+		config.addDefault("Recipe.Middle", "MDM");
+		config.addDefault("Recipe.Bottom", "IMI");
 
-        Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("I", Material.IRON_BLOCK.name());
-        recipeMaterials.put("M", Material.TNT.name());
-        recipeMaterials.put("D", Material.DIAMOND.name());
+		Map<String, String> recipeMaterials = new HashMap<>();
+		recipeMaterials.put("I", Material.IRON_BLOCK.name());
+		recipeMaterials.put("M", Material.TNT.name());
+		recipeMaterials.put("D", Material.DIAMOND.name());
 
-        config.addDefault("Recipe.Materials", recipeMaterials);
+		config.addDefault("Recipe.Materials", recipeMaterials);
 
-        ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(Material.IRON_BLOCK, true);
-    }
+		init(Material.IRON_BLOCK, true);
+	}
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        ItemMeta meta = tool.getItemMeta();
+	@Override
+	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+		ItemMeta meta = tool.getItemMeta();
 
-        if (meta != null) {
-            if (ToolType.HELMET.contains(tool.getType()) || ToolType.CHESTPLATE.contains(tool.getType())
-                    || ToolType.LEGGINGS.contains(tool.getType()) || ToolType.BOOTS.contains(tool.getType())) {
+		if (meta != null) {
+			if (ToolType.HELMET.contains(tool.getType()) || ToolType.CHESTPLATE.contains(tool.getType())
+					|| ToolType.LEGGINGS.contains(tool.getType()) || ToolType.BOOTS.contains(tool.getType())) {
 
-                meta.addEnchant(Enchantment.PROTECTION_EXPLOSIONS, modManager.getModLevel(tool, this), true);
-            }
+				meta.addEnchant(Enchantment.PROTECTION_EXPLOSIONS, modManager.getModLevel(tool, this), true);
+			}
 
-            tool.setItemMeta(meta);
-        }
+			tool.setItemMeta(meta);
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

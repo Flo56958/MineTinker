@@ -17,72 +17,72 @@ import java.util.List;
 
 public class LightWeight extends Modifier {
 
-    private static LightWeight instance;
+	private static LightWeight instance;
 
-    public static LightWeight instance() {
-        synchronized (LightWeight.class) {
-            if (instance == null) {
-                instance = new LightWeight();
-            }
-        }
+	private LightWeight() {
+		super(Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static LightWeight instance() {
+		synchronized (LightWeight.class) {
+			if (instance == null) {
+				instance = new LightWeight();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Light-Weight";
-    }
+		return instance;
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Collections.singletonList(ToolType.BOOTS);
-    }
+	@Override
+	public String getKey() {
+		return "Light-Weight";
+	}
 
-    private LightWeight() {
-        super(Main.getPlugin());
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Collections.singletonList(ToolType.BOOTS);
+	}
 
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return Collections.singletonList(Enchantment.PROTECTION_FALL);
-    }
+	@Override
+	public List<Enchantment> getAppliedEnchantments() {
+		return Collections.singletonList(Enchantment.PROTECTION_FALL);
+	}
 
-    @Override
-    public void reload() {
-    	FileConfiguration config = getConfig();
-    	config.options().copyDefaults(true);
-    	
-    	config.addDefault("Allowed", true);
-    	config.addDefault("Name", "Light-Weight");
-    	config.addDefault("ModifierItemName", "Enhanced Feather");
-        config.addDefault("Description", "You fall like a feather - sort of...");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Light-Weight-Modifier");
-        config.addDefault("Color", "%GRAY%");
-        config.addDefault("MaxLevel", 3);
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", true);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Light-Weight");
+		config.addDefault("ModifierItemName", "Enhanced Feather");
+		config.addDefault("Description", "You fall like a feather - sort of...");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Light-Weight-Modifier");
+		config.addDefault("Color", "%GRAY%");
+		config.addDefault("MaxLevel", 3);
 
-        config.addDefault("Recipe.Enabled", false);
-        config.addDefault("OverrideLanguagesystem", false);
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", true);
 
-        ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
-    	
-        init(Material.FEATHER, true);
-    }
+		config.addDefault("Recipe.Enabled", false);
+		config.addDefault("OverrideLanguagesystem", false);
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        ItemMeta meta = tool.getItemMeta();
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        if (meta != null) {
-            meta.addEnchant(Enchantment.PROTECTION_FALL, modManager.getModLevel(tool, this), true);
+		init(Material.FEATHER, true);
+	}
 
-            tool.setItemMeta(meta);
-        }
+	@Override
+	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+		ItemMeta meta = tool.getItemMeta();
 
-        return true;
-    }
+		if (meta != null) {
+			meta.addEnchant(Enchantment.PROTECTION_FALL, modManager.getModLevel(tool, this), true);
+
+			tool.setItemMeta(meta);
+		}
+
+		return true;
+	}
 }

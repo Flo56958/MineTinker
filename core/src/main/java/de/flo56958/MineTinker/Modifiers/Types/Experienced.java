@@ -26,137 +26,137 @@ import java.util.Random;
 
 public class Experienced extends Modifier implements Listener {
 
-    private int percentagePerLevel;
-    private int amount;
+	private static Experienced instance;
+	private int percentagePerLevel;
+	private int amount;
 
-    private static Experienced instance;
+	private Experienced() {
+		super(Main.getPlugin());
 
-    public static Experienced instance() {
-        synchronized (Experienced.class) {
-            if (instance == null) {
-                instance = new Experienced();
-            }
-        }
+		Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static Experienced instance() {
+		synchronized (Experienced.class) {
+			if (instance == null) {
+				instance = new Experienced();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Experienced";
-    }
+		return instance;
+	}
 
-    @Override
-    public boolean hasRecipe() {
-        return false;
-    }
+	@Override
+	public String getKey() {
+		return "Experienced";
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Collections.singletonList(ToolType.ALL);
-    }
+	@Override
+	public boolean hasRecipe() {
+		return false;
+	}
 
-    private Experienced() {
-        super(Main.getPlugin());
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Collections.singletonList(ToolType.ALL);
+	}
 
-        Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
-    }
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-    @Override
-    public void reload() {
-    	FileConfiguration config = getConfig();
-    	config.options().copyDefaults(true);
-    	
-    	config.addDefault("Allowed", true);
-    	config.addDefault("Name", "Experienced");
-    	config.addDefault("Description", "Tool has the chance to drop XP while using it!");
-        config.addDefault("Color", "%GREEN%");
-        config.addDefault("MaxLevel", 10);
-    	config.addDefault("PercentagePerLevel", 2); //= 20% at Level 10 -> every 5th hit / block will trigger Experienced
-    	config.addDefault("Amount", 1); //How much XP should be dropped when triggered
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Experienced");
+		config.addDefault("Description", "Tool has the chance to drop XP while using it!");
+		config.addDefault("Color", "%GREEN%");
+		config.addDefault("MaxLevel", 10);
+		config.addDefault("PercentagePerLevel", 2); //= 20% at Level 10 -> every 5th hit / block will trigger Experienced
+		config.addDefault("Amount", 1); //How much XP should be dropped when triggered
 
-    	config.addDefault("Recipe.Enabled", false);
-        config.addDefault("OverrideLanguagesystem", false);
+		config.addDefault("Recipe.Enabled", false);
+		config.addDefault("OverrideLanguagesystem", false);
 
-        ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
-    	
-        init(Material.EXPERIENCE_BOTTLE, false);
-        
-        this.percentagePerLevel = config.getInt("PercentagePerLevel", 2);
-        this.amount = config.getInt("Amount", 1);
-        this.description = this.description.replace("%chance", "" + this.percentagePerLevel)
-                .replace("%amount", "" + this.amount);
-    }
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-    //----------------------------------------------------------
+		init(Material.EXPERIENCE_BOTTLE, false);
 
-    @EventHandler(ignoreCancelled = true)
-    public void effect(MTBlockBreakEvent event) {
-        if (!this.isAllowed()) {
-            return;
-        }
+		this.percentagePerLevel = config.getInt("PercentagePerLevel", 2);
+		this.amount = config.getInt("Amount", 1);
+		this.description = this.description.replace("%chance", "" + this.percentagePerLevel)
+				.replace("%amount", "" + this.amount);
+	}
 
-        effect(event.getPlayer(), event.getTool());
-    }
+	//----------------------------------------------------------
 
-    @EventHandler(ignoreCancelled = true)
-    public void effect(MTEntityDamageByEntityEvent event) {
-        if (!this.isAllowed()) {
-            return;
-        }
+	@EventHandler(ignoreCancelled = true)
+	public void effect(MTBlockBreakEvent event) {
+		if (!this.isAllowed()) {
+			return;
+		}
 
-        if (ToolType.BOOTS.contains(event.getTool().getType())
-            || ToolType.LEGGINGS.contains(event.getTool().getType())
-            || ToolType.CHESTPLATE.contains(event.getTool().getType())
-            || ToolType.HELMET.contains(event.getTool().getType())) {
+		effect(event.getPlayer(), event.getTool());
+	}
 
-            return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
-        }
+	@EventHandler(ignoreCancelled = true)
+	public void effect(MTEntityDamageByEntityEvent event) {
+		if (!this.isAllowed()) {
+			return;
+		}
 
-        effect(event.getPlayer(), event.getTool());
-    }
+		if (ToolType.BOOTS.contains(event.getTool().getType())
+				|| ToolType.LEGGINGS.contains(event.getTool().getType())
+				|| ToolType.CHESTPLATE.contains(event.getTool().getType())
+				|| ToolType.HELMET.contains(event.getTool().getType())) {
 
-    @EventHandler(ignoreCancelled = true)
-    public void effect(MTEntityDamageEvent event) {
-        if (!this.isAllowed()) {
-            return;
-        }
+			return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
+		}
 
-        effect(event.getPlayer(), event.getTool());
-    }
+		effect(event.getPlayer(), event.getTool());
+	}
 
-    @EventHandler(ignoreCancelled = true)
-    public void effect(MTPlayerInteractEvent event) {
-        if (!this.isAllowed()) {
-            return;
-        }
+	@EventHandler(ignoreCancelled = true)
+	public void effect(MTEntityDamageEvent event) {
+		if (!this.isAllowed()) {
+			return;
+		}
 
-        effect(event.getPlayer(), event.getTool());
-    }
+		effect(event.getPlayer(), event.getTool());
+	}
 
-    /**
-     * The Effect of the modifier
-     * @param p the Player
-     * @param tool the Tool
-     */
-    private void effect(Player p, ItemStack tool) {
-        if (!p.hasPermission("minetinker.modifiers.experienced.use")) {
-            return;
-        }
+	@EventHandler(ignoreCancelled = true)
+	public void effect(MTPlayerInteractEvent event) {
+		if (!this.isAllowed()) {
+			return;
+		}
 
-        if (!modManager.hasMod(tool, this)) {
-            return;
-        }
+		effect(event.getPlayer(), event.getTool());
+	}
 
-        int level = modManager.getModLevel(tool, this);
+	/**
+	 * The Effect of the modifier
+	 *
+	 * @param p    the Player
+	 * @param tool the Tool
+	 */
+	private void effect(Player p, ItemStack tool) {
+		if (!p.hasPermission("minetinker.modifiers.experienced.use")) {
+			return;
+		}
 
-        Random rand = new Random();
-        int n = rand.nextInt(100);
+		if (!modManager.hasMod(tool, this)) {
+			return;
+		}
 
-        if (n <= this.percentagePerLevel * level) {
-            p.giveExp(this.amount);
-            ChatWriter.log(false, p.getDisplayName() + " triggered Experienced on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
-        }
-    }
+		int level = modManager.getModLevel(tool, this);
+
+		Random rand = new Random();
+		int n = rand.nextInt(100);
+
+		if (n <= this.percentagePerLevel * level) {
+			p.giveExp(this.amount);
+			ChatWriter.log(false, p.getDisplayName() + " triggered Experienced on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
+		}
+	}
 }

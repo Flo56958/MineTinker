@@ -17,88 +17,88 @@ import java.util.List;
 
 public class Knockback extends Modifier {
 
-    private static Knockback instance;
+	private static Knockback instance;
 
-    private boolean worksOnShields = false;
+	private boolean worksOnShields = false;
 
-    public static Knockback instance() {
-        synchronized (Knockback.class) {
-            if (instance == null) {
-                instance = new Knockback();
-            }
-        }
+	private Knockback() {
+		super(Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static Knockback instance() {
+		synchronized (Knockback.class) {
+			if (instance == null) {
+				instance = new Knockback();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Knockback";
-    }
+		return instance;
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        if (worksOnShields) {
-            return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.SHIELD, ToolType.TRIDENT);
-        } else {
-            return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT);
-        }
-    }
+	@Override
+	public String getKey() {
+		return "Knockback";
+	}
 
-    private Knockback() {
-        super(Main.getPlugin());
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		if (worksOnShields) {
+			return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.SHIELD, ToolType.TRIDENT);
+		} else {
+			return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.TRIDENT);
+		}
+	}
 
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return Arrays.asList(Enchantment.KNOCKBACK, Enchantment.ARROW_KNOCKBACK);
-    }
+	@Override
+	public List<Enchantment> getAppliedEnchantments() {
+		return Arrays.asList(Enchantment.KNOCKBACK, Enchantment.ARROW_KNOCKBACK);
+	}
 
-    @Override
-    public void reload() {
-    	FileConfiguration config = getConfig();
-     	config.options().copyDefaults(true);
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-     	config.addDefault("Allowed", true);
-     	config.addDefault("Name", "Knockback");
-     	config.addDefault("ModifierItemName", "Enchanted TNT");
-        config.addDefault("Description", "Knock back Enemies further!");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Knockback-Modifier");
-        config.addDefault("Color", "%GRAY%");
-        config.addDefault("MaxLevel", 5);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Knockback");
+		config.addDefault("ModifierItemName", "Enchanted TNT");
+		config.addDefault("Description", "Knock back Enemies further!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Knockback-Modifier");
+		config.addDefault("Color", "%GRAY%");
+		config.addDefault("MaxLevel", 5);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", true);
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", true);
 
-        config.addDefault("Recipe.Enabled", false);
-        config.addDefault("OverrideLanguagesystem", false);
+		config.addDefault("Recipe.Enabled", false);
+		config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault("WorksOnShields", false);
+		config.addDefault("WorksOnShields", false);
 
-        ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-     	init(Material.TNT, true);
+		init(Material.TNT, true);
 
-     	this.worksOnShields = config.getBoolean("WorksOnShields");
-    }
+		this.worksOnShields = config.getBoolean("WorksOnShields");
+	}
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        ItemMeta meta = tool.getItemMeta();
+	@Override
+	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+		ItemMeta meta = tool.getItemMeta();
 
-        if (meta != null) {
-            if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType()) || ToolType.TRIDENT.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.SHIELD.contains(tool.getType()) && worksOnShields) {
-                meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.ARROW_KNOCKBACK, modManager.getModLevel(tool, this), true);
-            }
+		if (meta != null) {
+			if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType()) || ToolType.TRIDENT.contains(tool.getType())) {
+				meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);
+			} else if (ToolType.SHIELD.contains(tool.getType()) && worksOnShields) {
+				meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);
+			} else if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType())) {
+				meta.addEnchant(Enchantment.ARROW_KNOCKBACK, modManager.getModLevel(tool, this), true);
+			}
 
-            tool.setItemMeta(meta);
-        }
+			tool.setItemMeta(meta);
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

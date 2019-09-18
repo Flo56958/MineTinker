@@ -13,114 +13,117 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Reinforced extends Modifier {
 
-    private static Reinforced instance;
-    private boolean applyUnbreakableOnMaxLevel;
-    private boolean hideUnbreakableFlag;
+	private static Reinforced instance;
+	private boolean applyUnbreakableOnMaxLevel;
+	private boolean hideUnbreakableFlag;
 
-    public static Reinforced instance() {
-        synchronized (Reinforced.class) {
-            if (instance == null) {
-                instance = new Reinforced();
-            }
-        }
+	private Reinforced() {
+		super(Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static Reinforced instance() {
+		synchronized (Reinforced.class) {
+			if (instance == null) {
+				instance = new Reinforced();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Reinforced";
-    }
+		return instance;
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Collections.singletonList(ToolType.ALL);
-    }
+	@Override
+	public String getKey() {
+		return "Reinforced";
+	}
 
-    private Reinforced() {
-        super(Main.getPlugin());
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Collections.singletonList(ToolType.ALL);
+	}
 
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return Collections.singletonList(Enchantment.DURABILITY);
+	@Override
+	public List<Enchantment> getAppliedEnchantments() {
+		return Collections.singletonList(Enchantment.DURABILITY);
 
-    }
+	}
 
-    @Override
-    public void reload() {
-    	FileConfiguration config = getConfig();
-    	config.options().copyDefaults(true);
-    	
-    	config.addDefault("Allowed", true);
-    	config.addDefault("Name", "Reinforced");
-    	config.addDefault("ModifierItemName", "Compressed Obsidian");
-        config.addDefault("Description", "Chance to not use durability when using the tool/armor!");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Reinforced-Modifier");
-        config.addDefault("Color", "%DARK_GRAY%");
-        config.addDefault("MaxLevel", 3);
-        config.addDefault("ApplyUnbreakableOnMaxLevel", false);
-        config.addDefault("HideUnbreakableFlag", true);
-        config.addDefault("OverrideLanguagesystem", false);
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", false);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Reinforced");
+		config.addDefault("ModifierItemName", "Compressed Obsidian");
+		config.addDefault("Description", "Chance to not use durability when using the tool/armor!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Reinforced-Modifier");
+		config.addDefault("Color", "%DARK_GRAY%");
+		config.addDefault("MaxLevel", 3);
+		config.addDefault("ApplyUnbreakableOnMaxLevel", false);
+		config.addDefault("HideUnbreakableFlag", true);
+		config.addDefault("OverrideLanguagesystem", false);
 
-    	config.addDefault("Recipe.Enabled", true);
-    	config.addDefault("Recipe.Top", "OOO");
-    	config.addDefault("Recipe.Middle", "OOO");
-    	config.addDefault("Recipe.Bottom", "OOO");
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", false);
 
-        Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("O", Material.OBSIDIAN.name());
+		config.addDefault("Recipe.Enabled", true);
+		config.addDefault("Recipe.Top", "OOO");
+		config.addDefault("Recipe.Middle", "OOO");
+		config.addDefault("Recipe.Bottom", "OOO");
 
-        config.addDefault("Recipe.Materials", recipeMaterials);
+		Map<String, String> recipeMaterials = new HashMap<>();
+		recipeMaterials.put("O", Material.OBSIDIAN.name());
 
-    	ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		config.addDefault("Recipe.Materials", recipeMaterials);
 
-    	this.applyUnbreakableOnMaxLevel = config.getBoolean("ApplyUnbreakableOnMaxLevel", false);
-    	this.hideUnbreakableFlag = config.getBoolean("HideUnbreakableFlag", true);
-    	
-        init(Material.OBSIDIAN, true);
-    }
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        ItemMeta meta = tool.getItemMeta();
+		this.applyUnbreakableOnMaxLevel = config.getBoolean("ApplyUnbreakableOnMaxLevel", false);
+		this.hideUnbreakableFlag = config.getBoolean("HideUnbreakableFlag", true);
 
-        if (meta != null) {
-            meta.addEnchant(Enchantment.DURABILITY, modManager.getModLevel(tool, this), true);
+		init(Material.OBSIDIAN, true);
+	}
 
-            if (modManager.getModLevel(tool, this) == this.getMaxLvl() && this.applyUnbreakableOnMaxLevel) {
-                meta.setUnbreakable(true);
-                if (hideUnbreakableFlag) {
-                    meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-                }
-            }
+	@Override
+	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+		ItemMeta meta = tool.getItemMeta();
 
-            tool.setItemMeta(meta);
-        }
+		if (meta != null) {
+			meta.addEnchant(Enchantment.DURABILITY, modManager.getModLevel(tool, this), true);
 
-        return true;
-    }
+			if (modManager.getModLevel(tool, this) == this.getMaxLvl() && this.applyUnbreakableOnMaxLevel) {
+				meta.setUnbreakable(true);
+				if (hideUnbreakableFlag) {
+					meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+				}
+			}
 
-    @Override
-    public void removeMod(ItemStack tool) {
-        ItemMeta meta = tool.getItemMeta();
+			tool.setItemMeta(meta);
+		}
 
-        if (meta != null) {
-            meta.removeEnchant(Enchantment.DURABILITY);
-            if (this.applyUnbreakableOnMaxLevel) {
-                meta.setUnbreakable(false);
-                meta.removeItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-            }
+		return true;
+	}
 
-            tool.setItemMeta(meta);
-        }
-    }
+	@Override
+	public void removeMod(ItemStack tool) {
+		ItemMeta meta = tool.getItemMeta();
+
+		if (meta != null) {
+			meta.removeEnchant(Enchantment.DURABILITY);
+			if (this.applyUnbreakableOnMaxLevel) {
+				meta.setUnbreakable(false);
+				meta.removeItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+			}
+
+			tool.setItemMeta(meta);
+		}
+	}
 }

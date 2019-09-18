@@ -16,83 +16,83 @@ import java.util.*;
 
 public class Protecting extends Modifier {
 
-    private static Protecting instance;
+	private static Protecting instance;
 
-    public static Protecting instance() {
-        synchronized (Protecting.class) {
-            if (instance == null) {
-                instance = new Protecting();
-            }
-        }
+	private Protecting() {
+		super(Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static Protecting instance() {
+		synchronized (Protecting.class) {
+			if (instance == null) {
+				instance = new Protecting();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Protecting";
-    }
+		return instance;
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA);
-    }
+	@Override
+	public String getKey() {
+		return "Protecting";
+	}
 
-    private Protecting() {
-        super(Main.getPlugin());
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA);
+	}
 
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return Collections.singletonList(Enchantment.PROTECTION_ENVIRONMENTAL);
+	@Override
+	public List<Enchantment> getAppliedEnchantments() {
+		return Collections.singletonList(Enchantment.PROTECTION_ENVIRONMENTAL);
 
-    }
+	}
 
-    @Override
-    public void reload() {
-    	FileConfiguration config = getConfig();
-     	config.options().copyDefaults(true);
-    	
-     	config.addDefault("Allowed", true);
-     	config.addDefault("Name", "Protecting");
-     	config.addDefault("ModifierItemName", "Enriched Obsidian");
-        config.addDefault("Description", "Your armor protects you better against all damage!");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Protecting-Modifier");
-        config.addDefault("Color", "%GRAY%");
-        config.addDefault("MaxLevel", 5);
-        config.addDefault("OverrideLanguagesystem", false);
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", true);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Protecting");
+		config.addDefault("ModifierItemName", "Enriched Obsidian");
+		config.addDefault("Description", "Your armor protects you better against all damage!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Protecting-Modifier");
+		config.addDefault("Color", "%GRAY%");
+		config.addDefault("MaxLevel", 5);
+		config.addDefault("OverrideLanguagesystem", false);
 
-     	config.addDefault("Recipe.Enabled", true);
-     	config.addDefault("Recipe.Top", "DID");
-     	config.addDefault("Recipe.Middle", "IOI");
-     	config.addDefault("Recipe.Bottom", "DID");
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", true);
 
-        Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("D", Material.DIAMOND.name());
-        recipeMaterials.put("I", Material.IRON_INGOT.name());
-        recipeMaterials.put("O", Material.OBSIDIAN.name());
+		config.addDefault("Recipe.Enabled", true);
+		config.addDefault("Recipe.Top", "DID");
+		config.addDefault("Recipe.Middle", "IOI");
+		config.addDefault("Recipe.Bottom", "DID");
 
-        config.addDefault("Recipe.Materials", recipeMaterials);
-         
-     	ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
-     	
-        init(Material.OBSIDIAN, true);
-    }
+		Map<String, String> recipeMaterials = new HashMap<>();
+		recipeMaterials.put("D", Material.DIAMOND.name());
+		recipeMaterials.put("I", Material.IRON_INGOT.name());
+		recipeMaterials.put("O", Material.OBSIDIAN.name());
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        ItemMeta meta = tool.getItemMeta();
+		config.addDefault("Recipe.Materials", recipeMaterials);
 
-        if (meta != null) {
-            meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, modManager.getModLevel(tool, this), true);
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-            tool.setItemMeta(meta);
-        }
+		init(Material.OBSIDIAN, true);
+	}
 
-        return true;
-    }
+	@Override
+	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+		ItemMeta meta = tool.getItemMeta();
+
+		if (meta != null) {
+			meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, modManager.getModLevel(tool, this), true);
+
+			tool.setItemMeta(meta);
+		}
+
+		return true;
+	}
 }

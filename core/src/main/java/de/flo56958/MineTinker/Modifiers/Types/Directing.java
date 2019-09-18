@@ -14,118 +14,121 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Directing extends Modifier implements Listener {
 
-    private static Directing instance;
+	private static Directing instance;
 
-    private boolean workInPVP;
-    private boolean workOnXP;
-    private int minimumLevelForXP;
+	private boolean workInPVP;
+	private boolean workOnXP;
+	private int minimumLevelForXP;
 
-    public static Directing instance() {
-        synchronized (Directing.class) {
-            if (instance == null) {
-                instance = new Directing();
-            }
-        }
+	private Directing() {
+		super(Main.getPlugin());
 
-        return instance;
-    }
+		Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+	}
 
-    @Override
-    public String getKey() {
-        return "Directing";
-    }
+	public static Directing instance() {
+		synchronized (Directing.class) {
+			if (instance == null) {
+				instance = new Directing();
+			}
+		}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT);
-    }
+		return instance;
+	}
 
-    private Directing() {
-        super(Main.getPlugin());
+	@Override
+	public String getKey() {
+		return "Directing";
+	}
 
-        Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT);
+	}
 
-    @Override
-    public void reload() {
-    	FileConfiguration config = getConfig();
-    	config.options().copyDefaults(true);
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-    	config.addDefault("Allowed", true);
-    	config.addDefault("Name", "Directing");
-    	config.addDefault("ModifierItemName", "Enhanced Compass");
-        config.addDefault("Description", "Loot goes directly into Inventory!");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Directing-Modifier");
-        config.addDefault("MaxLevel", 1);
-        config.addDefault("WorksOnXP", true);
-        config.addDefault("MinimumLevelToGetXP", 1); //Modifier-Level to give Player XP
-        config.addDefault("WorkInPVP", true);
-        config.addDefault("Color", "%GRAY%");
-        config.addDefault("OverrideLanguagesystem", false);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Directing");
+		config.addDefault("ModifierItemName", "Enhanced Compass");
+		config.addDefault("Description", "Loot goes directly into Inventory!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Directing-Modifier");
+		config.addDefault("MaxLevel", 1);
+		config.addDefault("WorksOnXP", true);
+		config.addDefault("MinimumLevelToGetXP", 1); //Modifier-Level to give Player XP
+		config.addDefault("WorkInPVP", true);
+		config.addDefault("Color", "%GRAY%");
+		config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", false);
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", false);
 
-        config.addDefault("Recipe.Enabled", true);
-    	config.addDefault("Recipe.Top", "ECE");
-    	config.addDefault("Recipe.Middle", "CIC");
-    	config.addDefault("Recipe.Bottom", "ECE");
+		config.addDefault("Recipe.Enabled", true);
+		config.addDefault("Recipe.Top", "ECE");
+		config.addDefault("Recipe.Middle", "CIC");
+		config.addDefault("Recipe.Bottom", "ECE");
 
-        Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("C", Material.COMPASS.name());
-        recipeMaterials.put("E", Material.ENDER_PEARL.name());
-        recipeMaterials.put("I", Material.IRON_BLOCK.name());
+		Map<String, String> recipeMaterials = new HashMap<>();
+		recipeMaterials.put("C", Material.COMPASS.name());
+		recipeMaterials.put("E", Material.ENDER_PEARL.name());
+		recipeMaterials.put("I", Material.IRON_BLOCK.name());
 
-        config.addDefault("Recipe.Materials", recipeMaterials);
-    	
-    	ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		config.addDefault("Recipe.Materials", recipeMaterials);
 
-        init(Material.COMPASS, true);
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        this.workInPVP = config.getBoolean("WorkInPVP", true);
-        this.workOnXP = config.getBoolean("WorksOnXP", true);
-        this.minimumLevelForXP = config.getInt("MinimumLevelToGetXP", 1);
-    }
+		init(Material.COMPASS, true);
 
-    @EventHandler
-    public void effect(MTEntityDeathEvent event) {
-        if (!this.isAllowed()) {
-            return;
-        }
+		this.workInPVP = config.getBoolean("WorkInPVP", true);
+		this.workOnXP = config.getBoolean("WorksOnXP", true);
+		this.minimumLevelForXP = config.getInt("MinimumLevelToGetXP", 1);
+	}
 
-        if (!this.workInPVP && event.getEvent().getEntity() instanceof Player) {
-            return;
-        }
+	@EventHandler
+	public void effect(MTEntityDeathEvent event) {
+		if (!this.isAllowed()) {
+			return;
+		}
 
-        Player p = event.getPlayer();
-        ItemStack tool = event.getTool();
+		if (!this.workInPVP && event.getEvent().getEntity() instanceof Player) {
+			return;
+		}
 
-        if (!p.hasPermission("minetinker.modifiers.directing.use")) {
-            return;
-        }
+		Player p = event.getPlayer();
+		ItemStack tool = event.getTool();
 
-        if (!modManager.hasMod(tool, this)) {
-            return;
-        }
+		if (!p.hasPermission("minetinker.modifiers.directing.use")) {
+			return;
+		}
 
-        List<ItemStack> drops = event.getEvent().getDrops();
+		if (!modManager.hasMod(tool, this)) {
+			return;
+		}
 
-        for (ItemStack current : drops) {
-            if (p.getInventory().addItem(current).size() != 0) { //adds items to (full) inventory
-                p.getWorld().dropItem(p.getLocation(), current);
-            } // no else as it gets added in if-clause
-        }
+		List<ItemStack> drops = event.getEvent().getDrops();
 
-        drops.clear();
+		for (ItemStack current : drops) {
+			if (p.getInventory().addItem(current).size() != 0) { //adds items to (full) inventory
+				p.getWorld().dropItem(p.getLocation(), current);
+			} // no else as it gets added in if-clause
+		}
 
-        if (this.workOnXP && modManager.getModLevel(tool, this) >= this.minimumLevelForXP) {
-            p.giveExp(event.getEvent().getDroppedExp());
-            event.getEvent().setDroppedExp(0);
-        }
-    }
+		drops.clear();
+
+		if (this.workOnXP && modManager.getModLevel(tool, this) >= this.minimumLevelForXP) {
+			p.giveExp(event.getEvent().getDroppedExp());
+			event.getEvent().setDroppedExp(0);
+		}
+	}
 }

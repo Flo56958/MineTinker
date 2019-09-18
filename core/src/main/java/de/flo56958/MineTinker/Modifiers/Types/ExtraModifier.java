@@ -17,79 +17,78 @@ import java.util.List;
 
 public class ExtraModifier extends Modifier {
 
-    private int gain;
+	private static ExtraModifier instance;
+	private int gain;
 
-    private static ExtraModifier instance;
+	private ExtraModifier() {
+		super(Main.getPlugin());
+	}
 
-    public static ExtraModifier instance() {
-        synchronized (ExtraModifier.class) {
-            if (instance == null) {
-                instance = new ExtraModifier();
-            }
-        }
+	public static ExtraModifier instance() {
+		synchronized (ExtraModifier.class) {
+			if (instance == null) {
+				instance = new ExtraModifier();
+			}
+		}
 
-        return instance;
-    }
+		return instance;
+	}
 
-    @Override
-    public String getKey() {
-        return "Extra-Modifier";
-    }
+	@Override
+	public String getKey() {
+		return "Extra-Modifier";
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Collections.singletonList(ToolType.ALL);
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Collections.singletonList(ToolType.ALL);
+	}
 
-    private ExtraModifier() {
-        super(Main.getPlugin());
-    }
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-    @Override
-    public void reload() {
-    	FileConfiguration config = getConfig();
-    	config.options().copyDefaults(true);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Extra-Modifier");
+		config.addDefault("ModifierItem", "NETHER_STAR"); //Needs to be a viable Material-Type
+		config.addDefault("Description", "Adds a additional Modifiers-Slot to the tool!");
+		config.addDefault("Color", "%WHITE%");
+		config.addDefault("ExtraModifierGain", 1); //How much Slots should be added per Nether-Star
+		config.addDefault("OverrideLanguagesystem", false);
 
-    	config.addDefault("Allowed", true);
-    	config.addDefault("Name", "Extra-Modifier");
-        config.addDefault("ModifierItem", "NETHER_STAR"); //Needs to be a viable Material-Type
-        config.addDefault("Description", "Adds a additional Modifiers-Slot to the tool!");
-        config.addDefault("Color", "%WHITE%");
-        config.addDefault("ExtraModifierGain", 1); //How much Slots should be added per Nether-Star
-        config.addDefault("OverrideLanguagesystem", false);
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-    	ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		init(Material.getMaterial(config.getString("ModifierItem", "NETHER_STAR")), false);
 
-        init(Material.getMaterial(config.getString("ModifierItem", "NETHER_STAR")), false);
-        
-        this.gain = config.getInt("ExtraModifierGain", 1);
-        this.description = this.description.replace("%amount", "" + this.gain);
-    }
+		this.gain = config.getInt("ExtraModifierGain", 1);
+		this.description = this.description.replace("%amount", "" + this.gain);
+	}
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        if (!p.hasPermission("minetinker.modifiers.extramodifier.apply")) {
-            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.NO_PERMISSION, isCommand));
-            return false;
-        }
+	@Override
+	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+		if (!p.hasPermission("minetinker.modifiers.extramodifier.apply")) {
+			pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.NO_PERMISSION, isCommand));
+			return false;
+		}
 
-        if (!isMaterialCompatible(tool.getType())) {
-            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
-            return false;
-        }
+		if (!isMaterialCompatible(tool.getType())) {
+			pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
+			return false;
+		}
 
-        int slotsRemaining = modManager.getFreeSlots(tool);
+		int slotsRemaining = modManager.getFreeSlots(tool);
 
-        if (slotsRemaining + gain == Integer.MAX_VALUE || slotsRemaining + gain < 0) {
-            pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.MAXIMUM_SLOTS_REACHED, isCommand));
-            return false;
-        }
+		if (slotsRemaining + gain == Integer.MAX_VALUE || slotsRemaining + gain < 0) {
+			pluginManager.callEvent(new ModifierFailEvent(p, tool, this, ModifierFailCause.MAXIMUM_SLOTS_REACHED, isCommand));
+			return false;
+		}
 
-        int amount = slotsRemaining + gain;
+		int amount = slotsRemaining + gain;
 
-        modManager.setFreeSlots(tool, amount);
+		modManager.setFreeSlots(tool, amount);
 
-        return true;
-    }
+		return true;
+	}
 }

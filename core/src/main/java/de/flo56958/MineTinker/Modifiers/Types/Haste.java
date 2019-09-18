@@ -20,90 +20,91 @@ import java.util.Map;
 
 public class Haste extends Modifier {
 
-    private static Haste instance;
+	private static Haste instance;
 
-    public static Haste instance() {
-        synchronized (Haste.class) {
-            if (instance == null) {
-                instance = new Haste();
-            }
-        }
+	private Haste() {
+		super(Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static Haste instance() {
+		synchronized (Haste.class) {
+			if (instance == null) {
+				instance = new Haste();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Haste";
-    }
+		return instance;
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.AXE, ToolType.CROSSBOW, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS, ToolType.FISHINGROD);
-    }
+	@Override
+	public String getKey() {
+		return "Haste";
+	}
 
-    private Haste() {
-        super(Main.getPlugin());
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Arrays.asList(ToolType.AXE, ToolType.CROSSBOW, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS, ToolType.FISHINGROD);
+	}
 
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        if (NBTUtils.isOneFourteenCompatible()) {
-            return Arrays.asList(Enchantment.LURE, Enchantment.DIG_SPEED, Enchantment.QUICK_CHARGE);
-        }
+	@Override
+	public List<Enchantment> getAppliedEnchantments() {
+		if (NBTUtils.isOneFourteenCompatible()) {
+			return Arrays.asList(Enchantment.LURE, Enchantment.DIG_SPEED, Enchantment.QUICK_CHARGE);
+		}
 
-        return Arrays.asList(Enchantment.LURE, Enchantment.DIG_SPEED);
-    }
+		return Arrays.asList(Enchantment.LURE, Enchantment.DIG_SPEED);
+	}
 
-    @Override
-    public void reload() {
-    	FileConfiguration config = getConfig();
-    	config.options().copyDefaults(true);
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-    	config.addDefault("Allowed", true);
-    	config.addDefault("Name", "Haste");
-    	config.addDefault("ModifierItemName", "Compressed Redstoneblock");
-        config.addDefault("Description", "Tool can destroy blocks faster!");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Haste-Modifier");
-        config.addDefault("Color", "%DARK_RED%");
-        config.addDefault("MaxLevel", 5);
-        config.addDefault("OverrideLanguagesystem", false);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Haste");
+		config.addDefault("ModifierItemName", "Compressed Redstoneblock");
+		config.addDefault("Description", "Tool can destroy blocks faster!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Haste-Modifier");
+		config.addDefault("Color", "%DARK_RED%");
+		config.addDefault("MaxLevel", 5);
+		config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", false);
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", false);
 
-    	config.addDefault("Recipe.Enabled", true);
-    	config.addDefault("Recipe.Top", "RRR");
-    	config.addDefault("Recipe.Middle", "RRR");
-    	config.addDefault("Recipe.Bottom", "RRR");
+		config.addDefault("Recipe.Enabled", true);
+		config.addDefault("Recipe.Top", "RRR");
+		config.addDefault("Recipe.Middle", "RRR");
+		config.addDefault("Recipe.Bottom", "RRR");
 
-        Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("R", Material.REDSTONE_BLOCK.name());
+		Map<String, String> recipeMaterials = new HashMap<>();
+		recipeMaterials.put("R", Material.REDSTONE_BLOCK.name());
 
-        config.addDefault("Recipe.Materials", recipeMaterials);
+		config.addDefault("Recipe.Materials", recipeMaterials);
 
-    	ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(Material.REDSTONE_BLOCK, true);
-    }
+		init(Material.REDSTONE_BLOCK, true);
+	}
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        ItemMeta meta = tool.getItemMeta();
+	@Override
+	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+		ItemMeta meta = tool.getItemMeta();
 
-        if (meta != null) {
-            if (ToolType.FISHINGROD.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.LURE, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.CROSSBOW.contains(tool.getType())) {
-                if (NBTUtils.isOneFourteenCompatible()) meta.addEnchant(Enchantment.QUICK_CHARGE, modManager.getModLevel(tool, this), true);
-            } else {
-                meta.addEnchant(Enchantment.DIG_SPEED, modManager.getModLevel(tool, this), true);
-            }
+		if (meta != null) {
+			if (ToolType.FISHINGROD.contains(tool.getType())) {
+				meta.addEnchant(Enchantment.LURE, modManager.getModLevel(tool, this), true);
+			} else if (ToolType.CROSSBOW.contains(tool.getType())) {
+				if (NBTUtils.isOneFourteenCompatible())
+					meta.addEnchant(Enchantment.QUICK_CHARGE, modManager.getModLevel(tool, this), true);
+			} else {
+				meta.addEnchant(Enchantment.DIG_SPEED, modManager.getModLevel(tool, this), true);
+			}
 
-            tool.setItemMeta(meta);
-        }
+			tool.setItemMeta(meta);
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

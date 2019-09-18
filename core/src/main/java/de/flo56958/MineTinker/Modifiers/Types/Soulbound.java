@@ -23,173 +23,174 @@ import java.util.*;
 
 public class Soulbound extends Modifier implements Listener {
 
-    //Can't you the Player-Object here as it gets newly created if the player leaves without respawning
-    private final HashMap<UUID, ArrayList<ItemStack>> storedItemStacks = new HashMap<>(); //saves ItemStacks until reload (if the player does not respawn instantly)
-    private boolean toolDropable;
-    private boolean decrementModLevelOnUse;
-    private int percentagePerLevel;
+	private static Soulbound instance;
+	//Can't you the Player-Object here as it gets newly created if the player leaves without respawning
+	private final HashMap<UUID, ArrayList<ItemStack>> storedItemStacks = new HashMap<>(); //saves ItemStacks until reload (if the player does not respawn instantly)
+	private boolean toolDropable;
+	private boolean decrementModLevelOnUse;
+	private int percentagePerLevel;
 
-    private static Soulbound instance;
+	private Soulbound() {
+		super(Main.getPlugin());
 
-    public static Soulbound instance() {
-        synchronized (Soulbound.class) {
-            if (instance == null) {
-                instance = new Soulbound();
-            }
-        }
+		Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static Soulbound instance() {
+		synchronized (Soulbound.class) {
+			if (instance == null) {
+				instance = new Soulbound();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Soulbound";
-    }
+		return instance;
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Collections.singletonList(ToolType.ALL);
-    }
+	@Override
+	public String getKey() {
+		return "Soulbound";
+	}
 
-    private Soulbound() {
-        super(Main.getPlugin());
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Collections.singletonList(ToolType.ALL);
+	}
 
-        Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
-    }
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-    @Override
-    public void reload() {
-        FileConfiguration config = getConfig();
-        config.options().copyDefaults(true);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Soulbound");
+		config.addDefault("ModifierItemName", "Powerinfused Beacon");
+		config.addDefault("Description", "Do not lose the tool when dying.");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Soulbound-Modifier");
+		config.addDefault("Color", "%GRAY%");
+		config.addDefault("MaxLevel", 1);
+		config.addDefault("PercentagePerLevel", 100);
+		config.addDefault("DecrementModLevelOnUse", false);
+		config.addDefault("ToolDropable", true);
+		config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault("Allowed", true);
-        config.addDefault("Name", "Soulbound");
-        config.addDefault("ModifierItemName", "Powerinfused Beacon");
-        config.addDefault("Description", "Do not lose the tool when dying.");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Soulbound-Modifier");
-        config.addDefault("Color", "%GRAY%");
-        config.addDefault("MaxLevel", 1);
-        config.addDefault("PercentagePerLevel", 100);
-        config.addDefault("DecrementModLevelOnUse", false);
-        config.addDefault("ToolDropable", true);
-        config.addDefault("OverrideLanguagesystem", false);
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", false);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", false);
+		config.addDefault("Recipe.Enabled", true);
+		config.addDefault("Recipe.Top", "BLB");
+		config.addDefault("Recipe.Middle", "LNL");
+		config.addDefault("Recipe.Bottom", "BLB");
 
-        config.addDefault("Recipe.Enabled", true);
-        config.addDefault("Recipe.Top", "BLB");
-        config.addDefault("Recipe.Middle", "LNL");
-        config.addDefault("Recipe.Bottom", "BLB");
+		Map<String, String> recipeMaterials = new HashMap<>();
+		recipeMaterials.put("B", Material.BLAZE_ROD.name());
+		recipeMaterials.put("L", Material.LAVA_BUCKET.name());
+		recipeMaterials.put("N", Material.NETHER_STAR.name());
 
-        Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("B", Material.BLAZE_ROD.name());
-        recipeMaterials.put("L", Material.LAVA_BUCKET.name());
-        recipeMaterials.put("N", Material.NETHER_STAR.name());
+		config.addDefault("Recipe.Materials", recipeMaterials);
 
-        config.addDefault("Recipe.Materials", recipeMaterials);
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		init(Material.BEACON, true);
 
-        init(Material.BEACON, true);
+		this.toolDropable = config.getBoolean("ToolDropable", true);
+		this.decrementModLevelOnUse = config.getBoolean("DecrementModLevelOnUse", false);
+		this.percentagePerLevel = config.getInt("PercentagePerLevel", 100);
+	}
 
-        this.toolDropable = config.getBoolean("ToolDropable", true);
-        this.decrementModLevelOnUse = config.getBoolean("DecrementModLevelOnUse", false);
-        this.percentagePerLevel = config.getInt("PercentagePerLevel", 100);
-    }
+	/**
+	 * Effect when a player dies
+	 *
+	 * @param p  the Player
+	 * @param is the ItemStack to keep
+	 * @return true if soulbound has success
+	 */
+	public boolean effect(Player p, ItemStack is) {
+		if (!p.hasPermission("minetinker.modifiers.soulbound.use")) {
+			return false;
+		}
 
-    /**
-     * Effect when a player dies
-     * @param p the Player
-     * @param is the ItemStack to keep
-     * @return true if soulbound has success
-     */
-    public boolean effect(Player p, ItemStack is) {
-        if (!p.hasPermission("minetinker.modifiers.soulbound.use")) {
-            return false;
-        }
+		if (!modManager.hasMod(is, this)) {
+			return false;
+		}
 
-        if (!modManager.hasMod(is, this)) {
-            return false;
-        }
+		Random rand = new Random();
+		if (rand.nextInt(100) > modManager.getModLevel(is, this) * percentagePerLevel) {
+			return false;
+		}
 
-        Random rand = new Random();
-        if (rand.nextInt(100) > modManager.getModLevel(is, this) * percentagePerLevel) {
-            return false;
-        }
+		storedItemStacks.computeIfAbsent(p.getUniqueId(), k -> new ArrayList<>()); // ?
 
-        storedItemStacks.computeIfAbsent(p.getUniqueId(), k -> new ArrayList<>()); // ?
+		ArrayList<ItemStack> stored = storedItemStacks.get(p.getUniqueId());
 
-        ArrayList<ItemStack> stored = storedItemStacks.get(p.getUniqueId());
+		ChatWriter.log(false, p.getDisplayName() + " triggered Soulbound on " + ItemGenerator.getDisplayName(is) + ChatColor.GRAY + " (" + is.getType().toString() + ")!");
 
-        ChatWriter.log(false, p.getDisplayName() + " triggered Soulbound on " + ItemGenerator.getDisplayName(is) + ChatColor.GRAY + " (" + is.getType().toString() + ")!");
+		if (stored.contains(is)) {
+			return true;
+		}
 
-        if (stored.contains(is)) {
-            return true;
-        }
+		if (decrementModLevelOnUse) {
+			int newLevel = modManager.getModLevel(is, this) - 1;
 
-        if (decrementModLevelOnUse) {
-            int newLevel = modManager.getModLevel(is, this) - 1;
+			if (newLevel == 0) {
+				modManager.removeMod(is, this);
+			} else {
+				modManager.getNBTHandler().setInt(is, getKey(), modManager.getModLevel(is, this) - 1);
+			}
+		}
 
-            if (newLevel == 0) {
-                modManager.removeMod(is, this);
-            } else {
-                modManager.getNBTHandler().setInt(is, getKey(), modManager.getModLevel(is, this) - 1);
-            }
-        }
+		stored.add(is.clone());
+		return true;
+	}
 
-        stored.add(is.clone());
-        return true;
-    }
+	/**
+	 * Effect if a player respawns
+	 */
+	@EventHandler
+	public void effect(PlayerRespawnEvent event) {
+		Player player = event.getPlayer();
 
-    /**
-     * Effect if a player respawns
-     */
-    @EventHandler
-    public void effect(PlayerRespawnEvent event) {
-        Player player = event.getPlayer();
+		if (!player.hasPermission("minetinker.modifiers.soulbound.use")) {
+			return;
+		}
 
-        if (!player.hasPermission("minetinker.modifiers.soulbound.use")) {
-            return;
-        }
+		if (!storedItemStacks.containsKey(player.getUniqueId())) {
+			return;
+		}
 
-        if (!storedItemStacks.containsKey(player.getUniqueId())) {
-            return;
-        }
+		ArrayList<ItemStack> stored = storedItemStacks.get(player.getUniqueId());
 
-        ArrayList<ItemStack> stored = storedItemStacks.get(player.getUniqueId());
+		for (ItemStack is : stored) {
+			if (player.getInventory().addItem(is).size() != 0) { //adds items to (full) inventory
+				player.getWorld().dropItem(player.getLocation(), is);
+			} // no else as it gets added in if
+		}
 
-        for (ItemStack is : stored) {
-            if (player.getInventory().addItem(is).size() != 0) { //adds items to (full) inventory
-                player.getWorld().dropItem(player.getLocation(), is);
-            } // no else as it gets added in if
-        }
+		storedItemStacks.remove(player.getUniqueId());
+	}
 
-        storedItemStacks.remove(player.getUniqueId());
-    }
+	/**
+	 * Effect if a player drops an item
+	 *
+	 * @param event the event
+	 */
+	@EventHandler(ignoreCancelled = true)
+	public void effect(PlayerDropItemEvent event) {
+		Item item = event.getItemDrop();
+		ItemStack tool = item.getItemStack();
 
-    /**
-     * Effect if a player drops an item
-     * @param event the event
-     */
-    @EventHandler(ignoreCancelled = true)
-    public void effect(PlayerDropItemEvent event) {
-        Item item = event.getItemDrop();
-        ItemStack tool = item.getItemStack();
+		if (!(modManager.isArmorViable(tool) || modManager.isToolViable(tool) || modManager.isWandViable(tool))) {
+			return;
+		}
 
-        if (!(modManager.isArmorViable(tool) || modManager.isToolViable(tool) || modManager.isWandViable(tool))) {
-            return;
-        }
+		if (!modManager.hasMod(tool, this)) {
+			return;
+		}
 
-        if (!modManager.hasMod(tool, this)) {
-            return;
-        }
+		if (toolDropable) {
+			return;
+		}
 
-        if (toolDropable) {
-            return;
-        }
-
-        event.setCancelled(true);
-    }
+		event.setCancelled(true);
+	}
 }

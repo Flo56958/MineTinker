@@ -19,85 +19,85 @@ import java.util.Map;
 
 public class Piercing extends Modifier {
 
-    private static Piercing instance;
+	private static Piercing instance;
 
-    public static Piercing instance() {
-        synchronized (Piercing.class) {
-            if (instance == null) {
-                instance = new Piercing();
-            }
-        }
+	private Piercing() {
+		super(Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static Piercing instance() {
+		synchronized (Piercing.class) {
+			if (instance == null) {
+				instance = new Piercing();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Piercing";
-    }
+		return instance;
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Collections.singletonList(ToolType.CROSSBOW);
-    }
+	@Override
+	public String getKey() {
+		return "Piercing";
+	}
 
-    private Piercing() {
-        super(Main.getPlugin());
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Collections.singletonList(ToolType.CROSSBOW);
+	}
 
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return Collections.singletonList(Enchantment.PIERCING);
-    }
+	@Override
+	public List<Enchantment> getAppliedEnchantments() {
+		return Collections.singletonList(Enchantment.PIERCING);
+	}
 
-    @Override
-    public void reload() {
-        FileConfiguration config = getConfig();
-        config.options().copyDefaults(true);
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-        config.addDefault("Allowed", true);
-        config.addDefault("Name", "Piercing");
-        config.addDefault("ModifierItemName", "Bodkin Point");
-        config.addDefault("Description", "Passes through enemies!");
-        config.addDefault("DescriptionModifierItem", "%GRAY%Modifier-Item for the Piercing-Modifier");
-        config.addDefault("Color", "%GRAY%");
-        config.addDefault("MaxLevel", 4);
-        config.addDefault("OverrideLanguagesystem", false);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Piercing");
+		config.addDefault("ModifierItemName", "Bodkin Point");
+		config.addDefault("Description", "Passes through enemies!");
+		config.addDefault("DescriptionModifierItem", "%GRAY%Modifier-Item for the Piercing-Modifier");
+		config.addDefault("Color", "%GRAY%");
+		config.addDefault("MaxLevel", 4);
+		config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", false);
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", false);
 
-        config.addDefault("Recipe.Enabled", true);
-        config.addDefault("Recipe.Top", "FIF");
-        config.addDefault("Recipe.Middle", "OAO");
-        config.addDefault("Recipe.Bottom", "FIF");
+		config.addDefault("Recipe.Enabled", true);
+		config.addDefault("Recipe.Top", "FIF");
+		config.addDefault("Recipe.Middle", "OAO");
+		config.addDefault("Recipe.Bottom", "FIF");
 
-        Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("F", Material.FLINT.name());
-        recipeMaterials.put("I", Material.IRON_INGOT.name());
-        recipeMaterials.put("O", Material.OAK_PLANKS.name());
-        recipeMaterials.put("A", Material.ARROW.name());
+		Map<String, String> recipeMaterials = new HashMap<>();
+		recipeMaterials.put("F", Material.FLINT.name());
+		recipeMaterials.put("I", Material.IRON_INGOT.name());
+		recipeMaterials.put("O", Material.OAK_PLANKS.name());
+		recipeMaterials.put("A", Material.ARROW.name());
 
-        config.addDefault("Recipe.Materials", recipeMaterials);
+		config.addDefault("Recipe.Materials", recipeMaterials);
 
-        ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(Material.ARROW, true);
-    }
+		init(Material.ARROW, true);
+	}
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        ItemMeta meta = tool.getItemMeta();
+	@Override
+	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+		ItemMeta meta = tool.getItemMeta();
 
-        if (meta != null) {
-            if (ToolType.CROSSBOW.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.PIERCING, modManager.getModLevel(tool, this), true);
-            }
+		if (meta != null) {
+			if (ToolType.CROSSBOW.contains(tool.getType())) {
+				meta.addEnchant(Enchantment.PIERCING, modManager.getModLevel(tool, this), true);
+			}
 
-            tool.setItemMeta(meta);
-        }
+			tool.setItemMeta(meta);
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

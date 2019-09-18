@@ -16,96 +16,96 @@ import java.util.*;
 
 public class Luck extends Modifier {
 
-    private static EnumMap<ToolType, List<Enchantment>> applicableEnchants = new EnumMap<>(ToolType.class);
+	private static EnumMap<ToolType, List<Enchantment>> applicableEnchants = new EnumMap<>(ToolType.class);
 
-    private static Luck instance;
+	private static Luck instance;
 
-    static {
-        applicableEnchants.put(ToolType.AXE, Arrays.asList(Enchantment.LOOT_BONUS_BLOCKS, Enchantment.LOOT_BONUS_MOBS));
-        applicableEnchants.put(ToolType.BOW, Collections.singletonList(Enchantment.LOOT_BONUS_MOBS));
-        applicableEnchants.put(ToolType.HOE, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
-        applicableEnchants.put(ToolType.PICKAXE, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
-        applicableEnchants.put(ToolType.SHOVEL, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
-        applicableEnchants.put(ToolType.SWORD, Collections.singletonList(Enchantment.LOOT_BONUS_MOBS));
-        applicableEnchants.put(ToolType.SHEARS, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
-        applicableEnchants.put(ToolType.FISHINGROD, Collections.singletonList(Enchantment.LUCK));
-    }
+	static {
+		applicableEnchants.put(ToolType.AXE, Arrays.asList(Enchantment.LOOT_BONUS_BLOCKS, Enchantment.LOOT_BONUS_MOBS));
+		applicableEnchants.put(ToolType.BOW, Collections.singletonList(Enchantment.LOOT_BONUS_MOBS));
+		applicableEnchants.put(ToolType.HOE, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
+		applicableEnchants.put(ToolType.PICKAXE, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
+		applicableEnchants.put(ToolType.SHOVEL, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
+		applicableEnchants.put(ToolType.SWORD, Collections.singletonList(Enchantment.LOOT_BONUS_MOBS));
+		applicableEnchants.put(ToolType.SHEARS, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
+		applicableEnchants.put(ToolType.FISHINGROD, Collections.singletonList(Enchantment.LUCK));
+	}
 
-    public static Luck instance() {
-        synchronized (Luck.class) {
-            if (instance == null) {
-                instance = new Luck();
-            }
-        }
+	private Luck() {
+		super(Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static Luck instance() {
+		synchronized (Luck.class) {
+			if (instance == null) {
+				instance = new Luck();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Luck";
-    }
+		return instance;
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS,
-                ToolType.FISHINGROD, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT);
-    }
+	@Override
+	public String getKey() {
+		return "Luck";
+	}
 
-    private Luck() {
-        super(Main.getPlugin());
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS,
+				ToolType.FISHINGROD, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT);
+	}
 
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return Arrays.asList(Enchantment.LOOT_BONUS_BLOCKS, Enchantment.LOOT_BONUS_MOBS, Enchantment.LUCK);
-    }
+	@Override
+	public List<Enchantment> getAppliedEnchantments() {
+		return Arrays.asList(Enchantment.LOOT_BONUS_BLOCKS, Enchantment.LOOT_BONUS_MOBS, Enchantment.LUCK);
+	}
 
-    @Override
-    public void reload() {
-    	FileConfiguration config = getConfig();
-    	config.options().copyDefaults(true);
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-    	config.addDefault("Allowed", true);
-    	config.addDefault("Name", "Luck");
-    	config.addDefault("ModifierItemName", "Compressed Lapis-Block");
-        config.addDefault("Description", "Get more loot from mobs and blocks!");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Luck-Modifier");
-        config.addDefault("Color", "%BLUE%");
-        config.addDefault("MaxLevel", 3);
-        config.addDefault("OverrideLanguagesystem", false);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Luck");
+		config.addDefault("ModifierItemName", "Compressed Lapis-Block");
+		config.addDefault("Description", "Get more loot from mobs and blocks!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Luck-Modifier");
+		config.addDefault("Color", "%BLUE%");
+		config.addDefault("MaxLevel", 3);
+		config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", true);
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", true);
 
-    	config.addDefault("Recipe.Enabled", true);
-    	config.addDefault("Recipe.Top", "LLL");
-    	config.addDefault("Recipe.Middle", "LLL");
-    	config.addDefault("Recipe.Bottom", "LLL");
+		config.addDefault("Recipe.Enabled", true);
+		config.addDefault("Recipe.Top", "LLL");
+		config.addDefault("Recipe.Middle", "LLL");
+		config.addDefault("Recipe.Bottom", "LLL");
 
-        Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("L", Material.LAPIS_BLOCK.name());
+		Map<String, String> recipeMaterials = new HashMap<>();
+		recipeMaterials.put("L", Material.LAPIS_BLOCK.name());
 
-        config.addDefault("Recipe.Materials", recipeMaterials);
+		config.addDefault("Recipe.Materials", recipeMaterials);
 
-        ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(Material.LAPIS_BLOCK, true);
-    }
+		init(Material.LAPIS_BLOCK, true);
+	}
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        ItemMeta meta = tool.getItemMeta();
+	@Override
+	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+		ItemMeta meta = tool.getItemMeta();
 
-        if (meta != null) {
-            for (Enchantment enchantment : applicableEnchants.get(ToolType.get(tool.getType()))) {
-                meta.addEnchant(enchantment, modManager.getModLevel(tool, this), true);
-            }
+		if (meta != null) {
+			for (Enchantment enchantment : applicableEnchants.get(ToolType.get(tool.getType()))) {
+				meta.addEnchant(enchantment, modManager.getModLevel(tool, this), true);
+			}
 
-            tool.setItemMeta(meta);
-        }
+			tool.setItemMeta(meta);
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

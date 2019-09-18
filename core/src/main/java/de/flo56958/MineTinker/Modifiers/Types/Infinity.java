@@ -17,79 +17,79 @@ import java.util.List;
 
 public class Infinity extends Modifier {
 
-    private static Infinity instance;
+	private static Infinity instance;
 
-    public static Infinity instance() {
-        synchronized (Infinity.class) {
-            if (instance == null) {
-                instance = new Infinity();
-            }
-        }
+	//Infinity does not work on crossbows
+	private Infinity() {
+		super(Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static Infinity instance() {
+		synchronized (Infinity.class) {
+			if (instance == null) {
+				instance = new Infinity();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Infinity";
-    }
+		return instance;
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.BOW, ToolType.TRIDENT);
-    }
+	@Override
+	public String getKey() {
+		return "Infinity";
+	}
 
-    //Infinity does not work on crossbows
-    private Infinity() {
-        super(Main.getPlugin());
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Arrays.asList(ToolType.BOW, ToolType.TRIDENT);
+	}
 
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return Arrays.asList(Enchantment.ARROW_INFINITE, Enchantment.LOYALTY);
-    }
+	@Override
+	public List<Enchantment> getAppliedEnchantments() {
+		return Arrays.asList(Enchantment.ARROW_INFINITE, Enchantment.LOYALTY);
+	}
 
-    @Override
-    public void reload() {
-    	FileConfiguration config = getConfig();
-    	config.options().copyDefaults(true);
-    	
-    	config.addDefault("Allowed", true);
-    	config.addDefault("Name", "Infinity");
-    	config.addDefault("ModifierItemName", "Enchanted Arrow");
-        config.addDefault("Description", "You only need one Arrow to shoot a bow and the Trident comes back!");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Infinity-Modifier");
-        config.addDefault("MaxLevel", 3); //higher values than 1 have no effect on Infinity
-        config.addDefault("Color", "%WHITE%");
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", true);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Infinity");
+		config.addDefault("ModifierItemName", "Enchanted Arrow");
+		config.addDefault("Description", "You only need one Arrow to shoot a bow and the Trident comes back!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Infinity-Modifier");
+		config.addDefault("MaxLevel", 3); //higher values than 1 have no effect on Infinity
+		config.addDefault("Color", "%WHITE%");
 
-        config.addDefault("Recipe.Enabled", false);
-    	//Check Ender.yml for Compatibility-option for Ender and Infinity
-        config.addDefault("OverrideLanguagesystem", false);
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", true);
 
-        ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
-    	
-        init(Material.ARROW, true);
-    }
+		config.addDefault("Recipe.Enabled", false);
+		//Check Ender.yml for Compatibility-option for Ender and Infinity
+		config.addDefault("OverrideLanguagesystem", false);
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        ItemMeta meta = tool.getItemMeta();
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        if (meta != null) {
-            if (ToolType.BOW.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.ARROW_INFINITE, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.TRIDENT.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.LOYALTY, modManager.getModLevel(tool, this), true);
-            }
+		init(Material.ARROW, true);
+	}
 
-            tool.setItemMeta(meta);
-        }
+	@Override
+	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+		ItemMeta meta = tool.getItemMeta();
+
+		if (meta != null) {
+			if (ToolType.BOW.contains(tool.getType())) {
+				meta.addEnchant(Enchantment.ARROW_INFINITE, modManager.getModLevel(tool, this), true);
+			} else if (ToolType.TRIDENT.contains(tool.getType())) {
+				meta.addEnchant(Enchantment.LOYALTY, modManager.getModLevel(tool, this), true);
+			}
+
+			tool.setItemMeta(meta);
+		}
 
 
-        return true;
-    }
+		return true;
+	}
 }

@@ -16,84 +16,84 @@ import java.util.*;
 
 public class SpidersBane extends Modifier {
 
-    private static SpidersBane instance;
+	private static SpidersBane instance;
 
-    public static SpidersBane instance() {
-        synchronized (SpidersBane.class) {
-            if (instance == null) {
-                instance = new SpidersBane();
-            }
-        }
+	private SpidersBane() {
+		super(Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static SpidersBane instance() {
+		synchronized (SpidersBane.class) {
+			if (instance == null) {
+				instance = new SpidersBane();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Spiders-Bane";
-    }
+		return instance;
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.AXE, ToolType.SWORD);
-    }
+	@Override
+	public String getKey() {
+		return "Spiders-Bane";
+	}
 
-    private SpidersBane() {
-        super(Main.getPlugin());
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Arrays.asList(ToolType.AXE, ToolType.SWORD);
+	}
 
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return Collections.singletonList(Enchantment.DAMAGE_ARTHROPODS);
-    }
+	@Override
+	public List<Enchantment> getAppliedEnchantments() {
+		return Collections.singletonList(Enchantment.DAMAGE_ARTHROPODS);
+	}
 
-    @Override
-    public void reload() {
-        FileConfiguration config = getConfig();
-        config.options().copyDefaults(true);
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-        config.addDefault("Allowed", true);
-        config.addDefault("Name", "Spider's-Bane");
-        config.addDefault("ModifierItemName", "Cleansed Spider Eye");
-        config.addDefault("Description", "Weapon does additional damage to Spiders!");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Spider's-Bane-Modifier");
-        config.addDefault("Color", "%RED%");
-        config.addDefault("MaxLevel", 5);
-        config.addDefault("OverrideLanguagesystem", false);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Spider's-Bane");
+		config.addDefault("ModifierItemName", "Cleansed Spider Eye");
+		config.addDefault("Description", "Weapon does additional damage to Spiders!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Spider's-Bane-Modifier");
+		config.addDefault("Color", "%RED%");
+		config.addDefault("MaxLevel", 5);
+		config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", false);
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", false);
 
-        config.addDefault("Recipe.Enabled", true);
-        config.addDefault("Recipe.Top", "ESE");
-        config.addDefault("Recipe.Middle", "SFS");
-        config.addDefault("Recipe.Bottom", "ESE");
+		config.addDefault("Recipe.Enabled", true);
+		config.addDefault("Recipe.Top", "ESE");
+		config.addDefault("Recipe.Middle", "SFS");
+		config.addDefault("Recipe.Bottom", "ESE");
 
-        Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("E", Material.SPIDER_EYE.name());
-        recipeMaterials.put("S", Material.STRING.name());
-        recipeMaterials.put("F", Material.FERMENTED_SPIDER_EYE.name());
+		Map<String, String> recipeMaterials = new HashMap<>();
+		recipeMaterials.put("E", Material.SPIDER_EYE.name());
+		recipeMaterials.put("S", Material.STRING.name());
+		recipeMaterials.put("F", Material.FERMENTED_SPIDER_EYE.name());
 
-        config.addDefault("Recipe.Materials", recipeMaterials);
+		config.addDefault("Recipe.Materials", recipeMaterials);
 
-        ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(Material.FERMENTED_SPIDER_EYE, true);
-    }
+		init(Material.FERMENTED_SPIDER_EYE, true);
+	}
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        ItemMeta meta = tool.getItemMeta();
+	@Override
+	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+		ItemMeta meta = tool.getItemMeta();
 
-        if (meta != null) {
-            if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.DAMAGE_ARTHROPODS, modManager.getModLevel(tool, this), true);
-            }
+		if (meta != null) {
+			if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType())) {
+				meta.addEnchant(Enchantment.DAMAGE_ARTHROPODS, modManager.getModLevel(tool, this), true);
+			}
 
-            tool.setItemMeta(meta);
-        } else return false;
+			tool.setItemMeta(meta);
+		} else return false;
 
-        return true;
-    }
+		return true;
+	}
 }

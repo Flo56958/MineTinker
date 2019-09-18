@@ -665,6 +665,8 @@ public class ModManager {
             damage = ((Damageable) is.getItemMeta()).getDamage();
         }
 
+        if (!ToolType.ALL.getToolMaterials().contains(m)) return false;
+
         if (!Main.getPlugin().getConfig().getBoolean("ConvertEnchantsAndAttributes")) {
             ItemMeta meta = new ItemStack(is.getType(), is.getAmount()).getItemMeta();
             if (meta instanceof Damageable) {
@@ -713,10 +715,9 @@ public class ModManager {
 
                     meta.removeEnchant(entry.getKey());
 
-                    for (int i = 0; i < entry.getValue(); i++) {
-                        if (!hasMod(is, modifier)) { //else: already "applied"
-                            addMod(is, modifier);
-                        }
+                    for (int i = 0; i < entry.getValue(); i++) { //possible to go over MaxLevel of the mod
+                        addMod(is, modifier);
+                        modifier.applyMod(null, is, true); //Player is only required with Extra-Modifier (not possible here)
                     }
                 }
 
@@ -733,9 +734,7 @@ public class ModManager {
 
                     meta.removeAttributeModifier(entry.getKey());
 
-                    if (!hasMod(is, modifier)) { //else: already "applied"
-                        addMod(is, modifier);
-                    }
+                    addMod(is, modifier);
                 }
             }
             addArmorAttributes(is);

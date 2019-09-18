@@ -20,105 +20,107 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Glowing extends Modifier implements Listener {
 
-    private int duration;
-    private double durationMultiplier;
+	private static Glowing instance;
+	private int duration;
+	private double durationMultiplier;
 
-    private static Glowing instance;
+	private Glowing() {
+		super(Main.getPlugin());
 
-    public static Glowing instance() {
-        synchronized (Glowing.class) {
-            if (instance == null) {
-                instance = new Glowing();
-            }
-        }
+		Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static Glowing instance() {
+		synchronized (Glowing.class) {
+			if (instance == null) {
+				instance = new Glowing();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Glowing";
-    }
+		return instance;
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT);
-    }
+	@Override
+	public String getKey() {
+		return "Glowing";
+	}
 
-    private Glowing() {
-        super(Main.getPlugin());
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT);
+	}
 
-        Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
-    }
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-    @Override
-    public void reload() {
-    	FileConfiguration config = getConfig();
-    	config.options().copyDefaults(true);
-    	
-    	config.addDefault("Allowed", true);
-    	config.addDefault("Name", "Glowing");
-    	config.addDefault("ModifierItemName", "Ender-Glowstone");
-        config.addDefault("Description", "Makes Enemies glow!");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Glowing-Modifier");
-        config.addDefault("Color", "%YELLOW%");
-        config.addDefault("MaxLevel", 3);
-    	config.addDefault("Duration", 200); //ticks INTEGER (20 ticks ~ 1 sec)
-    	config.addDefault("DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
-        config.addDefault("OverrideLanguagesystem", false);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Glowing");
+		config.addDefault("ModifierItemName", "Ender-Glowstone");
+		config.addDefault("Description", "Makes Enemies glow!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Glowing-Modifier");
+		config.addDefault("Color", "%YELLOW%");
+		config.addDefault("MaxLevel", 3);
+		config.addDefault("Duration", 200); //ticks INTEGER (20 ticks ~ 1 sec)
+		config.addDefault("DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
+		config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", false);
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", false);
 
-    	config.addDefault("Recipe.Enabled", true);
-    	config.addDefault("Recipe.Top", "GGG");
-    	config.addDefault("Recipe.Middle", "GEG");
-    	config.addDefault("Recipe.Bottom", "GGG");
+		config.addDefault("Recipe.Enabled", true);
+		config.addDefault("Recipe.Top", "GGG");
+		config.addDefault("Recipe.Middle", "GEG");
+		config.addDefault("Recipe.Bottom", "GGG");
 
-        Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("G", Material.GLOWSTONE_DUST.name());
-        recipeMaterials.put("E", Material.ENDER_EYE.name());
+		Map<String, String> recipeMaterials = new HashMap<>();
+		recipeMaterials.put("G", Material.GLOWSTONE_DUST.name());
+		recipeMaterials.put("E", Material.ENDER_EYE.name());
 
-        config.addDefault("Recipe.Materials", recipeMaterials);
-        
-    	ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		config.addDefault("Recipe.Materials", recipeMaterials);
 
-        init(Material.GLOWSTONE, true);
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        this.duration = config.getInt("Duration", 200);
-        this.durationMultiplier = config.getDouble("DurationMultiplier", 1.1);
-    }
+		init(Material.GLOWSTONE, true);
 
-    @EventHandler(ignoreCancelled = true)
-    public void effect(MTEntityDamageByEntityEvent event) {
-        if (!this.isAllowed()) {
-            return;
-        }
+		this.duration = config.getInt("Duration", 200);
+		this.durationMultiplier = config.getDouble("DurationMultiplier", 1.1);
+	}
 
-        if (!(event.getEntity() instanceof LivingEntity)) {
-            return;
-        }
+	@EventHandler(ignoreCancelled = true)
+	public void effect(MTEntityDamageByEntityEvent event) {
+		if (!this.isAllowed()) {
+			return;
+		}
 
-        Player p = event.getPlayer();
-        ItemStack tool = event.getTool();
-        LivingEntity entity = (LivingEntity) event.getEntity();
+		if (!(event.getEntity() instanceof LivingEntity)) {
+			return;
+		}
 
-        if (!p.hasPermission("minetinker.modifiers.glowing.use")) {
-            return;
-        }
+		Player p = event.getPlayer();
+		ItemStack tool = event.getTool();
+		LivingEntity entity = (LivingEntity) event.getEntity();
 
-        if (!modManager.hasMod(tool, this)) {
-            return;
-        }
+		if (!p.hasPermission("minetinker.modifiers.glowing.use")) {
+			return;
+		}
 
-        int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (modManager.getModLevel(tool, this) - 1)));
-        entity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, duration, 0, false, false));
+		if (!modManager.hasMod(tool, this)) {
+			return;
+		}
 
-        ChatWriter.log(false, p.getDisplayName() + " triggered Glowing on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
-    }
+		int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (modManager.getModLevel(tool, this) - 1)));
+		entity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, duration, 0, false, false));
+
+		ChatWriter.log(false, p.getDisplayName() + " triggered Glowing on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+	}
 }

@@ -23,146 +23,144 @@ import java.util.List;
 
 public class Propelling extends Modifier implements Listener {
 
-    private int durabilityLoss;
-    private double speedPerLevel;
+	private static Propelling instance;
+	private int durabilityLoss;
+	private double speedPerLevel;
+	private boolean sound;
+	private boolean particles;
 
-    private boolean sound;
-    private boolean particles;
+	private Propelling() {
+		super(Main.getPlugin());
 
-    private static Propelling instance;
+		Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+	}
 
-    public static Propelling instance() {
-        synchronized (Propelling.class) {
-            if (instance == null) {
-                instance = new Propelling();
-            }
-        }
+	public static Propelling instance() {
+		synchronized (Propelling.class) {
+			if (instance == null) {
+				instance = new Propelling();
+			}
+		}
 
-        return instance;
-    }
+		return instance;
+	}
 
-    @Override
-    public String getKey() {
-        return "Propelling";
-    }
+	@Override
+	public String getKey() {
+		return "Propelling";
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.ELYTRA, ToolType.TRIDENT);
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Arrays.asList(ToolType.ELYTRA, ToolType.TRIDENT);
+	}
 
-    private Propelling() {
-        super(Main.getPlugin());
+	@Override
+	public List<Enchantment> getAppliedEnchantments() {
+		return Collections.singletonList(Enchantment.RIPTIDE);
+	}
 
-        Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
-    }
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return Collections.singletonList(Enchantment.RIPTIDE);
-    }
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Propelling");
+		config.addDefault("ModifierItemName", "Enchanted Fireworkstar");
+		config.addDefault("Description", "Propel yourself through the air.");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Propelling-Modifier");
+		config.addDefault("Color", "%GOLD%");
+		config.addDefault("MaxLevel", 3);
+		config.addDefault("Elytra.DurabilityLoss", 10);
+		config.addDefault("Elytra.SpeedPerLevel", 0.05);
+		config.addDefault("Elytra.Sound", true);
+		config.addDefault("Elytra.Particles", true);
 
-    @Override
-    public void reload() {
-        FileConfiguration config = getConfig();
-        config.options().copyDefaults(true);
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", true);
 
-        config.addDefault("Allowed", true);
-        config.addDefault("Name", "Propelling");
-        config.addDefault("ModifierItemName", "Enchanted Fireworkstar");
-        config.addDefault("Description", "Propel yourself through the air.");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Propelling-Modifier");
-        config.addDefault("Color", "%GOLD%");
-        config.addDefault("MaxLevel", 3);
-        config.addDefault("Elytra.DurabilityLoss", 10);
-        config.addDefault("Elytra.SpeedPerLevel", 0.05);
-        config.addDefault("Elytra.Sound", true);
-        config.addDefault("Elytra.Particles", true);
+		config.addDefault("Recipe.Enabled", false);
+		config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", true);
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        config.addDefault("Recipe.Enabled", false);
-        config.addDefault("OverrideLanguagesystem", false);
+		init(Material.FIREWORK_STAR, true);
 
-        ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		durabilityLoss = config.getInt("Elytra.DurabilityLoss", 10);
+		speedPerLevel = config.getDouble("Elytra.SpeedPerLevel", 0.05);
 
-        init(Material.FIREWORK_STAR, true);
+		sound = config.getBoolean("Elytra.Sound", true);
+		particles = config.getBoolean("Elytra.Particles", true);
+	}
 
-        durabilityLoss = config.getInt("Elytra.DurabilityLoss", 10);
-        speedPerLevel = config.getDouble("Elytra.SpeedPerLevel", 0.05);
+	@Override
+	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+		ItemMeta meta = tool.getItemMeta();
 
-        sound = config.getBoolean("Elytra.Sound", true);
-        particles = config.getBoolean("Elytra.Particles", true);
-    }
+		if (meta != null) {
+			if (ToolType.TRIDENT.contains(tool.getType())) {
+				meta.addEnchant(Enchantment.RIPTIDE, modManager.getModLevel(tool, this), true);
+			} //Elytra does not get an enchantment
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        ItemMeta meta = tool.getItemMeta();
+			tool.setItemMeta(meta);
+		}
 
-        if (meta != null) {
-            if (ToolType.TRIDENT.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.RIPTIDE, modManager.getModLevel(tool, this), true);
-            } //Elytra does not get an enchantment
+		return true;
+	}
 
-            tool.setItemMeta(meta);
-        }
+	@EventHandler(ignoreCancelled = true)
+	public void onElytraSneak(PlayerToggleSneakEvent event) {
+		Player player = event.getPlayer();
 
-        return true;
-    }
+		if (event.isSneaking()) {
+			return;
+		}
 
-    @EventHandler(ignoreCancelled = true)
-    public void onElytraSneak(PlayerToggleSneakEvent event) {
-        Player player = event.getPlayer();
+		if (!player.isGliding()) {
+			return;
+		}
 
-        if (event.isSneaking()) {
-            return;
-        }
+		if (!player.hasPermission("minetinker.modifiers.propelling.use")) {
+			return;
+		}
 
-        if (!player.isGliding()) {
-            return;
-        }
+		ItemStack elytra = player.getInventory().getChestplate();
 
-        if (!player.hasPermission("minetinker.modifiers.propelling.use")) {
-            return;
-        }
+		if (!(modManager.isArmorViable(elytra) && ToolType.ELYTRA.contains(elytra.getType()))) {
+			return;
+		}
 
-        ItemStack elytra = player.getInventory().getChestplate();
+		if (!modManager.hasMod(elytra, this)) {
+			return;
+		}
 
-        if (!(modManager.isArmorViable(elytra) && ToolType.ELYTRA.contains(elytra.getType()))) {
-            return;
-        }
+		int maxDamage = elytra.getType().getMaxDurability();
+		ItemMeta meta = elytra.getItemMeta();
 
-        if (!modManager.hasMod(elytra, this)) {
-            return;
-        }
+		if (meta instanceof Damageable && !meta.isUnbreakable()) {
+			Damageable dam = (Damageable) meta;
 
-        int maxDamage = elytra.getType().getMaxDurability();
-        ItemMeta meta = elytra.getItemMeta();
+			if (maxDamage <= dam.getDamage() + durabilityLoss + 1) {
+				player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
+				return;
+			}
 
-        if (meta instanceof Damageable && !meta.isUnbreakable()) {
-            Damageable dam = (Damageable) meta;
+			dam.setDamage(dam.getDamage() + durabilityLoss);
+			elytra.setItemMeta(meta);
+		}
 
-            if (maxDamage <= dam.getDamage() + durabilityLoss + 1) {
-                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
-                return;
-            }
+		int level = modManager.getModLevel(elytra, this);
+		Location loc = player.getLocation();
+		Vector dir = loc.getDirection().normalize();
 
-            dam.setDamage(dam.getDamage() + durabilityLoss);
-            elytra.setItemMeta(meta);
-        }
+		player.setVelocity(player.getVelocity().add(dir.multiply(1 + speedPerLevel * level)));
 
-        int level = modManager.getModLevel(elytra, this);
-        Location loc = player.getLocation();
-        Vector dir = loc.getDirection().normalize();
+		if (sound && loc.getWorld() != null) {
+			loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
+		}
 
-        player.setVelocity(player.getVelocity().add(dir.multiply(1 + speedPerLevel * level)));
-
-        if (sound && loc.getWorld() != null) {
-            loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
-        }
-
-        if (particles) player.playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
-    }
+		if (particles) player.playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
+	}
 }

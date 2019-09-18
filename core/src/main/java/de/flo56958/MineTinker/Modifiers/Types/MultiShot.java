@@ -19,83 +19,83 @@ import java.util.Map;
 
 public class MultiShot extends Modifier {
 
-    private static MultiShot instance;
+	private static MultiShot instance;
 
-    public static MultiShot instance() {
-        synchronized (MultiShot.class) {
-            if (instance == null) {
-                instance = new MultiShot();
-            }
-        }
+	private MultiShot() {
+		super(Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static MultiShot instance() {
+		synchronized (MultiShot.class) {
+			if (instance == null) {
+				instance = new MultiShot();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Multishot";
-    }
+		return instance;
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Collections.singletonList(ToolType.CROSSBOW);
-    }
+	@Override
+	public String getKey() {
+		return "Multishot";
+	}
 
-    private MultiShot() {
-        super(Main.getPlugin());
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Collections.singletonList(ToolType.CROSSBOW);
+	}
 
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return Collections.singletonList(Enchantment.MULTISHOT);
-    }
+	@Override
+	public List<Enchantment> getAppliedEnchantments() {
+		return Collections.singletonList(Enchantment.MULTISHOT);
+	}
 
-    @Override
-    public void reload() {
-        FileConfiguration config = getConfig();
-        config.options().copyDefaults(true);
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-        config.addDefault("Allowed", true);
-        config.addDefault("Name", "Multishot");
-        config.addDefault("ModifierItemName", "Multi-Arrow");
-        config.addDefault("Description", "Shoot more Arrows per shot!");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Multishot-Modifier");
-        config.addDefault("Color", "%YELLOW%");
-        config.addDefault("MaxLevel", 1);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Multishot");
+		config.addDefault("ModifierItemName", "Multi-Arrow");
+		config.addDefault("Description", "Shoot more Arrows per shot!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Multishot-Modifier");
+		config.addDefault("Color", "%YELLOW%");
+		config.addDefault("MaxLevel", 1);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", false);
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", false);
 
-        config.addDefault("Recipe.Enabled", true);
-        config.addDefault("Recipe.Top", "QQQ");
-        config.addDefault("Recipe.Middle", "AAA");
-        config.addDefault("Recipe.Bottom", "QQQ");
-        config.addDefault("OverrideLanguagesystem", false);
+		config.addDefault("Recipe.Enabled", true);
+		config.addDefault("Recipe.Top", "QQQ");
+		config.addDefault("Recipe.Middle", "AAA");
+		config.addDefault("Recipe.Bottom", "QQQ");
+		config.addDefault("OverrideLanguagesystem", false);
 
-        Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("Q", Material.QUARTZ_BLOCK.name());
-        recipeMaterials.put("A", Material.ARROW.name());
+		Map<String, String> recipeMaterials = new HashMap<>();
+		recipeMaterials.put("Q", Material.QUARTZ_BLOCK.name());
+		recipeMaterials.put("A", Material.ARROW.name());
 
-        config.addDefault("Recipe.Materials", recipeMaterials);
+		config.addDefault("Recipe.Materials", recipeMaterials);
 
-        ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        init(Material.ARROW, true);
-    }
+		init(Material.ARROW, true);
+	}
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        ItemMeta meta = tool.getItemMeta();
+	@Override
+	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+		ItemMeta meta = tool.getItemMeta();
 
-        if (meta != null) {
-            if (ToolType.CROSSBOW.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.MULTISHOT, modManager.getModLevel(tool, this), true);
-            }
+		if (meta != null) {
+			if (ToolType.CROSSBOW.contains(tool.getType())) {
+				meta.addEnchant(Enchantment.MULTISHOT, modManager.getModLevel(tool, this), true);
+			}
 
-            tool.setItemMeta(meta);
-        }
+			tool.setItemMeta(meta);
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

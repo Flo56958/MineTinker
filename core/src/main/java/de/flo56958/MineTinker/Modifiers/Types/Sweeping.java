@@ -17,74 +17,74 @@ import java.util.List;
 
 public class Sweeping extends Modifier {
 
-    //TODO: Make active right-click ability to push entities away
-    //has cooldown
-    private static Sweeping instance;
+	//TODO: Make active right-click ability to push entities away
+	//has cooldown
+	private static Sweeping instance;
 
-    public static Sweeping instance() {
-        synchronized (Sweeping.class) {
-            if (instance == null) {
-                instance = new Sweeping();
-            }
-        }
+	private Sweeping() {
+		super(Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static Sweeping instance() {
+		synchronized (Sweeping.class) {
+			if (instance == null) {
+				instance = new Sweeping();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Sweeping";
-    }
+		return instance;
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Collections.singletonList(ToolType.SWORD);
-    }
+	@Override
+	public String getKey() {
+		return "Sweeping";
+	}
 
-    private Sweeping() {
-        super(Main.getPlugin());
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Collections.singletonList(ToolType.SWORD);
+	}
 
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return Collections.singletonList(Enchantment.SWEEPING_EDGE);
-    }
+	@Override
+	public List<Enchantment> getAppliedEnchantments() {
+		return Collections.singletonList(Enchantment.SWEEPING_EDGE);
+	}
 
-    @Override
-    public void reload() {
-    	FileConfiguration config = getConfig();
-    	config.options().copyDefaults(true);
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-    	config.addDefault("Allowed", true);
-    	config.addDefault("Name", "Sweeping");
-    	config.addDefault("ModifierItemName", "Enchanted Iron Ingot");
-        config.addDefault("Description", "More damage over a greater area!");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Sweeping-Modifier");
-        config.addDefault("Color", "%RED%");
-        config.addDefault("MaxLevel", 5);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Sweeping");
+		config.addDefault("ModifierItemName", "Enchanted Iron Ingot");
+		config.addDefault("Description", "More damage over a greater area!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Sweeping-Modifier");
+		config.addDefault("Color", "%RED%");
+		config.addDefault("MaxLevel", 5);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", true);
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", true);
 
-        config.addDefault("Recipe.Enabled", false);
-        config.addDefault("OverrideLanguagesystem", false);
+		config.addDefault("Recipe.Enabled", false);
+		config.addDefault("OverrideLanguagesystem", false);
 
-        ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
-        
-        init(Material.IRON_INGOT, true);
-    }
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        ItemMeta meta = tool.getItemMeta();
+		init(Material.IRON_INGOT, true);
+	}
 
-        if (meta != null) {
-            meta.addEnchant(Enchantment.SWEEPING_EDGE, modManager.getModLevel(tool, this), true);
+	@Override
+	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+		ItemMeta meta = tool.getItemMeta();
 
-            tool.setItemMeta(meta);
-        }
+		if (meta != null) {
+			meta.addEnchant(Enchantment.SWEEPING_EDGE, modManager.getModLevel(tool, this), true);
 
-        return true;
-    }
+			tool.setItemMeta(meta);
+		}
+
+		return true;
+	}
 }

@@ -19,87 +19,87 @@ import java.util.Map;
 
 public class Sharpness extends Modifier {
 
-    private static Sharpness instance;
+	private static Sharpness instance;
 
-    public static Sharpness instance() {
-        synchronized (Sharpness.class) {
-            if (instance == null) {
-                instance = new Sharpness();
-            }
-        }
+	private Sharpness() {
+		super(Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static Sharpness instance() {
+		synchronized (Sharpness.class) {
+			if (instance == null) {
+				instance = new Sharpness();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Sharpness";
-    }
+		return instance;
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT);
-    }
+	@Override
+	public String getKey() {
+		return "Sharpness";
+	}
 
-    private Sharpness() {
-        super(Main.getPlugin());
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT);
+	}
 
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return Arrays.asList(Enchantment.DAMAGE_ALL, Enchantment.ARROW_DAMAGE, Enchantment.IMPALING);
-    }
+	@Override
+	public List<Enchantment> getAppliedEnchantments() {
+		return Arrays.asList(Enchantment.DAMAGE_ALL, Enchantment.ARROW_DAMAGE, Enchantment.IMPALING);
+	}
 
-    @Override
-    public void reload() {
-    	FileConfiguration config = getConfig();
-    	config.options().copyDefaults(true);
-    	
-    	config.addDefault("Allowed", true);
-    	config.addDefault("Name", "Sharpness");
-    	config.addDefault("ModifierItemName", "Compressed Quartzblock");
-        config.addDefault("Description", "Weapon does additional damage to everyone!");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Sharpness-Modifier");
-        config.addDefault("Color", "%WHITE%");
-        config.addDefault("MaxLevel", 5);
-        config.addDefault("OverrideLanguagesystem", false);
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", false);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Sharpness");
+		config.addDefault("ModifierItemName", "Compressed Quartzblock");
+		config.addDefault("Description", "Weapon does additional damage to everyone!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Sharpness-Modifier");
+		config.addDefault("Color", "%WHITE%");
+		config.addDefault("MaxLevel", 5);
+		config.addDefault("OverrideLanguagesystem", false);
 
-        config.addDefault("Recipe.Enabled", true);
-    	config.addDefault("Recipe.Top", "QQQ");
-    	config.addDefault("Recipe.Middle", "QQQ");
-    	config.addDefault("Recipe.Bottom", "QQQ");
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", false);
 
-        Map<String, String> recipeMaterials = new HashMap<>();
-        recipeMaterials.put("Q", Material.QUARTZ_BLOCK.name());
+		config.addDefault("Recipe.Enabled", true);
+		config.addDefault("Recipe.Top", "QQQ");
+		config.addDefault("Recipe.Middle", "QQQ");
+		config.addDefault("Recipe.Bottom", "QQQ");
 
-        config.addDefault("Recipe.Materials", recipeMaterials);
+		Map<String, String> recipeMaterials = new HashMap<>();
+		recipeMaterials.put("Q", Material.QUARTZ_BLOCK.name());
 
-    	ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
-    	
-        init(Material.QUARTZ_BLOCK, true);
-    }
+		config.addDefault("Recipe.Materials", recipeMaterials);
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        ItemMeta meta = tool.getItemMeta();
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        if (meta != null) {
-            if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.ARROW_DAMAGE, modManager.getModLevel(tool, this), true);
-            } else if (ToolType.TRIDENT.contains(tool.getType())) {
-                meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
-                meta.addEnchant(Enchantment.IMPALING, modManager.getModLevel(tool, this), true);
-            }
+		init(Material.QUARTZ_BLOCK, true);
+	}
 
-            tool.setItemMeta(meta);
-        }
+	@Override
+	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+		ItemMeta meta = tool.getItemMeta();
 
-        return true;
-    }
+		if (meta != null) {
+			if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType())) {
+				meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
+			} else if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType())) {
+				meta.addEnchant(Enchantment.ARROW_DAMAGE, modManager.getModLevel(tool, this), true);
+			} else if (ToolType.TRIDENT.contains(tool.getType())) {
+				meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
+				meta.addEnchant(Enchantment.IMPALING, modManager.getModLevel(tool, this), true);
+			}
+
+			tool.setItemMeta(meta);
+		}
+
+		return true;
+	}
 }

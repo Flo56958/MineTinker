@@ -18,72 +18,72 @@ import java.util.List;
 
 public class SilkTouch extends Modifier {
 
-    private static SilkTouch instance;
+	private static SilkTouch instance;
 
-    public static SilkTouch instance() {
-        synchronized (SilkTouch.class) {
-            if (instance == null) {
-                instance = new SilkTouch();
-            }
-        }
+	private SilkTouch() {
+		super(Main.getPlugin());
+	}
 
-        return instance;
-    }
+	public static SilkTouch instance() {
+		synchronized (SilkTouch.class) {
+			if (instance == null) {
+				instance = new SilkTouch();
+			}
+		}
 
-    @Override
-    public String getKey() {
-        return "Silk-Touch";
-    }
+		return instance;
+	}
 
-    @Override
-    public List<ToolType> getAllowedTools() {
-        return Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS);
-    }
+	@Override
+	public String getKey() {
+		return "Silk-Touch";
+	}
 
-    private SilkTouch() {
-        super(Main.getPlugin());
-    }
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS);
+	}
 
-    @Override
-    public List<Enchantment> getAppliedEnchantments() {
-        return Collections.singletonList(Enchantment.SILK_TOUCH);
-    }
+	@Override
+	public List<Enchantment> getAppliedEnchantments() {
+		return Collections.singletonList(Enchantment.SILK_TOUCH);
+	}
 
-    @Override
-    public void reload() {
-    	FileConfiguration config = getConfig();
-    	config.options().copyDefaults(true);
-    	
-    	config.addDefault("Allowed", true);
-    	config.addDefault("Name", "Silk-Touch");
-    	config.addDefault("ModifierItemName", "Enhanced Cobweb");
-        config.addDefault("Description", "Applies Silk-Touch!");
-        config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Silk-Touch-Modifier");
-        config.addDefault("Color", "%WHITE%");
-        config.addDefault("MaxLevel", 1); //IF 2: Epic Spawners work with MT-SilkTouch
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
 
-        config.addDefault("EnchantCost", 10);
-        config.addDefault("Enchantable", true);
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Silk-Touch");
+		config.addDefault("ModifierItemName", "Enhanced Cobweb");
+		config.addDefault("Description", "Applies Silk-Touch!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Silk-Touch-Modifier");
+		config.addDefault("Color", "%WHITE%");
+		config.addDefault("MaxLevel", 1); //IF 2: Epic Spawners work with MT-SilkTouch
 
-        config.addDefault("Recipe.Enabled", false);
-        config.addDefault("OverrideLanguagesystem", false);
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", true);
 
-        ConfigurationManager.saveConfig(config);
-        ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
-    	
-        init(Material.COBWEB, true);
-    }
+		config.addDefault("Recipe.Enabled", false);
+		config.addDefault("OverrideLanguagesystem", false);
 
-    @Override
-    public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
-        ItemMeta meta = tool.getItemMeta();
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-        if (meta != null) {
-            meta.addEnchant(Enchantment.SILK_TOUCH, modManager.getModLevel(tool, this), true);
+		init(Material.COBWEB, true);
+	}
 
-            tool.setItemMeta(meta);
-        }
+	@Override
+	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+		ItemMeta meta = tool.getItemMeta();
 
-        return true;
-    }
+		if (meta != null) {
+			meta.addEnchant(Enchantment.SILK_TOUCH, modManager.getModLevel(tool, this), true);
+
+			tool.setItemMeta(meta);
+		}
+
+		return true;
+	}
 }
