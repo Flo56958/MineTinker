@@ -11,6 +11,7 @@ import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.Utilities.Updater;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
+import de.flo56958.MineTinker.api.gui.GUI;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -149,6 +150,7 @@ public class Main extends JavaPlugin {
     public void onDisable() {
         ChatWriter.logInfo("Shutting down!");
         LanguageManager.cleanup();
+        GUI.guis.forEach(GUI::close);
     }
 
     /**

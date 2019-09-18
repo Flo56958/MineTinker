@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.api.gui;
 
 import de.flo56958.MineTinker.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -159,6 +160,13 @@ public class GUI implements Listener {
         synchronized (this) {
             if (isClosed) {
                 return;
+            }
+
+            for(Window w : windows) {
+                for (HumanEntity humanEntity : new ArrayList<>(w.getInventory().getViewers())) {
+                    //new ArrayList is required as of ModificationException
+                    humanEntity.closeInventory();
+                }
             }
 
             HandlerList.unregisterAll(this);
