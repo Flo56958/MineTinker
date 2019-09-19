@@ -3,8 +3,10 @@ package de.flo56958.MineTinker.Utilities.nms;
 import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftArrow;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -160,5 +162,13 @@ class NBTHandler_v1_13_R2 extends NBTHandler {
     @Override
     public Iterator<Recipe> getRecipeIterator() {
         return Bukkit.recipeIterator();
+    }
+
+    @Override
+    public void removeArrowFromClient(Arrow arrow) {
+        PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(((CraftArrow) arrow).getHandle().getId());
+        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+        }
     }
 }

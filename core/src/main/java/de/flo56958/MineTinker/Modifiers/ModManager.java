@@ -246,6 +246,7 @@ public class ModManager {
     	allMods.add(Lifesteal.instance());
     	allMods.add(LightWeight.instance());
         allMods.add(Luck.instance());
+        allMods.add(Magical.instance());
         allMods.add(Melting.instance());
         allMods.add(Photosynthesis.instance());
         allMods.add(Poisonous.instance());
