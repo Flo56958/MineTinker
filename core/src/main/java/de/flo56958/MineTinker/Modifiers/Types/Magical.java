@@ -63,10 +63,10 @@ public class Magical extends Modifier implements Listener {
 
 		config.addDefault("Allowed", true);
 		config.addDefault("Name", "Magical");
-		config.addDefault("ModifierItemName", "ToBeChanged");
-		config.addDefault("Description", "ToBeChanged");
+		config.addDefault("ModifierItemName", "Magic Arrow");
+		config.addDefault("Description", "Shoot a magic orb that is not affected by gravity but flies %amount% slower! If the orb hits a target it does %min% to %max% more damage (depending on level)!");
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Magical-Modifier");
-		config.addDefault("Color", "%PURPLE%");
+		config.addDefault("Color", "%DARK_PURPLE%");
 		config.addDefault("MaxLevel", 5);
 
 		config.addDefault("MultiplierArrowSpeed", 0.3);
@@ -78,14 +78,15 @@ public class Magical extends Modifier implements Listener {
 		config.addDefault("Enchantable", false);
 
 		config.addDefault("Recipe.Enabled", true); //TODO: Change
-		config.addDefault("Recipe.Top", "QQQ");
-		config.addDefault("Recipe.Middle", "AAA");
-		config.addDefault("Recipe.Bottom", "QQQ");
+		config.addDefault("Recipe.Top", "BPB");
+		config.addDefault("Recipe.Middle", "PAP");
+		config.addDefault("Recipe.Bottom", "BPB");
 		config.addDefault("OverrideLanguagesystem", false);
 
 		Map<String, String> recipeMaterials = new HashMap<>();
-		recipeMaterials.put("Q", Material.QUARTZ_BLOCK.name());
+		recipeMaterials.put("B", Material.DRAGON_BREATH.name());
 		recipeMaterials.put("A", Material.ARROW.name());
+		recipeMaterials.put("P", Material.BLAZE_POWDER.name());
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
 
@@ -98,6 +99,10 @@ public class Magical extends Modifier implements Listener {
 		this.multiplierDamagePerLevel = config.getDouble("MultiplierArrowDamagePerLevel", 1.2);
 		this.experienceCost = config.getInt("ExperienceCost", 10);
 		this.hasKnockback = config.getBoolean("HasKnockback", true);
+
+		this.description = this.description.replace("%amount", String.valueOf(Math.round((1.0 - this.multiplierArrowSpeed) * 100)))
+				.replace("%min", String.valueOf(Math.round((this.multiplierDamagePerLevel - 1.0) * 100)))
+				.replace("%max", String.valueOf(Math.round((Math.pow(this.multiplierDamagePerLevel, this.getMaxLvl()) - 1.0) * 100)));
 	}
 
 	@EventHandler
@@ -197,7 +202,7 @@ public class Magical extends Modifier implements Listener {
 		} catch (NumberFormatException ignored) {}
 	}
 
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onEntityHit(EntityDamageByEntityEvent e) {
 		if (!this.isAllowed()) return;
 

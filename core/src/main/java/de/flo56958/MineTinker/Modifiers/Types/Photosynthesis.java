@@ -45,6 +45,7 @@ public class Photosynthesis extends Modifier implements Listener {
 			}
 
 			if (p.isDead()) continue;
+			if (!p.hasPermission("minetinker.modifiers.photosynthesis.use")) continue;
 
 			Tupel t = data.get(id);
 			Location pLoc = p.getLocation();

@@ -200,6 +200,11 @@ Modifier:
     Description: "Get more loot from mobs and blocks!"
     ModifierItemName: "Compressed Lapis-Block"
     DescriptionModifierItem: "Modifier-Item for the Luck-Modifier"
+  Magical:
+    Name: "Magical"
+    Description: "Shoot a magic orb that is not affected by gravity but flies %amount% slower! If the orb hits a target it does %min% to %max% more damage (depending on level)!"
+    ModifierItemName: "Magic Arrow"
+    DescriptionModifierItem: "Modifier-Item for the Magical-Modifier"
   Melting:
     Name: "Melting"
     Description: "%amount% extra damage against burning enemies and %amount% less damage taken while on fire!"
