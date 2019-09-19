@@ -9,58 +9,59 @@ import org.jetbrains.annotations.NotNull;
 
 public class ModifierApplyEvent extends Event {
 
-    private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList handlers = new HandlerList();
 
-    private final Player player;
-    private final ItemStack tool;
-    private final Modifier mod;
-    private final int slotsRemaining;
+	private final Player player;
+	private final ItemStack tool;
+	private final Modifier mod;
+	private final int slotsRemaining;
 
-    private final boolean isCommand;
+	private final boolean isCommand;
 
-    /**
-     * Event constructor
-     * @param player The Player that is involved in the Event
-     * @param tool The Itemstack that gets modified
-     * @param mod The Modifier that is involved
-     * @param slotsRemaining How many Slots are remaining on the Tool/Armor
-     * @param isCommand Was the Event triggered as a result of a command input?
-     */
-    public ModifierApplyEvent(Player player, ItemStack tool, @NotNull Modifier mod, int slotsRemaining, boolean isCommand) {
-        this.player = player;
-        this.tool = tool;
-        this.mod = mod;
-        this.slotsRemaining = slotsRemaining;
-        this.isCommand = isCommand;
-    }
+	/**
+	 * Event constructor
+	 *
+	 * @param player         The Player that is involved in the Event
+	 * @param tool           The Itemstack that gets modified
+	 * @param mod            The Modifier that is involved
+	 * @param slotsRemaining How many Slots are remaining on the Tool/Armor
+	 * @param isCommand      Was the Event triggered as a result of a command input?
+	 */
+	public ModifierApplyEvent(Player player, ItemStack tool, @NotNull Modifier mod, int slotsRemaining, boolean isCommand) {
+		this.player = player;
+		this.tool = tool;
+		this.mod = mod;
+		this.slotsRemaining = slotsRemaining;
+		this.isCommand = isCommand;
+	}
 
-    public Player getPlayer() {
-        return player;
-    }
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 
-    public ItemStack getTool() {
-        return tool;
-    }
+	public Player getPlayer() {
+		return player;
+	}
 
-    public Modifier getMod() {
-        return mod;
-    }
+	public ItemStack getTool() {
+		return tool;
+	}
 
-    public int getSlotsRemaining() {
-        return slotsRemaining;
-    }
+	public Modifier getMod() {
+		return mod;
+	}
 
-    public boolean isCommand() {
-        return isCommand;
-    }
+	public int getSlotsRemaining() {
+		return slotsRemaining;
+	}
 
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+	public boolean isCommand() {
+		return isCommand;
+	}
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+	@NotNull
+	@Override
+	public HandlerList getHandlers() {
+		return handlers;
+	}
 }

@@ -42,7 +42,6 @@ public class Power extends Modifier implements Listener {
 
 	private Power() {
 		super(Main.getPlugin());
-		Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
 	}
 
 	public static Power instance() {

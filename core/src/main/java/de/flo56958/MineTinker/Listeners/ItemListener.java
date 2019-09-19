@@ -24,38 +24,38 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemListener implements Listener {
 
-    private final ModManager modManager = ModManager.instance();
+	private final ModManager modManager = ModManager.instance();
 
-    @EventHandler(ignoreCancelled = true)
-    public void onDespawn(ItemDespawnEvent event) {
-        Item item = event.getEntity();
-        ItemStack is = item.getItemStack();
+	@EventHandler(ignoreCancelled = true)
+	public void onDespawn(ItemDespawnEvent event) {
+		Item item = event.getEntity();
+		ItemStack is = item.getItemStack();
 
-        if (!((modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))
-                || (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems") && modManager.isModifierItem(is)
-                    && !(is.getType() == Material.NETHER_STAR || is.getType() == Material.EXPERIENCE_BOTTLE)))) {
-            return;
-        }
+		if (!((modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))
+				|| (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems") && modManager.isModifierItem(is)
+				&& !(is.getType() == Material.NETHER_STAR || is.getType() == Material.EXPERIENCE_BOTTLE)))) {
+			return;
+		}
 
-        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetPersistent")) {
-            event.setCancelled(true);
-            item.setTicksLived(1);
-        }
-    }
+		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetPersistent")) {
+			event.setCancelled(true);
+			item.setTicksLived(1);
+		}
+	}
 
-    @EventHandler(ignoreCancelled = true)
-    public void onItemDrop(PlayerDropItemEvent event) {
-        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
-            return;
-        }
+	@EventHandler(ignoreCancelled = true)
+	public void onItemDrop(PlayerDropItemEvent event) {
+		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
+			return;
+		}
 
-        Item item = event.getItemDrop();
-        ItemStack is = item.getItemStack();
+		Item item = event.getItemDrop();
+		ItemStack is = item.getItemStack();
 
-        boolean isMineTinker = false;
+		boolean isMineTinker = false;
 
-        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) {
-        	if (!(is.getType() == Material.NETHER_STAR || is.getType() == Material.EXPERIENCE_BOTTLE)) {
+		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) {
+			if (!(is.getType() == Material.NETHER_STAR || is.getType() == Material.EXPERIENCE_BOTTLE)) {
 				ItemStack modifierTester = is.clone();
 				modifierTester.setAmount(1);
 
@@ -66,112 +66,112 @@ public class ItemListener implements Listener {
 					}
 				}
 			}
-        }
-        if (modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is)) {
-            isMineTinker = true;
-        }
+		}
+		if (modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is)) {
+			isMineTinker = true;
+		}
 
-        if (!isMineTinker) {
-            return;
-        }
+		if (!isMineTinker) {
+			return;
+		}
 
-        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ShowName") && is.getItemMeta() != null) {
-            item.setCustomName(is.getItemMeta().getDisplayName());
-            item.setCustomNameVisible(true);
-        }
+		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ShowName") && is.getItemMeta() != null) {
+			item.setCustomName(is.getItemMeta().getDisplayName());
+			item.setCustomNameVisible(true);
+		}
 
-        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetGlowing")) {
-            item.setGlowing(true);
-        }
+		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetGlowing")) {
+			item.setGlowing(true);
+		}
 
-        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetInvulnerable")) {
-            item.setInvulnerable(true);
-        }
-    }
+		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetInvulnerable")) {
+			item.setInvulnerable(true);
+		}
+	}
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        if (event.getKeepInventory()) {
-            return;
-        }
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onPlayerDeath(PlayerDeathEvent event) {
+		if (event.getKeepInventory()) {
+			return;
+		}
 
-        Player player = event.getEntity();
-        Inventory inventory = player.getInventory();
+		Player player = event.getEntity();
+		Inventory inventory = player.getInventory();
 
-        if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ApplyOnPlayerDeath", true)) { //For DeadSouls and other Grave-Plugins //
-            // TODO: Try to find better handling of this Event or with these Plugins
-            return;
-        }
+		if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ApplyOnPlayerDeath", true)) { //For DeadSouls and other Grave-Plugins //
+			// TODO: Try to find better handling of this Event or with these Plugins
+			return;
+		}
 
-        for (ItemStack itemStack : inventory.getContents()) {
-            if (itemStack == null) {
-                continue; // More consistent nullability in NotNull fields
-            }
+		for (ItemStack itemStack : inventory.getContents()) {
+			if (itemStack == null) {
+				continue; // More consistent nullability in NotNull fields
+			}
 
-            boolean isMineTinker = false;
+			boolean isMineTinker = false;
 
-            if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) { //Modifieritems
-                ItemStack modifierTester = itemStack.clone();
-                modifierTester.setAmount(1);
+			if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) { //Modifieritems
+				ItemStack modifierTester = itemStack.clone();
+				modifierTester.setAmount(1);
 
-                for (Modifier modifier : modManager.getAllowedMods()) {
-                    if (modifier.getModItem().equals(modifierTester)) {
-                        isMineTinker = true;
-                        break;
-                    }
-                }
-            }
+				for (Modifier modifier : modManager.getAllowedMods()) {
+					if (modifier.getModItem().equals(modifierTester)) {
+						isMineTinker = true;
+						break;
+					}
+				}
+			}
 
-            if (modManager.isArmorViable(itemStack) || modManager.isToolViable(itemStack) || modManager.isWandViable(itemStack)) {
-                isMineTinker = true;
-            }
+			if (modManager.isArmorViable(itemStack) || modManager.isToolViable(itemStack) || modManager.isWandViable(itemStack)) {
+				isMineTinker = true;
+			}
 
-            if (!isMineTinker) {
-                continue;
-            }
+			if (!isMineTinker) {
+				continue;
+			}
 
-            if (Soulbound.instance().effect(player, itemStack)) {
-                itemStack.setAmount(0);
-                continue;
-            } //workaround as inv.remove(is) does not work insteads duplicates item
+			if (Soulbound.instance().effect(player, itemStack)) {
+				itemStack.setAmount(0);
+				continue;
+			} //workaround as inv.remove(is) does not work insteads duplicates item
 
-            if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
-                PlayerDropItemEvent dropItemEvent = new PlayerDropItemEvent(player, player.getWorld().dropItem(player.getLocation(), itemStack));
-                Bukkit.getPluginManager().callEvent(dropItemEvent); //To trigger item behaviour
-                itemStack.setAmount(0);
-            }
-        }
-    }
+			if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
+				PlayerDropItemEvent dropItemEvent = new PlayerDropItemEvent(player, player.getWorld().dropItem(player.getLocation(), itemStack));
+				Bukkit.getPluginManager().callEvent(dropItemEvent); //To trigger item behaviour
+				itemStack.setAmount(0);
+			}
+		}
+	}
 
-    //TODO: Crossbow gets destroyed non the less
-    @EventHandler
-    public void onItemBreak(PlayerItemBreakEvent event) {
-        Player player = event.getPlayer();
-        ItemStack item = event.getBrokenItem();
+	//TODO: Crossbow gets destroyed non the less
+	@EventHandler
+	public void onItemBreak(PlayerItemBreakEvent event) {
+		Player player = event.getPlayer();
+		ItemStack item = event.getBrokenItem();
 
-        if (Lists.WORLDS.contains(player.getWorld().getName())) {
-            return;
-        }
+		if (Lists.WORLDS.contains(player.getWorld().getName())) {
+			return;
+		}
 
-        if (!modManager.isToolViable(item)) {
-            return;
-        }
+		if (!modManager.isToolViable(item)) {
+			return;
+		}
 
-        if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.StopBreakEvent")) {
-            return;
-        }
+		if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.StopBreakEvent")) {
+			return;
+		}
 
-        if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.AlertPlayerOnBreak")) {
-            player.sendMessage(LanguageManager.getString("Alert.OnItemBreak", player));
-        }
+		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.AlertPlayerOnBreak")) {
+			player.sendMessage(LanguageManager.getString("Alert.OnItemBreak", player));
+		}
 
-        ItemMeta meta = item.getItemMeta();
+		ItemMeta meta = item.getItemMeta();
 
-        if (meta instanceof Damageable) {
-            ((Damageable) meta).setDamage(item.getType().getMaxDurability() - 1);
-            item.setItemMeta(meta);
-        }
+		if (meta instanceof Damageable) {
+			((Damageable) meta).setDamage(item.getType().getMaxDurability() - 1);
+			item.setItemMeta(meta);
+		}
 
-        player.getInventory().addItem(item);
-    }
+		player.getInventory().addItem(item);
+	}
 }

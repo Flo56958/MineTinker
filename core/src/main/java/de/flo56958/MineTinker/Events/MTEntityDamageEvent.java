@@ -14,80 +14,83 @@ import org.jetbrains.annotations.NotNull;
  * the criteria (right Armor, ...)
  */
 public class MTEntityDamageEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList handlers = new HandlerList();
 
-    private final Player player;
-    private final ItemStack tool;
+	private final Player player;
+	private final ItemStack tool;
 
-    private final EntityDamageEvent event;
+	private final EntityDamageEvent event;
 
-    /**
-     * Event constructor
-     * @param tool The ItemStack (MUST be a MineTinker-Tool)
-     * @param event    The BlockBreakEvent from which it was called
-     */
-    public MTEntityDamageEvent(@NotNull ItemStack tool, @NotNull EntityDamageEvent event) {
-        if (event.getEntity() instanceof Player) {
-            this.player = (Player) event.getEntity();
-        } else {
-            this.player = null;
-        }
-        this.tool = tool;
-        this.event = event;
-    }
+	/**
+	 * Event constructor
+	 *
+	 * @param tool  The ItemStack (MUST be a MineTinker-Tool)
+	 * @param event The BlockBreakEvent from which it was called
+	 */
+	public MTEntityDamageEvent(@NotNull ItemStack tool, @NotNull EntityDamageEvent event) {
+		if (event.getEntity() instanceof Player) {
+			this.player = (Player) event.getEntity();
+		} else {
+			this.player = null;
+		}
+		this.tool = tool;
+		this.event = event;
+	}
 
-    /**
-     * Event constructor (used for the Armor-Effects as the Player and the Entity are the same)
-     * @param p The Player
-     * @param tool The ItemStack (MUST be a MineTinker-Tool)
-     * @param event    The BlockBreakEvent from which it was called
-     */
-    public MTEntityDamageEvent(@NotNull Player p, @NotNull ItemStack tool, @NotNull EntityDamageEvent event) {
-        this.player = p;
-        this.tool = tool;
-        this.event = event;
-    }
+	/**
+	 * Event constructor (used for the Armor-Effects as the Player and the Entity are the same)
+	 *
+	 * @param p     The Player
+	 * @param tool  The ItemStack (MUST be a MineTinker-Tool)
+	 * @param event The BlockBreakEvent from which it was called
+	 */
+	public MTEntityDamageEvent(@NotNull Player p, @NotNull ItemStack tool, @NotNull EntityDamageEvent event) {
+		this.player = p;
+		this.tool = tool;
+		this.event = event;
+	}
 
-    public Player getPlayer() {
-        return player;
-    }
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 
-    public ItemStack getTool() {
-        return tool;
-    }
+	public Player getPlayer() {
+		return player;
+	}
 
-    /**
-     * @return The original EntityDamageEvent
-     */
-    public EntityDamageEvent getEvent() {
-        return event;
-    }
+	public ItemStack getTool() {
+		return tool;
+	}
 
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+	/**
+	 * @return The original EntityDamageEvent
+	 */
+	public EntityDamageEvent getEvent() {
+		return event;
+	}
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+	@NotNull
+	@Override
+	public HandlerList getHandlers() {
+		return handlers;
+	}
 
-    /**
-     * @return if the original EntityDamageEvent is cancelled
-     */
-    @Override
-    public boolean isCancelled() {
-        return event.isCancelled();
-    }
+	/**
+	 * @return if the original EntityDamageEvent is cancelled
+	 */
+	@Override
+	public boolean isCancelled() {
+		return event.isCancelled();
+	}
 
-    /**
-     * Sets the original EntityDamageEvent Cancelled-State
-     * This system is linked to the original Event as this is only a trigger for the MineTinker-Modifiers
-     * @param b true/false is cancelled
-     */
-    @Override
-    public void setCancelled(boolean b) {
-        event.setCancelled(b);
-    }
+	/**
+	 * Sets the original EntityDamageEvent Cancelled-State
+	 * This system is linked to the original Event as this is only a trigger for the MineTinker-Modifiers
+	 *
+	 * @param b true/false is cancelled
+	 */
+	@Override
+	public void setCancelled(boolean b) {
+		event.setCancelled(b);
+	}
 }

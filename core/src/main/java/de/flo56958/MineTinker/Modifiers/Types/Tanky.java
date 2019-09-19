@@ -33,7 +33,6 @@ public class Tanky extends Modifier implements Listener {
 
 	private Tanky() {
 		super(Main.getPlugin());
-		Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
 	}
 
 	public static Tanky instance() {

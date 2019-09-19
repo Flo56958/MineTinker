@@ -7,7 +7,10 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -35,7 +38,6 @@ public class AutoSmelt extends Modifier implements Listener {
 	private AutoSmelt() {
 		super(Main.getPlugin());
 
-		Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
 	}
 
 	public static AutoSmelt instance() {
@@ -186,10 +188,6 @@ public class AutoSmelt extends Modifier implements Listener {
 	 */
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTBlockBreakEvent event) {
-		if (!this.isAllowed()) {
-			return;
-		}
-
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 		Block block = event.getBlock();

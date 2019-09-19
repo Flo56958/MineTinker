@@ -15,86 +15,89 @@ import org.jetbrains.annotations.NotNull;
  * the criteria (right Tool, ...)
  */
 public class MTEntityDamageByEntityEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList handlers = new HandlerList();
 
-    private final Player player;
-    private final ItemStack tool;
+	private final Player player;
+	private final ItemStack tool;
 
-    private final Entity entity;
+	private final Entity entity;
 
-    private final EntityDamageByEntityEvent event;
+	private final EntityDamageByEntityEvent event;
 
-    /**
-     * Event constructor (used for the Armor-Effects as the Player and the Entity are the same)
-     * @param p         The Player
-     * @param tool      The ItemStack (MUST be a MineTinker-Tool)
-     * @param entity    The Entity to apply effects on
-     * @param event         The BlockBreakEvent from which it was called
-     */
-    public MTEntityDamageByEntityEvent(@NotNull Player p, @NotNull ItemStack tool, Entity entity, @NotNull EntityDamageByEntityEvent event) {
-        this.player = p;
-        this.tool = tool;
-        this.entity = entity;
-        this.event = event;
-    }
+	/**
+	 * Event constructor (used for the Armor-Effects as the Player and the Entity are the same)
+	 *
+	 * @param p      The Player
+	 * @param tool   The ItemStack (MUST be a MineTinker-Tool)
+	 * @param entity The Entity to apply effects on
+	 * @param event  The BlockBreakEvent from which it was called
+	 */
+	public MTEntityDamageByEntityEvent(@NotNull Player p, @NotNull ItemStack tool, Entity entity, @NotNull EntityDamageByEntityEvent event) {
+		this.player = p;
+		this.tool = tool;
+		this.entity = entity;
+		this.event = event;
+	}
 
-    /**
-     * Event constructor (used for the Armor-Effects as the Player and the Entity are the same)
-     * @param p         The Player
-     * @param tool      The ItemStack (MUST be a MineTinker-Tool)
-     * @param event         The BlockBreakEvent from which it was called
-     */
-    public MTEntityDamageByEntityEvent(@NotNull Player p, @NotNull ItemStack tool, @NotNull EntityDamageByEntityEvent event) {
-        this.player = p;
-        this.tool = tool;
-        this.entity = event.getEntity();
-        this.event = event;
-    }
+	/**
+	 * Event constructor (used for the Armor-Effects as the Player and the Entity are the same)
+	 *
+	 * @param p     The Player
+	 * @param tool  The ItemStack (MUST be a MineTinker-Tool)
+	 * @param event The BlockBreakEvent from which it was called
+	 */
+	public MTEntityDamageByEntityEvent(@NotNull Player p, @NotNull ItemStack tool, @NotNull EntityDamageByEntityEvent event) {
+		this.player = p;
+		this.tool = tool;
+		this.entity = event.getEntity();
+		this.event = event;
+	}
 
-    public Player getPlayer() {
-        return player;
-    }
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 
-    public ItemStack getTool() {
-        return tool;
-    }
+	public Player getPlayer() {
+		return player;
+	}
 
-    public Entity getEntity() {
-        return entity;
-    }
+	public ItemStack getTool() {
+		return tool;
+	}
 
-    /**
-     * @return The original EntityDamageByEntityEvent
-     */
-    public EntityDamageByEntityEvent getEvent() {
-        return event;
-    }
+	public Entity getEntity() {
+		return entity;
+	}
 
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+	/**
+	 * @return The original EntityDamageByEntityEvent
+	 */
+	public EntityDamageByEntityEvent getEvent() {
+		return event;
+	}
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+	@NotNull
+	@Override
+	public HandlerList getHandlers() {
+		return handlers;
+	}
 
-    /**
-     * @return if the original EntityDamageByEntityEvent is cancelled
-     */
-    @Override
-    public boolean isCancelled() {
-        return event.isCancelled();
-    }
+	/**
+	 * @return if the original EntityDamageByEntityEvent is cancelled
+	 */
+	@Override
+	public boolean isCancelled() {
+		return event.isCancelled();
+	}
 
-    /**
-     * Sets the original EntityDamageByEntityEvent Cancelled-State
-     * This system is linked to the original Event as this is only a trigger for the MineTinker-Modifiers
-     * @param b true/false is cancelled
-     */
-    @Override
-    public void setCancelled(boolean b) {
-        event.setCancelled(b);
-    }
+	/**
+	 * Sets the original EntityDamageByEntityEvent Cancelled-State
+	 * This system is linked to the original Event as this is only a trigger for the MineTinker-Modifiers
+	 *
+	 * @param b true/false is cancelled
+	 */
+	@Override
+	public void setCancelled(boolean b) {
+		event.setCancelled(b);
+	}
 }

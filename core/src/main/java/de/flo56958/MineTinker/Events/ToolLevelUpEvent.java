@@ -7,36 +7,37 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class ToolLevelUpEvent extends Event {
-    private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList handlers = new HandlerList();
 
-    private final Player player;
-    private final ItemStack tool;
+	private final Player player;
+	private final ItemStack tool;
 
-    /**
-     * Event constructor
-     * @param player The Player that was involved in the Event
-     * @param tool The Tool that got a Level-up
-     */
-    public ToolLevelUpEvent(@NotNull Player player, @NotNull ItemStack tool) {
-        this.player = player;
-        this.tool = tool;
-    }
+	/**
+	 * Event constructor
+	 *
+	 * @param player The Player that was involved in the Event
+	 * @param tool   The Tool that got a Level-up
+	 */
+	public ToolLevelUpEvent(@NotNull Player player, @NotNull ItemStack tool) {
+		this.player = player;
+		this.tool = tool;
+	}
 
-    public Player getPlayer() {
-        return player;
-    }
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 
-    public ItemStack getTool() {
-        return tool;
-    }
+	public Player getPlayer() {
+		return player;
+	}
 
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+	public ItemStack getTool() {
+		return tool;
+	}
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+	@NotNull
+	@Override
+	public HandlerList getHandlers() {
+		return handlers;
+	}
 }

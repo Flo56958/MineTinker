@@ -22,193 +22,193 @@ import org.bukkit.inventory.ItemStack;
 
 public class EasyHarvestListener implements Listener {
 
-    private static final ModManager modManager = ModManager.instance();
+	private static final ModManager modManager = ModManager.instance();
 
-    @EventHandler
-    public void onHarvestTry(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
-            return;
-        }
+	private static void harvestCrops(Player player, ItemStack tool, Block block) {
+		Ageable ageable = (Ageable) block.getBlockData();
 
-        Player player = event.getPlayer();
+		if (ageable.getAge() == ageable.getMaximumAge()) {
+			breakCrops(player, tool, block);
+			playSound(block);
+		}
+	}
 
-        if (Lists.WORLDS_EASYHARVEST.contains(player.getWorld().getName())) {
-            return;
-        }
+	private static void breakCrops(Player player, ItemStack tool, Block block) {
+		Power.HASPOWER.get(player).set(true);
+		Material type = block.getType();
 
-        if (!(player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
-            return;
-        }
+		String direction = PlayerInfo.getFacingDirection(player);
+		Location location = block.getLocation();
+		World world = location.getWorld();
 
-        ItemStack tool = player.getInventory().getItemInMainHand();
+		FileConfiguration config = Main.getPlugin().getConfig();
 
-        if (!ToolType.HOE.contains(tool.getType())) {
-            return;
-        }
+		if (world == null) {
+			return;
+		}
 
-        if (!modManager.isToolViable(tool)) {
-            return;
-        }
+		if (!player.isSneaking() && modManager.hasMod(tool, Power.instance())) {
+			int level = modManager.getModLevel(tool, Power.instance());
 
-        if (event.getClickedBlock() == null) {
-            return;
-        }
+			if (level == 1) {
+				Block b1;
+				Block b2;
 
-        if (event.getItem() == null) {
-            return;
-        }
+				if (direction.equals("N") || direction.equals("S")) {
+					if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
+						b1 = world.getBlockAt(location.add(0, 0, 1));
+						b2 = world.getBlockAt(location.add(0, 0, -1));
+					} else {
+						b1 = world.getBlockAt(location.add(1, 0, 0));
+						b2 = world.getBlockAt(location.add(-1, 0, 0));
+					}
+				} else if (direction.equals("W") || direction.equals("E")) {
+					if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
+						b1 = world.getBlockAt(location.add(1, 0, 0));
+						b2 = world.getBlockAt(location.add(-1, 0, 0));
+					} else {
+						b1 = world.getBlockAt(location.add(0, 0, 1));
+						b2 = world.getBlockAt(location.add(0, 0, -1));
+					}
+				} else {
+					return;
+				}
+				if (b1.getBlockData() instanceof Ageable) {
+					Ageable blockOneAgeable = (Ageable) b1.getBlockData();
+					if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
+						breakBlock(b1, player);
+						replantCrops(player, b1, type);
+					}
+				}
 
-        Block block = event.getClickedBlock();
+				if (b2.getBlockData() instanceof Ageable) {
+					Ageable blockTwoAgeable = (Ageable) b2.getBlockData();
+					if (b2.getType().equals(block.getType()) && (blockTwoAgeable.getAge() == blockTwoAgeable.getMaximumAge())) {
+						breakBlock(b2, player);
+						replantCrops(player, b2, type);
+					}
+				}
+			} else {
+				for (int x = -(level - 1); x <= (level - 1); x++) {
+					for (int z = -(level - 1); z <= (level - 1); z++) {
+						if (!(x == 0 && z == 0)) {
+							Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
 
-        if (!(block.getBlockData() instanceof Ageable)) {
-            return;
-        }
+							if (!(b1.getBlockData() instanceof Ageable)) {
+								continue;
+							}
 
-        //triggers a pseudoevent to find out if the Player can build
-        BlockPlaceEvent placeEvent = new BlockPlaceEvent(block, block.getState(), block, event.getItem(), player, true, EquipmentSlot.HAND);
-        Bukkit.getPluginManager().callEvent(placeEvent);
+							Ageable blockOneAgeable = (Ageable) b1.getBlockData();
 
-        //check the pseudoevent
-        if (!placeEvent.canBuild() || placeEvent.isCancelled()) {
-            return;
-        }
+							if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
+								breakBlock(b1, player);
+								replantCrops(player, b1, type);
+							}
+						}
+					}
+				}
+			}
+		}
 
-        harvestCrops(player, tool, block);
-    }
+		breakBlock(block, player);
+		replantCrops(player, block, type);
 
-    private static void harvestCrops(Player player, ItemStack tool, Block block) {
-        Ageable ageable = (Ageable)block.getBlockData();
+		Power.HASPOWER.get(player).set(false);
+	}
 
-        if (ageable.getAge() == ageable.getMaximumAge()) {
-            breakCrops(player, tool, block);
-            playSound(block);
-        }
-    }
+	private static void replantCrops(Player p, Block b, Material m) {
+		if (Main.getPlugin().getConfig().getBoolean("EasyHarvest.replant")) {
+			for (ItemStack is : p.getInventory().getContents()) {
 
-    private static void breakCrops(Player player, ItemStack tool, Block block) {
-        Power.HASPOWER.get(player).set(true);
-        Material type = block.getType();
+				if (is == null) {
+					// This is necessary as even though this is annotated @NotNull, it's still null sometimes
+					continue;
+				}
 
-        String direction = PlayerInfo.getFacingDirection(player);
-        Location location = block.getLocation();
-        World world = location.getWorld();
+				if (m == Material.BEETROOTS && is.getType() == Material.BEETROOT_SEEDS) {
+					is.setAmount(is.getAmount() - 1);
+					b.setType(m);
+					break;
+				} else if (m == Material.CARROTS && is.getType() == Material.CARROT) {
+					is.setAmount(is.getAmount() - 1);
+					b.setType(m);
+					break;
+				} else if (m == Material.POTATOES && is.getType() == Material.POTATO) {
+					is.setAmount(is.getAmount() - 1);
+					b.setType(m);
+					break;
+				} else if (m == Material.WHEAT && is.getType() == Material.WHEAT_SEEDS) {
+					is.setAmount(is.getAmount() - 1);
+					b.setType(m);
+					break;
+				} else if (m == Material.NETHER_WART && is.getType() == Material.NETHER_WART) {
+					is.setAmount(is.getAmount() - 1);
+					b.setType(m);
+					break;
+				}
+			}
+		}
+	}
 
-        FileConfiguration config = Main.getPlugin().getConfig();
+	private static void playSound(Block b) {
+		if (Main.getPlugin().getConfig().getBoolean("EasyHarvest.Sound")) {
+			b.getWorld().playSound(b.getLocation(), Sound.ITEM_HOE_TILL, 1.0F, 0.5F);
+		}
+	}
 
-        if (world == null) {
-            return;
-        }
+	private static void breakBlock(Block b, Player p) {
+		NBTUtils.getHandler().playerBreakBlock(p, b);
+	}
 
-        if (!player.isSneaking() && modManager.hasMod(tool, Power.instance())) {
-            int level = modManager.getModLevel(tool, Power.instance());
+	@EventHandler
+	public void onHarvestTry(PlayerInteractEvent event) {
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+			return;
+		}
 
-            if (level == 1) {
-                Block b1;
-                Block b2;
+		Player player = event.getPlayer();
 
-                if (direction.equals("N") || direction.equals("S")) {
-                    if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
-                        b1 = world.getBlockAt(location.add(0, 0, 1));
-                        b2 = world.getBlockAt(location.add(0, 0, -1));
-                    } else {
-                        b1 = world.getBlockAt(location.add(1, 0, 0));
-                        b2 = world.getBlockAt(location.add(-1, 0, 0));
-                    }
-                } else if (direction.equals("W") || direction.equals("E")) {
-                    if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
-                        b1 = world.getBlockAt(location.add(1, 0, 0));
-                        b2 = world.getBlockAt(location.add(-1, 0, 0));
-                    } else {
-                        b1 = world.getBlockAt(location.add(0, 0, 1));
-                        b2 = world.getBlockAt(location.add(0, 0, -1));
-                    }
-                } else {
-                    return;
-                }
-                if (b1.getBlockData() instanceof Ageable) {
-                    Ageable blockOneAgeable = (Ageable) b1.getBlockData();
-                    if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
-                        breakBlock(b1, player);
-                        replantCrops(player, b1, type);
-                    }
-                }
+		if (Lists.WORLDS_EASYHARVEST.contains(player.getWorld().getName())) {
+			return;
+		}
 
-                if (b2.getBlockData() instanceof Ageable) {
-                    Ageable blockTwoAgeable = (Ageable) b2.getBlockData();
-                    if (b2.getType().equals(block.getType()) && (blockTwoAgeable.getAge() == blockTwoAgeable.getMaximumAge())) {
-                        breakBlock(b2, player);
-                        replantCrops(player, b2, type);
-                    }
-                }
-            } else {
-                for (int x = -(level - 1); x <= (level - 1); x++) {
-                    for (int z = -(level - 1); z <= (level - 1); z++) {
-                        if (!(x == 0 && z == 0)) {
-                            Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
+		if (!(player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
+			return;
+		}
 
-                            if (!(b1.getBlockData() instanceof Ageable)) {
-                                continue;
-                            }
+		ItemStack tool = player.getInventory().getItemInMainHand();
 
-                            Ageable blockOneAgeable = (Ageable) b1.getBlockData();
+		if (!ToolType.HOE.contains(tool.getType())) {
+			return;
+		}
 
-                            if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
-                                breakBlock(b1, player);
-                                replantCrops(player, b1, type);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+		if (!modManager.isToolViable(tool)) {
+			return;
+		}
 
-        breakBlock(block, player);
-        replantCrops(player, block, type);
+		if (event.getClickedBlock() == null) {
+			return;
+		}
 
-        Power.HASPOWER.get(player).set(false);
-    }
+		if (event.getItem() == null) {
+			return;
+		}
 
-    private static void replantCrops(Player p, Block b, Material m) {
-        if (Main.getPlugin().getConfig().getBoolean("EasyHarvest.replant")) {
-            for (ItemStack is : p.getInventory().getContents()) {
+		Block block = event.getClickedBlock();
 
-                if (is == null)  {
-                    // This is necessary as even though this is annotated @NotNull, it's still null sometimes
-                    continue;
-                }
+		if (!(block.getBlockData() instanceof Ageable)) {
+			return;
+		}
 
-                if (m == Material.BEETROOTS && is.getType() == Material.BEETROOT_SEEDS) {
-                    is.setAmount(is.getAmount() - 1);
-                    b.setType(m);
-                    break;
-                } else if (m == Material.CARROTS && is.getType() == Material.CARROT) {
-                    is.setAmount(is.getAmount() - 1);
-                    b.setType(m);
-                    break;
-                } else if (m == Material.POTATOES && is.getType() == Material.POTATO) {
-                    is.setAmount(is.getAmount() - 1);
-                    b.setType(m);
-                    break;
-                } else if (m == Material.WHEAT && is.getType() == Material.WHEAT_SEEDS) {
-                    is.setAmount(is.getAmount() - 1);
-                    b.setType(m);
-                    break;
-                } else if (m == Material.NETHER_WART && is.getType() == Material.NETHER_WART) {
-                    is.setAmount(is.getAmount() - 1);
-                    b.setType(m);
-                    break;
-                }
-            }
-        }
-    }
+		//triggers a pseudoevent to find out if the Player can build
+		BlockPlaceEvent placeEvent = new BlockPlaceEvent(block, block.getState(), block, event.getItem(), player, true, EquipmentSlot.HAND);
+		Bukkit.getPluginManager().callEvent(placeEvent);
 
-    private static void playSound(Block b) {
-        if (Main.getPlugin().getConfig().getBoolean("EasyHarvest.Sound")) {
-            b.getWorld().playSound(b.getLocation(), Sound.ITEM_HOE_TILL, 1.0F, 0.5F);
-        }
-    }
+		//check the pseudoevent
+		if (!placeEvent.canBuild() || placeEvent.isCancelled()) {
+			return;
+		}
 
-    private static void breakBlock(Block b, Player p) {
-        NBTUtils.getHandler().playerBreakBlock(p, b);
-    }
+		harvestCrops(player, tool, block);
+	}
 }

@@ -11,10 +11,10 @@ api-version: 1.13
 
 ####################################################
 commands:
-   minetinker:
-     aliases: [mt]
-     description: Main Command of MineTinker
-     usage: /minetinker
+  minetinker:
+    aliases: [mt]
+    description: Main Command of MineTinker
+    usage: /minetinker
 
 ####################################################
 permissions:
@@ -400,11 +400,11 @@ permissions:
       minetinker.modifiers.lightweight.apply: true
       minetinker.modifiers.lightweight.craft: true
   minetinker.modifiers.lightweight.apply:
-      description: Allows to apply Light-Weight to MineTinker-Armor
-      default: true
+    description: Allows to apply Light-Weight to MineTinker-Armor
+    default: true
   minetinker.modifiers.lightweight.craft:
-      description: Allows to craft the Light-Weight-Modifier
-      default: true
+    description: Allows to craft the Light-Weight-Modifier
+    default: true
 
   minetinker.modifiers.luck.*:
     children:

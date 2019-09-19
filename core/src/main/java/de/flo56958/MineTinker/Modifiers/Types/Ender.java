@@ -37,7 +37,6 @@ public class Ender extends Modifier implements Listener {
 	private Ender() {
 		super(Main.getPlugin());
 
-		Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
 	}
 
 	public static Ender instance() {
@@ -114,9 +113,7 @@ public class Ender extends Modifier implements Listener {
 	 */
 	@EventHandler
 	public void effect(MTProjectileHitEvent event) {
-		if (!this.isAllowed()) {
-			return;
-		}
+
 
 		Player p = event.getPlayer();
 		ItemStack tool = event.getTool();
@@ -162,9 +159,7 @@ public class Ender extends Modifier implements Listener {
 	 */
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageByEntityEvent event) {
-		if (!this.isAllowed()) {
-			return;
-		}
+
 
 		Player player = event.getPlayer();
 		Entity entity = event.getEvent().getEntity();

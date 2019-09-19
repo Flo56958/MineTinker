@@ -13,46 +13,47 @@ import org.jetbrains.annotations.NotNull;
  * the criteria (right Tool, ...)
  */
 public class MTProjectileHitEvent extends Event {
-    private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList handlers = new HandlerList();
 
-    private final Player player;
-    private final ItemStack tool;
+	private final Player player;
+	private final ItemStack tool;
 
-    private final ProjectileHitEvent event;
+	private final ProjectileHitEvent event;
 
-    /**
-     * Event constructor
-     * @param tool The ItemStack (MUST be a MineTinker-Tool)
-     * @param event    The BlockBreakEvent from which it was called
-     */
-    public MTProjectileHitEvent(@NotNull Player p, @NotNull ItemStack tool, @NotNull ProjectileHitEvent event) {
-        this.player = p;
-        this.tool = tool;
-        this.event = event;
-    }
+	/**
+	 * Event constructor
+	 *
+	 * @param tool  The ItemStack (MUST be a MineTinker-Tool)
+	 * @param event The BlockBreakEvent from which it was called
+	 */
+	public MTProjectileHitEvent(@NotNull Player p, @NotNull ItemStack tool, @NotNull ProjectileHitEvent event) {
+		this.player = p;
+		this.tool = tool;
+		this.event = event;
+	}
 
-    public Player getPlayer() {
-        return player;
-    }
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 
-    public ItemStack getTool() {
-        return tool;
-    }
+	public Player getPlayer() {
+		return player;
+	}
 
-    /**
-     * @return The original ProjectileHitEvent
-     */
-    public ProjectileHitEvent getEvent() {
-        return event;
-    }
+	public ItemStack getTool() {
+		return tool;
+	}
 
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+	/**
+	 * @return The original ProjectileHitEvent
+	 */
+	public ProjectileHitEvent getEvent() {
+		return event;
+	}
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+	@NotNull
+	@Override
+	public HandlerList getHandlers() {
+		return handlers;
+	}
 }

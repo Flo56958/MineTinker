@@ -14,16 +14,19 @@ import org.bukkit.plugin.Plugin;
  * and other features of MineTinker.
  * The methods used in this API are mostly just wrappers around
  * other methods only with better documentation.
- *
+ * <p>
  * It is possible to mess with Modifiers outside this API with
  * MineTinker-Methods, but it is recommended to do everything
  * with this class.
- *
+ * <p>
  * This API is in a very unfinished state.
  *
+ * @author Flo56958
+ * @version 2019/06/08
+ * @apiNote USE ON OWN RISK. MAY CHANGE WITH FUTURE UPDATES.
  * @see de.flo56958.MineTinker.Modifiers.Modifier
  * @see de.flo56958.MineTinker.Utilities.nms.NBTUtils
- *
+ * <p>
  * MineTinker-Events:
  * @see de.flo56958.MineTinker.Events.ModifierApplyEvent
  * @see de.flo56958.MineTinker.Events.ModifierFailEvent
@@ -35,59 +38,58 @@ import org.bukkit.plugin.Plugin;
  * @see de.flo56958.MineTinker.Events.MTProjectileHitEvent
  * @see de.flo56958.MineTinker.Events.ToolLevelUpEvent
  * @see de.flo56958.MineTinker.Events.ToolUpgradeEvent
- *
- * @author Flo56958
- * @version 2019/06/08
- * @apiNote USE ON OWN RISK. MAY CHANGE WITH FUTURE UPDATES.
  */
 public class MineTinkerAPI {
 
-    private static MineTinkerAPI api;
-    private static final ModManager modManager = ModManager.instance();
+	private static final ModManager modManager = ModManager.instance();
+	private static MineTinkerAPI api;
 
-    public static MineTinkerAPI instance() {
-        if (api == null) {
-            api = new MineTinkerAPI();
-        }
+	private MineTinkerAPI() {
+	}
 
-        return api;
-    }
+	public static MineTinkerAPI instance() {
+		if (api == null) {
+			api = new MineTinkerAPI();
+		}
 
-    private MineTinkerAPI() {}
+		return api;
+	}
 
-    public void registerModifier(Modifier mod) {
-        modManager.register(mod);
-    }
+	public void registerModifier(Modifier mod) {
+		modManager.register(mod);
+	}
 
-    public void unregisterModifier(Modifier mod) {
-        modManager.unregister(mod);
-    }
+	public void unregisterModifier(Modifier mod) {
+		modManager.unregister(mod);
+	}
 
-    /**
-     * Gets the specified Configuration
-     * @param folder the folder in the MineTinker-Data directory; empty string if in main directory
-     * @param name the name of the file with extension
-     * @return the configuration
-     */
-    public FileConfiguration getConfig(String folder, String name) {
-        ConfigurationManager.loadConfig(folder, name);
+	/**
+	 * Gets the specified Configuration
+	 *
+	 * @param folder the folder in the MineTinker-Data directory; empty string if in main directory
+	 * @param name   the name of the file with extension
+	 * @return the configuration
+	 */
+	public FileConfiguration getConfig(String folder, String name) {
+		ConfigurationManager.loadConfig(folder, name);
 
-        return ConfigurationManager.getConfig(name);
-    }
+		return ConfigurationManager.getConfig(name);
+	}
 
-    /**
-     * Saves the specified Configuration
-     * @param config the config you got through getConfig()
-     */
-    public void saveConfig(FileConfiguration config) {
-        ConfigurationManager.saveConfig(config);
-    }
+	/**
+	 * Saves the specified Configuration
+	 *
+	 * @param config the config you got through getConfig()
+	 */
+	public void saveConfig(FileConfiguration config) {
+		ConfigurationManager.saveConfig(config);
+	}
 
-    public Plugin getMineTinker() {
-        return Main.getPlugin();
-    }
+	public Plugin getMineTinker() {
+		return Main.getPlugin();
+	}
 
-    public NBTHandler getNBTHandler() {
-        return NBTUtils.getHandler();
-    }
+	public NBTHandler getNBTHandler() {
+		return NBTUtils.getHandler();
+	}
 }
