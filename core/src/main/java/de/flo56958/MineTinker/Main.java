@@ -124,14 +124,34 @@ public class Main extends JavaPlugin {
         ChatWriter.logInfo(LanguageManager.getString("StartUp.Incompatible.Start"));
         List<String> skipped = getConfig().getStringList("PluginIncompatibility.SkippedPlugins");
 
+        FileConfiguration layout = ConfigurationManager.getConfig("layout.yml");
+
         //TODO: Change to UsePatternMatcher
         Zenchantments: {
             String name = "Zenchantments";
             if (skipped.contains(name)) break Zenchantments;
             if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
                 ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
-                getConfig().set("EnableLore", false);
-                ChatWriter.logColor(ChatColor.WHITE + " - EnableLore -> false");
+                layout.set("UsePatternMatcher", true);
+                ChatWriter.logColor(ChatColor.WHITE + " - UsePatternMatcher -> true");
+            }
+        }
+        mcMMO: {
+            String name = "mcMMO";
+            if (skipped.contains(name)) break mcMMO;
+            if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
+                ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
+                layout.set("UsePatternMatcher", true);
+                ChatWriter.logColor(ChatColor.WHITE + " - UsePatternMatcher -> true");
+            }
+        }
+        Multitool: {
+            String name = "Multitool";
+            if (skipped.contains(name)) break Multitool;
+            if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
+                ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
+                layout.set("UsePatternMatcher", true);
+                ChatWriter.logColor(ChatColor.WHITE + " - UsePatternMatcher -> true");
             }
         }
         DeadSouls: {
@@ -144,6 +164,7 @@ public class Main extends JavaPlugin {
             }
         }
 
+        ConfigurationManager.saveConfig(layout);
         saveConfig();
     }
 
