@@ -140,6 +140,16 @@ public class Main extends JavaPlugin {
 				ChatWriter.logColor(ChatColor.WHITE + " - UsePatternMatcher -> true");
 			}
 		}
+		EliteMobs:
+		{
+			String name = "EliteMobs";
+			if (skipped.contains(name)) break EliteMobs;
+			if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
+				ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
+				layout.set("UsePatternMatcher", true);
+				ChatWriter.logColor(ChatColor.WHITE + " - UsePatternMatcher -> true");
+			}
+		}
 		mcMMO:
 		{
 			String name = "mcMMO";
