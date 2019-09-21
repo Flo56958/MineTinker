@@ -81,7 +81,7 @@ public class Fiery extends Modifier {
 		if (meta != null) {
 			if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType())) {
 				meta.addEnchant(Enchantment.ARROW_FIRE, modManager.getModLevel(tool, this), true);
-			} else if (ToolType.SWORD.contains(tool.getType())) {
+			} else if (ToolType.SWORD.contains(tool.getType()) || ToolType.AXE.contains(tool.getType())) {
 				meta.addEnchant(Enchantment.FIRE_ASPECT, modManager.getModLevel(tool, this), true);
 			}
 
