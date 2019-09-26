@@ -22,11 +22,18 @@ import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class ArmorListener implements Listener {
 
 	private static final ModManager modManager = ModManager.instance();
+	private static final ArrayList<EntityDamageEvent.DamageCause> blacklistedCauses = new ArrayList<>();
+
+	static {
+		blacklistedCauses.add(EntityDamageEvent.DamageCause.SUICIDE);
+		blacklistedCauses.add(EntityDamageEvent.DamageCause.VOID);
+	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPlayerDamage(EntityDamageEvent event) {
@@ -42,7 +49,7 @@ public class ArmorListener implements Listener {
 			return;
 		}
 
-		if (event.getCause().equals(EntityDamageEvent.DamageCause.SUICIDE) || event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
+		if (blacklistedCauses.contains(event.getCause())) {
 			return;
 		}
 
