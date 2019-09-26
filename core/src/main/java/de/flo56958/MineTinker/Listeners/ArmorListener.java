@@ -29,7 +29,7 @@ public class ArmorListener implements Listener {
 	private static final ModManager modManager = ModManager.instance();
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onEntityDamage(EntityDamageByEntityEvent event) {
+	public void onPlayerDamage(EntityDamageEvent event) {
 		if (event.getDamage() <= 0) {
 			return;
 		}
@@ -48,17 +48,24 @@ public class ArmorListener implements Listener {
 
 		Player player = (Player) event.getEntity();
 
-		Entity entity = event.getDamager();
+		Entity entity = null;
+		EntityDamageByEntityEvent byEntityEvent = null;
 
-		if (entity instanceof Arrow) {
-			Arrow arrow = (Arrow) entity;
-			ProjectileSource source = arrow.getShooter();
+		if (event instanceof EntityDamageByEntityEvent) {
+			byEntityEvent = (EntityDamageByEntityEvent)event;
+			entity = byEntityEvent.getDamager();
 
-			if (source instanceof Entity) {
-				entity = (Entity) source;
-			} else {
-				return;
+			if (entity instanceof Arrow) {
+				Arrow arrow = (Arrow) entity;
+				ProjectileSource source = arrow.getShooter();
+
+				if (source instanceof Entity) {
+					entity = (Entity) source;
+				} else {
+					return;
+				}
 			}
+
 		}
 
 		ItemStack[] armor = player.getInventory().getArmorContents();
@@ -68,45 +75,11 @@ public class ArmorListener implements Listener {
 				continue;
 			}
 
-			MTEntityDamageByEntityEvent damageByEntityEvent = new MTEntityDamageByEntityEvent(player, piece, entity, event);
-			Bukkit.getPluginManager().callEvent(damageByEntityEvent);
-
-			FileConfiguration config = Main.getPlugin().getConfig();
-
-			int amount = config.getInt("ExpPerEntityHit");
-
-			if (config.getBoolean("EnableDamageExp")) {
-				amount = (int) event.getDamage();
+			if (byEntityEvent != null) {
+				Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(player, piece, entity, byEntityEvent));
+			} else {
+				Bukkit.getPluginManager().callEvent(new MTEntityDamageEvent(player, piece, event));
 			}
-
-			modManager.addExp(player, piece, amount);
-		}
-	}
-
-	@EventHandler(ignoreCancelled = true)
-	public void onPlayerDamage(EntityDamageEvent event) {
-		if (Lists.WORLDS.contains(event.getEntity().getWorld().getName())) {
-			return;
-		}
-
-		if (!(event.getEntity() instanceof Player)) {
-			return;
-		}
-
-		if (event.getCause().equals(EntityDamageEvent.DamageCause.SUICIDE) || event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
-			return;
-		}
-
-		Player p = (Player) event.getEntity();
-
-		ItemStack[] armor = p.getInventory().getArmorContents();
-
-		for (ItemStack piece : armor) {
-			if (!modManager.isArmorViable(piece)) {
-				continue;
-			}
-
-			Bukkit.getPluginManager().callEvent(new MTEntityDamageEvent(p, piece, event));
 
 			FileConfiguration config = Main.getPlugin().getConfig();
 
@@ -116,7 +89,7 @@ public class ArmorListener implements Listener {
 				amount = (int) event.getDamage() / 2;
 			}
 
-			modManager.addExp(p, piece, amount);
+			modManager.addExp(player, piece, amount);
 		}
 	}
 
