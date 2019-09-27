@@ -129,6 +129,11 @@ Modifier:
     Description: "%chance% chance to drop the head of the killed mob per level."
     ModifierItemName: "Enchanted Wither-Skull"
     DescriptionModifierItem: "Modifier-Item for the Beheading-Modifier"
+  Berserk:
+    Name: "Berserk"
+    Description: "Gain an extra strength boost for %duration seconds when your health drops below %percent%!"
+    ModifierItemName: "Bloody Redstone"
+    DescriptionModifierItem: "Modifier-Item for the Berserk-Modifier"
   Channeling:
     Name: "Channeling"
     Description: "Summons lightning when the trident hits its foes!"
