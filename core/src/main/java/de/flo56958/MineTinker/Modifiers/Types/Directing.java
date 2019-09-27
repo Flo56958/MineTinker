@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Events.MTEntityDeathEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -30,7 +29,6 @@ public class Directing extends Modifier implements Listener {
 	private Directing() {
 		super(Main.getPlugin());
 
-		Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
 	}
 
 	public static Directing instance() {
@@ -97,9 +95,7 @@ public class Directing extends Modifier implements Listener {
 
 	@EventHandler
 	public void effect(MTEntityDeathEvent event) {
-		if (!this.isAllowed()) {
-			return;
-		}
+
 
 		if (!this.workInPVP && event.getEvent().getEntity() instanceof Player) {
 			return;

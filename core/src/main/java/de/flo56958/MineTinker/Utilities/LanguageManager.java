@@ -13,72 +13,73 @@ import java.nio.charset.StandardCharsets;
 
 public class LanguageManager {
 
-    private static YamlConfiguration langFile;
-    private static YamlConfiguration langBackup;
+	private static YamlConfiguration langFile;
+	private static YamlConfiguration langBackup;
 
-    private static boolean playerLocale;
+	private static boolean playerLocale;
 
-    private LanguageManager() {}
+	private LanguageManager() {
+	}
 
-    public static void reload() {
-        String lang = Main.getPlugin().getConfig().getString("Language", "en_US");
+	public static void reload() {
+		String lang = Main.getPlugin().getConfig().getString("Language", "en_US");
 
-        langFile = loadLanguage(lang);
-        langBackup = loadLanguage("en_US");
+		langFile = loadLanguage(lang);
+		langBackup = loadLanguage("en_US");
 
-        playerLocale = Main.getPlugin().getConfig().getBoolean("EnablePlayerLocale", false);
+		playerLocale = Main.getPlugin().getConfig().getBoolean("EnablePlayerLocale", false);
 
-        if(langFile == null) langFile = langBackup;
-        else ChatWriter.logInfo(getString("LanguageManager.LoadedLanguage").replaceFirst("%lang", lang));
-    }
+		if (langFile == null) langFile = langBackup;
+		else ChatWriter.logInfo(getString("LanguageManager.LoadedLanguage").replaceFirst("%lang", lang));
+	}
 
-    public static void cleanup() {
-        langFile = null;
-        langBackup = null;
-    }
+	public static void cleanup() {
+		langFile = null;
+		langBackup = null;
+	}
 
-    /**
-     * @param path the Path to the Strings location
-     * @return "" on failure
-     *         the requested String on success
-     */
-    @NotNull
-    public static String getString(@NotNull String path) {
-        String ret = langFile.getString(path);
-        if (ret == null) {
-            ret = langBackup.getString(path, "");
-        }
-        return ChatWriter.addColors(ret);
-    }
+	/**
+	 * @param path the Path to the Strings location
+	 * @return "" on failure
+	 * the requested String on success
+	 */
+	@NotNull
+	public static String getString(@NotNull String path) {
+		String ret = langFile.getString(path);
+		if (ret == null) {
+			ret = langBackup.getString(path, "");
+		}
+		return ChatWriter.addColors(ret);
+	}
 
-    @NotNull
-    public static String getString (@NotNull String path, Player player) {
-        if (player == null) return getString(path);
-        if (playerLocale && !player.getLocale().equals(Main.getPlugin().getConfig().getString("Language"))) {
-            YamlConfiguration langFile = loadLanguage(player.getLocale());
-            if (langFile != null) {
-                String ret = langFile.getString(path);
-                if (ret != null) {
-                    return ChatWriter.addColors(ret);
-                }
-            }
-        }
-        return getString(path);
-    }
+	@NotNull
+	public static String getString(@NotNull String path, Player player) {
+		if (player == null) return getString(path);
+		if (playerLocale && !player.getLocale().equals(Main.getPlugin().getConfig().getString("Language"))) {
+			YamlConfiguration langFile = loadLanguage(player.getLocale());
+			if (langFile != null) {
+				String ret = langFile.getString(path);
+				if (ret != null) {
+					return ChatWriter.addColors(ret);
+				}
+			}
+		}
+		return getString(path);
+	}
 
-    @Nullable
-    private static YamlConfiguration loadLanguage(@NotNull String lang) {
-        InputStream stream = LanguageManager.class.getResourceAsStream("/lang/" + lang + ".yml");
-        if (stream == null) return null;
-        InputStreamReader ir = new InputStreamReader(stream, StandardCharsets.UTF_8);
+	@Nullable
+	private static YamlConfiguration loadLanguage(@NotNull String lang) {
+		InputStream stream = LanguageManager.class.getResourceAsStream("/lang/" + lang + ".yml");
+		if (stream == null) return null;
+		InputStreamReader ir = new InputStreamReader(stream, StandardCharsets.UTF_8);
 
-        YamlConfiguration file = YamlConfiguration.loadConfiguration(ir);
-        try {
-            ir.close();
-            stream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return file;
-    }
+		YamlConfiguration file = YamlConfiguration.loadConfiguration(ir);
+		try {
+			ir.close();
+			stream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return file;
+	}
 }

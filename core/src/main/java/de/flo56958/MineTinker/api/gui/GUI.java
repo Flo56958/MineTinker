@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.api.gui;
 
 import de.flo56958.MineTinker.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,248 +27,272 @@ import java.util.List;
  */
 public class GUI implements Listener {
 
-    public static List<GUI> guis = Collections.synchronizedList(new ArrayList<>());
+	public static List<GUI> guis = Collections.synchronizedList(new ArrayList<>());
 
-    private List<Window> windows = Collections.synchronizedList(new ArrayList<>());
+	private List<Window> windows = Collections.synchronizedList(new ArrayList<>());
 
-    private volatile boolean isClosed = true;
+	private volatile boolean isClosed = true;
 
-    public GUI() {
-        guis.add(this);
-        open();
-    }
+	public GUI() {
+		guis.add(this);
+		open();
+	}
 
-    /**
-     * Adds a window to the GUI
-     * @param size      The size of the window
-     * @param title     The title of the window
-     * @throws          IllegalStateException when GUI is closed
-     */
-    public Window addWindow(final int size, @NotNull final String title) {
-        if (isClosed) {
-            throw new IllegalStateException("GUI (" + this.hashCode() + ") is already closed!");
-        }
+	/**
+	 * Adds a window to the GUI
+	 *
+	 * @param size  The size of the window
+	 * @param title The title of the window
+	 * @throws IllegalStateException when GUI is closed
+	 */
+	public Window addWindow(final int size, @NotNull final String title) {
+		if (isClosed) {
+			throw new IllegalStateException("GUI (" + this.hashCode() + ") is already closed!");
+		}
 
-        Window window = new Window(size, title, this);
-        windows.add(window);
+		Window window = new Window(size, title, this);
+		windows.add(window);
 
-        return window;
-    }
+		return window;
+	}
 
-    /**
-     * Removes a given window from the GUI
-     * @param window    the window to remove
-     * @return          true:  if window was in GUI and was successfully removed
-     *                  false: if window was not in GUI or was not removed
-     */
-    public boolean removeWindow(@NotNull final Window window) {
-        return windows.remove(window);
-    }
+	/**
+	 * Removes a given window from the GUI
+	 *
+	 * @param window the window to remove
+	 * @return true:  if window was in GUI and was successfully removed
+	 * false: if window was not in GUI or was not removed
+	 */
+	public boolean removeWindow(@NotNull final Window window) {
+		return windows.remove(window);
+	}
 
-    /**
-     * Returns if possible the associated Window-object in the GUI-Framework
-     * @param inv       the Inventory to find the Window for
-     * @return          the found window or null
-     */
-    @Nullable
-    public Window getWindowFromInventory(final Inventory inv) {
-        if (inv == null) {
-            return null;
-        }
+	/**
+	 * Returns if possible the associated Window-object in the GUI-Framework
+	 *
+	 * @param inv the Inventory to find the Window for
+	 * @return the found window or null
+	 */
+	@Nullable
+	public Window getWindowFromInventory(final Inventory inv) {
+		if (inv == null) {
+			return null;
+		}
 
-        for (Window w : windows) {
-            if (w.inventory.equals(inv)) {
-                return w;
-            }
-        }
+		for (Window w : windows) {
+			if (w.inventory.equals(inv)) {
+				return w;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    @Nullable
-    public Window getWindow(final int i) {
-        return windows.get(i);
-    }
+	@Nullable
+	public Window getWindow(final int i) {
+		return windows.get(i);
+	}
 
-    /**
-     * shows the first page of the GUI to the specified Player
-     * @param p the Player
-     */
-    public void show(@NotNull final Player p) {
-        show(p, 0);
-    }
+	/**
+	 * shows the first page of the GUI to the specified Player
+	 *
+	 * @param p the Player
+	 */
+	public void show(@NotNull final Player p) {
+		show(p, 0);
+	}
 
-    /**
-     * shows the [page] page of the GUI to the specified Player
-     * @param p         the Player
-     * @param page      the Page shown to the Player
-     * @throws          IllegalStateException when show() was called as the GUI was closed
-     */
-    public void show(@NotNull final Player p, final int page) {
-        synchronized (this) {
-            if (isClosed) {
-                throw new IllegalStateException("GUI (" + this.hashCode() + ") is closed.");
-            }
+	/**
+	 * shows the [page] page of the GUI to the specified Player
+	 *
+	 * @param p    the Player
+	 * @param page the Page shown to the Player
+	 * @throws IllegalStateException when show() was called as the GUI was closed
+	 */
+	public void show(@NotNull final Player p, final int page) {
+		synchronized (this) {
+			if (isClosed) {
+				throw new IllegalStateException("GUI (" + this.hashCode() + ") is closed.");
+			}
 
-            p.openInventory(windows.get(page).inventory);
-        }
-    }
+			p.openInventory(windows.get(page).inventory);
+		}
+	}
 
-    public void show(@NotNull final Player p, final Window window) {
-        synchronized (this) {
-            if (isClosed) {
-                throw new IllegalStateException("GUI (" + this.hashCode() + ") is closed.");
-            }
+	public void show(@NotNull final Player p, final Window window) {
+		synchronized (this) {
+			if (isClosed) {
+				throw new IllegalStateException("GUI (" + this.hashCode() + ") is closed.");
+			}
 
-            if (!window.getGUI().equals(this)) {
-                throw new IllegalArgumentException("GUI (" + this.hashCode() + ") does not manage Window (" + window.hashCode() + ")!");
-            }
+			if (!window.getGUI().equals(this)) {
+				throw new IllegalArgumentException("GUI (" + this.hashCode() + ") does not manage Window (" + window.hashCode() + ")!");
+			}
 
-            p.openInventory(window.inventory);
-        }
-    }
+			p.openInventory(window.inventory);
+		}
+	}
 
-    public int getWindowNumber(Window window) {
-        return windows.indexOf(window);
-    }
+	public int getWindowNumber(Window window) {
+		return windows.indexOf(window);
+	}
 
-    public int getWindowAmount() {
-        return windows.size();
-    }
+	public int getWindowAmount() {
+		return windows.size();
+	}
 
-    /**
-     * This will open the GUI again for further interactions.
-     * can be used to micro manage the performance of the GUIs
-     */
-    public void open() {
-        synchronized (this) {
-            if (!isClosed) {
-                return;
-            }
+	/**
+	 * This will open the GUI again for further interactions.
+	 * can be used to micro manage the performance of the GUIs
+	 */
+	public void open() {
+		synchronized (this) {
+			if (!isClosed) {
+				return;
+			}
 
-            Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
-            isClosed = false;
-        }
-    }
+			Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+			isClosed = false;
+		}
+	}
 
-    /**
-     * this will close the Listener section of the GUI
-     * show() will throw Exception when called after close()
-     * can be used to micro manage the performance of the GUIs
-     */
-    public void close() {
-        synchronized (this) {
-            if (isClosed) {
-                return;
-            }
+	/**
+	 * this will close the Listener section of the GUI
+	 * show() will throw Exception when called after close()
+	 * can be used to micro manage the performance of the GUIs
+	 */
+	public void close() {
+		synchronized (this) {
+			if (isClosed) {
+				return;
+			}
 
-            HandlerList.unregisterAll(this);
-            isClosed = true;
-        }
-    }
+			for (Window w : windows) {
+				for (HumanEntity humanEntity : new ArrayList<>(w.getInventory().getViewers())) {
+					//new ArrayList is required as of ModificationException
+					humanEntity.closeInventory();
+				}
+			}
 
-    //<------------------------------------Events------------------------------------------->
+			HandlerList.unregisterAll(this);
+			isClosed = true;
+		}
+	}
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onClick(InventoryClickEvent event) {
-        Window w1 = getWindowFromInventory(event.getClickedInventory());
-        Window w2 = getWindowFromInventory(event.getWhoClicked().getOpenInventory().getTopInventory());
+	//<------------------------------------Events------------------------------------------->
 
-        if (w1 == null && w2 == null) {
-            return;
-        }
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onClick(InventoryClickEvent event) {
+		Window w1 = getWindowFromInventory(event.getClickedInventory());
+		Window w2 = getWindowFromInventory(event.getWhoClicked().getOpenInventory().getTopInventory());
 
-        event.setCancelled(true);
+		if (w1 == null && w2 == null) {
+			return;
+		}
 
-        if (w1 == null) return;
+		event.setCancelled(true);
 
-        Window.Button clickedButton = w1.getButtonFromSlot(event.getSlot());
+		if (w1 == null) return;
 
-        if (clickedButton != null) {
-            clickedButton.executeAction(event);
-        }
-    }
+		Window.Button clickedButton = w1.getButtonFromSlot(event.getSlot());
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onDrag(InventoryDragEvent event) {
-        Window w = getWindowFromInventory(event.getInventory());
+		if (clickedButton != null) {
+			clickedButton.executeAction(event);
+		}
+	}
 
-        if (w == null) {
-            return;
-        }
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onDrag(InventoryDragEvent event) {
+		Window w = getWindowFromInventory(event.getInventory());
 
-        event.setCancelled(true);
-    }
+		if (w == null) {
+			return;
+		}
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onMove(InventoryMoveItemEvent event) {
-        Window w1 = getWindowFromInventory(event.getDestination());
+		event.setCancelled(true);
+	}
 
-        Window w2 = getWindowFromInventory(event.getInitiator());
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onMove(InventoryMoveItemEvent event) {
+		Window w1 = getWindowFromInventory(event.getDestination());
 
-        Window w3 = getWindowFromInventory(event.getSource());
+		Window w2 = getWindowFromInventory(event.getInitiator());
 
-        if (w1 == null && w2 == null && w3 == null) return;
+		Window w3 = getWindowFromInventory(event.getSource());
 
-        event.setCancelled(true);
-    }
+		if (w1 == null && w2 == null && w3 == null) return;
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onEvent(InventoryInteractEvent event) {
-        Window w = getWindowFromInventory(event.getInventory());
+		event.setCancelled(true);
+	}
 
-        if (w == null) {
-            return;
-        }
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onEvent(InventoryInteractEvent event) {
+		Window w = getWindowFromInventory(event.getInventory());
 
-        event.setCancelled(true);
-    }
+		if (w == null) {
+			return;
+		}
 
-    //<------------------------------------Events------------------------------------------->
+		event.setCancelled(true);
+	}
 
-    /**
-     * A wrapper class for the Minecraft Inventory Window
-     */
-    public static class Window {
+	//<------------------------------------Events------------------------------------------->
 
-        private final Inventory inventory;
-        private final GUI gui;
-        private final Button[] buttonMap;
+	/**
+	 * A wrapper class for the Minecraft Inventory Window
+	 */
+	public static class Window {
 
-        /**
-         * Creates a new Window with the given size and the given title.
-         * @param size      The number of rows in the standard Inventory. Due to Minecraft-Limitations must be between 1 and 6.
-         * @param title     The Title of the Window
-         * @throws          IllegalArgumentException when size is does not match the limitations.
-         */
-        private Window(int size, @NotNull final String title, @NotNull final GUI gui) {
-            if (size <= 0) {
-                throw new IllegalArgumentException("Size of Inventory needs to be at least ONE!");
-            } else if (size > 6) {
-                throw new IllegalArgumentException("Size of Inventory needs to be at least SIX!");
-            }
+		private final Inventory inventory;
+		private final GUI gui;
+		private final Button[] buttonMap;
 
-            size *= 9;
+		/**
+		 * Creates a new Window with the given size and the given title.
+		 *
+		 * @param size  The number of rows in the standard Inventory. Due to Minecraft-Limitations must be between 1 and 6.
+		 * @param title The Title of the Window
+		 * @throws IllegalArgumentException when size is does not match the limitations.
+		 */
+		private Window(int size, @NotNull final String title, @NotNull final GUI gui) {
+			if (size <= 0) {
+				throw new IllegalArgumentException("Size of Inventory needs to be at least ONE!");
+			} else if (size > 6) {
+				throw new IllegalArgumentException("Size of Inventory needs to be at least SIX!");
+			}
 
-            this.inventory = Bukkit.createInventory(null, size, title);
-            this.buttonMap = new Button[54];
-            this.gui = gui;
-        }
+			size *= 9;
 
-        public Button addButton(final int x, final int y, @NotNull final ItemStack item) {
-            return addButton(getSlot(x, y, this), item);
-        }
+			this.inventory = Bukkit.createInventory(null, size, title);
+			this.buttonMap = new Button[54];
+			this.gui = gui;
+		}
 
-        public Button addButton(final int slot, @NotNull final ItemStack item) {
-            Button b = new Button(item, this);
+		/**
+		 * Calculates the slot nr. from the coordinates
+		 *
+		 * @param x x-Coordinate
+		 * @param y y-Coordinate
+		 * @return the slot
+		 * @throws IllegalArgumentException when Coordinates less than zero
+		 */
+		public static int getSlot(final int x, final int y, Window window) {
+			if (x < 0 || y < 0) {
+				throw new IllegalArgumentException("Coordinates can not be less than ZERO!");
+			}
 
-            buttonMap[slot] = b;
-            inventory.setItem(slot, b.item);
+			int slot = (9 * y) + x;
 
-            b.item = inventory.getItem(slot); //Update item as it gets changed during inventory.setItem();
+			if (slot >= window.inventory.getSize()) {
+				throw new IllegalArgumentException("Coordinates are to big for the given Inventory!");
+			}
 
-            return b;
-        }
+			return slot;
+		}
+
+		public Button addButton(final int x, final int y, @NotNull final ItemStack item) {
+			return addButton(getSlot(x, y, this), item);
+		}
 
 //        /**
 //         *
@@ -287,86 +312,76 @@ public class GUI implements Listener {
 //            return buttonMap[slot];
 //        }
 
-        @NotNull
-        public Inventory getInventory() {
-            return inventory;
-        }
+		public Button addButton(final int slot, @NotNull final ItemStack item) {
+			Button b = new Button(item, this);
 
-        @NotNull
-        public GUI getGUI() {
-            return gui;
-        }
+			buttonMap[slot] = b;
+			inventory.setItem(slot, b.item);
 
-        /**
-         * Calculates the slot nr. from the coordinates
-         * @param x     x-Coordinate
-         * @param y     y-Coordinate
-         * @return      the slot
-         * @throws      IllegalArgumentException when Coordinates less than zero
-         */
-        public static int getSlot(final int x, final int y, Window window) {
-            if (x < 0 || y < 0) {
-                throw new IllegalArgumentException("Coordinates can not be less than ZERO!");
-            }
+			b.item = inventory.getItem(slot); //Update item as it gets changed during inventory.setItem();
 
-            int slot = (9 * y) + x;
+			return b;
+		}
 
-            if (slot >= window.inventory.getSize()) {
-                throw new IllegalArgumentException("Coordinates are to big for the given Inventory!");
-            }
+		@NotNull
+		public Inventory getInventory() {
+			return inventory;
+		}
 
-            return slot;
-        }
+		@NotNull
+		public GUI getGUI() {
+			return gui;
+		}
 
-        @Nullable
-        public Button getButtonFromSlot(final int slot) {
-            return buttonMap[slot];
-        }
+		@Nullable
+		public Button getButtonFromSlot(final int slot) {
+			return buttonMap[slot];
+		}
 
-        /**
-         * This class is a Button for the Window. The button can be clicked by the User to trigger certain methods.
-         */
-        public static class Button {
-            private ItemStack item;
-            private final Window window;
+		/**
+		 * This class is a Button for the Window. The button can be clicked by the User to trigger certain methods.
+		 */
+		public static class Button {
+			private final Window window;
+			private ItemStack item;
+			private EnumMap<ClickType, ButtonAction> actions = new EnumMap<>(ClickType.class);
 
-            private EnumMap<ClickType, ButtonAction> actions = new EnumMap<>(ClickType.class);
+			/**
+			 * creates a Button with no actions
+			 *
+			 * @param item the ItemStack that will appear in the Window
+			 */
+			private Button(@NotNull ItemStack item, @NotNull Window window) {
+				this.window = window;
+				this.item = item;
+			}
 
-            /**
-             * creates a Button with no actions
-             * @param item the ItemStack that will appear in the Window
-             */
-            private Button(@NotNull ItemStack item, @NotNull Window window) {
-                this.window = window;
-                this.item = item;
-            }
+			public void addAction(@NotNull ClickType c_action, @NotNull ButtonAction b_action) {
+				actions.put(c_action, b_action);
+			}
 
-            public void addAction(@NotNull ClickType c_action, @NotNull ButtonAction b_action) {
-                actions.put(c_action, b_action);
-            }
+			private void executeAction(@NotNull InventoryClickEvent event) {
+				ButtonAction action = actions.get(event.getClick());
 
-            private void executeAction(@NotNull InventoryClickEvent event) {
-                ButtonAction action = actions.get(event.getClick());
+				if (action == null) {
+					return;
+				}
 
-                if (action == null) {
-                    return;
-                }
+				action.run();
 
-                action.run();
+				if (action instanceof PlayerAction && event.getWhoClicked() instanceof Player) {
+					((PlayerAction) action).run((Player) event.getWhoClicked());
+				}
+			}
 
-                if (action instanceof PlayerAction && event.getWhoClicked() instanceof Player) {
-                    ((PlayerAction) action).run((Player) event.getWhoClicked());
-                }
-            }
+			public ItemStack getItemStack() {
+				return this.item;
+			}
 
-            public ItemStack getItemStack() {
-                return this.item;
-            }
-
-            @NotNull
-            public Window getWindow() {
-                return window;
-            }
-        }
-    }
+			@NotNull
+			public Window getWindow() {
+				return window;
+			}
+		}
+	}
 }

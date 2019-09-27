@@ -7,7 +7,6 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -31,7 +30,6 @@ public class Lifesteal extends Modifier implements Listener {
 	private Lifesteal() {
 		super(Main.getPlugin());
 
-		Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
 	}
 
 	public static Lifesteal instance() {
@@ -98,9 +96,7 @@ public class Lifesteal extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH) //because of Melting
 	public void effect(MTEntityDamageByEntityEvent event) {
-		if (!this.isAllowed()) {
-			return;
-		}
+
 
 		if (event.getPlayer().equals(event.getEvent().getEntity())) {
 			return; //when event was triggered by the armor

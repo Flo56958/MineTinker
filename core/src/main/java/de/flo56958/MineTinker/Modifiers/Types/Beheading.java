@@ -7,7 +7,6 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -34,7 +33,6 @@ public class Beheading extends Modifier implements Listener {
 	private Beheading() {
 		super(Main.getPlugin());
 
-		Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
 	}
 
 	public static Beheading instance() {
@@ -91,10 +89,6 @@ public class Beheading extends Modifier implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.LOW) //For Directing
 	public void effect(MTEntityDeathEvent event) {
-		if (!this.isAllowed()) {
-			return;
-		}
-
 		Player p = event.getPlayer();
 		ItemStack tool = event.getTool();
 		LivingEntity mob = event.getEvent().getEntity();

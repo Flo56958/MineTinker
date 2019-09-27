@@ -4,7 +4,10 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -32,7 +35,6 @@ public class Propelling extends Modifier implements Listener {
 	private Propelling() {
 		super(Main.getPlugin());
 
-		Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
 	}
 
 	public static Propelling instance() {

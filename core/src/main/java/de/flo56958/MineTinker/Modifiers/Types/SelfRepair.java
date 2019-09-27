@@ -10,7 +10,6 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.ItemGenerator;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -38,7 +37,6 @@ public class SelfRepair extends Modifier implements Listener {
 	private SelfRepair() {
 		super(Main.getPlugin());
 
-		Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
 	}
 
 	public static SelfRepair instance() {
@@ -119,18 +117,14 @@ public class SelfRepair extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTBlockBreakEvent event) {
-		if (!this.isAllowed()) {
-			return;
-		}
+
 
 		effect(event.getPlayer(), event.getTool());
 	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageByEntityEvent event) {
-		if (!this.isAllowed()) {
-			return;
-		}
+
 
 		if (ToolType.BOOTS.contains(event.getTool().getType())
 				|| ToolType.LEGGINGS.contains(event.getTool().getType())
@@ -145,27 +139,21 @@ public class SelfRepair extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageEvent event) {
-		if (!this.isAllowed()) {
-			return;
-		}
+
 
 		effect(event.getPlayer(), event.getTool());
 	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTPlayerInteractEvent event) {
-		if (!this.isAllowed()) {
-			return;
-		}
+
 
 		effect(event.getPlayer(), event.getTool());
 	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void onShear(PlayerShearEntityEvent event) {
-		if (!this.isAllowed()) {
-			return;
-		}
+
 
 		ItemStack tool = event.getPlayer().getInventory().getItemInMainHand();
 

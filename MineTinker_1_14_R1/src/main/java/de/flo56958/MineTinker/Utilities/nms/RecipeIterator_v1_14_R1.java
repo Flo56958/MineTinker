@@ -10,35 +10,35 @@ import java.util.Map;
 
 public class RecipeIterator_v1_14_R1 implements Iterator<Recipe> {
 
-    private Iterator<? extends Map<MinecraftKey, IRecipe<?>>> iterator;
-    private Iterator<IRecipe<?>> currentIterator;
+	private Iterator<? extends Map<MinecraftKey, IRecipe<?>>> iterator;
+	private Iterator<IRecipe<?>> currentIterator;
 
-    RecipeIterator_v1_14_R1() {
-        iterator = MinecraftServer.getServer().getCraftingManager().recipes.values().iterator();
-    }
+	RecipeIterator_v1_14_R1() {
+		iterator = MinecraftServer.getServer().getCraftingManager().recipes.values().iterator();
+	}
 
-    @Override
-    public boolean hasNext() {
-        if(currentIterator == null || !currentIterator.hasNext()) {
-            while(iterator.hasNext()) {
-                currentIterator = iterator.next().values().iterator();
-                if(currentIterator.hasNext())
-                    return true;
-            }
-        }
+	@Override
+	public boolean hasNext() {
+		if (currentIterator == null || !currentIterator.hasNext()) {
+			while (iterator.hasNext()) {
+				currentIterator = iterator.next().values().iterator();
+				if (currentIterator.hasNext())
+					return true;
+			}
+		}
 
-        return currentIterator != null && currentIterator.hasNext();
-    }
+		return currentIterator != null && currentIterator.hasNext();
+	}
 
-    @Override
-    public Recipe next() {
-        if(currentIterator == null) return null;
-        return currentIterator.next().toBukkitRecipe();
-    }
+	@Override
+	public Recipe next() {
+		if (currentIterator == null) return null;
+		return currentIterator.next().toBukkitRecipe();
+	}
 
-    @Override
-    public void remove() {
-        if(currentIterator == null) return;
-        currentIterator.remove();
-    }
+	@Override
+	public void remove() {
+		if (currentIterator == null) return;
+		currentIterator.remove();
+	}
 }

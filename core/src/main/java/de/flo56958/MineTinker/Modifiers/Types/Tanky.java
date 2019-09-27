@@ -4,11 +4,16 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -16,9 +21,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.io.File;
 import java.util.*;
 
-public class Tanky extends Modifier {
+public class Tanky extends Modifier implements Listener {
 
 	private static Tanky instance;
+
+	private HashMap<UUID, Double> playerHealth = new HashMap<>(); //used to track Player health when quiting and rejoining
+	//TODO: Save this data to a more suitable location, this one gets deleted on reload
+	//Maybe a database
 
 	private int healthPerLevel;
 
@@ -116,5 +125,21 @@ public class Tanky extends Modifier {
 		init(Material.OBSIDIAN, true);
 
 		this.description = this.description.replace("%amount", "" + this.healthPerLevel / 2.0);
+	}
+
+	@EventHandler
+	public void onJoin(PlayerJoinEvent e) {
+		Double health = playerHealth.get(e.getPlayer().getUniqueId());
+		if (health != null) {
+			Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> e.getPlayer().setHealth(health), 10L);
+		}
+		playerHealth.remove(e.getPlayer().getUniqueId());
+	}
+
+	@EventHandler
+	public void onQuit(PlayerQuitEvent e) {
+		if (e.getPlayer().getHealth() >= 20.0) { //has Tanky and enough health
+			playerHealth.put(e.getPlayer().getUniqueId(), e.getPlayer().getHealth());
+		}
 	}
 }

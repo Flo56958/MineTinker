@@ -13,86 +13,91 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class ConfigurationManager {
-	private ConfigurationManager() {}
-	
-    /*
-     * Stores all config-files with their name
-     */
-    private static final HashMap<String, FileConfiguration> configs = new HashMap<>();
-    private static final HashMap<FileConfiguration, File> configsFolder = new HashMap<>();
-    
-    /**
-     * Gets the specified config file
-     * @param modifier The Name of the file (Enum modifiers_Config)
-     * @return The FileConfiguration with the given name
-     */
-    public static FileConfiguration getConfig(Modifier modifier) {
-        return configs.get(modifier.getFileName());
-    }
+	/*
+	 * Stores all config-files with their name
+	 */
+	private static final HashMap<String, FileConfiguration> configs = new HashMap<>();
+	private static final HashMap<FileConfiguration, File> configsFolder = new HashMap<>();
+	private ConfigurationManager() {
+	}
 
-    /**
-     * Gets the specified config file
-     * @param file The Name of the file
-     * @return The FileConfiguration with the given name
-     */
-    public static FileConfiguration getConfig(String file) {
-        return configs.get(file);
-    }
+	/**
+	 * Gets the specified config file
+	 *
+	 * @param modifier The Name of the file (Enum modifiers_Config)
+	 * @return The FileConfiguration with the given name
+	 */
+	public static FileConfiguration getConfig(Modifier modifier) {
+		return configs.get(modifier.getFileName());
+	}
 
-    public static void reload() {
-        //clean up before reload
-        configs.clear();
-        configsFolder.clear();
+	/**
+	 * Gets the specified config file
+	 *
+	 * @param file The Name of the file
+	 * @return The FileConfiguration with the given name
+	 */
+	public static FileConfiguration getConfig(String file) {
+		return configs.get(file);
+	}
 
-        loadConfig("", "layout.yml");
+	public static void reload() {
+		//clean up before reload
+		configs.clear();
+		configsFolder.clear();
 
-        loadConfig("", "BuildersWand.yml");
+		loadConfig("", "layout.yml");
 
-        loadConfig("", "Elytra.yml");
+		loadConfig("", "BuildersWand.yml");
 
-        loadConfig("", "Modifiers.yml");
+		loadConfig("", "Elytra.yml");
 
-        for (Modifier modifier : ModManager.instance().getAllMods()) {
-            if (modifier.getFileName().isEmpty()) {
-                continue;
-            }
+		loadConfig("", "Modifiers.yml");
 
-            loadConfig("Modifiers" + File.separator, modifier.getFileName());
-        }
+		for (Modifier modifier : ModManager.instance().getAllMods()) {
+			if (modifier.getFileName().isEmpty()) {
+				continue;
+			}
 
-        //importing Main configuration into system
-        configs.put("config.yml", Main.getPlugin().getConfig());
-        configsFolder.put(Main.getPlugin().getConfig(), new File(Main.getPlugin().getDataFolder(), "config.yml"));
-    }
+			loadConfig("Modifiers" + File.separator, modifier.getFileName());
+		}
 
-    /**
-     * creates a config file in the specified folder
-     * @param folder The name of the folder
-     * @param file The name of the file
-     */
-    public static void loadConfig(String folder, String file) {
-        File customConfigFile = new File(Main.getPlugin().getDataFolder(), folder + file);
-        YamlConfiguration fileConfiguration = new YamlConfiguration();
+		//importing Main configuration into system
+		configs.put("config.yml", Main.getPlugin().getConfig());
+		configsFolder.put(Main.getPlugin().getConfig(), new File(Main.getPlugin().getDataFolder(), "config.yml"));
+	}
 
-        configsFolder.put(fileConfiguration, customConfigFile);
-        configs.put(file, fileConfiguration);
-        
-        if (customConfigFile.exists()) {
-        	try {
-	            fileConfiguration.load(customConfigFile);
-	        } catch (IOException | InvalidConfigurationException e) { e.printStackTrace(); }
-        }
-    }
+	/**
+	 * creates a config file in the specified folder
+	 *
+	 * @param folder The name of the folder
+	 * @param file   The name of the file
+	 */
+	public static void loadConfig(String folder, String file) {
+		File customConfigFile = new File(Main.getPlugin().getDataFolder(), folder + file);
+		YamlConfiguration fileConfiguration = new YamlConfiguration();
 
-    public static void saveConfig(FileConfiguration config) {
-    	try {
+		configsFolder.put(fileConfiguration, customConfigFile);
+		configs.put(file, fileConfiguration);
+
+		if (customConfigFile.exists()) {
+			try {
+				fileConfiguration.load(customConfigFile);
+			} catch (IOException | InvalidConfigurationException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static void saveConfig(FileConfiguration config) {
+		try {
 			config.save(configsFolder.get(config));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    }
+	}
 
-    public static Set<String> getAllConfigNames() {
-        return configs.keySet();
-    }
+	public static Set<String> getAllConfigNames() {
+		return configs.keySet();
+	}
 }

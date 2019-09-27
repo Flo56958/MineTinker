@@ -18,49 +18,49 @@ import org.bukkit.inventory.ItemStack;
 
 public class CraftItemListener implements Listener {
 
-    private static final ModManager modManager = ModManager.instance();
-	
+	private static final ModManager modManager = ModManager.instance();
+
 	@EventHandler(ignoreCancelled = true)
-    public void onCraft(CraftItemEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) {
-        	return;
+	public void onCraft(CraftItemEvent event) {
+		if (!(event.getWhoClicked() instanceof Player)) {
+			return;
 		}
 
-        Player player = (Player) event.getWhoClicked();
-        FileConfiguration config = Main.getPlugin().getConfig();
+		Player player = (Player) event.getWhoClicked();
+		FileConfiguration config = Main.getPlugin().getConfig();
 
-        if (config.getBoolean("Sound.OnEveryCrafting")) {
-            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
+		if (config.getBoolean("Sound.OnEveryCrafting")) {
+			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
 
-            return;
-        }
-        
-        ItemStack tool = event.getInventory().getResult();
-        
-        if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool) || modManager.isWandViable(tool))) {
-        	return;
+			return;
 		}
 
-        if (config.getBoolean("Sound.OnCrafting")) {
-        	player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
+		ItemStack tool = event.getInventory().getResult();
+
+		if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool) || modManager.isWandViable(tool))) {
+			return;
 		}
 
-        if (tool != null) {
+		if (config.getBoolean("Sound.OnCrafting")) {
+			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
+		}
+
+		if (tool != null) {
 			ChatWriter.log(false, player.getName() + " crafted " + ItemGenerator.getDisplayName(tool) + "! It is now a MineTinker-Item!");
 		}
-    }
+	}
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPrepare(PrepareItemCraftEvent event) {
-	    if (Main.getPlugin().getConfig().getBoolean("ModifiersCanBeUsedForCrafting")) return;
-        CraftingInventory inv = event.getInventory();
-        for (ItemStack is : inv.getMatrix()) {
-            if (is == null) continue;
-            if (is.getType() == Material.EXPERIENCE_BOTTLE || is.getType() == Material.NETHER_STAR) continue;
-            if (modManager.isModifierItem(is)) {
-                inv.setResult(null);
-                break;
-            }
-        }
-    }
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onPrepare(PrepareItemCraftEvent event) {
+		if (Main.getPlugin().getConfig().getBoolean("ModifiersCanBeUsedForCrafting")) return;
+		CraftingInventory inv = event.getInventory();
+		for (ItemStack is : inv.getMatrix()) {
+			if (is == null) continue;
+			if (is.getType() == Material.EXPERIENCE_BOTTLE || is.getType() == Material.NETHER_STAR) continue;
+			if (modManager.isModifierItem(is)) {
+				inv.setResult(null);
+				break;
+			}
+		}
+	}
 }

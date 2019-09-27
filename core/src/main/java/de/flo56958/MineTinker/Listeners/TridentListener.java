@@ -12,26 +12,26 @@ import java.util.HashMap;
 
 public class TridentListener implements Listener {
 
-    static final HashMap<Trident, ItemStack> TridentToItemStack = new HashMap<>();
+	static final HashMap<Trident, ItemStack> TridentToItemStack = new HashMap<>();
 
-    @EventHandler(ignoreCancelled = true)
-    public void onTridentLaunch(ProjectileLaunchEvent event) {
-        if (!(event.getEntity().getShooter() instanceof Player)) {
-            return;
-        }
+	@EventHandler(ignoreCancelled = true)
+	public void onTridentLaunch(ProjectileLaunchEvent event) {
+		if (!(event.getEntity().getShooter() instanceof Player)) {
+			return;
+		}
 
-        if (!(event.getEntity() instanceof Trident)) {
-            return;
-        }
+		if (!(event.getEntity() instanceof Trident)) {
+			return;
+		}
 
-        Player player = (Player) event.getEntity().getShooter();
-        ItemStack trident = player.getInventory().getItemInMainHand().clone();
+		Player player = (Player) event.getEntity().getShooter();
+		ItemStack trident = player.getInventory().getItemInMainHand().clone();
 
-        if (!ModManager.instance().isToolViable(trident)) {
-            return;
-        }
+		if (!ModManager.instance().isToolViable(trident)) {
+			return;
+		}
 
-        ModManager.instance().addExp(player, trident, -20000); //trident is a item clone and only for triggering modifier effects - this makes sure that the item duplicate does not get any level ups
-        TridentToItemStack.put((Trident) event.getEntity(), trident);
-    }
+		ModManager.instance().addExp(player, trident, -20000, false); //trident is a item clone and only for triggering modifier effects - this makes sure that the item duplicate does not get any level ups
+		TridentToItemStack.put((Trident) event.getEntity(), trident);
+	}
 }

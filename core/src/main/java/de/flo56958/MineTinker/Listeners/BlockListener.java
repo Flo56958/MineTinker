@@ -9,6 +9,7 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Modifiers.Types.Ender;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
+import de.flo56958.MineTinker.Modifiers.Types.SilkTouch;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -26,256 +27,259 @@ import org.bukkit.inventory.ItemStack;
 
 public class BlockListener implements Listener {
 
-    private static final ModManager modManager = ModManager.instance();
-
-    //To cancel event if Tool would be broken so other plugins can react faster to MineTinker (e.g. PyroMining)
-    //onBlockBreak() has priority highest as it needs to wait on WorldGuard and other plugins to cancel event if necessary
-    //TODO: Replace if Issue #111 is implemented
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onBlockBreak_DurabilityCheck(BlockBreakEvent event) {
-        Player p = event.getPlayer();
-        ItemStack tool = p.getInventory().getItemInMainHand();
-        if (modManager.isToolViable(tool)) {
-            modManager.durabilityCheck(event, p, tool);
-        }
-    }
+	private static final ModManager modManager = ModManager.instance();
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockBreak(BlockBreakEvent event) {
-        Player p = event.getPlayer();
-        ItemStack tool = p.getInventory().getItemInMainHand();
+	public static void onAxeUse(PlayerInteractEvent event) {
+		Player player = event.getPlayer();
 
-        if (Lists.WORLDS.contains(p.getWorld().getName())) {
-            return;
-        }
+		if (Lists.WORLDS.contains(player.getWorld().getName())) {
+			return;
+		}
 
-        if (event.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS || ToolType.HOE.contains(tool.getType()))) {
-            return;
-        }
+		if (!(player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE))) {
+			return;
+		}
 
-        if (!(p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE)) {
-            return;
-        }
+		ItemStack tool = player.getInventory().getItemInMainHand();
 
-        if (!modManager.isToolViable(tool)) {
-            return;
-        }
+		if (!ToolType.AXE.contains(tool.getType())) {
+			return;
+		}
 
-        FileConfiguration config = Main.getPlugin().getConfig();
+		if (!modManager.isToolViable(tool)) {
+			return;
+		}
 
-        int expAmount = config.getInt("ExpPerBlockBreak");
-        expAmount += config.getInt("ExtraExpPerBlock." + event.getBlock().getType().toString());
-        //adds 0 if not in found in config (negative values are also fine)
+		boolean apply = false;
 
-        modManager.addExp(p, tool, expAmount);
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null) {
+			if (Lists.getWoodLogs().contains(event.getClickedBlock().getType()))
+				apply = true;
+			else if (Lists.getWoodWood().contains(event.getClickedBlock().getType()))
+				apply = true;
+		}
 
-        //-------------------------------------------POWERCHECK---------------------------------------------
-        if (Power.HASPOWER.get(p).get() && !ToolType.PICKAXE.contains(tool.getType())
-                && event.getBlock().getDrops(tool).isEmpty()
-                && event.getBlock().getType() != Material.NETHER_WART) { //Necessary for EasyHarvest NetherWard-Break
+		if (!apply) {
+			return;
+		}
 
-            event.setCancelled(true);
-            return;
-        }
+		if (!modManager.durabilityCheck(event, player, tool)) {
+			return;
+		}
 
-        MTBlockBreakEvent breakEvent = new MTBlockBreakEvent(tool, event);
-        Bukkit.getPluginManager().callEvent(breakEvent); //Event-Trigger for Modifiers
-    }
+		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"), false);
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onClick(PlayerInteractEvent event) {
-        Player p = event.getPlayer();
-        Block b = event.getClickedBlock();
+		MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
+		Bukkit.getPluginManager().callEvent(interactEvent);
+	}
 
-        if (b == null) {
-            return;
-        }
+	//To cancel event if Tool would be broken so other plugins can react faster to MineTinker (e.g. PyroMining)
+	//onBlockBreak() has priority highest as it needs to wait on WorldGuard and other plugins to cancel event if necessary
+	//TODO: Replace if Issue #111 is implemented
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	public void onBlockBreak_DurabilityCheck(BlockBreakEvent event) {
+		Player p = event.getPlayer();
+		ItemStack tool = p.getInventory().getItemInMainHand();
+		if (modManager.isToolViable(tool)) {
+			modManager.durabilityCheck(event, p, tool);
+		}
+	}
 
-        if (event.getHand() != EquipmentSlot.HAND) {
-            return;
-        }
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onBlockBreak(BlockBreakEvent event) {
+		Player p = event.getPlayer();
+		ItemStack tool = p.getInventory().getItemInMainHand();
 
-        ItemStack norm = p.getInventory().getItemInMainHand();
+		if (Lists.WORLDS.contains(p.getWorld().getName())) {
+			return;
+		}
 
-        if (norm.getType() == Material.EXPERIENCE_BOTTLE) {
-            return;
-        }
+		if (event.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS || ToolType.HOE.contains(tool.getType()))) {
+			return;
+		}
 
-        if (event.getAction() == Action.RIGHT_CLICK_AIR) {
-            if (Ender.instance().getModItem().equals(norm)) {
-                event.setCancelled(true);
-            }
-        } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (!p.isSneaking()) {
-                Material type = b.getType();
+		if (!(p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE)) {
+			return;
+		}
 
-                if (type == Material.ANVIL || type == Material.CRAFTING_TABLE
-                    || type == Material.CHEST || type == Material.ENDER_CHEST
-                    || type == Material.DROPPER || type == Material.HOPPER
-                    || type == Material.DISPENSER || type == Material.TRAPPED_CHEST
-                    || type == Material.FURNACE || type == Material.ENCHANTING_TABLE) {
+		if (!modManager.isToolViable(tool)) {
+			return;
+		}
 
-                    return;
-                }
-            }
+		FileConfiguration config = Main.getPlugin().getConfig();
 
-            if (modManager.isModifierItem(norm)) {
-                event.setCancelled(true);
-                return;
-            }
+		int expAmount = config.getInt("ExpPerBlockBreak");
+		if (!(!config.getBoolean("ExtraExpPerBlock.ApplicableToSilkTouch") && modManager.hasMod(tool, SilkTouch.instance()))) {
+			expAmount += config.getInt("ExtraExpPerBlock." + event.getBlock().getType().toString());
+			//adds 0 if not in found in config (negative values are also fine)
+		}
 
-            if (b.getType() == Material.getMaterial(Main.getPlugin().getConfig().getString("BlockToEnchantModifiers"))) {
-                ItemStack item = p.getInventory().getItemInMainHand();
+		modManager.addExp(p, tool, expAmount, false);
 
-                for (Modifier m : modManager.getAllMods()) {
-                    if (m.getModItem().getType().equals(item.getType())) {
-                        m.enchantItem(p);
-                        event.setCancelled(true);
-                        break;
-                    }
-                }
-            }
-        }
-    }
+		//-------------------------------------------POWERCHECK---------------------------------------------
+		if (Power.HASPOWER.get(p).get() && !ToolType.PICKAXE.contains(tool.getType())
+				&& event.getBlock().getDrops(tool).isEmpty()
+				&& event.getBlock().getType() != Material.NETHER_WART) { //Necessary for EasyHarvest NetherWard-Break
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onHoeUse(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
+			event.setCancelled(true);
+			return;
+		}
 
-        if (Lists.WORLDS.contains(player.getWorld().getName())) {
-            return;
-        }
+		MTBlockBreakEvent breakEvent = new MTBlockBreakEvent(tool, event);
+		Bukkit.getPluginManager().callEvent(breakEvent); //Event-Trigger for Modifiers
+	}
 
-        if (!(player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
-            return;
-        }
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	public void onClick(PlayerInteractEvent event) {
+		Player p = event.getPlayer();
+		Block b = event.getClickedBlock();
 
-        ItemStack tool = player.getInventory().getItemInMainHand();
+		if (b == null) {
+			return;
+		}
 
-        if (!ToolType.HOE.contains(tool.getType())) {
-            return;
-        }
+		if (event.getHand() != EquipmentSlot.HAND) {
+			return;
+		}
 
-        if (!modManager.isToolViable(tool)) {
-            return;
-        }
+		ItemStack norm = p.getInventory().getItemInMainHand();
 
-        Block block = event.getClickedBlock();
+		if (norm.getType() == Material.EXPERIENCE_BOTTLE) {
+			return;
+		}
 
-        boolean apply = false;
+		if (event.getAction() == Action.RIGHT_CLICK_AIR) {
+			if (Ender.instance().getModItem().equals(norm)) {
+				event.setCancelled(true);
+			}
+		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			if (!p.isSneaking()) {
+				Material type = b.getType();
 
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block != null) {
-            if (block.getType() == Material.GRASS_BLOCK || block.getType() == Material.DIRT)
-                apply = true;
+				if (type == Material.ANVIL || type == Material.CRAFTING_TABLE
+						|| type == Material.CHEST || type == Material.ENDER_CHEST
+						|| type == Material.DROPPER || type == Material.HOPPER
+						|| type == Material.DISPENSER || type == Material.TRAPPED_CHEST
+						|| type == Material.FURNACE || type == Material.ENCHANTING_TABLE) {
 
-            Block b = player.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
-            if (b.getType() != Material.AIR && b.getType() != Material.CAVE_AIR) //Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
-                apply = false;
-        }
+					return;
+				}
+			}
 
-        if (!apply) {
-            return;
-        }
+			if (modManager.isModifierItem(norm)) {
+				event.setCancelled(true);
+				return;
+			}
 
-        if (!modManager.durabilityCheck(event, player, tool)) {
-            return;
-        }
+			if (b.getType() == Material.getMaterial(Main.getPlugin().getConfig().getString("BlockToEnchantModifiers"))) {
+				ItemStack item = p.getInventory().getItemInMainHand();
 
-        modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
+				for (Modifier m : modManager.getAllMods()) {
+					if (m.getModItem().getType().equals(item.getType())) {
+						if (!m.isEnchantable()) continue;
+						m.enchantItem(p);
+						event.setCancelled(true);
+						break;
+					}
+				}
+			}
+		}
+	}
 
-        MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
-        Bukkit.getPluginManager().callEvent(interactEvent);
-    }
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onHoeUse(PlayerInteractEvent event) {
+		Player player = event.getPlayer();
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public static void onAxeUse(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
+		if (Lists.WORLDS.contains(player.getWorld().getName())) {
+			return;
+		}
 
-        if (Lists.WORLDS.contains(player.getWorld().getName())) {
-            return;
-        }
+		if (!(player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
+			return;
+		}
 
-        if (!(player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE))) {
-            return;
-        }
+		ItemStack tool = player.getInventory().getItemInMainHand();
 
-        ItemStack tool = player.getInventory().getItemInMainHand();
+		if (!ToolType.HOE.contains(tool.getType())) {
+			return;
+		}
 
-        if (!ToolType.AXE.contains(tool.getType())) {
-            return;
-        }
+		if (!modManager.isToolViable(tool)) {
+			return;
+		}
 
-        if (!modManager.isToolViable(tool)) {
-            return;
-        }
+		Block block = event.getClickedBlock();
 
-        boolean apply = false;
+		boolean apply = false;
 
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null) {
-            if (Lists.getWoodLogs().contains(event.getClickedBlock().getType()))
-                apply = true;
-            else if (Lists.getWoodWood().contains(event.getClickedBlock().getType()))
-                apply = true;
-        }
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block != null) {
+			if (block.getType() == Material.GRASS_BLOCK || block.getType() == Material.DIRT)
+				apply = true;
 
-        if (!apply) {
-            return;
-        }
+			Block b = player.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
+			if (b.getType() != Material.AIR && b.getType() != Material.CAVE_AIR) //Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
+				apply = false;
+		}
 
-        if (!modManager.durabilityCheck(event, player, tool)) {
-            return;
-        }
+		if (!apply) {
+			return;
+		}
 
-        modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
+		if (!modManager.durabilityCheck(event, player, tool)) {
+			return;
+		}
 
-        MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
-        Bukkit.getPluginManager().callEvent(interactEvent);
-    }
+		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"), false);
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onShovelUse(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
+		MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
+		Bukkit.getPluginManager().callEvent(interactEvent);
+	}
 
-        if (Lists.WORLDS.contains(player.getWorld().getName())) {
-            return;
-        }
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onShovelUse(PlayerInteractEvent event) {
+		Player player = event.getPlayer();
 
-        if (!(player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
-            return;
-        }
+		if (Lists.WORLDS.contains(player.getWorld().getName())) {
+			return;
+		}
 
-        ItemStack tool = player.getInventory().getItemInMainHand();
+		if (!(player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
+			return;
+		}
 
-        if (!ToolType.SHOVEL.contains(tool.getType())) {
-            return;
-        }
+		ItemStack tool = player.getInventory().getItemInMainHand();
 
-        if (!modManager.isToolViable(tool)) {
-            return;
-        }
+		if (!ToolType.SHOVEL.contains(tool.getType())) {
+			return;
+		}
 
-        boolean apply = false;
+		if (!modManager.isToolViable(tool)) {
+			return;
+		}
 
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null) {
-            if (event.getClickedBlock().getType() == Material.GRASS_BLOCK)
-                apply = true;
+		boolean apply = false;
 
-            Block b = player.getWorld().getBlockAt(event.getClickedBlock().getLocation().add(0, 1, 0));
-            if (b.getType() != Material.AIR && b.getType() != Material.CAVE_AIR) //Case Block is on top of clicked Block -> No Path created -> no Exp
-                apply = false;
-        }
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null) {
+			if (event.getClickedBlock().getType() == Material.GRASS_BLOCK)
+				apply = true;
 
-        if (!apply) {
-            return;
-        }
+			Block b = player.getWorld().getBlockAt(event.getClickedBlock().getLocation().add(0, 1, 0));
+			if (b.getType() != Material.AIR && b.getType() != Material.CAVE_AIR) //Case Block is on top of clicked Block -> No Path created -> no Exp
+				apply = false;
+		}
 
-        if (!modManager.durabilityCheck(event, player, tool)) {
-            return;
-        }
+		if (!apply) {
+			return;
+		}
 
-        modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
+		if (!modManager.durabilityCheck(event, player, tool)) {
+			return;
+		}
 
-        MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
-        Bukkit.getPluginManager().callEvent(interactEvent);
-    }
+		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"), false);
+
+		MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
+		Bukkit.getPluginManager().callEvent(interactEvent);
+	}
 }

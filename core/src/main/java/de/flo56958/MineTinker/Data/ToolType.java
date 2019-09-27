@@ -70,14 +70,6 @@ public enum ToolType {
 		return toolMaterials;
 	}
 
-	public List<Material> getToolMaterials() {
-		return getTools().get(this);
-	}
-
-	public boolean contains(Material material) {
-		return getToolMaterials().contains(material);
-	}
-
 	public static boolean isMaterialCompatible(Material material) {
 		return ToolType.ALL.contains(material);
 	}
@@ -110,5 +102,13 @@ public enum ToolType {
 		}
 
 		return null;
+	}
+
+	public List<Material> getToolMaterials() {
+		return getTools().get(this);
+	}
+
+	public boolean contains(Material material) {
+		return getToolMaterials().contains(material);
 	}
 }

@@ -60,7 +60,9 @@ public class Speedy extends Modifier {
 			return false;
 		}
 
-		if (meta.getAttributeModifiers(Attribute.GENERIC_ARMOR) == null || meta.getAttributeModifiers(Attribute.GENERIC_ARMOR).isEmpty()) {
+		Collection<AttributeModifier> attributeModifiers = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR);
+
+		if (attributeModifiers == null || attributeModifiers.isEmpty()) {
 			modManager.addArmorAttributes(tool);
 		}
 
