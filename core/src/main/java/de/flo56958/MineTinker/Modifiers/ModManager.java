@@ -338,10 +338,10 @@ public class ModManager {
 		rewriteLore(is);
 	}
 
-	public boolean addMod(Player player, ItemStack item, Modifier modifier, boolean fromCommand, boolean fromRandom) {
+	public boolean addMod(Player player, ItemStack item, Modifier modifier, boolean fromCommand, boolean fromRandom, boolean silent) {
 		if (!modifier.getKey().equals(ExtraModifier.instance().getKey())) {
 			if (!Modifier.checkAndAdd(player, item, modifier,
-					modifier.getKey().toLowerCase().replace("-", ""), fromCommand, fromRandom)) {
+					modifier.getKey().toLowerCase().replace("-", ""), fromCommand, fromRandom, silent)) {
 				return false;
 			}
 		}
@@ -479,8 +479,9 @@ public class ModManager {
 	 * @param p      Player that uses the tool
 	 * @param tool   tool that needs to get exp
 	 * @param amount how much exp should the tool get
+	 * @param noEvent
 	 */
-	public void addExp(Player p, ItemStack tool, int amount) {
+	public void addExp(Player p, ItemStack tool, long amount, boolean noEvent) {
 		if (amount == 0) {
 			return;
 		}
@@ -519,7 +520,7 @@ public class ModManager {
 		setExp(tool, exp);
 		rewriteLore(tool);
 
-		if (LevelUp) {
+		if (LevelUp && !noEvent) {
 			Bukkit.getPluginManager().callEvent(new ToolLevelUpEvent(p, tool));
 		}
 	}

@@ -47,25 +47,25 @@ public abstract class Modifier {
 		this.source = source;
 	}
 
-	static boolean checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand, boolean fromRandom) {
+	static boolean checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand, boolean fromRandom, boolean silent) {
 		if ((modManager.getFreeSlots(tool) < 1 && !mod.equals(ExtraModifier.instance())) && !isCommand) {
-			pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_FREE_SLOTS, isCommand));
+			if (!silent) pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_FREE_SLOTS, isCommand));
 			return false;
 		}
 
 		if (!p.hasPermission("minetinker.modifiers." + permission + ".apply")) {
-			pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_PERMISSION, isCommand));
+			if (!silent) pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_PERMISSION, isCommand));
 			return false;
 		}
 
 		FileConfiguration modifiersconfig = ConfigurationManager.getConfig("Modifiers.yml");
 		if (!(modifiersconfig.getBoolean("CommandIgnoresToolTypes") && isCommand && !fromRandom) && !mod.isMaterialCompatible(tool.getType())) {
-			pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
+			if (!silent) pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
 			return false;
 		}
 
 		if (!(modifiersconfig.getBoolean("CommandIgnoresMaxLevel") && isCommand && !fromRandom) && modManager.getModLevel(tool, mod) >= mod.getMaxLvl()) {
-			pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.MOD_MAXLEVEL, isCommand));
+			if (!silent) pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.MOD_MAXLEVEL, isCommand));
 			return false;
 		}
 
@@ -75,14 +75,14 @@ public abstract class Modifier {
 
 				for (Modifier m : incompatibility) {
 					if (modManager.hasMod(tool, m)) {
-						pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+						if (!silent) pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
 						return false;
 					}
 					if (modifiersconfig.getBoolean("IncompatibilitiesConsiderEnchants")) {
 						for (Enchantment e : m.getAppliedEnchantments()) {
 							if (!tool.hasItemMeta()) return false;
 							if (tool.getItemMeta().hasEnchant(e)) {
-								pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+								if (!silent) pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
 								return false;
 							}
 						}
@@ -98,8 +98,10 @@ public abstract class Modifier {
 		if (!isCommand) {
 			modManager.setFreeSlots(tool, --freeSlots);
 		} else {
-			ModifierApplyEvent event = new ModifierApplyEvent(p, tool, mod, freeSlots, true);
-			Bukkit.getPluginManager().callEvent(event);
+			if (!silent) {
+				ModifierApplyEvent event = new ModifierApplyEvent(p, tool, mod, freeSlots, true);
+				Bukkit.getPluginManager().callEvent(event);
+			}
 		}
 
 		return true;

@@ -72,6 +72,26 @@ ItemBehaviour:
   ApplyOnPlayerDeath: true            #Applies ItemBehaviour on PlayerDeath, set false if another plugin controls keepInventory on deaths
 ModifiersCanBeUsedForCrafting: false  #Enablea crafting with Modifier-Items
 
+#---------------MOB-DROPS-------------------
+ConvertMobDrops:
+  Enabled: true
+  Chance: 100
+  ApplyModifiers: true
+  MaximumNumberOfModifiers: 4
+  AppliedModifiersConsiderSlots: true
+  ApplyExp: true
+  MaximumNumberOfExp: 1000
+MobDropModifierItems:
+  Enabled: true
+  Chance: 100
+  MaximumAmount: 2                    #Amount of possible different modifiers (Item will have amount of 1)
+  ExcludeModifiers:
+    - Extra-Modifier
+  ConsiderIncludedMobs: true
+  IncludedMobs:
+    - ENDER_DRAGON
+    - WITHER
+
 #---------------LEVELUP-EVENTS--------------
 LevelUpEvents:                        #Events that happen when a MT-Item gets a Level-Up (chancebased)
   enabled: true                       #disable all events

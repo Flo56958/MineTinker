@@ -58,7 +58,7 @@ class Functions {
 			if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
 				try {
 					int amount = Integer.parseInt(args[1]);
-					modManager.addExp(player, tool, amount);
+					modManager.addExp(player, tool, amount, false);
 				} catch (Exception e) {
 					Commands.invalidArgs(player);
 				}
@@ -144,7 +144,7 @@ class Functions {
 					ItemStack tool = player.getInventory().getItemInMainHand();
 
 					if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
-						modManager.addMod(player, tool, m, true, false);
+						modManager.addMod(player, tool, m, true, false, false);
 					}
 
 					break;

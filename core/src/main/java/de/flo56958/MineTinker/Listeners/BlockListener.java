@@ -68,7 +68,7 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
+		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"), false);
 
 		MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
 		Bukkit.getPluginManager().callEvent(interactEvent);
@@ -115,7 +115,7 @@ public class BlockListener implements Listener {
 			//adds 0 if not in found in config (negative values are also fine)
 		}
 
-		modManager.addExp(p, tool, expAmount);
+		modManager.addExp(p, tool, expAmount, false);
 
 		//-------------------------------------------POWERCHECK---------------------------------------------
 		if (Power.HASPOWER.get(p).get() && !ToolType.PICKAXE.contains(tool.getType())
@@ -230,7 +230,7 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
+		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"), false);
 
 		MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
 		Bukkit.getPluginManager().callEvent(interactEvent);
@@ -277,7 +277,7 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
+		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"), false);
 
 		MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
 		Bukkit.getPluginManager().callEvent(interactEvent);

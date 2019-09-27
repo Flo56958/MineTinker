@@ -24,6 +24,9 @@ import org.bukkit.event.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
+import java.util.List;
+import java.util.Random;
+
 public class EntityListener implements Listener {
 
 	private static final ModManager modManager = ModManager.instance();
@@ -107,7 +110,7 @@ public class EntityListener implements Listener {
 		}
 
 		amount += config.getInt("ExtraExpPerEntityHit." + event.getEntity().getType().toString()); //adds 0 if not in found in config (negative values are also fine)
-		modManager.addExp(player, tool, amount);
+		modManager.addExp(player, tool, amount, false);
 	}
 
 	@EventHandler
@@ -129,10 +132,67 @@ public class EntityListener implements Listener {
 			return;
 		}
 
+		FileConfiguration config = Main.getPlugin().getConfig();
+
+		if (config.getBoolean("ConvertMobDrops.Enabled", true)) {
+			for (ItemStack item : event.getDrops()) {
+				Random rand = new Random();
+				if (rand.nextInt(100) < config.getInt("ConvertMobDrops.Chance", 50)) {
+					if (!modManager.convertItemStack(item)) continue;
+
+					if (config.getBoolean("ConvertMobDrops.ApplyExp", true)) {
+						int exp = rand.nextInt(config.getInt("ConvertMobDrops.MaximumNumberOfExp", 2000));
+						int divider = config.getInt("LevelStep", 100);
+						for (int i = 0; i < (exp - 17) / divider; i++) { //to get possible LevelUps
+							modManager.addExp(player, item, divider, true);
+						}
+						long difference = exp - modManager.getExp(item);
+						modManager.addExp(player, item, difference, true);
+					}
+
+					if (config.getBoolean("ConvertMobDrops.ApplyModifiers", true)) {
+						List<Modifier> mods = modManager.getAllowedMods();
+						for (int i = 0; i < rand.nextInt(config.getInt("ConvertMobDrops.MaximumNumberOfModifiers", 4) + 1); i++) {
+							if (config.getBoolean("ConvertMobDrops.AppliedModifiersConsiderSlots", true) && modManager.getFreeSlots(item) == 0) {
+								break;
+							}
+							for (int j = 0; j < 2; j++) { //to give an extra chance
+								int index = rand.nextInt(mods.size());
+								Modifier mod = mods.get(index);
+								if (modManager.addMod(player, item, mod, true, true, true)) {
+									if (config.getBoolean("ConvertMobDrops.AppliedModifiersConsiderSlots", true)) {
+										modManager.setFreeSlots(item, modManager.getFreeSlots(item) - 1);
+									}
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (config.getBoolean("MobDropModifierItems.Enabled", true)) {
+			if (config.getBoolean("MobDropModifierItems.ConsiderIncludedMobs") == config.getStringList("MobDropModifierItems.IncludedMobs").contains(mob.getType().name())) {
+				Random rand = new Random();
+				if (rand.nextInt(100) < config.getInt("MobDropModifierItems.Chance", 2)) {
+					int amount = rand.nextInt(config.getInt("MobDropModifierItems.MaximumAmount") + 1);
+					List<Modifier> mods = modManager.getAllowedMods();
+					for (int i = 0; i < amount; i++) {
+						int index = rand.nextInt(mods.size());
+						Modifier mod = mods.get(index);
+						if (!config.getStringList("MobDropModifierItems.ExcludeModifiers").contains(mod.getKey())) {
+							event.getDrops().add(mod.getModItem().clone());
+						}
+					}
+				}
+			}
+		}
+
 		MTEntityDeathEvent deathEvent = new MTEntityDeathEvent(player, tool, event);
 		Bukkit.getPluginManager().callEvent(deathEvent);
 
-		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExtraExpPerEntityDeath." + event.getEntity().getType().toString())); //adds 0 if not in found in config (negative values are also fine)
+		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExtraExpPerEntityDeath." + event.getEntity().getType().toString()), false); //adds 0 if not in found in config (negative values are also fine)
 	}
 
 	@EventHandler
@@ -200,7 +260,7 @@ public class EntityListener implements Listener {
 			return;
 		}
 
-		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerArrowShot"));
+		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerArrowShot"), false);
 
         /*
         Self-Repair and Experienced will no longer trigger on bowfire
