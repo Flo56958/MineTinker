@@ -174,6 +174,7 @@ public class BlockListener implements Listener {
 
 				for (Modifier m : modManager.getAllMods()) {
 					if (m.getModItem().getType().equals(item.getType())) {
+						if (!m.isEnchantable()) continue;
 						m.enchantItem(p);
 						event.setCancelled(true);
 						break;

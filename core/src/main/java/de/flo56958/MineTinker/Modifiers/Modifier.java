@@ -311,18 +311,10 @@ public abstract class Modifier {
 	// ---------------------- Enchantable Stuff ----------------------
 
 	public void enchantItem(Player p) {
-		if (!isEnchantable()) {
-			return;
-		}
-
 		if (!p.hasPermission("minetinker.modifiers." + getKey().replace("-", "").toLowerCase() + ".craft")) {
 			return;
 		}
 
-		_createModifierItem(p);
-	}
-
-	private void _createModifierItem(Player p) {
 		if (getConfig().getBoolean("Recipe.Enabled")) {
 			return;
 		}
