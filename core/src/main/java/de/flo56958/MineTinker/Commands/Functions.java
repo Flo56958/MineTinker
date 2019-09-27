@@ -84,7 +84,7 @@ class Functions {
 				StringBuilder name = new StringBuilder();
 
 				for (int i = 1; i < args.length; i++) {
-					name.append(" ").append(args[i].replace('^', '§'));
+					name.append(" ").append(args[i].replace('&', '§'));
 				}
 
 				name = new StringBuilder(name.substring(1));
