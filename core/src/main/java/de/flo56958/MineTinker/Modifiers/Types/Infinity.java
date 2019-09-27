@@ -111,7 +111,9 @@ public class Infinity extends Modifier implements Listener {
 
 		if (!ToolType.CROSSBOW.contains(tool.getType())) return;
 
-		if(!modManager.isToolViable(tool)) return;
+		if (!modManager.isToolViable(tool)) return;
+
+		if (!modManager.hasMod(tool, this)) return;
 
 		if(!((Arrow) arrow).hasCustomEffects()) {
 			if (p.getInventory().addItem(new ItemStack(Material.ARROW, 1)).size() != 0) { //adds items to (full) inventory
