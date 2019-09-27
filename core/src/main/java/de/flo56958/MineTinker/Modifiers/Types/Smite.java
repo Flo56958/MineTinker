@@ -87,7 +87,7 @@ public class Smite extends Modifier {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
-			if (!ToolType.AXE.contains(tool.getType()) && !ToolType.SWORD.contains(tool.getType())) {
+			if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType())) {
 				meta.addEnchant(Enchantment.DAMAGE_UNDEAD, modManager.getModLevel(tool, this), true);
 			}
 
