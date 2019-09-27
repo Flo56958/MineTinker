@@ -101,9 +101,10 @@ LevelUpEvents:                        #Events that happen when a MT-Item gets a 
   RandomModifier:                     #Applies a random modifier
     enabled: true
     percentage: 10
-    AmountOfModifiers: 1              #How many (different) Modifiers should be applied in this event
+    MaximumAmountOfModifiers: 1       #How many (different) Modifiers should be applied in this event
     DisableAddingNewSlots: false      #Should the Event replace the normal free Slots on Level up
     AllowExtraModifier: true          #Should the Extra Modifier be part of the random roll
+    DropAsItem: false
   DropLoot:                           #Drops specific loot
     enabled: true
     percentage: 25

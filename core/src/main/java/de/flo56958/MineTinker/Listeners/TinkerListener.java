@@ -163,7 +163,7 @@ public class TinkerListener implements Listener {
 				if (n <= config.getInt("LevelUpEvents.RandomModifier.percentage")) {
 					for (int i = 0; i < player.getInventory().getSize(); i++) { //getting the inventory slot of the tool
 						if (player.getInventory().getItem(i) != null && player.getInventory().getItem(i).equals(tool)) {  //Can be NULL!
-							for (int j = 0; j < config.getInt("LevelUpEvents.RandomModifier.AmountOfModifiers"); j++) {
+							for (int j = 0; j < new Random().nextInt(config.getInt("LevelUpEvents.RandomModifier.MaximumAmountOfModifiers") + 1); j++) {
 
 								List<Modifier> mods = new ArrayList<>(modManager.getAllowedMods()); //necessary as the failed modifiers get removed from the list (so a copy is in order)
 
@@ -179,8 +179,15 @@ public class TinkerListener implements Listener {
 									} //Secures that the while will terminate after some time (if all modifiers were removed)
 
 									index = new Random().nextInt(mods.size());
-									appliedRandomMod = modManager.addMod(player, tool, mods.get(index), true, true, false);
-
+									Modifier mod = mods.get(index);
+									if (config.getBoolean("LevelUpEvents.RandomModifier.DropAsItem", false)) {
+										appliedRandomMod = true;
+										if (player.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
+											player.getWorld().dropItem(player.getLocation(), mod.getModItem()); //drops item when inventory is full
+										} // no else as it gets added in if
+									} else {
+										appliedRandomMod = modManager.addMod(player, tool, mod, true, true, false);
+									}
 									if (!appliedRandomMod) {
 										mods.remove(index); //Remove the failed modifier from the the list of the possibles
 									}
