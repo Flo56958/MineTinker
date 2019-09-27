@@ -126,8 +126,6 @@ public class Photosynthesis extends Modifier implements Listener {
 
 	private Photosynthesis() {
 		super(Main.getPlugin());
-
-		Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
 	}
 
 	public static Photosynthesis instance() {

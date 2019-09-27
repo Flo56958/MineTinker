@@ -33,7 +33,6 @@ public class Magical extends Modifier implements Listener {
 
 	private Magical() {
 		super(Main.getPlugin());
-		Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
 	}
 
 	public static Magical instance() {
@@ -137,7 +136,7 @@ public class Magical extends Modifier implements Listener {
 		arrow.setGravity(false);
 		//arrow.setGlowing(true);
 
-		Entity entity = p.getLocation().getWorld().spawnEntity(arrow.getLocation().add(arrow.getVelocity().normalize().multiply(-0.4)), EntityType.ENDERMITE);
+		Entity entity = p.getLocation().getWorld().spawnEntity(arrow.getLocation().add(arrow.getVelocity().normalize().multiply(-0.5)), EntityType.ENDERMITE);
 		if (entity instanceof LivingEntity) {
 			((LivingEntity) entity).setRemoveWhenFarAway(true);
 			//((LivingEntity) entity).setAI(false); can not move
@@ -145,6 +144,7 @@ public class Magical extends Modifier implements Listener {
 			entity.setVelocity(arrow.getVelocity().multiply(this.multiplierArrowSpeed)); //does not work
 			entity.setInvulnerable(true);
 			entity.setSilent(true);
+			((LivingEntity) entity).setCollidable(false);
 
 			for (int i = 5; i < 10 * 20; i = i + 5) {
 				Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {

@@ -7,7 +7,13 @@ import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.AbstractArrow;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -15,11 +21,10 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-public class Infinity extends Modifier {
+public class Infinity extends Modifier implements Listener {
 
 	private static Infinity instance;
 
-	//Infinity does not work on crossbows
 	private Infinity() {
 		super(Main.getPlugin());
 	}
@@ -41,7 +46,7 @@ public class Infinity extends Modifier {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.BOW, ToolType.TRIDENT);
+		return Arrays.asList(ToolType.BOW, ToolType.TRIDENT, ToolType.CROSSBOW);
 	}
 
 	@Override
@@ -80,7 +85,7 @@ public class Infinity extends Modifier {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
-			if (ToolType.BOW.contains(tool.getType())) {
+			if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType())) {
 				meta.addEnchant(Enchantment.ARROW_INFINITE, modManager.getModLevel(tool, this), true);
 			} else if (ToolType.TRIDENT.contains(tool.getType())) {
 				meta.addEnchant(Enchantment.LOYALTY, modManager.getModLevel(tool, this), true);
@@ -88,8 +93,33 @@ public class Infinity extends Modifier {
 
 			tool.setItemMeta(meta);
 		}
-
-
 		return true;
 	}
+
+	@EventHandler
+	public void onShoot(ProjectileLaunchEvent e) {
+		if (!this.isAllowed()) return;
+
+		Projectile arrow = e.getEntity();
+		if (!(arrow instanceof Arrow)) return;
+
+		if (!(arrow.getShooter() instanceof Player)) return;
+
+		Player p = (Player) arrow.getShooter();
+
+		ItemStack tool = p.getInventory().getItemInMainHand();
+
+		if (!ToolType.CROSSBOW.contains(tool.getType())) return;
+
+		if(!modManager.isToolViable(tool)) return;
+
+		if(!((Arrow) arrow).hasCustomEffects()) {
+			if (p.getInventory().addItem(new ItemStack(Material.ARROW, 1)).size() != 0) { //adds items to (full) inventory
+				p.getWorld().dropItem(p.getLocation(), new ItemStack(Material.ARROW, 1)); //drops item when inventory is full
+			} // no else as it gets added in if
+
+			((Arrow) arrow).setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+		}
+	}
 }
+
