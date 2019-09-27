@@ -665,22 +665,33 @@ public class ModManager {
 	/**
 	 * converts a given ItemStack into its MineTinker equivalent
 	 *
-	 * @param is the MineTinker equivalent
+	 * @param is The {@link ItemStack} to convert.
+	 * @return If the conversion was successful. Also returns false if the item is already MT compatible.
 	 */
 	public boolean convertItemStack(ItemStack is) {
 		Material m = is.getType();
 		int damage = 0;
+
+		// Don't convert already converted items
+		if (isArmorViable(is) || isToolViable(is) || isWandViable(is)) {
+			return false;
+		}
+
 		if (is.getItemMeta() instanceof Damageable) {
 			damage = ((Damageable) is.getItemMeta()).getDamage();
 		}
 
-		if (!ToolType.ALL.getToolMaterials().contains(m)) return false;
+		if (!ToolType.ALL.getToolMaterials().contains(m)) {
+			return false;
+		}
 
 		if (!Main.getPlugin().getConfig().getBoolean("ConvertEnchantsAndAttributes")) {
 			ItemMeta meta = new ItemStack(is.getType(), is.getAmount()).getItemMeta();
+
 			if (meta instanceof Damageable) {
 				((Damageable) meta).setDamage(damage);
 			}
+
 			is.setItemMeta(meta);
 		}
 
@@ -710,6 +721,7 @@ public class ModManager {
 		setLevel(is, 1);
 		setFreeSlots(is, config.getInt("StartingModifierSlots"));
 		rewriteLore(is);
+
 		ItemMeta meta = is.getItemMeta();
 
 		if (meta != null) {

@@ -47,10 +47,12 @@ public class ConvertToolListener implements Listener {
 
 			ItemMeta gridMeta = item.getItemMeta();
 			ItemMeta resultMeta = inv.getResult().getItemMeta();
+
 			if (gridMeta instanceof LeatherArmorMeta && resultMeta instanceof LeatherArmorMeta) {
 				if (!((LeatherArmorMeta) gridMeta).getColor().equals(((LeatherArmorMeta) resultMeta).getColor()))
 					return; //dye process - abort converting
 			}
+
 			break;
 		}
 
