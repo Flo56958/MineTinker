@@ -9,6 +9,7 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Modifiers.Types.Ender;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
+import de.flo56958.MineTinker.Modifiers.Types.SilkTouch;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -109,8 +110,10 @@ public class BlockListener implements Listener {
 		FileConfiguration config = Main.getPlugin().getConfig();
 
 		int expAmount = config.getInt("ExpPerBlockBreak");
-		expAmount += config.getInt("ExtraExpPerBlock." + event.getBlock().getType().toString());
-		//adds 0 if not in found in config (negative values are also fine)
+		if (!(!config.getBoolean("ExtraExpPerBlock.ApplicableToSilkTouch") && modManager.hasMod(tool, SilkTouch.instance()))) {
+			expAmount += config.getInt("ExtraExpPerBlock." + event.getBlock().getType().toString());
+			//adds 0 if not in found in config (negative values are also fine)
+		}
 
 		modManager.addExp(p, tool, expAmount);
 

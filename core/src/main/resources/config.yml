@@ -28,6 +28,7 @@ ExpPerBlockBreak: 1                   #How much XP will the tool get when you br
 ExpPerEntityHit: 1                    #How much XP will the tool get when you hit a Entity with Sword / Bow
 ExpPerArrowShot: 1                    #How much XP will the tool get when you shoot with the bow
 ExtraExpPerBlock:                     #Extra Exp for block break
+  ApplicableToSilkTouch: false        #Fixes Exp exploit with silk touch
   DIAMOND_ORE: 2
   EMERALD_ORE: 5
   GOLD_ORE: 1
