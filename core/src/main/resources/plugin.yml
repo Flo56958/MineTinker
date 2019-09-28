@@ -149,6 +149,7 @@ permissions:
       minetinker.modifiers.aquaphilic.*: true
       minetinker.modifiers.autosmelt.*: true
       minetinker.modifiers.beheading.*: true
+      minetinker.modifiers.berserk.*: true
       minetinker.modifiers.channeling.*: true
       minetinker.modifiers.directing.*: true
       minetinker.modifiers.ender.*: true
@@ -164,8 +165,10 @@ permissions:
       minetinker.modifiers.lifesteal.*: true
       minetinker.modifiers.lightweight.*: true
       minetinker.modifiers.luck.*: true
+      minetinker.modifiers.magical.*: true
       minetinker.modifiers.melting.*: true
       minetinker.modifiers.multishot.*: true
+      minetinker.modifiers.photosynthesis.*: true
       minetinker.modifiers.piercing.*: true
       minetinker.modifiers.poisonous.*: true
       minetinker.modifiers.power.*: true
@@ -231,6 +234,21 @@ permissions:
     default: true
   minetinker.modifiers.beheading.use:
     description: Allows to use Beheading on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.berserk.*:
+    children:
+      minetinker.modifiers.berserk.apply: true
+      minetinker.modifiers.berserk.craft: true
+      minetinker.modifiers.berserk.use: true
+  minetinker.modifiers.berserk.apply:
+    description: Allows to apply Berserk to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.berserk.craft:
+    description: Allows to craft a Berserk-Modifiers
+    default: true
+  minetinker.modifiers.berserk.use:
+    description: Allows to use Berserk on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.channeling.*:
@@ -327,6 +345,28 @@ permissions:
     description: Allows to craft a Infinity-Modifiers
     default: true
 
+  minetinker.modifiers.insulating.*:
+    children:
+      minetinker.modifiers.insulating.apply: true
+  minetinker.modifiers.insulating.apply:
+    description: Allows to apply Insulating to the MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.magical.*:
+    children:
+      minetinker.modifiers.magical.apply: true
+      minetinker.modifiers.magical.craft: true
+      minetinker.modifiers.magical.use: true
+  minetinker.modifiers.magical.apply:
+    description: Allows to apply Magical to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.magical.craft:
+    description: Allows to craft a Magical-Modifiers
+    default: true
+  minetinker.modifiers.magical.use:
+    description: Allows to use the Magical-Modifier on a MineTinker-Tool
+    default: true
+
   minetinker.modifiers.melting.*:
     children:
       minetinker.modifiers.melting.apply: true
@@ -342,18 +382,26 @@ permissions:
     description: Allows to use the Melting-Modifier on a MineTinker-Tool
     default: true
 
-  minetinker.modifiers.insulating.*:
-    children:
-      minetinker.modifiers.insulating.apply: true
-  minetinker.modifiers.insulating.apply:
-    description: Allows to apply Insulating to the MineTinker-Tool
-    default: true
-
   minetinker.modifiers.multishot.*:
     children:
       minetinker.modifiers.multishot.apply: true
   minetinker.modifiers.multishot.apply:
     description: Allows to apply Multishot to the MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.photosynthesis.*:
+    children:
+      minetinker.modifiers.photosynthesis.apply: true
+      minetinker.modifiers.photosynthesis.craft: true
+      minetinker.modifiers.photosynthesis.use: true
+  minetinker.modifiers.photosynthesis.apply:
+    description: Allows to apply Photosynthesis to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.photosynthesis.craft:
+    description: Allows to craft a Photosynthesis-Modifiers
+    default: true
+  minetinker.modifiers.photosynthesis.use:
+    description: Allows to use the Photosynthesis-Modifier on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.piercing.*:

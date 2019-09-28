@@ -217,7 +217,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Melting-Modifier"
   Multishot:
     Name: "Multishot"
-    Description: "Shoot more Arrows per shot!"
+    Description: "Shoot more Arrows per shot! (One Arrow more per Level)"
     ModifierItemName: "Multi-Arrow"
     DescriptionModifierItem: "Modifier-Item for the Multishot-Modifier"
   Photosynthesis:

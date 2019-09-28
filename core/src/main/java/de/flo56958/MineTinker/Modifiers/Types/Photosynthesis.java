@@ -35,6 +35,7 @@ public class Photosynthesis extends Modifier implements Listener {
 	private int tickTime;
 	private double multiplierPerTick;
 	private boolean fullEffectAtNoon;
+	private boolean allowOffhand;
 
 	private Runnable runnable = () -> {
 		for (UUID id : data.keySet()) {
@@ -75,7 +76,7 @@ public class Photosynthesis extends Modifier implements Listener {
 					items[i++] = item;
 				}
 				items[4] = inv.getItemInMainHand();
-				items[5] = inv.getItemInOffHand();
+				if (allowOffhand) items[5] = inv.getItemInOffHand();
 
 				double timeAdvantage = multiplierPerTick * ((timeDif / 50) / tickTime);
 
@@ -167,6 +168,7 @@ public class Photosynthesis extends Modifier implements Listener {
 		config.addDefault("MultiplierPerTick", 1.05);
 		config.addDefault("TickTime", 100); //TickTime in Minecraft ticks
 		config.addDefault("FullEffectAtNoon", true); //if false: full effect always in daylight
+		config.addDefault("AllowOffHand", true); //if false: only main hand
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -193,6 +195,7 @@ public class Photosynthesis extends Modifier implements Listener {
 		this.tickTime = config.getInt("TickTime", 100);
 		this.multiplierPerTick = config.getDouble("MultiplierPerTick", 1.05);
 		this.fullEffectAtNoon = config.getBoolean("FullEffectAtNoon", true);
+		this.allowOffhand = config.getBoolean("AllowOffHand", true);
 
 		this.description = this.description
 				.replace("%amount", String.valueOf(healthRepair))

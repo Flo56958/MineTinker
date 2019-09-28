@@ -69,7 +69,7 @@ public class Magical extends Modifier implements Listener {
 		config.addDefault("MaxLevel", 5);
 
 		config.addDefault("MultiplierArrowSpeed", 0.3);
-		config.addDefault("MultiplierArrowDamagePerLevel", 1.2);
+		config.addDefault("MultiplierArrowDamagePerLevel", 1.3);
 		config.addDefault("ExperienceCost", 3);
 		config.addDefault("HasKnockback", true);
 

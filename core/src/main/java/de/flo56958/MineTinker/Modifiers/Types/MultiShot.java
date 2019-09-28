@@ -28,6 +28,7 @@ public class MultiShot extends Modifier implements Listener {
 
 	private static MultiShot instance;
 	private double spread;
+	private boolean needsArrows;
 
 	private MultiShot() {
 		super(Main.getPlugin());
@@ -70,11 +71,12 @@ public class MultiShot extends Modifier implements Listener {
 		config.addDefault("Allowed", true);
 		config.addDefault("Name", "Multishot");
 		config.addDefault("ModifierItemName", "Multi-Arrow");
-		config.addDefault("Description", "Shoot more Arrows per shot!");
+		config.addDefault("Description", "Shoot more Arrows per shot! (One Arrow more per Level)");
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Multishot-Modifier");
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("ArrowSpread", 5.0);
+		config.addDefault("NeedsArrows", true);
 		config.addDefault("UseEnchantOnCrossbow", false);
 
 		config.addDefault("EnchantCost", 10);
@@ -98,6 +100,7 @@ public class MultiShot extends Modifier implements Listener {
 		init(Material.ARROW, true);
 
 		this.spread = config.getDouble("ArrowSpread");
+		this.needsArrows = config.getBoolean("NeedsArrows");
 	}
 
 	@Override
@@ -142,7 +145,7 @@ public class MultiShot extends Modifier implements Listener {
 		boolean hasInfinity = modManager.hasMod(tool, Infinity.instance());
 
 		for (int i = 1; i <= modLevel; i++) {
-			if (!hasInfinity) {
+			if (!hasInfinity && needsArrows) {
 				if (!p.getInventory().contains(Material.ARROW)) break;
 				for (ItemStack item : p.getInventory().getContents()) {
 					if (item == null) continue;
