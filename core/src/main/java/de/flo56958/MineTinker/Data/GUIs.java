@@ -83,7 +83,7 @@ public class GUIs {
 				ItemMeta meta = item.getItemMeta();
 
 				if (meta != null) {
-					meta.setDisplayName(m.getColor() + m.getName());
+					meta.setDisplayName(m.getColor() + "" + ChatColor.UNDERLINE + "" + ChatColor.BOLD + m.getName());
 					ArrayList<String> lore = new ArrayList<>();
 
 					lore.add(ChatColor.WHITE + Objects.requireNonNull(m.getModItem().getItemMeta()).getDisplayName());
@@ -103,8 +103,10 @@ public class GUIs {
 
 					// Enchant Cost
 					if (m.isEnchantable()) {
-						String cost = LanguageManager.getString("GUIs.Modifiers.EnchantCost");
+						String cost = ChatColor.YELLOW + LanguageManager.getString("GUIs.Modifiers.EnchantCost");
 						lore.add(cost.replaceFirst("%enchantCost", ChatWriter.toRomanNumerals(m.getEnchantCost())));
+					} else {
+						lore.addAll(ChatWriter.splitString(LanguageManager.getString("GUIs.Modifiers.ClickToRecipe"), 30));
 					}
 
 					lore.add("");
@@ -117,7 +119,7 @@ public class GUIs {
 							incompatibilities.append(in.getName()).append(", ");
 						}
 
-						lore.add(LanguageManager.getString("GUIs.Modifiers.IncompatibleWith"));
+						lore.add(ChatColor.DARK_RED + "" + ChatColor.BOLD + LanguageManager.getString("GUIs.Modifiers.IncompatibleWith"));
 
 						lore.addAll(ChatWriter.splitString(incompatibilities.toString().substring(0, incompatibilities.length() - 2), 30));
 					}
@@ -125,7 +127,7 @@ public class GUIs {
 					// Applied Enchantments
 					List<Enchantment> enchants = m.getAppliedEnchantments();
 					if (!enchants.isEmpty()) {
-						lore.add(LanguageManager.getString("GUIs.Modifiers.CanApply"));
+						lore.add(ChatColor.BLUE + "" + ChatColor.BOLD + LanguageManager.getString("GUIs.Modifiers.CanApply"));
 
 						StringBuilder e = new StringBuilder();
 						for (Enchantment enchant : enchants) {
@@ -137,7 +139,7 @@ public class GUIs {
 					}
 
 					// Allowed Tools
-					lore.add(LanguageManager.getString("GUIs.Modifiers.WorksOn"));
+					lore.add(ChatColor.BLUE + "" + ChatColor.BOLD + LanguageManager.getString("GUIs.Modifiers.WorksOn"));
 
 					StringBuilder builder = new StringBuilder();
 
