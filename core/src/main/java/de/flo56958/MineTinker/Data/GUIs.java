@@ -143,8 +143,6 @@ public class GUIs {
 
 					builder.append(ChatColor.WHITE);
 
-					int count = 0;
-
 					for (ToolType toolType : m.getAllowedTools()) {
 						builder.append(LanguageManager.getString("ToolType." + toolType.name())).append(", ");
 					}
@@ -207,6 +205,8 @@ public class GUIs {
 							}
 						}
 						modButton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(modButton, modRecipe));
+						GUI.Window.Button returnButton = modRecipe.addButton(8, 2, backOtherMenuStack.clone());
+						returnButton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(returnButton, currentPage));
 					}
 
 					i++;
