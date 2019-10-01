@@ -731,6 +731,8 @@ public class ModManager {
 		setFreeSlots(is, config.getInt("StartingModifierSlots"));
 		rewriteLore(is);
 
+		addArmorAttributes(is);
+
 		ItemMeta meta = is.getItemMeta();
 
 		if (meta != null) {
@@ -767,7 +769,6 @@ public class ModManager {
 					addMod(is, modifier);
 				}
 			}
-			addArmorAttributes(is);
 		}
 		return true;
 	}

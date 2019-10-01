@@ -60,14 +60,15 @@ public class Speedy extends Modifier {
 			return false;
 		}
 
+		//To check if armor modifiers are on the armor
 		Collection<AttributeModifier> attributeModifiers = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR);
 
 		if (attributeModifiers == null || attributeModifiers.isEmpty()) {
 			modManager.addArmorAttributes(tool);
+			meta = tool.getItemMeta();
 		}
 
 		Collection<AttributeModifier> speedModifiers = meta.getAttributeModifiers(Attribute.GENERIC_MOVEMENT_SPEED);
-		if (speedModifiers == null || speedModifiers.isEmpty()) modManager.addArmorAttributes(tool);
 		double speedOnItem = 0.0D;
 
 		if (!(speedModifiers == null || speedModifiers.isEmpty())) {
@@ -83,7 +84,6 @@ public class Speedy extends Modifier {
 		meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(UUID.randomUUID(), "generic.movementSpeed", speedOnItem + this.speedPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
 
 		tool.setItemMeta(meta);
-
 		return true;
 	}
 

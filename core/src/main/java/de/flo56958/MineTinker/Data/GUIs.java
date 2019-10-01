@@ -114,7 +114,7 @@ public class GUIs {
 					if (!incomp.isEmpty()) {
 						StringBuilder incompatibilities = new StringBuilder();
 						for (Modifier in : incomp) {
-							incompatibilities.append(in.getColor()).append(in.getName()).append(ChatColor.WHITE).append(", ");
+							incompatibilities.append(in.getName()).append(", ");
 						}
 
 						lore.add(LanguageManager.getString("GUIs.Modifiers.IncompatibleWith"));

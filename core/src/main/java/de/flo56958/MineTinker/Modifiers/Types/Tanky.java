@@ -68,8 +68,15 @@ public class Tanky extends Modifier implements Listener {
 			return false;
 		}
 
+		//To check if armor modifiers are on the armor
+		Collection<AttributeModifier> attributeModifiers = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR);
+
+		if (attributeModifiers == null || attributeModifiers.isEmpty()) {
+			modManager.addArmorAttributes(tool);
+			meta = tool.getItemMeta();
+		}
+
 		Collection<AttributeModifier> healthModifiers = meta.getAttributeModifiers(Attribute.GENERIC_MAX_HEALTH);
-		if (healthModifiers == null || healthModifiers.isEmpty()) modManager.addArmorAttributes(tool);
 
 		double healthOnItem = 0.0D;
 		if (!(healthModifiers == null || healthModifiers.isEmpty())) {
@@ -79,11 +86,11 @@ public class Tanky extends Modifier implements Listener {
 			}
 		}
 		meta.removeAttributeModifier(Attribute.GENERIC_MAX_HEALTH);
+		modManager.addArmorAttributes(tool);
 		meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(), "generic.maxHealth", healthOnItem + this.healthPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
 		meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(), "generic.maxHealth", healthOnItem + this.healthPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
 
 		tool.setItemMeta(meta);
-
 		return true;
 	}
 
