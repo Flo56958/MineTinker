@@ -209,15 +209,6 @@ public class ChatWriter {
 		if (msg == null) return new ArrayList<>();
 		List<String> res = new ArrayList<>();
 
-        /*
-        Pattern pattern = Pattern.compile("\\b.+" + (lineSize-1) + "}\\b\\W?");
-        Matcher matcher = pattern.matcher(msg);
-
-        while(matcher.find()) {
-            res.add(matcher.group());
-        }
-        */
-
 		String[] str = msg.split(" ");
 		int index = 0;
 		while (index < str.length) {
@@ -227,7 +218,7 @@ public class ChatWriter {
 				line.append(str[index - 1]);
 				line.append(" ");
 			} while (index < str.length && line.length() + str[index].length() < lineSize);
-			res.add(line.toString().substring(0, line.length() - 1));
+			res.add(ChatColor.WHITE + line.toString().substring(0, line.length() - 1));
 		}
 
 		return res;

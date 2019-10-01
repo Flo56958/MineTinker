@@ -14,6 +14,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -103,14 +104,28 @@ public class GUIs {
 
 					// Enchant Cost
 					if (m.isEnchantable()) {
-						String cost = ChatWriter.addColors(LanguageManager.getString("GUIs.Modifiers.EnchantCost"));
+						String cost = LanguageManager.getString("GUIs.Modifiers.EnchantCost");
 						lore.add(cost.replaceFirst("%enchantCost", ChatWriter.toRomanNumerals(m.getEnchantCost())));
 
 						lore.add("");
 					}
 
+					// Applied Enchantments
+					List<Enchantment> enchants = m.getAppliedEnchantments();
+					if (!enchants.isEmpty()) {
+						lore.add(LanguageManager.getString("GUIs.Modifiers.CanApply"));
+
+						StringBuilder e = new StringBuilder();
+						for (Enchantment enchant : enchants) {
+							e.append(LanguageManager.getString("Enchantment." + enchant.getKey().getKey())).append(", ");
+						}
+
+						List<String> lines = ChatWriter.splitString(e.toString().substring(0, e.length() - 2),30);
+						lore.addAll(lines);
+					}
+
 					// Allowed Tools
-					lore.add(ChatWriter.addColors(LanguageManager.getString("GUIs.Modifiers.WorksOn")));
+					lore.add(LanguageManager.getString("GUIs.Modifiers.WorksOn"));
 
 					StringBuilder builder = new StringBuilder();
 
@@ -120,20 +135,10 @@ public class GUIs {
 
 					for (ToolType toolType : m.getAllowedTools()) {
 						builder.append(LanguageManager.getString("ToolType." + toolType.name())).append(", ");
-
-						if (++count > 2) {
-							lore.add(builder.toString());
-
-							builder = new StringBuilder();
-							builder.append(ChatColor.WHITE);
-
-							count = 0;
-						}
 					}
 
-					String lastLine = builder.toString();
-
-					lore.add(lastLine.substring(0, lastLine.length() - 2));
+					List<String> lines = ChatWriter.splitString(builder.toString().substring(0, builder.length() - 2),30);
+					lore.addAll(lines);
 
 					// Apply lore changes
 					meta.setLore(lore);
