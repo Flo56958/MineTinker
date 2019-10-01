@@ -101,15 +101,13 @@ public class GUIs {
 					lore.add(ChatColor.GOLD + LanguageManager.getString("GUIs.Modifiers.MaxLevel")
 							.replaceFirst("%maxLevel", maxLevel));
 
-					lore.add("");
-
 					// Enchant Cost
 					if (m.isEnchantable()) {
 						String cost = LanguageManager.getString("GUIs.Modifiers.EnchantCost");
 						lore.add(cost.replaceFirst("%enchantCost", ChatWriter.toRomanNumerals(m.getEnchantCost())));
-
-						lore.add("");
 					}
+
+					lore.add("");
 
 					//Modifier incompatibilities
 					Set<Modifier> incomp = ModManager.instance().getIncompatibilities(m);

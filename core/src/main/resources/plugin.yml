@@ -385,8 +385,12 @@ permissions:
   minetinker.modifiers.multishot.*:
     children:
       minetinker.modifiers.multishot.apply: true
+      minetinker.modifiers.multishot.use: true
   minetinker.modifiers.multishot.apply:
     description: Allows to apply Multishot to the MineTinker-Tool
+    default: true
+  minetinker.modifiers.multishot.use:
+    description: Allows to use Multishot on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.photosynthesis.*:
