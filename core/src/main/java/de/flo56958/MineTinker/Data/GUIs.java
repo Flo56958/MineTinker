@@ -111,6 +111,19 @@ public class GUIs {
 						lore.add("");
 					}
 
+					//Modifier incompatibilities
+					Set<Modifier> incomp = ModManager.instance().getIncompatibilities(m);
+					if (!incomp.isEmpty()) {
+						StringBuilder incompatibilities = new StringBuilder();
+						for (Modifier in : incomp) {
+							incompatibilities.append(in.getColor()).append(in.getName()).append(ChatColor.WHITE).append(", ");
+						}
+
+						lore.add(LanguageManager.getString("GUIs.Modifiers.IncompatibleWith"));
+
+						lore.addAll(ChatWriter.splitString(incompatibilities.toString().substring(0, incompatibilities.length() - 2), 30));
+					}
+
 					// Applied Enchantments
 					List<Enchantment> enchants = m.getAppliedEnchantments();
 					if (!enchants.isEmpty()) {
