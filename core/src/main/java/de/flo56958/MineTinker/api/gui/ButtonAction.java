@@ -117,6 +117,22 @@ public abstract class ButtonAction {
 		}
 	}
 
+	public static class RUN_RUNNABLE_ON_PLAYER extends ButtonAction implements PlayerAction {
+		private final PlayerRunnable runnable;
+
+		public RUN_RUNNABLE_ON_PLAYER(GUI.Window.Button button, PlayerRunnable runnable) {
+			super(button);
+			this.runnable = runnable;
+		}
+
+		public void run() {}
+
+		@Override
+		public void run(Player p) {
+			runnable.run(p, "");
+		}
+	}
+
 	public static class REQUEST_INPUT extends ButtonAction implements PlayerAction {
 
 		private static ConcurrentHashMap<Player, REQUEST_INPUT> playerToAction = new ConcurrentHashMap<>();
@@ -140,10 +156,10 @@ public abstract class ButtonAction {
 		private void afterRun(Player p) {
 			Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> button.getWindow().getGUI().show(p, button.getWindow()), 10);
 		}
+	}
 
-		public abstract static class PlayerRunnable {
-			public abstract void run(Player player, String input);
-		}
+	public interface PlayerRunnable {
+		void run(Player player, String input);
 	}
 
 	private static class ChatListener implements Listener {

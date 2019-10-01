@@ -313,7 +313,7 @@ public class Commands implements TabExecutor {
 	 *
 	 * @param sender The sender to send the message to
 	 */
-	private void reload(CommandSender sender) {
+	public static void reload(CommandSender sender) {
 		Player player = null;
 
 		if (sender instanceof Player) {

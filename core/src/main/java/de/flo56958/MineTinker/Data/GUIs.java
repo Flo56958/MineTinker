@@ -1,5 +1,6 @@
 package de.flo56958.MineTinker.Data;
 
+import de.flo56958.MineTinker.Commands.Commands;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -216,6 +217,17 @@ public class GUIs {
 			GUI.Window currentPage = configurationsGUI.addWindow(6, LanguageManager.getString("GUIs.ConfigurationEditor.Title")
 					.replace("%pageNo", "" + pageNo++));
 			addNavigationButtons(currentPage);
+			ItemStack reload = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+			ItemMeta meta = reload.getItemMeta();
+			if (meta != null) {
+				meta.setDisplayName(ChatColor.YELLOW + LanguageManager.getString("GUIs.ConfigurationEditor.ReloadPlugin"));
+				reload.setItemMeta(meta);
+			}
+			GUI.Window.Button reloadButton = currentPage.addButton(4, 5, reload);
+			reloadButton.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE_ON_PLAYER(reloadButton, (player, ignored) -> {
+				Commands.reload(player);
+				configurationsGUI.show(player, 0);
+			}));
 
 			int i = 0;
 			ArrayList<String> names = new ArrayList<>(ConfigurationManager.getAllConfigNames());
@@ -258,6 +270,13 @@ public class GUIs {
 							.replace("%pageNo", "" + pageNo++));
 
 					addNavigationButtons(currentPage);
+
+					reloadButton = currentPage.addButton(4, 5, reload);
+					int pagenumber = pageNo;
+					reloadButton.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE_ON_PLAYER(reloadButton, (player, ignored) -> {
+						Commands.reload(player);
+						configurationsGUI.show(player, pagenumber - 2);
+					}));
 					i = 0;
 				}
 			}
@@ -265,10 +284,22 @@ public class GUIs {
 	}
 
 	private static void addNavigationButtons(GUI.Window currentPage) {
-		GUI.Window.Button back = currentPage.addButton(0, 5, backStack.clone());
+		ItemMeta forwardMeta = forwardStack.getItemMeta();
+		if (forwardMeta != null) {
+			forwardMeta.setDisplayName(ChatColor.GREEN + LanguageManager.getString("GUIs.Forward"));
+			forwardStack.setItemMeta(forwardMeta);
+		}
+
+		ItemMeta backMeta = backStack.getItemMeta();
+		if (backMeta != null) {
+			backMeta.setDisplayName(ChatColor.RED + LanguageManager.getString("GUIs.Back"));
+			backStack.setItemMeta(backMeta);
+		}
+
+		GUI.Window.Button back = currentPage.addButton(0, 5, backStack);
 		back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
 
-		GUI.Window.Button forward = currentPage.addButton(8, 5, forwardStack.clone());
+		GUI.Window.Button forward = currentPage.addButton(8, 5, forwardStack);
 		forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
 	}
 
@@ -307,7 +338,7 @@ public class GUIs {
 
 					if (value instanceof Boolean) {
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type")
-								.replace("%type", "Boolean"));
+								.replace("%type", LanguageManager.getString("DataType.Boolean")));
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
 								.replace("%value", "" + value));
 						buttonStackLore.add("");
@@ -353,7 +384,7 @@ public class GUIs {
 						currentButton.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, buttonRunnable));
 					} else if (value instanceof Integer) {
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type")
-								.replace("%type", "Integer"));
+								.replace("%type", LanguageManager.getString("DataType.Integer")));
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
 								.replace("%value", "" + value));
 						buttonStackLore.add("");
@@ -431,7 +462,7 @@ public class GUIs {
 									broadcastChange(configName + ":" + key, oldValue + "", in + "");
 								} catch (NumberFormatException e) {
 									ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUIs.ConfigurationEditor.WrongInput")
-											.replace("%type", "Integer").replace("%input", input));
+											.replace("%type", LanguageManager.getString("DataType.Integer")).replace("%input", input));
 								}
 							}
 						};
@@ -440,7 +471,7 @@ public class GUIs {
 								new ButtonAction.REQUEST_INPUT(currentButton, pRun, ChatColor.WHITE + configName + ":" + key));
 					} else if (value instanceof Double) {
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type")
-								.replace("%type", "Double"));
+								.replace("%type", LanguageManager.getString("DataType.Double")));
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
 								.replace("%value", "" + value));
 						buttonStackLore.add("");
@@ -477,7 +508,7 @@ public class GUIs {
 									broadcastChange(configName + ":" + key, oldValue + "", input);
 								} catch (NumberFormatException e) {
 									ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUIs.ConfigurationEditor.WrongInput")
-											.replace("%type", "Double").replace("%input", input));
+											.replace("%type", LanguageManager.getString("DataType.Double")).replace("%input", input));
 								}
 							}
 						};
@@ -486,7 +517,7 @@ public class GUIs {
 								new ButtonAction.REQUEST_INPUT(currentButton, pRun, ChatColor.WHITE + configName + ":" + key));
 					} else if (value instanceof String) {
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type")
-								.replace("%type", "String"));
+								.replace("%type", LanguageManager.getString("DataType.String")));
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
 								.replace("%value", "" + value));
 						buttonStackLore.add("");
@@ -526,7 +557,7 @@ public class GUIs {
 						currentButton.addAction(ClickType.LEFT, new ButtonAction.REQUEST_INPUT(currentButton, pRun, ChatColor.WHITE + configName + ":" + key));
 					} else if (value instanceof List) {
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type")
-								.replace("%type", "List"));
+								.replace("%type", LanguageManager.getString("DataType.List")));
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
 								.replace("%value", "" + value));
 						for (String line : ChatWriter.splitString(LanguageManager.getString("GUIs.ConfigurationEditor.UnsupportedType"), 30)) {

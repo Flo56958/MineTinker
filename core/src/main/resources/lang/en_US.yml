@@ -61,6 +61,7 @@ GUIs.Modifiers.MaxLevel: "Max Level: %maxLevel"
 GUIs.Modifiers.WorksOn: "%BLUE%Works On:"
 GUIs.Modifiers.CanApply: "%BLUE%Can apply:"
 GUIs.Modifiers.EnchantCost: "%YELLOW%Enchant Cost: %WHITE%%enchantCost"
+GUIs.ConfigurationEditor.ReloadPlugin: "Reload MineTinker"
 GUIs.ConfigurationEditor.Change: "Changed %key from %old to %new!"
 GUIs.ConfigurationEditor.Type: "Type: %type"
 GUIs.ConfigurationEditor.Value: "Value: %GOLD%%value"
@@ -208,7 +209,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Luck-Modifier"
   Magical:
     Name: "Magical"
-    Description: "Shoot a magic orb that is not affected by gravity but flies %amount% slower! If the orb hits a target it does %min% to %max% more damage (depending on level)!"
+    Description: "Shoot a magic orb that is not affected by gravity but flies %amount% slower! If the orb hits a target it does %min% to %max% more damage (depending on level)! Costs %xp XP to shoot!"
     ModifierItemName: "Magic Arrow"
     DescriptionModifierItem: "Modifier-Item for the Magical-Modifier"
   Melting:
@@ -218,7 +219,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Melting-Modifier"
   Multishot:
     Name: "Multishot"
-    Description: "Shoot more Arrows per shot! (One Arrow more per Level)"
+    Description: "Shoot one more Arrow per Level per shot!"
     ModifierItemName: "Multi-Arrow"
     DescriptionModifierItem: "Modifier-Item for the Multishot-Modifier"
   Photosynthesis:
@@ -321,6 +322,12 @@ Modifier:
     Description: "Slow down enemies when you hit them or they hit you for %duration Ticks * %multiplier per level!"
     ModifierItemName: "Compressed Cobweb"
     DescriptionModifierItem: "Modifier-Item for the Webbed-Modifier"
+
+DataType.Boolean: "Boolean (true/false)"
+DataType.String: "String"
+DataType.List: "List"
+DataType.Integer: "Integer"
+DataType.Double: "Floating point number (Double)"
 
 ToolType.ALL: "All"
 ToolType.AXE: "Axes"

@@ -101,7 +101,8 @@ public class Magical extends Modifier implements Listener {
 
 		this.description = this.description.replace("%amount", String.valueOf(Math.round((1.0 - this.multiplierArrowSpeed) * 100)))
 				.replace("%min", String.valueOf(Math.round((this.multiplierDamagePerLevel - 1.0) * 100)))
-				.replace("%max", String.valueOf(Math.round((Math.pow(this.multiplierDamagePerLevel, this.getMaxLvl()) - 1.0) * 100)));
+				.replace("%max", String.valueOf(Math.round((Math.pow(this.multiplierDamagePerLevel, this.getMaxLvl()) - 1.0) * 100)))
+				.replace("%xp", String.valueOf(this.experienceCost));
 	}
 
 	@EventHandler
