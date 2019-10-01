@@ -154,6 +154,9 @@ public class ModManager {
 		incompatibilityList.add(Infinity.instance().getKey() + ":" + Propelling.instance().getKey());
 		incompatibilityList.add(MultiShot.instance().getKey() + ":" + Piercing.instance().getKey());
 		incompatibilityList.add(Power.instance().getKey() + ":" + Timber.instance().getKey());
+		incompatibilityList.add(SelfRepair.instance().getKey() + ":" + Photosynthesis.instance().getKey());
+		incompatibilityList.add(MultiShot.instance().getKey() + ":" + Magical.instance().getKey());
+		incompatibilityList.add(Magical.instance().getKey() + ":" + Ender.instance().getKey());
 		incompatibilityList.sort(String::compareToIgnoreCase);
 
 		modifierconfig.addDefault("Incompatibilities", incompatibilityList);
@@ -230,6 +233,7 @@ public class ModManager {
 		allMods.add(Aquaphilic.instance());
 		allMods.add(AutoSmelt.instance());
 		allMods.add(Beheading.instance());
+		allMods.add(Berserk.instance());
 		allMods.add(Channeling.instance());
 		allMods.add(Directing.instance());
 		allMods.add(Ender.instance());
@@ -244,7 +248,10 @@ public class ModManager {
 		allMods.add(Lifesteal.instance());
 		allMods.add(LightWeight.instance());
 		allMods.add(Luck.instance());
-		allMods.add(Melting.instance());
+		allMods.add(Magical.instance());
+        allMods.add(Melting.instance());
+		allMods.add(MultiShot.instance());
+		allMods.add(Photosynthesis.instance());
 		allMods.add(Poisonous.instance());
 		allMods.add(Power.instance());
 		allMods.add(Propelling.instance());
@@ -266,7 +273,6 @@ public class ModManager {
 
 		if (NBTUtils.isOneFourteenCompatible()) {
 			allMods.add(Piercing.instance());
-			allMods.add(MultiShot.instance());
 		}
 
 		ConfigurationManager.reload(); //To load all Modifier-Configurations in
@@ -670,6 +676,8 @@ public class ModManager {
 	 * @return If the conversion was successful. Also returns false if the item is already MT compatible.
 	 */
 	public boolean convertItemStack(ItemStack is) {
+		if (is == null) return false;
+
 		Material m = is.getType();
 		int damage = 0;
 

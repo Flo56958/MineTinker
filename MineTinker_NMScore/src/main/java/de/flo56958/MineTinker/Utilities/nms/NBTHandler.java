@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker.Utilities.nms;
 
 import org.bukkit.block.Block;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -25,4 +26,6 @@ public abstract class NBTHandler {
     public abstract void playerBreakBlock(Player p, Block block);
 
     public abstract Iterator<Recipe> getRecipeIterator();
+
+    public abstract void removeArrowFromClient(Arrow arrow);
 }

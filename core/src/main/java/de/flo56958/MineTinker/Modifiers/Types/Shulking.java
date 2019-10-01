@@ -78,9 +78,9 @@ public class Shulking extends Modifier implements Listener {
 		config.addDefault("Enchantable", false);
 
 		config.addDefault("Recipe.Enabled", true);
-		config.addDefault("Recipe.Top", "S");
-		config.addDefault("Recipe.Middle", "C");
-		config.addDefault("Recipe.Bottom", "S");
+		config.addDefault("Recipe.Top", " S ");
+		config.addDefault("Recipe.Middle", " C ");
+		config.addDefault("Recipe.Bottom", " S ");
 
 		Map<String, String> recipeMaterials = new HashMap<>();
 		recipeMaterials.put("S", Material.SHULKER_SHELL.name());
@@ -101,8 +101,6 @@ public class Shulking extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageByEntityEvent event) {
-
-
 		if (!(event.getEntity() instanceof LivingEntity)) {
 			return;
 		}
@@ -115,8 +113,6 @@ public class Shulking extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTProjectileHitEvent event) {
-
-
 		if (!(event.getEvent().getHitEntity() instanceof LivingEntity)) {
 			return;
 		}

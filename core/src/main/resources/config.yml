@@ -64,7 +64,7 @@ ItemBehaviour:
   ShowName: true                      #Shows the name of the ItemStack (if has one) when on the ground
   SetGlowing: true                    #Item glowes on the ground
   SetInvulnerable: true               #Item can not be damaged or destroyed
-  SetPersistent: true                 #Item will not despawn
+  SetPersistent: false                #Item will not despawn
   ForModItems: true                   #Settings apply also for Modifier-Items
   DisableDroppingBehaviour: false     #Disables the Itembehaviours for droping them and drop on death - every option above - for plugin compatibility
   StopBreakEvent: true                #If the item breaks due to a bug, give the item back to the player with 1 durability
@@ -75,14 +75,14 @@ ModifiersCanBeUsedForCrafting: false  #Enablea crafting with Modifier-Items
 #---------------MOB-DROPS-------------------
 ConvertMobDrops:
   Enabled: true
-  Chance: 100
+  Chance: 100                         #Not the real / actual chance as Modifier-Application can fail
   ApplyModifiers: true
-  MaximumNumberOfModifiers: 4
+  MaximumNumberOfModifiers: 4         #Not the real / actual amount as Modifier-Application can fail
   AppliedModifiersConsiderSlots: true
   ApplyExp: true
-  MaximumNumberOfExp: 1000
+  MaximumNumberOfExp: 650
 MobDropModifierItems:
-  Enabled: true
+  Enabled: true                       #Should Modifieritems be dropped from Mobs
   Chance: 100
   MaximumAmount: 2                    #Amount of possible different modifiers (Item will have amount of 1)
   ExcludeModifiers:

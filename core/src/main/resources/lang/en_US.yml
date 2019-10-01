@@ -129,6 +129,11 @@ Modifier:
     Description: "%chance% chance to drop the head of the killed mob per level."
     ModifierItemName: "Enchanted Wither-Skull"
     DescriptionModifierItem: "Modifier-Item for the Beheading-Modifier"
+  Berserk:
+    Name: "Berserk"
+    Description: "Gain an extra strength boost for %duration seconds when your health drops below %percent%!"
+    ModifierItemName: "Bloody Redstone"
+    DescriptionModifierItem: "Modifier-Item for the Berserk-Modifier"
   Channeling:
     Name: "Channeling"
     Description: "Summons lightning when the trident hits its foes!"
@@ -200,6 +205,11 @@ Modifier:
     Description: "Get more loot from mobs and blocks!"
     ModifierItemName: "Compressed Lapis-Block"
     DescriptionModifierItem: "Modifier-Item for the Luck-Modifier"
+  Magical:
+    Name: "Magical"
+    Description: "Shoot a magic orb that is not affected by gravity but flies %amount% slower! If the orb hits a target it does %min% to %max% more damage (depending on level)!"
+    ModifierItemName: "Magic Arrow"
+    DescriptionModifierItem: "Modifier-Item for the Magical-Modifier"
   Melting:
     Name: "Melting"
     Description: "%amount% extra damage against burning enemies and %amount% less damage taken while on fire!"
@@ -207,9 +217,14 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Melting-Modifier"
   Multishot:
     Name: "Multishot"
-    Description: "Shoot more Arrows per shot!"
+    Description: "Shoot more Arrows per shot! (One Arrow more per Level)"
     ModifierItemName: "Multi-Arrow"
     DescriptionModifierItem: "Modifier-Item for the Multishot-Modifier"
+  Photosynthesis:
+    Name: "Photosynthesis"
+    Description: "Repair your item with %amount durability per level every %ticks Ticks when standing still while the sun shines. The longer you stand still the faster it repairs. (%multiplier%)"
+    ModifierItemName: "Extracted Chlorophyll"
+    DescriptionModifierItem: "%WHITE%Modifier-Item for the Photosynthesis-Modifier"
   Piercing:
     Name: "Piercing"
     Description: "Arrows pass through multiple enemies!"
