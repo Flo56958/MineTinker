@@ -137,7 +137,7 @@ public class EntityListener implements Listener {
 		if (config.getBoolean("ConvertMobDrops.Enabled", true)) {
 			for (ItemStack item : event.getDrops()) {
 				Random rand = new Random();
-				if (rand.nextInt(100) < config.getInt("ConvertMobDrops.Chance", 50)) {
+				if (rand.nextInt(100) < config.getInt("ConvertMobDrops.Chance", 100)) {
 					if (!modManager.convertItemStack(item)) continue;
 
 					if (config.getBoolean("ConvertMobDrops.ApplyExp", true)) {

@@ -156,6 +156,7 @@ public class ModManager {
 		incompatibilityList.add(Power.instance().getKey() + ":" + Timber.instance().getKey());
 		incompatibilityList.add(SelfRepair.instance().getKey() + ":" + Photosynthesis.instance().getKey());
 		incompatibilityList.add(MultiShot.instance().getKey() + ":" + Magical.instance().getKey());
+		incompatibilityList.add(Magical.instance().getKey() + ":" + Ender.instance().getKey());
 		incompatibilityList.sort(String::compareToIgnoreCase);
 
 		modifierconfig.addDefault("Incompatibilities", incompatibilityList);
@@ -675,6 +676,8 @@ public class ModManager {
 	 * @return If the conversion was successful. Also returns false if the item is already MT compatible.
 	 */
 	public boolean convertItemStack(ItemStack is) {
+		if (is == null) return false;
+
 		Material m = is.getType();
 		int damage = 0;
 

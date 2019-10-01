@@ -99,10 +99,6 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		if (!(p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE)) {
-			return;
-		}
-
 		if (!modManager.isToolViable(tool)) {
 			return;
 		}

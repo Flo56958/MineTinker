@@ -69,7 +69,7 @@ public class Magical extends Modifier implements Listener {
 		config.addDefault("MaxLevel", 5);
 
 		config.addDefault("MultiplierArrowSpeed", 0.3);
-		config.addDefault("MultiplierArrowDamagePerLevel", 1.3);
+		config.addDefault("MultiplierArrowDamagePerLevel", 1.25);
 		config.addDefault("ExperienceCost", 3);
 		config.addDefault("HasKnockback", true);
 
@@ -95,7 +95,7 @@ public class Magical extends Modifier implements Listener {
 		init(Material.ARROW, true);
 
 		this.multiplierArrowSpeed = config.getDouble("MultiplierArrowSpeed", 0.3);
-		this.multiplierDamagePerLevel = config.getDouble("MultiplierArrowDamagePerLevel", 1.2);
+		this.multiplierDamagePerLevel = config.getDouble("MultiplierArrowDamagePerLevel", 1.25);
 		this.experienceCost = config.getInt("ExperienceCost", 10);
 		this.hasKnockback = config.getBoolean("HasKnockback", true);
 
