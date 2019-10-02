@@ -20,7 +20,26 @@ public class Updater {
 	}
 
 	public static synchronized boolean hasUpdate() {
-		return onlineVersion != null && !onlineVersion.equals(version);
+		if (onlineVersion == null) return false;
+
+		if (version.contains("-pre")) return false;
+
+		String[] ver = version.split("\\.");
+		String[] onl = onlineVersion.split("\\.");
+
+		for (int i = 0; i < 3; i++) {
+			int v = -1;
+			if (ver.length > i) v = Integer.parseInt(ver[i]);
+
+			int o = -1;
+			if (onl.length > i) o = Integer.parseInt(onl[i]);
+
+			if (v == -1 && o != -1) return true;
+			if (v != -1 && o != -1 && v < o) return true;
+			if (v != -1 && o != -1 && v > o) return false;
+		}
+
+		return false;
 	}
 
 	/**
@@ -59,7 +78,7 @@ public class Updater {
 
 		if (onlineVersion == null) {
 			ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Updater.Unable", p));
-		} else if (!version.equals(onlineVersion)) {
+		} else if (hasUpdate()) {
 			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpdateAvailable", p));
 			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.YourVersion", p).replaceFirst("%ver", version));
 			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.OnlineVersion", p).replaceFirst("%ver", onlineVersion));

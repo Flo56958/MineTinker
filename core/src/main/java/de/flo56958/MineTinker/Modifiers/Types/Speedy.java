@@ -80,8 +80,10 @@ public class Speedy extends Modifier {
 		}
 
 		meta.removeAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED);
-		meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(UUID.randomUUID(), "generic.movementSpeed", speedOnItem + this.speedPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
-		meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(UUID.randomUUID(), "generic.movementSpeed", speedOnItem + this.speedPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
+		meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED,
+				new AttributeModifier(UUID.randomUUID(), "generic.movementSpeed", speedOnItem + this.speedPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
+		meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED,
+				new AttributeModifier(UUID.randomUUID(), "generic.movementSpeed", speedOnItem + this.speedPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
 
 		tool.setItemMeta(meta);
 		return true;
