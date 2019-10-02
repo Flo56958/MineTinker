@@ -105,8 +105,15 @@ public class GUIs {
 					if (m.isEnchantable()) {
 						String cost = ChatColor.YELLOW + LanguageManager.getString("GUIs.Modifiers.EnchantCost");
 						lore.add(cost.replaceFirst("%enchantCost", ChatWriter.toRomanNumerals(m.getEnchantCost())));
+						lore.addAll(ChatWriter.splitString(LanguageManager.getString("GUIs.Modifiers.BlockToEnchant")
+								.replace("%block", ChatColor.ITALIC
+										+ Main.getPlugin().getConfig().getString("BlockToEnchantModifiers", "")
+										+ ChatColor.RESET + "" + ChatColor.WHITE)
+								.replace("%mat", m.getModItem().getType().name()).replace("%key",
+										LanguageManager.getString("GUIs.RightClick")), 30));
 					} else {
-						lore.addAll(ChatWriter.splitString(LanguageManager.getString("GUIs.Modifiers.ClickToRecipe"), 30));
+						lore.addAll(ChatWriter.splitString(LanguageManager.getString("GUIs.Modifiers.ClickToRecipe")
+								.replace("%key", LanguageManager.getString("GUIs.LeftClick")), 30));
 					}
 
 					lore.add("");
