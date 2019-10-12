@@ -18,7 +18,7 @@ public class ItemGenerator {
 	public static String getDisplayName(ItemStack tool) {
 		String name;
 
-		if (tool.getItemMeta() == null || tool.getItemMeta().getDisplayName().equals("")) {
+		if (tool.getItemMeta() == null || !tool.getItemMeta().hasDisplayName()) {
 			name = tool.getType().toString();
 		} else {
 			name = tool.getItemMeta().getDisplayName();

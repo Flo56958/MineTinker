@@ -63,6 +63,13 @@ public class PlayerListener implements Listener {
 		}
 
 		ItemStack repair = event.getWhoClicked().getItemOnCursor();
+		if (repair == null) return;
+
+		ItemMeta repairMeta = repair.getItemMeta();
+		if(repairMeta != null) {
+			if (repairMeta.hasDisplayName() || repairMeta.hasLore()) return;
+		}
+
 		String[] name = tool.getType().toString().split("_");
 
 		boolean eligible = false;
