@@ -176,8 +176,17 @@ public class PlayerListener implements Listener {
 			if (player.hasPermission("minetinker.update.notify")) {
 				if (Updater.hasUpdate()) {
 					ChatWriter.sendMessage(player, ChatColor.GOLD, LanguageManager.getString("Updater.UpdateAvailable", player));
-					ChatWriter.sendMessage(player, ChatColor.WHITE, LanguageManager.getString("Updater.YourVersion", player).replace("%ver", Main.getPlugin().getDescription().getVersion()));
-					ChatWriter.sendMessage(player, ChatColor.WHITE, LanguageManager.getString("Updater.OnlineVersion", player).replace("%ver", Updater.getOnlineVersion()));
+					ChatWriter.sendMessage(player, ChatColor.WHITE, LanguageManager.getString("Updater.YourVersion", player)
+							.replace("%ver", Main.getPlugin().getDescription().getVersion()));
+					ChatWriter.sendMessage(player, ChatColor.WHITE, LanguageManager.getString("Updater.OnlineVersion", player)
+							.replace("%ver", Updater.getOnlineVersion()));
+				}
+			}
+			if (player.isOp()) {
+				if (LanguageManager.isUsingFallback()) {
+					ChatWriter.sendMessage(player, ChatColor.RED, "MineTinker is using the fallback language en_US as "
+							+ Main.getPlugin().getConfig().getString("Language")
+							+ " is not currently supported. If you want MineTinker to support this language you can help translating on Transifex!");
 				}
 			}
 		}

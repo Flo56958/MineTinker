@@ -56,6 +56,17 @@ public class GUI implements Listener {
 		return window;
 	}
 
+	public Window addWindow(Inventory inventory) {
+		if (isClosed) {
+			throw new IllegalStateException("GUI (" + this.hashCode() + ") is already closed!");
+		}
+
+		Window window = new Window(inventory, this);
+		windows.add(window);
+
+		return window;
+	}
+
 	/**
 	 * Removes a given window from the GUI
 	 *
@@ -265,6 +276,12 @@ public class GUI implements Listener {
 
 			this.inventory = Bukkit.createInventory(null, size, title);
 			this.buttonMap = new Button[54];
+			this.gui = gui;
+		}
+
+		private Window(@NotNull final Inventory inventory, @NotNull final GUI gui) {
+			this.inventory = inventory;
+			this.buttonMap = new Button[inventory.getSize()];
 			this.gui = gui;
 		}
 

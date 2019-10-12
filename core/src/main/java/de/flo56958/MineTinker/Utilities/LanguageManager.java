@@ -16,9 +16,11 @@ public class LanguageManager {
 	private static YamlConfiguration langFile;
 	private static YamlConfiguration langBackup;
 
+	private static boolean usingFallback = false;
+
 	private static boolean playerLocale;
 
-	private LanguageManager() {
+	private LanguageManager() { //only to make it impossible to instantiate an object
 	}
 
 	public static void reload() {
@@ -29,8 +31,11 @@ public class LanguageManager {
 
 		playerLocale = Main.getPlugin().getConfig().getBoolean("EnablePlayerLocale", false);
 
-		if (langFile == null) langFile = langBackup;
-		else ChatWriter.logInfo(getString("LanguageManager.LoadedLanguage").replaceFirst("%lang", lang));
+		if (langFile == null) {
+			langFile = langBackup;
+			usingFallback = true;
+			ChatWriter.logError(lang + " is currently not supported. If you want MineTinker to support this language you can help translating on Transifex!");
+		} else ChatWriter.logInfo(getString("LanguageManager.LoadedLanguage").replaceFirst("%lang", lang));
 	}
 
 	public static void cleanup() {
@@ -81,5 +86,9 @@ public class LanguageManager {
 			e.printStackTrace();
 		}
 		return file;
+	}
+
+	public static boolean isUsingFallback() {
+		return usingFallback;
 	}
 }
