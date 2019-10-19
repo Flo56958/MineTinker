@@ -201,7 +201,7 @@ class Functions {
 	 * adds a MineTinker-Tool/Armor of the specified type to the players inventory
 	 *
 	 * @param player The player to get the item from
-	 * @param args   command input of the player - parsed down from onCommand()
+	 * @param args   command input of the player - passed down from onCommand()
 	 */
 	static void give(Player player, String[] args) {
 		Material material;
