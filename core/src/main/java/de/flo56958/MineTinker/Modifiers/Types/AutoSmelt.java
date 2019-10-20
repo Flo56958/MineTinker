@@ -37,7 +37,6 @@ public class AutoSmelt extends Modifier implements Listener {
 
 	private AutoSmelt() {
 		super(Main.getPlugin());
-
 	}
 
 	public static AutoSmelt instance() {

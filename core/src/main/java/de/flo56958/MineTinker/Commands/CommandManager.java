@@ -1,6 +1,8 @@
 package de.flo56958.MineTinker.Commands;
 
+import de.flo56958.MineTinker.Commands.subs.AddModifierCommand;
 import de.flo56958.MineTinker.Commands.subs.GiveCommand;
+import de.flo56958.MineTinker.Commands.subs.ModifierListCommand;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.api.SubCommand;
 import org.bukkit.Bukkit;
@@ -24,6 +26,8 @@ public class CommandManager implements TabExecutor {
 	public CommandManager() {
 		ArrayList<SubCommand> commands = new ArrayList<>();
 		commands.add(new GiveCommand());
+		commands.add(new ModifierListCommand());
+		commands.add(new AddModifierCommand());
 
 		commands.forEach(this::registerSubcommand);
 
@@ -49,7 +53,7 @@ public class CommandManager implements TabExecutor {
 
 		if (args.length <= 0) {
 			//TODO: send not enough or wrong Arguments
-			return false;
+			return true;
 		}
 
 		SubCommand sub = map.get(args[0]);
@@ -65,13 +69,16 @@ public class CommandManager implements TabExecutor {
 			int index = -1;
 			boolean worldOnly = false;
 			for (int i = 0; i < args.length; i++) {
-				if (args[i].startsWith("@aw")) {
-					index = i;
-					worldOnly = true;
-					break;
-				} else if (args[i].startsWith("@a")) {
-					index = i;
-					break;
+				List<ArgumentType> types = sub.getArgumentsToParse().get(i);
+				if (types != null && types.contains(ArgumentType.PLAYER)) {
+					if (args[i].startsWith("@aw")) {
+						index = i;
+						worldOnly = true;
+						break;
+					} else if (args[i].startsWith("@a")) {
+						index = i;
+						break;
+					}
 				}
 			}
 			if (index != -1) {
@@ -84,7 +91,7 @@ public class CommandManager implements TabExecutor {
 						world = ((Entity) sender).getWorld();
 					}
 
-					if (world == null) return false;
+					if (world == null) return true;
 					players = world.getPlayers();
 				} else {
 					players = Bukkit.getOnlinePlayers();

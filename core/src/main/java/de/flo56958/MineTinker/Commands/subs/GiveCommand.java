@@ -37,7 +37,7 @@ public class GiveCommand implements SubCommand {
 				player = (Player) sender;
 			} else {
 				//TODO: Send invalid arguments
-				return false;
+				return true;
 			}
 		} else if (args.length > 2) {
 			material = Material.getMaterial(args[2].toUpperCase());
@@ -46,12 +46,12 @@ public class GiveCommand implements SubCommand {
 
 		if (material == null) {
 			//TODO: Send invalid Material
-			return false;
+			return true;
 		}
 
 		if (player == null) {
 			//Send invalid Player
-			return false;
+			return true;
 		}
 
 		ItemStack tool = new ItemStack(material, 1);
