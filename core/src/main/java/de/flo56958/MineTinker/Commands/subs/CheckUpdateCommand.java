@@ -18,6 +18,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Syntax of /mt checkupdate:
+ * 		/mt checkupdate
+ *
+ * Legend:
+ * 		{ }: not necessary
+ * 		[ ]: necessary
+ */
 public class CheckUpdateCommand implements SubCommand {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
@@ -26,7 +34,8 @@ public class CheckUpdateCommand implements SubCommand {
 			player = (Player) sender;
 		}
 		if (Main.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
-			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.CheckUpdate.Start", player));
+			ChatWriter.sendMessage(sender, ChatColor.WHITE,
+					LanguageManager.getString("Commands.CheckUpdate.Start", player));
 
 			new BukkitRunnable() {
 				@Override
@@ -35,7 +44,8 @@ public class CheckUpdateCommand implements SubCommand {
 				}
 			}.runTaskLater(Main.getPlugin(), 20);
 		} else {
-			ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.CheckUpdate.Disabled", player));
+			ChatWriter.sendMessage(sender, ChatColor.RED,
+					LanguageManager.getString("Commands.CheckUpdate.Disabled", player));
 		}
 		return true;
 	}

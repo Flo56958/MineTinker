@@ -10,10 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Syntax of /mt addmodifier:
@@ -91,6 +88,9 @@ public class AddModifierCommand implements SubCommand {
 
 	@Override
 	public @NotNull Map<Integer, List<ArgumentType>> getArgumentsToParse() {
-		return new HashMap<>();
+		Map<Integer, List<ArgumentType>> argumentsToParse = new HashMap<>();
+		argumentsToParse.put(1, Collections.singletonList(ArgumentType.PLAYER));
+		argumentsToParse.put(3, Collections.singletonList(ArgumentType.RANDOM_NUMBER));
+		return argumentsToParse;
 	}
 }

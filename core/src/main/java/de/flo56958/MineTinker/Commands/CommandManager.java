@@ -1,9 +1,6 @@
 package de.flo56958.MineTinker.Commands;
 
-import de.flo56958.MineTinker.Commands.subs.AddModifierCommand;
-import de.flo56958.MineTinker.Commands.subs.CheckUpdateCommand;
-import de.flo56958.MineTinker.Commands.subs.GiveCommand;
-import de.flo56958.MineTinker.Commands.subs.ModifierListCommand;
+import de.flo56958.MineTinker.Commands.subs.*;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.api.SubCommand;
 import org.bukkit.Bukkit;
@@ -30,6 +27,7 @@ public class CommandManager implements TabExecutor {
 		commands.add(new ModifierListCommand());
 		commands.add(new AddModifierCommand());
 		commands.add(new CheckUpdateCommand());
+		commands.add(new GiveModifierItemCommand());
 
 		commands.forEach(this::registerSubcommand);
 
@@ -189,6 +187,9 @@ public class CommandManager implements TabExecutor {
 							}
 						}
 						break;
+					case RANDOM_NUMBER:
+						//TODO: Implement me
+						//like range 1-5 (inclusive), or just complete random, or from 1,2,3,6,7,8, or all of them combined like 1-5,r,7-9,11,13
 					default:
 				}
 			}

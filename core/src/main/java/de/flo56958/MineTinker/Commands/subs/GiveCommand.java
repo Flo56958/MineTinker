@@ -2,7 +2,9 @@ package de.flo56958.MineTinker.Commands.subs;
 
 import de.flo56958.MineTinker.Commands.ArgumentType;
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Listeners.BuildersWandListener;
 import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.api.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -44,13 +46,24 @@ public class GiveCommand implements SubCommand {
 			player = Bukkit.getPlayer(args[1]);
 		}
 
-		if (material == null) {
-			//TODO: Send invalid Material
+		if (player == null) {
+			//Send invalid Player
 			return true;
 		}
 
-		if (player == null) {
-			//Send invalid Player
+		if (material == null) {
+			if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("enabled")) {
+				String name = args[1].replaceAll("_", " ");
+				for (ItemStack stack : BuildersWandListener.getWands()) {
+					if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
+						if (player.getInventory().addItem(stack.clone()).size() != 0) { //adds items to (full) inventory
+							player.getWorld().dropItem(player.getLocation(), stack.clone());
+						} // no else as it gets added in if
+						return true;
+					}
+				}
+			}
+			//TODO: Send invalid Material
 			return true;
 		}
 
@@ -85,6 +98,11 @@ public class GiveCommand implements SubCommand {
 				for (ToolType type : ToolType.values()) {
 					for (Material mat : type.getToolMaterials()) {
 						result.add(mat.toString());
+					}
+				}
+				if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("enabled")) {
+					for (ItemStack wand : BuildersWandListener.getWands()) {
+						result.add(wand.getItemMeta().getDisplayName().replaceAll(" ", "_"));
 					}
 				}
 				break;

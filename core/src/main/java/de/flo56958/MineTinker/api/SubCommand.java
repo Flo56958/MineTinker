@@ -29,4 +29,6 @@ public interface SubCommand {
 	 * @return A Map which maps the indices to the ArgumentTypes to parse
 	 */
 	@NotNull Map<Integer, List<ArgumentType>> getArgumentsToParse();
+
+	@NotNull String syntax();
 }
