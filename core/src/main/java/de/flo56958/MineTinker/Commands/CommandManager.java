@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker.Commands;
 
 import de.flo56958.MineTinker.Commands.subs.AddModifierCommand;
+import de.flo56958.MineTinker.Commands.subs.CheckUpdateCommand;
 import de.flo56958.MineTinker.Commands.subs.GiveCommand;
 import de.flo56958.MineTinker.Commands.subs.ModifierListCommand;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -28,6 +29,7 @@ public class CommandManager implements TabExecutor {
 		commands.add(new GiveCommand());
 		commands.add(new ModifierListCommand());
 		commands.add(new AddModifierCommand());
+		commands.add(new CheckUpdateCommand());
 
 		commands.forEach(this::registerSubcommand);
 
