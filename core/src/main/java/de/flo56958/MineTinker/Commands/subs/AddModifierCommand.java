@@ -93,4 +93,9 @@ public class AddModifierCommand implements SubCommand {
 		argumentsToParse.put(3, Collections.singletonList(ArgumentType.RANDOM_NUMBER));
 		return argumentsToParse;
 	}
+
+	@Override
+	public @NotNull String syntax() {
+		return "/mt addmodifier [Modifier] {Level}";
+	}
 }

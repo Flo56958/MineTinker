@@ -188,8 +188,26 @@ public class CommandManager implements TabExecutor {
 						}
 						break;
 					case RANDOM_NUMBER:
-						//TODO: Implement me
-						//like range 1-5 (inclusive), or just complete random, or from 1,2,3,6,7,8, or all of them combined like 1-5,r,7-9,11,13
+						//like range 1-5 (inclusive), or from 1,2,3,6,7,8, or all of them combined like 1-5,7-9,11,13
+						String[] rules = args[i].split(",");
+						int index = new Random().nextInt(rules.length);
+						if (rules[index].indexOf('-') != 0) {
+							String[] nums = rules[index].split("-");
+							if (nums.length != 2) {
+								//TODO: Return wrong random number format
+							}
+							try{
+								int min = Integer.parseInt(nums[0]);
+								int max = Integer.parseInt(nums[1]);
+								int rand = new Random().nextInt(max - min) + min;
+								args[i] = String.valueOf(rand);
+							} catch (NumberFormatException e) {
+								//TODO: Return wrong random number format
+							}
+						} else {
+							args[i] = rules[index];
+						}
+						break;
 					default:
 				}
 			}

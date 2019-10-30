@@ -79,4 +79,9 @@ public class ModifierListCommand implements SubCommand {
 	public @NotNull Map<Integer, List<ArgumentType>> getArgumentsToParse() {
 		return new HashMap<>();
 	}
+
+	@Override
+	public @NotNull String syntax() {
+		return "/mt modifiers {-t}";
+	}
 }

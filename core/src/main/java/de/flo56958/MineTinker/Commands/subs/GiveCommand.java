@@ -135,4 +135,9 @@ public class GiveCommand implements SubCommand {
 		argumentsToParse.put(1, Collections.singletonList(ArgumentType.PLAYER));
 		return argumentsToParse;
 	}
+
+	@Override
+	public @NotNull String syntax() {
+		return "/mt give {Player} [Material]";
+	}
 }
