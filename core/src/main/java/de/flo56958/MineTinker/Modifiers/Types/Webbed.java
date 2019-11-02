@@ -81,11 +81,12 @@ public class Webbed extends Modifier implements Listener {
 
 		config.addDefault("Recipe.Enabled", true);
 		config.addDefault("Recipe.Top", "WWW");
-		config.addDefault("Recipe.Middle", "WWW");
+		config.addDefault("Recipe.Middle", "WDW");
 		config.addDefault("Recipe.Bottom", "WWW");
 
 		Map<String, String> recipeMaterials = new HashMap<>();
 		recipeMaterials.put("W", Material.COBWEB.name());
+		recipeMaterials.put("D", Material.DIAMOND.name());
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
 

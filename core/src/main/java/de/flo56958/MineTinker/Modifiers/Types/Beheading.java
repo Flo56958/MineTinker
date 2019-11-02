@@ -69,7 +69,7 @@ public class Beheading extends Modifier implements Listener {
 		config.addDefault("MaxLevel", 10);
 		config.addDefault("PercentagePerLevel", 10);  //= 100% at Level 10
 
-		config.addDefault("EnchantCost", 10);
+		config.addDefault("EnchantCost", 25);
 		config.addDefault("Enchantable", true);
 
 		config.addDefault("Recipe.Enabled", false);

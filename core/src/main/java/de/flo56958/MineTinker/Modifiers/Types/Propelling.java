@@ -79,7 +79,7 @@ public class Propelling extends Modifier implements Listener {
 		config.addDefault("Elytra.Sound", true);
 		config.addDefault("Elytra.Particles", true);
 
-		config.addDefault("EnchantCost", 10);
+		config.addDefault("EnchantCost", 25);
 		config.addDefault("Enchantable", true);
 
 		config.addDefault("Recipe.Enabled", false);

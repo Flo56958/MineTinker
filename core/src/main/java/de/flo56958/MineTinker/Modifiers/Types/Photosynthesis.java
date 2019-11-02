@@ -78,7 +78,7 @@ public class Photosynthesis extends Modifier implements Listener {
 				items[4] = inv.getItemInMainHand();
 				if (allowOffhand) items[5] = inv.getItemInOffHand();
 
-				double timeAdvantage = multiplierPerTick * ((timeDif / 50) / tickTime);
+				double timeAdvantage = multiplierPerTick * ((timeDif / 50.0) / tickTime);
 
 				for (ItemStack item : items) {
 					if (item == null) continue;

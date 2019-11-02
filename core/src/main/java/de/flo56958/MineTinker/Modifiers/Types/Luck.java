@@ -79,12 +79,13 @@ public class Luck extends Modifier {
 		config.addDefault("Enchantable", true);
 
 		config.addDefault("Recipe.Enabled", true);
-		config.addDefault("Recipe.Top", "LLL");
+		config.addDefault("Recipe.Top", "GLG");
 		config.addDefault("Recipe.Middle", "LLL");
-		config.addDefault("Recipe.Bottom", "LLL");
+		config.addDefault("Recipe.Bottom", "GLG");
 
 		Map<String, String> recipeMaterials = new HashMap<>();
 		recipeMaterials.put("L", Material.LAPIS_BLOCK.name());
+		recipeMaterials.put("G", Material.GOLD_BLOCK.name());
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
 

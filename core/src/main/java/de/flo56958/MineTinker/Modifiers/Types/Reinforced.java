@@ -74,12 +74,14 @@ public class Reinforced extends Modifier {
 		config.addDefault("Enchantable", false);
 
 		config.addDefault("Recipe.Enabled", true);
-		config.addDefault("Recipe.Top", "OOO");
-		config.addDefault("Recipe.Middle", "OOO");
-		config.addDefault("Recipe.Bottom", "OOO");
+		config.addDefault("Recipe.Top", "IOI");
+		config.addDefault("Recipe.Middle", "ODO");
+		config.addDefault("Recipe.Bottom", "IOI");
 
 		Map<String, String> recipeMaterials = new HashMap<>();
 		recipeMaterials.put("O", Material.OBSIDIAN.name());
+		recipeMaterials.put("I", Material.IRON_INGOT.name());
+		recipeMaterials.put("D", Material.DIAMOND.name());
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
 

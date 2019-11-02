@@ -73,7 +73,7 @@ public class Magical extends Modifier implements Listener {
 		config.addDefault("ExperienceCost", 3);
 		config.addDefault("HasKnockback", true);
 
-		config.addDefault("EnchantCost", 10);
+		config.addDefault("EnchantCost", 7);
 		config.addDefault("Enchantable", false);
 
 		config.addDefault("Recipe.Enabled", true); //TODO: Change

@@ -73,12 +73,14 @@ public class Haste extends Modifier {
 		config.addDefault("Enchantable", false);
 
 		config.addDefault("Recipe.Enabled", true);
-		config.addDefault("Recipe.Top", "RRR");
-		config.addDefault("Recipe.Middle", "RRR");
-		config.addDefault("Recipe.Bottom", "RRR");
+		config.addDefault("Recipe.Top", "RDR");
+		config.addDefault("Recipe.Middle", "GRG");
+		config.addDefault("Recipe.Bottom", "RDR");
 
 		Map<String, String> recipeMaterials = new HashMap<>();
 		recipeMaterials.put("R", Material.REDSTONE_BLOCK.name());
+		recipeMaterials.put("G", Material.GOLD_INGOT.name());
+		recipeMaterials.put("D", Material.DIAMOND.name());
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
 

@@ -76,7 +76,7 @@ public class SelfRepair extends Modifier implements Listener {
 		config.addDefault("Description", "Chance to repair the tool / armor while using it!");
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Self-Repair-Modifier");
 		config.addDefault("Color", "%GREEN%");
-		config.addDefault("MaxLevel", 10);
+		config.addDefault("MaxLevel", 25);
 		config.addDefault("PercentagePerLevel", 10); //100% at Level 10 (not necessary for unbreakable tool in most cases)
 		config.addDefault("HealthRepair", 2); //How much durability should be repaired per trigger
 		config.addDefault("UseMending", false); //Disables the plugins own system and instead uses the vanilla Mending enchantment
