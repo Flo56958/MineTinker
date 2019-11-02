@@ -112,24 +112,35 @@ public class CommandManager implements TabExecutor {
 	@Override
 	public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
 												@NotNull String s, @NotNull String[] args) {
+		List<String> result = new ArrayList<>();
 		if (args.length == 0) {
-			return null;
+			return result;
 		} else if (args.length == 1) {
-			return cmds;
+			result.addAll(cmds);
+			ArrayList<String> toRemove = new ArrayList<>();
+			for (String st : result) {
+				SubCommand sub = map.get(st);
+				if (sub != null) {
+					if (!commandSender.hasPermission(sub.getPermission())) {
+						toRemove.add(st);
+					}
+				} else
+					toRemove.add(st);
+			}
+			result.removeAll(toRemove);
 		} else {
 			SubCommand sub = map.get(args[0]);
 			if (sub == null) return null;
 			if (commandSender.hasPermission(sub.getPermission())) {
-				List<String> result = sub.onTabComplete(commandSender, args);
-				if (result != null) {
-					//filter out any command that is not the beginning of the typed command
-					result.removeIf(str ->  !str.toLowerCase().startsWith(args[args.length - 1].toLowerCase()));
-					result.sort(String::compareToIgnoreCase);
-				}
-				return result;
+				result = sub.onTabComplete(commandSender, args);
 			}
 		}
-		return null;
+		if (result != null) {
+			//filter out any command that is not the beginning of the typed command
+			result.removeIf(str -> !str.toLowerCase().startsWith(args[args.length - 1].toLowerCase()));
+			result.sort(String::compareToIgnoreCase);
+		}
+		return result;
 	}
 
 	private void parseArguments(CommandSender sender, SubCommand sub, String[] args) {
@@ -195,6 +206,7 @@ public class CommandManager implements TabExecutor {
 							String[] nums = rules[index].split("-");
 							if (nums.length != 2) {
 								//TODO: Return wrong random number format
+								break;
 							}
 							try{
 								int min = Integer.parseInt(nums[0]);
