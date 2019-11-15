@@ -162,6 +162,7 @@ permissions:
       minetinker.modifiers.infinity.*: true
       minetinker.modifiers.insulating.*: true
       minetinker.modifiers.knockback.*: true
+      minetinker.modifiers.kineticplating.*: true
       minetinker.modifiers.lifesteal.*: true
       minetinker.modifiers.lightweight.*: true
       minetinker.modifiers.luck.*: true
@@ -219,6 +220,17 @@ permissions:
     default: true
   minetinker.modifiers.autosmelt.use:
     description: Allows to use Auto-Smelt on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.kineticplating.*:
+    children:
+      minetinker.modifiers.kineticplating.apply: true
+      minetinker.modifiers.kineticplating.use: true
+  minetinker.modifiers.kineticplating.apply:
+    description: Allows to apply Kinetic Plating to a MineTinker-Elytra
+    default: true
+  minetinker.modifiers.kineticplating.use:
+    description: Allows to use Kinetic Plating on a MineTinker-Elytra
     default: true
 
   minetinker.modifiers.beheading.*:

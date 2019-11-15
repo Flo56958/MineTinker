@@ -190,6 +190,11 @@ Modifier:
     Description: "Armor mitigates heat damage!"
     ModifierItemName: "Heat Resistant Alloy"
     DescriptionModifierItem: "Modifier-Item for the Insulating-Modifier"
+  KineticPlating:
+    Name: "Kinetic Plating"
+    Description: "Reduces the damage taken by crashing with an Elytra by %amount% per Level."
+    ModifierItemName: "Kinetic Plate"
+    DescriptionModifierItem: "Modifier-Item for the Kinetic-Plating-Modifier"
   Knockback:
     Name: "Knockback"
     Description: "Knock back enemies further with every punch!"

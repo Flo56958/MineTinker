@@ -244,6 +244,7 @@ public class ModManager {
 		allMods.add(Glowing.instance());
 		allMods.add(Haste.instance());
 		allMods.add(Infinity.instance());
+		allMods.add(KineticPlating.instance());
 		allMods.add(Knockback.instance());
 		allMods.add(Lifesteal.instance());
 		allMods.add(LightWeight.instance());
