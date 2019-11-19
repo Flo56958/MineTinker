@@ -190,6 +190,11 @@ Modifier:
     Description: "Броня защищает от высоких температур!"
     ModifierItemName: "Огнеупорный Сплав"
     DescriptionModifierItem: "Модификатор Изоляции"
+  KineticPlating:
+    Name: "Кинетическое Покрытие"
+    Description: "Уменьшает урон, получаемый при врезании в стену на Элитре на %amount% за Уровень."
+    ModifierItemName: "Кинетическая Пластина"
+    DescriptionModifierItem: "Модификатор Кинетического Покрытия"
   Knockback:
     Name: "Отбрасывание"
     Description: "С каждым ударом отбрасывает от Вас врагов!"
