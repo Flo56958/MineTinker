@@ -107,7 +107,7 @@ public class Photosynthesis extends Modifier implements Listener {
 
 				boolean isAboveGround = false;
 				if (t.loc.getWorld().getEnvironment().getId() == 0) { //check for overworld
-					for(int i = t.loc.getBlockY(); i <= 256; i++) {
+					for(int i = t.loc.getBlockY() + 1; i <= 256; i++) {
 						Block b = t.loc.getWorld().getBlockAt(t.loc.getBlockX(), i, t.loc.getBlockZ());
 						if (!(b.getType() == Material.AIR || b.getType() == Material.CAVE_AIR || b.getType() == Material.VOID_AIR
 								|| b.getType() == Material.GLASS || b.getType() == Material.BARRIER)) {
