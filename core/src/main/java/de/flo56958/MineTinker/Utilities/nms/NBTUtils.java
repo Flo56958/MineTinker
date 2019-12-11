@@ -8,6 +8,7 @@ public class NBTUtils {
 
 	private static boolean oneThirteenCompatible = false;
 	private static boolean oneFourteenCompatible = false;
+	private static boolean oneFifteenCompatible = false;
 
 	private NBTUtils() {
 	}
@@ -28,6 +29,12 @@ public class NBTUtils {
 		}
 
 		switch (version) {
+			case "v1_15_R1":
+				handler = new NBTHandler_v1_15_R1();
+				oneFifteenCompatible = true;
+				oneThirteenCompatible = true;
+				oneFourteenCompatible = true;
+				break;
 			case "v1_14_R1":
 				handler = new NBTHandler_v1_14_R1();
 				oneThirteenCompatible = true;
@@ -60,4 +67,9 @@ public class NBTUtils {
 	public static boolean isOneFourteenCompatible() {
 		return oneFourteenCompatible;
 	}
+
+	public static boolean isOneFifteenCompatible() {
+		return oneFifteenCompatible;
+	}
+
 }

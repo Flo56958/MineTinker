@@ -44,11 +44,6 @@ public class KineticPlating extends Modifier implements Listener {
 	}
 
 	@Override
-	public boolean hasRecipe() {
-		return false;
-	}
-
-	@Override
 	public List<ToolType> getAllowedTools() {
 		return Collections.singletonList(ToolType.ELYTRA);
 	}
@@ -78,6 +73,9 @@ public class KineticPlating extends Modifier implements Listener {
 		Map<String, String> recipeMaterials = new HashMap<>();
 		recipeMaterials.put("I", Material.IRON_BLOCK.name());
 		recipeMaterials.put("P", Material.PHANTOM_MEMBRANE.name());
+
+		config.addDefault("Recipe.Materials", recipeMaterials);
+
 		config.addDefault("OverrideLanguagesystem", false);
 
 		ConfigurationManager.saveConfig(config);

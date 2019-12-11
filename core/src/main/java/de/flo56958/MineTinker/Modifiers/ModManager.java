@@ -145,8 +145,12 @@ public class ModManager {
 		incompatibilityList.add(Protecting.instance().getKey() + ":" + AntiBlastPlating.instance().getKey());
 		incompatibilityList.add(Protecting.instance().getKey() + ":" + Insulating.instance().getKey());
 		incompatibilityList.add(AntiBlastPlating.instance().getKey() + ":" + AntiArrowPlating.instance().getKey());
+		incompatibilityList.add(Protecting.instance().getKey() + ":" + KineticPlating.instance().getKey());
+		incompatibilityList.add(AntiBlastPlating.instance().getKey() + ":" + KineticPlating.instance().getKey());
 		incompatibilityList.add(AntiBlastPlating.instance().getKey() + ":" + Insulating.instance().getKey());
 		incompatibilityList.add(AntiArrowPlating.instance().getKey() + ":" + Insulating.instance().getKey());
+		incompatibilityList.add(KineticPlating.instance().getKey() + ":" + Insulating.instance().getKey());
+		incompatibilityList.add(AntiArrowPlating.instance().getKey() + ":" + KineticPlating.instance().getKey());
 		incompatibilityList.add(Sharpness.instance().getKey() + ":" + Smite.instance().getKey());
 		incompatibilityList.add(Sharpness.instance().getKey() + ":" + SpidersBane.instance().getKey());
 		incompatibilityList.add(SpidersBane.instance().getKey() + ":" + Smite.instance().getKey());
