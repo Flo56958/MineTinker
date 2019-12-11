@@ -117,7 +117,7 @@ public class Timber extends Modifier implements Listener {
 				locs.add(b.getLocation());
 				breakTree(p, b, Collections.singletonList(b.getType()), locs);
 			}
-		} else if (ToolType.AXE.contains(tool.getType())) {
+		} else {
 			ArrayList<Material> allowed = new ArrayList<>();
 			allowed.addAll(Lists.getWoodLogs());
 			allowed.addAll(Lists.getWoodWood());
@@ -169,8 +169,6 @@ public class Timber extends Modifier implements Listener {
 			ArrayList<Location> locs = new ArrayList<>();
 			locs.add(b.getLocation());
 			breakTree(p, b, allowed, locs);
-		} else {
-			return;
 		}
 
 		Power.HASPOWER.get(p).set(false);

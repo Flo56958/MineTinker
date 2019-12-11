@@ -159,16 +159,9 @@ public class GiveModifierItemCommand implements SubCommand {
 				}
 				break;
 			case 4:
-				result.add("0");
-				result.add("1");
-				result.add("2");
-				result.add("3");
-				result.add("4");
-				result.add("5");
-				result.add("6");
-				result.add("7");
-				result.add("8");
-				result.add("9");
+				for (int i = 0; i < 10; i++) {
+					result.add(String.valueOf(i));
+				}
 				break;
 		}
 		return result;

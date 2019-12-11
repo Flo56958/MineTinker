@@ -28,6 +28,8 @@ public class CommandManager implements TabExecutor {
 		commands.add(new AddModifierCommand());
 		commands.add(new CheckUpdateCommand());
 		commands.add(new GiveModifierItemCommand());
+		commands.add(new ConvertCommand());
+		commands.add(new AddExpCommand());
 
 		commands.forEach(this::registerSubcommand);
 
@@ -202,7 +204,7 @@ public class CommandManager implements TabExecutor {
 						//like range 1-5 (inclusive), or from 1,2,3,6,7,8, or all of them combined like 1-5,7-9,11,13
 						String[] rules = args[i].split(",");
 						int index = new Random().nextInt(rules.length);
-						if (rules[index].indexOf('-') != 0) {
+						if (rules[index].indexOf('-') != -1) {
 							String[] nums = rules[index].split("-");
 							if (nums.length != 2) {
 								//TODO: Return wrong random number format
@@ -217,7 +219,9 @@ public class CommandManager implements TabExecutor {
 								//TODO: Return wrong random number format
 							}
 						} else {
+							System.out.println(args[i]);
 							args[i] = rules[index];
+							System.out.println(args[i]);
 						}
 						break;
 					default:
