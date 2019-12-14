@@ -190,6 +190,11 @@ Modifier:
     Description: "¡La armadura mitiga el daño por calor!"
     ModifierItemName: "Aleación resistente al calor"
     DescriptionModifierItem: "Item para el modificador Aislante"
+  KineticPlating:
+    Name: "Galjanoplastia cinética"
+    Description: "Reduce el daño recibido al estrellarse con un Elytra en %amount% por nivel."
+    ModifierItemName: "Placa cinética"
+    DescriptionModifierItem: "Item modificador para Placa cinética"
   Knockback:
     Name: "Empuje"
     Description: "¡Empuja a los enemigos aún más con cada golpe!"
