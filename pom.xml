@@ -3,11 +3,15 @@
 
    <groupId>de.flo56958</groupId>
    <artifactId>MineTinker-Parent</artifactId>
-   <version>1.2.1</version>
+   <version>${revision}</version>
    <packaging>pom</packaging>
 
    <url>https://flo56958.github.io/MineTinker</url>
    <description>A TinkersConstruct (and other mods) inspired server plugin</description>
+
+    <properties>
+        <revision>1.2.1</revision>
+    </properties>
 
    <developers>
        <developer>
@@ -24,6 +28,47 @@
        <module>MineTinker_1_13_R1</module>
        <module>MineTinker_1_13_R2</module>
    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>de.flo56958</groupId>
+                <artifactId>core</artifactId>
+                <version>${revision}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>de.flo56958</groupId>
+                <artifactId>MineTinker-NMScore</artifactId>
+                <version>${revision}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>de.flo56958</groupId>
+                <artifactId>MineTinker-1.15</artifactId>
+                <version>${revision}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>de.flo56958</groupId>
+                <artifactId>MineTinker-1.14</artifactId>
+                <version>${revision}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>de.flo56958</groupId>
+                <artifactId>MineTinker-1.13.2</artifactId>
+                <version>${revision}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>de.flo56958</groupId>
+                <artifactId>MineTinker-1.13</artifactId>
+                <version>${revision}</version>
+                <scope>compile</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
    <repositories>
        <repository>
