@@ -709,6 +709,7 @@ public class ModManager {
 			is.setItemMeta(meta);
 		}
 
+		boolean eligible = false;
 		if ((ToolType.AXE.contains(m)
 				|| ToolType.BOW.contains(m)
 				|| ToolType.CROSSBOW.contains(m)
@@ -721,15 +722,19 @@ public class ModManager {
 				|| ToolType.SHIELD.contains(m)
 				|| ToolType.FISHINGROD.contains(m)) && !isWandViable(is)) {
 			nbt.setInt(is, this.ToolIdentifier, 0);
-		} else if (ToolType.BOOTS.contains(m)
+			eligible = true;
+		} 
+		if (ToolType.BOOTS.contains(m)
 				|| ToolType.CHESTPLATE.contains(m)
 				|| ToolType.HELMET.contains(m)
 				|| ToolType.LEGGINGS.contains(m)
-				|| ToolType.ELYTRA.contains(m)) {
+				|| ToolType.ELYTRA.contains(m)
+				|| ToolType.SHIELD.contains(m)) {
 			nbt.setInt(is, this.ArmorIdentifier, 0);
-		} else {
-			return false;
+			eligible = true;
 		}
+
+		if (!eligible) return false;
 
 		setExp(is, 0);
 		setLevel(is, 1);

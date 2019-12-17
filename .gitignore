@@ -75,3 +75,10 @@ buildNumber.properties
 
 # Dolphin browser keeps recreating this
 .directory
+
+# VS Code and Eclipse
+.project
+.settings/
+.vscode/
+.classpath
+

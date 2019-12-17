@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker.Listeners;
 
 import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Events.MTEntityDamageEvent;
 import de.flo56958.MineTinker.Main;
@@ -23,6 +24,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class ArmorListener implements Listener {
@@ -75,7 +77,9 @@ public class ArmorListener implements Listener {
 
 		}
 
-		ItemStack[] armor = player.getInventory().getArmorContents();
+		ArrayList<ItemStack> armor = new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents()));
+		if (ToolType.SHIELD.contains(player.getInventory().getItemInMainHand().getType())) armor.add(player.getInventory().getItemInMainHand());
+		else if (ToolType.SHIELD.contains(player.getInventory().getItemInOffHand().getType())) armor.add(player.getInventory().getItemInOffHand());
 
 		for (ItemStack piece : armor) {
 			if (!modManager.isArmorViable(piece)) {
