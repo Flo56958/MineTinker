@@ -8,7 +8,7 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.14.2-R0.1-SNAPSHOT</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -18,14 +18,13 @@
     </properties>
 
     <artifactId>MineTinker-NMScore</artifactId>
-    <version>1.2.1</version>
     <description>A TinkersConstruct (and other mods) inspired server plugin</description>
     <url>https://flo56958.github.io/MineTinker</url>
 
     <parent>
         <groupId>de.flo56958</groupId>
         <artifactId>MineTinker-Parent</artifactId>
-        <version>1.2.1</version>
+        <version>${revision}</version>
     </parent>
 
     <developers>
