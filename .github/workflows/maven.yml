@@ -1,0 +1,45 @@
+name: Maven CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Activating cache
+      uses: actions/cache@v1.0.1
+      id: cache
+      with:
+        path: ~/.m2/repository/org/
+        key: ${{ runner.os }}-maven-test
+        restore-keys: |
+          ${{ runner.os }}-maven-
+  
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+
+    - name: Gathering dependencies
+      shell: bash
+      run: |
+        bash .github/workflows/scripts/installSpigot.sh 1.13
+        bash .github/workflows/scripts/installSpigot.sh 1.13.2
+        bash .github/workflows/scripts/installSpigot.sh 1.14.4
+        bash .github/workflows/scripts/installSpigot.sh 1.15
+        
+    - name: Preparing pom.xml
+      run: sed -i 's/<.revision>/-${{ github.sha }}<\/revision>/g' ./pom.xml
+
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+      
+    - name: Setting up Python for publishing
+      run: pip install requests
+    
+    - name: Publishing Build
+      run: python3 .github/workflows/scripts/publish.py ./core/target/MineTinker.jar MineTinker ${{ secrets.DiscordWebHook }} ${{ github.sha }}
