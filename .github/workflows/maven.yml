@@ -33,7 +33,7 @@ jobs:
         java-version: 1.8
 
     - name: Preparing pom.xml
-      run: sed -i 's/<.revision>/-${{ github.event_name }}-${{ github.ref }}<\/revision>/g' ./pom.xml
+      run: sed -i 's/<.revision>/-${{ github.sha }}<\/revision>/g' ./pom.xml
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
