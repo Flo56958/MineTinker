@@ -1,10 +1,15 @@
 name: Maven CI
 
-on: [push]
+on:
+  push:
+    paths:
+    - '**.java' # <- Only build, test and publish MineTinker if any .java-files changed
+  pull_request:
+    paths:
+    - '**.java'
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -14,7 +19,7 @@ jobs:
       uses: actions/cache@v1.0.1
       id: cache
       with:
-        path: ~/.m2/repository/org/
+        path: ~/.m2/repository/org/bukkit
         key: ${{ runner.os }}-maven-test
         restore-keys: |
           ${{ runner.os }}-maven-
@@ -30,16 +35,19 @@ jobs:
         bash .github/workflows/scripts/installSpigot.sh 1.13
         bash .github/workflows/scripts/installSpigot.sh 1.13.2
         bash .github/workflows/scripts/installSpigot.sh 1.14.4
-        bash .github/workflows/scripts/installSpigot.sh 1.15
+        bash .github/workflows/scripts/installSpigot.sh 1.15.1
         
-    - name: Preparing pom.xml
-      run: sed -i 's/<.revision>/-${{ github.sha }}<\/revision>/g' ./pom.xml
+    - name: Preparing pom.xml # <- Only necessary for publishing - changes the revision number dependent on the commit sha
+      if: github.event_name == 'push'
+      run: sed -i 's/<\/revision>/-${{ github.sha }}<\/revision>/g' ./pom.xml
 
-    - name: Build with Maven
+    - name: Build with Maven # <- Executes the MineTinker Maven goal
       run: mvn -B package --file pom.xml
       
     - name: Setting up Python for publishing
-      run: pip install requests
+      if: github.event_name == 'push'
+      run: pip install requests # Request is needed for publishing over webhook
     
     - name: Publishing Build
+      if: github.event_name == 'push'
       run: python3 .github/workflows/scripts/publish.py ./core/target/MineTinker.jar MineTinker ${{ secrets.DiscordWebHook }} ${{ github.sha }}
