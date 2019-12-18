@@ -4,9 +4,11 @@ on:
   push:
     paths:
     - '**.java' # <- Only build, test and publish MineTinker if any .java-files changed
+    - '**pom.xml'
   pull_request:
     paths:
     - '**.java'
+    - '**pom.xml'
 
 jobs:
   build:

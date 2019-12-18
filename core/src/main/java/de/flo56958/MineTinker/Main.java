@@ -188,7 +188,7 @@ public class Main extends JavaPlugin {
 	public void onDisable() {
 		ChatWriter.logInfo("Shutting down!");
 		LanguageManager.cleanup();
-		GUI.guis.forEach(GUI::close);
+		GUI.guis.forEach(GUI::close); //To negate exploit that you could use the Items in the GUIs
 	}
 
 	/**

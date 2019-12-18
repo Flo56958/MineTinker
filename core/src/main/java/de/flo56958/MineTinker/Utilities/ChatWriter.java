@@ -192,8 +192,10 @@ public class ChatWriter {
 			return "LEET";
 		}
 
-		if (number <= 0) {
+		if (number == 0) {
 			return "0"; //Roman Numbers do not have a zero (need to switch to arabic numerals)
+		} else if (number < 0) {
+			return "-" + toRomanNumerals(Math.abs(number)); //So negative numbers get shown correctly and are not 0
 		}
 
 		int floorKey = map.floorKey(number);

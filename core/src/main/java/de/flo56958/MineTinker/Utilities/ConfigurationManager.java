@@ -18,8 +18,7 @@ public class ConfigurationManager {
 	 */
 	private static final HashMap<String, FileConfiguration> configs = new HashMap<>();
 	private static final HashMap<FileConfiguration, File> configsFolder = new HashMap<>();
-	private ConfigurationManager() {
-	}
+	private ConfigurationManager() {} //So nobody can instantiate this class
 
 	/**
 	 * Gets the specified config file
