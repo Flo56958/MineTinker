@@ -19,17 +19,13 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-
 
-    - name: Preparing Scripts
-      shell: bash
-      run: chmod +x .github/workflows/scripts/installSpigot.sh
-
     - name: Gathering dependencies
       shell: bash
       run: |
-        .github/workflows/scripts/installSpigot.sh 1.13
-        .github/workflows/scripts/installSpigot.sh 1.13.2
-        .github/workflows/scripts/installSpigot.sh 1.14.4
-        .github/workflows/scripts/installSpigot.sh 1.15.1
+        sh .github/workflows/scripts/installSpigot.sh 1.13
+        sh .github/workflows/scripts/installSpigot.sh 1.13.2
+        sh .github/workflows/scripts/installSpigot.sh 1.14.4
+        sh .github/workflows/scripts/installSpigot.sh 1.15.1
 
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
