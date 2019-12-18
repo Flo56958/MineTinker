@@ -37,3 +37,9 @@ jobs:
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+      
+    - name: Setting up Python for publishing
+      run: pip install requests
+    
+    - name: Publishing Build
+      run: python3 .github/workflows/scripts/publish.py ./core/target/MineTinker.jar MineTinker
