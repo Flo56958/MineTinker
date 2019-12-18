@@ -42,4 +42,6 @@ jobs:
       run: pip install requests
     
     - name: Publishing Build
+      env:
+        secrets.DiscordWebHook: ${{ secrets.DiscordWebHook }}
       run: python3 .github/workflows/scripts/publish.py ./core/target/MineTinker.jar MineTinker
