@@ -18,4 +18,3 @@ mvn install:install-file -Dfile=$HOME/spigot-build/spigot-$1.jar -Dpackaging=jar
 echo "Installing CraftBukkit jar in Maven"
 mvn install:install-file -Dfile=$HOME/spigot-build/craftbukkit-$1.jar -Dpackaging=jar -DpomFile=$HOME/spigot-build/CraftBukkit/pom.xml
 popd
-exit 0
