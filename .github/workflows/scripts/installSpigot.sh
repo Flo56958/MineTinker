@@ -1,6 +1,7 @@
 if [ -d "$HOME/.m2/repository/org/spigotmc/spigot/$1-R0.1-SNAPSHOT" ]; 
     then echo "Not compiling Spigot $1 because it is already in the maven repository!" ; exit 0;
 else echo "Compiling Spigot $1 because it is not in the maven repository!" ; 
+fi ;
 mkdir -p $HOME/spigot-build
 pushd $HOME/spigot-build
 
@@ -17,5 +18,3 @@ mvn install:install-file -Dfile=$HOME/spigot-build/spigot-$1.jar -Dpackaging=jar
 echo "Installing CraftBukkit jar in Maven"
 mvn install:install-file -Dfile=$HOME/spigot-build/craftbukkit-$1.jar -Dpackaging=jar -DpomFile=$HOME/spigot-build/CraftBukkit/pom.xml
 popd
-
-fi
