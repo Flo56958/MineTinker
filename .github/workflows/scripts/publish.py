@@ -1,9 +1,10 @@
 import sys
 import requests
+from datetime import datetime
 
 data = {}
 
-data['content'] = ' '
+data['content'] = str(datetime.now())
 print(data, flush=True)
 
 result = requests.post(sys.argv[3],
