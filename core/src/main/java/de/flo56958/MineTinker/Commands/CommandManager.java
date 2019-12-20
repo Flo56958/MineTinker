@@ -4,9 +4,9 @@ import de.flo56958.MineTinker.Commands.subs.*;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.api.SubCommand;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.BlockCommandSender;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Entity;
@@ -46,7 +46,7 @@ public class CommandManager implements TabExecutor {
 	}
 
 	@Override
-	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s,
+	public boolean onCommand(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command, @NotNull String s,
 							 @NotNull String[] args) {
 		if (!(sender.hasPermission("minetinker.commands.main"))) {
 			//TODO: send no Perm
@@ -55,12 +55,19 @@ public class CommandManager implements TabExecutor {
 
 		if (args.length <= 0) {
 			//TODO: send not enough or wrong Arguments
+			sendHelp(sender, null);
 			return true;
 		}
 
-		SubCommand sub = map.get(args[0]);
+		if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?")) {
+			sendHelp(sender, args.length >= 2 ? map.get(args[1].toLowerCase()) : null);
+			return true;
+		}
+
+		SubCommand sub = map.get(args[0].toLowerCase());
 		if (sub == null) {
 			//TODO: send unknown command
+			sendHelp(sender, null);
 			return true;
 		}
 
@@ -112,7 +119,7 @@ public class CommandManager implements TabExecutor {
 	}
 
 	@Override
-	public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
+	public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command,
 												@NotNull String s, @NotNull String[] args) {
 		List<String> result = new ArrayList<>();
 		if (args.length == 0) {
@@ -131,13 +138,30 @@ public class CommandManager implements TabExecutor {
 			}
 			result.removeAll(toRemove);
 		} else {
-			SubCommand sub = map.get(args[0]);
-			if (sub == null) return null;
+			SubCommand sub = map.get(args[0].toLowerCase());
+			if (sub == null) {
+				if (args.length == 2 && args[0].equalsIgnoreCase("help")) { //help auto-complete
+					result.addAll(cmds);
+					ArrayList<String> toRemove = new ArrayList<>();
+					for (String st : result) {
+						sub = map.get(st);
+						if (sub != null) {
+							if (!commandSender.hasPermission(sub.getPermission())) {
+								toRemove.add(st);
+							}
+						} else
+							toRemove.add(st);
+					}
+					result.removeAll(toRemove);
+				}
+				return result;
+			}
 			if (commandSender.hasPermission(sub.getPermission())) {
 				result = sub.onTabComplete(commandSender, args);
 			}
 		}
 		if (result != null) {
+			result.add("help");
 			//filter out any command that is not the beginning of the typed command
 			result.removeIf(str -> !str.toLowerCase().startsWith(args[args.length - 1].toLowerCase()));
 			result.sort(String::compareToIgnoreCase);
@@ -145,7 +169,7 @@ public class CommandManager implements TabExecutor {
 		return result;
 	}
 
-	private void parseArguments(CommandSender sender, SubCommand sub, String[] args) {
+	private void parseArguments(@NotNull CommandSender sender, @NotNull SubCommand sub, String[] args) {
 		for (int i = 1; i < args.length; i++) {
 			List<ArgumentType> atypes = sub.getArgumentsToParse().get(i);
 			if (atypes == null) continue;
@@ -228,5 +252,21 @@ public class CommandManager implements TabExecutor {
 				}
 			}
 		}
+	}
+
+	private void sendHelp(CommandSender sender, @Nullable SubCommand command) {
+		if (command == null) {
+			int index = 1;
+			for (String cmd : cmds) {
+				SubCommand sub = map.get(cmd);
+				if (sender.hasPermission(sub.getPermission()))
+				ChatWriter.sendMessage(sender, ChatColor.WHITE, index++ + ". " + cmd + " "
+						+ sub.getAliases(false).toString() + ": " + sub.syntax());
+			}
+			return;
+		}
+
+		if (sender.hasPermission(command.getPermission()))
+			ChatWriter.sendMessage(sender, ChatColor.WHITE, command.syntax());
 	}
 }
