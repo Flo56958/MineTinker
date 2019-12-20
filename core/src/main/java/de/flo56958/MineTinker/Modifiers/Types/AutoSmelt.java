@@ -34,6 +34,7 @@ public class AutoSmelt extends Modifier implements Listener {
 	private boolean hasSound;
 	private boolean hasParticles;
 	private boolean worksUnderWater;
+	private boolean toggleable;
 
 	private AutoSmelt() {
 		super(Main.getPlugin());
@@ -76,6 +77,7 @@ public class AutoSmelt extends Modifier implements Listener {
 		config.addDefault("Sound", true); //Auto-Smelt makes a sound
 		config.addDefault("Particles", true); //Auto-Smelt will create a particle effect when triggered
 		config.addDefault("WorksUnderWater", true);
+		config.addDefault("Toggleable", false);
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
@@ -169,13 +171,14 @@ public class AutoSmelt extends Modifier implements Listener {
 		this.hasSound = config.getBoolean("Sound", true);
 		this.hasParticles = config.getBoolean("Particles", true);
 		this.worksUnderWater = config.getBoolean("WorksUnderWater", true);
+		this.toggleable = config.getBoolean("Toggleable", false);
 
 		ConfigurationSection conversionConfig = config.getConfigurationSection("Conversions");
 		if (conversionConfig == null) return;
 
 		Map<String, Object> conversionValues = conversionConfig.getValues(false);
 		conversionValues.forEach((k, v) -> {
-			if (v instanceof String) conversions.put(Material.getMaterial(k), Triplet.fromString((String) v));
+			if (v instanceof String) conversions.put(Objects.requireNonNull(Material.getMaterial(k)), Triplet.fromString((String) v));
 		});
 
 		this.description = this.description.replace("%chance", "" + this.percentagePerLevel);
@@ -202,32 +205,29 @@ public class AutoSmelt extends Modifier implements Listener {
 		}
 
 		if (!worksUnderWater) {
-			if (player.isSwimming() || player.getWorld().getBlockAt(player.getLocation()).getType() == Material.WATER) {
+			if (player.isSwimming() || player.getWorld().getBlockAt(player.getLocation()).getType() == Material.WATER)
 				return;
-			}
 		}
 
-		if (!(new Random().nextInt(100) <= this.percentagePerLevel * modManager.getModLevel(tool, this) && block.getLocation().getWorld() != null)) {
-			return;
+		if (toggleable) {
+			if (player.isSneaking()) return;
 		}
+
+		if (!(new Random().nextInt(100) <= this.percentagePerLevel * modManager.getModLevel(tool, this)
+				&& block.getLocation().getWorld() != null)) return;
 
 		Triplet conv = conversions.get(block.getType());
-		if (conv == null) {
-			return;
-		}
+		if (conv == null) return;
 
 		int amount = conv.amount;
 		Material loot = conv.material;
-		if (loot == null) {
-			return;
-		}
+		if (loot == null) return;
 
 		if (conv.luckable) {
 			int level = modManager.getModLevel(tool, Luck.instance());
 
-			if (level > 0) {
-				amount = amount + new Random().nextInt(level + 1) * amount; //Times amount is for clay as it drops 4 per block
-			}
+			if (level > 0) amount = amount + new Random().nextInt(level + 1) * amount;
+			//Times amount is for clay as it drops 4 per block
 		}
 
 		if (loot != Material.AIR && amount > 0) {
@@ -237,15 +237,13 @@ public class AutoSmelt extends Modifier implements Listener {
 
 		breakEvent.setDropItems(false);
 
-		if (this.hasParticles) {
-			block.getLocation().getWorld().spawnParticle(Particle.FLAME, block.getLocation(), 5);
-		}
+		if (this.hasParticles) block.getLocation().getWorld().spawnParticle(Particle.FLAME, block.getLocation(), 5);
 
-		if (this.hasSound) {
-			block.getLocation().getWorld().playSound(block.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
-		}
+		if (this.hasSound) block.getLocation().getWorld().playSound(block.getLocation(),
+				Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
 
-		ChatWriter.log(false, player.getDisplayName() + " triggered Auto-Smelt on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY +
+		ChatWriter.log(false, player.getDisplayName() + " triggered Auto-Smelt on "
+				+ ItemGenerator.getDisplayName(tool) + ChatColor.GRAY +
 				" (" + tool.getType().toString() + ") while mining " + breakEvent.getBlock().getType().toString() + "!");
 	}
 

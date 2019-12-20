@@ -39,6 +39,7 @@ public class Power extends Modifier implements Listener {
 	private static Power instance;
 	private ArrayList<Material> blacklist;
 	private boolean lv1_vertical;
+	private boolean toggleable;
 
 	private Power() {
 		super(Main.getPlugin());
@@ -94,6 +95,7 @@ public class Power extends Modifier implements Listener {
 		config.addDefault("Color", "%GREEN%");
 		config.addDefault("Lv1Vertical", false); // Should the 3x1 at level 1 be horizontal (false) or vertical
 		// (true)
+		config.addDefault("Toggleable", true);
 		config.addDefault("OverrideLanguagesystem", false);
 		config.addDefault("MaxLevel", 2); // Algorithm for area of effect (except for level 1): (level * 2) - 1 x
 
@@ -122,6 +124,7 @@ public class Power extends Modifier implements Listener {
 		init(Material.EMERALD, true);
 
 		this.lv1_vertical = config.getBoolean("Lv1Vertical", false);
+		this.toggleable = config.getBoolean("Toggleable", true);
 
 		blacklist = new ArrayList<>();
 
@@ -144,14 +147,10 @@ public class Power extends Modifier implements Listener {
 	}
 
 	private boolean checkPower(Player p, ItemStack tool) {
-		if (!p.hasPermission("minetinker.modifiers.power.use")) {
-			return false;
-		}
-		if (HASPOWER.get(p).get()) {
-			return false;
-		}
-		if (p.isSneaking()) {
-			return false;
+		if (!p.hasPermission("minetinker.modifiers.power.use")) return false;
+		if (HASPOWER.get(p).get()) return false;
+		if (toggleable) {
+			if (p.isSneaking()) return false;
 		}
 
 		return modManager.hasMod(tool, this);

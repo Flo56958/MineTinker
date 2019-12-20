@@ -22,7 +22,7 @@ jobs:
       id: cache
       with:
         path: ~/.m2/repository/org/bukkit
-        key: ${{ runner.os }}-maven-test
+        key: ${{ runner.os }}-maven-MineTinker
         restore-keys: |
           ${{ runner.os }}-maven-
   
