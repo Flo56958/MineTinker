@@ -9,6 +9,7 @@ import de.flo56958.MineTinker.Modifiers.Types.ExtraModifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
+import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
@@ -150,6 +151,7 @@ public abstract class Modifier {
 	/**
 	 * changes the core settings of the Modifier (like a secondary constructor)
 	 */
+
 	protected void init(Material m, boolean customItem) {
 		FileConfiguration config = getConfig();
 
@@ -178,6 +180,11 @@ public abstract class Modifier {
 			} else {
 				this.modItem = new ItemStack(m, 1);
 			}
+		}
+
+		if (ConfigurationManager.getConfig("Modifiers.yml").getBoolean("UseCustomModelData", false)) {
+			this.modItem.setType(Material.STICK);
+			NBTUtils.getHandler().setInt(this.modItem, "CustomModelData", Math.abs(this.getKey().hashCode() % 10_000_000));
 		}
 	}
 
