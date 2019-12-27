@@ -151,7 +151,6 @@ public abstract class Modifier {
 	/**
 	 * changes the core settings of the Modifier (like a secondary constructor)
 	 */
-
 	protected void init(Material m, boolean customItem) {
 		FileConfiguration config = getConfig();
 
@@ -182,9 +181,11 @@ public abstract class Modifier {
 			}
 		}
 
-		if (ConfigurationManager.getConfig("Modifiers.yml").getBoolean("UseCustomModelData", false)) {
-			this.modItem.setType(Material.STICK);
-			NBTUtils.getHandler().setInt(this.modItem, "CustomModelData", Math.abs(this.getKey().hashCode() % 10_000_000));
+		if (!customItem) {
+			if (ConfigurationManager.getConfig("Modifiers.yml").getBoolean("UseCustomModelData", false)) {
+				this.modItem.setType(Material.STICK);
+				NBTUtils.getHandler().setInt(this.modItem, "CustomModelData", Math.abs(this.getKey().hashCode() % 10_000_000));
+			}
 		}
 	}
 

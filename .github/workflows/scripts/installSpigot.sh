@@ -1,4 +1,4 @@
-if [ -d "$HOME/.m2/repository/org/bukkit/craftbukkit/$1-R0.1-SNAPSHOT" ];
+if [ -d "$HOME/.m2/repository/org/spigotmc/spigot/1.13-R0.1-SNAPSHOT" ];
     then echo "Not compiling Spigot $1 because it is already in the maven repository!" ; exit 0;
 else echo "Compiling Spigot $1 because it is not in the maven repository!" ; 
 fi ;
