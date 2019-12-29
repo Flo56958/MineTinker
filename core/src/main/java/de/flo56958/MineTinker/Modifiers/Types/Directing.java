@@ -115,6 +115,10 @@ public class Directing extends Modifier implements Listener {
 		List<ItemStack> drops = event.getEvent().getDrops();
 
 		for (ItemStack current : drops) {
+			if (modManager.hasMod(current, Soulbound.instance())) {
+				continue;
+			}
+
 			if (p.getInventory().addItem(current).size() != 0) { //adds items to (full) inventory
 				p.getWorld().dropItem(p.getLocation(), current);
 			} // no else as it gets added in if-clause
