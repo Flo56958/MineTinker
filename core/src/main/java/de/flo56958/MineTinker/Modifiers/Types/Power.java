@@ -147,10 +147,18 @@ public class Power extends Modifier implements Listener {
 	}
 
 	private boolean checkPower(Player p, ItemStack tool) {
-		if (!p.hasPermission("minetinker.modifiers.power.use")) return false;
-		if (HASPOWER.get(p).get()) return false;
+		if (!p.hasPermission("minetinker.modifiers.power.use")) {
+			return false;
+		}
+
+		if (HASPOWER.get(p).get()) {
+			return false;
+		}
+
 		if (toggleable) {
-			if (p.isSneaking()) return false;
+			if (p.isSneaking()) {
+				return false;
+			}
 		}
 
 		return modManager.hasMod(tool, this);
@@ -163,17 +171,21 @@ public class Power extends Modifier implements Listener {
 	 */
 	@EventHandler
 	public void effect(MTBlockBreakEvent event) {
-		if (event.isCancelled() || !this.isAllowed())
+		if (event.isCancelled() || !this.isAllowed()){
 			return;
+		}
 
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 		Block block = event.getBlock();
 
-		if (!checkPower(player, tool))
+		if (!checkPower(player, tool)) {
 			return;
-		if (ToolType.HOE.contains(tool.getType()))
+		}
+
+		if (ToolType.HOE.contains(tool.getType())) {
 			return;
+		}
 
 		ChatWriter.log(false, player.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool)
 				+ ChatColor.GRAY + " (" + tool.getType().toString() + ")!");

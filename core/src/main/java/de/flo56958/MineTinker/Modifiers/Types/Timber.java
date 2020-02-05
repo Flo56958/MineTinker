@@ -96,8 +96,6 @@ public class Timber extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTBlockBreakEvent event) {
-
-
 		Player p = event.getPlayer();
 		ItemStack tool = event.getTool();
 		Block b = event.getBlock();
@@ -107,6 +105,10 @@ public class Timber extends Modifier implements Listener {
 		}
 
 		if (!modManager.hasMod(tool, this)) {
+			return;
+		}
+
+		if (!p.hasPermission("minetinker.modifiers.timber.use")) {
 			return;
 		}
 
