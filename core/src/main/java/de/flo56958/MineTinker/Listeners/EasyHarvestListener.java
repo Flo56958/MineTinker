@@ -48,6 +48,10 @@ public class EasyHarvestListener implements Listener {
 		}
 
 		if (!player.isSneaking() && modManager.hasMod(tool, Power.instance())) {
+			if (!Power.instance().canUsePower(player, tool, false)) {
+				return;
+			}
+
 			int level = modManager.getModLevel(tool, Power.instance());
 
 			if (level == 1) {
