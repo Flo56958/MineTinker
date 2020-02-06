@@ -120,24 +120,41 @@ public class MultiShot extends Modifier implements Listener {
 
 	@EventHandler
 	public void onShoot(ProjectileLaunchEvent e) {
-		if (!this.isAllowed()) return;
+		if (!this.isAllowed()) {
+			return;
+		}
 
 		Projectile arrow = e.getEntity();
-		if (!(arrow instanceof Arrow)) return;
 
-		if (!(arrow.getShooter() instanceof Player)) return;
+		if (!(arrow instanceof Arrow)) {
+			return;
+		}
+
+		if (!(arrow.getShooter() instanceof Player)) {
+			return;
+		}
 
 		Player p = (Player) arrow.getShooter();
-		if (!p.hasPermission("minetinker.modifiers.multishot.use")) return;
+
+		if (!p.hasPermission("minetinker.modifiers.multishot.use")) {
+			return;
+		}
 
 		ItemStack tool = p.getInventory().getItemInMainHand();
 
-		if (ToolType.CROSSBOW.contains(tool.getType()) && getConfig().getBoolean("UseEnchantOnCrossbow")) return;
+		if (ToolType.CROSSBOW.contains(tool.getType()) && getConfig().getBoolean("UseEnchantOnCrossbow")) {
+			return;
+		}
 
-		if (!modManager.isToolViable(tool)) return;
+		if (!modManager.isToolViable(tool)) {
+			return;
+		}
 
 		int modLevel = modManager.getModLevel(tool, this);
-		if (modLevel <= 0) return;
+
+		if (modLevel <= 0) {
+			return;
+		}
 
 		Vector vel = arrow.getVelocity().clone();
 		Location loc = arrow.getLocation().clone();
@@ -146,19 +163,30 @@ public class MultiShot extends Modifier implements Listener {
 
 		for (int i = 1; i <= modLevel; i++) {
 			if (!hasInfinity && needsArrows) {
-				if (!p.getInventory().contains(Material.ARROW)) break;
+				if (!p.getInventory().contains(Material.ARROW)) {
+					break;
+				}
+
 				for (ItemStack item : p.getInventory().getContents()) {
-					if (item == null) continue;
+					if (item == null) {
+						continue;
+					}
+
 					if (item.getType() == Material.ARROW) {
 						item.setAmount(item.getAmount() - 1);
 						break;
 					}
 				}
 			}
+
 			Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
 				Arrow arr = loc.getWorld().spawnArrow(loc, vel, (float) vel.length(), (float) spread);
 				arr.setShooter(p);
-				if (hasInfinity) arr.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+
+				if (hasInfinity) {
+					arr.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+				}
+
 				arr.setCritical(((Arrow) arrow).isCritical());
 				arr.setDamage(((Arrow) arrow).getDamage());
 			}, i);
