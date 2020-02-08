@@ -48,7 +48,7 @@ public class EasyHarvestListener implements Listener {
 		}
 
 		if (!player.isSneaking() && modManager.hasMod(tool, Power.instance())) {
-			if (!Power.instance().canUsePower(player, tool, false)) {
+			if (!player.hasPermission("minetinker.modifiers.power.use")) {
 				return;
 			}
 

@@ -146,7 +146,7 @@ public class Power extends Modifier implements Listener {
 		}
 	}
 
-	public boolean canUsePower(Player p, ItemStack tool, boolean allowToggle) {
+	public boolean canUsePower(Player p, ItemStack tool) {
 		if (!p.hasPermission("minetinker.modifiers.power.use")) {
 			return false;
 		}
@@ -155,7 +155,7 @@ public class Power extends Modifier implements Listener {
 			return false;
 		}
 
-		if (allowToggle && toggleable) {
+		if (toggleable) {
 			if (p.isSneaking()) {
 				return false;
 			}
@@ -179,7 +179,7 @@ public class Power extends Modifier implements Listener {
 		ItemStack tool = event.getTool();
 		Block block = event.getBlock();
 
-		if (!canUsePower(player, tool, true)) {
+		if (!canUsePower(player, tool)) {
 			return;
 		}
 
@@ -295,7 +295,7 @@ public class Power extends Modifier implements Listener {
 
 		PlayerInteractEvent e = event.getEvent();
 
-		if (!canUsePower(p, tool, true)) {
+		if (!canUsePower(p, tool)) {
 			return;
 		}
 
