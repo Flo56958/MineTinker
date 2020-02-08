@@ -25,6 +25,7 @@ permissions:
       minetinker.builderswands.*: true
       minetinker.tool.*: true
       minetinker.update.*: true
+      minetinker.easyharvest.*: true
 
   minetinker.tool.*:
     children:
@@ -656,4 +657,16 @@ permissions:
       minetinker.builderswands.use: true
   minetinker.builderswands.use:
     description: Allows to use the Builderswands of MineTinker
+    default: true
+
+  #EasyHarvest
+  minetinker.easyharvest.*:
+    children:
+      minetinker.easyharvest.use: true
+      minetinker.easyharvest.replant: true
+  minetinker.easyharvest.use:
+    description: Allows usage of the EasyHarvest feature
+    default: true
+  minetinker.easyharvest.replant:
+    description: Automatically replant crops when using EasyHarvest
     default: true

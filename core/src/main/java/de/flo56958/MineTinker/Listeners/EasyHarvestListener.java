@@ -34,6 +34,8 @@ public class EasyHarvestListener implements Listener {
 	}
 
 	private static void breakCrops(Player player, ItemStack tool, Block block) {
+		if (!player.hasPermission("minetinker.easyharvest.use"))
+
 		Power.HASPOWER.get(player).set(true);
 		Material type = block.getType();
 
@@ -122,8 +124,11 @@ public class EasyHarvestListener implements Listener {
 
 	private static void replantCrops(Player p, Block b, Material m) {
 		if (Main.getPlugin().getConfig().getBoolean("EasyHarvest.replant")) {
-			for (ItemStack is : p.getInventory().getContents()) {
+			if (!p.hasPermission("minetinker.easyharvest.replant")) {
+				return;
+			}
 
+			for (ItemStack is : p.getInventory().getContents()) {
 				if (is == null) {
 					// This is necessary as even though this is annotated @NotNull, it's still null sometimes
 					continue;
