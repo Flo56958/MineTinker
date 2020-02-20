@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker.Commands.subs;
 
 import de.flo56958.MineTinker.Commands.ArgumentType;
+import de.flo56958.MineTinker.Commands.CommandManager;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -26,7 +27,7 @@ public class ItemStatisticsCommand implements SubCommand {
 		Player player;
 		if (args.length < 2) {
 			if (!(sender instanceof Player)) {
-				//TODO: Send missing Player information
+				CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 				return true;
 			}
 			player = (Player) sender;
@@ -34,7 +35,7 @@ public class ItemStatisticsCommand implements SubCommand {
 			player = Bukkit.getPlayer(args[1]);
 		}
 		if (player == null) {
-			//TODO: Send Player not found
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound"));
 			return true;
 		}
 		ModManager modManager = ModManager.instance();

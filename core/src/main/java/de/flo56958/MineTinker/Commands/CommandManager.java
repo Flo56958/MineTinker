@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Commands;
 
 import de.flo56958.MineTinker.Commands.subs.*;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.api.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -55,12 +56,12 @@ public class CommandManager implements TabExecutor {
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command, @NotNull String s,
 							 @NotNull String[] args) {
 		if (!(sender.hasPermission("minetinker.commands.main"))) {
-			//TODO: send no Perm
+			sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NoPermission"));
 			return true;
 		}
 
 		if (args.length <= 0) {
-			//TODO: send not enough or wrong Arguments
+			sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 			sendHelp(sender, null);
 			return true;
 		}
@@ -72,7 +73,7 @@ public class CommandManager implements TabExecutor {
 
 		SubCommand sub = map.get(args[0].toLowerCase());
 		if (sub == null) {
-			//TODO: send unknown command
+			sendError(sender, LanguageManager.getString("Commands.Failure.Cause.UnknownCommand"));
 			sendHelp(sender, null);
 			return true;
 		}
@@ -119,6 +120,11 @@ public class CommandManager implements TabExecutor {
 					ret = ret && onCommand(sender, command, s, arg);
 				}
 			}
+		}
+
+		if (!sender.hasPermission(sub.getPermission())) {
+			sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NoPermission"));
+			return true;
 		}
 
 		return sub.onCommand(sender, args);
@@ -224,7 +230,7 @@ public class CommandManager implements TabExecutor {
 								Player player = Bukkit.getPlayer(uuid);
 								if (player != null) args[i] = player.getDisplayName();
 								else {
-									//TODO: Wrong Player UUID / Name or not Online
+									sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound"));
 								}
 							} catch (IllegalArgumentException ignored) {
 							}
@@ -237,7 +243,7 @@ public class CommandManager implements TabExecutor {
 						if (rules[index].indexOf('-') != -1) {
 							String[] nums = rules[index].split("-");
 							if (nums.length != 2) {
-								//TODO: Return wrong random number format
+								sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 								break;
 							}
 							try{
@@ -246,7 +252,7 @@ public class CommandManager implements TabExecutor {
 								int rand = new Random().nextInt(max - min) + min;
 								args[i] = String.valueOf(rand);
 							} catch (NumberFormatException e) {
-								//TODO: Return wrong random number format
+								sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 							}
 						} else {
 							System.out.println(args[i]);
@@ -258,6 +264,10 @@ public class CommandManager implements TabExecutor {
 				}
 			}
 		}
+	}
+
+	public static void sendError(CommandSender sender, String cause) {
+		ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.Failure.Main").replaceAll("%cause", cause));
 	}
 
 	private void sendHelp(CommandSender sender, @Nullable SubCommand command) {

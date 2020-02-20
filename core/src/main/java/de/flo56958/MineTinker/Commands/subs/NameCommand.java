@@ -1,7 +1,9 @@
 package de.flo56958.MineTinker.Commands.subs;
 
 import de.flo56958.MineTinker.Commands.ArgumentType;
+import de.flo56958.MineTinker.Commands.CommandManager;
 import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.api.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
@@ -28,14 +30,14 @@ public class NameCommand implements SubCommand {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
 		if (args.length < 2) {
-			//TODO: Send invalid arguments
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 			return true;
 		}
 
 		Player player = Bukkit.getPlayer(args[1]);
 		if (sender instanceof Player && player == null) player = (Player) sender;
 		if (player == null) {
-			//TODO: Send no player specified
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 			return true;
 		}
 		ItemStack tool = player.getInventory().getItemInMainHand();
@@ -56,7 +58,7 @@ public class NameCommand implements SubCommand {
 				tool.setItemMeta(meta);
 			}
 		} else {
-			//TODO: Send invalid Tool
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidItem"));
 		}
 		return true;
 	}

@@ -1,7 +1,9 @@
 package de.flo56958.MineTinker.Commands.subs;
 
 import de.flo56958.MineTinker.Commands.ArgumentType;
+import de.flo56958.MineTinker.Commands.CommandManager;
 import de.flo56958.MineTinker.Data.GUIs;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.api.SubCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,7 +19,7 @@ public class EditConfigurationCommand implements SubCommand {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
 		if (!(sender instanceof Player)) {
-			//TODO: Send Player only command
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerOnlyCommand"));
 			return true;
 		}
 		GUIs.getConfigurationsGUI().show((Player) sender);

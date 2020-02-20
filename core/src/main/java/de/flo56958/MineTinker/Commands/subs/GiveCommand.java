@@ -1,10 +1,12 @@
 package de.flo56958.MineTinker.Commands.subs;
 
 import de.flo56958.MineTinker.Commands.ArgumentType;
+import de.flo56958.MineTinker.Commands.CommandManager;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Listeners.BuildersWandListener;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.api.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -38,7 +40,7 @@ public class GiveCommand implements SubCommand {
 			if (sender instanceof Player) {
 				player = (Player) sender;
 			} else {
-				//TODO: Send invalid arguments
+				CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 				return true;
 			}
 		} else if (args.length > 2) {
@@ -63,7 +65,7 @@ public class GiveCommand implements SubCommand {
 					}
 				}
 			}
-			//TODO: Send invalid Material
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 			return true;
 		}
 

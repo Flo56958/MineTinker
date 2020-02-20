@@ -1,8 +1,10 @@
 package de.flo56958.MineTinker.Commands.subs;
 
 import de.flo56958.MineTinker.Commands.ArgumentType;
+import de.flo56958.MineTinker.Commands.CommandManager;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.api.SubCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,7 +26,7 @@ public class AddModifierCommand implements SubCommand {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
 		if (!(sender instanceof Player)) {
-			//TODO: Send Player only command
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerOnlyCommand"));
 			return true;
 		}
 		Player player = (Player) sender;
@@ -40,7 +42,7 @@ public class AddModifierCommand implements SubCommand {
 							try {
 								amount = Integer.parseInt(args[2]);
 							} catch (NumberFormatException e) {
-								//TODO: Send expected Integer value in argument 3
+								CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 							}
 						}
 						for (int i = 0; i < amount; i++) {

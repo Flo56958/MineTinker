@@ -1,8 +1,10 @@
 package de.flo56958.MineTinker.Commands.subs;
 
 import de.flo56958.MineTinker.Commands.ArgumentType;
+import de.flo56958.MineTinker.Commands.CommandManager;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.api.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
@@ -41,14 +43,14 @@ public class GiveModifierItemCommand implements SubCommand {
 						if (sender instanceof Player) {
 							p = (Player) sender;
 						} else {
-							//TODO: Send missing Player to give item to
+							CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 							return true;
 						}
 						break;
 					}
 				}
 				if(mod == null) {
-					//TODO: Send expected Modifier in Index 1
+					CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 					return true;
 				}
 				break;
@@ -70,14 +72,14 @@ public class GiveModifierItemCommand implements SubCommand {
 						if (sender instanceof Player) {
 							p = (Player) sender;
 						} else if (modifierIndex == 1){
-							//TODO: Send missing Player to give item to
+							CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 							return true;
 						}
 						break;
 					}
 				}
 				if (mod == null) {
-					//TODO: Send expected Modifier in Index 1
+					CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 					return true;
 				}
 
@@ -86,7 +88,7 @@ public class GiveModifierItemCommand implements SubCommand {
 					try {
 						amount = Integer.parseInt(args[amountIndex]);
 					} catch (NumberFormatException ignored) {
-						//TODO: Expected Amount in Index 2 got args[2]
+						CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 						return true;
 					}
 				}
@@ -103,7 +105,7 @@ public class GiveModifierItemCommand implements SubCommand {
 					}
 				}
 				if (p == null) {
-					//TODO: Send expected Player in Index 1 got args[1]
+					CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 					return true;
 				}
 				for (Modifier m : ModManager.instance().getAllowedMods()) {
@@ -113,19 +115,19 @@ public class GiveModifierItemCommand implements SubCommand {
 					}
 				}
 				if (mod == null) {
-					//TODO: Send expected Modifier in Index 2
+					CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 					return true;
 				}
 
 				try {
 					amount = Integer.parseInt(args[amountIndex]);
 				} catch (NumberFormatException ignored) {
-					//TODO: Expected Amount in Index 2 got args[2]
+					CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 					return true;
 				}
 				break;
 			default:
-				//TODO: Send wrong command argument length args.length
+				CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 				return true;
 		}
 		ItemStack item = mod.getModItem().clone();

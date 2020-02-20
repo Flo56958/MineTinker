@@ -1,7 +1,9 @@
 package de.flo56958.MineTinker.Commands.subs;
 
 import de.flo56958.MineTinker.Commands.ArgumentType;
+import de.flo56958.MineTinker.Commands.CommandManager;
 import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.api.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
@@ -33,13 +35,13 @@ public class AddExpCommand implements SubCommand {
 			if (sender instanceof Player) {
 				player = (Player) sender;
 			} else {
-				//TODO: Send invalid arguments
+				CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 				return true;
 			}
 			try {
 				amount = Integer.parseInt(args[1]);
 			} catch (NumberFormatException e) {
-				//TODO: Send wrong number format in Index 1
+				CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 				return true;
 			}
 		} else if (args.length > 2) {
@@ -47,11 +49,15 @@ public class AddExpCommand implements SubCommand {
 			try {
 				amount = Integer.parseInt(args[2]);
 			} catch (NumberFormatException e) {
-				//TODO: Send wrong number format in Index 2
+				CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 				return true;
 			}
 		} else {
-			//TODO: Send wrong argument length
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+			return true;
+		}
+		if (player == null) {
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound"));
 			return true;
 		}
 
