@@ -30,6 +30,9 @@ public class CommandManager implements TabExecutor {
 		commands.add(new GiveModifierItemCommand());
 		commands.add(new ConvertCommand());
 		commands.add(new AddExpCommand());
+		commands.add(new InfoCommand());
+		commands.add(new ReloadCommand());
+		commands.add(new NameCommand());
 
 		commands.forEach(this::registerSubcommand);
 

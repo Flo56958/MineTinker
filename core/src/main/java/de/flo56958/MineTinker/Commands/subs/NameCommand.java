@@ -9,65 +9,61 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 /**
- * Syntax of /mt addexp:
- * 		/mt addexp {Player} [Amount]
+ * Syntax of /mt convert:
+ * 		/mt convert {player} [name]
  *
  * Legend:
  * 		{ }: not necessary
  * 		[ ]: necessary
  */
-public class AddExpCommand implements SubCommand {
+public class NameCommand implements SubCommand {
 
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
-		Player player;
-		int amount;
-
-		if (args.length == 2) {
-			if (sender instanceof Player) {
-				player = (Player) sender;
-			} else {
-				//TODO: Send invalid arguments
-				return true;
-			}
-			try {
-				amount = Integer.parseInt(args[1]);
-			} catch (NumberFormatException e) {
-				//TODO: Send wrong number format in Index 1
-				return true;
-			}
-		} else if (args.length > 2) {
-			player = Bukkit.getPlayer(args[1]);
-			try {
-				amount = Integer.parseInt(args[2]);
-			} catch (NumberFormatException e) {
-				//TODO: Send wrong number format in Index 2
-				return true;
-			}
-		} else {
-			//TODO: Send wrong argument length
+		if (args.length < 2) {
+			//TODO: Send invalid arguments
 			return true;
 		}
 
-		ItemStack tool = player.getInventory().getItemInMainHand();
-		ModManager modManager = ModManager.instance();
-
-		if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
-			modManager.addExp(player, tool, amount, false);
+		Player player = Bukkit.getPlayer(args[1]);
+		if (sender instanceof Player && player == null) player = (Player) sender;
+		if (player == null) {
+			//TODO: Send no player specified
+			return true;
 		}
+		ItemStack tool = player.getInventory().getItemInMainHand();
 
+		if (ModManager.instance().isToolViable(tool) || ModManager.instance().isArmorViable(tool)) {
+			StringBuilder name = new StringBuilder();
+
+			for (int i = 1; i < args.length; i++) {
+				name.append(" ").append(args[i].replace('&', '§'));
+			}
+
+			name = new StringBuilder(name.substring(1));
+
+			ItemMeta meta = tool.getItemMeta();
+
+			if (meta != null) {
+				meta.setDisplayName(name.toString());
+				tool.setItemMeta(meta);
+			}
+		} else {
+			//TODO: Send invalid Tool
+		}
 		return true;
 	}
 
 	@Override
 	public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String[] args) {
-		List<String> result = new ArrayList<>();
+		ArrayList<String> result = new ArrayList<>();
 		if (args.length == 2) {
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				result.add(player.getDisplayName());
@@ -80,10 +76,6 @@ public class AddExpCommand implements SubCommand {
 				result.add("@p");
 				result.add("@rw");
 			}
-		} else if (args.length == 3) {
-			for (int i = 0; i < 10; i++) {
-				result.add(String.valueOf(i));
-			}
 		}
 		return result;
 	}
@@ -91,32 +83,31 @@ public class AddExpCommand implements SubCommand {
 
 	@Override @NotNull
 	public String getName() {
-		return "addexp";
+		return "name";
 	}
 
 	@Override @NotNull
 	public List<String> getAliases(boolean withName) {
 		ArrayList<String> aliases = new ArrayList<>();
 		if (withName) aliases.add(getName());
-		aliases.add("ae");
+		aliases.add("n");
 		return aliases;
 	}
 
 	@Override @NotNull
 	public String getPermission() {
-		return "minetinker.commands.convert";
+		return "minetinker.commands.name";
 	}
 
 	@Override @NotNull
 	public Map<Integer, List<ArgumentType>> getArgumentsToParse() {
 		Map<Integer, List<ArgumentType>> argumentsToParse = new HashMap<>();
-		argumentsToParse.put(1, Arrays.asList(ArgumentType.PLAYER, ArgumentType.RANDOM_NUMBER));
-		argumentsToParse.put(2, Collections.singletonList(ArgumentType.RANDOM_NUMBER));
+		argumentsToParse.put(1, Collections.singletonList(ArgumentType.PLAYER));
 		return argumentsToParse;
 	}
 
 	@Override
 	public @NotNull String syntax() {
-		return "/mt addexp {Player} [Amount]";
+		return "/mt name {Player} [Name] ...";
 	}
 }
