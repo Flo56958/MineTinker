@@ -1,6 +1,6 @@
 package de.flo56958.MineTinker;
 
-import de.flo56958.MineTinker.Commands.Commands;
+import de.flo56958.MineTinker.Commands.CommandManager;
 import de.flo56958.MineTinker.Data.GUIs;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Listeners.*;
@@ -15,6 +15,7 @@ import de.flo56958.MineTinker.api.gui.GUI;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -54,7 +55,7 @@ public class Main extends JavaPlugin {
 			incompatibilityCheck();
 		}
 
-		Commands cmd = new Commands();
+		TabExecutor cmd = new CommandManager();
 		this.getCommand("minetinker").setExecutor(cmd); // must be after internals as it would throw a NullPointerException
 		this.getCommand("minetinker").setTabCompleter(cmd);
 

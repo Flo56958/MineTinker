@@ -22,8 +22,8 @@ import org.bukkit.plugin.Plugin;
  * This API is in a very unfinished state.
  *
  * @author Flo56958
- * @version 2019/06/08
- * @apiNote USE ON OWN RISK. MAY CHANGE WITH FUTURE UPDATES.
+ * @version 2019/10/20
+ * @apiNote USE AT OWN RISK. MAY CHANGE WITH FUTURE UPDATES.
  * @see de.flo56958.MineTinker.Modifiers.Modifier
  * @see de.flo56958.MineTinker.Utilities.nms.NBTUtils
  * <p>
@@ -85,7 +85,7 @@ public class MineTinkerAPI {
 		ConfigurationManager.saveConfig(config);
 	}
 
-	public Plugin getMineTinker() {
+	public Plugin getPlugin() {
 		return Main.getPlugin();
 	}
 

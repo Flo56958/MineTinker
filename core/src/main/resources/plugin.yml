@@ -57,7 +57,6 @@ permissions:
       minetinker.commands.name: true
       minetinker.commands.addmod: true
       minetinker.commands.removemod: true
-      minetinker.commands.setdurability: true
       minetinker.commands.give: true
       minetinker.commands.givemodifieritem: true
       minetinker.commands.convert: true
@@ -100,10 +99,6 @@ permissions:
 
   minetinker.commands.removemod:
     description: Allows to remove Modifiers from a MineTinker-Tool
-    default: op
-
-  minetinker.commands.setdurability:
-    description: Allows to set the Durability of a MineTinker-Tool
     default: op
 
   minetinker.commands.give:
