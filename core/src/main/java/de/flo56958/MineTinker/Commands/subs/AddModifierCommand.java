@@ -52,6 +52,8 @@ public class AddModifierCommand implements SubCommand {
 					break;
 				}
 			}
+		} else {
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 		}
 		return true;
 	}

@@ -173,7 +173,7 @@ public class CommandManager implements TabExecutor {
 			}
 		}
 		if (result != null) {
-			result.add("help");
+			if (args.length < 2) result.add("help");
 			//filter out any command that is not the beginning of the typed command
 			result.removeIf(str -> !str.toLowerCase().startsWith(args[args.length - 1].toLowerCase()));
 			result.sort(String::compareToIgnoreCase);
