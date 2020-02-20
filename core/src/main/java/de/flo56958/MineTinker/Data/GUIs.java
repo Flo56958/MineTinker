@@ -1,6 +1,5 @@
 package de.flo56958.MineTinker.Data;
 
-import de.flo56958.MineTinker.Commands.Commands;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -245,7 +244,7 @@ public class GUIs {
 			}
 			GUI.Window.Button reloadButton = currentPage.addButton(4, 5, reload);
 			reloadButton.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE_ON_PLAYER(reloadButton, (player, ignored) -> {
-				Commands.reload(player);
+				Bukkit.getServer().dispatchCommand(player, "/mt reload");
 				configurationsGUI.show(player, 0);
 			}));
 
@@ -294,7 +293,7 @@ public class GUIs {
 					reloadButton = currentPage.addButton(4, 5, reload);
 					int pagenumber = pageNo;
 					reloadButton.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE_ON_PLAYER(reloadButton, (player, ignored) -> {
-						Commands.reload(player);
+						Bukkit.getServer().dispatchCommand(player, "/mt reload");
 						configurationsGUI.show(player, pagenumber - 2);
 					}));
 					i = 0;

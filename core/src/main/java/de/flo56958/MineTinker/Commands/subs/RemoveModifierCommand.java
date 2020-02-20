@@ -10,17 +10,20 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Syntax of /mt addmodifier:
- * 		/mt addmodifier [Modifier] {Level}
+ * Syntax of /mt removemodifier:
+ * 		/mt removemodifier [Modifier]
  *
  * Legend:
  * 		{ }: not necessary
  * 		[ ]: necessary
  */
-public class AddModifierCommand implements SubCommand {
+public class RemoveModifierCommand implements SubCommand {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
 		if (!(sender instanceof Player)) {
@@ -34,19 +37,8 @@ public class AddModifierCommand implements SubCommand {
 				if (m.getName().equalsIgnoreCase(args[1].replaceAll("_", " "))) {
 					ItemStack tool = player.getInventory().getItemInMainHand();
 
-					if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
-						int amount = 1;
-						if (args.length >= 3) {
-							try {
-								amount = Integer.parseInt(args[2]);
-							} catch (NumberFormatException e) {
-								//TODO: Send expected Integer value in argument 3
-							}
-						}
-						for (int i = 0; i < amount; i++) {
-							if (!modManager.addMod(player, tool, m, true, false, false)) break;
-						}
-					}
+					if (modManager.isToolViable(tool) || modManager.isArmorViable(tool))
+						modManager.removeMod(tool, m);
 					break;
 				}
 			}
@@ -58,13 +50,11 @@ public class AddModifierCommand implements SubCommand {
 	public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String[] args) {
 		List<String> result = new ArrayList<>();
 		if (sender instanceof Player) {
+			ItemStack item = ((Player) sender).getInventory().getItemInMainHand();
 			if (args.length == 2) {
 				for (Modifier mod : ModManager.instance().getAllowedMods()) {
-					result.add(mod.getName().replaceAll(" ", "_"));
-				}
-			} else if (args.length == 3) {
-				for (int i = 0; i < 10; i++) {
-					result.add(String.valueOf(i));
+					if (ModManager.instance().hasMod(item, mod))
+						result.add(mod.getName().replaceAll(" ", "_"));
 				}
 			}
 		}
@@ -73,31 +63,30 @@ public class AddModifierCommand implements SubCommand {
 
 	@Override
 	public @NotNull String getName() {
-		return "addmodifier";
+		return "removemodifier";
 	}
 
 	@Override
 	public @NotNull List<String> getAliases(boolean withName) {
 		ArrayList<String> aliases = new ArrayList<>();
 		if (withName) aliases.add(getName());
-		aliases.add("am");
+		aliases.add("rm");
+		aliases.add("rmod");
 		return aliases;
 	}
 
 	@Override
 	public @NotNull String getPermission() {
-		return "minetinker.commands.addmod";
+		return "minetinker.commands.removemod";
 	}
 
 	@Override
 	public @NotNull Map<Integer, List<ArgumentType>> getArgumentsToParse() {
-		Map<Integer, List<ArgumentType>> argumentsToParse = new HashMap<>();
-		argumentsToParse.put(3, Collections.singletonList(ArgumentType.RANDOM_NUMBER));
-		return argumentsToParse;
+		return new HashMap<>();
 	}
 
 	@Override
 	public @NotNull String syntax() {
-		return "/mt addmodifier [Modifier] {Level}";
+		return "/mt removemodifier [Modifier]";
 	}
 }
