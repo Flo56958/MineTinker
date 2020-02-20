@@ -230,7 +230,7 @@ public class CommandManager implements TabExecutor {
 								Player player = Bukkit.getPlayer(uuid);
 								if (player != null) args[i] = player.getDisplayName();
 								else {
-									sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound"));
+									sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound").replace("%p", args[i]));
 								}
 							} catch (IllegalArgumentException ignored) {
 							}
@@ -255,9 +255,7 @@ public class CommandManager implements TabExecutor {
 								sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 							}
 						} else {
-							System.out.println(args[i]);
 							args[i] = rules[index];
-							System.out.println(args[i]);
 						}
 						break;
 					default:

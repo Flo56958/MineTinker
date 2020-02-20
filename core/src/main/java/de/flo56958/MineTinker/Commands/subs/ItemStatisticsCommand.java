@@ -35,7 +35,7 @@ public class ItemStatisticsCommand implements SubCommand {
 			player = Bukkit.getPlayer(args[1]);
 		}
 		if (player == null) {
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound"));
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound").replace("%p", args[1]));
 			return true;
 		}
 		ModManager modManager = ModManager.instance();
