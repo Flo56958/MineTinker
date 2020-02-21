@@ -6,6 +6,7 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -163,19 +164,21 @@ public class MultiShot extends Modifier implements Listener {
 		boolean hasInfinity = modManager.hasMod(tool, Infinity.instance());
 
 		for (int i = 1; i <= modLevel; i++) {
-			if (!hasInfinity && needsArrows) {
-				if (!p.getInventory().contains(Material.ARROW)) {
-					break;
-				}
-
-				for (ItemStack item : p.getInventory().getContents()) {
-					if (item == null) {
-						continue;
+			if (!p.getGameMode().equals(GameMode.CREATIVE)) {
+				if (!hasInfinity && needsArrows) {
+					if (!p.getInventory().contains(Material.ARROW)) {
+						break;
 					}
 
-					if (item.getType() == Material.ARROW) {
-						item.setAmount(item.getAmount() - 1);
-						break;
+					for (ItemStack item : p.getInventory().getContents()) {
+						if (item == null) {
+							continue;
+						}
+
+						if (item.getType() == Material.ARROW) {
+							item.setAmount(item.getAmount() - 1);
+							break;
+						}
 					}
 				}
 			}
@@ -184,7 +187,7 @@ public class MultiShot extends Modifier implements Listener {
 				Arrow arr = loc.getWorld().spawnArrow(loc, vel, (float) vel.length(), (float) spread);
 				arr.setShooter(p);
 
-				if (hasInfinity) {
+				if (hasInfinity || p.getGameMode().equals(GameMode.CREATIVE)) {
 					arr.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
 				}
 

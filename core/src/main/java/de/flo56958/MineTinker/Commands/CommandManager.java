@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.BlockCommandSender;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Entity;
@@ -53,7 +54,7 @@ public class CommandManager implements TabExecutor {
 	}
 
 	@Override
-	public boolean onCommand(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command, @NotNull String s,
+	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s,
 							 @NotNull String[] args) {
 		if (!(sender.hasPermission("minetinker.commands.main"))) {
 			sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NoPermission"));
@@ -131,7 +132,7 @@ public class CommandManager implements TabExecutor {
 	}
 
 	@Override
-	public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull org.bukkit.command.Command command,
+	public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
 												@NotNull String s, @NotNull String[] args) {
 		List<String> result = new ArrayList<>();
 		if (args.length == 0) {
