@@ -25,6 +25,7 @@ public class Speedy extends Modifier {
 
 	private Speedy() {
 		super(Main.getPlugin());
+		customModelData = 10_037;
 	}
 
 	public static Speedy instance() {

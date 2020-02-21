@@ -20,6 +20,7 @@ public class Thorned extends Modifier {
 
 	private Thorned() {
 		super(Main.getPlugin());
+		customModelData = 10_041;
 	}
 
 	public static Thorned instance() {

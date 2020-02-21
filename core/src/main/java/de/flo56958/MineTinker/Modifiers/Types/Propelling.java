@@ -34,7 +34,7 @@ public class Propelling extends Modifier implements Listener {
 
 	private Propelling() {
 		super(Main.getPlugin());
-
+		customModelData = 10_028;
 	}
 
 	public static Propelling instance() {

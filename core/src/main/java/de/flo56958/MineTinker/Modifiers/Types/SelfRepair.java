@@ -36,7 +36,7 @@ public class SelfRepair extends Modifier implements Listener {
 
 	private SelfRepair() {
 		super(Main.getPlugin());
-
+		customModelData = 10_031;
 	}
 
 	public static SelfRepair instance() {

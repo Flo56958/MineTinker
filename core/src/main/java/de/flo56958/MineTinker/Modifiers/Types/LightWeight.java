@@ -21,6 +21,7 @@ public class LightWeight extends Modifier {
 
 	private LightWeight() {
 		super(Main.getPlugin());
+		customModelData = 10_019;
 	}
 
 	public static LightWeight instance() {

@@ -20,6 +20,7 @@ public class Insulating extends Modifier {
 
 	private Insulating() {
 		super(Main.getPlugin());
+		customModelData = 10_015;
 	}
 
 	public static Insulating instance() {

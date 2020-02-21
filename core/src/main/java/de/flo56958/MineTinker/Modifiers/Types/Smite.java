@@ -20,6 +20,7 @@ public class Smite extends Modifier {
 
 	private Smite() {
 		super(Main.getPlugin());
+		customModelData = 10_035;
 	}
 
 	public static Smite instance() {

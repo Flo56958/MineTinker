@@ -28,7 +28,7 @@ public class Directing extends Modifier implements Listener {
 
 	private Directing() {
 		super(Main.getPlugin());
-
+		customModelData = 10_008;
 	}
 
 	public static Directing instance() {

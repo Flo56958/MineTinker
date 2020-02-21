@@ -38,6 +38,8 @@ public abstract class Modifier {
 	private int maxLvl;
 	private ItemStack modItem;
 
+	protected int customModelData = -1;
+
 	/**
 	 * Class constructor
 	 *
@@ -107,6 +109,8 @@ public abstract class Modifier {
 
 		return true;
 	}
+
+	public int getCustomModelData() { return customModelData; }
 
 	public abstract String getKey();
 
@@ -184,7 +188,7 @@ public abstract class Modifier {
 		if (!customItem) {
 			if (ConfigurationManager.getConfig("Modifiers.yml").getBoolean("UseCustomModelData", false)) {
 				this.modItem.setType(Material.STICK);
-				NBTUtils.getHandler().setInt(this.modItem, "CustomModelData", Math.abs(this.getKey().hashCode() % 10_000_000));
+				NBTUtils.getHandler().setInt(this.modItem, "CustomModelData", this.customModelData);
 			}
 		}
 	}

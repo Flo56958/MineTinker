@@ -23,6 +23,7 @@ public class Channeling extends Modifier {
 
 	private Channeling() {
 		super(Main.getPlugin());
+		customModelData = 10_007;
 	}
 
 	public static Channeling instance() {

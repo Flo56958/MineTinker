@@ -23,6 +23,7 @@ public class Freezing extends Modifier {
 
 	private Freezing() {
 		super(Main.getPlugin());
+		customModelData = 10_011;
 	}
 
 	public static Freezing instance() {

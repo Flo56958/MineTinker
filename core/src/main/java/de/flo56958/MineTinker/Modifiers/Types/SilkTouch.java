@@ -22,6 +22,7 @@ public class SilkTouch extends Modifier {
 
 	private SilkTouch() {
 		super(Main.getPlugin());
+		customModelData = 10_034;
 	}
 
 	public static SilkTouch instance() {

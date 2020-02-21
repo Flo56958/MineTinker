@@ -38,6 +38,7 @@ public class AutoSmelt extends Modifier implements Listener {
 
 	private AutoSmelt() {
 		super(Main.getPlugin());
+		customModelData = 10_004;
 	}
 
 	public static AutoSmelt instance() {

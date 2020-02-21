@@ -33,6 +33,7 @@ public class Tanky extends Modifier implements Listener {
 
 	private Tanky() {
 		super(Main.getPlugin());
+		customModelData = 10_040;
 	}
 
 	public static Tanky instance() {

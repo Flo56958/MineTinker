@@ -23,6 +23,7 @@ public class Sharpness extends Modifier {
 
 	private Sharpness() {
 		super(Main.getPlugin());
+		customModelData = 10_032;
 	}
 
 	public static Sharpness instance() {

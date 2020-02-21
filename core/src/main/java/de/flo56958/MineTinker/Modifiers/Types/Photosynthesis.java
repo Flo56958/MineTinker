@@ -127,6 +127,7 @@ public class Photosynthesis extends Modifier implements Listener {
 
 	private Photosynthesis() {
 		super(Main.getPlugin());
+		customModelData = 10_024;
 	}
 
 	public static Photosynthesis instance() {

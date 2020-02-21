@@ -32,7 +32,7 @@ public class Beheading extends Modifier implements Listener {
 
 	private Beheading() {
 		super(Main.getPlugin());
-
+		customModelData = 10_005;
 	}
 
 	public static Beheading instance() {

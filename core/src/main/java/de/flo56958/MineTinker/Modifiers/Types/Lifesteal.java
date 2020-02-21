@@ -29,7 +29,7 @@ public class Lifesteal extends Modifier implements Listener {
 
 	private Lifesteal() {
 		super(Main.getPlugin());
-
+		customModelData = 10_018;
 	}
 
 	public static Lifesteal instance() {

@@ -34,7 +34,7 @@ public class Shulking extends Modifier implements Listener {
 
 	private Shulking() {
 		super(Main.getPlugin());
-
+		customModelData = 10_033;
 	}
 
 	public static Shulking instance() {

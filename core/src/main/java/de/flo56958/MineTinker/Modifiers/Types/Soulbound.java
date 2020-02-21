@@ -31,7 +31,7 @@ public class Soulbound extends Modifier implements Listener {
 
 	private Soulbound() {
 		super(Main.getPlugin());
-
+		customModelData = 10_036;
 	}
 
 	public static Soulbound instance() {

@@ -29,7 +29,7 @@ public class Melting extends Modifier implements Listener {
 
 	private Melting() {
 		super(Main.getPlugin());
-
+		customModelData = 10_022;
 	}
 
 	public static Melting instance() {

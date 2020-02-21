@@ -20,6 +20,7 @@ public class AntiBlastPlating extends Modifier {
 
 	private AntiBlastPlating() {
 		super(Main.getPlugin());
+		customModelData = 10_002;
 	}
 
 	public static AntiBlastPlating instance() {

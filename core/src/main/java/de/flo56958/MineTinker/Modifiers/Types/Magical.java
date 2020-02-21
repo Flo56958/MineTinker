@@ -33,6 +33,7 @@ public class Magical extends Modifier implements Listener {
 
 	private Magical() {
 		super(Main.getPlugin());
+		customModelData = 10_021;
 	}
 
 	public static Magical instance() {

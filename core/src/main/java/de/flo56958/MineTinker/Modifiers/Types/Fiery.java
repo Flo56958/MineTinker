@@ -22,6 +22,7 @@ public class Fiery extends Modifier {
 
 	private Fiery() {
 		super(Main.getPlugin());
+		customModelData = 10_010;
 	}
 
 	public static Fiery instance() {

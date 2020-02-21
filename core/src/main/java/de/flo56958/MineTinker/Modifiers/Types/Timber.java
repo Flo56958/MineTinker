@@ -29,7 +29,7 @@ public class Timber extends Modifier implements Listener {
 
 	private Timber() {
 		super(Main.getPlugin());
-
+		customModelData = 10_042;
 	}
 
 	public static Timber instance() {

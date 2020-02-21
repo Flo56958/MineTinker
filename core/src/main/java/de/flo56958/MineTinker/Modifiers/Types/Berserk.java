@@ -29,7 +29,7 @@ public class Berserk extends Modifier implements Listener {
 
 	private Berserk() {
 		super(Main.getPlugin());
-
+		customModelData = 10_006;
 	}
 
 	public static Berserk instance() {

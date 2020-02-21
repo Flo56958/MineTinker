@@ -26,6 +26,7 @@ public class KineticPlating extends Modifier implements Listener {
 
 	private KineticPlating() {
 		super(Main.getPlugin());
+		customModelData = 10_016;
 	}
 
 	public static KineticPlating instance() {

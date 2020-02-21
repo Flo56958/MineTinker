@@ -26,6 +26,7 @@ public class Reinforced extends Modifier {
 
 	private Reinforced() {
 		super(Main.getPlugin());
+		customModelData = 10_030;
 	}
 
 	public static Reinforced instance() {

@@ -24,6 +24,7 @@ public class Haste extends Modifier {
 
 	private Haste() {
 		super(Main.getPlugin());
+		customModelData = 10_013;
 	}
 
 	public static Haste instance() {

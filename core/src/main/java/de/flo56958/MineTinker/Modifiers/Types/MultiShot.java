@@ -32,6 +32,7 @@ public class MultiShot extends Modifier implements Listener {
 
 	private MultiShot() {
 		super(Main.getPlugin());
+		customModelData = 10_023;
 	}
 
 	public static MultiShot instance() {

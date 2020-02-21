@@ -20,6 +20,7 @@ public class SpidersBane extends Modifier {
 
 	private SpidersBane() {
 		super(Main.getPlugin());
+		customModelData = 10_038;
 	}
 
 	public static SpidersBane instance() {

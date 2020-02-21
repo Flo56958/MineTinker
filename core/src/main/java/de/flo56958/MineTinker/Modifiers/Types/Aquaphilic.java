@@ -20,6 +20,7 @@ public class Aquaphilic extends Modifier {
 
 	private Aquaphilic() {
 		super(Main.getPlugin());
+		customModelData = 10_003;
 	}
 
 	public static Aquaphilic instance() {

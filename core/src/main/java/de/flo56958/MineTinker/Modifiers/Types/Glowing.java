@@ -32,7 +32,7 @@ public class Glowing extends Modifier implements Listener {
 
 	private Glowing() {
 		super(Main.getPlugin());
-
+		customModelData = 10_012;
 	}
 
 	public static Glowing instance() {

@@ -33,6 +33,7 @@ public class Luck extends Modifier {
 
 	private Luck() {
 		super(Main.getPlugin());
+		customModelData = 10_020;
 	}
 
 	public static Luck instance() {

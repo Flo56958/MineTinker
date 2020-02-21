@@ -27,6 +27,7 @@ public class Infinity extends Modifier implements Listener {
 
 	private Infinity() {
 		super(Main.getPlugin());
+		customModelData = 10_014;
 	}
 
 	public static Infinity instance() {

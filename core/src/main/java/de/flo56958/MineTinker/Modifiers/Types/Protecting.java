@@ -20,6 +20,7 @@ public class Protecting extends Modifier {
 
 	private Protecting() {
 		super(Main.getPlugin());
+		customModelData = 10_029;
 	}
 
 	public static Protecting instance() {

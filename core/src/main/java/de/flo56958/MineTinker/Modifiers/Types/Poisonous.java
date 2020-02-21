@@ -35,6 +35,7 @@ public class Poisonous extends Modifier implements Listener {
 
 	private Poisonous() {
 		super(Main.getPlugin());
+		customModelData = 10_026;
 	}
 
 	public static Poisonous instance() {

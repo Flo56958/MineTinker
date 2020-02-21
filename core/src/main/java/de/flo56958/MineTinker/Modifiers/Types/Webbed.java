@@ -35,7 +35,7 @@ public class Webbed extends Modifier implements Listener {
 
 	private Webbed() {
 		super(Main.getPlugin());
-
+		customModelData = 10_043;
 	}
 
 	public static Webbed instance() {

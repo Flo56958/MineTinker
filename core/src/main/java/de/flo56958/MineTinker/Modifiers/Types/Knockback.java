@@ -23,6 +23,7 @@ public class Knockback extends Modifier {
 
 	private Knockback() {
 		super(Main.getPlugin());
+		customModelData = 10_017;
 	}
 
 	public static Knockback instance() {

@@ -20,6 +20,7 @@ public class AntiArrowPlating extends Modifier {
 
 	private AntiArrowPlating() {
 		super(Main.getPlugin());
+		customModelData = 10_001;
 	}
 
 	public static AntiArrowPlating instance() {

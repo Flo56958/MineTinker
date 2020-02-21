@@ -23,6 +23,7 @@ public class Sweeping extends Modifier {
 
 	private Sweeping() {
 		super(Main.getPlugin());
+		customModelData = 10_039;
 	}
 
 	public static Sweeping instance() {

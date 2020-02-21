@@ -43,6 +43,7 @@ public class Power extends Modifier implements Listener {
 
 	private Power() {
 		super(Main.getPlugin());
+		customModelData = 10_027;
 	}
 
 	public static Power instance() {

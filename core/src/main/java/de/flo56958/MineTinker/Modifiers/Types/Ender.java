@@ -36,7 +36,7 @@ public class Ender extends Modifier implements Listener {
 
 	private Ender() {
 		super(Main.getPlugin());
-
+		customModelData = 10_009;
 	}
 
 	public static Ender instance() {

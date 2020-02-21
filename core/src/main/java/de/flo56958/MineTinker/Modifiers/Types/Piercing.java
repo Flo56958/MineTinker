@@ -23,6 +23,7 @@ public class Piercing extends Modifier {
 
 	private Piercing() {
 		super(Main.getPlugin());
+		customModelData = 10_025;
 	}
 
 	public static Piercing instance() {
