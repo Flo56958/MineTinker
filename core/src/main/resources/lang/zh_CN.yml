@@ -38,8 +38,6 @@ Commands.Reload.Builderswands: "正在重载建造工具杖!"
 Commands.Reload.GUIs: "正在重载用户界面!"
 Commands.Reload.Finish: "重载完毕!"
 Commands.ModList: "可用的模块:"
-Commands.SetDurability.InvalidInput: "无效参数! 请键入有效数值或用\"full\"代表全体!"
-Commands.GiveModifierItem.PlayerNotFound: "玩家%player不存在或不在线!"
 Commands.CheckUpdate.Start: "正在检查更新..."
 Commands.CheckUpdate.Disabled: "服务器已禁止检查更新功能!"
 Commands.ItemStatistics.Head: "这是%toolname的物品数据:"
@@ -47,6 +45,15 @@ Commands.ItemStatistics.Level: "%GOLD%等级: %WHITE%%level"
 Commands.ItemStatistics.Exp: "%GOLD%经验: %WHITE%%current/%nextlevel"
 Commands.ItemStatistics.FreeSlots: "%GOLD%空余槽位: %WHITE%%slots"
 Commands.ItemStatistics.Modifiers: "%WHITE%模块:"
+Commands.Failure.Main: "命令执行错误: %cause"
+Commands.Failure.Cause.PlayerNotFound: "ID为%p的玩家未找到!"
+Commands.Failure.Cause.PlayerMissing: "缺失所需的玩家信息!"
+Commands.Failure.Cause.InvalidArguments: "非法参数!"
+Commands.Failure.Cause.NumberFormatException: "数字类型错误!"
+Commands.Failure.Cause.PlayerOnlyCommand: "该命令仅能由玩家执行!"
+Commands.Failure.Cause.UnknownCommand: "未知命令!"
+Commands.Failure.Cause.NoPermission: "你没有权限!"
+Commands.Failure.Cause.InvalidItem: "非法物品!"
 
 GUI.ButtonAction.REQUEST_INPUT: "你需要手动为%data键入信息. 你在聊天框中发送的下一个消息会被MineTinker截取作为信息录入."
 
@@ -110,15 +117,15 @@ Modifier:
   Enchantable:
     LevelsRequired: "需要%amount级经验!"
   Anti-Arrow-Plating:
-    Name: "抗箭矢镀层"
+    Name: "抗箭矢镶板"
     Description: "护甲将削弱箭矢造成的伤害!"
     ModifierItemName: "抗穿刺金属"
-    DescriptionModifierItem: "抗箭矢镀层模块"
+    DescriptionModifierItem: "抗箭矢镶板模块"
   Anti-Blast-Plating:
-    Name: "抗爆镀层"
+    Name: "抗爆镶板"
     Description: "护甲将削弱爆炸造成的伤害!"
     ModifierItemName: "防爆金属"
-    DescriptionModifierItem: "抗爆镀层模块"
+    DescriptionModifierItem: "抗爆镶板模块"
   Aquaphilic:
     Name: "亲水性"
     Description: "让水成为你的好朋友."
@@ -190,6 +197,11 @@ Modifier:
     Description: "护甲将削弱火焰造成的伤害!"
     ModifierItemName: "绝热合金"
     DescriptionModifierItem: "绝热模块"
+  KineticPlating:
+    Name: "动能镶板"
+    Description: "将鞘翅滑翔时受到的撞击伤害减少%amount%/级."
+    ModifierItemName: "动能镶板"
+    DescriptionModifierItem: "动能镶板模块"
   Knockback:
     Name: "击退"
     Description: "将敌人击飞更远!"
@@ -313,7 +325,7 @@ Modifier:
   Thorned:
     Name: "荆棘"
     Description: "你的护甲将反击伤害你的敌人!"
-    ModifierItemName: "镶刺镀层"
+    ModifierItemName: "嵌刺镶板"
     DescriptionModifierItem: "荆棘模块"
   Timber:
     Name: "伐木"
