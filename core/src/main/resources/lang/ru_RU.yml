@@ -38,8 +38,6 @@ Commands.Reload.Builderswands: "Перезагрузка Посохов Стро
 Commands.Reload.GUIs: "Перезагрузка GUIs!"
 Commands.Reload.Finish: "Перезагрузка выполнена!"
 Commands.ModList: "Возможные модификаторы:"
-Commands.SetDurability.InvalidInput: "Неправильные Аргументы! Пожалуйста, введите допустимое число или 'full'!"
-Commands.GiveModifierItem.PlayerNotFound: "Игрока %player не существует или он не в сети!"
 Commands.CheckUpdate.Start: "Проверка на наличие обновлений..."
 Commands.CheckUpdate.Disabled: "Проверка на наличие обновлений отключена администратором!"
 Commands.ItemStatistics.Head: "Статистика по %toolname"
@@ -47,6 +45,15 @@ Commands.ItemStatistics.Level: "%GOLD%Уровень: %WHITE%%level"
 Commands.ItemStatistics.Exp: "%GOLD%Опыт: %WHITE%%current / %nextlevel"
 Commands.ItemStatistics.FreeSlots: "%GOLD%Свободных модификаторов: %WHITE%%slots"
 Commands.ItemStatistics.Modifiers: "%WHITE%Модификаторы:"
+Commands.Failure.Main: ""
+Commands.Failure.Cause.PlayerNotFound: ""
+Commands.Failure.Cause.PlayerMissing: ""
+Commands.Failure.Cause.InvalidArguments: ""
+Commands.Failure.Cause.NumberFormatException: ""
+Commands.Failure.Cause.PlayerOnlyCommand: ""
+Commands.Failure.Cause.UnknownCommand: ""
+Commands.Failure.Cause.NoPermission: ""
+Commands.Failure.Cause.InvalidItem: ""
 
 GUI.ButtonAction.REQUEST_INPUT: "Для %data требуется ввести данные. Следующее Ваше сообщение в чат будет будет услышано MineTinker."
 
@@ -192,7 +199,7 @@ Modifier:
     DescriptionModifierItem: "Модификатор Изоляции"
   KineticPlating:
     Name: "Кинетическое Покрытие"
-    Description: "Уменьшает урон, получаемый при врезании в стену на Элитре на %amount% за Уровень."
+    Description: "Уменьшает урон, получаемый при ударе о стену на Элитре на %amount% за уровень."
     ModifierItemName: "Кинетическая Пластина"
     DescriptionModifierItem: "Модификатор Кинетического Покрытия"
   Knockback:
