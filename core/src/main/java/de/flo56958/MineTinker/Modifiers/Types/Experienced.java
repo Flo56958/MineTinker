@@ -50,11 +50,6 @@ public class Experienced extends Modifier implements Listener {
 	}
 
 	@Override
-	public boolean hasRecipe() {
-		return false;
-	}
-
-	@Override
 	public List<ToolType> getAllowedTools() {
 		return Collections.singletonList(ToolType.ALL);
 	}
