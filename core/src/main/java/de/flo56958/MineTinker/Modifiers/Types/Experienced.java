@@ -85,15 +85,11 @@ public class Experienced extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTBlockBreakEvent event) {
-
-
 		effect(event.getPlayer(), event.getTool());
 	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageByEntityEvent event) {
-
-
 		if (ToolType.BOOTS.contains(event.getTool().getType())
 				|| ToolType.LEGGINGS.contains(event.getTool().getType())
 				|| ToolType.CHESTPLATE.contains(event.getTool().getType())
@@ -107,15 +103,11 @@ public class Experienced extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageEvent event) {
-
-
 		effect(event.getPlayer(), event.getTool());
 	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTPlayerInteractEvent event) {
-
-
 		effect(event.getPlayer(), event.getTool());
 	}
 
