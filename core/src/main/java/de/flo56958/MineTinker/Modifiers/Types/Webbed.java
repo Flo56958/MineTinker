@@ -131,12 +131,12 @@ public class Webbed extends Modifier implements Listener {
 		effect(event.getPlayer(), event.getTool(), event.getEvent().getHitEntity());
 	}
 
-	private void effect(Player p, ItemStack tool, Entity ent) {
-		if (!p.hasPermission("minetinker.modifiers.webbed.use")) {
+	private void effect(Player player, ItemStack tool, Entity entity) {
+		if (!player.hasPermission("minetinker.modifiers.webbed.use")) {
 			return;
 		}
 
-		if (ent.isDead()) {
+		if (entity.isDead()) {
 			return;
 		}
 
@@ -149,8 +149,8 @@ public class Webbed extends Modifier implements Listener {
 		int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (level - 1)));
 		int amplifier = this.effectAmplifier * (level - 1) / 2;
 
-		((LivingEntity) ent).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration, amplifier, false, false));
+		((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration, amplifier, false, false));
 
-		ChatWriter.log(false, p.getDisplayName() + " triggered Webbed on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+		ChatWriter.log(false, player.getDisplayName() + " triggered Webbed on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 	}
 }

@@ -113,12 +113,10 @@ public class Ender extends Modifier implements Listener {
 	 */
 	@EventHandler
 	public void effect(MTProjectileHitEvent event) {
-
-
-		Player p = event.getPlayer();
+		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!p.hasPermission("minetinker.modifiers.ender.use")) {
+		if (!player.hasPermission("minetinker.modifiers.ender.use")) {
 			return;
 		}
 
@@ -126,30 +124,30 @@ public class Ender extends Modifier implements Listener {
 			return;
 		}
 
-		if (!p.isSneaking()) {
+		if (!player.isSneaking()) {
 			return;
 		}
 
 		Location loc = event.getEvent().getEntity().getLocation().clone(); //Location of the Arrow
-		Location oldLoc = p.getLocation();
+		Location oldLoc = player.getLocation();
 
-		p.teleport(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(), p.getLocation().getYaw(), p.getLocation().getPitch()).add(0, 1, 0));
+		player.teleport(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(), player.getLocation().getYaw(), player.getLocation().getPitch()).add(0, 1, 0));
 
 		if (this.hasSound) {
-			p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F);
+			player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F);
 		}
 
-		spawnParticles(p, oldLoc);
+		spawnParticles(player, oldLoc);
 
 		if (this.giveNauseaOnUse) {
-			p.removePotionEffect(PotionEffectType.CONFUSION);
-			p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, this.nauseaDuration, 0, false, false));
+			player.removePotionEffect(PotionEffectType.CONFUSION);
+			player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, this.nauseaDuration, 0, false, false));
 		}
 		if (this.giveBlindnessOnUse) {
-			p.removePotionEffect(PotionEffectType.BLINDNESS);
-			p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, this.blindnessDuration, 0, false, false));
+			player.removePotionEffect(PotionEffectType.BLINDNESS);
+			player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, this.blindnessDuration, 0, false, false));
 		}
-		ChatWriter.log(false, p.getDisplayName() + " triggered Ender on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+		ChatWriter.log(false, player.getDisplayName() + " triggered Ender on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 	}
 
 	/**
@@ -159,8 +157,6 @@ public class Ender extends Modifier implements Listener {
 	 */
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageByEntityEvent event) {
-
-
 		Player player = event.getPlayer();
 		Entity entity = event.getEvent().getEntity();
 
@@ -222,16 +218,16 @@ public class Ender extends Modifier implements Listener {
 		ChatWriter.log(false, player.getDisplayName() + " triggered Ender on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 	}
 
-	private void spawnParticles(Player p, Location oldLoc) {
+	private void spawnParticles(Player player, Location oldLoc) {
 		if (this.hasParticles) {
-			AreaEffectCloud cloud = (AreaEffectCloud) p.getWorld().spawnEntity(p.getLocation(), EntityType.AREA_EFFECT_CLOUD);
+			AreaEffectCloud cloud = (AreaEffectCloud) player.getWorld().spawnEntity(player.getLocation(), EntityType.AREA_EFFECT_CLOUD);
 			cloud.setVelocity(new Vector(0, 1, 0));
 			cloud.setRadius(0.5f);
 			cloud.setDuration(5);
 			cloud.setColor(Color.GREEN);
 			cloud.getLocation().setYaw(90);
 
-			AreaEffectCloud cloud2 = (AreaEffectCloud) p.getWorld().spawnEntity(oldLoc, EntityType.AREA_EFFECT_CLOUD);
+			AreaEffectCloud cloud2 = (AreaEffectCloud) player.getWorld().spawnEntity(oldLoc, EntityType.AREA_EFFECT_CLOUD);
 			cloud2.setVelocity(new Vector(0, 1, 0));
 			cloud2.setRadius(0.5f);
 			cloud2.setDuration(5);

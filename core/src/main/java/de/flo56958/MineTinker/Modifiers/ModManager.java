@@ -488,12 +488,12 @@ public class ModManager {
 	}
 
 	/**
-	 * @param p      Player that uses the tool
+	 * @param player      Player that uses the tool
 	 * @param tool   tool that needs to get exp
 	 * @param amount how much exp should the tool get
 	 * @param noEvent
 	 */
-	public void addExp(Player p, ItemStack tool, long amount, boolean noEvent) {
+	public void addExp(Player player, ItemStack tool, long amount, boolean noEvent) {
 		if (amount == 0) {
 			return;
 		}
@@ -526,14 +526,14 @@ public class ModManager {
 		}
 
 		if (config.getBoolean("actionbar-on-exp-gain")) {
-			ChatWriter.sendActionBar(p, ChatColor.translateAlternateColorCodes('&', "&a+" + amount + " exp gained"));
+			ChatWriter.sendActionBar(player, ChatColor.translateAlternateColorCodes('&', "&a+" + amount + " exp gained"));
 		}
 
 		setExp(tool, exp);
 		rewriteLore(tool);
 
 		if (LevelUp && !noEvent) {
-			Bukkit.getPluginManager().callEvent(new ToolLevelUpEvent(p, tool));
+			Bukkit.getPluginManager().callEvent(new ToolLevelUpEvent(player, tool));
 		}
 	}
 
@@ -975,21 +975,21 @@ public class ModManager {
 	/**
 	 * Checks the durability of the Tool
 	 *
-	 * @param e    the Event (implements Cancelable)
-	 * @param p    the Player
+	 * @param cancellable    the Event (implements Cancelable)
+	 * @param player    the Player
 	 * @param tool the Tool
 	 * @return false: if broken; true: if enough durability
 	 */
-	public boolean durabilityCheck(Cancellable e, Player p, ItemStack tool) {
+	public boolean durabilityCheck(Cancellable cancellable, Player player, ItemStack tool) {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta instanceof Damageable) {
 			if (config.getBoolean("UnbreakableTools", true)
 					&& tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2) {
-				e.setCancelled(true);
+				cancellable.setCancelled(true);
 
 				if (config.getBoolean("Sound.OnBreaking", true)) {
-					p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
+					player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
 				}
 
 				return false;

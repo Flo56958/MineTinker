@@ -90,17 +90,17 @@ public class Timber extends Modifier implements Listener {
 	}
 
 	@Override
-	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
 		return true;
 	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTBlockBreakEvent event) {
-		Player p = event.getPlayer();
+		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
-		Block b = event.getBlock();
+		Block block = event.getBlock();
 
-		if (Power.HASPOWER.get(p).get() || p.isSneaking()) {
+		if (Power.HASPOWER.get(player).get() || player.isSneaking()) {
 			return;
 		}
 
@@ -108,23 +108,23 @@ public class Timber extends Modifier implements Listener {
 			return;
 		}
 
-		if (!p.hasPermission("minetinker.modifiers.timber.use")) {
+		if (!player.hasPermission("minetinker.modifiers.timber.use")) {
 			return;
 		}
 
 		if (ToolType.SHEARS.contains(tool.getType())) {
-			if (Lists.getWoodLeaves().contains(b.getType())) {
-				Power.HASPOWER.get(p).set(true);
+			if (Lists.getWoodLeaves().contains(block.getType())) {
+				Power.HASPOWER.get(player).set(true);
 				ArrayList<Location> locs = new ArrayList<>();
-				locs.add(b.getLocation());
-				breakTree(p, b, Collections.singletonList(b.getType()), locs);
+				locs.add(block.getLocation());
+				breakTree(player, block, Collections.singletonList(block.getType()), locs);
 			}
 		} else {
 			ArrayList<Material> allowed = new ArrayList<>();
 			allowed.addAll(Lists.getWoodLogs());
 			allowed.addAll(Lists.getWoodWood());
 
-			if (!allowed.contains(b.getType())) {
+			if (!allowed.contains(block.getType())) {
 				return;
 			}
 
@@ -132,8 +132,8 @@ public class Timber extends Modifier implements Listener {
 			boolean isTreeTop = false; //checks for Leaves above Log
 
 
-			for (int y = b.getY() - 1; y > 0; y--) {
-				Material blockType = p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType();
+			for (int y = block.getY() - 1; y > 0; y--) {
+				Material blockType = player.getWorld().getBlockAt(block.getX(), y, block.getZ()).getType();
 
 				if (blockType == Material.GRASS_BLOCK || blockType == Material.DIRT
 						|| blockType == Material.PODZOL || blockType == Material.COARSE_DIRT) {
@@ -141,17 +141,17 @@ public class Timber extends Modifier implements Listener {
 					isTreeBottom = true;
 				}
 
-				if (!p.getWorld().getBlockAt(b.getX(), y, b.getZ()).getType().equals(b.getType())) {
+				if (!player.getWorld().getBlockAt(block.getX(), y, block.getZ()).getType().equals(block.getType())) {
 					break;
 				}
 			}
 
-			for (int dy = b.getY() + 1, airgap = 0; dy < 256 && airgap < 6; dy++) {
-				if (!allowed.contains(p.getWorld().getBlockAt(b.getX(), dy, b.getZ()).getType())) {
-					Location loc = b.getLocation().clone();
+			for (int dy = block.getY() + 1, airgap = 0; dy < 256 && airgap < 6; dy++) {
+				if (!allowed.contains(player.getWorld().getBlockAt(block.getX(), dy, block.getZ()).getType())) {
+					Location loc = block.getLocation().clone();
 					loc.setY(dy);
 
-					Material mat = p.getWorld().getBlockAt(loc).getType();
+					Material mat = player.getWorld().getBlockAt(loc).getType();
 
 					if (Lists.getWoodLeaves().contains(mat)) {
 						isTreeTop = true;
@@ -167,18 +167,18 @@ public class Timber extends Modifier implements Listener {
 				return; //TODO: Improve tree check
 			}
 
-			Power.HASPOWER.get(p).set(true);
+			Power.HASPOWER.get(player).set(true);
 			ArrayList<Location> locs = new ArrayList<>();
-			locs.add(b.getLocation());
-			breakTree(p, b, allowed, locs);
+			locs.add(block.getLocation());
+			breakTree(player, block, allowed, locs);
 		}
 
-		Power.HASPOWER.get(p).set(false);
+		Power.HASPOWER.get(player).set(false);
 
-		ChatWriter.log(false, p.getDisplayName() + " triggered Timber on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+		ChatWriter.log(false, player.getDisplayName() + " triggered Timber on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 	}
 
-	private void breakTree(Player p, Block b, List<Material> allowed, List<Location> locs) { //TODO: Improve algorythm and performance -> async?
+	private void breakTree(Player player, Block block, List<Material> allowed, List<Location> locs) { //TODO: Improve algorythm and performance -> async?
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dy = -1; dy <= 1; dy++) {
 				for (int dz = -1; dz <= 1; dz++) {
@@ -186,7 +186,7 @@ public class Timber extends Modifier implements Listener {
 						continue;
 					}
 
-					Location loc = b.getLocation().clone();
+					Location loc = block.getLocation().clone();
 					loc.add(dx, dy, dz);
 
 					if (locs.contains(loc)) {
@@ -199,10 +199,10 @@ public class Timber extends Modifier implements Listener {
 
 					locs.add(loc);
 
-					Block toBreak = p.getWorld().getBlockAt(loc);
+					Block toBreak = player.getWorld().getBlockAt(loc);
 					if (allowed.contains(toBreak.getType())) {
-						breakTree(p, toBreak, allowed, locs);
-						NBTUtils.getHandler().playerBreakBlock(p, toBreak);
+						breakTree(player, toBreak, allowed, locs);
+						NBTUtils.getHandler().playerBreakBlock(player, toBreak);
 					}
 				}
 			}

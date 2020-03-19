@@ -97,16 +97,14 @@ public class Poisonous extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageByEntityEvent event) {
-
-
 		if (!(event.getEntity() instanceof LivingEntity)) {
 			return;
 		}
 
-		Player p = event.getPlayer();
+		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!p.hasPermission("minetinker.modifiers.poisonous.use")) {
+		if (!player.hasPermission("minetinker.modifiers.poisonous.use")) {
 			return;
 		}
 
@@ -119,7 +117,7 @@ public class Poisonous extends Modifier implements Listener {
 		int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (level - 1)));
 		int amplifier = this.effectAmplifier * (level - 1);
 		((LivingEntity) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration, amplifier, false, false));
-		ChatWriter.log(false, p.getDisplayName() + " triggered Poisonous on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+		ChatWriter.log(false, player.getDisplayName() + " triggered Poisonous on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 	}
 
 	@EventHandler
@@ -129,13 +127,13 @@ public class Poisonous extends Modifier implements Listener {
 		}
 
 		LivingEntity mob = event.getEntity();
-		Player p = mob.getKiller();
+		Player player = mob.getKiller();
 
-		if (p == null) {
+		if (player == null) {
 			return;
 		}
 
-		if (Lists.WORLDS.contains(p.getWorld().getName())) {
+		if (Lists.WORLDS.contains(player.getWorld().getName())) {
 			return;
 		}
 

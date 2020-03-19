@@ -19,20 +19,20 @@ public enum ModifierFailCause {
 	}
 
 	@NotNull
-	public String toString(Player p) {
+	public String toString(Player player) {
 		switch (this) {
 			case INCOMPATIBLE_MODIFIERS:
-				return LanguageManager.getString("ModifierFailCause.IncompatibleModifiers", p);
+				return LanguageManager.getString("ModifierFailCause.IncompatibleModifiers", player);
 			case INVALID_TOOLTYPE:
-				return LanguageManager.getString("ModifierFailCause.InvalidToolType", p);
+				return LanguageManager.getString("ModifierFailCause.InvalidToolType", player);
 			case MAXIMUM_SLOTS_REACHED:
-				return LanguageManager.getString("ModifierFailCause.MaximumSlotsReached", p);
+				return LanguageManager.getString("ModifierFailCause.MaximumSlotsReached", player);
 			case MOD_MAXLEVEL:
-				return LanguageManager.getString("ModifierFailCause.ModMaxLevel", p);
+				return LanguageManager.getString("ModifierFailCause.ModMaxLevel", player);
 			case NO_FREE_SLOTS:
-				return LanguageManager.getString("ModifierFailCause.NoFreeSlots", p);
+				return LanguageManager.getString("ModifierFailCause.NoFreeSlots", player);
 			case NO_PERMISSION:
-				return LanguageManager.getString("ModifierFailCause.NoPermission", p);
+				return LanguageManager.getString("ModifierFailCause.NoPermission", player);
 		}
 		return "";
 	}

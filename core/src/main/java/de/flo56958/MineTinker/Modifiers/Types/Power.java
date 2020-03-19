@@ -55,19 +55,19 @@ public class Power extends Modifier implements Listener {
 		return instance;
 	}
 
-	private void powerCreateFarmland(Player p, ItemStack tool, Block b) {
-		if (b.getType().equals(Material.GRASS_BLOCK) || b.getType().equals(Material.DIRT)) {
-			if (b.getWorld().getBlockAt(b.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
+	private void powerCreateFarmland(Player player, ItemStack tool, Block block) {
+		if (block.getType().equals(Material.GRASS_BLOCK) || block.getType().equals(Material.DIRT)) {
+			if (block.getWorld().getBlockAt(block.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
 				if (tool.getItemMeta() instanceof Damageable) {
 					Damageable damageable = (Damageable) tool.getItemMeta();
 					damageable.setDamage(damageable.getDamage() + 1);
 					tool.setItemMeta((ItemMeta) damageable);
 				}
 
-				PlayerInteractEvent event = new PlayerInteractEvent(p, Action.RIGHT_CLICK_BLOCK, tool, b, BlockFace.UP);
+				PlayerInteractEvent event = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, tool, block, BlockFace.UP);
 				Bukkit.getPluginManager().callEvent(event);
 
-				b.setType(Material.FARMLAND); // Event only does Plugin event (no vanilla conversion to Farmland and
+				block.setType(Material.FARMLAND); // Event only does Plugin event (no vanilla conversion to Farmland and
 				// Tool-Damage)
 			}
 		}
@@ -147,17 +147,17 @@ public class Power extends Modifier implements Listener {
 		}
 	}
 
-	public boolean canUsePower(Player p, ItemStack tool) {
-		if (!p.hasPermission("minetinker.modifiers.power.use")) {
+	public boolean canUsePower(Player player, ItemStack tool) {
+		if (!player.hasPermission("minetinker.modifiers.power.use")) {
 			return false;
 		}
 
-		if (HASPOWER.get(p).get()) {
+		if (HASPOWER.get(player).get()) {
 			return false;
 		}
 
 		if (toggleable) {
-			if (p.isSneaking()) {
+			if (player.isSneaking()) {
 				return false;
 			}
 		}
@@ -287,90 +287,90 @@ public class Power extends Modifier implements Listener {
 			return;
 		}
 
-		Player p = event.getPlayer();
+		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
 		if (!ToolType.HOE.contains(tool.getType())) {
 			return;
 		}
 
-		PlayerInteractEvent e = event.getEvent();
+		PlayerInteractEvent interactEvent = event.getEvent();
 
-		if (!canUsePower(p, tool)) {
+		if (!canUsePower(player, tool)) {
 			return;
 		}
 
-		ChatWriter.log(false, p.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool)
+		ChatWriter.log(false, player.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool)
 				+ ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 
-		HASPOWER.get(p).set(true);
+		HASPOWER.get(player).set(true);
 
 		int level = modManager.getModLevel(tool, this);
-		Block b = e.getClickedBlock();
+		Block block = interactEvent.getClickedBlock();
 
-		if (b == null) {
+		if (block == null) {
 			return;
 		}
 
 		if (level == 1) {
-			if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
+			if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
 				Block b1;
 				Block b2;
 
-				if ((PlayerInfo.getFacingDirection(p).equals("N") || PlayerInfo.getFacingDirection(p).equals("S"))) {
+				if ((PlayerInfo.getFacingDirection(player).equals("N") || PlayerInfo.getFacingDirection(player).equals("S"))) {
 					if (this.lv1_vertical) {
-						b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
-						b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
+						b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
+						b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
 					} else {
-						b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
-						b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
+						b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
+						b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
 					}
-				} else if (PlayerInfo.getFacingDirection(p).equals("W")
-						|| PlayerInfo.getFacingDirection(p).equals("E")) {
+				} else if (PlayerInfo.getFacingDirection(player).equals("W")
+						|| PlayerInfo.getFacingDirection(player).equals("E")) {
 					if (this.lv1_vertical) {
-						b1 = b.getWorld().getBlockAt(b.getLocation().add(1, 0, 0));
-						b2 = b.getWorld().getBlockAt(b.getLocation().add(-1, 0, 0));
+						b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
+						b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
 					} else {
-						b1 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, 1));
-						b2 = b.getWorld().getBlockAt(b.getLocation().add(0, 0, -1));
+						b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
+						b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
 					}
 				} else {
-					b1 = b;
-					b2 = b;
+					b1 = block;
+					b2 = block;
 				}
 
-				powerCreateFarmland(p, tool, b1);
-				powerCreateFarmland(p, tool, b2);
+				powerCreateFarmland(player, tool, b1);
+				powerCreateFarmland(player, tool, b2);
 			}
 		} else {
-			if (Lists.BLOCKFACE.get(p).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(p).equals(BlockFace.UP)) {
+			if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
 				for (int x = -(level - 1); x <= (level - 1); x++) {
 					for (int z = -(level - 1); z <= (level - 1); z++) {
 						if (!(x == 0 && z == 0)) {
-							Block b_ = p.getWorld().getBlockAt(b.getLocation().add(x, 0, z));
-							powerCreateFarmland(p, tool, b_);
+							Block b_ = player.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
+							powerCreateFarmland(player, tool, b_);
 						}
 					}
 				}
 			}
 		}
 
-		HASPOWER.get(p).set(false);
+		HASPOWER.get(player).set(false);
 	}
 
-	private void powerBlockBreak(Block b, Block centralBlock, Player p) {
-		if (blacklist.contains(b.getType())) {
+	private void powerBlockBreak(Block block, Block centralBlock, Player player) {
+		if (blacklist.contains(block.getType())) {
 			return;
 		}
 
-		if (b.getDrops(p.getInventory().getItemInMainHand()).isEmpty()) {
+		if (block.getDrops(player.getInventory().getItemInMainHand()).isEmpty()) {
 			return;
 		}
 
-		if (b.getType().getHardness() > centralBlock.getType().getHardness() + 2) {
+		if (block.getType().getHardness() > centralBlock.getType().getHardness() + 2) {
 			return; //So Obsidian can not be mined using Cobblestone and Power
 		}
 
-		NBTUtils.getHandler().playerBreakBlock(p, b);
+		NBTUtils.getHandler().playerBreakBlock(player, block);
 	}
 }

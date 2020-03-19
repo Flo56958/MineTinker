@@ -73,19 +73,20 @@ public class Updater {
 	 */
 	public static void checkForUpdate(CommandSender sender) {
 		checkOnline();
-		Player p = null;
+
+		Player player = null;
 		if (sender instanceof Player) {
-			p = (Player) sender;
+			player = (Player) sender;
 		}
 
 		if (onlineVersion == null) {
-			ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Updater.Unable", p));
+			ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Updater.Unable", player));
 		} else if (hasUpdate()) {
-			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpdateAvailable", p));
-			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.YourVersion", p).replaceFirst("%ver", version));
-			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.OnlineVersion", p).replaceFirst("%ver", onlineVersion));
+			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpdateAvailable", player));
+			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.YourVersion", player).replaceFirst("%ver", version));
+			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.OnlineVersion", player).replaceFirst("%ver", onlineVersion));
 		} else {
-			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpToDate", p));
+			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpToDate", player));
 		}
 	}
 

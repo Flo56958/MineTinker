@@ -27,7 +27,7 @@ public class ItemGenerator {
 		return name;
 	}
 
-	public static ItemStack itemUpgrader(ItemStack tool, ItemStack upgrade, Player p) {
+	public static ItemStack itemUpgrader(ItemStack tool, ItemStack upgrade, Player player) {
 		// TODO: Fix this fuckery
 
 		ItemMeta meta = tool.getItemMeta();
@@ -41,28 +41,28 @@ public class ItemGenerator {
 						upgrade.getType() == Material.OAK_PLANKS ||
 						upgrade.getType() == Material.SPRUCE_PLANKS)) {
 
-			pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+			pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 			return null;
 		} else if (name.equals("stone") && upgrade.getType() == Material.COBBLESTONE) {
-			pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+			pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 			return null;
 		} else if (name.equals("iron") && upgrade.getType() == Material.IRON_INGOT) {
-			pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+			pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 			return null;
 		} else if (name.equals("gold") && upgrade.getType() == Material.GOLD_INGOT) {
-			pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+			pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 			return null;
 		} else if (name.equals("diamond") && upgrade.getType() == Material.DIAMOND) {
-			pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+			pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 			return null;
 		} else if (name.equals("leather") && upgrade.getType() == Material.LEATHER) {
-			pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+			pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 			return null;
 		} else if (name.equals("turtle") && upgrade.getType() == Material.SCUTE) {
-			pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+			pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 			return null;
 		} else if (name.equals("chainmail") && upgrade.getType() == Material.IRON_BARS) {
-			pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+			pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 			return null;
 		}
 
@@ -89,7 +89,7 @@ public class ItemGenerator {
 					tool.setType(Material.DIAMOND_SWORD);
 					break;
 				default:
-					pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 					return null;
 			}
 		} else if (ToolType.PICKAXE.contains(tool.getType())) {
@@ -115,7 +115,7 @@ public class ItemGenerator {
 					tool.setType(Material.DIAMOND_PICKAXE);
 					break;
 				default:
-					pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 					return null;
 			}
 		} else if (ToolType.AXE.contains(tool.getType())) {
@@ -141,7 +141,7 @@ public class ItemGenerator {
 					tool.setType(Material.DIAMOND_AXE);
 					break;
 				default:
-					pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 					return null;
 			}
 		} else if (ToolType.SHOVEL.contains(tool.getType())) {
@@ -167,7 +167,7 @@ public class ItemGenerator {
 					tool.setType(Material.DIAMOND_SHOVEL);
 					break;
 				default:
-					pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 					return null;
 			}
 		} else if (ToolType.HOE.contains(tool.getType())) {
@@ -193,7 +193,7 @@ public class ItemGenerator {
 					tool.setType(Material.DIAMOND_HOE);
 					break;
 				default:
-					pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 					return null;
 			}
 		} else if (ToolType.HELMET.contains(tool.getType())) {
@@ -217,7 +217,7 @@ public class ItemGenerator {
 					tool.setType(Material.CHAINMAIL_HELMET);
 					break;
 				default:
-					pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 					return null;
 			}
 		} else if (ToolType.CHESTPLATE.contains(tool.getType())) {
@@ -238,7 +238,7 @@ public class ItemGenerator {
 					tool.setType(Material.CHAINMAIL_CHESTPLATE);
 					break;
 				default:
-					pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 					return null;
 			}
 		} else if (ToolType.LEGGINGS.contains(tool.getType())) {
@@ -259,7 +259,7 @@ public class ItemGenerator {
 					tool.setType(Material.CHAINMAIL_LEGGINGS);
 					break;
 				default:
-					pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 					return null;
 			}
 		} else if (ToolType.BOOTS.contains(tool.getType())) {
@@ -280,7 +280,7 @@ public class ItemGenerator {
 					tool.setType(Material.CHAINMAIL_BOOTS);
 					break;
 				default:
-					pluginManager.callEvent(new ToolUpgradeEvent(p, tool, false));
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
 					return null;
 			}
 		}

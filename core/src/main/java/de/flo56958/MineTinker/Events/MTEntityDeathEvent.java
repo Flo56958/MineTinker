@@ -26,8 +26,8 @@ public class MTEntityDeathEvent extends Event {
 	 * @param tool  The ItemStack (MUST be a MineTinker-Tool)
 	 * @param event The EntityDeathEvent from which it was called
 	 */
-	public MTEntityDeathEvent(@NotNull Player p, @NotNull ItemStack tool, @NotNull EntityDeathEvent event) {
-		this.player = p;
+	public MTEntityDeathEvent(@NotNull Player player, @NotNull ItemStack tool, @NotNull EntityDeathEvent event) {
+		this.player = player;
 		this.tool = tool;
 		this.event = event;
 	}

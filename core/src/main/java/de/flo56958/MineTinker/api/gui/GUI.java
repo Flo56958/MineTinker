@@ -90,9 +90,9 @@ public class GUI implements Listener {
 			return null;
 		}
 
-		for (Window w : windows) {
-			if (w.inventory.equals(inv)) {
-				return w;
+		for (Window window : windows) {
+			if (window.inventory.equals(inv)) {
+				return window;
 			}
 		}
 
@@ -107,30 +107,30 @@ public class GUI implements Listener {
 	/**
 	 * shows the first page of the GUI to the specified Player
 	 *
-	 * @param p the Player
+	 * @param player the Player
 	 */
-	public void show(@NotNull final Player p) {
-		show(p, 0);
+	public void show(@NotNull final Player player) {
+		show(player, 0);
 	}
 
 	/**
 	 * shows the [page] page of the GUI to the specified Player
 	 *
-	 * @param p    the Player
+	 * @param player    the Player
 	 * @param page the Page shown to the Player
 	 * @throws IllegalStateException when show() was called as the GUI was closed
 	 */
-	public void show(@NotNull final Player p, final int page) {
+	public void show(@NotNull final Player player, final int page) {
 		synchronized (this) {
 			if (isClosed) {
 				throw new IllegalStateException("GUI (" + this.hashCode() + ") is closed.");
 			}
 
-			p.openInventory(windows.get(page).inventory);
+			player.openInventory(windows.get(page).inventory);
 		}
 	}
 
-	public void show(@NotNull final Player p, final Window window) {
+	public void show(@NotNull final Player player, final Window window) {
 		synchronized (this) {
 			if (isClosed) {
 				throw new IllegalStateException("GUI (" + this.hashCode() + ") is closed.");
@@ -140,7 +140,7 @@ public class GUI implements Listener {
 				throw new IllegalArgumentException("GUI (" + this.hashCode() + ") does not manage Window (" + window.hashCode() + ")!");
 			}
 
-			p.openInventory(window.inventory);
+			player.openInventory(window.inventory);
 		}
 	}
 

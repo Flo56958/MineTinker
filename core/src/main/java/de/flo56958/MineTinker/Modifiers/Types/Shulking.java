@@ -105,10 +105,10 @@ public class Shulking extends Modifier implements Listener {
 			return;
 		}
 
-		Player p = event.getPlayer();
+		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		effect(p, tool, event.getEntity());
+		effect(player, tool, event.getEntity());
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -117,18 +117,18 @@ public class Shulking extends Modifier implements Listener {
 			return;
 		}
 
-		Player p = event.getPlayer();
+		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
 		if (!ToolType.FISHINGROD.contains(tool.getType())) {
 			return;
 		}
 
-		effect(p, tool, event.getEvent().getHitEntity());
+		effect(player, tool, event.getEvent().getHitEntity());
 	}
 
-	private void effect(Player p, ItemStack tool, Entity ent) {
-		if (!p.hasPermission("minetinker.modifiers.shulking.use")) {
+	private void effect(Player player, ItemStack tool, Entity entity) {
+		if (!player.hasPermission("minetinker.modifiers.shulking.use")) {
 			return;
 		}
 
@@ -139,9 +139,9 @@ public class Shulking extends Modifier implements Listener {
 		int level = modManager.getModLevel(tool, this);
 		int amplifier = this.effectAmplifier * (level - 1);
 
-		((LivingEntity) ent).addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, this.duration, amplifier, false, false));
+		((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, this.duration, amplifier, false, false));
 
-		ChatWriter.log(false, p.getDisplayName() + " triggered Shulking on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+		ChatWriter.log(false, player.getDisplayName() + " triggered Shulking on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 
 	}
 }

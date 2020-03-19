@@ -114,11 +114,11 @@ public class Experienced extends Modifier implements Listener {
 	/**
 	 * The Effect of the modifier
 	 *
-	 * @param p    the Player
+	 * @param player    the Player
 	 * @param tool the Tool
 	 */
-	private void effect(Player p, ItemStack tool) {
-		if (!p.hasPermission("minetinker.modifiers.experienced.use")) {
+	private void effect(Player player, ItemStack tool) {
+		if (!player.hasPermission("minetinker.modifiers.experienced.use")) {
 			return;
 		}
 
@@ -132,8 +132,8 @@ public class Experienced extends Modifier implements Listener {
 		int n = rand.nextInt(100);
 
 		if (n <= this.percentagePerLevel * level) {
-			p.giveExp(this.amount);
-			ChatWriter.log(false, p.getDisplayName() + " triggered Experienced on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
+			player.giveExp(this.amount);
+			ChatWriter.log(false, player.getDisplayName() + " triggered Experienced on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
 		}
 	}
 }

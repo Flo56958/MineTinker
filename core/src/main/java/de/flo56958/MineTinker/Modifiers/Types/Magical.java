@@ -107,30 +107,30 @@ public class Magical extends Modifier implements Listener {
 	}
 
 	@EventHandler
-	public void onShoot(ProjectileLaunchEvent e) {
+	public void onShoot(ProjectileLaunchEvent event) {
 		if (!this.isAllowed()) return;
 
-		Projectile arrow = e.getEntity();
+		Projectile arrow = event.getEntity();
 		if (!(arrow instanceof Arrow)) return;
 
 		if (!(arrow.getShooter() instanceof Player)) return;
 
-		Player p = (Player) arrow.getShooter();
-		if (!p.hasPermission("minetinker.modifiers.magical.use")) return;
+		Player player = (Player) arrow.getShooter();
+		if (!player.hasPermission("minetinker.modifiers.magical.use")) return;
 
-		ItemStack tool = p.getInventory().getItemInMainHand();
+		ItemStack tool = player.getInventory().getItemInMainHand();
 
 		if (!modManager.isToolViable(tool)) return;
 
 		int modLevel = modManager.getModLevel(tool, this);
 		if (modLevel <= 0) return;
 
-		if (PlayerInfo.getPlayerExp(p) < this.experienceCost) {
-			e.setCancelled(true);
+		if (PlayerInfo.getPlayerExp(player) < this.experienceCost) {
+			event.setCancelled(true);
 			return;
 		}
 
-		p.giveExp(- this.experienceCost);
+		player.giveExp(- this.experienceCost);
 
 		arrow.setBounce(true);
 		((Arrow) arrow).setColor(Color.PURPLE);
@@ -138,7 +138,7 @@ public class Magical extends Modifier implements Listener {
 		arrow.setGravity(false);
 		//arrow.setGlowing(true);
 
-		Entity entity = p.getLocation().getWorld().spawnEntity(arrow.getLocation().add(arrow.getVelocity().normalize().multiply(-0.5)), EntityType.ENDERMITE);
+		Entity entity = player.getLocation().getWorld().spawnEntity(arrow.getLocation().add(arrow.getVelocity().normalize().multiply(-0.5)), EntityType.ENDERMITE);
 		if (entity instanceof LivingEntity) {
 			((LivingEntity) entity).setRemoveWhenFarAway(true);
 			//((LivingEntity) entity).setAI(false); can not move
@@ -174,26 +174,26 @@ public class Magical extends Modifier implements Listener {
 	}
 
 	@EventHandler
-	public void onHit(ProjectileHitEvent e) {
+	public void onHit(ProjectileHitEvent event) {
 		if (!this.isAllowed()) return;
 
-		Projectile arrow = e.getEntity();
+		Projectile arrow = event.getEntity();
 		if (!(arrow instanceof Arrow)) return;
 
 		if (!(arrow.getShooter() instanceof Player)) return;
 
-		Player p = (Player) arrow.getShooter();
-		if(!p.hasPermission("minetinker.modifiers.magical.use")) return;
+		Player player = (Player) arrow.getShooter();
+		if(!player.hasPermission("minetinker.modifiers.magical.use")) return;
 
-		String s = arrow.getCustomName();
-		if (s == null) return;
+		String customName = arrow.getCustomName();
+		if (customName == null) return;
 
-		String[] name = s.split(":");
+		String[] name = customName.split(":");
 		if (name.length != 3) return;
 		if (!name[0].equals(this.getKey())) return;
 
 		try {
-			int modLevel = Integer.parseInt(name[1]);
+			//int modLevel = Integer.parseInt(name[1]);
 
 			Entity entity = Bukkit.getServer().getEntity(UUID.fromString(name[2]));
 			if (entity != null) {
@@ -205,26 +205,26 @@ public class Magical extends Modifier implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onEntityHit(EntityDamageByEntityEvent e) {
+	public void onEntityHit(EntityDamageByEntityEvent event) {
 		if (!this.isAllowed()) return;
 
-		if (!(e.getDamager() instanceof Arrow)) return;
+		if (!(event.getDamager() instanceof Arrow)) return;
 
-		Arrow arrow = (Arrow) e.getDamager();
-		String s = arrow.getCustomName();
-		if (s == null) return;
+		Arrow arrow = (Arrow) event.getDamager();
+		String customName = arrow.getCustomName();
+		if (customName == null) return;
 
-		String[] name = s.split(":");
+		String[] name = customName.split(":");
 		if (name.length != 3) return;
 		if (!name[0].equals(this.getKey())) return;
 
 		try {
 			int modLevel = Integer.parseInt(name[1]);
 
-			e.setDamage(e.getDamage() * Math.pow(this.multiplierDamagePerLevel, modLevel));
+			event.setDamage(event.getDamage() * Math.pow(this.multiplierDamagePerLevel, modLevel));
 
 			if (this.hasKnockback) {
-				e.getEntity().setVelocity(arrow.getVelocity().normalize().multiply(modLevel));
+				event.getEntity().setVelocity(arrow.getVelocity().normalize().multiply(modLevel));
 			}
 		} catch (NumberFormatException ignored) {}
 	}

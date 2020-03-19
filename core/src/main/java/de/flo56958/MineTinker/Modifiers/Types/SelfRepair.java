@@ -100,7 +100,7 @@ public class SelfRepair extends Modifier implements Listener {
 	}
 
 	@Override
-	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
 		if (useMending) {
 			ItemMeta meta = tool.getItemMeta();
 
@@ -117,8 +117,6 @@ public class SelfRepair extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTBlockBreakEvent event) {
-
-
 		effect(event.getPlayer(), event.getTool());
 	}
 
@@ -153,8 +151,6 @@ public class SelfRepair extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onShear(PlayerShearEntityEvent event) {
-
-
 		ItemStack tool = event.getPlayer().getInventory().getItemInMainHand();
 
 		if (!(modManager.isToolViable(tool) && ToolType.SHEARS.contains(tool.getType()))) {
@@ -164,26 +160,26 @@ public class SelfRepair extends Modifier implements Listener {
 		effect(event.getPlayer(), tool);
 	}
 
-	public void effectElytra(Player p, ItemStack elytra) {
+	public void effectElytra(Player player, ItemStack elytra) {
 		if (!this.isAllowed()) {
 			return;
 		}
 
-		effect(p, elytra);
+		effect(player, elytra);
 	}
 
 	/**
 	 * The Effect that is used if Mending is disabled
 	 *
-	 * @param p    the Player
+	 * @param player    the Player
 	 * @param tool the Tool
 	 */
-	private void effect(Player p, ItemStack tool) {
+	private void effect(Player player, ItemStack tool) {
 		if (useMending) {
 			return;
 		}
 
-		if (!p.hasPermission("minetinker.modifiers.selfrepair.use")) {
+		if (!player.hasPermission("minetinker.modifiers.selfrepair.use")) {
 			return;
 		}
 
@@ -208,7 +204,7 @@ public class SelfRepair extends Modifier implements Listener {
 
 				tool.setItemMeta((ItemMeta) damageable);
 
-				ChatWriter.log(false, p.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+				ChatWriter.log(false, player.getDisplayName() + " triggered Self-Repair on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 			}
 		}
 	}

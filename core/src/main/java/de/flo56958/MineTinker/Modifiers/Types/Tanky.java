@@ -62,7 +62,7 @@ public class Tanky extends Modifier implements Listener {
 	}
 
 	@Override
-	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta == null) {
@@ -136,18 +136,18 @@ public class Tanky extends Modifier implements Listener {
 	}
 
 	@EventHandler
-	public void onJoin(PlayerJoinEvent e) {
-		Double health = playerHealth.get(e.getPlayer().getUniqueId());
+	public void onJoin(PlayerJoinEvent event) {
+		Double health = playerHealth.get(event.getPlayer().getUniqueId());
 		if (health != null) {
-			Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> e.getPlayer().setHealth(health), 10L);
+			Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> event.getPlayer().setHealth(health), 10L);
 		}
-		playerHealth.remove(e.getPlayer().getUniqueId());
+		playerHealth.remove(event.getPlayer().getUniqueId());
 	}
 
 	@EventHandler
-	public void onQuit(PlayerQuitEvent e) {
-		if (e.getPlayer().getHealth() >= 20.0) { //has Tanky and enough health
-			playerHealth.put(e.getPlayer().getUniqueId(), e.getPlayer().getHealth());
+	public void onQuit(PlayerQuitEvent event) {
+		if (event.getPlayer().getHealth() >= 20.0) { //has Tanky and enough health
+			playerHealth.put(event.getPlayer().getUniqueId(), event.getPlayer().getHealth());
 		}
 	}
 }

@@ -620,9 +620,9 @@ public class GUIs {
 				.replace("%key", configSetting).replace("%old", oldValue).replace("%new", newValue));
 
 		if (Main.getPlugin().getConfig().getBoolean("BroadcastConfigChanges") || configSetting.equals("config.yml:BroadcastConfigChanges")) {
-			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-				if (p.hasPermission("minetinker.commands.editconfigbroadcast")) {
-					ChatWriter.sendMessage(p, ChatColor.RED, LanguageManager.getString("GUIs.ConfigurationEditor.Change")
+			for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+				if (player.hasPermission("minetinker.commands.editconfigbroadcast")) {
+					ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUIs.ConfigurationEditor.Change")
 							.replace("%key", configSetting).replace("%old", oldValue).replace("%new", newValue));
 				}
 			}

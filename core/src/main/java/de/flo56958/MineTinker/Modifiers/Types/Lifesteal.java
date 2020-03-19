@@ -96,16 +96,14 @@ public class Lifesteal extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH) //because of Melting
 	public void effect(MTEntityDamageByEntityEvent event) {
-
-
 		if (event.getPlayer().equals(event.getEvent().getEntity())) {
 			return; //when event was triggered by the armor
 		}
 
-		Player p = event.getPlayer();
+		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!p.hasPermission("minetinker.modifiers.lifesteal.use")) {
+		if (!player.hasPermission("minetinker.modifiers.lifesteal.use")) {
 			return;
 		}
 
@@ -122,9 +120,9 @@ public class Lifesteal extends Modifier implements Listener {
 		int level = modManager.getModLevel(tool, this);
 		double damage = event.getEvent().getDamage();
 		double recovery = damage * ((percentPerLevel * level) / 100.0);
-		double health = p.getHealth() + recovery;
+		double health = player.getHealth() + recovery;
 
-		AttributeInstance attribute = p.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+		AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
 
 		if (attribute != null) {
 			// for IllegalArgumentExeption if Health is biggen than MaxHealth
@@ -132,9 +130,9 @@ public class Lifesteal extends Modifier implements Listener {
 				health = attribute.getValue();
 			}
 
-			p.setHealth(health);
+			player.setHealth(health);
 		}
 
-		ChatWriter.log(false, p.getDisplayName() + " triggered Lifesteal on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") and got " + recovery + " health back!");
+		ChatWriter.log(false, player.getDisplayName() + " triggered Lifesteal on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") and got " + recovery + " health back!");
 	}
 }

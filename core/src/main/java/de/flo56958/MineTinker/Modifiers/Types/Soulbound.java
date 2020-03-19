@@ -99,45 +99,45 @@ public class Soulbound extends Modifier implements Listener {
 	/**
 	 * Effect when a player dies
 	 *
-	 * @param p  the Player
-	 * @param is the ItemStack to keep
+	 * @param player  the Player
+	 * @param itemStack the ItemStack to keep
 	 * @return true if soulbound has success
 	 */
-	public boolean effect(Player p, ItemStack is) {
-		if (!p.hasPermission("minetinker.modifiers.soulbound.use")) {
+	public boolean effect(Player player, ItemStack itemStack) {
+		if (!player.hasPermission("minetinker.modifiers.soulbound.use")) {
 			return false;
 		}
 
-		if (!modManager.hasMod(is, this)) {
+		if (!modManager.hasMod(itemStack, this)) {
 			return false;
 		}
 
 		Random rand = new Random();
-		if (rand.nextInt(100) > modManager.getModLevel(is, this) * percentagePerLevel) {
+		if (rand.nextInt(100) > modManager.getModLevel(itemStack, this) * percentagePerLevel) {
 			return false;
 		}
 
-		storedItemStacks.computeIfAbsent(p.getUniqueId(), k -> new ArrayList<>()); // ?
+		storedItemStacks.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>()); // ?
 
-		ArrayList<ItemStack> stored = storedItemStacks.get(p.getUniqueId());
+		ArrayList<ItemStack> stored = storedItemStacks.get(player.getUniqueId());
 
-		ChatWriter.log(false, p.getDisplayName() + " triggered Soulbound on " + ItemGenerator.getDisplayName(is) + ChatColor.GRAY + " (" + is.getType().toString() + ")!");
+		ChatWriter.log(false, player.getDisplayName() + " triggered Soulbound on " + ItemGenerator.getDisplayName(itemStack) + ChatColor.GRAY + " (" + itemStack.getType().toString() + ")!");
 
-		if (stored.contains(is)) {
+		if (stored.contains(itemStack)) {
 			return true;
 		}
 
 		if (decrementModLevelOnUse) {
-			int newLevel = modManager.getModLevel(is, this) - 1;
+			int newLevel = modManager.getModLevel(itemStack, this) - 1;
 
 			if (newLevel == 0) {
-				modManager.removeMod(is, this);
+				modManager.removeMod(itemStack, this);
 			} else {
-				modManager.getNBTHandler().setInt(is, getKey(), modManager.getModLevel(is, this) - 1);
+				modManager.getNBTHandler().setInt(itemStack, getKey(), modManager.getModLevel(itemStack, this) - 1);
 			}
 		}
 
-		stored.add(is.clone());
+		stored.add(itemStack.clone());
 		return true;
 	}
 

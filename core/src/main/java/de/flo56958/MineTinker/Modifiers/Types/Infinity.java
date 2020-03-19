@@ -82,7 +82,7 @@ public class Infinity extends Modifier implements Listener {
 	}
 
 	@Override
-	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
@@ -98,17 +98,17 @@ public class Infinity extends Modifier implements Listener {
 	}
 
 	@EventHandler
-	public void onShoot(ProjectileLaunchEvent e) {
+	public void onShoot(ProjectileLaunchEvent event) {
 		if (!this.isAllowed()) return;
 
-		Projectile arrow = e.getEntity();
+		Projectile arrow = event.getEntity();
 		if (!(arrow instanceof Arrow)) return;
 
 		if (!(arrow.getShooter() instanceof Player)) return;
 
-		Player p = (Player) arrow.getShooter();
+		Player player = (Player) arrow.getShooter();
 
-		ItemStack tool = p.getInventory().getItemInMainHand();
+		ItemStack tool = player.getInventory().getItemInMainHand();
 
 		if (!ToolType.CROSSBOW.contains(tool.getType())) return;
 
@@ -117,8 +117,8 @@ public class Infinity extends Modifier implements Listener {
 		if (!modManager.hasMod(tool, this)) return;
 
 		if(!((Arrow) arrow).hasCustomEffects()) {
-			if (p.getInventory().addItem(new ItemStack(Material.ARROW, 1)).size() != 0) { //adds items to (full) inventory
-				p.getWorld().dropItem(p.getLocation(), new ItemStack(Material.ARROW, 1)); //drops item when inventory is full
+			if (player.getInventory().addItem(new ItemStack(Material.ARROW, 1)).size() != 0) { //adds items to (full) inventory
+				player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.ARROW, 1)); //drops item when inventory is full
 			} // no else as it gets added in if
 
 			((Arrow) arrow).setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);

@@ -32,14 +32,14 @@ public class AnvilListener implements Listener {
 	//reverted due to bugs in new implementation; newer implementation is commented out below
 	//changed method applyMod() to addMod() due to modifier rework
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onInventoryClick(InventoryClickEvent e) {
-		HumanEntity he = e.getWhoClicked();
+	public void onInventoryClick(InventoryClickEvent event) {
+		HumanEntity he = event.getWhoClicked();
 
-		if (!(he instanceof Player && e.getClickedInventory() instanceof AnvilInventory)) {
+		if (!(he instanceof Player && event.getClickedInventory() instanceof AnvilInventory)) {
 			return;
 		}
 
-		AnvilInventory inv = (AnvilInventory) e.getClickedInventory();
+		AnvilInventory inv = (AnvilInventory) event.getClickedInventory();
 		Player player = (Player) he;
 
 		ItemStack tool = inv.getItem(0);
@@ -50,7 +50,7 @@ public class AnvilListener implements Listener {
 			return;
 		}
 
-		if (e.getSlot() != 2) {
+		if (event.getSlot() != 2) {
 			return;
 		}
 
@@ -63,7 +63,7 @@ public class AnvilListener implements Listener {
 		}
 
 		//boolean deleteAllItems = false;
-		if (e.getCursor() != null && !e.getCursor().getType().equals(Material.AIR)) {
+		if (event.getCursor() != null && !event.getCursor().getType().equals(Material.AIR)) {
 			return;
 		}
 
@@ -71,9 +71,9 @@ public class AnvilListener implements Listener {
 			if (tool.getType().equals(newTool.getType())) return; //Not an upgrade
 
 			// ------ upgrade
-			if (e.isShiftClick()) {
+			if (event.isShiftClick()) {
 				if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
-					e.setCancelled(true); //cancels the event if the player has a full inventory
+					event.setCancelled(true); //cancels the event if the player has a full inventory
 					return;
 				} // no else as it gets added in if-clause
 
@@ -96,9 +96,9 @@ public class AnvilListener implements Listener {
 			modifier.setAmount(modifier.getAmount() - 1);
 			Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
 
-			if (e.isShiftClick()) {
+			if (event.isShiftClick()) {
 				if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
-					e.setCancelled(true); //cancels the event if the player has a full inventory
+					event.setCancelled(true); //cancels the event if the player has a full inventory
 					return;
 				} // no else as it gets added in if-clause
 
@@ -116,10 +116,10 @@ public class AnvilListener implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void onAnvilPrepare(PrepareAnvilEvent e) {
-		AnvilInventory i = e.getInventory();
-		ItemStack tool = i.getItem(0);
-		ItemStack modifier = i.getItem(1);
+	public void onAnvilPrepare(PrepareAnvilEvent event) {
+		AnvilInventory inventory = event.getInventory();
+		ItemStack tool = inventory.getItem(0);
+		ItemStack modifier = inventory.getItem(1);
 
 		if (tool == null || modifier == null) {
 			return;
@@ -128,7 +128,7 @@ public class AnvilListener implements Listener {
 		//-----
 		Player player = null;
 
-		List<HumanEntity> listHumans = e.getViewers();
+		List<HumanEntity> listHumans = event.getViewers();
 
 		for (HumanEntity he : listHumans) {
 			if (he instanceof Player) {
@@ -156,7 +156,7 @@ public class AnvilListener implements Listener {
 				return;
 			} else {
 				// Otherwise, set the resulting item to AIR to negate the enchant
-				e.setResult(new ItemStack(Material.AIR, 0)); //sets ghostitem by client
+				event.setResult(new ItemStack(Material.AIR, 0)); //sets ghostitem by client
 				return;
 			}
 		}
@@ -172,43 +172,43 @@ public class AnvilListener implements Listener {
 			}
 		} else {
 			if (Main.getPlugin().getConfig().getBoolean("Upgradeable") && player.hasPermission("minetinker.tool.upgrade")) {
-				ItemStack item = i.getItem(1);
+				ItemStack item = inventory.getItem(1);
 
 				if (item != null) {
 					switch (item.getAmount()) {
 						case 1:
 							if (ToolType.SHOVEL.contains(tool.getType())) {
-								newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+								newTool = ItemGenerator.itemUpgrader(tool.clone(), inventory.getItem(1), player);
 							}
 							break;
 						case 2:
 							if (ToolType.SWORD.contains(tool.getType()) || ToolType.HOE.contains(tool.getType())) {
-								newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+								newTool = ItemGenerator.itemUpgrader(tool.clone(), inventory.getItem(1), player);
 							}
 							break;
 						case 3:
 							if (ToolType.AXE.contains(tool.getType()) || ToolType.PICKAXE.contains(tool.getType())) {
-								newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+								newTool = ItemGenerator.itemUpgrader(tool.clone(), inventory.getItem(1), player);
 							}
 							break;
 						case 4:
 							if (ToolType.BOOTS.contains(tool.getType())) {
-								newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+								newTool = ItemGenerator.itemUpgrader(tool.clone(), inventory.getItem(1), player);
 							}
 							break;
 						case 5:
 							if (ToolType.HELMET.contains(tool.getType())) {
-								newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+								newTool = ItemGenerator.itemUpgrader(tool.clone(), inventory.getItem(1), player);
 							}
 							break;
 						case 7:
 							if (ToolType.LEGGINGS.contains(tool.getType())) {
-								newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+								newTool = ItemGenerator.itemUpgrader(tool.clone(), inventory.getItem(1), player);
 							}
 							break;
 						case 8:
 							if (ToolType.CHESTPLATE.contains(tool.getType())) {
-								newTool = ItemGenerator.itemUpgrader(tool.clone(), i.getItem(1), player);
+								newTool = ItemGenerator.itemUpgrader(tool.clone(), inventory.getItem(1), player);
 							}
 							break;
 					}
@@ -217,8 +217,8 @@ public class AnvilListener implements Listener {
 		}
 
 		if (newTool != null) {
-			e.setResult(newTool);
-			i.setRepairCost(0);
+			event.setResult(newTool);
+			inventory.setRepairCost(0);
 		}
 	}
 

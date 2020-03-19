@@ -79,19 +79,19 @@ public class BlockListener implements Listener {
 	//TODO: Replace if Issue #111 is implemented
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onBlockBreak_DurabilityCheck(BlockBreakEvent event) {
-		Player p = event.getPlayer();
-		ItemStack tool = p.getInventory().getItemInMainHand();
+		Player player = event.getPlayer();
+		ItemStack tool = player.getInventory().getItemInMainHand();
 		if (modManager.isToolViable(tool)) {
-			modManager.durabilityCheck(event, p, tool);
+			modManager.durabilityCheck(event, player, tool);
 		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent event) {
-		Player p = event.getPlayer();
-		ItemStack tool = p.getInventory().getItemInMainHand();
+		Player player = event.getPlayer();
+		ItemStack tool = player.getInventory().getItemInMainHand();
 
-		if (Lists.WORLDS.contains(p.getWorld().getName())) {
+		if (Lists.WORLDS.contains(player.getWorld().getName())) {
 			return;
 		}
 
@@ -111,10 +111,10 @@ public class BlockListener implements Listener {
 			//adds 0 if not in found in config (negative values are also fine)
 		}
 
-		modManager.addExp(p, tool, expAmount, false);
+		modManager.addExp(player, tool, expAmount, false);
 
 		//-------------------------------------------POWERCHECK---------------------------------------------
-		if (Power.HASPOWER.get(p).get() && !ToolType.PICKAXE.contains(tool.getType())
+		if (Power.HASPOWER.get(player).get() && !ToolType.PICKAXE.contains(tool.getType())
 				&& event.getBlock().getDrops(tool).isEmpty()
 				&& event.getBlock().getType() != Material.NETHER_WART) { //Necessary for EasyHarvest NetherWard-Break
 
@@ -128,10 +128,10 @@ public class BlockListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onClick(PlayerInteractEvent event) {
-		Player p = event.getPlayer();
-		Block b = event.getClickedBlock();
+		Player player = event.getPlayer();
+		Block block = event.getClickedBlock();
 
-		if (b == null) {
+		if (block == null) {
 			return;
 		}
 
@@ -139,7 +139,7 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		ItemStack norm = p.getInventory().getItemInMainHand();
+		ItemStack norm = player.getInventory().getItemInMainHand();
 
 		if (norm.getType() == Material.EXPERIENCE_BOTTLE) {
 			return;
@@ -150,8 +150,8 @@ public class BlockListener implements Listener {
 				event.setCancelled(true);
 			}
 		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			if (!p.isSneaking()) {
-				Material type = b.getType();
+			if (!player.isSneaking()) {
+				Material type = block.getType();
 
 				if (type == Material.ANVIL || type == Material.CRAFTING_TABLE
 						|| type == Material.CHEST || type == Material.ENDER_CHEST
@@ -168,13 +168,13 @@ public class BlockListener implements Listener {
 				return;
 			}
 
-			if (b.getType() == Material.getMaterial(Main.getPlugin().getConfig().getString("BlockToEnchantModifiers"))) {
-				ItemStack item = p.getInventory().getItemInMainHand();
+			if (block.getType() == Material.getMaterial(Main.getPlugin().getConfig().getString("BlockToEnchantModifiers"))) {
+				ItemStack item = player.getInventory().getItemInMainHand();
 
 				for (Modifier m : modManager.getAllMods()) {
 					if (m.getModItem().getType().equals(item.getType())) {
 						if (!m.isEnchantable()) continue;
-						m.enchantItem(p);
+						m.enchantItem(player);
 						event.setCancelled(true);
 						break;
 					}

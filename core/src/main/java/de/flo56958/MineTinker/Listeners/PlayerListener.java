@@ -171,11 +171,11 @@ public class PlayerListener implements Listener {
 	/**
 	 * Adds the Player to the HashMaps BLOCKFACE and HASPOWER
 	 *
-	 * @param e PlayerJoinEvent
+	 * @param event PlayerJoinEvent
 	 */
 	@EventHandler
-	public void onJoin(PlayerJoinEvent e) {
-		Player player = e.getPlayer();
+	public void onJoin(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
 		Lists.BLOCKFACE.put(player, null);
 		Power.HASPOWER.computeIfAbsent(player, p -> new AtomicBoolean(false));
 

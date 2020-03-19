@@ -86,12 +86,10 @@ public class Melting extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageByEntityEvent event) {
-
-
-		Player p = event.getPlayer();
+		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!p.hasPermission("minetinker.modifiers.melting.use")) {
+		if (!player.hasPermission("minetinker.modifiers.melting.use")) {
 			return;
 		}
 
@@ -105,12 +103,12 @@ public class Melting extends Modifier implements Listener {
              */
 			int level = modManager.getModLevel(tool, this);
 
-			if (p.getFireTicks() <= 0) {
+			if (player.getFireTicks() <= 0) {
 				return;
 			}
 
-			if (p.getFireTicks() > 0 && cancelBurning) {
-				p.setFireTicks(0);
+			if (player.getFireTicks() > 0 && cancelBurning) {
+				player.setFireTicks(0);
 			}
 
 			double damage = event.getEvent().getDamage();
@@ -118,7 +116,7 @@ public class Melting extends Modifier implements Listener {
 
 			event.getEvent().setDamage(damage);
 
-			ChatWriter.log(false, p.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+			ChatWriter.log(false, player.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 		} else {
             /*
             The melting effect, if the Player is the Damager
@@ -141,19 +139,17 @@ public class Melting extends Modifier implements Listener {
 
 				event.getEvent().setDamage(damage);
 
-				ChatWriter.log(false, p.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+				ChatWriter.log(false, player.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 			}
 		}
 	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageEvent event) {
-
-
-		Player p = event.getPlayer();
+		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!p.hasPermission("minetinker.modifiers.melting.use")) {
+		if (!player.hasPermission("minetinker.modifiers.melting.use")) {
 			return;
 		}
 
@@ -161,10 +157,10 @@ public class Melting extends Modifier implements Listener {
 			return;
 		}
 
-		if (p.getFireTicks() > 0 && cancelBurning) {
-			p.setFireTicks(0);
+		if (player.getFireTicks() > 0 && cancelBurning) {
+			player.setFireTicks(0);
 		}
 
-		ChatWriter.log(false, p.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+		ChatWriter.log(false, player.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 	}
 }

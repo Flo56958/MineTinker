@@ -33,7 +33,7 @@ public class GiveModifierItemCommand implements SubCommand {
 		int amountIndex;
 
 		Modifier mod = null;
-		Player p = null;
+		Player player = null;
 		int amount = 1;
 		switch (args.length) {
 			case 2:
@@ -41,7 +41,7 @@ public class GiveModifierItemCommand implements SubCommand {
 					if (m.getName().replaceAll(" ", "_").equalsIgnoreCase(args[1])) {
 						mod = m;
 						if (sender instanceof Player) {
-							p = (Player) sender;
+							player = (Player) sender;
 						} else {
 							CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 							return true;
@@ -55,22 +55,22 @@ public class GiveModifierItemCommand implements SubCommand {
 				}
 				break;
 			case 3:
-				p = Bukkit.getPlayer(args[1]);
-				if (p == null) {
+				player = Bukkit.getPlayer(args[1]);
+				if (player == null) {
 					try {
-						p = Bukkit.getPlayer(UUID.fromString(args[1]));
+						player = Bukkit.getPlayer(UUID.fromString(args[1]));
 					} catch (IllegalArgumentException ignored) {
 					}
 				}
 
-				if (p == null) modifierIndex = 1;
+				if (player == null) modifierIndex = 1;
 				else modifierIndex = 2;
 
 				for (Modifier m : ModManager.instance().getAllowedMods()) {
 					if (m.getName().replaceAll(" ", "_").equalsIgnoreCase(args[modifierIndex])) {
 						mod = m;
 						if (sender instanceof Player) {
-							p = (Player) sender;
+							player = (Player) sender;
 						} else if (modifierIndex == 1){
 							CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 							return true;
@@ -97,14 +97,14 @@ public class GiveModifierItemCommand implements SubCommand {
 				playerIndex = 1;
 				modifierIndex = 2;
 				amountIndex = 3;
-				p = Bukkit.getPlayer(args[playerIndex]);
-				if (p == null) {
+				player = Bukkit.getPlayer(args[playerIndex]);
+				if (player == null) {
 					try {
-						p = Bukkit.getPlayer(UUID.fromString(args[playerIndex]));
+						player = Bukkit.getPlayer(UUID.fromString(args[playerIndex]));
 					} catch (IllegalArgumentException ignored) {
 					}
 				}
-				if (p == null) {
+				if (player == null) {
 					CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 					return true;
 				}
@@ -132,8 +132,8 @@ public class GiveModifierItemCommand implements SubCommand {
 		}
 		ItemStack item = mod.getModItem().clone();
 		item.setAmount(amount);
-		if (p.getInventory().addItem(item).size() != 0) { //adds items to (full) inventory
-			p.getWorld().dropItem(p.getLocation(), item);
+		if (player.getInventory().addItem(item).size() != 0) { //adds items to (full) inventory
+			player.getWorld().dropItem(player.getLocation(), item);
 		} // no else as it gets added in if
 		return true;
 	}

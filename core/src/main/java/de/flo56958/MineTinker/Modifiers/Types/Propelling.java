@@ -98,7 +98,7 @@ public class Propelling extends Modifier implements Listener {
 	}
 
 	@Override
-	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {

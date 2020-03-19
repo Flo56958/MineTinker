@@ -95,9 +95,9 @@ public class KineticPlating extends Modifier implements Listener {
 		if (!(event.getEntity() instanceof Player)) return;
 		if (event.getCause() != EntityDamageEvent.DamageCause.FLY_INTO_WALL) return;
 
-		Player p = (Player) event.getEntity();
-		if (!p.hasPermission("minetinker.modifiers.kineticplating.use")) return;
-		ItemStack elytra = p.getInventory().getChestplate();
+		Player player = (Player) event.getEntity();
+		if (!player.hasPermission("minetinker.modifiers.kineticplating.use")) return;
+		ItemStack elytra = player.getInventory().getChestplate();
 
 		if (!modManager.hasMod(elytra, this)) return;
 

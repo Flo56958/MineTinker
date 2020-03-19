@@ -155,8 +155,8 @@ class NBTHandler_v1_15_R1 extends NBTHandler {
 	}
 
 	@Override
-	public void playerBreakBlock(Player p, Block block) {
-		((CraftPlayer) p).getHandle().playerInteractManager.breakBlock(new BlockPosition(block.getX(), block.getY(), block.getZ()));
+	public void playerBreakBlock(Player player, Block block) {
+		((CraftPlayer) player).getHandle().playerInteractManager.breakBlock(new BlockPosition(block.getX(), block.getY(), block.getZ()));
 	}
 
     @Override

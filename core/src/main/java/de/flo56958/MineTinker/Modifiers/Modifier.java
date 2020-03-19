@@ -50,25 +50,25 @@ public abstract class Modifier {
 		this.source = source;
 	}
 
-	static boolean checkAndAdd(Player p, ItemStack tool, Modifier mod, String permission, boolean isCommand, boolean fromRandom, boolean silent) {
+	static boolean checkAndAdd(Player player, ItemStack tool, Modifier mod, String permission, boolean isCommand, boolean fromRandom, boolean silent) {
 		if ((modManager.getFreeSlots(tool) < 1 && !mod.equals(ExtraModifier.instance())) && !isCommand) {
-			if (!silent) pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_FREE_SLOTS, isCommand));
+			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.NO_FREE_SLOTS, isCommand));
 			return false;
 		}
 
-		if (!p.hasPermission("minetinker.modifiers." + permission + ".apply")) {
-			if (!silent) pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.NO_PERMISSION, isCommand));
+		if (!player.hasPermission("minetinker.modifiers." + permission + ".apply")) {
+			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.NO_PERMISSION, isCommand));
 			return false;
 		}
 
 		FileConfiguration modifiersconfig = ConfigurationManager.getConfig("Modifiers.yml");
 		if (!(modifiersconfig.getBoolean("CommandIgnoresToolTypes") && isCommand && !fromRandom) && !mod.isMaterialCompatible(tool.getType())) {
-			if (!silent) pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
+			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
 			return false;
 		}
 
 		if (!(modifiersconfig.getBoolean("CommandIgnoresMaxLevel") && isCommand && !fromRandom) && modManager.getModLevel(tool, mod) >= mod.getMaxLvl()) {
-			if (!silent) pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.MOD_MAXLEVEL, isCommand));
+			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.MOD_MAXLEVEL, isCommand));
 			return false;
 		}
 
@@ -78,14 +78,14 @@ public abstract class Modifier {
 
 				for (Modifier m : incompatibility) {
 					if (modManager.hasMod(tool, m)) {
-						if (!silent) pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+						if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
 						return false;
 					}
 					if (modifiersconfig.getBoolean("IncompatibilitiesConsiderEnchants")) {
 						for (Enchantment e : m.getAppliedEnchantments()) {
 							if (!tool.hasItemMeta()) return false;
 							if (tool.getItemMeta().hasEnchant(e)) {
-								if (!silent) pluginManager.callEvent(new ModifierFailEvent(p, tool, mod, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+								if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
 								return false;
 							}
 						}
@@ -102,7 +102,7 @@ public abstract class Modifier {
 			modManager.setFreeSlots(tool, --freeSlots);
 		} else {
 			if (!silent) {
-				ModifierApplyEvent event = new ModifierApplyEvent(p, tool, mod, freeSlots, true);
+				ModifierApplyEvent event = new ModifierApplyEvent(player, tool, mod, freeSlots, true);
 				Bukkit.getPluginManager().callEvent(event);
 			}
 		}
@@ -196,12 +196,12 @@ public abstract class Modifier {
 	/**
 	 * applies the Modifier to the tool
 	 *
-	 * @param p    the Player
+	 * @param player    the Player
 	 * @param tool the Tool to modify
 	 * @return true if successful
 	 * false if failure
 	 */
-	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
 		return true;
 	}
 
@@ -324,8 +324,8 @@ public abstract class Modifier {
 
 	// ---------------------- Enchantable Stuff ----------------------
 
-	public void enchantItem(Player p) {
-		if (!p.hasPermission("minetinker.modifiers." + getKey().replace("-", "").toLowerCase() + ".craft")) {
+	public void enchantItem(Player player) {
+		if (!player.hasPermission("minetinker.modifiers." + getKey().replace("-", "").toLowerCase() + ".craft")) {
 			return;
 		}
 
@@ -333,29 +333,29 @@ public abstract class Modifier {
 			return;
 		}
 
-		Location location = p.getLocation();
+		Location location = player.getLocation();
 		World world = location.getWorld();
-		PlayerInventory inventory = p.getInventory();
+		PlayerInventory inventory = player.getInventory();
 
 		if (world == null) {
 			return;
 		}
 
-		if (p.getGameMode() == GameMode.CREATIVE) {
+		if (player.getGameMode() == GameMode.CREATIVE) {
 			if (inventory.addItem(getModItem()).size() != 0) { //adds items to (full) inventory
 				world.dropItem(location, getModItem());
 			} // no else as it gets added in if
 
 			if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-				p.playSound(location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+				player.playSound(location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
 			}
 
-			ChatWriter.log(false, p.getDisplayName() + " created a " + getName() + "-Modifiers in Creative!");
-		} else if (p.getLevel() >= getEnchantCost()) {
+			ChatWriter.log(false, player.getDisplayName() + " created a " + getName() + "-Modifiers in Creative!");
+		} else if (player.getLevel() >= getEnchantCost()) {
 			int amount = inventory.getItemInMainHand().getAmount();
-			int newLevel = p.getLevel() - getEnchantCost();
+			int newLevel = player.getLevel() - getEnchantCost();
 
-			p.setLevel(newLevel);
+			player.setLevel(newLevel);
 			inventory.getItemInMainHand().setAmount(amount - 1);
 
 			if (inventory.addItem(getModItem()).size() != 0) { //adds items to (full) inventory
@@ -363,13 +363,13 @@ public abstract class Modifier {
 			} // no else as it gets added in if
 
 			if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
-				p.playSound(location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
+				player.playSound(location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
 			}
 
-			ChatWriter.log(false, p.getDisplayName() + " created a " + getName() + "-Modifiers!");
+			ChatWriter.log(false, player.getDisplayName() + " created a " + getName() + "-Modifiers!");
 		} else {
-			ChatWriter.sendActionBar(p, ChatColor.RED + LanguageManager.getString("Modifier.Enchantable.LevelsRequired", p).replace("%amount", "" + getEnchantCost()));
-			ChatWriter.log(false, p.getDisplayName() + " tried to create a " + getName() + "-Modifiers but had not enough levels!");
+			ChatWriter.sendActionBar(player, ChatColor.RED + LanguageManager.getString("Modifier.Enchantable.LevelsRequired", player).replace("%amount", "" + getEnchantCost()));
+			ChatWriter.log(false, player.getDisplayName() + " tried to create a " + getName() + "-Modifiers but had not enough levels!");
 		}
 
 	}

@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.ConcurrentHashMap;
 
 interface PlayerAction {
-	void run(Player p);
+	void run(Player player);
 }
 
 public abstract class ButtonAction {
@@ -128,8 +128,8 @@ public abstract class ButtonAction {
 		public void run() {}
 
 		@Override
-		public void run(Player p) {
-			runnable.run(p, "");
+		public void run(Player player) {
+			runnable.run(player, "");
 		}
 	}
 
@@ -147,14 +147,14 @@ public abstract class ButtonAction {
 		}
 
 		@Override
-		public void run(Player p) {
-			playerToAction.put(p, this);
-			p.closeInventory();
-			ChatWriter.sendMessage(p, ChatColor.RED, LanguageManager.getString("GUI.ButtonAction.REQUEST_INPUT").replace("%data", data + ChatColor.RESET + "" + ChatColor.RED));
+		public void run(Player player) {
+			playerToAction.put(player, this);
+			player.closeInventory();
+			ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUI.ButtonAction.REQUEST_INPUT").replace("%data", data + ChatColor.RESET + "" + ChatColor.RED));
 		}
 
-		private void afterRun(Player p) {
-			Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> button.getWindow().getGUI().show(p, button.getWindow()), 10);
+		private void afterRun(Player player) {
+			Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> button.getWindow().getGUI().show(player, button.getWindow()), 10);
 		}
 	}
 
@@ -165,13 +165,13 @@ public abstract class ButtonAction {
 	private static class ChatListener implements Listener {
 
 		@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-		public static void onChat(AsyncPlayerChatEvent e) {
-			REQUEST_INPUT ri = REQUEST_INPUT.playerToAction.remove(e.getPlayer());
+		public static void onChat(AsyncPlayerChatEvent event) {
+			REQUEST_INPUT ri = REQUEST_INPUT.playerToAction.remove(event.getPlayer());
 			if (ri == null) return;
-			e.setCancelled(true);
+			event.setCancelled(true);
 
-			ri.runnable.run(e.getPlayer(), e.getMessage());
-			ri.afterRun(e.getPlayer());
+			ri.runnable.run(event.getPlayer(), event.getMessage());
+			ri.afterRun(event.getPlayer());
 		}
 
 	}

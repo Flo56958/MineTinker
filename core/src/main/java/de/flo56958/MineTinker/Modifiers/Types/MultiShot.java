@@ -106,7 +106,7 @@ public class MultiShot extends Modifier implements Listener {
 	}
 
 	@Override
-	public boolean applyMod(Player p, ItemStack tool, boolean isCommand) {
+	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
@@ -121,12 +121,12 @@ public class MultiShot extends Modifier implements Listener {
 	}
 
 	@EventHandler
-	public void onShoot(ProjectileLaunchEvent e) {
+	public void onShoot(ProjectileLaunchEvent event) {
 		if (!this.isAllowed()) {
 			return;
 		}
 
-		Projectile arrow = e.getEntity();
+		Projectile arrow = event.getEntity();
 
 		if (!(arrow instanceof Arrow)) {
 			return;
@@ -136,13 +136,13 @@ public class MultiShot extends Modifier implements Listener {
 			return;
 		}
 
-		Player p = (Player) arrow.getShooter();
+		Player player = (Player) arrow.getShooter();
 
-		if (!p.hasPermission("minetinker.modifiers.multishot.use")) {
+		if (!player.hasPermission("minetinker.modifiers.multishot.use")) {
 			return;
 		}
 
-		ItemStack tool = p.getInventory().getItemInMainHand();
+		ItemStack tool = player.getInventory().getItemInMainHand();
 
 		if (ToolType.CROSSBOW.contains(tool.getType()) && getConfig().getBoolean("UseEnchantOnCrossbow")) {
 			return;
@@ -164,13 +164,13 @@ public class MultiShot extends Modifier implements Listener {
 		boolean hasInfinity = modManager.hasMod(tool, Infinity.instance());
 
 		for (int i = 1; i <= modLevel; i++) {
-			if (!p.getGameMode().equals(GameMode.CREATIVE)) {
+			if (!player.getGameMode().equals(GameMode.CREATIVE)) {
 				if (!hasInfinity && needsArrows) {
-					if (!p.getInventory().contains(Material.ARROW)) {
+					if (!player.getInventory().contains(Material.ARROW)) {
 						break;
 					}
 
-					for (ItemStack item : p.getInventory().getContents()) {
+					for (ItemStack item : player.getInventory().getContents()) {
 						if (item == null) {
 							continue;
 						}
@@ -185,9 +185,9 @@ public class MultiShot extends Modifier implements Listener {
 
 			Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
 				Arrow arr = loc.getWorld().spawnArrow(loc, vel, (float) vel.length(), (float) spread);
-				arr.setShooter(p);
+				arr.setShooter(player);
 
-				if (hasInfinity || p.getGameMode().equals(GameMode.CREATIVE)) {
+				if (hasInfinity || player.getGameMode().equals(GameMode.CREATIVE)) {
 					arr.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
 				}
 

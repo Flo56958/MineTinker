@@ -124,51 +124,51 @@ public class EasyHarvestListener implements Listener {
 		Power.HASPOWER.get(player).set(false);
 	}
 
-	private static void replantCrops(Player p, Block b, Material m) {
+	private static void replantCrops(Player player, Block block, Material material) {
 		if (Main.getPlugin().getConfig().getBoolean("EasyHarvest.replant")) {
-			if (!p.hasPermission("minetinker.easyharvest.replant")) {
+			if (!player.hasPermission("minetinker.easyharvest.replant")) {
 				return;
 			}
 
-			for (ItemStack is : p.getInventory().getContents()) {
-				if (is == null) {
+			for (ItemStack itemStack : player.getInventory().getContents()) {
+				if (itemStack == null) {
 					// This is necessary as even though this is annotated @NotNull, it's still null sometimes
 					continue;
 				}
 
-				if (m == Material.BEETROOTS && is.getType() == Material.BEETROOT_SEEDS) {
-					is.setAmount(is.getAmount() - 1);
-					b.setType(m);
+				if (material == Material.BEETROOTS && itemStack.getType() == Material.BEETROOT_SEEDS) {
+					itemStack.setAmount(itemStack.getAmount() - 1);
+					block.setType(material);
 					break;
-				} else if (m == Material.CARROTS && is.getType() == Material.CARROT) {
-					is.setAmount(is.getAmount() - 1);
-					b.setType(m);
+				} else if (material == Material.CARROTS && itemStack.getType() == Material.CARROT) {
+					itemStack.setAmount(itemStack.getAmount() - 1);
+					block.setType(material);
 					break;
-				} else if (m == Material.POTATOES && is.getType() == Material.POTATO) {
-					is.setAmount(is.getAmount() - 1);
-					b.setType(m);
+				} else if (material == Material.POTATOES && itemStack.getType() == Material.POTATO) {
+					itemStack.setAmount(itemStack.getAmount() - 1);
+					block.setType(material);
 					break;
-				} else if (m == Material.WHEAT && is.getType() == Material.WHEAT_SEEDS) {
-					is.setAmount(is.getAmount() - 1);
-					b.setType(m);
+				} else if (material == Material.WHEAT && itemStack.getType() == Material.WHEAT_SEEDS) {
+					itemStack.setAmount(itemStack.getAmount() - 1);
+					block.setType(material);
 					break;
-				} else if (m == Material.NETHER_WART && is.getType() == Material.NETHER_WART) {
-					is.setAmount(is.getAmount() - 1);
-					b.setType(m);
+				} else if (material == Material.NETHER_WART && itemStack.getType() == Material.NETHER_WART) {
+					itemStack.setAmount(itemStack.getAmount() - 1);
+					block.setType(material);
 					break;
 				}
 			}
 		}
 	}
 
-	private static void playSound(Block b) {
+	private static void playSound(Block block) {
 		if (Main.getPlugin().getConfig().getBoolean("EasyHarvest.Sound")) {
-			b.getWorld().playSound(b.getLocation(), Sound.ITEM_HOE_TILL, 1.0F, 0.5F);
+			block.getWorld().playSound(block.getLocation(), Sound.ITEM_HOE_TILL, 1.0F, 0.5F);
 		}
 	}
 
-	private static void breakBlock(Block b, Player p) {
-		NBTUtils.getHandler().playerBreakBlock(p, b);
+	private static void breakBlock(Block block, Player player) {
+		NBTUtils.getHandler().playerBreakBlock(player, block);
 	}
 
 	@EventHandler

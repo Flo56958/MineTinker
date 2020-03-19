@@ -281,9 +281,9 @@ public class BuildersWandListener implements Listener {
 		int _u = 0;
 		int _w = 0;
 
-		Player p = event.getPlayer();
+		Player player = event.getPlayer();
 
-		if (!p.isSneaking()) {
+		if (!player.isSneaking()) {
 			switch (wand.getType()) {  //TODO: custom Builderswand sizes
 				case STONE_SHOVEL:
 					_w = 1;
@@ -305,7 +305,7 @@ public class BuildersWandListener implements Listener {
 
 		Block block = event.getClickedBlock();
 		BlockFace face = event.getBlockFace();
-		ItemStack[] inv = p.getInventory().getContents();
+		ItemStack[] inv = player.getInventory().getContents();
 
 		Vector u = new Vector(0, 0, 0);
 		Vector v = new Vector(0, 0, 0);
@@ -318,7 +318,7 @@ public class BuildersWandListener implements Listener {
 				v = new Vector(0, -1, 0);
 			}
 
-			switch (PlayerInfo.getFacingDirection(p)) {
+			switch (PlayerInfo.getFacingDirection(player)) {
 				case "N":
 					w = new Vector(-1, 0, 0);
 					break;
@@ -351,7 +351,7 @@ public class BuildersWandListener implements Listener {
 			w = new Vector(0, 0, 1);
 			u = new Vector(0, -1, 0);
 		}
-		if ((p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE) && block != null) {
+		if ((player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) && block != null) {
 			for (ItemStack current : inv) {
 				if (current == null) {
 					continue;
@@ -384,7 +384,7 @@ public class BuildersWandListener implements Listener {
 								}
 							}
 
-							if (!placeBlock(block, p, l, loc, current, v)) {
+							if (!placeBlock(block, player, l, loc, current, v)) {
 								continue;
 							}
 
@@ -417,7 +417,7 @@ public class BuildersWandListener implements Listener {
 
 				break;
 			}
-		} else if (p.getGameMode() == GameMode.CREATIVE && block != null) {
+		} else if (player.getGameMode() == GameMode.CREATIVE && block != null) {
 			for (int i = -_w; i <= _w; i++) {
 				for (int j = -_u; j <= _u; j++) {
 					Location l = block.getLocation().clone();
@@ -427,7 +427,7 @@ public class BuildersWandListener implements Listener {
 
 					Location loc = l.clone().subtract(v.clone().multiply(-1));
 
-					placeBlock(block, p, l, loc, new ItemStack(block.getType(), 64), v);
+					placeBlock(block, player, l, loc, new ItemStack(block.getType(), 64), v);
 				}
 			}
 		}

@@ -99,10 +99,10 @@ public class Directing extends Modifier implements Listener {
 			return;
 		}
 
-		Player p = event.getPlayer();
+		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!p.hasPermission("minetinker.modifiers.directing.use")) {
+		if (!player.hasPermission("minetinker.modifiers.directing.use")) {
 			return;
 		}
 
@@ -117,15 +117,15 @@ public class Directing extends Modifier implements Listener {
 				continue;
 			}
 
-			if (p.getInventory().addItem(current).size() != 0) { //adds items to (full) inventory
-				p.getWorld().dropItem(p.getLocation(), current);
+			if (player.getInventory().addItem(current).size() != 0) { //adds items to (full) inventory
+				player.getWorld().dropItem(player.getLocation(), current);
 			} // no else as it gets added in if-clause
 		}
 
 		drops.clear();
 
 		if (this.workOnXP && modManager.getModLevel(tool, this) >= this.minimumLevelForXP) {
-			p.giveExp(event.getEvent().getDroppedExp());
+			player.giveExp(event.getEvent().getDroppedExp());
 			event.getEvent().setDroppedExp(0);
 		}
 	}

@@ -96,17 +96,15 @@ public class Glowing extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageByEntityEvent event) {
-
-
 		if (!(event.getEntity() instanceof LivingEntity)) {
 			return;
 		}
 
-		Player p = event.getPlayer();
+		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 		LivingEntity entity = (LivingEntity) event.getEntity();
 
-		if (!p.hasPermission("minetinker.modifiers.glowing.use")) {
+		if (!player.hasPermission("minetinker.modifiers.glowing.use")) {
 			return;
 		}
 
@@ -117,6 +115,6 @@ public class Glowing extends Modifier implements Listener {
 		int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (modManager.getModLevel(tool, this) - 1)));
 		entity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, duration, 0, false, false));
 
-		ChatWriter.log(false, p.getDisplayName() + " triggered Glowing on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+		ChatWriter.log(false, player.getDisplayName() + " triggered Glowing on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 	}
 }
