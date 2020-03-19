@@ -104,6 +104,10 @@ public class Berserk extends Modifier implements Listener {
 
 		Player player = (Player) event.getEntity();
 
+		if (!player.hasPermission("minetinker.modifiers.berserk.use")) {
+			return;
+		}
+
 		if (player.getInventory().getChestplate() == null) {
 			return;
 		}
