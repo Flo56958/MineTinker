@@ -34,7 +34,9 @@ public class EasyHarvestListener implements Listener {
 	}
 
 	private static void breakCrops(Player player, ItemStack tool, Block block) {
-		if (!player.hasPermission("minetinker.easyharvest.use"))
+		if (!player.hasPermission("minetinker.easyharvest.use")) {
+			return;
+		}
 
 		Power.HASPOWER.get(player).set(true);
 		Material type = block.getType();
