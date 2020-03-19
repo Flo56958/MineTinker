@@ -6,6 +6,7 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -96,20 +97,34 @@ public class Berserk extends Modifier implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onHit(EntityDamageEvent e) {
-		if (!(e.getEntity() instanceof Player)) return;
-		Player p = (Player) e.getEntity();
+	public void onHit(EntityDamageEvent event) {
+		if (!(event.getEntity() instanceof Player)) {
+			return;
+		}
 
-		if (p.getInventory().getChestplate() == null) return;
+		Player player = (Player) event.getEntity();
 
-		int level = modManager.getModLevel(p.getInventory().getChestplate(), this);
-		if (level <= 0) return;
+		if (player.getInventory().getChestplate() == null) {
+			return;
+		}
 
-		double lifeAfterDamage = p.getHealth() - e.getFinalDamage();
+		int modifierLevel = modManager.getModLevel(player.getInventory().getChestplate(), this);
 
-		if (p.getHealth() / p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() > trigger / 100.0
-			&& lifeAfterDamage / p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() <= trigger / 100.0) {
-			p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, boostTime, level - 1));
+		if (modifierLevel <= 0) {
+			return;
+		}
+
+		double lifeAfterDamage = player.getHealth() - event.getFinalDamage();
+		AttributeInstance healthAttr = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+
+		double maxHealth = 20;
+
+		if (healthAttr != null) {
+			maxHealth = healthAttr.getValue();
+		}
+
+		if (player.getHealth() / maxHealth > trigger / 100.0 && lifeAfterDamage / maxHealth <= trigger / 100.0) {
+			player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, boostTime, modifierLevel - 1));
 		}
 	}
 }
