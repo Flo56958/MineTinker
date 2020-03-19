@@ -95,8 +95,6 @@ public class Directing extends Modifier implements Listener {
 
 	@EventHandler
 	public void effect(MTEntityDeathEvent event) {
-
-
 		if (!this.workInPVP && event.getEvent().getEntity() instanceof Player) {
 			return;
 		}
