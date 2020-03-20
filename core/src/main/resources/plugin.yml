@@ -66,7 +66,7 @@ permissions:
       minetinker.commands.reload: true
 
   minetinker.commands.main:
-    description: Allows to access MineTinker
+    description: Allows to access MineTinker Commands entirely. Is necessary for every command.
     default: true
 
   minetinker.commands.help:
