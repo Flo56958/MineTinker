@@ -397,19 +397,19 @@ public class BuildersWandListener implements Listener {
 
 							current.setAmount(current.getAmount() - amountPlaced);
 
-							if (config.getBoolean("BuildersWand.useDurability")) {
-								//TODO: Add Modifiers to the Builderwand (Self-Repair, Reinforced, XP)
+							if (config.getBoolean("useDurability")) {
+								//TODO: Add Modifiers to the Builderswand (Self-Repair, Reinforced, XP)
 								if (!wand.getItemMeta().isUnbreakable()) {
 									damageable.setDamage(damageable.getDamage() + 1);
 								}
 							}
 
+							wand.setItemMeta((ItemMeta) damageable);
+
 							if (current.getAmount() == 0) {
 								//TODO: Add Exp gain for Builderswands
 								break loop;
 							}
-
-							wand.setItemMeta((ItemMeta) damageable);
 							event.setCancelled(true);
 						}
 					}
