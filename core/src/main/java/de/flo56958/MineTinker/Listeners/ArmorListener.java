@@ -121,7 +121,7 @@ public class ArmorListener implements Listener {
 		Random rand = new Random();
 		int chance = rand.nextInt(100);
 
-		if (chance < ConfigurationManager.getConfig("Elytra.yml").getInt("Elytra.ExpChanceWhileFlying")) {
+		if (chance < ConfigurationManager.getConfig("Elytra.yml").getInt("ExpChanceWhileFlying")) {
 			modManager.addExp(event.getPlayer(), event.getItem(), Main.getPlugin().getConfig().getInt("ExpPerEntityHit"), false);
 		}
 

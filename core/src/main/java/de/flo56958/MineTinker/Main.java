@@ -81,7 +81,7 @@ public class Main extends JavaPlugin {
 
 		FileConfiguration elytraConf = ConfigurationManager.getConfig("Elytra.yml");
 		elytraConf.options().copyDefaults(true);
-		elytraConf.addDefault("Elytra.ExpChanceWhileFlying", 10);
+		elytraConf.addDefault("ExpChanceWhileFlying", 10);
 		ConfigurationManager.saveConfig(elytraConf);
 
 		if (getConfig().getBoolean("ConvertEnchantmentsOnEnchant")) {
