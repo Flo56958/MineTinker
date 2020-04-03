@@ -19,6 +19,10 @@ actionbar-messages: true
 actionbar-on-exp-gain: false
 BroadcastConfigChanges: true
 
+#--COMMANDS--
+NameCommandBlacklist:                 #Which words are not allowed in the name of Tools and Armor (Regex-Expressions allowed)
+  - BlacklistExample
+
 #---------------EXP-SETTINGS--------------
 LevelStep: 100                        #*(LevelFactor^LevelOfTool) [EXPONENTIAL]; *(LevelFactor*LevelOfTool) [LINEAR]
 LevelFactor: 2.0
@@ -37,7 +41,7 @@ ExtraExpPerEntityHit:                 #Extra Exp for entity hit
 ExtraExpPerEntityDeath:               #Extra Exp for entity death
   ENDER_DRAGON: 20
   WITHER: 10
-EnableDamageExp: true                 #When true: Sword/Bow will gain XP equal to the damage-value
+EnableDamageExp: true                 #When true: Sword/Bow will gain XP equal to the damage dealt
 
 #---------------TOOL-SETTINGS--------------
 AddModifierSlotsPerLevel: 1           #Amount of new free Modifier-Slots for each Level-Up (must be positive or zero)

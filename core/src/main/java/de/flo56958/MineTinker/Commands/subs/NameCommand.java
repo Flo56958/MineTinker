@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Commands.subs;
 
 import de.flo56958.MineTinker.Commands.ArgumentType;
 import de.flo56958.MineTinker.Commands.CommandManager;
+import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.api.SubCommand;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Syntax of /mt convert:
@@ -51,10 +53,19 @@ public class NameCommand implements SubCommand {
 
 			name = new StringBuilder(name.substring(1));
 
+			//Test given Name with Blacklist
+			String name_ = name.toString();
+			for (String pattern : Lists.NAME_COMMAND_BLACKLIST) {
+				if (Pattern.compile(pattern).matcher(name_).find()) {
+					CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NameNotAllowed"));
+					return true;
+				}
+			}
+
 			ItemMeta meta = tool.getItemMeta();
 
 			if (meta != null) {
-				meta.setDisplayName(name.toString());
+				meta.setDisplayName(name_);
 				tool.setItemMeta(meta);
 			}
 		} else {

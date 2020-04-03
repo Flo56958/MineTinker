@@ -19,6 +19,7 @@ public class Lists {
 	public static List<String> WORLDS;
 	public static List<String> WORLDS_BUILDERSWANDS;
 	public static List<String> WORLDS_EASYHARVEST;
+	public static List<String> NAME_COMMAND_BLACKLIST;
 
 	static {
 		reload();
@@ -26,8 +27,9 @@ public class Lists {
 
 	public static void reload() {
 		WORLDS = config.getStringList("BannedWorlds");
-		WORLDS_BUILDERSWANDS = ConfigurationManager.getConfig("BuildersWand.yml").getStringList("BuildersWand.BannedWorlds");
+		WORLDS_BUILDERSWANDS = ConfigurationManager.getConfig("BuildersWand.yml").getStringList("BannedWorlds");
 		WORLDS_EASYHARVEST = config.getStringList("EasyHarvest.BannedWorlds");
+		NAME_COMMAND_BLACKLIST = config.getStringList("NameCommandBlacklist");
 	}
 
 	public static ArrayList<Material> getLetherArmor() {

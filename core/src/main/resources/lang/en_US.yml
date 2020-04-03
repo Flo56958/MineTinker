@@ -54,6 +54,7 @@ Commands.Failure.Cause.PlayerOnlyCommand: "Player only Command!"
 Commands.Failure.Cause.UnknownCommand: "Unknown Command!"
 Commands.Failure.Cause.NoPermission: "No Permission!"
 Commands.Failure.Cause.InvalidItem: "Invalid Item!"
+Commands.Failure.Cause.NameNotAllowed: "Name not allowed!"
 
 GUI.ButtonAction.REQUEST_INPUT: "Your Input is needed for %data. The next chat message you send will be caught by MineTinker and will be your input."
 
