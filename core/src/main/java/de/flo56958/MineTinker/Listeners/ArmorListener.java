@@ -33,8 +33,10 @@ public class ArmorListener implements Listener {
 	private static final ArrayList<EntityDamageEvent.DamageCause> blacklistedCauses = new ArrayList<>();
 
 	static {
-		blacklistedCauses.add(EntityDamageEvent.DamageCause.SUICIDE);
-		blacklistedCauses.add(EntityDamageEvent.DamageCause.VOID);
+		//List to disable XP-Farming on Armor with Suicide-Commands
+		blacklistedCauses.add(EntityDamageEvent.DamageCause.SUICIDE); //vanilla Suicide command
+		blacklistedCauses.add(EntityDamageEvent.DamageCause.VOID); //other Suicide commands
+		blacklistedCauses.add(EntityDamageEvent.DamageCause.CUSTOM); //Essentials Suicide
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
