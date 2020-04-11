@@ -7,7 +7,6 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -116,7 +115,7 @@ public class Melting extends Modifier implements Listener {
 
 			event.getEvent().setDamage(damage);
 
-			ChatWriter.log(false, player.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+			ChatWriter.log(false, player.getDisplayName() + " triggered Melting on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 		} else {
             /*
             The melting effect, if the Player is the Damager
@@ -139,7 +138,7 @@ public class Melting extends Modifier implements Listener {
 
 				event.getEvent().setDamage(damage);
 
-				ChatWriter.log(false, player.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+				ChatWriter.log(false, player.getDisplayName() + " triggered Melting on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 			}
 		}
 	}
@@ -161,6 +160,6 @@ public class Melting extends Modifier implements Listener {
 			player.setFireTicks(0);
 		}
 
-		ChatWriter.log(false, player.getDisplayName() + " triggered Melting on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+		ChatWriter.log(false, player.getDisplayName() + " triggered Melting on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 	}
 }

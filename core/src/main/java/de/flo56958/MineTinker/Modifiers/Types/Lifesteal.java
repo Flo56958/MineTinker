@@ -6,7 +6,6 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -133,6 +132,6 @@ public class Lifesteal extends Modifier implements Listener {
 			player.setHealth(health);
 		}
 
-		ChatWriter.log(false, player.getDisplayName() + " triggered Lifesteal on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") and got " + recovery + " health back!");
+		ChatWriter.log(false, player.getDisplayName() + " triggered Lifesteal on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") and got " + recovery + " health back!");
 	}
 }

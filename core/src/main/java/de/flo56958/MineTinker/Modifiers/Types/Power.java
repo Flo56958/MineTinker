@@ -8,7 +8,6 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
@@ -188,7 +187,7 @@ public class Power extends Modifier implements Listener {
 			return;
 		}
 
-		ChatWriter.log(false, player.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool)
+		ChatWriter.log(false, player.getDisplayName() + " triggered Power on " + ChatWriter.getDisplayName(tool)
 				+ ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 
 		HASPOWER.get(player).set(true); // for the power-triggered BlockBreakEvents (prevents endless "recursion")
@@ -300,7 +299,7 @@ public class Power extends Modifier implements Listener {
 			return;
 		}
 
-		ChatWriter.log(false, player.getDisplayName() + " triggered Power on " + ItemGenerator.getDisplayName(tool)
+		ChatWriter.log(false, player.getDisplayName() + " triggered Power on " + ChatWriter.getDisplayName(tool)
 				+ ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 
 		HASPOWER.get(player).set(true);

@@ -3,7 +3,6 @@ package de.flo56958.MineTinker.Listeners;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -46,7 +45,7 @@ public class CraftItemListener implements Listener {
 		}
 
 		if (tool != null) {
-			ChatWriter.log(false, player.getName() + " crafted " + ItemGenerator.getDisplayName(tool) + "! It is now a MineTinker-Item!");
+			ChatWriter.log(false, player.getName() + " crafted " + ChatWriter.getDisplayName(tool) + "! It is now a MineTinker-Item!");
 		}
 	}
 

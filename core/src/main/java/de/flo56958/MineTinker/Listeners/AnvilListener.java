@@ -7,7 +7,6 @@ import de.flo56958.MineTinker.Events.ToolUpgradeEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -178,37 +177,37 @@ public class AnvilListener implements Listener {
 					switch (item.getAmount()) {
 						case 1:
 							if (ToolType.SHOVEL.contains(tool.getType())) {
-								newTool = ItemGenerator.itemUpgrader(tool.clone(), inventory.getItem(1), player);
+								newTool = ModManager.itemUpgrader(tool.clone(), inventory.getItem(1), player);
 							}
 							break;
 						case 2:
 							if (ToolType.SWORD.contains(tool.getType()) || ToolType.HOE.contains(tool.getType())) {
-								newTool = ItemGenerator.itemUpgrader(tool.clone(), inventory.getItem(1), player);
+								newTool = ModManager.itemUpgrader(tool.clone(), inventory.getItem(1), player);
 							}
 							break;
 						case 3:
 							if (ToolType.AXE.contains(tool.getType()) || ToolType.PICKAXE.contains(tool.getType())) {
-								newTool = ItemGenerator.itemUpgrader(tool.clone(), inventory.getItem(1), player);
+								newTool = ModManager.itemUpgrader(tool.clone(), inventory.getItem(1), player);
 							}
 							break;
 						case 4:
 							if (ToolType.BOOTS.contains(tool.getType())) {
-								newTool = ItemGenerator.itemUpgrader(tool.clone(), inventory.getItem(1), player);
+								newTool = ModManager.itemUpgrader(tool.clone(), inventory.getItem(1), player);
 							}
 							break;
 						case 5:
 							if (ToolType.HELMET.contains(tool.getType())) {
-								newTool = ItemGenerator.itemUpgrader(tool.clone(), inventory.getItem(1), player);
+								newTool = ModManager.itemUpgrader(tool.clone(), inventory.getItem(1), player);
 							}
 							break;
 						case 7:
 							if (ToolType.LEGGINGS.contains(tool.getType())) {
-								newTool = ItemGenerator.itemUpgrader(tool.clone(), inventory.getItem(1), player);
+								newTool = ModManager.itemUpgrader(tool.clone(), inventory.getItem(1), player);
 							}
 							break;
 						case 8:
 							if (ToolType.CHESTPLATE.contains(tool.getType())) {
-								newTool = ItemGenerator.itemUpgrader(tool.clone(), inventory.getItem(1), player);
+								newTool = ModManager.itemUpgrader(tool.clone(), inventory.getItem(1), player);
 							}
 							break;
 					}

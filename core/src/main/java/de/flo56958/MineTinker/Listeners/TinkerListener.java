@@ -11,7 +11,6 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Modifiers.Types.ExtraModifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -47,9 +46,9 @@ public class TinkerListener implements Listener {
 
 			ChatWriter.sendActionBar(player,
 					LanguageManager.getString("TinkerListener.ToolUpgrade", player)
-							.replace("%tool", ItemGenerator.getDisplayName(tool) + ChatColor.WHITE)
+							.replace("%tool", ChatWriter.getDisplayName(tool) + ChatColor.WHITE)
 							.replace("%type", tool.getType().toString().split("_")[0]));
-			ChatWriter.log(false, player.getDisplayName() + " upgraded " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ") to " + tool.getType().toString() + "!");
+			ChatWriter.log(false, player.getDisplayName() + " upgraded " + ChatWriter.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ") to " + tool.getType().toString() + "!");
 		} else {
 			if (config.getBoolean("Sound.OnUpgrade")) {
 				player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
@@ -69,10 +68,10 @@ public class TinkerListener implements Listener {
 
 		ChatWriter.sendActionBar(player,
 				LanguageManager.getString("TinkerListener.ModifierApply", player)
-						.replace("%tool", ItemGenerator.getDisplayName(tool) + ChatColor.WHITE)
+						.replace("%tool", ChatWriter.getDisplayName(tool) + ChatColor.WHITE)
 						.replace("%mod", mod.getColor() + mod.getName() + ChatColor.WHITE)
 						.replace("%slots", "" + event.getSlotsRemaining()));
-		ChatWriter.log(false, player.getDisplayName() + " modded " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") with " + mod.getColor() + mod.getName() + ChatColor.GRAY + " " + modManager.getModLevel(tool, mod) + "!");
+		ChatWriter.log(false, player.getDisplayName() + " modded " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") with " + mod.getColor() + mod.getName() + ChatColor.GRAY + " " + modManager.getModLevel(tool, mod) + "!");
 	}
 
 	@EventHandler
@@ -89,9 +88,9 @@ public class TinkerListener implements Listener {
 			ChatWriter.sendActionBar(player,
 					LanguageManager.getString("TinkerListener.ModifierFail", player)
 							.replace("%mod", mod.getColor() + mod.getName() + ChatColor.WHITE)
-							.replace("%tool", ItemGenerator.getDisplayName(tool) + ChatColor.WHITE)
+							.replace("%tool", ChatWriter.getDisplayName(tool) + ChatColor.WHITE)
 							.replace("%cause", event.getFailCause().toString(player)));
-			ChatWriter.log(false, player.getDisplayName() + " failed to apply " + mod.getColor() + mod.getName() + ChatColor.GRAY + " " + (modManager.getModLevel(tool, mod) + 1) + " on " + ItemGenerator.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") (" + event.getFailCause().toString() + ")");
+			ChatWriter.log(false, player.getDisplayName() + " failed to apply " + mod.getColor() + mod.getName() + ChatColor.GRAY + " " + (modManager.getModLevel(tool, mod) + 1) + " on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") (" + event.getFailCause().toString() + ")");
 		}
 	}
 
@@ -231,8 +230,8 @@ public class TinkerListener implements Listener {
 
 		ChatWriter.sendActionBar(player,
 				LanguageManager.getString("TinkerListener.ToolLevelUp", player)
-						.replace("%tool", ItemGenerator.getDisplayName(tool))
+						.replace("%tool", ChatWriter.getDisplayName(tool))
 						.replace("%level", "" + modManager.getLevel(tool)));
-		ChatWriter.log(false, player.getDisplayName() + " leveled up " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
+		ChatWriter.log(false, player.getDisplayName() + " leveled up " + ChatWriter.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
 	}
 }

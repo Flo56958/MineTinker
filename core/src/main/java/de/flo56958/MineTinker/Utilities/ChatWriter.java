@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
@@ -224,5 +225,17 @@ public class ChatWriter {
 		}
 
 		return res;
+	}
+
+	public static String getDisplayName(ItemStack tool) {
+		String name;
+
+		if (tool.getItemMeta() == null || !tool.getItemMeta().hasDisplayName()) {
+			name = tool.getType().toString();
+		} else {
+			name = tool.getItemMeta().getDisplayName();
+		}
+
+		return name;
 	}
 }

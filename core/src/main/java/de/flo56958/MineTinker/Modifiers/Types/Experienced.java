@@ -9,7 +9,6 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -133,7 +132,7 @@ public class Experienced extends Modifier implements Listener {
 
 		if (n <= this.percentagePerLevel * level) {
 			player.giveExp(this.amount);
-			ChatWriter.log(false, player.getDisplayName() + " triggered Experienced on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
+			ChatWriter.log(false, player.getDisplayName() + " triggered Experienced on " + ChatWriter.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
 		}
 	}
 }

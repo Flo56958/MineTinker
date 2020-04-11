@@ -6,7 +6,6 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -124,7 +123,7 @@ public class Beheading extends Modifier implements Listener {
 
 					if (loot.getType() != Material.AIR) {
 						event.getEvent().getDrops().add(loot);
-						ChatWriter.log(false, player.getDisplayName() + " triggered Beheading on " + ItemGenerator.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
+						ChatWriter.log(false, player.getDisplayName() + " triggered Beheading on " + ChatWriter.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
 					}
 				}
 			}

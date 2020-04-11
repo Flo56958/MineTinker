@@ -2,6 +2,7 @@ package de.flo56958.MineTinker.Modifiers;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ToolLevelUpEvent;
+import de.flo56958.MineTinker.Events.ToolUpgradeEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Types.*;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -23,6 +24,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.PluginManager;
 
 import java.util.*;
 
@@ -32,6 +34,8 @@ public class ModManager {
 	private static FileConfiguration config;
 	private static FileConfiguration layout;
 	private static ModManager instance;
+
+	private static final PluginManager pluginManager = Bukkit.getPluginManager();
 
 	static {
 		nbt = NBTUtils.getHandler();
@@ -997,5 +1001,273 @@ public class ModManager {
 		}
 
 		return true;
+	}
+
+	public static ItemStack itemUpgrader(ItemStack tool, ItemStack upgrade, Player player) {
+		// TODO: Fix this fuckery
+
+		ItemMeta meta = tool.getItemMeta();
+		String name = tool.getType().toString().split("_")[0].toLowerCase();
+
+		if (name.equals("wooden") && (
+				upgrade.getType() == Material.ACACIA_PLANKS ||
+						upgrade.getType() == Material.BIRCH_PLANKS ||
+						upgrade.getType() == Material.DARK_OAK_PLANKS ||
+						upgrade.getType() == Material.JUNGLE_PLANKS ||
+						upgrade.getType() == Material.OAK_PLANKS ||
+						upgrade.getType() == Material.SPRUCE_PLANKS)) {
+
+			pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+			return null;
+		} else if (name.equals("stone") && upgrade.getType() == Material.COBBLESTONE) {
+			pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+			return null;
+		} else if (name.equals("iron") && upgrade.getType() == Material.IRON_INGOT) {
+			pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+			return null;
+		} else if (name.equals("gold") && upgrade.getType() == Material.GOLD_INGOT) {
+			pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+			return null;
+		} else if (name.equals("diamond") && upgrade.getType() == Material.DIAMOND) {
+			pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+			return null;
+		} else if (name.equals("leather") && upgrade.getType() == Material.LEATHER) {
+			pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+			return null;
+		} else if (name.equals("turtle") && upgrade.getType() == Material.SCUTE) {
+			pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+			return null;
+		} else if (name.equals("chainmail") && upgrade.getType() == Material.IRON_BARS) {
+			pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+			return null;
+		}
+
+		if (ToolType.SWORD.contains(tool.getType())) {
+			switch (upgrade.getType()) {
+				case ACACIA_PLANKS:
+				case BIRCH_PLANKS:
+				case DARK_OAK_PLANKS:
+				case JUNGLE_PLANKS:
+				case OAK_PLANKS:
+				case SPRUCE_PLANKS:
+					tool.setType(Material.WOODEN_SWORD);
+					break;
+				case COBBLESTONE:
+					tool.setType(Material.STONE_SWORD);
+					break;
+				case IRON_INGOT:
+					tool.setType(Material.IRON_SWORD);
+					break;
+				case GOLD_INGOT:
+					tool.setType(Material.GOLDEN_SWORD);
+					break;
+				case DIAMOND:
+					tool.setType(Material.DIAMOND_SWORD);
+					break;
+				default:
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+					return null;
+			}
+		} else if (ToolType.PICKAXE.contains(tool.getType())) {
+			switch (upgrade.getType()) {
+				case ACACIA_PLANKS:
+				case BIRCH_PLANKS:
+				case DARK_OAK_PLANKS:
+				case JUNGLE_PLANKS:
+				case OAK_PLANKS:
+				case SPRUCE_PLANKS:
+					tool.setType(Material.WOODEN_PICKAXE);
+					break;
+				case COBBLESTONE:
+					tool.setType(Material.STONE_PICKAXE);
+					break;
+				case IRON_INGOT:
+					tool.setType(Material.IRON_PICKAXE);
+					break;
+				case GOLD_INGOT:
+					tool.setType(Material.GOLDEN_PICKAXE);
+					break;
+				case DIAMOND:
+					tool.setType(Material.DIAMOND_PICKAXE);
+					break;
+				default:
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+					return null;
+			}
+		} else if (ToolType.AXE.contains(tool.getType())) {
+			switch (upgrade.getType()) {
+				case ACACIA_PLANKS:
+				case BIRCH_PLANKS:
+				case DARK_OAK_PLANKS:
+				case JUNGLE_PLANKS:
+				case OAK_PLANKS:
+				case SPRUCE_PLANKS:
+					tool.setType(Material.WOODEN_AXE);
+					break;
+				case COBBLESTONE:
+					tool.setType(Material.STONE_AXE);
+					break;
+				case IRON_INGOT:
+					tool.setType(Material.IRON_AXE);
+					break;
+				case GOLD_INGOT:
+					tool.setType(Material.GOLDEN_AXE);
+					break;
+				case DIAMOND:
+					tool.setType(Material.DIAMOND_AXE);
+					break;
+				default:
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+					return null;
+			}
+		} else if (ToolType.SHOVEL.contains(tool.getType())) {
+			switch (upgrade.getType()) {
+				case ACACIA_PLANKS:
+				case BIRCH_PLANKS:
+				case DARK_OAK_PLANKS:
+				case JUNGLE_PLANKS:
+				case OAK_PLANKS:
+				case SPRUCE_PLANKS:
+					tool.setType(Material.WOODEN_SHOVEL);
+					break;
+				case COBBLESTONE:
+					tool.setType(Material.STONE_SHOVEL);
+					break;
+				case IRON_INGOT:
+					tool.setType(Material.IRON_SHOVEL);
+					break;
+				case GOLD_INGOT:
+					tool.setType(Material.GOLDEN_SHOVEL);
+					break;
+				case DIAMOND:
+					tool.setType(Material.DIAMOND_SHOVEL);
+					break;
+				default:
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+					return null;
+			}
+		} else if (ToolType.HOE.contains(tool.getType())) {
+			switch (upgrade.getType()) {
+				case ACACIA_PLANKS:
+				case BIRCH_PLANKS:
+				case DARK_OAK_PLANKS:
+				case JUNGLE_PLANKS:
+				case OAK_PLANKS:
+				case SPRUCE_PLANKS:
+					tool.setType(Material.WOODEN_HOE);
+					break;
+				case COBBLESTONE:
+					tool.setType(Material.STONE_HOE);
+					break;
+				case IRON_INGOT:
+					tool.setType(Material.IRON_HOE);
+					break;
+				case GOLD_INGOT:
+					tool.setType(Material.GOLDEN_HOE);
+					break;
+				case DIAMOND:
+					tool.setType(Material.DIAMOND_HOE);
+					break;
+				default:
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+					return null;
+			}
+		} else if (ToolType.HELMET.contains(tool.getType())) {
+			switch (upgrade.getType()) {
+				case LEATHER:
+					tool.setType(Material.LEATHER_HELMET);
+					break;
+				case IRON_INGOT:
+					tool.setType(Material.IRON_HELMET);
+					break;
+				case GOLD_INGOT:
+					tool.setType(Material.GOLDEN_HELMET);
+					break;
+				case DIAMOND:
+					tool.setType(Material.DIAMOND_HELMET);
+					break;
+				case SCUTE:
+					tool.setType(Material.TURTLE_HELMET);
+					break;
+				case IRON_BARS:
+					tool.setType(Material.CHAINMAIL_HELMET);
+					break;
+				default:
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+					return null;
+			}
+		} else if (ToolType.CHESTPLATE.contains(tool.getType())) {
+			switch (upgrade.getType()) {
+				case LEATHER:
+					tool.setType(Material.LEATHER_CHESTPLATE);
+					break;
+				case IRON_INGOT:
+					tool.setType(Material.IRON_CHESTPLATE);
+					break;
+				case GOLD_INGOT:
+					tool.setType(Material.GOLDEN_CHESTPLATE);
+					break;
+				case DIAMOND:
+					tool.setType(Material.DIAMOND_CHESTPLATE);
+					break;
+				case IRON_BARS:
+					tool.setType(Material.CHAINMAIL_CHESTPLATE);
+					break;
+				default:
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+					return null;
+			}
+		} else if (ToolType.LEGGINGS.contains(tool.getType())) {
+			switch (upgrade.getType()) {
+				case LEATHER:
+					tool.setType(Material.LEATHER_LEGGINGS);
+					break;
+				case IRON_INGOT:
+					tool.setType(Material.IRON_LEGGINGS);
+					break;
+				case GOLD_INGOT:
+					tool.setType(Material.GOLDEN_LEGGINGS);
+					break;
+				case DIAMOND:
+					tool.setType(Material.DIAMOND_LEGGINGS);
+					break;
+				case IRON_BARS:
+					tool.setType(Material.CHAINMAIL_LEGGINGS);
+					break;
+				default:
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+					return null;
+			}
+		} else if (ToolType.BOOTS.contains(tool.getType())) {
+			switch (upgrade.getType()) {
+				case LEATHER:
+					tool.setType(Material.LEATHER_BOOTS);
+					break;
+				case IRON_INGOT:
+					tool.setType(Material.IRON_BOOTS);
+					break;
+				case GOLD_INGOT:
+					tool.setType(Material.GOLDEN_BOOTS);
+					break;
+				case DIAMOND:
+					tool.setType(Material.DIAMOND_BOOTS);
+					break;
+				case IRON_BARS:
+					tool.setType(Material.CHAINMAIL_BOOTS);
+					break;
+				default:
+					pluginManager.callEvent(new ToolUpgradeEvent(player, tool, false));
+					return null;
+			}
+		}
+
+		if (meta instanceof Damageable) {
+			Damageable dam = (Damageable) meta;
+			dam.setDamage(0);
+		}
+
+		tool.setItemMeta(meta);
+		instance().addArmorAttributes(tool);
+		return tool;
 	}
 }

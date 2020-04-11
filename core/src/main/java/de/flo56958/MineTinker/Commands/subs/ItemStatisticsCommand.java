@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Commands.CommandManager;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import de.flo56958.MineTinker.api.SubCommand;
@@ -43,7 +42,7 @@ public class ItemStatisticsCommand implements SubCommand {
 			if (!modManager.isToolViable(stack) && !modManager.isArmorViable(stack)) continue;
 
 			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Head")
-					.replaceFirst("%toolname", ItemGenerator.getDisplayName(stack) + ChatColor.WHITE + " (" + stack.getType().toString() + ")"));
+					.replaceFirst("%toolname", ChatWriter.getDisplayName(stack) + ChatColor.WHITE + " (" + stack.getType().toString() + ")"));
 			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Level")
 					.replaceFirst("%level", "" + modManager.getLevel(stack)));
 			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Exp")

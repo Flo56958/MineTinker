@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.ItemGenerator;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -26,8 +25,8 @@ import java.util.*;
 public class Soulbound extends Modifier implements Listener {
 
 	private static Soulbound instance;
-	//Can't you the Player-Object here as it gets newly created if the player leaves without respawning
-	private final HashMap<UUID, ArrayList<ItemStack>> storedItemStacks = new HashMap<>(); //saves ItemStacks until reload (if the player does not respawn instantly)
+	//Must be UUID as if the Player reconnects the Player-Object gets recreated and is not the same anymore
+ 	private final HashMap<UUID, ArrayList<ItemStack>> storedItemStacks = new HashMap<>(); //saves ItemStacks until reload (if the player does not respawn instantly)
 	private boolean toolDropable;
 	private boolean decrementModLevelOnUse;
 	private int percentagePerLevel;
@@ -131,7 +130,7 @@ public class Soulbound extends Modifier implements Listener {
 
 				ArrayList<ItemStack> stored = storedItemStacks.get(player.getUniqueId());
 
-				ChatWriter.log(false, player.getDisplayName() + " triggered Soulbound on " + ItemGenerator.getDisplayName(itemStack) + ChatColor.GRAY + " (" + itemStack.getType().toString() + ")!");
+				ChatWriter.log(false, player.getDisplayName() + " triggered Soulbound on " + ChatWriter.getDisplayName(itemStack) + ChatColor.GRAY + " (" + itemStack.getType().toString() + ")!");
 
 				if (stored.contains(itemStack)) {
 					continue;
