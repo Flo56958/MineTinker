@@ -41,6 +41,8 @@ public class RemoveModifierCommand implements SubCommand {
 
 					if (modManager.isToolViable(tool) || modManager.isArmorViable(tool))
 						modManager.removeMod(tool, m);
+					else
+						CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidItem"));
 					break;
 				}
 			}
