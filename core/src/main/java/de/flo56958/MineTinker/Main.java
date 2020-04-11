@@ -181,6 +181,16 @@ public class Main extends JavaPlugin {
 				ChatWriter.logColor(ChatColor.WHITE + " - ItemBehaviour.ApplyOnPlayerDeath -> false");
 			}
 		}
+		DeathBarrel:
+		{
+			String name = "DeathBarrel";
+			if (skipped.contains(name)) break DeathBarrel;
+			if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
+				ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
+				getConfig().set("ItemBehaviour.ApplyOnPlayerDeath", false);
+				ChatWriter.logColor(ChatColor.WHITE + " - ItemBehaviour.ApplyOnPlayerDeath -> false");
+			}
+		}
 
 		ConfigurationManager.saveConfig(layout);
 		saveConfig();

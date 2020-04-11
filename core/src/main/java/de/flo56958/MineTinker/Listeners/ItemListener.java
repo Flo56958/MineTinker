@@ -4,7 +4,6 @@ import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Modifiers.Types.Soulbound;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -129,11 +128,6 @@ public class ItemListener implements Listener {
 			if (!isMineTinker) {
 				continue;
 			}
-
-			if (Soulbound.instance().effect(player, itemStack)) {
-				itemStack.setAmount(0);
-				continue;
-			} //workaround as inv.remove(is) does not work insteads duplicates item
 
 			if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
 				PlayerDropItemEvent dropItemEvent = new PlayerDropItemEvent(player, player.getWorld().dropItem(player.getLocation(), itemStack));

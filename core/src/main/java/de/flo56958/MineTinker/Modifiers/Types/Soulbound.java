@@ -12,9 +12,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
@@ -96,49 +99,58 @@ public class Soulbound extends Modifier implements Listener {
 		this.percentagePerLevel = config.getInt("PercentagePerLevel", 100);
 	}
 
-	/**
-	 * Effect when a player dies
-	 *
-	 * @param player  the Player
-	 * @param itemStack the ItemStack to keep
-	 * @return true if soulbound has success
-	 */
-	public boolean effect(Player player, ItemStack itemStack) {
-		if (!player.hasPermission("minetinker.modifiers.soulbound.use")) {
-			return false;
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	public void effect(PlayerDeathEvent event) {
+		if (event.getKeepInventory()) {
+			return;
 		}
 
-		if (!modManager.hasMod(itemStack, this)) {
-			return false;
-		}
+		Player player = event.getEntity();
+		Inventory inventory = player.getInventory();
 
-		Random rand = new Random();
-		if (rand.nextInt(100) > modManager.getModLevel(itemStack, this) * percentagePerLevel) {
-			return false;
-		}
+		for (ItemStack itemStack : inventory.getContents()) {
+			if (itemStack == null) {
+				continue; // More consistent nullability in NotNull fields
+			}
 
-		storedItemStacks.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>()); // ?
+			if (modManager.isArmorViable(itemStack) || modManager.isToolViable(itemStack) || modManager.isWandViable(itemStack)) {
+				if (!player.hasPermission("minetinker.modifiers.soulbound.use")) {
+					continue;
+				}
 
-		ArrayList<ItemStack> stored = storedItemStacks.get(player.getUniqueId());
+				if (!modManager.hasMod(itemStack, this)) {
+					continue;
+				}
 
-		ChatWriter.log(false, player.getDisplayName() + " triggered Soulbound on " + ItemGenerator.getDisplayName(itemStack) + ChatColor.GRAY + " (" + itemStack.getType().toString() + ")!");
+				Random rand = new Random();
+				if (rand.nextInt(100) > modManager.getModLevel(itemStack, this) * percentagePerLevel) {
+					continue;
+				}
 
-		if (stored.contains(itemStack)) {
-			return true;
-		}
+				storedItemStacks.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>()); // ?
 
-		if (decrementModLevelOnUse) {
-			int newLevel = modManager.getModLevel(itemStack, this) - 1;
+				ArrayList<ItemStack> stored = storedItemStacks.get(player.getUniqueId());
 
-			if (newLevel == 0) {
-				modManager.removeMod(itemStack, this);
-			} else {
-				modManager.getNBTHandler().setInt(itemStack, getKey(), modManager.getModLevel(itemStack, this) - 1);
+				ChatWriter.log(false, player.getDisplayName() + " triggered Soulbound on " + ItemGenerator.getDisplayName(itemStack) + ChatColor.GRAY + " (" + itemStack.getType().toString() + ")!");
+
+				if (stored.contains(itemStack)) {
+					continue;
+				}
+
+				if (decrementModLevelOnUse) {
+					int newLevel = modManager.getModLevel(itemStack, this) - 1;
+
+					if (newLevel == 0) {
+						modManager.removeMod(itemStack, this);
+					} else {
+						modManager.getNBTHandler().setInt(itemStack, getKey(), modManager.getModLevel(itemStack, this) - 1);
+					}
+				}
+
+				stored.add(itemStack.clone());
+				itemStack.setAmount(0);
 			}
 		}
-
-		stored.add(itemStack.clone());
-		return true;
 	}
 
 	/**
