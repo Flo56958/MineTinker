@@ -1,6 +1,7 @@
 package de.flo56958.MineTinker.Listeners;
 
 import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -24,13 +25,20 @@ public class EnchantingListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onTableEnchant(EnchantItemEvent event) {
+		if (!ToolType.ALL.contains(event.getItem().getType())) { //Something different (like a book)
+			return;
+		}
+		if (!(modManager.isToolViable(event.getItem()) || modManager.isWandViable(event.getItem()) || modManager.isArmorViable(event.getItem()))) { //not a MineTinker Tool
+			return;
+		}
+
 		Map<Enchantment, Integer> enchants = event.getEnchantsToAdd();
 
 		for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
 			Modifier modifier = modManager.getModifierFromEnchantment(entry.getKey());
 
 			// The modifier may be disabled
-			if (modifier != null) {
+			if (modifier != null && modifier.isAllowed()) {
 				for (int i = 0; i < entry.getValue(); i++) {
 					boolean success = modManager.addMod(event.getEnchanter(), event.getItem(), modifier, false, false, false);
 
