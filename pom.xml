@@ -25,8 +25,8 @@
        <module>MineTinker_NMScore</module>
        <module>MineTinker_1_15_R1</module>
        <module>MineTinker_1_14_R1</module>
-       <module>MineTinker_1_13_R1</module>
        <module>MineTinker_1_13_R2</module>
+       <module>MineTinker_1_13_R1</module>
    </modules>
 
     <dependencyManagement>

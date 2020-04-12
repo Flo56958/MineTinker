@@ -468,22 +468,19 @@ public class GUIs {
 						currentButton.addAction(ClickType.SHIFT_LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, helper.getRunnable(10)));
 						currentButton.addAction(ClickType.SHIFT_RIGHT, new ButtonAction.RUN_RUNNABLE(currentButton, helper.getRunnable(-10)));
 
-						ButtonAction.REQUEST_INPUT.PlayerRunnable pRun = new ButtonAction.REQUEST_INPUT.PlayerRunnable() {
-							@Override
-							public void run(Player player, String input) {
-								try {
-									int in = Integer.parseInt(input);
-									int oldValue = config.getInt(key);
-									config.set(key, in);
+						ButtonAction.REQUEST_INPUT.PlayerRunnable pRun = (player, input) -> {
+							try {
+								int in = Integer.parseInt(input);
+								int oldValue = config.getInt(key);
+								config.set(key, in);
 
-									helper.saveInt(in);
-									helper.setAmount(buttonStackForRunnable, in);
+								helper.saveInt(in);
+								helper.setAmount(buttonStackForRunnable, in);
 
-									broadcastChange(configName + ":" + key, oldValue + "", in + "");
-								} catch (NumberFormatException e) {
-									ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUIs.ConfigurationEditor.WrongInput")
-											.replace("%type", LanguageManager.getString("DataType.Integer")).replace("%input", input));
-								}
+								broadcastChange(configName + ":" + key, oldValue + "", in + "");
+							} catch (NumberFormatException e) {
+								ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUIs.ConfigurationEditor.WrongInput")
+										.replace("%type", LanguageManager.getString("DataType.Integer")).replace("%input", input));
 							}
 						};
 
@@ -500,36 +497,33 @@ public class GUIs {
 
 						buttonStack.setType(Material.STONE);
 
-						ButtonAction.REQUEST_INPUT.PlayerRunnable pRun = new ButtonAction.REQUEST_INPUT.PlayerRunnable() {
-							@Override
-							public void run(Player player, String input) {
-								try {
-									ItemMeta meta = buttonStackForRunnable.getItemMeta();
-									if (meta == null) return;
+						ButtonAction.REQUEST_INPUT.PlayerRunnable pRun = (player, input) -> {
+							try {
+								ItemMeta meta = buttonStackForRunnable.getItemMeta();
+								if (meta == null) return;
 
-									double in = Double.parseDouble(input);
-									double oldValue = config.getDouble(key);
-									config.set(key, in);
+								double in = Double.parseDouble(input);
+								double oldValue = config.getDouble(key);
+								config.set(key, in);
 
-									ConfigurationManager.saveConfig(config);
+								ConfigurationManager.saveConfig(config);
 
-									List<String> lore;
-									if (meta.hasLore()) {
-										lore = meta.getLore();
-									} else {
-										lore = new LinkedList<>();
-									}
-
-									lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
-											.replace("%value", "" + in));
-									meta.setLore(lore);
-									buttonStackForRunnable.setItemMeta(meta);
-
-									broadcastChange(configName + ":" + key, oldValue + "", input);
-								} catch (NumberFormatException e) {
-									ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUIs.ConfigurationEditor.WrongInput")
-											.replace("%type", LanguageManager.getString("DataType.Double")).replace("%input", input));
+								List<String> lore;
+								if (meta.hasLore()) {
+									lore = meta.getLore();
+								} else {
+									lore = new LinkedList<>();
 								}
+
+								lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
+										.replace("%value", "" + in));
+								meta.setLore(lore);
+								buttonStackForRunnable.setItemMeta(meta);
+
+								broadcastChange(configName + ":" + key, oldValue + "", input);
+							} catch (NumberFormatException e) {
+								ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUIs.ConfigurationEditor.WrongInput")
+										.replace("%type", LanguageManager.getString("DataType.Double")).replace("%input", input));
 							}
 						};
 
@@ -546,32 +540,29 @@ public class GUIs {
 
 						buttonStack.setType(Material.WHITE_WOOL);
 
-						ButtonAction.REQUEST_INPUT.PlayerRunnable pRun = new ButtonAction.REQUEST_INPUT.PlayerRunnable() {
-							@Override
-							public void run(Player player, String input) {
-								ItemMeta meta = buttonStackForRunnable.getItemMeta();
-								if (meta == null) return;
+						ButtonAction.REQUEST_INPUT.PlayerRunnable pRun = (player, input) -> {
+							ItemMeta meta = buttonStackForRunnable.getItemMeta();
+							if (meta == null) return;
 
-								String oldValue = config.getString(key);
+							String oldValue = config.getString(key);
 
-								//input = ChatWriter.addColors(input);
-								config.set(key, input);
+							//input = ChatWriter.addColors(input);
+							config.set(key, input);
 
-								ConfigurationManager.saveConfig(config);
+							ConfigurationManager.saveConfig(config);
 
-								List<String> lore;
-								if (meta.hasLore()) {
-									lore = meta.getLore();
-								} else {
-									lore = new LinkedList<>();
-								}
-								lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
-										.replace("%value", "" + input));
-								meta.setLore(lore);
-								buttonStackForRunnable.setItemMeta(meta);
-
-								broadcastChange(configName + ":" + key, oldValue, input);
+							List<String> lore;
+							if (meta.hasLore()) {
+								lore = meta.getLore();
+							} else {
+								lore = new LinkedList<>();
 							}
+							lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
+									.replace("%value", "" + input));
+							meta.setLore(lore);
+							buttonStackForRunnable.setItemMeta(meta);
+
+							broadcastChange(configName + ":" + key, oldValue, input);
 						};
 
 						currentButton.addAction(ClickType.LEFT, new ButtonAction.REQUEST_INPUT(currentButton, pRun, ChatColor.WHITE + configName + ":" + key));

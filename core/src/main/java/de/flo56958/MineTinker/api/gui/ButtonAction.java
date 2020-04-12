@@ -55,10 +55,6 @@ public abstract class ButtonAction {
 			super(button);
 		}
 
-		@Override
-		public void run() {
-		}
-
 		public void run(Player player) {
 			GUI gui = this.button.getWindow().getGUI();
 			int pageNo = gui.getWindowNumber(this.button.getWindow());
@@ -124,8 +120,6 @@ public abstract class ButtonAction {
 			super(button);
 			this.runnable = runnable;
 		}
-
-		public void run() {}
 
 		@Override
 		public void run(Player player) {

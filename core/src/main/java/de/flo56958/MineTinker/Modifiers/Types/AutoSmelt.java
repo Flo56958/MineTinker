@@ -177,7 +177,7 @@ public class AutoSmelt extends Modifier implements Listener {
 
 		Map<String, Object> conversionValues = conversionConfig.getValues(false);
 		conversionValues.forEach((k, v) -> {
-			if (v instanceof String) conversions.put(Objects.requireNonNull(Material.getMaterial(k)), Triplet.fromString((String) v));
+			if (v instanceof String) conversions.put(Objects.requireNonNull(Material.getMaterial(k)), Objects.requireNonNull(Triplet.fromString((String) v)));
 		});
 
 		this.description = this.description.replace("%chance", "" + this.percentagePerLevel);

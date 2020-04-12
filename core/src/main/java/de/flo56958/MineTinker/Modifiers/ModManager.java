@@ -25,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -132,7 +133,6 @@ public class ModManager {
 		}
 
 		//get Modifier incompatibilities
-		//TODO: Add error messages for wrong syntax
 		incompatibilities.clear();
 		for (Modifier m : this.allMods) {
 			incompatibilities.put(m, new HashSet<>());
@@ -199,7 +199,10 @@ public class ModManager {
 					mod2 = m;
 				}
 			}
-			if (mod1 == null || mod2 == null) continue;
+			if (mod1 == null || mod2 == null) {
+				Bukkit.getConsoleSender().sendMessage(LanguageManager.getString("ModManager.IncompatibilityWrongSyntax").replace("&line", s));
+				continue;
+			}
 
 			incompatibilities.get(mod1).add(mod2);
 			incompatibilities.get(mod2).add(mod1);
@@ -587,7 +590,6 @@ public class ModManager {
 		String nextLevelReq_ = layout.getBoolean("UseRomans.Exp") ? ChatWriter.toRomanNumerals((int) nextLevelReq) : String.valueOf(nextLevelReq);
 		String freeSlots_ = layout.getBoolean("UseRomans.FreeSlots") ? ChatWriter.toRomanNumerals(freeSlots) : String.valueOf(freeSlots);
 
-
 		for (int i = 0; i < lore.size(); i++) {
 			String s = lore.get(i);
 			s = s.replaceAll("%EXP%", "" + exp_);
@@ -653,7 +655,6 @@ public class ModManager {
 						for (Modifier m : this.mods) {
 							if (s.contains(m.getColor() + m.getName())) {
 								toRemove.add(s);
-								removed = true;
 								break;
 							}
 						}
@@ -933,7 +934,11 @@ public class ModManager {
 			return null;
 		}
 
-		String name = Objects.requireNonNull(nbt.getString(item, "modifierItem"));
+		String name = nbt.getString(item, "modifierItem");
+
+		if (name == null) {
+			return null;
+		}
 
 		for (Modifier m : mods) {
 			if (m.getKey().equals(name)) {
@@ -948,8 +953,9 @@ public class ModManager {
 	 * Gets the first found modifier that applies the supplied enchantment.
 	 *
 	 * @param enchantment
-	 * @return
+	 * @return the Modifier or null
 	 */
+	@Nullable
 	public Modifier getModifierFromEnchantment(Enchantment enchantment) {
 		for (Modifier modifier : getAllMods()) {
 			if (modifier.getAppliedEnchantments().contains(enchantment)) {
@@ -964,8 +970,9 @@ public class ModManager {
 	 * Gets the first found modifier that applies the supplied attribute.
 	 *
 	 * @param attribute
-	 * @return
+	 * @return the Modifier or null
 	 */
+	@Nullable
 	public Modifier getModifierFromAttribute(Attribute attribute) {
 		for (Modifier modifier : getAllMods()) {
 			if (modifier.getAppliedAttributes().contains(attribute)) {

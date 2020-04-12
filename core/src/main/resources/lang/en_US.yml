@@ -98,6 +98,7 @@ GUIs.ConfigurationEditor.config.logging.metrics: "bStats-Metrics for anonymous s
 
 ModManager.RegisterModifier: "%GREEN%Registered the %mod %GREEN%modifier from %plugin."
 ModManager.UnregisterModifier: "%GREEN%Unregistered the %mod %GREEN%modifier from %plugin."
+ModManager.IncompatibilityWrongSyntax: "Wrong line syntax or wrong Modifier name found in the Modifier Incompatibilities in line '%line'."
 
 ModifierFailCause.IncompatibleModifiers: "Incompatible Modifiers!"
 ModifierFailCause.InvalidToolType: "Invalid ToolType!"

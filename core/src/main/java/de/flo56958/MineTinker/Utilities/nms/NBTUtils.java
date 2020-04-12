@@ -10,8 +10,7 @@ public class NBTUtils {
 	private static boolean oneFourteenCompatible = false;
 	private static boolean oneFifteenCompatible = false;
 
-	private NBTUtils() {
-	}
+	private NBTUtils() {}
 
 	/**
 	 * Initializes the NBTHandler for the server version.

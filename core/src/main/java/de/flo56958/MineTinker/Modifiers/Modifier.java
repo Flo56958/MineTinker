@@ -52,7 +52,7 @@ public abstract class Modifier {
 
 	static boolean checkAndAdd(Player player, ItemStack tool, Modifier mod, String permission, boolean isCommand, boolean fromRandom, boolean silent) {
 		if ((modManager.getFreeSlots(tool) < 1 && !mod.equals(ExtraModifier.instance())) && !isCommand) {
-			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.NO_FREE_SLOTS, isCommand));
+			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.NO_FREE_SLOTS, false));
 			return false;
 		}
 
