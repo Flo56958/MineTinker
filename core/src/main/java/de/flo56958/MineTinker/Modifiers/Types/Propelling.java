@@ -4,10 +4,7 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -23,6 +20,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class Propelling extends Modifier implements Listener {
 
@@ -31,6 +29,8 @@ public class Propelling extends Modifier implements Listener {
 	private double speedPerLevel;
 	private boolean sound;
 	private boolean particles;
+	private boolean considerReinforced;
+	private boolean useLessDurability;
 
 	private Propelling() {
 		super(Main.getPlugin());
@@ -78,6 +78,8 @@ public class Propelling extends Modifier implements Listener {
 		config.addDefault("Elytra.SpeedPerLevel", 0.05);
 		config.addDefault("Elytra.Sound", true);
 		config.addDefault("Elytra.Particles", true);
+		config.addDefault("ConsiderReinforced", true); //should Reinforced (Unbreaking) be considered
+		config.addDefault("ReinforcedUseLessDurability", true); //should Reinforced lessen the durability damage or if false chance to dont use durability at all
 
 		config.addDefault("EnchantCost", 25);
 		config.addDefault("Enchantable", true);
@@ -92,6 +94,8 @@ public class Propelling extends Modifier implements Listener {
 
 		durabilityLoss = config.getInt("Elytra.DurabilityLoss", 10);
 		speedPerLevel = config.getDouble("Elytra.SpeedPerLevel", 0.05);
+		considerReinforced = config.getBoolean("ConsiderReinforced", true);
+		useLessDurability = config.getBoolean("ReinforcedUseLessDurability", true);
 
 		sound = config.getBoolean("Elytra.Sound", true);
 		particles = config.getBoolean("Elytra.Particles", true);
@@ -130,6 +134,10 @@ public class Propelling extends Modifier implements Listener {
 
 		ItemStack elytra = player.getInventory().getChestplate();
 
+		if (elytra == null) {
+			return;
+		}
+
 		if (!(modManager.isArmorViable(elytra) && ToolType.ELYTRA.contains(elytra.getType()))) {
 			return;
 		}
@@ -141,15 +149,30 @@ public class Propelling extends Modifier implements Listener {
 		int maxDamage = elytra.getType().getMaxDurability();
 		ItemMeta meta = elytra.getItemMeta();
 
-		if (meta instanceof Damageable && !meta.isUnbreakable()) {
+		if (meta instanceof Damageable && !meta.isUnbreakable() && !meta.isUnbreakable()
+				&& (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
 			Damageable dam = (Damageable) meta;
 
-			if (maxDamage <= dam.getDamage() + durabilityLoss + 1) {
+			int loss = durabilityLoss;
+
+			if (considerReinforced) {
+				int level = modManager.getModLevel(elytra, Reinforced.instance());
+				if (useLessDurability) {
+					loss = (int) Math.round(durabilityLoss * (1.0 / (level + 1)));
+				} else {
+					int durabilityChance = 60 + (40 / (level + 1));
+					if (new Random().nextInt(100) > durabilityChance) {
+						loss = 0;
+					}
+				}
+			}
+
+			if (maxDamage <= dam.getDamage() + loss + 1) {
 				player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
 				return;
 			}
 
-			dam.setDamage(dam.getDamage() + durabilityLoss);
+			dam.setDamage(dam.getDamage() + loss);
 			elytra.setItemMeta(meta);
 		}
 
@@ -159,10 +182,10 @@ public class Propelling extends Modifier implements Listener {
 
 		player.setVelocity(player.getVelocity().add(dir.multiply(1 + speedPerLevel * level)));
 
-		if (sound && loc.getWorld() != null) {
+		if (particles && loc.getWorld() != null) {
 			loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
 		}
 
-		if (particles) player.playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
+		if (sound) player.playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
 	}
 }
