@@ -179,7 +179,7 @@ public class EasyHarvestListener implements Listener {
 			return;
 		}
 
-		if (!(player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
+		if (!(player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE || player.getGameMode() == GameMode.CREATIVE)) {
 			return;
 		}
 
