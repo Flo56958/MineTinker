@@ -13,10 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Directing extends Modifier implements Listener {
 
@@ -114,6 +111,7 @@ public class Directing extends Modifier implements Listener {
 		}
 
 		List<ItemStack> drops = event.getEvent().getDrops();
+		List<ItemStack> toremove = new ArrayList<>();
 
 		for (ItemStack current : drops) {
 			if (modManager.hasMod(current, Soulbound.instance())) {
@@ -123,9 +121,10 @@ public class Directing extends Modifier implements Listener {
 			if (player.getInventory().addItem(current).size() != 0) { //adds items to (full) inventory
 				player.getWorld().dropItem(player.getLocation(), current);
 			} // no else as it gets added in if-clause
+			toremove.add(current);
 		}
 
-		drops.clear();
+		drops.removeAll(toremove);
 
 		if (this.workOnXP && modManager.getModLevel(tool, this) >= this.minimumLevelForXP) {
 			player.giveExp(event.getEvent().getDroppedExp());
