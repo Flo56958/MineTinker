@@ -144,7 +144,7 @@ public class GiveModifierItemCommand implements SubCommand {
 		switch (args.length) {
 			case 2:
 				for (Player player : Bukkit.getOnlinePlayers()) {
-					result.add(player.getDisplayName());
+					result.add(player.getName());
 				}
 				result.add("@a");
 				result.add("@r");

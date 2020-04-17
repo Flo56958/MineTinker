@@ -117,7 +117,7 @@ public class CommandManager implements TabExecutor {
 				boolean ret = true;
 				for (Player player : players) {
 					String[] arg = args.clone();
-					arg[index] = player.getDisplayName();
+					arg[index] = player.getName();
 					ret = ret && onCommand(sender, command, s, arg);
 				}
 			}
@@ -176,7 +176,11 @@ public class CommandManager implements TabExecutor {
 		if (result != null) {
 			if (args.length < 2) result.add("help");
 			//filter out any command that is not the beginning of the typed command
-			result.forEach(ChatColor::stripColor);
+			List<String> tempResult = new ArrayList<>();
+			for (String str : result) {
+				tempResult.add(ChatColor.stripColor(str));
+			}
+			result = tempResult;
 			result.removeIf(str -> !str.toLowerCase().startsWith(args[args.length - 1].toLowerCase()));
 			result.sort(String::compareToIgnoreCase);
 		}
@@ -195,7 +199,7 @@ public class CommandManager implements TabExecutor {
 					case PLAYER:
 						if (args[i].startsWith("@p")) {
 							if (sender instanceof Player) {
-								args[i] = ((Player) sender).getDisplayName();
+								args[i] = ((Player) sender).getName();
 							} else if (sender instanceof BlockCommandSender) {
 								List<Player> players = ((BlockCommandSender) sender).getBlock()
 																					.getWorld().getPlayers();
@@ -206,7 +210,7 @@ public class CommandManager implements TabExecutor {
 																					.getBlock().getLocation());
 									if (newDist < distance) {
 										distance = newDist;
-										args[i] = player.getDisplayName();
+										args[i] = player.getName();
 									}
 								}
 							}
@@ -221,16 +225,16 @@ public class CommandManager implements TabExecutor {
 							if (world == null) continue;
 
 							List<Player> players = world.getPlayers();
-							args[i] = players.get(new Random().nextInt(players.size())).getDisplayName();
+							args[i] = players.get(new Random().nextInt(players.size())).getName();
 						} else if (args[i].startsWith("@r")) {
 							Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
 							args[i] = onlinePlayers.toArray(new Player[0])
-									[new Random().nextInt(onlinePlayers.size())].getDisplayName();
+									[new Random().nextInt(onlinePlayers.size())].getName();
 						} else {
 							try {
 								UUID uuid = UUID.fromString(args[i]);
 								Player player = Bukkit.getPlayer(uuid);
-								if (player != null) args[i] = player.getDisplayName();
+								if (player != null) args[i] = player.getName();
 								else {
 									sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound").replace("%p", args[i]));
 								}

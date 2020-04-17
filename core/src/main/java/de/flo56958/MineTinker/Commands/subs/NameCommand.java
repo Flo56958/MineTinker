@@ -79,7 +79,7 @@ public class NameCommand implements SubCommand {
 		ArrayList<String> result = new ArrayList<>();
 		if (args.length == 2) {
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				result.add(player.getDisplayName());
+				result.add(player.getName());
 			}
 			result.add("@a");
 			result.add("@r");

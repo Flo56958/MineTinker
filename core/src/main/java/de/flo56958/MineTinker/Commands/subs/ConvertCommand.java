@@ -49,7 +49,7 @@ public class ConvertCommand implements SubCommand {
 		List<String> result = new ArrayList<>();
 		if (args.length == 2) {
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				result.add(player.getDisplayName());
+				result.add(player.getName());
 			}
 
 			if (sender instanceof Entity || sender instanceof BlockState) {
