@@ -50,6 +50,7 @@ Upgradeable: true                     #Can you upgrade your tools with an anvil
 Repairable: true                      #Can you repair your tools in your inventory (instead of an anvil) just by dragging the ressource on the tool
 UnbreakableTools: true                #Makes sure that tools can not break while using them (will make the tools not useable untill repaired)
 AllowEnchanting: false                #When enabled you can enchant the tools with vanilla methods (not recommended!)
+EnchantingCostsSlots: true            #When enchanted through the enchanting table or anvil (the vanilla way) should the tool need free slots
 AllowCrafting: true                   #Only recommended if used in combination with other Plugins that use the crafting grid for tools. If false: Tools are only aquired with give command
 AllowConverting: true                 #Allows you to convert tools by placing them in the crafting window
 BlockToEnchantModifiers: BOOKSHELF    #Block that needs to be right-clicked

@@ -32,6 +32,8 @@ public class EnchantingListener implements Listener {
 			return;
 		}
 
+		boolean free = !Main.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true);
+
 		Map<Enchantment, Integer> enchants = event.getEnchantsToAdd();
 
 		for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
@@ -40,7 +42,7 @@ public class EnchantingListener implements Listener {
 			// The modifier may be disabled
 			if (modifier != null && modifier.isAllowed()) {
 				for (int i = 0; i < entry.getValue(); i++) {
-					boolean success = modManager.addMod(event.getEnchanter(), event.getItem(), modifier, false, false, false);
+					boolean success = modManager.addMod(event.getEnchanter(), event.getItem(), modifier, free, false, true);
 
 					if (success) {
 						int newLevel = enchants.get(entry.getKey()) - 1;
@@ -102,6 +104,8 @@ public class EnchantingListener implements Listener {
 			return;
 		}
 
+		boolean free = !Main.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true);
+
 		for (Map.Entry<Enchantment, Integer> entry : newTool.getEnchantments().entrySet()) {
 			int oldEnchantLevel = tool.getEnchantmentLevel(entry.getKey());
 
@@ -112,7 +116,7 @@ public class EnchantingListener implements Listener {
 				newTool.removeEnchantment(entry.getKey());
 
 				for (int i = 0; i < difference; i++) {
-					modManager.addMod(player, newTool, modifier, false, false, false);
+					modManager.addMod(player, newTool, modifier, true, false, true);
 				}
 			}
 		}
