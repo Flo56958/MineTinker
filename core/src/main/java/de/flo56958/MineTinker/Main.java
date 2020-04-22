@@ -99,9 +99,13 @@ public class Main extends JavaPlugin {
 			ChatWriter.log(false, LanguageManager.getString("StartUp.EasyHarvest"));
 		}
 
+		if (getConfig().getBoolean("actionbar-on-exp-gain", false)) {
+			Bukkit.getPluginManager().registerEvents(new ActionBarListener(), this);
+		}
+
 		ChatWriter.log(false, LanguageManager.getString("StartUp.Events"));
 
-		if (getConfig().getBoolean("logging.metrics")) {
+		if (getConfig().getBoolean("logging.metrics", true)) {
 			Metrics met = new Metrics(this);
 			met.addCustomChart(new Metrics.SimplePie("used_language", () -> getConfig().getString("Language", "en_US")));
 		}

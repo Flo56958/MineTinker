@@ -114,9 +114,10 @@ public class EnchantingListener implements Listener {
 				Modifier modifier = ModManager.instance().getModifierFromEnchantment(entry.getKey());
 
 				newTool.removeEnchantment(entry.getKey());
-
-				for (int i = 0; i < difference; i++) {
-					modManager.addMod(player, newTool, modifier, true, false, true);
+				if (modifier != null) {
+					for (int i = 0; i < difference; i++) {
+						modManager.addMod(player, newTool, modifier, free, false, true);
+					}
 				}
 			}
 		}

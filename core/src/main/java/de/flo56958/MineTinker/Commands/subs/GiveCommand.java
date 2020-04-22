@@ -49,7 +49,7 @@ public class GiveCommand implements SubCommand {
 		}
 
 		if (player == null) {
-			//Send invalid Player
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 			return true;
 		}
 

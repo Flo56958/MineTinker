@@ -3,6 +3,7 @@ package de.flo56958.MineTinker.Modifiers;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ToolLevelUpEvent;
 import de.flo56958.MineTinker.Events.ToolUpgradeEvent;
+import de.flo56958.MineTinker.Listeners.ActionBarListener;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Types.*;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -533,7 +534,7 @@ public class ModManager {
 		}
 
 		if (config.getBoolean("actionbar-on-exp-gain")) {
-			ChatWriter.sendActionBar(player, ChatColor.translateAlternateColorCodes('&', "&a+" + amount + " exp gained"));
+			ActionBarListener.addXP(player, (int) amount);
 		}
 
 		setExp(tool, exp);
