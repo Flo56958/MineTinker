@@ -2,8 +2,8 @@ package de.flo56958.MineTinker.Listeners;
 
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,7 +23,10 @@ public class ActionBarListener implements Listener {
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				int xpamount = xpbuffer.get(p.getUniqueId()).getAndSet(0);
 				if (xpamount != 0) {
-					ChatWriter.sendActionBar(p, ChatColor.translateAlternateColorCodes('&', "&a+" + xpamount + " exp gained"));
+					String a = String.valueOf(xpamount);
+					if (xpamount > 0) a = "+" + a;
+					else a = "-" + a;
+					ChatWriter.sendActionBar(p, LanguageManager.getString("ActionBar.ExpGain", p).replaceAll("&amount", a));
 				}
 			}
 			Bukkit.getScheduler().runTaskLater(Main.getPlugin(), this, 20);

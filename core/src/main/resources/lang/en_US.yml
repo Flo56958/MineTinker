@@ -107,6 +107,8 @@ ModifierFailCause.ModMaxLevel: "Modifier is already max Level!"
 ModifierFailCause.NoFreeSlots: "No free Slots on Item!"
 ModifierFailCause.NoPermission: "No Permission!"
 
+ActionBar.ExpGain: "&amount exp gained!"
+
 LanguageManager.LoadedLanguage: "LanguageManager loaded %lang successfully!"
 
 TinkerListener.ToolUpgrade: "%tool has been upgraded to %type!"
