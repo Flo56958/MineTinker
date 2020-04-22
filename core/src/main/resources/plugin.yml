@@ -70,62 +70,92 @@ permissions:
     default: true
 
   minetinker.commands.help:
+    children:
+      minetinker.commands.main: true
     description: Allows to access the help of MineTinker-commands
     default: true
 
   minetinker.commands.info:
+    children:
+      minetinker.commands.main: true
     description: Allows to access information about MineTinker
     default: true
 
   minetinker.commands.itemstatistics:
+    children:
+      minetinker.commands.main: true
     description: Allows to access information about the held MineTinker-Item
     default: true
 
   minetinker.commands.modifiers:
+    children:
+      minetinker.commands.main: true
     description: Allows to access the list of MineTinker-modifiers
     default: true
 
   minetinker.commands.addexp:
+    children:
+      minetinker.commands.main: true
     description: Allows to access the AddExp-command for MineTinker-Tools
     default: op
 
   minetinker.commands.name:
+    children:
+      minetinker.commands.main: true
     description: Allows to access the Name-command for MineTinker-Tools
     default: true
 
   minetinker.commands.addmod:
+    children:
+      minetinker.commands.main: true
     description: Allows to add Modifiers from a MineTinker-Tool
     default: op
 
   minetinker.commands.removemod:
+    children:
+      minetinker.commands.main: true
     description: Allows to remove Modifiers from a MineTinker-Tool
     default: op
 
   minetinker.commands.give:
+    children:
+      minetinker.commands.main: true
     description: Allows to give MineTinker-Tools through command
     default: op
 
   minetinker.commands.givemodifieritem:
+    children:
+      minetinker.commands.main: true
     description: Allows to give MineTinker-Modifier-Item through command
     default: op
 
   minetinker.commands.convert:
+    children:
+      minetinker.commands.main: true
     description: Allows to convert a tool to a MineTinker-Tool
     default: op
 
   minetinker.commands.checkupdate:
+    children:
+      minetinker.commands.main: true
     description: Allows to check for a MineTinker update
     default: op
 
   minetinker.commands.editconfig:
+    children:
+      minetinker.commands.main: true
     description: Allows the player to edit the configurations of MineTinker through an interface
     default: op
 
   minetinker.commands.editconfigbroadcast:
+    children:
+      minetinker.commands.main: true
     description: Allows the player to get notifications when configurations of MineTinker change through /mt editconfig
     default: op
 
   minetinker.commands.reload:
+    children:
+      minetinker.commands.main: true
     description: Allows to reload the configuration-files from MineTinker
     default: op
 
