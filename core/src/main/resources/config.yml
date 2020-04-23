@@ -39,8 +39,8 @@ ExtraExpPerBlock:                     #Extra Exp for block break
 ExtraExpPerEntityHit:                 #Extra Exp for entity hit
   ENDER_DRAGON: 2
 ExtraExpPerEntityDeath:               #Extra Exp for entity death
-  ENDER_DRAGON: 20
-  WITHER: 10
+  ENDER_DRAGON: 500
+  WITHER: 250
 EnableDamageExp: true                 #When true: Sword/Bow will gain XP equal to the damage dealt
 
 #---------------TOOL-SETTINGS--------------

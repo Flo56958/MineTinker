@@ -59,7 +59,7 @@ public class Insulating extends Modifier {
 		config.addDefault("Description", "Armor mitigates heat damage!");
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Anti-Fire-Plating-Modifier");
 		config.addDefault("Color", "%WHITE%");
-		config.addDefault("MaxLevel", 5);
+		config.addDefault("MaxLevel", 4);
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);

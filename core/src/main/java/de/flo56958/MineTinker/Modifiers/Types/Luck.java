@@ -77,7 +77,7 @@ public class Luck extends Modifier {
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
-		config.addDefault("Enchantable", true);
+		config.addDefault("Enchantable", false);
 
 		config.addDefault("Recipe.Enabled", true);
 		config.addDefault("Recipe.Top", "GLG");

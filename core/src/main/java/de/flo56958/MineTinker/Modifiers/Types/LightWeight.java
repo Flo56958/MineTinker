@@ -60,7 +60,7 @@ public class LightWeight extends Modifier {
 		config.addDefault("Description", "You fall like a feather - sort of...");
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Light-Weight-Modifier");
 		config.addDefault("Color", "%GRAY%");
-		config.addDefault("MaxLevel", 3);
+		config.addDefault("MaxLevel", 4);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", true);
