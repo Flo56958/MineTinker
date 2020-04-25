@@ -7,6 +7,7 @@ import de.flo56958.MineTinker.Events.ToolUpgradeEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -505,25 +506,4 @@ public class AnvilListener implements Listener {
         }
     }
     */
-
-	@EventHandler(ignoreCancelled = true)
-	public void onGrind(InventoryClickEvent event) {
-		if (!NBTUtils.isOneFourteenCompatible()) {
-			return;
-		}
-
-		if (!(event.getInventory() instanceof GrindstoneInventory)) {
-			return;
-		}
-
-		if (event.getSlot() != 9) {
-			return;
-		}
-
-		ItemStack results = event.getCurrentItem();
-
-		if (modManager.isToolViable(results) || modManager.isArmorViable(results)) {
-			event.setCancelled(true);
-		}
-	}
 }

@@ -1,4 +1,5 @@
 Alert.OnItemBreak: "%RED%Looks like your tool broke! Giving it back with 1 durability."
+Alert.OnItemGrind: "%RED%You can't use Grindstone for MineTinker's items."
 
 StartUp.Commands: "Registered commands!"
 StartUp.BuildersWands: "Enabled Builderswands!"

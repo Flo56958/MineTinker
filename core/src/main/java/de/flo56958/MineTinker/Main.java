@@ -78,6 +78,7 @@ public class Main extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new TinkerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new TridentListener(), this);
+		Bukkit.getPluginManager().registerEvents(new GrindstoneListener(), this);
 
 		FileConfiguration elytraConf = ConfigurationManager.getConfig("Elytra.yml");
 		elytraConf.options().copyDefaults(true);
