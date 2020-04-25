@@ -4,7 +4,6 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
-import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -26,10 +25,6 @@ public class GrindstoneListener implements Listener {
 		FileConfiguration config = Main.getPlugin().getConfig();
 
 		if(config.getBoolean("AllowGrindstone")) {
-			return;
-		}
-
-		if (!NBTUtils.isOneFourteenCompatible()) {
 			return;
 		}
 
