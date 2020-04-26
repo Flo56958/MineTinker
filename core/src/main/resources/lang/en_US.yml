@@ -1,5 +1,6 @@
 Alert.OnItemBreak: "%RED%Looks like your tool broke! Giving it back with 1 durability."
 Alert.OnItemGrind: "%RED%You can't use Grindstone for MineTinker's items."
+Alert.InternalError: "%RED%An internal error occurred!"
 
 StartUp.Commands: "Registered commands!"
 StartUp.BuildersWands: "Enabled Builderswands!"
@@ -108,7 +109,9 @@ ModifierFailCause.ModMaxLevel: "Modifier is already max Level!"
 ModifierFailCause.NoFreeSlots: "No free Slots on Item!"
 ModifierFailCause.NoPermission: "No Permission!"
 
-ActionBar.ExpGain: "&amount exp gained!"
+GrindStone.PossibleSlotsAfterGrind: "Possible free Slots after grind: %amount"
+
+ActionBar.ExpGain: "%amount exp gained!"
 
 LanguageManager.LoadedLanguage: "LanguageManager loaded %lang successfully!"
 

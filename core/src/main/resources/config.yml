@@ -49,7 +49,10 @@ StartingModifierSlots: 1
 Upgradeable: true                     #Can you upgrade your tools with an anvil
 Repairable: true                      #Can you repair your tools in your inventory (instead of an anvil) just by dragging the ressource on the tool
 UnbreakableTools: true                #Makes sure that tools can not break while using them (will make the tools not useable untill repaired)
-AllowGrindstone: false                #Due to problems with grindstone and it's breaking mechanics you can disable it.
+Grindstone:
+  Enabled: true                       #Due to problems with grindstone and it's breaking mechanics you can disable it.
+  ChanceToGetSlotsBack: 100           #Percentage; Should the tool get free slots back for every removed Modifier?
+  ChanceToGetModifierItemBack: 100    #Percentage; Should the player get the possible used modification items back?
 AllowEnchanting: false                #When enabled you can enchant the tools with vanilla methods (not recommended!)
 EnchantingCostsSlots: true            #When enchanted through the enchanting table or anvil (the vanilla way) should the tool need free slots
 AllowCrafting: true                   #Only recommended if used in combination with other Plugins that use the crafting grid for tools. If false: Tools are only aquired with give command
