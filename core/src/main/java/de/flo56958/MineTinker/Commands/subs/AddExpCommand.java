@@ -65,7 +65,7 @@ public class AddExpCommand implements SubCommand {
 		ModManager modManager = ModManager.instance();
 
 		if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
-			modManager.addExp(player, tool, amount, false);
+			modManager.addExp(player, tool, amount);
 		} else {
 			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidItem"));
 		}

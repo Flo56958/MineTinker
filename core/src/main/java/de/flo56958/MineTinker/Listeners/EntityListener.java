@@ -110,7 +110,7 @@ public class EntityListener implements Listener {
 		}
 
 		amount += config.getInt("ExtraExpPerEntityHit." + event.getEntity().getType().toString()); //adds 0 if not in found in config (negative values are also fine)
-		modManager.addExp(player, tool, amount, false);
+		modManager.addExp(player, tool, amount);
 	}
 
 	@EventHandler
@@ -144,10 +144,10 @@ public class EntityListener implements Listener {
 						int exp = rand.nextInt(config.getInt("ConvertMobDrops.MaximumNumberOfExp", 650));
 						int divider = config.getInt("LevelStep", 100);
 						for (int i = 0; i < (exp - 17) / divider; i++) { //to get possible LevelUps
-							modManager.addExp(player, item, divider, true);
+							modManager.addExp(null, item, divider);
 						}
 						long difference = exp - modManager.getExp(item);
-						modManager.addExp(player, item, difference, true);
+						modManager.addExp(null, item, difference);
 					}
 
 					if (config.getBoolean("ConvertMobDrops.ApplyModifiers", true)) {
@@ -192,7 +192,7 @@ public class EntityListener implements Listener {
 		MTEntityDeathEvent deathEvent = new MTEntityDeathEvent(player, tool, event);
 		Bukkit.getPluginManager().callEvent(deathEvent);
 
-		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExtraExpPerEntityDeath." + event.getEntity().getType().toString()), false); //adds 0 if not in found in config (negative values are also fine)
+		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExtraExpPerEntityDeath." + event.getEntity().getType().toString())); //adds 0 if not in found in config (negative values are also fine)
 	}
 
 	@EventHandler
@@ -260,7 +260,7 @@ public class EntityListener implements Listener {
 			return;
 		}
 
-		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerArrowShot"), false);
+		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerArrowShot"));
 
         /*
         Self-Repair and Experienced will no longer trigger on bowfire

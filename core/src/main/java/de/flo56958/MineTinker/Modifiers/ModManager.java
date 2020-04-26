@@ -499,9 +499,8 @@ public class ModManager {
 	 * @param player      Player that uses the tool
 	 * @param tool   tool that needs to get exp
 	 * @param amount how much exp should the tool get
-	 * @param noEvent
 	 */
-	public void addExp(Player player, ItemStack tool, long amount, boolean noEvent) {
+	public void addExp(Player player, ItemStack tool, long amount) {
 		if (amount == 0) {
 			return;
 		}
@@ -540,7 +539,7 @@ public class ModManager {
 		setExp(tool, exp);
 		rewriteLore(tool);
 
-		if (LevelUp && !noEvent) {
+		if (LevelUp) {
 			Bukkit.getPluginManager().callEvent(new ToolLevelUpEvent(player, tool));
 		}
 	}

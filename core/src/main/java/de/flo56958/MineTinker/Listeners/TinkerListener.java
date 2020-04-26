@@ -100,118 +100,123 @@ public class TinkerListener implements Listener {
 		ItemStack tool = event.getTool();
 
 		FileConfiguration config = ConfigurationManager.getConfig("config.yml");
-
 		boolean appliedRandomMod = false;
 
-		if (config.getBoolean("LevelUpEvents.enabled")) {
-			Random rand = new Random();
+		if (player != null) {
+			if (config.getBoolean("LevelUpEvents.enabled")) {
+				Random rand = new Random();
 
-			if (config.getBoolean("LevelUpEvents.DurabilityRepair.enabled")) {
-				int n = rand.nextInt(100);
+				if (config.getBoolean("LevelUpEvents.DurabilityRepair.enabled")) {
+					int n = rand.nextInt(100);
 
-				if (n <= config.getInt("LevelUpEvents.DurabilityRepair.percentage")) {
-					Damageable dam = (Damageable) tool.getItemMeta();
+					if (n <= config.getInt("LevelUpEvents.DurabilityRepair.percentage")) {
+						Damageable dam = (Damageable) tool.getItemMeta();
 
-					if (dam != null) {
-						dam.setDamage(0);
-						tool.setItemMeta((ItemMeta) dam);
+						if (dam != null) {
+							dam.setDamage(0);
+							tool.setItemMeta((ItemMeta) dam);
+						}
 					}
 				}
-			}
 
-			if (config.getBoolean("LevelUpEvents.DropLoot.enabled")) {
-				int n = rand.nextInt(100);
+				if (config.getBoolean("LevelUpEvents.DropLoot.enabled")) {
+					int n = rand.nextInt(100);
 
-				if (n <= config.getInt("LevelUpEvents.DropLoot.percentage")) {
-					int index = rand.nextInt(Lists.DROPLOOT.size());
-					Material m = Material.getMaterial(Lists.DROPLOOT.get(index));
+					if (n <= config.getInt("LevelUpEvents.DropLoot.percentage")) {
+						int index = rand.nextInt(Lists.DROPLOOT.size());
+						Material m = Material.getMaterial(Lists.DROPLOOT.get(index));
 
-					if (m != null) {
-						int max = config.getInt("LevelUpEvents.DropLoot.maximumDrop");
-						int min = config.getInt("LevelUpEvents.DropLoot.minimumDrop");
-						int amount = 0;
+						if (m != null) {
+							int max = config.getInt("LevelUpEvents.DropLoot.maximumDrop");
+							int min = config.getInt("LevelUpEvents.DropLoot.minimumDrop");
+							int amount = 0;
 
-						if (max == min) {
-							amount = min;
-						} else if (max < min) { //if the user has configured the options wrongly
-							config.set("LevelUpEvents.DropLoot.maximumDrop", min);
-							config.set("LevelUpEvents.DropLoot.minimumDrop", max);
-							ConfigurationManager.saveConfig(config);
+							if (max == min) {
+								amount = min;
+							} else if (max < min) { //if the user has configured the options wrongly
+								config.set("LevelUpEvents.DropLoot.maximumDrop", min);
+								config.set("LevelUpEvents.DropLoot.minimumDrop", max);
+								ConfigurationManager.saveConfig(config);
 
-							int temp = min;
-							min = max;
-							max = temp;
-						}
-
-						if (amount == 0 && max - min > 0) {
-							amount = rand.nextInt(max - min) + min;
-						}
-
-						ItemStack drop = new ItemStack(m, amount);
-
-						if (player.getInventory().addItem(drop).size() != 0) { //adds items to (full) inventory
-							player.getWorld().dropItem(player.getLocation(), drop); //drops item when inventory is full
-						} // no else as it gets added in if
-					}
-				}
-			}
-
-			if (config.getBoolean("LevelUpEvents.RandomModifier.enabled")) {
-				int n = rand.nextInt(100);
-
-				if (n <= config.getInt("LevelUpEvents.RandomModifier.percentage")) {
-					for (int i = 0; i < player.getInventory().getSize(); i++) { //getting the inventory slot of the tool
-						if (player.getInventory().getItem(i) != null && player.getInventory().getItem(i).equals(tool)) {  //Can be NULL!
-							for (int j = 0; j < new Random().nextInt(config.getInt("LevelUpEvents.RandomModifier.MaximumAmountOfModifiers") + 1); j++) {
-
-								List<Modifier> mods = new ArrayList<>(modManager.getAllowedMods()); //necessary as the failed modifiers get removed from the list (so a copy is in order)
-
-								if (!config.getBoolean("LevelUpEvents.RandomModifier.AllowExtraModifier")) {
-									mods.remove(ExtraModifier.instance());
-								}
-
-								int index;
-
-								do {
-									if (mods.isEmpty()) {
-										break;
-									} //Secures that the while will terminate after some time (if all modifiers were removed)
-
-									index = new Random().nextInt(mods.size());
-									Modifier mod = mods.get(index);
-									if (config.getBoolean("LevelUpEvents.RandomModifier.DropAsItem", false)) {
-										appliedRandomMod = true;
-										if (player.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
-											player.getWorld().dropItem(player.getLocation(), mod.getModItem()); //drops item when inventory is full
-										} // no else as it gets added in if
-									} else {
-										appliedRandomMod = modManager.addMod(player, tool, mod, true, true, false);
-									}
-									if (!appliedRandomMod) {
-										mods.remove(index); //Remove the failed modifier from the the list of the possibles
-									}
-								} while (!appliedRandomMod);
+								int temp = min;
+								min = max;
+								max = temp;
 							}
-							break;
+
+							if (amount == 0 && max - min > 0) {
+								amount = rand.nextInt(max - min) + min;
+							}
+
+							ItemStack drop = new ItemStack(m, amount);
+
+							if (player.getInventory().addItem(drop).size() != 0) { //adds items to (full) inventory
+								player.getWorld().dropItem(player.getLocation(), drop); //drops item when inventory is full
+							} // no else as it gets added in if
 						}
+					}
+				}
+
+				if (config.getBoolean("LevelUpEvents.RandomModifier.enabled")) {
+					int n = rand.nextInt(100);
+
+					if (n <= config.getInt("LevelUpEvents.RandomModifier.percentage")) {
+						for (int i = 0; i < player.getInventory().getSize(); i++) { //getting the inventory slot of the tool
+							if (player.getInventory().getItem(i) != null && player.getInventory().getItem(i).equals(tool)) {  //Can be NULL!
+								for (int j = 0; j < new Random().nextInt(config.getInt("LevelUpEvents.RandomModifier.MaximumAmountOfModifiers") + 1); j++) {
+
+									List<Modifier> mods = new ArrayList<>(modManager.getAllowedMods()); //necessary as the failed modifiers get removed from the list (so a copy is in order)
+
+									if (!config.getBoolean("LevelUpEvents.RandomModifier.AllowExtraModifier")) {
+										mods.remove(ExtraModifier.instance());
+									}
+
+									int index;
+
+									do {
+										if (mods.isEmpty()) {
+											break;
+										} //Secures that the while will terminate after some time (if all modifiers were removed)
+
+										index = new Random().nextInt(mods.size());
+										Modifier mod = mods.get(index);
+										if (config.getBoolean("LevelUpEvents.RandomModifier.DropAsItem", false)) {
+											appliedRandomMod = true;
+											if (player.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
+												player.getWorld().dropItem(player.getLocation(), mod.getModItem()); //drops item when inventory is full
+											} // no else as it gets added in if
+										} else {
+											appliedRandomMod = modManager.addMod(player, tool, mod, true, true, false);
+										}
+										if (!appliedRandomMod) {
+											mods.remove(index); //Remove the failed modifier from the the list of the possibles
+										}
+									} while (!appliedRandomMod);
+								}
+								break;
+							}
+						}
+					}
+				}
+
+				if (config.getBoolean("LevelUpEvents.DropXP.enabled")) {
+					int n = rand.nextInt(100);
+
+					if (n <= config.getInt("LevelUpEvents.DropXP.percentage")) {
+						ExperienceOrb orb = player.getWorld().spawn(player.getLocation(), ExperienceOrb.class);
+						orb.setExperience(config.getInt("LevelUpEvents.DropXP.amount"));
 					}
 				}
 			}
 
-			if (config.getBoolean("LevelUpEvents.DropXP.enabled")) {
-				int n = rand.nextInt(100);
-
-				if (n <= config.getInt("LevelUpEvents.DropXP.percentage")) {
-					ExperienceOrb orb = player.getWorld().spawn(player.getLocation(), ExperienceOrb.class);
-					orb.setExperience(config.getInt("LevelUpEvents.DropXP.amount"));
-				}
+			if (config.getBoolean("Sound.OnLevelUp")) {
+				player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.5F);
 			}
-		}
 
-		//------------------------------------------------------------------------------------------------------------------------
-
-		if (config.getBoolean("Sound.OnLevelUp")) {
-			player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.5F);
+			ChatWriter.sendActionBar(player,
+					LanguageManager.getString("TinkerListener.ToolLevelUp", player)
+							.replace("%tool", ChatWriter.getDisplayName(tool))
+							.replace("%level", "" + modManager.getLevel(tool)));
+			ChatWriter.log(false, player.getDisplayName() + " leveled up " + ChatWriter.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
 		}
 
 		int amount = config.getInt("AddModifierSlotsPerLevel");
@@ -227,11 +232,5 @@ public class TinkerListener implements Listener {
 
 			modManager.setFreeSlots(tool, slots);
 		}
-
-		ChatWriter.sendActionBar(player,
-				LanguageManager.getString("TinkerListener.ToolLevelUp", player)
-						.replace("%tool", ChatWriter.getDisplayName(tool))
-						.replace("%level", "" + modManager.getLevel(tool)));
-		ChatWriter.log(false, player.getDisplayName() + " leveled up " + ChatWriter.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
 	}
 }

@@ -102,7 +102,7 @@ public class ArmorListener implements Listener {
 				amount = (int) event.getDamage() / 2;
 			}
 
-			modManager.addExp(player, piece, amount, false);
+			modManager.addExp(player, piece, amount);
 		}
 	}
 
@@ -124,7 +124,7 @@ public class ArmorListener implements Listener {
 		int chance = rand.nextInt(100);
 
 		if (chance < ConfigurationManager.getConfig("Elytra.yml").getInt("ExpChanceWhileFlying")) {
-			modManager.addExp(event.getPlayer(), event.getItem(), Main.getPlugin().getConfig().getInt("ExpPerEntityHit"), false);
+			modManager.addExp(event.getPlayer(), event.getItem(), Main.getPlugin().getConfig().getInt("ExpPerEntityHit"));
 		}
 
 		SelfRepair.instance().effectElytra(event.getPlayer(), event.getItem());

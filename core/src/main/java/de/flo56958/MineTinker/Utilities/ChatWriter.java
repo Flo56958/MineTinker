@@ -117,7 +117,7 @@ public class ChatWriter {
 			return;
 		}
 
-		if (!player.isOnline()) {
+		if (player == null || !player.isOnline()) {
 			return; // Player may have logged out, unlikely but possible?
 		}
 
