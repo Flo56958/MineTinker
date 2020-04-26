@@ -168,7 +168,7 @@ public class BlockListener implements Listener {
 				return;
 			}
 
-			if (block.getType() == Material.getMaterial(Main.getPlugin().getConfig().getString("BlockToEnchantModifiers"))) {
+			if (block.getType() == Material.getMaterial(Main.getPlugin().getConfig().getString("BlockToEnchantModifiers", Material.BOOKSHELF.name()))) {
 				ItemStack item = player.getInventory().getItemInMainHand();
 
 				for (Modifier m : modManager.getAllMods()) {

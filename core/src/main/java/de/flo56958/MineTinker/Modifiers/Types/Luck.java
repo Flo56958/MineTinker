@@ -16,7 +16,7 @@ import java.util.*;
 
 public class Luck extends Modifier {
 
-	private static EnumMap<ToolType, List<Enchantment>> applicableEnchants = new EnumMap<>(ToolType.class);
+	private static final EnumMap<ToolType, List<Enchantment>> applicableEnchants = new EnumMap<>(ToolType.class);
 
 	private static Luck instance;
 

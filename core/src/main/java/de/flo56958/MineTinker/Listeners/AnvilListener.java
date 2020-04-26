@@ -7,8 +7,6 @@ import de.flo56958.MineTinker.Events.ToolUpgradeEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -19,7 +17,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.AnvilInventory;
-import org.bukkit.inventory.GrindstoneInventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;

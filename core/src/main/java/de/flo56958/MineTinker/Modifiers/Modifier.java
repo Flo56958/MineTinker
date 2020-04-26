@@ -256,6 +256,7 @@ public abstract class Modifier {
 		return Collections.emptyList();
 	}
 
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	protected boolean isMaterialCompatible(Material material) {
 		for (ToolType toolType : getAllowedTools()) {
 			if (toolType.contains(material)) {

@@ -27,9 +27,9 @@ import java.util.List;
  */
 public class GUI implements Listener {
 
-	public static List<GUI> guis = Collections.synchronizedList(new ArrayList<>());
+	public static final List<GUI> guis = Collections.synchronizedList(new ArrayList<>());
 
-	private List<Window> windows = Collections.synchronizedList(new ArrayList<>());
+	private final List<Window> windows = Collections.synchronizedList(new ArrayList<>());
 
 	private volatile boolean isClosed = true;
 
@@ -361,7 +361,7 @@ public class GUI implements Listener {
 		public static class Button {
 			private final Window window;
 			private ItemStack item;
-			private EnumMap<ClickType, ButtonAction> actions = new EnumMap<>(ClickType.class);
+			private final EnumMap<ClickType, ButtonAction> actions = new EnumMap<>(ClickType.class);
 
 			/**
 			 * creates a Button with no actions

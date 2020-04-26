@@ -27,7 +27,7 @@ import java.util.*;
 public class AutoSmelt extends Modifier implements Listener {
 
 	private static AutoSmelt instance;
-	private EnumMap<Material, @NotNull Triplet> conversions = new EnumMap<>(Material.class);
+	private final EnumMap<Material, @NotNull Triplet> conversions = new EnumMap<>(Material.class);
 
 	private int percentagePerLevel;
 	private boolean hasSound;
@@ -247,10 +247,10 @@ public class AutoSmelt extends Modifier implements Listener {
 	}
 
 	private static class Triplet {
-		private static String regex = ":";
+		private static final String regex = ":";
 
-		int amount;
-		Material material;
+		final int amount;
+		final Material material;
 		boolean luckable = false;
 
 		private Triplet(Material m, int amount) {

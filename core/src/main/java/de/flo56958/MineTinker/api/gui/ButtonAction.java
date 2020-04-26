@@ -129,10 +129,10 @@ public abstract class ButtonAction {
 
 	public static class REQUEST_INPUT extends ButtonAction implements PlayerAction {
 
-		private static ConcurrentHashMap<Player, REQUEST_INPUT> playerToAction = new ConcurrentHashMap<>();
+		private static final ConcurrentHashMap<Player, REQUEST_INPUT> playerToAction = new ConcurrentHashMap<>();
 
-		private PlayerRunnable runnable;
-		private String data;
+		private final PlayerRunnable runnable;
+		private final String data;
 
 		public REQUEST_INPUT(GUI.Window.Button button, PlayerRunnable runnable, String data) {
 			super(button);

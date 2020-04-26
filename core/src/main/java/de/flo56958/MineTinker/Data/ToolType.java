@@ -27,8 +27,8 @@ public enum ToolType {
 	SWORD,
 	TRIDENT;
 
-	private static EnumMap<ToolType, List<Material>> tools = new EnumMap<>(ToolType.class);
-	private static List<Material> toolMaterials = new ArrayList<>();
+	private static final EnumMap<ToolType, List<Material>> tools = new EnumMap<>(ToolType.class);
+	private static final List<Material> toolMaterials = new ArrayList<>();
 
 	static {
 		tools.put(ToolType.AXE, Arrays.asList(Material.WOODEN_AXE, Material.STONE_AXE, Material.IRON_AXE, Material.GOLDEN_AXE, Material.DIAMOND_AXE));

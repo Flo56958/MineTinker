@@ -146,6 +146,7 @@ public class Power extends Modifier implements Listener {
 		}
 	}
 
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public boolean canUsePower(Player player, ItemStack tool) {
 		if (!player.hasPermission("minetinker.modifiers.power.use")) {
 			return false;

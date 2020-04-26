@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class RecipeIterator_v1_14_R1 implements Iterator<Recipe> {
 
-	private Iterator<? extends Map<MinecraftKey, IRecipe<?>>> iterator;
+	private final Iterator<? extends Map<MinecraftKey, IRecipe<?>>> iterator;
 	private Iterator<IRecipe<?>> currentIterator;
 
 	RecipeIterator_v1_14_R1() {

@@ -7,6 +7,7 @@ import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -31,13 +32,13 @@ public class Photosynthesis extends Modifier implements Listener {
 	private static Photosynthesis instance;
 	private int healthRepair;
 	private int taskID = -1;
-	private ConcurrentHashMap<UUID, Tupel> data = new ConcurrentHashMap<>();
+	private final ConcurrentHashMap<UUID, Tupel> data = new ConcurrentHashMap<>();
 	private int tickTime;
 	private double multiplierPerTick;
 	private boolean fullEffectAtNoon;
 	private boolean allowOffhand;
 
-	private Runnable runnable = () -> {
+	private final Runnable runnable = () -> {
 		for (UUID id : data.keySet()) {
 			Player player = Bukkit.getPlayer(id);
 			if (player == null || !player.isOnline()) {
@@ -110,7 +111,7 @@ public class Photosynthesis extends Modifier implements Listener {
 				tupel.time = System.currentTimeMillis();
 
 				boolean isAboveGround = false;
-				if (tupel.loc.getWorld().getEnvironment().getId() == 0) { //check for overworld
+				if (tupel.loc.getWorld().getEnvironment() == World.Environment.NORMAL) { //check for overworld
 					for (int i = tupel.loc.getBlockY() + 1; i <= 256; i++) {
 						Block b = tupel.loc.getWorld().getBlockAt(tupel.loc.getBlockX(), i, tupel.loc.getBlockZ());
 						if (!(b.getType() == Material.AIR || b.getType() == Material.CAVE_AIR || b.getType() == Material.VOID_AIR
@@ -236,8 +237,8 @@ public class Photosynthesis extends Modifier implements Listener {
 		private Location loc;
 		private long time; //in ms
 		private boolean isAboveGround;
-
-		private Tupel(Location loc, long time, boolean isAboveGround) {
+												//isAboveGround is not always false
+		private Tupel(Location loc, long time, @SuppressWarnings("SameParameterValue") boolean isAboveGround) {
 			this.loc = loc;
 			this.time = time;
 			this.isAboveGround = isAboveGround;

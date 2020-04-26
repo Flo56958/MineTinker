@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class EnchantingListener implements Listener {
 
-	private ModManager modManager = ModManager.instance();
+	private final ModManager modManager = ModManager.instance();
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onTableEnchant(EnchantItemEvent event) {

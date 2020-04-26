@@ -20,8 +20,8 @@ import java.util.*;
 
 public class CommandManager implements TabExecutor {
 
-	private HashMap<String, SubCommand> map = new HashMap<>();
-	private ArrayList<String> cmds = new ArrayList<>();
+	private final HashMap<String, SubCommand> map = new HashMap<>();
+	private final ArrayList<String> cmds = new ArrayList<>();
 
 	public CommandManager() {
 		ArrayList<SubCommand> commands = new ArrayList<>();
@@ -199,7 +199,7 @@ public class CommandManager implements TabExecutor {
 					case PLAYER:
 						if (args[i].startsWith("@p")) {
 							if (sender instanceof Player) {
-								args[i] = ((Player) sender).getName();
+								args[i] = sender.getName();
 							} else if (sender instanceof BlockCommandSender) {
 								List<Player> players = ((BlockCommandSender) sender).getBlock()
 																					.getWorld().getPlayers();

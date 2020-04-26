@@ -25,7 +25,7 @@ public class Tanky extends Modifier implements Listener {
 
 	private static Tanky instance;
 
-	private HashMap<UUID, Double> playerHealth = new HashMap<>(); //used to track Player health when quiting and rejoining
+	private final HashMap<UUID, Double> playerHealth = new HashMap<>(); //used to track Player health when quiting and rejoining
 	//TODO: Save this data to a more suitable location, this one gets deleted on reload
 	//Maybe a database
 

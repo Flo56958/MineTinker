@@ -79,10 +79,8 @@ public class EntityListener implements Listener {
 		ItemStack tool = player.getInventory().getItemInMainHand();
 
 		if (event.getDamager() instanceof Trident) {
-			tool = TridentListener.TridentToItemStack.get(event.getDamager());
-
 			Trident trident = (Trident) event.getDamager();
-			TridentListener.TridentToItemStack.remove(trident);
+			tool = TridentListener.TridentToItemStack.remove(trident);
 
 			if (tool == null) {
 				return;
