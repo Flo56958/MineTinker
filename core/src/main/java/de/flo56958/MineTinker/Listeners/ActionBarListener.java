@@ -25,7 +25,7 @@ public class ActionBarListener implements Listener {
 				if (xpamount != 0) {
 					String a = String.valueOf(xpamount);
 					if (xpamount > 0) a = "+" + a;
-					else a = "-" + a;
+					else continue;
 					ChatWriter.sendActionBar(p, LanguageManager.getString("ActionBar.ExpGain", p).replaceAll("&amount", a));
 				}
 			}

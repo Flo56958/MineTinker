@@ -11,6 +11,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.GrindstoneInventory;
@@ -56,5 +57,10 @@ public class GrindstoneListener implements Listener {
 
 		ChatWriter.sendActionBar(player, LanguageManager.getString("Alert.OnItemGrind", player));
 		player.playSound(player.getLocation(), Sound.BLOCK_CHEST_LOCKED, 1.0F, 2F);
+	}
+
+	@EventHandler
+	public void onGrid(CraftItemEvent event) {
+		//TODO: Implement me
 	}
 }

@@ -141,7 +141,7 @@ public class EntityListener implements Listener {
 					if (!modManager.convertItemStack(item)) continue;
 
 					if (config.getBoolean("ConvertMobDrops.ApplyExp", true)) {
-						int exp = rand.nextInt(config.getInt("ConvertMobDrops.MaximumNumberOfExp", 2000));
+						int exp = rand.nextInt(config.getInt("ConvertMobDrops.MaximumNumberOfExp", 650));
 						int divider = config.getInt("LevelStep", 100);
 						for (int i = 0; i < (exp - 17) / divider; i++) { //to get possible LevelUps
 							modManager.addExp(player, item, divider, true);

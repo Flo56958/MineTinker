@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -160,6 +161,11 @@ public class Ender extends Modifier implements Listener {
 		Entity entity = event.getEvent().getEntity();
 
 		if (!player.isSneaking()) {
+			return;
+		}
+
+		//The Damage cause was not the arrow and therefore Ender should not be triggered
+		if (!event.getEvent().getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)) {
 			return;
 		}
 
