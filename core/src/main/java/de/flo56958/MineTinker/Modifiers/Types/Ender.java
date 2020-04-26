@@ -7,6 +7,7 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
@@ -187,7 +188,14 @@ public class Ender extends Modifier implements Listener {
 			return;
 		}
 
-		// e
+		if (entity instanceof Player) {
+			//Save Players from getting teleported
+			if (entity.hasPermission("minetinker.modifiers.ender.prohibittp")) {
+				ChatWriter.sendActionBar(player, LanguageManager.getString("Modifier.Ender.TeleportationProhibited", player));
+				return;
+			}
+		}
+
 		Location loc = entity.getLocation().clone();
 		entity.teleport(player.getLocation());
 

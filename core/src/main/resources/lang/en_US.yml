@@ -166,6 +166,7 @@ Modifier:
     Description: "Teleports you while sneaking to the arrows landing location!"
     ModifierItemName: "Special Endereye"
     DescriptionModifierItem: "Modifier-Item for the Ender-Modifier"
+    TeleportationProhibited: "You can't swap places with this Player!"
   Experienced:
     Name: "Experienced"
     Description: "Tool has the %chance% chance per level to drop %amount XP while using it!"

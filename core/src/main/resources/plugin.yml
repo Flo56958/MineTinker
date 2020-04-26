@@ -311,12 +311,16 @@ permissions:
     children:
       minetinker.modifiers.ender.apply: true
       minetinker.modifiers.ender.use: true
+      minetinker.modifiers.ender.prohibittp: true
   minetinker.modifiers.ender.apply:
     description: Allows to apply Ender to a MineTinker-Tool
     default: true
   minetinker.modifiers.ender.use:
     description: Allows to use Ender on a MineTinker-Tool
     default: true
+  minetinker.modifiers.ender.prohibittp:
+    description: Having this Permission saves the Player from getting swapped with other Players using Ender
+    default: false
 
   minetinker.modifiers.extramodifier.*:
     children:
