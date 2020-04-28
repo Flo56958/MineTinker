@@ -133,7 +133,7 @@ public abstract class Modifier {
 	}
 
 	public boolean hasRecipe() {
-		return true;
+		return getConfig().getBoolean("Recipe.Enabled", false);
 	}
 
 	Plugin getSource() {
@@ -145,11 +145,11 @@ public abstract class Modifier {
 	}
 
 	public int getEnchantCost() {
-		return getConfig().getInt("EnchantCost");
+		return getConfig().getInt("EnchantCost", 10);
 	}
 
 	public boolean isEnchantable() {
-		return getConfig().getBoolean("Enchantable");
+		return getConfig().getBoolean("Enchantable", false);
 	}
 
 	/**

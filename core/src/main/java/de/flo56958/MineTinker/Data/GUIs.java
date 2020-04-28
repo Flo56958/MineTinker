@@ -111,7 +111,7 @@ public class GUIs {
 										+ ChatColor.RESET + "" + ChatColor.WHITE)
 								.replace("%mat", m.getModItem().getType().name()).replace("%key",
 										LanguageManager.getString("GUIs.RightClick")), 30));
-					} else {
+					} else if (m.hasRecipe()) {
 						lore.addAll(ChatWriter.splitString(LanguageManager.getString("GUIs.Modifiers.ClickToRecipe")
 								.replace("%key", LanguageManager.getString("GUIs.LeftClick")), 30));
 					}
