@@ -47,7 +47,7 @@ public class Directing extends Modifier implements Listener {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.HOE);
+		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.HOE, ToolType.SHEARS);
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class Directing extends Modifier implements Listener {
 			return;
 		}
 
-		if (tool.getType() == Material.AIR || !modManager.hasMod(tool, this)) {
+		if (!modManager.isToolViable(tool) || !modManager.hasMod(tool, this)) {
 			return;
 		}
 

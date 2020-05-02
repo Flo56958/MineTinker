@@ -161,7 +161,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Channeling-Modifier"
   Directing:
     Name: "Directing"
-    Description: "Loot from killed mobs goes directly into your Inventory!"
+    Description: "Loot from killed mobs or broken Blocks goes directly into your Inventory!"
     ModifierItemName: "Enhanced Compass"
     DescriptionModifierItem: "Modifier-Item for the Directing-Modifier"
   Ender:
