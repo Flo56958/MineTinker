@@ -7,9 +7,11 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
@@ -45,7 +47,7 @@ public class Directing extends Modifier implements Listener {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT);
+		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.HOE);
 	}
 
 	@Override
@@ -88,6 +90,37 @@ public class Directing extends Modifier implements Listener {
 		this.workInPVP = config.getBoolean("WorkInPVP", true);
 		this.workOnXP = config.getBoolean("WorksOnXP", true);
 		this.minimumLevelForXP = config.getInt("MinimumLevelToGetXP", 1);
+	}
+
+	@EventHandler
+	public void effect(BlockDropItemEvent event) {
+		Player player = event.getPlayer();
+		ItemStack tool = player.getInventory().getItemInMainHand();
+
+		if (!player.hasPermission("minetinker.modifiers.directing.use")) {
+			return;
+		}
+
+		if (tool.getType() == Material.AIR || !modManager.hasMod(tool, this)) {
+			return;
+		}
+
+		Iterator<Item> itemIterator = event.getItems().iterator();
+		Item next;
+
+		while (itemIterator.hasNext()) {
+			next = itemIterator.next();
+
+			HashMap<Integer, ItemStack> refusedItems = player.getInventory().addItem(next.getItemStack());
+
+			if (!refusedItems.isEmpty()) {
+				for (ItemStack itemStack : refusedItems.values()) {
+					player.getWorld().dropItem(player.getLocation(), itemStack);
+				}
+			}
+
+			itemIterator.remove();
+		}
 	}
 
 	@EventHandler
