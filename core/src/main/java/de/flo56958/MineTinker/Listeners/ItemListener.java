@@ -137,7 +137,6 @@ public class ItemListener implements Listener {
 		}
 	}
 
-	//TODO: Crossbow gets destroyed non the less
 	@EventHandler
 	public void onItemBreak(PlayerItemBreakEvent event) {
 		Player player = event.getPlayer();
@@ -147,7 +146,7 @@ public class ItemListener implements Listener {
 			return;
 		}
 
-		if (!modManager.isToolViable(item)) {
+		if (!modManager.isToolViable(item) && !modManager.isArmorViable(item)) {
 			return;
 		}
 
@@ -166,6 +165,13 @@ public class ItemListener implements Listener {
 			item.setItemMeta(meta);
 		}
 
-		player.getInventory().addItem(item);
+		if (player.getInventory().addItem(item).size() != 0) { //adds items to (full) inventory
+			if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
+				PlayerDropItemEvent dropItemEvent = new PlayerDropItemEvent(player, player.getWorld().dropItem(player.getLocation(), item));
+				Bukkit.getPluginManager().callEvent(dropItemEvent); //To trigger item behaviour
+			} else {
+				player.getWorld().dropItem(player.getLocation(), item);
+			}
+		} // no else as it gets added in if-clause
 	}
 }
