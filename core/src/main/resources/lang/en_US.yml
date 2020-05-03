@@ -1,5 +1,6 @@
 Alert.OnItemBreak: "%RED%Looks like your tool broke! Giving it back with 1 durability."
 Alert.OnItemGrind: "%RED%You can't use Grindstone for MineTinker's items."
+Alert.ToolUpgradeFailure: "%RED%You have failed upgrading!"
 Alert.InternalError: "%RED%An internal error occurred!"
 
 StartUp.Commands: "Registered commands!"
@@ -108,6 +109,7 @@ ModifierFailCause.MaximumSlotsReached: "Maximum Amount of Slots reached!"
 ModifierFailCause.ModMaxLevel: "Modifier is already max Level!"
 ModifierFailCause.NoFreeSlots: "No free Slots on Item!"
 ModifierFailCause.NoPermission: "No Permission!"
+ModifierFailCause.PlayerFailure: "Player has failed applying the Modification!"
 
 GrindStone.PossibleSlotsAfterGrind: "Possible free Slots after grind: %amount"
 

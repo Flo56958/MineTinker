@@ -67,6 +67,8 @@ ConvertEnchantmentsOnEnchant: false   #Should (new) enchantments be converted to
 ConvertEnchantsAndAttributes: true    #Should enchants and Attributes be also converted if tool is converted
 ToolIdentifier: IdentifierTool        #Changing this will break all current tools; Used to identify Tools
 ArmorIdentifier: IdentifierArmor      #Changing this will break all current armors; Used to identify Armor
+ChanceToFailModifierApply: 0          #Chance the Modifier does not get applied and instead removes the modifier item
+ChanceToFailToolUpgrade: 0            #Chance the tool does not get upgraded and instead removes the upgrading items
 
 #---------------ITEMBEHAVIOUR--------------
 ItemBehaviour:

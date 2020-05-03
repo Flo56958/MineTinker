@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 public enum ModifierFailCause {
 
 	INCOMPATIBLE_MODIFIERS,
+	PLAYER_FAILURE,
 	INVALID_TOOLTYPE,
 	MAXIMUM_SLOTS_REACHED,
 	MOD_MAXLEVEL,
@@ -23,6 +24,8 @@ public enum ModifierFailCause {
 		switch (this) {
 			case INCOMPATIBLE_MODIFIERS:
 				return LanguageManager.getString("ModifierFailCause.IncompatibleModifiers", player);
+			case PLAYER_FAILURE:
+				return LanguageManager.getString("ModifierFailCause.PlayerFailure", player);
 			case INVALID_TOOLTYPE:
 				return LanguageManager.getString("ModifierFailCause.InvalidToolType", player);
 			case MAXIMUM_SLOTS_REACHED:

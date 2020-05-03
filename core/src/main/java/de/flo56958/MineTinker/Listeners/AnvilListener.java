@@ -1,12 +1,14 @@
 package de.flo56958.MineTinker.Listeners;
 
 import de.flo56958.MineTinker.Data.Lists;
+import de.flo56958.MineTinker.Data.ModifierFailCause;
 import de.flo56958.MineTinker.Events.ModifierApplyEvent;
+import de.flo56958.MineTinker.Events.ModifierFailEvent;
 import de.flo56958.MineTinker.Events.ToolUpgradeEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import jdk.internal.net.http.common.Pair;
+import de.flo56958.MineTinker.Utilities.Datatypes.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -22,6 +24,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
+import java.util.Random;
 
 public class AnvilListener implements Listener {
 
@@ -66,6 +69,13 @@ public class AnvilListener implements Listener {
 		if (!modManager.isModifierItem(modifier)) { //upgrade
 			if (tool.getType().equals(newTool.getType())) return; //Not an upgrade
 
+			if (new Random().nextInt(100) < Main.getPlugin().getConfig().getInt("ChanceToFailToolUpgrade")) {
+				newTool = tool;
+				Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, false));
+			} else {
+				Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, true));
+			}
+
 			// ------ upgrade
 			if (event.isShiftClick()) {
 				if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
@@ -74,11 +84,8 @@ public class AnvilListener implements Listener {
 				} // no else as it gets added in if-clause
 
 				inv.clear();
-
 				return;
 			}
-
-			Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, true));
 
 			player.setItemOnCursor(newTool);
 			inv.clear();
@@ -90,7 +97,13 @@ public class AnvilListener implements Listener {
 			}
 
 			modifier.setAmount(modifier.getAmount() - 1);
-			Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
+
+			if (new Random().nextInt(100) < Main.getPlugin().getConfig().getInt("ChanceToFailModifierApply")) {
+				newTool = tool;
+				Bukkit.getPluginManager().callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.PLAYER_FAILURE, false));
+			} else {
+				Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
+			}
 
 			if (event.isShiftClick()) {
 				if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
@@ -172,10 +185,10 @@ public class AnvilListener implements Listener {
 
 				if (item != null) {
 					Pair<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(tool.getType(), item.getType());
-					if (materialIntegerPair != null && materialIntegerPair.first != null) {
-						if (item.getAmount() == materialIntegerPair.second) {
+					if (materialIntegerPair != null && materialIntegerPair.x != null) {
+						if (item.getAmount() == materialIntegerPair.y) {
 							newTool = tool.clone();
-							newTool.setType(materialIntegerPair.first);
+							newTool.setType(materialIntegerPair.x);
 							ItemMeta meta = newTool.getItemMeta();
 							if(meta instanceof Damageable) {
 								((Damageable) meta).setDamage(0);

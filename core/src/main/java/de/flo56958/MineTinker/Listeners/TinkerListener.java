@@ -53,6 +53,7 @@ public class TinkerListener implements Listener {
 			if (config.getBoolean("Sound.OnUpgrade")) {
 				player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
 			}
+			ChatWriter.sendActionBar(player, LanguageManager.getString("Alert.ToolUpgradeFailure", player));
 		}
 	}
 
