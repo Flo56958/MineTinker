@@ -174,7 +174,7 @@ Modifier:
     TeleportationProhibited: "Nie możesz zamieniać się miejscami z tym graczem!"
   Evasive:
     Name: "Unik"
-    Description: "Szansa na uniknięcie nadchodzących ataków (%chance na poziom) - %sneakX podczas skradania się, %sprintX podczas sprintu"
+    Description: "Szansa na uniknięcie nadchodzących ataków (%chance szans na poziom) - %sneakX podczas skradania się, %sprintX podczas sprintu, %pvpX podczas PvP"
     ModifierItemName: "Szybkie Pióro"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Unik\""
   Experienced:
