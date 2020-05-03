@@ -70,6 +70,7 @@ public class Webbed extends Modifier implements Listener {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Webbed-Modifier");
 		config.addDefault("Color", "%WHITE%");
 		config.addDefault("MaxLevel", 3);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("Duration", 60); //ticks (20 ticks ~ 1 sec)
 		config.addDefault("DurationMultiplier", 1.2);//Duration * (Multiplier^Level)
 		config.addDefault("EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)

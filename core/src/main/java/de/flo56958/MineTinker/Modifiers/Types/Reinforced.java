@@ -67,6 +67,7 @@ public class Reinforced extends Modifier {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Reinforced-Modifier");
 		config.addDefault("Color", "%DARK_GRAY%");
 		config.addDefault("MaxLevel", 3);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("ApplyUnbreakableOnMaxLevel", false);
 		config.addDefault("HideUnbreakableFlag", true);
 		config.addDefault("OverrideLanguagesystem", false);

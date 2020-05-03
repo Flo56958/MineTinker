@@ -98,6 +98,7 @@ public class Power extends Modifier implements Listener {
 		config.addDefault("Toggleable", true);
 		config.addDefault("OverrideLanguagesystem", false);
 		config.addDefault("MaxLevel", 2); // Algorithm for area of effect (except for level 1): (level * 2) - 1 x
+		config.addDefault("SlotCost", 1);
 
 		config.addDefault("EnchantCost", 15);
 		config.addDefault("Enchantable", true);

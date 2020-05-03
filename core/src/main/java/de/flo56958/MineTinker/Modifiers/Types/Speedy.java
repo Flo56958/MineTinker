@@ -102,6 +102,7 @@ public class Speedy extends Modifier {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Speedy-Modifier");
 		config.addDefault("Color", "%BLUE%");
 		config.addDefault("MaxLevel", 5);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("SpeedPerLevel", 0.01);
 		config.addDefault("OverrideLanguagesystem", false);
 

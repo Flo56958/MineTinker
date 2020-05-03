@@ -60,6 +60,7 @@ public class Aquaphilic extends Modifier {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Aquaphilic-Modifier");
 		config.addDefault("Color", "%AQUA%");
 		config.addDefault("MaxLevel", 3); //higher will have no effect on depth strider
+		config.addDefault("SlotCost", 1);
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);

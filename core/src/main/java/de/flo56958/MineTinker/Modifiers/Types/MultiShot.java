@@ -77,6 +77,7 @@ public class MultiShot extends Modifier implements Listener {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Multishot-Modifier");
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 5);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("ArrowSpread", 5.0);
 		config.addDefault("NeedsArrows", true);
 		config.addDefault("UseEnchantOnCrossbow", false);

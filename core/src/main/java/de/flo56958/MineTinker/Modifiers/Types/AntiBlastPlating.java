@@ -59,6 +59,7 @@ public class AntiBlastPlating extends Modifier {
 		config.addDefault("Description", "Armor mitigates explosion damage!");
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Anti-Blast-Plating-Modifier");
 		config.addDefault("MaxLevel", 4);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("Color", "%WHITE%");
 		config.addDefault("OverrideLanguagesystem", false);
 

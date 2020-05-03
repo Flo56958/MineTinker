@@ -60,6 +60,7 @@ public class SpidersBane extends Modifier {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Spider's-Bane-Modifier");
 		config.addDefault("Color", "%RED%");
 		config.addDefault("MaxLevel", 5);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);

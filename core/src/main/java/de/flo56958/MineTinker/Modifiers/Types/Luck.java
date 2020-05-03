@@ -74,6 +74,7 @@ public class Luck extends Modifier {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Luck-Modifier");
 		config.addDefault("Color", "%BLUE%");
 		config.addDefault("MaxLevel", 3);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);

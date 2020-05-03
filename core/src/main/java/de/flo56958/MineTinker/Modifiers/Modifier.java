@@ -37,6 +37,7 @@ public abstract class Modifier {
 	private ChatColor color;
 	private int maxLvl;
 	private ItemStack modItem;
+	protected int slotCost;
 
 	protected int customModelData = -1;
 
@@ -50,42 +51,42 @@ public abstract class Modifier {
 		this.source = source;
 	}
 
-	static boolean checkAndAdd(Player player, ItemStack tool, Modifier mod, String permission, boolean isCommand, boolean fromRandom, boolean silent) {
-		if ((modManager.getFreeSlots(tool) < 1 && !mod.equals(ExtraModifier.instance())) && !isCommand) {
-			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.NO_FREE_SLOTS, false));
+	boolean checkAndAdd(Player player, ItemStack tool, String permission, boolean isCommand, boolean fromRandom, boolean silent) {
+		if ((modManager.getFreeSlots(tool) < this.getSlotCost() && !this.equals(ExtraModifier.instance())) && !isCommand) {
+			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.NO_FREE_SLOTS, false));
 			return false;
 		}
 
 		if (!player.hasPermission("minetinker.modifiers." + permission + ".apply")) {
-			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.NO_PERMISSION, isCommand));
+			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.NO_PERMISSION, isCommand));
 			return false;
 		}
 
 		FileConfiguration modifiersconfig = ConfigurationManager.getConfig("Modifiers.yml");
-		if (!(modifiersconfig.getBoolean("CommandIgnoresToolTypes") && isCommand && !fromRandom) && !mod.isMaterialCompatible(tool.getType())) {
-			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
+		if (!(modifiersconfig.getBoolean("CommandIgnoresToolTypes") && isCommand && !fromRandom) && !this.isMaterialCompatible(tool.getType())) {
+			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
 			return false;
 		}
 
-		if (!(modifiersconfig.getBoolean("CommandIgnoresMaxLevel") && isCommand && !fromRandom) && modManager.getModLevel(tool, mod) >= mod.getMaxLvl()) {
-			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.MOD_MAXLEVEL, isCommand));
+		if (!(modifiersconfig.getBoolean("CommandIgnoresMaxLevel") && isCommand && !fromRandom) && modManager.getModLevel(tool, this) >= this.getMaxLvl()) {
+			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.MOD_MAXLEVEL, isCommand));
 			return false;
 		}
 
-		if (!(modManager.hasMod(tool, mod) && modifiersconfig.getBoolean("IgnoreIncompatibilityIfModifierAlreadyApplied"))) {
+		if (!(modManager.hasMod(tool, this) && modifiersconfig.getBoolean("IgnoreIncompatibilityIfModifierAlreadyApplied"))) {
 			if (fromRandom || !(modifiersconfig.getBoolean("CommandIgnoresIncompatibilities") && isCommand)) {
-				Set<Modifier> incompatibility = modManager.getIncompatibilities(mod);
+				Set<Modifier> incompatibility = modManager.getIncompatibilities(this);
 
 				for (Modifier m : incompatibility) {
 					if (modManager.hasMod(tool, m)) {
-						if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+						if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
 						return false;
 					}
 					if (modifiersconfig.getBoolean("IncompatibilitiesConsiderEnchants")) {
 						for (Enchantment e : m.getAppliedEnchantments()) {
 							if (!tool.hasItemMeta()) return false;
 							if (tool.getItemMeta().hasEnchant(e)) {
-								if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+								if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
 								return false;
 							}
 						}
@@ -94,15 +95,13 @@ public abstract class Modifier {
 			}
 		}
 
-		modManager.addMod(tool, mod);
-
-		int freeSlots = modManager.getFreeSlots(tool);
+		modManager.addMod(tool, this);
 
 		if (!isCommand) {
-			modManager.setFreeSlots(tool, --freeSlots);
+			modManager.setFreeSlots(tool, modManager.getFreeSlots(tool) - this.getSlotCost());
 		} else {
 			if (!silent) {
-				ModifierApplyEvent event = new ModifierApplyEvent(player, tool, mod, freeSlots, true);
+				ModifierApplyEvent event = new ModifierApplyEvent(player, tool, this, modManager.getFreeSlots(tool), true);
 				Bukkit.getPluginManager().callEvent(event);
 			}
 		}
@@ -127,6 +126,8 @@ public abstract class Modifier {
 	public int getMaxLvl() {
 		return maxLvl;
 	}
+
+	public int getSlotCost() { return slotCost; }
 
 	public ItemStack getModItem() {
 		return modItem;
@@ -160,6 +161,7 @@ public abstract class Modifier {
 
 		this.color = ChatWriter.getColor(config.getString("Color", "%WHITE%"));
 		this.maxLvl = config.getInt("MaxLevel");
+		this.slotCost = config.getInt("SlotCost", 1);
 
 		if (config.getBoolean("OverrideLanguagesystem", false)) { //use the config values instead
 			this.name = config.getString("Name", "");
@@ -372,6 +374,5 @@ public abstract class Modifier {
 			ChatWriter.sendActionBar(player, ChatColor.RED + LanguageManager.getString("Modifier.Enchantable.LevelsRequired", player).replace("%amount", "" + getEnchantCost()));
 			ChatWriter.log(false, player.getDisplayName() + " tried to create a " + getName() + "-Modifiers but had not enough levels!");
 		}
-
 	}
 }

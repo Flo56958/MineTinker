@@ -362,7 +362,7 @@ public class ModManager {
 
 	public boolean addMod(Player player, ItemStack item, Modifier modifier, boolean fromCommand, boolean fromRandom, boolean silent) {
 		if (!modifier.getKey().equals(ExtraModifier.instance().getKey())) {
-			if (!Modifier.checkAndAdd(player, item, modifier,
+			if (!modifier.checkAndAdd(player, item,
 					modifier.getKey().toLowerCase().replace("-", ""), fromCommand, fromRandom, silent)) {
 				return false;
 			}

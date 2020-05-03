@@ -66,6 +66,7 @@ public class Beheading extends Modifier implements Listener {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Beheading-Modifier");
 		config.addDefault("Color", "%DARK_GRAY%");
 		config.addDefault("MaxLevel", 10);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("PercentagePerLevel", 10);  //= 100% at Level 10
 
 		config.addDefault("EnchantCost", 25);

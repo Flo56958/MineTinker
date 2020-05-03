@@ -63,6 +63,7 @@ public class Sharpness extends Modifier {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Sharpness-Modifier");
 		config.addDefault("Color", "%WHITE%");
 		config.addDefault("MaxLevel", 5);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);

@@ -81,12 +81,12 @@ public class GrindstoneListener implements Listener {
 				boolean hadMods = false;
 				for (Modifier mod : ModManager.instance().getAllMods()) {
 					int level = ModManager.instance().getModLevel(result, mod);
-					amount += level;
+					amount += level * mod.getSlotCost();
 					for(int i = 0; i < level; i++) {
 						hadMods = true;
 						//Test for getting slot back
 						if (rand.nextInt(100) < config.getInt("Grindstone.ChanceToGetSlotsBack")) {
-							gs.slots++;
+							gs.slots += mod.getSlotCost();
 						}
 						//Test for getting modifier item back
 						if (rand.nextInt(100) < config.getInt("Grindstone.ChanceToGetModifierItemBack")) {

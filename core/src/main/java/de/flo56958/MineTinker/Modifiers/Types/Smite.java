@@ -60,6 +60,7 @@ public class Smite extends Modifier {
 		config.addDefault("DescriptionModifierItem", "%YELLOW%Modifier-Item for the Smite-Modifier");
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 5);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);

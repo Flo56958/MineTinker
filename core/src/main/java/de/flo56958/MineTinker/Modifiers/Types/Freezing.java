@@ -63,6 +63,7 @@ public class Freezing extends Modifier {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Freezing-Modifier");
 		config.addDefault("Color", "%AQUA%");
 		config.addDefault("MaxLevel", 3);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);

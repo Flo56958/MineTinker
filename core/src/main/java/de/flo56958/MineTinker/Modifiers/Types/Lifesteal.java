@@ -63,6 +63,7 @@ public class Lifesteal extends Modifier implements Listener {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Lifesteal-Modifier");
 		config.addDefault("Color", "%DARK_RED%");
 		config.addDefault("MaxLevel", 3);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("PercentToTrigger", 50);
 		config.addDefault("PercentOfDamagePerLevel", 10);
 		config.addDefault("OverrideLanguagesystem", false);

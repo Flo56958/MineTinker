@@ -63,6 +63,7 @@ public class Piercing extends Modifier {
 		config.addDefault("DescriptionModifierItem", "%GRAY%Modifier-Item for the Piercing-Modifier");
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 4);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);

@@ -68,6 +68,7 @@ public class Magical extends Modifier implements Listener {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Magical-Modifier");
 		config.addDefault("Color", "%DARK_PURPLE%");
 		config.addDefault("MaxLevel", 5);
+		config.addDefault("SlotCost", 1);
 
 		config.addDefault("MultiplierArrowSpeed", 0.3);
 		config.addDefault("MultiplierArrowDamagePerLevel", 1.25);

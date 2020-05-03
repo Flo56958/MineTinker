@@ -171,6 +171,7 @@ public class Photosynthesis extends Modifier implements Listener {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Photosynthesis-Modifier");
 		config.addDefault("Color", "%GREEN%");
 		config.addDefault("MaxLevel", 5);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("HealthRepairPerLevel", 2); //per Tick
 		config.addDefault("MultiplierPerTick", 1.05);
 		config.addDefault("TickTime", 100); //TickTime in Minecraft ticks

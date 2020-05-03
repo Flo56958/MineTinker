@@ -86,8 +86,11 @@ public class GUIs {
 					meta.setDisplayName(m.getColor() + "" + ChatColor.UNDERLINE + "" + ChatColor.BOLD + m.getName());
 					ArrayList<String> lore = new ArrayList<>();
 
-					lore.add(ChatColor.WHITE + Objects.requireNonNull(m.getModItem().getItemMeta()).getDisplayName());
-					lore.add("");
+					String modifierItemName = Objects.requireNonNull(m.getModItem().getItemMeta()).getDisplayName();
+					if (!modifierItemName.equals("")) {
+						lore.add(ChatColor.WHITE + modifierItemName);
+						lore.add("");
+					}
 
 					List<String> descList = ChatWriter.splitString(m.getDescription(), 30);
 					for (String descPart : descList) {
@@ -114,6 +117,12 @@ public class GUIs {
 					} else if (m.hasRecipe()) {
 						lore.addAll(ChatWriter.splitString(LanguageManager.getString("GUIs.Modifiers.ClickToRecipe")
 								.replace("%key", LanguageManager.getString("GUIs.LeftClick")), 30));
+					}
+
+					//Slot cost
+					if (m.getSlotCost() > 0) {
+						lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.SlotCost")
+								.replaceFirst("%amount", String.valueOf(m.getSlotCost())));
 					}
 
 					lore.add("");

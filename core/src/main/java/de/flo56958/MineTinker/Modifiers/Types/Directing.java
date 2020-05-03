@@ -61,6 +61,7 @@ public class Directing extends Modifier implements Listener {
 		config.addDefault("Description", "Loot goes directly into Inventory!");
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Directing-Modifier");
 		config.addDefault("MaxLevel", 1);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("WorksOnXP", true);
 		config.addDefault("MinimumLevelToGetXP", 1); //Modifier-Level to give Player XP
 		config.addDefault("WorkInPVP", true);

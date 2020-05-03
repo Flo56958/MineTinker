@@ -65,6 +65,7 @@ public class Berserk extends Modifier implements Listener {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Berserk-Modifier");
 		config.addDefault("Color", "%DARK_RED%");
 		config.addDefault("MaxLevel", 3);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("BoostTimeInTicks", 200);
 		config.addDefault("TriggerPercent", 20);
 		config.addDefault("OverrideLanguagesystem", false);

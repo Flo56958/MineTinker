@@ -62,6 +62,8 @@ public class ExtraModifier extends Modifier {
 
 		init(Material.getMaterial(config.getString("ModifierItem", "NETHER_STAR")), false);
 
+		this.slotCost = 0;
+
 		this.gain = config.getInt("ExtraModifierGain", 1);
 		this.description = this.description.replace("%amount", "" + this.gain);
 	}

@@ -66,6 +66,7 @@ public class Glowing extends Modifier implements Listener {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Glowing-Modifier");
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 3);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("Duration", 200); //ticks INTEGER (20 ticks ~ 1 sec)
 		config.addDefault("DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
 		config.addDefault("OverrideLanguagesystem", false);

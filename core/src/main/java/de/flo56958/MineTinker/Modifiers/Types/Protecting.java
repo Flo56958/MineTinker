@@ -61,6 +61,7 @@ public class Protecting extends Modifier {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Protecting-Modifier");
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 4);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);

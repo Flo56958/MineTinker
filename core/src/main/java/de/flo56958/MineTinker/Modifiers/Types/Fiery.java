@@ -62,6 +62,7 @@ public class Fiery extends Modifier {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Fiery-Modifier");
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 2);
+		config.addDefault("SlotCost", 1);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", true);

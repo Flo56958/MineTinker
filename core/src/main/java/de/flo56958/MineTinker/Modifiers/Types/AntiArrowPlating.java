@@ -60,6 +60,7 @@ public class AntiArrowPlating extends Modifier {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Anti-Arrow-Plating-Modifier");
 		config.addDefault("Color", "%WHITE%");
 		config.addDefault("MaxLevel", 4);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);

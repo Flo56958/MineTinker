@@ -63,6 +63,7 @@ public class Experienced extends Modifier implements Listener {
 		config.addDefault("Description", "Tool has the chance to drop XP while using it!");
 		config.addDefault("Color", "%GREEN%");
 		config.addDefault("MaxLevel", 10);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("PercentagePerLevel", 2); //= 20% at Level 10 -> every 5th hit / block will trigger Experienced
 		config.addDefault("Amount", 1); //How much XP should be dropped when triggered
 

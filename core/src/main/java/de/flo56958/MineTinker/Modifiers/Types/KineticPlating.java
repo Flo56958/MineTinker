@@ -61,6 +61,7 @@ public class KineticPlating extends Modifier implements Listener {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Kinetic-Plating-Modifier");
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 5);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("Amount", 20); //How much XP should be dropped when triggered
 
 		config.addDefault("EnchantCost", 10);

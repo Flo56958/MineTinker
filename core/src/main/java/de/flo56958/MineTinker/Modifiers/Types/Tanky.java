@@ -107,6 +107,7 @@ public class Tanky extends Modifier implements Listener {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Tanky-Modifier");
 		config.addDefault("Color", "%DARK_GRAY%");
 		config.addDefault("MaxLevel", 5);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("HealthPerLevel", 3);
 
 		config.addDefault("EnchantCost", 10);

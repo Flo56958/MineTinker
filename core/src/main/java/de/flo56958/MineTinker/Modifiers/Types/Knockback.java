@@ -67,6 +67,7 @@ public class Knockback extends Modifier {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Knockback-Modifier");
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 5);
+		config.addDefault("SlotCost", 1);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", true);

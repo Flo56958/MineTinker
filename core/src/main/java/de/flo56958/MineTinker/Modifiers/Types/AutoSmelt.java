@@ -72,6 +72,7 @@ public class AutoSmelt extends Modifier implements Listener {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Auto-Smelt-Modifier");
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 5);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("PercentagePerLevel", 20);
 		config.addDefault("Sound", true); //Auto-Smelt makes a sound
 		config.addDefault("Particles", true); //Auto-Smelt will create a particle effect when triggered
