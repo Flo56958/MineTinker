@@ -167,6 +167,11 @@ Modifier:
     Description: "Loot from killed mobs or broken Blocks goes directly into your Inventory!"
     ModifierItemName: "Enhanced Compass"
     DescriptionModifierItem: "Modifier-Item for the Directing-Modifier"
+  Drilling:
+    Name: "Drilling"
+    Description: "Drill one block deeper into the earth per level!"
+    ModifierItemName: "Reinforced Drill"
+    DescriptionModifierItem: "Modifier-Item for the Drilling-Modifier"
   Ender:
     Name: "Ender"
     Description: "Teleports you while sneaking to the arrows landing location!"

@@ -171,12 +171,8 @@ public class Power extends Modifier implements Listener {
 	 *
 	 * @param event The Event
 	 */
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void effect(MTBlockBreakEvent event) {
-		if (event.isCancelled() || !this.isAllowed()){
-			return;
-		}
-
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 		Block block = event.getBlock();
@@ -282,12 +278,8 @@ public class Power extends Modifier implements Listener {
 	/**
 	 * Effect for the PlayerInteractEvent for the Hoe
 	 */
-	@EventHandler
+	@EventHandler (ignoreCancelled = true)
 	public void effect(MTPlayerInteractEvent event) {
-		if (event.isCancelled() || !this.isAllowed()) {
-			return;
-		}
-
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 

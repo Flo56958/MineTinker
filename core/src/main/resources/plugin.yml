@@ -178,6 +178,7 @@ permissions:
       minetinker.modifiers.berserk.*: true
       minetinker.modifiers.channeling.*: true
       minetinker.modifiers.directing.*: true
+      minetinker.modifiers.drilling.*: true
       minetinker.modifiers.ender.*: true
       minetinker.modifiers.evasive.*: true
       minetinker.modifiers.experienced.*: true
@@ -306,6 +307,17 @@ permissions:
     default: true
   minetinker.modifiers.directing.use:
     description: Allows to use Directing on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.drilling.*:
+    children:
+      minetinker.modifiers.drilling.apply: true
+      minetinker.modifiers.drilling.use: true
+  minetinker.modifiers.drilling.apply:
+    description: Allows to apply Drilling to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.drilling.use:
+    description: Allows to use Drilling on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.ender.*:

@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Modifiers.Types.Drilling;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
@@ -178,6 +179,7 @@ public class PlayerListener implements Listener {
 		Player player = event.getPlayer();
 		Lists.BLOCKFACE.put(player, null);
 		Power.HASPOWER.computeIfAbsent(player, p -> new AtomicBoolean(false));
+		Drilling.HASDRILLING.computeIfAbsent(player, p -> new AtomicBoolean(false));
 
 		if (Main.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
 			if (player.hasPermission("minetinker.update.notify")) {
@@ -208,6 +210,7 @@ public class PlayerListener implements Listener {
 	public void onQuit(PlayerQuitEvent event) {
 		Lists.BLOCKFACE.remove(event.getPlayer());
 		Power.HASPOWER.remove(event.getPlayer());
+		Drilling.HASDRILLING.remove(event.getPlayer());
 	}
 
 	/**

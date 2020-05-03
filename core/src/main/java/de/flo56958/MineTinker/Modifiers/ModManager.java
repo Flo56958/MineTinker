@@ -250,6 +250,7 @@ public class ModManager {
 		allMods.add(Berserk.instance());
 		allMods.add(Channeling.instance());
 		allMods.add(Directing.instance());
+		allMods.add(Drilling.instance());
 		allMods.add(Ender.instance());
 		allMods.add(Evasive.instance());
 		allMods.add(Experienced.instance());
