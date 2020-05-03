@@ -12,14 +12,11 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Syntax of /mt removemodifier:
- * 		/mt removemodifier [Modifier]
+ * 		/mt removemodifier [Modifier] {Amount}
  *
  * Legend:
  * 		{ }: not necessary
@@ -39,13 +36,27 @@ public class RemoveModifierCommand implements SubCommand {
 				if (m.getName().equalsIgnoreCase(args[1].replaceAll("_", " "))) {
 					ItemStack tool = player.getInventory().getItemInMainHand();
 
-					if (modManager.isToolViable(tool) || modManager.isArmorViable(tool))
+					if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
+						int toAdd = 0;
+						if (args.length >= 3) {
+							try {
+								int a = Integer.parseInt(args[2]);
+								toAdd = modManager.getModLevel(tool, m) - a;
+							} catch (NumberFormatException ignored) {
+								CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+								return true;
+							}
+						}
 						modManager.removeMod(tool, m);
-					else
+						for (int i = 0; i < toAdd; i++) {
+							if (!modManager.addMod(player, tool, m, true, false, true)) break;
+						}
+					} else
 						CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidItem"));
-					break;
+					return true;
 				}
 			}
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 		}
 		return true;
 	}
@@ -59,6 +70,10 @@ public class RemoveModifierCommand implements SubCommand {
 				for (Modifier mod : ModManager.instance().getAllowedMods()) {
 					if (ModManager.instance().hasMod(item, mod))
 						result.add(mod.getName().replaceAll(" ", "_"));
+				}
+			} else if (args.length == 3) {
+				for (int i = 0; i < 10; i++) {
+					result.add(String.valueOf(i));
 				}
 			}
 		}
@@ -86,11 +101,13 @@ public class RemoveModifierCommand implements SubCommand {
 
 	@Override
 	public @NotNull Map<Integer, List<ArgumentType>> getArgumentsToParse() {
-		return new HashMap<>();
+		Map<Integer, List<ArgumentType>> argumentsToParse = new HashMap<>();
+		argumentsToParse.put(2, Collections.singletonList(ArgumentType.RANDOM_NUMBER));
+		return argumentsToParse;
 	}
 
 	@Override
 	public @NotNull String syntax() {
-		return "/mt removemodifier [Modifier]";
+		return "/mt removemodifier [Modifier] {Amount}";
 	}
 }
