@@ -174,7 +174,7 @@ Modifier:
     TeleportationProhibited: "You can't swap places with this Player!"
   Evasive:
     Name: "Evasive"
-    Description: "Chance to dodge incoming attacks (%chance per Level) - %sneakX when sneaking, %sprintX when sprinting"
+    Description: "Chance to dodge incoming attacks (%chance per Level) - %sneakX when sneaking, %sprintX when sprinting, %pvpX when in PvP"
     ModifierItemName: "Quick Feather"
     DescriptionModifierItem: "Modifier-Item for the Evasive-Modifier"
   Experienced:

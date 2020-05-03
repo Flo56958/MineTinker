@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,8 +27,9 @@ public class Evasive extends Modifier implements Listener {
 	private int cooldownInSeconds;
 	private double sneakMultiplier;
 	private double sprintMultiplier;
+	private double pvpMultiplier;
 
-	private HashMap<String, Long> cooldownTracker = new HashMap<>();
+	private final HashMap<String, Long> cooldownTracker = new HashMap<>();
 
 	private Evasive() {
 		super(Main.getPlugin());
@@ -62,13 +64,14 @@ public class Evasive extends Modifier implements Listener {
 		config.addDefault("Allowed", true);
 		config.addDefault("Name", "Evasive");
 		config.addDefault("ModifierItemName", "Quick Feather");
-		config.addDefault("Description", "Chance to dodge incoming attacks (%chance per Level) - %sneakX when sneaking, %sprintX when sprinting");
+		config.addDefault("Description", "Chance to dodge incoming attacks (%chance per Level) - %sneakX when sneaking, %sprintX when sprinting, %pvpX when in PvP");
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Evasive-Modifier");
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("PercentPerLevel", 5);
 		config.addDefault("SneakMultiplier", 0.5);
 		config.addDefault("SprintMultiplier", 2.0);
+		config.addDefault("PvPMultiplier", 1.0);
 		config.addDefault("CooldownInSeconds", 5);
 		config.addDefault("Sound", true);
 		config.addDefault("OverrideLanguagesystem", false);
@@ -96,10 +99,12 @@ public class Evasive extends Modifier implements Listener {
 		this.sneakMultiplier = config.getDouble("SneakMultiplier", 0.5);
 		this.sprintMultiplier = config.getDouble("SprintMultiplier", 2.0);
 		this.cooldownInSeconds = config.getInt("CooldownInSeconds", 5);
+		this.pvpMultiplier = config.getDouble("PvPMultiplier", 1.0);
 
 		this.description = this.description.replaceAll("%chance", String.valueOf(this.percentPerLevel))
 				.replaceAll("%sneak", String.valueOf(this.sneakMultiplier))
-				.replaceAll("%sprint", String.valueOf(this.sprintMultiplier));
+				.replaceAll("%sprint", String.valueOf(this.sprintMultiplier))
+				.replaceAll("%pvp", String.valueOf(this.pvpMultiplier));
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
@@ -141,6 +146,13 @@ public class Evasive extends Modifier implements Listener {
 			chance *= this.sneakMultiplier;
 		if (player.isSprinting())
 			chance *= this.sprintMultiplier;
+		if (event.getEvent().getDamager() instanceof Player)
+			chance *= this.pvpMultiplier;
+		else if (event.getEvent().getDamager() instanceof Arrow) {
+			if (((Arrow) event.getEvent().getDamager()).getShooter() instanceof Player) {
+				chance *= this.pvpMultiplier;
+			}
+		}
 
 		if (rand.nextInt(100) > chance) return;
 
