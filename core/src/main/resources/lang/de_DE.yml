@@ -1,4 +1,7 @@
 Alert.OnItemBreak: "%RED%Scheint so, als ob dein Werkzeug zerstört wurde! Es wurde dir mit einer Haltbarkeit zurückgegeben."
+Alert.OnItemGrind: "%RED%Du kannst keinen Schleifstein für MineTinker-Items benutzen!"
+Alert.ToolUpgradeFailure: "%RED%Verbesserung ist fehlgeschlagen!"
+Alert.InternalError: "%RED%Ein interner Fehler ist aufgetreten!"
 
 StartUp.Commands: "Befehle registriert!"
 StartUp.BuildersWands: "Baumeisterstäbe registriert!"
@@ -54,6 +57,7 @@ Commands.Failure.Cause.PlayerOnlyCommand: "Der Befehl ist nur für Spieler!"
 Commands.Failure.Cause.UnknownCommand: "Unbekannter Befehl!"
 Commands.Failure.Cause.NoPermission: "Keine Rechte!"
 Commands.Failure.Cause.InvalidItem: "Ungültiges Item!"
+Commands.Failure.Cause.NameNotAllowed: "Dieser Name ist nicht erlaubt!"
 
 GUI.ButtonAction.REQUEST_INPUT: "Deine Eingabe für %data wird benötigt. Die nächste Chatnachricht, die du sendest, wird von MineTinker abgefangen und als deine Eingabe gewertet."
 
@@ -97,6 +101,7 @@ GUIs.ConfigurationEditor.config.logging.metrics: "bStats-Metrics für anonyme St
 
 ModManager.RegisterModifier: "%GREEN%Die Modifikation %mod %GREEN%von %plugin wurde erfolgreich registriert."
 ModManager.UnregisterModifier: "%GREEN%Die Modifikation %mod %GREEN%von %plugin wurde erfolgreich deregistriert."
+ModManager.IncompatibilityWrongSyntax: "Es wurde ein falscher Syntax oder falscher Modifizierungsname in den nicht kompatiblen Modifizierungseinstellungen gefunden in Zeile '%line'."
 
 ModifierFailCause.IncompatibleModifiers: "Inkompatible Modifikationen!"
 ModifierFailCause.InvalidToolType: "Ungültiger Werkzeug-Typ!"
@@ -104,6 +109,11 @@ ModifierFailCause.MaximumSlotsReached: "Die maximale Anzahl an Plätzen für Mod
 ModifierFailCause.ModMaxLevel: "Die Modifikation ist bereits auf dem höchsten Level!"
 ModifierFailCause.NoFreeSlots: "Das Item hat keine freien Modifikationsplätze!"
 ModifierFailCause.NoPermission: "Keine Berechtigung!"
+ModifierFailCause.PlayerFailure: "Spieler hat versagt beim Modifizieren!"
+
+GrindStone.PossibleSlotsAfterGrind: "Mögliche freie Modifizierungsplätze nach dem Schleifen: %amount"
+
+ActionBar.ExpGain: "%amount Exp hinzugewonnen!"
 
 LanguageManager.LoadedLanguage: "Sprachmanager hat Sprache %lang erfolgreich geladen!"
 
@@ -153,7 +163,7 @@ Modifier:
     DescriptionModifierItem: "Modifizierungs-Item für die Kanalisierend-Modifizierung"
   Directing:
     Name: "Direkt"
-    Description: "Beute von getöteten Gegnern geht direkt in dein Inventar!"
+    Description: "Drops von getöteten Mobs oder zerstörten Blöcken wird automatisch dem Inventar hinzugefügt."
     ModifierItemName: "Verbesserter Kompass"
     DescriptionModifierItem: "Modifizierungs-Item für die Direkt-Modifikation"
   Ender:
@@ -161,6 +171,12 @@ Modifier:
     Description: "Teleportiert dich, wenn du schleichst, zum Einschlagsort des Pfeils!"
     ModifierItemName: "Besonderes Enderauge"
     DescriptionModifierItem: "Modifizierungs-Item für die Ender-Modifizierung"
+    TeleportationProhibited: "Du kannst keine Plätze mit diesem Spieler tauschen!"
+  Evasive:
+    Name: "Ausweichend"
+    Description: "Wahrscheinlichkeit einem Angriff auszuweichen (%chance pro Level) - %sneakX wenn schleichend, %sprintX wenn sprintend"
+    ModifierItemName: "Schnelle Feder"
+    DescriptionModifierItem: "Modifizierungs-Item für die Ausweichend-Modifikation"
   Experienced:
     Name: "Erfahrend"
     Description: "Das Werkzeug hat die %chance% Wahrscheinlichkeit pro Level, um bei Benutzung %amount XP fallen zu lassen!"
