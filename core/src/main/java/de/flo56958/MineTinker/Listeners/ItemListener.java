@@ -18,8 +18,11 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CrossbowMeta;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
 
 public class ItemListener implements Listener {
 
@@ -162,8 +165,13 @@ public class ItemListener implements Listener {
 
 		if (meta instanceof Damageable) {
 			((Damageable) meta).setDamage(item.getType().getMaxDurability() - 1);
-			item.setItemMeta(meta);
 		}
+
+		if (meta instanceof CrossbowMeta) { //TODO: Crossbow will still shoot arrow
+			((CrossbowMeta) meta).setChargedProjectiles(new ArrayList<>());
+		}
+
+		item.setItemMeta(meta);
 
 		if (player.getInventory().addItem(item).size() != 0) { //adds items to (full) inventory
 			if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
