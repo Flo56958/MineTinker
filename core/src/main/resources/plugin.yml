@@ -179,6 +179,7 @@ permissions:
       minetinker.modifiers.channeling.*: true
       minetinker.modifiers.directing.*: true
       minetinker.modifiers.ender.*: true
+      minetinker.modifiers.evasive.*: true
       minetinker.modifiers.experienced.*: true
       minetinker.modifiers.extramodifier.*: true
       minetinker.modifiers.fiery.*: true
@@ -321,6 +322,17 @@ permissions:
   minetinker.modifiers.ender.prohibittp:
     description: Having this Permission saves the Player from getting swapped with other Players using Ender
     default: false
+
+  minetinker.modifiers.evasive.*:
+    children:
+      minetinker.modifiers.evasive.apply: true
+      minetinker.modifiers.evasive.use: true
+  minetinker.modifiers.evasive.apply:
+    description: Allows to apply Evasive to a MineTinker-Armor
+    default: true
+  minetinker.modifiers.evasive.use:
+    description: Allows to use Evasive on a MineTinker-Armor
+    default: true
 
   minetinker.modifiers.extramodifier.*:
     children:
@@ -558,7 +570,6 @@ permissions:
   minetinker.modifiers.protecting.apply:
     description: Allows to apply Protecting to MineTinker-Armor
     default: true
-
 
   minetinker.modifiers.reinforced.*:
     children:

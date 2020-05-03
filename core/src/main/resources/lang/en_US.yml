@@ -172,6 +172,11 @@ Modifier:
     ModifierItemName: "Special Endereye"
     DescriptionModifierItem: "Modifier-Item for the Ender-Modifier"
     TeleportationProhibited: "You can't swap places with this Player!"
+  Evasive:
+    Name: "Evasive"
+    Description: "Chance to dodge incoming attacks (%chance per Level) - %sneakX when sneaking, %sprintX when sprinting"
+    ModifierItemName: "Quick Feather"
+    DescriptionModifierItem: "Modifier-Item for the Evasive-Modifier"
   Experienced:
     Name: "Experienced"
     Description: "Tool has the %chance% chance per level to drop %amount XP while using it!"

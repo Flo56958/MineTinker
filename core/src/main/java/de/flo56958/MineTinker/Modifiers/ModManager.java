@@ -251,6 +251,7 @@ public class ModManager {
 		allMods.add(Channeling.instance());
 		allMods.add(Directing.instance());
 		allMods.add(Ender.instance());
+		allMods.add(Evasive.instance());
 		allMods.add(Experienced.instance());
 		allMods.add(ExtraModifier.instance());
 		allMods.add(Fiery.instance());

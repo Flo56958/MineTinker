@@ -95,20 +95,11 @@ public class EntityListener implements Listener {
 			return;
 		}
 
-		FileConfiguration config = Main.getPlugin().getConfig();
+		Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(player, tool, event.getEntity(), event));
 
-		int amount = config.getInt("ExpPerEntityHit");
-
-		MTEntityDamageByEntityEvent damageByEntityEvent = new MTEntityDamageByEntityEvent(player, tool, event.getEntity(), event);
-		Bukkit.getPluginManager().callEvent(damageByEntityEvent);
-
-		if (config.getBoolean("EnableDamageExp")) {
-			//at bottom because of Melting
-			amount = (int) event.getDamage();
-		}
-
-		amount += config.getInt("ExtraExpPerEntityHit." + event.getEntity().getType().toString()); //adds 0 if not in found in config (negative values are also fine)
-		modManager.addExp(player, tool, amount);
+		modManager.addExp(player, tool,
+				Main.getPlugin().getConfig().getInt("ExtraExpPerEntityHit."
+						+ event.getEntity().getType().toString(), 0));
 	}
 
 	@EventHandler
@@ -190,7 +181,8 @@ public class EntityListener implements Listener {
 		MTEntityDeathEvent deathEvent = new MTEntityDeathEvent(player, tool, event);
 		Bukkit.getPluginManager().callEvent(deathEvent);
 
-		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExtraExpPerEntityDeath." + event.getEntity().getType().toString())); //adds 0 if not in found in config (negative values are also fine)
+		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExtraExpPerEntityDeath."
+				+ event.getEntity().getType().toString(), 0));
 	}
 
 	@EventHandler

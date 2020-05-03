@@ -93,17 +93,34 @@ public class ArmorListener implements Listener {
 			} else {
 				Bukkit.getPluginManager().callEvent(new MTEntityDamageEvent(player, piece, event));
 			}
-
-			FileConfiguration config = Main.getPlugin().getConfig();
-
-			int amount = config.getInt("ExpPerEntityHit") / 2;
-
-			if (config.getBoolean("EnableDamageExp")) {
-				amount = (int) event.getDamage() / 2;
-			}
-
-			modManager.addExp(player, piece, amount);
 		}
+	}
+
+	//Handle exp calculation for both armor and weapons
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void expCalculation(MTEntityDamageEvent event) {
+		FileConfiguration config = Main.getPlugin().getConfig();
+
+		int amount = config.getInt("ExpPerEntityHit") / 2;
+
+		if (config.getBoolean("EnableDamageExp")) {
+			amount = (int) event.getEvent().getDamage() / 2;
+		}
+
+		modManager.addExp(event.getPlayer(), event.getTool(), amount);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void expCalculation(MTEntityDamageByEntityEvent event) {
+		FileConfiguration config = Main.getPlugin().getConfig();
+
+		int amount = config.getInt("ExpPerEntityHit") / 2;
+
+		if (config.getBoolean("EnableDamageExp")) {
+			amount = (int) event.getEvent().getDamage() / 2;
+		}
+
+		modManager.addExp(event.getPlayer(), event.getTool(), amount);
 	}
 
 	@EventHandler(ignoreCancelled = true)
