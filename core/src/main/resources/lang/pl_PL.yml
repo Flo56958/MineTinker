@@ -1,4 +1,7 @@
 Alert.OnItemBreak: "%RED%Wygląda na to że twoje narzędzie się zepsuło! Oddawanie narzędzia z 1 wytrzymałością."
+Alert.OnItemGrind: "%RED%Nie możesz używać kamienia szlifierskiego dla przedmiotów MineTinker'a."
+Alert.ToolUpgradeFailure: "%RED%Ulepszenie nie powiodło się!"
+Alert.InternalError: "%RED%Wystąpił błąd wewnętrzny!"
 
 StartUp.Commands: "Zarejestrowano polecenia!"
 StartUp.BuildersWands: "Włączono Różdżki Budowniczego!"
@@ -67,7 +70,7 @@ GUIs.BackOtherMenu: "Powrót do innego menu"
 GUIs.Modifiers.Title: "Modyfikatory MineTinker, %pageNo"
 GUIs.Modifiers.MaxLevel: "Maksymalny poziom: %maxLevel"
 GUIs.Modifiers.WorksOn: "Działa na:"
-GUIs.Modifiers.CanApply: "Można zastosować:"
+GUIs.Modifiers.CanApply: "Działa jak:"
 GUIs.Modifiers.IncompatibleWith: "Niekompatybilne z:"
 GUIs.Modifiers.EnchantCost: "Koszt zaklinania: %WHITE%%enchantCost"
 GUIs.Modifiers.ClickToRecipe: "%key aby pokazać przepis rzemieślniczy."
@@ -98,6 +101,7 @@ GUIs.ConfigurationEditor.config.logging.metrics: "bStats-Metrics dla anonimowych
 
 ModManager.RegisterModifier: "%GREEN%Zarejestrowano %mod %GREEN%modyfikator od %plugin."
 ModManager.UnregisterModifier: "%GREEN%Niezarejestrowano %mod %GREEN%modyfikator od %plugin."
+ModManager.IncompatibilityWrongSyntax: "Zła składnia wiersza lub niepoprawna nazwa modyfikatora znaleziona w niezgodności modyfikatora w wierszu '%line'."
 
 ModifierFailCause.IncompatibleModifiers: "Niezgodne modyfikatory!"
 ModifierFailCause.InvalidToolType: "Nieprawidłowy typ narzędzia!"
@@ -105,6 +109,11 @@ ModifierFailCause.MaximumSlotsReached: "Osiągnięto maksymalną liczbę miejsc!
 ModifierFailCause.ModMaxLevel: "Modyfikator ma już maksymalny poziom!"
 ModifierFailCause.NoFreeSlots: "Brak wolnych miejsc na przedmiot!"
 ModifierFailCause.NoPermission: "Brak pozwolenia!"
+ModifierFailCause.PlayerFailure: "Graczowi nie powiodło się zastosowanie modyfikacji!"
+
+GrindStone.PossibleSlotsAfterGrind: "Możliwe wolne sloty po użyciu kamienia szlifierskiego: %amount"
+
+ActionBar.ExpGain: "Zdobyto %amount exp'a!"
 
 LanguageManager.LoadedLanguage: "LanguageManager pomyślnie załadował %lang!"
 
@@ -129,7 +138,7 @@ Modifier:
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Opancerzenie Przeciwwybuchowe\""
   Aquaphilic:
     Name: "Aquaphil"
-    Description: "Pływaj szybciej, nurkuj dłużej i wydajniej pływaj pod wodą"
+    Description: "Pływaj i niszcz bloki pod wodą szybciej oraz nurkuj dłużej."
     ModifierItemName: "Perła oceanu"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Aquaphil\""
   Auto-Smelt:
@@ -148,13 +157,13 @@ Modifier:
     ModifierItemName: "Krwawy Redstone"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Berserk\""
   Channeling:
-    Name: "Porażenie"
+    Name: "Wyładowanie"
     Description: "Przywołuje błyskawicę, gdy trójząb uderza we wrogów!"
     ModifierItemName: "Odłamek Błyskawicy"
-    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Porażenie\""
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Wyładowanie\""
   Directing:
     Name: "W Zasięgu Ręki"
-    Description: "Łup z zabitych mobów trafia bezpośrednio do twojego ekwipunku!"
+    Description: "Łup z zabitych mobów lub zniszczonych bloków trafia bezpośrednio do ekwipunku!"
     ModifierItemName: "Ulepszony Kompas"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"W Zasięgu Ręki\""
   Ender:
@@ -162,6 +171,12 @@ Modifier:
     Description: "Teleportuje cię podczas skradania się do miejsca lądowania strzał!"
     ModifierItemName: "Specjalne Oko Endera"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Ender\""
+    TeleportationProhibited: "Nie możesz zamieniać się miejscami z tym graczem!"
+  Evasive:
+    Name: "Unik"
+    Description: "Szansa na uniknięcie nadchodzących ataków (%chance na poziom) - %sneakX podczas skradania się, %sprintX podczas sprintu"
+    ModifierItemName: "Szybkie Pióro"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Unik\""
   Experienced:
     Name: "Doświadczenie"
     Description: "Narzędzie ma %chance% szans na poziom, aby wydropić %amount XP podczas używania!"
@@ -169,15 +184,15 @@ Modifier:
     Name: "Extra-Modyfikator"
     Description: "Dodaje %amount dodatkowe sloty modyfikatora do narzędzia!"
   Fiery:
-    Name: "Ognistość"
-    Description: "Jeden modyfikator, aby spalić ich wszystkich!"
-    ModifierItemName: "Zaklęty Blaze-Rod"
-    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Ognistość\""
+    Name: "Ogień"
+    Description: "Jeden modyfikator, by wszystkich spalić! Jeden, by wszystkich w popiół zamienić!"
+    ModifierItemName: "Zaklęta Płomienna Różdżka"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Ogień\""
   Freezing:
-    Name: "Zamrażanie"
+    Name: "Zamrożenie"
     Description: "Zamroź wodę wokół siebie!"
-    ModifierItemName: "Lodowaty Kryształ"
-    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Zamrażanie\""
+    ModifierItemName: "Lodowy Kryształ"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Zamrożenie\""
   Glowing:
     Name: "Blask"
     Description: "Rozjaśnij wrogów!"
@@ -189,10 +204,10 @@ Modifier:
     ModifierItemName: "Skompresowany Blok Redstone'a"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Pośpiech\""
   Infinity:
-    Name: "Nieskończoność"
-    Description: "Potrzebujesz tylko jednej strzały, aby wystrzelić z łuku, a trójząb wróci do ciebie!"
+    Name: "Bezgraniczność"
+    Description: "Potrzebujesz tylko jednej strzały, aby wystrzelić z łuku/kuszy! Również twój trójząb wróci do ciebie!"
     ModifierItemName: "Zaklęta Strzała"
-    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Nieskończoność\""
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Bezgraniczność\""
   Insulating:
     Name: "Izolacja"
     Description: "Pancerz zmniejsza obrażenia od gorąca!"
@@ -204,13 +219,13 @@ Modifier:
     ModifierItemName: "Płyta Kinetyczna"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Poszycie Kinetyczne\""
   Knockback:
-    Name: "Odrzut"
+    Name: "Odrzucenie"
     Description: "Odeprzyj wrogów dalej z każdym uderzeniem!"
     ModifierItemName: "Zaklęte TNT"
-    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Odrzut\""
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Odrzucenie\""
   Lifesteal:
     Name: "Kradzież Życia"
-    Description: "Leczy %amount% zadanych obrażeń. %chance% szans do wywołania efektu."
+    Description: "Leczy cię o %amount% zadanych obrażeń. %chance% szans do wywołania efektu."
     ModifierItemName: "Netherrack Z Krwią"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Kradzież Życia\""
   Light-Weight:
@@ -224,10 +239,10 @@ Modifier:
     ModifierItemName: "Skompresowany Blok Lapisu"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Szczęście\""
   Magical:
-    Name: "Magia"
-    Description: "Wystrzel magiczną kulę, na którą nie ma wpływu grawitacja, ale leci %amount% wolniej! Jeśli kula trafi w cel, zadaje od %min% do %max% dodatkowych obrażeń (w zależności od poziomu)! Strzelanie kosztuje %xp XP!"
+    Name: "Pocisk"
+    Description: "Wystrzel magiczny pocisk, na którą nie ma wpływu grawitacja, ale leci do %amount% wolniej! Jeśli pocisk trafi w cel, zadaje od %min% do %max% dodatkowych obrażeń (w zależności od poziomu)! Strzelanie kosztuje %xp XP!"
     ModifierItemName: "Magiczna Strzała"
-    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Magia\""
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Pocisk\""
   Melting:
     Name: "Topienie"
     Description: "%amount% dodatkowych obrażeń przeciwko płonącym wrogom i %amount% mniej obrażeń otrzymanych podczas ognia!"
@@ -240,7 +255,7 @@ Modifier:
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Wielostrzał\""
   Photosynthesis:
     Name: "Fotosynteza"
-    Description: "Napraw swój przedmiot z wytrzymałością %amount na poziom co %ticks tików, gdy stoisz w miejscu, gdzie świeci słońce. Im dłużej stoisz, tym szybciej przedmiot się naprawia. (%multiplier%)"
+    Description: "Napraw swój przedmiot z wytrzymałością %amount na poziom co %ticks Tików, gdy stoisz w miejscu, gdzie świeci słońce. Im dłużej stoisz, tym szybciej przedmiot się naprawia. (%multiplier%)"
     ModifierItemName: "Wyekstrahowany Chlorofil"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Fotosynteza\""
   Piercing:
@@ -254,20 +269,20 @@ Modifier:
     ModifierItemName: "Zaklęte Zgniłe Mięso"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Trutka\""
   Power:
-    Name: "Moc"
+    Name: "Energia"
     Description: "Zniszcz więcej bloków za pomocą swojego narzędzia!"
     ModifierItemName: "Zaklęty Szmaragd"
-    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Moc\""
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Energia\""
   Propelling:
     Name: "Napęd"
-    Description: "Napędź się w powietrzu, skradając się, szybując z elytrą lub stojąc w wodzie z trójzębem!"
+    Description: "Przyśpiesz, skradając się podczas szybowania z elytrą lub rzucając trójzębem podczas stania w wodzie!"
     ModifierItemName: "Zaklęta Gwiazda"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Napęd\""
   Protecting:
-    Name: "Ochrona"
+    Name: "Osłona"
     Description: "Twoja zbroja lepiej chroni cię przed obrażeniami!"
     ModifierItemName: "Wzbogacony Obsydian"
-    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Ochrona\""
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Osłona\""
   Reinforced:
     Name: "Wzmacniacz"
     Description: "Możliwe, że nie zużyjesz wytrzymałości podczas używania narzędzia/zbroi! Sprawia, że narzędzie jest bardziej trwałe!"
@@ -275,29 +290,29 @@ Modifier:
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Wzmacniacz\""
   Self-Repair:
     Name: "Samo-Naprawa"
-    Description: "%chance% szans na poziom do naprawy narzędzia/zbroi o wytrzymałości %amount podczas używania albo zastosowanie zaklęcia \"Naprawa\"!"
+    Description: "%chance% szans na poziom, by naprawić podczas używania lub zastosowania zaklęcia \"Naprawa\" narzędzie/zbroję o wytrzymałości %amount !"
     ModifierItemName: "Zaklęty Zamszony Bruk"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Samo-Naprawa\""
   Sharpness:
-    Name: "Ostrość"
+    Name: "Brzytwa"
     Description: "Broń zadaje wszystkim dodatkowe obrażenia!"
     ModifierItemName: "Skompresowany Blok Kwarcu"
-    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Ostrość\""
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Brzytwa\""
   Shulking:
     Name: "Shulkering"
     Description: "Spraw, by wrogowie lewitowali i byli nieruchomi na %duration tików! Efekt staje się silniejszy z każdym poziomem."
     ModifierItemName: "Ulepszona Skorupa Shulkera"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Shulkering\""
   Silk-Touch:
-    Name: "Jedwabny Dotyk"
-    Description: "Zastosuj Jedwabny Dotyk"
+    Name: "Gładki Dotyk"
+    Description: "Zdobądź blok, który niszczysz!"
     ModifierItemName: "Ulepszona Pajęczyna"
-    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Jedwabny Dotyk\""
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Gładki Dotyk\""
   Smite:
-    Name: "Pogromca Nieumarłych"
+    Name: "Odegnanie Nieumarłych"
     Description: "Twoja broń zadaje dodatkowe obrażenia nieumarłym!"
     ModifierItemName: "Święta Kość"
-    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Pogromca Nieumarłych\""
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Odegnanie Nieumarłych\""
   Soulbound:
     Name: "Związana Dusza"
     Description: "Nie tracisz przedmiotów podczas śmierci."
@@ -305,7 +320,7 @@ Modifier:
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Związana Dusza\""
   Speedy:
     Name: "Przyspieszenie"
-    Description: "Muszę iść szybko! Sprawia, że idziesz i biegasz o %amount% szybciej na poziom!"
+    Description: "Musisz pędzić! Sprawia, że idziesz i biegasz o %amount% szybciej na poziom!"
     ModifierItemName: "Ulepszona Skóra Królika"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Przyspieszenie\""
   Spiders-Bane:
@@ -324,10 +339,10 @@ Modifier:
     ModifierItemName: "Obsydian Z Krwią"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Pancerz\""
   Thorned:
-    Name: "Ciernie"
+    Name: "Cierpienie"
     Description: "Twoja zbroja wyrządza szkodę innym, gdy zadadzą ci obrażenia!"
     ModifierItemName: "Kolczaste Poszycie"
-    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Ciernie\""
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Cierpienie\""
   Timber:
     Name: "Uwaga, drzewo!"
     Description: "Ścinaj drzewa w mgnieniu oka!"
