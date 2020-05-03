@@ -23,8 +23,11 @@ public class Evasive extends Modifier implements Listener {
 
 	private static Evasive instance;
 	private int percentPerLevel;
+	private int cooldownInSeconds;
 	private double sneakMultiplier;
 	private double sprintMultiplier;
+
+	private HashMap<String, Long> cooldownTracker = new HashMap<>();
 
 	private Evasive() {
 		super(Main.getPlugin());
@@ -66,6 +69,7 @@ public class Evasive extends Modifier implements Listener {
 		config.addDefault("PercentPerLevel", 5);
 		config.addDefault("SneakMultiplier", 0.5);
 		config.addDefault("SprintMultiplier", 2.0);
+		config.addDefault("CooldownInSeconds", 5);
 		config.addDefault("Sound", true);
 		config.addDefault("OverrideLanguagesystem", false);
 
@@ -91,6 +95,7 @@ public class Evasive extends Modifier implements Listener {
 		this.percentPerLevel = config.getInt("PercentPerLevel", 5);
 		this.sneakMultiplier = config.getDouble("SneakMultiplier", 0.5);
 		this.sprintMultiplier = config.getDouble("SprintMultiplier", 2.0);
+		this.cooldownInSeconds = config.getInt("CooldownInSeconds", 5);
 
 		this.description = this.description.replaceAll("%chance", String.valueOf(this.percentPerLevel))
 				.replaceAll("%sneak", String.valueOf(this.sneakMultiplier))
@@ -114,20 +119,34 @@ public class Evasive extends Modifier implements Listener {
 			return;
 		}
 
+		//cooldown checker
+		Long time = System.currentTimeMillis();
+		if (this.cooldownInSeconds > 0) {
+			Long cd = cooldownTracker.get(player.getUniqueId().toString());
+			if (cd != null) { //was on cooldown
+				if (time - cd > this.cooldownInSeconds * 1000) {
+					cooldownTracker.remove(player.getUniqueId().toString());
+				} else {
+					return; //still on cooldown
+				}
+			}
+		}
+
+		//calculating chance
 		Random rand = new Random();
 		int level = modManager.getModLevel(tool, this);
 
 		double chance = this.percentPerLevel * level;
-		if (player.isSneaking()) {
+		if (player.isSneaking())
 			chance *= this.sneakMultiplier;
-		}
-		if (player.isSprinting()) {
+		if (player.isSprinting())
 			chance *= this.sprintMultiplier;
-		}
 
-		if (rand.nextInt(100) > chance) {
-			return;
-		}
+		if (rand.nextInt(100) > chance) return;
+
+
+		if (this.cooldownInSeconds > 0)
+			cooldownTracker.put(player.getUniqueId().toString(), time);
 
 		event.setCancelled(true);
 		if (getConfig().getBoolean("Sound", true))
