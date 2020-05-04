@@ -1,10 +1,6 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
-import de.flo56958.MineTinker.Events.MTBlockBreakEvent;
-import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
-import de.flo56958.MineTinker.Events.MTEntityDamageEvent;
-import de.flo56958.MineTinker.Events.MTPlayerInteractEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -16,7 +12,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerShearEntityEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -116,70 +112,17 @@ public class SelfRepair extends Modifier implements Listener {
 	//------------------------------------------------------
 
 	@EventHandler(ignoreCancelled = true)
-	public void effect(MTBlockBreakEvent event) {
-		effect(event.getPlayer(), event.getTool());
-	}
-
-	@EventHandler(ignoreCancelled = true)
-	public void effect(MTEntityDamageByEntityEvent event) {
-
-
-		if (ToolType.BOOTS.contains(event.getTool().getType())
-				|| ToolType.LEGGINGS.contains(event.getTool().getType())
-				|| ToolType.CHESTPLATE.contains(event.getTool().getType())
-				|| ToolType.HELMET.contains(event.getTool().getType())) {
-
-			return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
-		}
-
-		effect(event.getPlayer(), event.getTool());
-	}
-
-	@EventHandler(ignoreCancelled = true)
-	public void effect(MTEntityDamageEvent event) {
-
-
-		effect(event.getPlayer(), event.getTool());
-	}
-
-	@EventHandler(ignoreCancelled = true)
-	public void effect(MTPlayerInteractEvent event) {
-
-
-		effect(event.getPlayer(), event.getTool());
-	}
-
-	@EventHandler(ignoreCancelled = true)
-	public void onShear(PlayerShearEntityEvent event) {
-		ItemStack tool = event.getPlayer().getInventory().getItemInMainHand();
-
-		if (!(modManager.isToolViable(tool) && ToolType.SHEARS.contains(tool.getType()))) {
-			return;
-		}
-
-		effect(event.getPlayer(), tool);
-	}
-
-	public void effectElytra(Player player, ItemStack elytra) {
-		if (!this.isAllowed()) {
-			return;
-		}
-
-		effect(player, elytra);
-	}
-
-	/**
-	 * The Effect that is used if Mending is disabled
-	 *
-	 * @param player    the Player
-	 * @param tool the Tool
-	 */
-	private void effect(Player player, ItemStack tool) {
+	public void effect(PlayerItemDamageEvent event) {
 		if (useMending) {
 			return;
 		}
 
-		if (!player.hasPermission("minetinker.modifiers.selfrepair.use")) {
+		ItemStack tool = event.getItem();
+		if (!modManager.isToolViable(tool) && !modManager.isArmorViable(tool)) {
+			return;
+		}
+
+		if (!event.getPlayer().hasPermission("minetinker.modifiers.selfrepair.use")) {
 			return;
 		}
 
@@ -204,7 +147,7 @@ public class SelfRepair extends Modifier implements Listener {
 
 				tool.setItemMeta((ItemMeta) damageable);
 
-				ChatWriter.log(false, player.getDisplayName() + " triggered Self-Repair on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+				ChatWriter.log(false, event.getPlayer().getDisplayName() + " triggered Self-Repair on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 			}
 		}
 	}
