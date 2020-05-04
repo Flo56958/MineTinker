@@ -37,6 +37,7 @@ public class Power extends Modifier implements Listener {
 	public static final ConcurrentHashMap<Player, AtomicBoolean> HASPOWER = new ConcurrentHashMap<>();
 	private static Power instance;
 	private ArrayList<Material> blacklist;
+	private boolean treatAsWhitelist;
 	private boolean lv1_vertical;
 	private boolean toggleable;
 
@@ -118,6 +119,7 @@ public class Power extends Modifier implements Listener {
 		blacklistTemp.add(Material.NETHER_PORTAL.name());
 
 		config.addDefault("Blacklist", blacklistTemp);
+		config.addDefault("TreatAsWhitelist", false);
 
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
@@ -126,6 +128,7 @@ public class Power extends Modifier implements Listener {
 
 		this.lv1_vertical = config.getBoolean("Lv1Vertical", false);
 		this.toggleable = config.getBoolean("Toggleable", true);
+		this.treatAsWhitelist = config.getBoolean("TreatAsWhitelist", false);
 
 		blacklist = new ArrayList<>();
 
@@ -278,7 +281,7 @@ public class Power extends Modifier implements Listener {
 	/**
 	 * Effect for the PlayerInteractEvent for the Hoe
 	 */
-	@EventHandler (ignoreCancelled = true)
+	@EventHandler(ignoreCancelled = true)
 	public void effect(MTPlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
@@ -352,7 +355,7 @@ public class Power extends Modifier implements Listener {
 	}
 
 	private void powerBlockBreak(Block block, Block centralBlock, Player player) {
-		if (blacklist.contains(block.getType())) {
+		if (treatAsWhitelist ^ blacklist.contains(block.getType())) {
 			return;
 		}
 

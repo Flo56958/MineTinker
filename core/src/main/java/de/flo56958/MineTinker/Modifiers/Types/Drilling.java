@@ -28,6 +28,7 @@ public class Drilling extends Modifier implements Listener {
 	public static final ConcurrentHashMap<Player, AtomicBoolean> HASDRILLING = new ConcurrentHashMap<>();
 	private static Drilling instance;
 	private ArrayList<Material> blacklist;
+	private boolean treatAsWhitelist;
 	private boolean toggleable;
 
 	private Drilling() {
@@ -98,6 +99,7 @@ public class Drilling extends Modifier implements Listener {
 		blacklistTemp.add(Material.NETHER_PORTAL.name());
 
 		config.addDefault("Blacklist", blacklistTemp);
+		config.addDefault("TreatAsWhitelist", false);
 
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
@@ -105,6 +107,7 @@ public class Drilling extends Modifier implements Listener {
 		init(Material.HOPPER, true);
 
 		this.toggleable = config.getBoolean("Toggleable", true);
+		this.treatAsWhitelist = config.getBoolean("TreatAsWhitelist", false);
 
 		blacklist = new ArrayList<>();
 
@@ -177,7 +180,7 @@ public class Drilling extends Modifier implements Listener {
 	}
 
 	private boolean drillingBlockBreak(Block block, Block centralBlock, Player player) {
-		if (blacklist.contains(block.getType())) {
+		if (treatAsWhitelist ^ blacklist.contains(block.getType())) {
 			return false;
 		}
 
