@@ -164,6 +164,7 @@ public class ModManager {
 		incompatibilityList.add(Infinity.instance().getKey() + ":" + Propelling.instance().getKey());
 		incompatibilityList.add(MultiShot.instance().getKey() + ":" + Piercing.instance().getKey());
 		incompatibilityList.add(Power.instance().getKey() + ":" + Timber.instance().getKey());
+		incompatibilityList.add(Drilling.instance().getKey() + ":" + Timber.instance().getKey());
 		incompatibilityList.add(SelfRepair.instance().getKey() + ":" + Photosynthesis.instance().getKey());
 		incompatibilityList.add(MultiShot.instance().getKey() + ":" + Magical.instance().getKey());
 		incompatibilityList.add(Magical.instance().getKey() + ":" + Ender.instance().getKey());

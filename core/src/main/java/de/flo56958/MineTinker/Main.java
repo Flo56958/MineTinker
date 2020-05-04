@@ -5,6 +5,7 @@ import de.flo56958.MineTinker.Data.GUIs;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Listeners.*;
 import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Modifiers.Types.Drilling;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
@@ -120,6 +121,7 @@ public class Main extends JavaPlugin {
 
 		for (Player current : Bukkit.getServer().getOnlinePlayers()) {
 			Power.HASPOWER.computeIfAbsent(current, player -> new AtomicBoolean(false));
+			Drilling.HASDRILLING.computeIfAbsent(current, player -> new AtomicBoolean(false));
 			Lists.BLOCKFACE.put(current, null);
 		}
 

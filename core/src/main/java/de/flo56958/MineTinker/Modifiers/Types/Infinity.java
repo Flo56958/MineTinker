@@ -66,7 +66,7 @@ public class Infinity extends Modifier implements Listener {
 		config.addDefault("Description", "You only need one Arrow to shoot a bow and the Trident comes back!");
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Infinity-Modifier");
 		config.addDefault("MaxLevel", 3); //higher values than 1 have no effect on Infinity
-		config.addDefault("SlotCost", 1);
+		config.addDefault("SlotCost", 2);
 		config.addDefault("Color", "%WHITE%");
 
 		config.addDefault("EnchantCost", 15);

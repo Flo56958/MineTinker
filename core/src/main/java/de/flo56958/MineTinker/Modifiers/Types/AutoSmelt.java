@@ -230,8 +230,14 @@ public class AutoSmelt extends Modifier implements Listener {
 			//Times amount is for clay as it drops 4 per block
 		}
 
-		if (loot != Material.AIR && amount > 0) {
-			ItemStack items = new ItemStack(loot, amount);
+		if (loot == Material.AIR || amount <= 0) return;
+		ItemStack items = new ItemStack(loot, amount);
+
+		if (modManager.hasMod(tool, Directing.instance())) {
+			if (player.getInventory().addItem(items).size() != 0) { //adds items to (full) inventory
+				player.getWorld().dropItem(player.getLocation(), items);
+			} // no else as it gets added in if-clause
+		} else {
 			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), items);
 		}
 

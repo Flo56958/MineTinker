@@ -116,7 +116,9 @@ public class Directing extends Modifier implements Listener {
 
 			if (!refusedItems.isEmpty()) {
 				for (ItemStack itemStack : refusedItems.values()) {
-					player.getWorld().dropItem(player.getLocation(), itemStack);
+					if (player.getInventory().addItem(itemStack).size() != 0) { //adds items to (full) inventory
+						player.getWorld().dropItem(player.getLocation(), itemStack);
+					} // no else as it gets added in if-clause
 				}
 			}
 

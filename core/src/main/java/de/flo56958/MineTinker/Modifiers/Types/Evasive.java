@@ -68,11 +68,11 @@ public class Evasive extends Modifier implements Listener {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Evasive-Modifier");
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 5);
-		config.addDefault("SlotCost", 1);
-		config.addDefault("PercentPerLevel", 5);
+		config.addDefault("SlotCost", 3);
+		config.addDefault("PercentPerLevel", 10);
 		config.addDefault("SneakMultiplier", 0.5);
 		config.addDefault("SprintMultiplier", 2.0);
-		config.addDefault("PvPMultiplier", 1.0);
+		config.addDefault("PvPMultiplier", 0.5);
 		config.addDefault("CooldownInSeconds", 5);
 		config.addDefault("Sound", true);
 		config.addDefault("OverrideLanguagesystem", false);

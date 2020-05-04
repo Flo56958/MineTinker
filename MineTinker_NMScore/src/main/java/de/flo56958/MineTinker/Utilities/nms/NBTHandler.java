@@ -23,7 +23,7 @@ public abstract class NBTHandler {
     public abstract boolean hasTag(ItemStack item, String key);
     public abstract void removeTag(ItemStack item, String key);
 
-    public abstract void playerBreakBlock(Player player, Block block);
+    public abstract boolean playerBreakBlock(Player player, Block block);
 
     public abstract Iterator<Recipe> getRecipeIterator();
 

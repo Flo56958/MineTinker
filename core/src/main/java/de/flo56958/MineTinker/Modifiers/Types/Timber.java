@@ -62,7 +62,7 @@ public class Timber extends Modifier implements Listener {
 		config.addDefault("Description", "Chop down trees in an instant!");
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Timber-Modifier");
 		config.addDefault("MaxLevel", 1);
-		config.addDefault("SlotCost", 1);
+		config.addDefault("SlotCost", 2);
 		config.addDefault("Color", "%GREEN%");
 		config.addDefault("MaximumBlocksPerSwing", 2000); //-1 to disable it
 		config.addDefault("OverrideLanguagesystem", false);

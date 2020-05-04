@@ -72,7 +72,7 @@ public class Ender extends Modifier implements Listener {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Ender-Modifier");
 		config.addDefault("Color", "%DARK_GREEN%");
 		config.addDefault("MaxLevel", 2);
-		config.addDefault("SlotCost", 1);
+		config.addDefault("SlotCost", 2);
 		config.addDefault("Sound", true); //#Enderman-Teleport-Sound
 		config.addDefault("Particles", true);
 		config.addDefault("GiveNauseaOnUse", true);

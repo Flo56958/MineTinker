@@ -68,7 +68,7 @@ public class Soulbound extends Modifier implements Listener {
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Soulbound-Modifier");
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 1);
-		config.addDefault("SlotCost", 1);
+		config.addDefault("SlotCost", 2);
 		config.addDefault("PercentagePerLevel", 100);
 		config.addDefault("DecrementModLevelOnUse", false);
 		config.addDefault("ToolDropable", true);
