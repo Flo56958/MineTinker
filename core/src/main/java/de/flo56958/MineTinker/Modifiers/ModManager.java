@@ -259,6 +259,7 @@ public class ModManager {
 		allMods.add(Fiery.instance());
 		allMods.add(Freezing.instance());
 		allMods.add(Glowing.instance());
+		allMods.add(Hardened.instance());
 		allMods.add(Haste.instance());
 		allMods.add(Infinity.instance());
 		allMods.add(KineticPlating.instance());
@@ -780,7 +781,7 @@ public class ModManager {
 				for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : meta.getAttributeModifiers().asMap().entrySet()) {
 					Modifier modifier = getModifierFromAttribute(entry.getKey());
 
-					if (modifier == null) {
+					if (modifier == null || modifier == Hardened.instance()) {
 						continue;
 					}
 
@@ -879,6 +880,8 @@ public class ModManager {
 			}
 
 			is.setItemMeta(meta);
+
+			Hardened.instance().reapplyAttributes(is);
 		}
 	}
 

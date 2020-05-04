@@ -204,6 +204,11 @@ Modifier:
     Description: "Make enemies glow!"
     ModifierItemName: "Ender-Glowstone"
     DescriptionModifierItem: "Modifier-Item for the Glowing-Modifier"
+  Hardened:
+    Name: "Hardened"
+    Description: "Harden your armor by %aamount and toughness by %tamount points per level!"
+    ModifierItemName: "Diamond refined Iron"
+    DescriptionModifierItem: "Modifier-Item for the Hardened-Modifier"
   Haste:
     Name: "Haste"
     Description: "Destroy blocks and shoot crossbows faster!"
