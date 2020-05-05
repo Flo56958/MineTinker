@@ -148,10 +148,10 @@ Modifier:
     ModifierItemName: "Ulepszony Piec"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Auto-Wytapianie\""
   Beheading:
-    Name: "Ścinanie Głowy"
+    Name: "Kat"
     Description: "%chance% szans na upuszczenie głowy zabitego moba na poziom."
     ModifierItemName: "Zaklęta Czaszka Wither'a"
-    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Ścinanie Głowy\""
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Kat\""
   Berserk:
     Name: "Berserk"
     Description: "Zdobądź dodatkowe wzmocnienie siły na %duration sekund, gdy twoje zdrowie spadnie poniżej %percent%!"
@@ -204,6 +204,11 @@ Modifier:
     Description: "Rozjaśnij wrogów!"
     ModifierItemName: "Enderowy Jasnogłaz"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Blask\""
+  Hardened:
+    Name: "Umocnienie"
+    Description: "Umocnij swoją zbroję o %aamount, a wytrzymałość o %tamount punktów na poziom!"
+    ModifierItemName: "Żelazo Udoskonalone Diamentem"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Umocnienie\""
   Haste:
     Name: "Pośpiech"
     Description: "Niszcz bloki i strzelaj z kuszy szybciej!"
@@ -251,7 +256,7 @@ Modifier:
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Pocisk\""
   Melting:
     Name: "Topienie"
-    Description: "%amount% dodatkowych obrażeń przeciwko płonącym wrogom i %amount% mniej obrażeń otrzymanych podczas ognia!"
+    Description: "%amount% dodatkowych obrażeń przeciwko płonącym wrogom i %amount% mniej obrażeń otrzymanych od ognia!"
     ModifierItemName: "Zaklęty Blok Magmy"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Topienie\""
   Multishot:
