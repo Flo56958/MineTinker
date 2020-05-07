@@ -795,7 +795,7 @@ public class ModManager {
 	}
 
 	public void addArmorAttributes(ItemStack is) {
-		double armor;
+		double armor = 0.0d;
 		double toughness = 0.0d;
 
 		switch (is.getType()) {
@@ -841,8 +841,6 @@ public class ModManager {
 				armor = 6.0d;
 				toughness = 2.0d;
 				break;
-			default:
-				return;
 		}
 
 		ItemMeta meta = is.getItemMeta();
@@ -863,10 +861,15 @@ public class ModManager {
 			} else if (ToolType.LEGGINGS.contains(is.getType())) {
 				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
 				toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+			} else if (ToolType.ELYTRA.contains(is.getType())) {
+				armorAM = null;
+				toughnessAM = null;
 			} else return;
 
-			meta.removeAttributeModifier(Attribute.GENERIC_ARMOR);
-			meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
+			if (armor > 0.0d) {
+				meta.removeAttributeModifier(Attribute.GENERIC_ARMOR);
+				meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
+			}
 
 			if (toughness > 0.0d) {
 				meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);

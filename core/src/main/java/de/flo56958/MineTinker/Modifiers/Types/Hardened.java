@@ -46,7 +46,7 @@ public class Hardened extends Modifier implements Listener {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS);
+		return Arrays.asList(ToolType.HELMET, ToolType.CHESTPLATE, ToolType.ELYTRA, ToolType.LEGGINGS, ToolType.BOOTS);
 	}
 
 	@Override
@@ -81,7 +81,6 @@ public class Hardened extends Modifier implements Listener {
 			Collection<AttributeModifier> attributeModifiers = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR);
 			double amount = 0;
 			if (!(attributeModifiers == null || attributeModifiers.isEmpty())) {
-
 				for (AttributeModifier attmod : attributeModifiers) {
 					amount += attmod.getAmount();
 				}
@@ -92,20 +91,25 @@ public class Hardened extends Modifier implements Listener {
 				meta.removeAttributeModifier(Attribute.GENERIC_ARMOR);
 				AttributeModifier armorAM = null;
 				if (ToolType.BOOTS.contains(armor.getType())) {
-					armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", amount, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
-				} else if (ToolType.CHESTPLATE.contains(armor.getType())) {
-					armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", amount, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+					armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", amount,
+							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+				} else if (ToolType.CHESTPLATE.contains(armor.getType()) || ToolType.ELYTRA.contains(armor.getType())) {
+					armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", amount,
+							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 				} else if (ToolType.HELMET.contains(armor.getType())) {
-					armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", amount, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+					armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", amount,
+							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
 				} else if (ToolType.LEGGINGS.contains(armor.getType())) {
-					armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", amount, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+					armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", amount,
+							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
 				}
 				meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
 			}
 		}
 
 		{
-			Collection<AttributeModifier> attributeModifiers = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR_TOUGHNESS);
+			Collection<AttributeModifier> attributeModifiers =
+					meta.getAttributeModifiers(Attribute.GENERIC_ARMOR_TOUGHNESS);
 			double amount = 0;
 			if (!(attributeModifiers == null || attributeModifiers.isEmpty())) {
 				for (AttributeModifier attmod : attributeModifiers) {
@@ -117,13 +121,17 @@ public class Hardened extends Modifier implements Listener {
 				meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);
 				AttributeModifier toughnessAM = null;
 				if (ToolType.BOOTS.contains(armor.getType())) {
-					toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", amount, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
-				} else if (ToolType.CHESTPLATE.contains(armor.getType())) {
-					toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", amount, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+					toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", amount,
+							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+				} else if (ToolType.CHESTPLATE.contains(armor.getType()) || ToolType.ELYTRA.contains(armor.getType())) {
+					toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", amount,
+							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 				} else if (ToolType.HELMET.contains(armor.getType())) {
-					toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", amount, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+					toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", amount,
+							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
 				} else if (ToolType.LEGGINGS.contains(armor.getType())) {
-					toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", amount, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+					toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", amount,
+							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
 				}
 				meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
 			}
