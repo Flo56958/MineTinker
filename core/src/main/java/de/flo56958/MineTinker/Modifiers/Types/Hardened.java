@@ -60,6 +60,12 @@ public class Hardened extends Modifier implements Listener {
 		return true;
 	}
 
+	@Override
+	public void removeMod(ItemStack tool) {
+		super.removeMod(tool);
+		modManager.addArmorAttributes(tool);
+	}
+
 	public void reapplyAttributes(ItemStack armor) {
 		if (!modManager.hasMod(armor, this)) {
 			return;

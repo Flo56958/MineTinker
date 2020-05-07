@@ -31,6 +31,7 @@ ResetAtVarOverflow: true              #Resets Level and Exp at Integer.MAX_VALUE
 ExpPerBlockBreak: 1                   #How much XP will the tool get when you break a block
 ExpPerEntityHit: 1                    #How much XP will the tool get when you hit a Entity with Sword / Bow
 ExpPerArrowShot: 1                    #How much XP will the tool get when you shoot with the bow
+DisableExpFromFalldamage: false       #Should Armor get Exp from fall damage
 ExtraExpPerBlock:                     #Extra Exp for block break
   ApplicableToSilkTouch: false        #Fixes Exp exploit with silk touch
   DIAMOND_ORE: 2

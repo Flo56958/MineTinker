@@ -100,10 +100,15 @@ public class ArmorListener implements Listener {
 	public void expCalculation(MTEntityDamageEvent event) {
 		FileConfiguration config = Main.getPlugin().getConfig();
 
-		int amount = config.getInt("ExpPerEntityHit") / 2;
+		int amount = config.getInt("ExpPerEntityHit");
 
 		if (config.getBoolean("EnableDamageExp")) {
 			amount = (int) event.getEvent().getDamage() / 2;
+		}
+
+		if (config.getBoolean("DisableExpFromFalldamage", false)
+				&& event.getEvent().getCause() == EntityDamageEvent.DamageCause.FALL) {
+			return;
 		}
 
 		modManager.addExp(event.getPlayer(), event.getTool(), amount);
@@ -113,10 +118,15 @@ public class ArmorListener implements Listener {
 	public void expCalculation(MTEntityDamageByEntityEvent event) {
 		FileConfiguration config = Main.getPlugin().getConfig();
 
-		int amount = config.getInt("ExpPerEntityHit") / 2;
+		int amount = config.getInt("ExpPerEntityHit");
 
 		if (config.getBoolean("EnableDamageExp")) {
 			amount = (int) event.getEvent().getDamage() / 2;
+		}
+
+		if (config.getBoolean("DisableExpFromFalldamage", false)
+				&& event.getEvent().getCause() == EntityDamageEvent.DamageCause.FALL) {
+			return;
 		}
 
 		modManager.addExp(event.getPlayer(), event.getTool(), amount);
