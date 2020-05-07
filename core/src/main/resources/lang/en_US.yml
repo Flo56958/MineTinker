@@ -2,6 +2,7 @@ Alert.OnItemBreak: "%RED%Looks like your tool broke! Giving it back with 1 durab
 Alert.OnItemGrind: "%RED%You can't use Grindstone for MineTinker's items."
 Alert.ToolUpgradeFailure: "%RED%You have failed upgrading!"
 Alert.InternalError: "%RED%An internal error occurred!"
+Alert.OnCooldown: "%RED%This ability is still on cooldown!"
 
 StartUp.Commands: "Registered commands!"
 StartUp.BuildersWands: "Enabled Builderswands!"

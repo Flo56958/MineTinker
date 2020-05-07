@@ -3,7 +3,9 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import de.flo56958.MineTinker.Utilities.LanguageManager;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -17,10 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Propelling extends Modifier implements Listener {
 
@@ -31,6 +30,9 @@ public class Propelling extends Modifier implements Listener {
 	private boolean particles;
 	private boolean considerReinforced;
 	private boolean useLessDurability;
+
+	private int cooldownInSeconds;
+	private HashMap<String, Long> cooldownTracker = new HashMap<>();
 
 	private Propelling() {
 		super(Main.getPlugin());
@@ -75,6 +77,7 @@ public class Propelling extends Modifier implements Listener {
 		config.addDefault("Color", "%GOLD%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("CooldownInSeconds", 5);
 		config.addDefault("Elytra.DurabilityLoss", 10);
 		config.addDefault("Elytra.SpeedPerLevel", 0.05);
 		config.addDefault("Elytra.Sound", true);
@@ -93,13 +96,14 @@ public class Propelling extends Modifier implements Listener {
 
 		init(Material.FIREWORK_STAR, true);
 
-		durabilityLoss = config.getInt("Elytra.DurabilityLoss", 10);
-		speedPerLevel = config.getDouble("Elytra.SpeedPerLevel", 0.05);
-		considerReinforced = config.getBoolean("ConsiderReinforced", true);
-		useLessDurability = config.getBoolean("ReinforcedUseLessDurability", true);
+		this.durabilityLoss = config.getInt("Elytra.DurabilityLoss", 10);
+		this.speedPerLevel = config.getDouble("Elytra.SpeedPerLevel", 0.05);
+		this.considerReinforced = config.getBoolean("ConsiderReinforced", true);
+		this.useLessDurability = config.getBoolean("ReinforcedUseLessDurability", true);
+		this.cooldownInSeconds = config.getInt("CooldownInSeconds", 5);
 
-		sound = config.getBoolean("Elytra.Sound", true);
-		particles = config.getBoolean("Elytra.Particles", true);
+		this.sound = config.getBoolean("Elytra.Sound", true);
+		this.particles = config.getBoolean("Elytra.Particles", true);
 	}
 
 	@Override
@@ -147,10 +151,23 @@ public class Propelling extends Modifier implements Listener {
 			return;
 		}
 
+		if (cooldownInSeconds > 0) {
+			long time = System.currentTimeMillis();
+			Long playerTime = this.cooldownTracker.get(player.getUniqueId().toString());
+			if (playerTime != null) {
+				if (time - playerTime < this.cooldownInSeconds * 1000) {
+					ChatWriter.sendActionBar(player, LanguageManager.getString("Alert.OnCooldown", player));
+					return;
+				} else {
+					this.cooldownTracker.remove(player.getUniqueId().toString());
+				}
+			}
+		}
+
 		int maxDamage = elytra.getType().getMaxDurability();
 		ItemMeta meta = elytra.getItemMeta();
 
-		if (meta instanceof Damageable && !meta.isUnbreakable() && !meta.isUnbreakable()
+		if (meta instanceof Damageable && !meta.isUnbreakable()
 				&& (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
 			Damageable dam = (Damageable) meta;
 
@@ -187,6 +204,10 @@ public class Propelling extends Modifier implements Listener {
 			loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
 		}
 
-		if (sound) player.playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
+		if (sound) player.getWorld().playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
+
+		if (cooldownInSeconds > 0) {
+			this.cooldownTracker.put(player.getUniqueId().toString(), System.currentTimeMillis());
+		}
 	}
 }
