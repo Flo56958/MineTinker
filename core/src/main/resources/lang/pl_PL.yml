@@ -2,6 +2,7 @@ Alert.OnItemBreak: "%RED%Wygląda na to że twoje narzędzie się zepsuło! Odda
 Alert.OnItemGrind: "%RED%Nie możesz używać kamienia szlifierskiego dla przedmiotów MineTinker'a."
 Alert.ToolUpgradeFailure: "%RED%Ulepszenie nie powiodło się!"
 Alert.InternalError: "%RED%Wystąpił błąd wewnętrzny!"
+Alert.OnCooldown: "%RED%Ta umiejętność wciąż się odnawia!"
 
 StartUp.Commands: "Zarejestrowano polecenia!"
 StartUp.BuildersWands: "Włączono Różdżki Budowniczego!"
