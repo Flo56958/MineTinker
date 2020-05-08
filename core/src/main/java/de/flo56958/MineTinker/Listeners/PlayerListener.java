@@ -205,7 +205,8 @@ public class PlayerListener implements Listener {
 								+ " is not currently supported. If you want MineTinker to support this language you "
 								+ "can help translating on Transifex!");
 			} else {
-				if (!LanguageManager.isComplete()) {
+				if (!LanguageManager.isComplete()
+						&& Main.getPlugin().getConfig().getBoolean("LanguageManagerNotifyOP", true)) {
 					Long langCompleteness = LanguageManager.getCompleteness();
 					ChatWriter.sendMessage(player, ChatColor.RED, "The translation you are using is only "
 							+ langCompleteness / 100 + "." + langCompleteness % 100

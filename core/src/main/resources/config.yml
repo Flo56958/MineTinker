@@ -18,6 +18,7 @@ chat-messages: true                   #Will turn off command output
 actionbar-messages: true
 actionbar-on-exp-gain: false
 BroadcastConfigChanges: true
+LanguageManagerNotifyOP: true         #Should the LanguageManager notify the server operators if the language settings might be wrong or incomplete
 
 #--COMMANDS--
 NameCommandBlacklist:                 #Which words are not allowed in the name of Tools and Armor (Regex-Expressions allowed)
