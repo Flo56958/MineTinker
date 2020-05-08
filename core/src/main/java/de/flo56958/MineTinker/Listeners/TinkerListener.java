@@ -48,7 +48,8 @@ public class TinkerListener implements Listener {
 					LanguageManager.getString("TinkerListener.ToolUpgrade", player)
 							.replace("%tool", ChatWriter.getDisplayName(tool) + ChatColor.WHITE)
 							.replace("%type", tool.getType().toString().split("_")[0]));
-			ChatWriter.log(false, player.getDisplayName() + " upgraded " + ChatWriter.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ") to " + tool.getType().toString() + "!");
+			ChatWriter.log(false, player.getDisplayName() + " upgraded " + ChatWriter.getDisplayName(tool)
+					+ ChatColor.WHITE + " (" + tool.getType().toString() + ") to " + tool.getType().toString() + "!");
 		} else {
 			if (config.getBoolean("Sound.OnUpgrade")) {
 				player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
@@ -72,7 +73,9 @@ public class TinkerListener implements Listener {
 						.replace("%tool", ChatWriter.getDisplayName(tool) + ChatColor.WHITE)
 						.replace("%mod", mod.getColor() + mod.getName() + ChatColor.WHITE)
 						.replace("%slots", "" + event.getSlotsRemaining()));
-		ChatWriter.log(false, player.getDisplayName() + " modded " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") with " + mod.getColor() + mod.getName() + ChatColor.GRAY + " " + modManager.getModLevel(tool, mod) + "!");
+		ChatWriter.log(false, player.getDisplayName() + " modded " + ChatWriter.getDisplayName(tool)
+				+ ChatColor.GRAY + " (" + tool.getType().toString() + ") with " + mod.getColor() + mod.getName()
+				+ ChatColor.GRAY + " " + modManager.getModLevel(tool, mod) + "!");
 	}
 
 	@EventHandler
@@ -91,7 +94,10 @@ public class TinkerListener implements Listener {
 							.replace("%mod", mod.getColor() + mod.getName() + ChatColor.WHITE)
 							.replace("%tool", ChatWriter.getDisplayName(tool) + ChatColor.WHITE)
 							.replace("%cause", event.getFailCause().toString(player)));
-			ChatWriter.log(false, player.getDisplayName() + " failed to apply " + mod.getColor() + mod.getName() + ChatColor.GRAY + " " + (modManager.getModLevel(tool, mod) + 1) + " on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") (" + event.getFailCause().toString() + ")");
+			ChatWriter.log(false, player.getDisplayName() + " failed to apply " + mod.getColor()
+					+ mod.getName() + ChatColor.GRAY + " " + (modManager.getModLevel(tool, mod) + 1) + " on "
+					+ ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") ("
+					+ event.getFailCause().toString() + ")");
 		}
 	}
 
@@ -165,7 +171,8 @@ public class TinkerListener implements Listener {
 							if (player.getInventory().getItem(i) != null && player.getInventory().getItem(i).equals(tool)) {  //Can be NULL!
 								for (int j = 0; j < new Random().nextInt(config.getInt("LevelUpEvents.RandomModifier.MaximumAmountOfModifiers") + 1); j++) {
 
-									List<Modifier> mods = new ArrayList<>(modManager.getAllowedMods()); //necessary as the failed modifiers get removed from the list (so a copy is in order)
+									List<Modifier> mods = new ArrayList<>(modManager.getAllowedMods());
+									//necessary as the failed modifiers get removed from the list (so a copy is in order)
 
 									if (!config.getBoolean("LevelUpEvents.RandomModifier.AllowExtraModifier")) {
 										mods.remove(ExtraModifier.instance());

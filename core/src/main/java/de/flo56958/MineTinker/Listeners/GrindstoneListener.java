@@ -65,7 +65,8 @@ public class GrindstoneListener implements Listener {
 					//Illegal state
 					if (modManager.isToolViable(cursorItem) || modManager.isArmorViable(cursorItem)) {
 						event.setResult(Event.Result.DENY);
-						Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> event.getClickedInventory().setItem(2, null), 1);
+						Bukkit.getScheduler().runTaskLater(Main.getPlugin(),
+								() -> event.getClickedInventory().setItem(2, null), 1);
 					}
 					return;
 				}
@@ -97,7 +98,8 @@ public class GrindstoneListener implements Listener {
 				}
 
 				if (!hadMods) {
-					Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> event.getClickedInventory().setItem(2, null), 1);
+					Bukkit.getScheduler().runTaskLater(Main.getPlugin(),
+							() -> event.getClickedInventory().setItem(2, null), 1);
 					return;
 				}
 
@@ -113,7 +115,8 @@ public class GrindstoneListener implements Listener {
 
 				event.setResult(Event.Result.ALLOW);
 				//so the item gets not overwritten by vanilla
-				Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> event.getClickedInventory().setItem(2, result), 1);
+				Bukkit.getScheduler().runTaskLater(Main.getPlugin(),
+						() -> event.getClickedInventory().setItem(2, result), 1);
 				save.put(player, gs);
 			} else if (event.getSlotType() == InventoryType.SlotType.RESULT) { //on Gridstone use
 				ItemStack result = event.getCurrentItem();
@@ -146,14 +149,16 @@ public class GrindstoneListener implements Listener {
 			}
 		} else {
 			// Avoid handling the clicks inside of the inventory.
-			if (event.getSlotType() != InventoryType.SlotType.RESULT && event.getSlotType() != InventoryType.SlotType.CRAFTING) {
+			if (event.getSlotType() != InventoryType.SlotType.RESULT
+					&& event.getSlotType() != InventoryType.SlotType.CRAFTING) {
 				return;
 			}
 			// Works fine even if the getItem method returns null.
 			ItemStack slot1 =  event.getClickedInventory().getItem(0);
 			ItemStack slot2 =  event.getClickedInventory().getItem(1);
 
-			if (!(modManager.isToolViable(slot1) || modManager.isArmorViable(slot1) || modManager.isToolViable(slot2) || modManager.isArmorViable(slot2))) {
+			if (!(modManager.isToolViable(slot1) || modManager.isArmorViable(slot1) || modManager.isToolViable(slot2)
+					|| modManager.isArmorViable(slot2))) {
 				return;
 			}
 

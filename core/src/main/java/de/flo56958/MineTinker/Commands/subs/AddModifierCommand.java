@@ -26,7 +26,8 @@ public class AddModifierCommand implements SubCommand {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
 		if (!(sender instanceof Player)) {
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerOnlyCommand"));
+			CommandManager.sendError(sender,
+					LanguageManager.getString("Commands.Failure.Cause.PlayerOnlyCommand"));
 			return true;
 		}
 		Player player = (Player) sender;
@@ -42,20 +43,24 @@ public class AddModifierCommand implements SubCommand {
 							try {
 								amount = Integer.parseInt(args[2]);
 							} catch (NumberFormatException e) {
-								CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+								CommandManager.sendError(sender,
+										LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 							}
 						}
 						for (int i = 0; i < amount; i++) {
-							if (!modManager.addMod(player, tool, m, true, false, true)) break;
+							if (!modManager.addMod(player, tool, m, true, false, true))
+								break;
 						}
 					} else {
-						CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidItem"));
+						CommandManager.sendError(sender,
+								LanguageManager.getString("Commands.Failure.Cause.InvalidItem"));
 					}
 					break;
 				}
 			}
 		} else {
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+			CommandManager.sendError(sender,
+					LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 		}
 		return true;
 	}

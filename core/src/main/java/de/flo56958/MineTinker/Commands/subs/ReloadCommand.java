@@ -33,10 +33,13 @@ public class ReloadCommand implements SubCommand {
 			player = (Player) sender;
 		}
 
-		ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.Reload.Note1", player));
-		ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Reload.Recipes", player));
+		ChatWriter.sendMessage(sender, ChatColor.RED,
+				LanguageManager.getString("Commands.Reload.Note1", player));
+		ChatWriter.sendMessage(sender, ChatColor.WHITE,
+				LanguageManager.getString("Commands.Reload.Recipes", player));
 
-		Iterator<Recipe> it = NBTUtils.getHandler().getRecipeIterator(); //TODO: Find a different way to remove recipes! Bukkit is bugged atm
+		Iterator<Recipe> it = NBTUtils.getHandler().getRecipeIterator();
+		//TODO: Find a different way to remove recipes! Bukkit is bugged atm
 
 		while (it.hasNext()) {
 			ItemStack result = it.next().getResult();
@@ -57,7 +60,8 @@ public class ReloadCommand implements SubCommand {
 
 		ModManager.instance().recipe_Namespaces.clear();
 
-		ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Reload.Configs", player));
+		ChatWriter.sendMessage(sender, ChatColor.WHITE,
+				LanguageManager.getString("Commands.Reload.Configs", player));
 		Main.getPlugin().reloadConfig();
 		ChatWriter.reload();
 		ConfigurationManager.reload();
@@ -65,16 +69,20 @@ public class ReloadCommand implements SubCommand {
 
 		LanguageManager.reload();
 
-		ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Reload.ModManager", player));
+		ChatWriter.sendMessage(sender, ChatColor.WHITE,
+				LanguageManager.getString("Commands.Reload.ModManager", player));
 		ModManager.instance().reload();
 
-		ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Reload.Builderswands", player));
+		ChatWriter.sendMessage(sender, ChatColor.WHITE,
+				LanguageManager.getString("Commands.Reload.Builderswands", player));
 		BuildersWandListener.reload();
 
-		ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Reload.GUIs", player));
+		ChatWriter.sendMessage(sender, ChatColor.WHITE,
+				LanguageManager.getString("Commands.Reload.GUIs", player));
 		GUIs.reload();
 
-		ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Reload.Finish", player));
+		ChatWriter.sendMessage(sender, ChatColor.WHITE,
+				LanguageManager.getString("Commands.Reload.Finish", player));
 
 		if (Main.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
 			Bukkit.getScheduler().scheduleAsyncDelayedTask(Main.getPlugin(), Updater::checkForUpdate, 20);

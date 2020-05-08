@@ -34,7 +34,8 @@ public class ItemListener implements Listener {
 		ItemStack is = item.getItemStack();
 
 		if (!((modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))
-				|| (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems") && modManager.isModifierItem(is)
+				|| (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")
+				&& modManager.isModifierItem(is)
 				&& !(is.getType() == Material.NETHER_STAR || is.getType() == Material.EXPERIENCE_BOTTLE)))) {
 			return;
 		}
@@ -100,7 +101,7 @@ public class ItemListener implements Listener {
 		Player player = event.getEntity();
 		Inventory inventory = player.getInventory();
 
-		if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ApplyOnPlayerDeath", true)) { //For DeadSouls and other Grave-Plugins //
+		if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ApplyOnPlayerDeath", true)) { //For DeadSouls and other Grave-Plugins
 			// TODO: Try to find better handling of this Event or with these Plugins
 			return;
 		}

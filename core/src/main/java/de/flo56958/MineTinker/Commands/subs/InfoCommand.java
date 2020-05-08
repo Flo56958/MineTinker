@@ -22,7 +22,8 @@ public class InfoCommand implements SubCommand {
 		Player player = null;
 		if(sender instanceof Player) player = (Player) sender;
 
-		ChatWriter.sendMessage(player, ChatColor.WHITE, LanguageManager.getString("Commands.Info.Line1", player).replaceFirst("%ver", Main.getPlugin().getDescription().getVersion()));
+		ChatWriter.sendMessage(player, ChatColor.WHITE, LanguageManager.getString("Commands.Info.Line1", player)
+				.replaceFirst("%ver", Main.getPlugin().getDescription().getVersion()));
 		ChatWriter.sendMessage(player, ChatColor.WHITE, LanguageManager.getString("Commands.Info.Line2", player));
 		return true;
 	}

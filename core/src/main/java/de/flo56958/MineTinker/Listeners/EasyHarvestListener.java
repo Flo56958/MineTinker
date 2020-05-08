@@ -51,7 +51,8 @@ public class EasyHarvestListener implements Listener {
 			return;
 		}
 
-		if (!player.isSneaking() && modManager.hasMod(tool, Power.instance()) && player.hasPermission("minetinker.modifiers.power.use")) {
+		if (!player.isSneaking() && modManager.hasMod(tool, Power.instance())
+				&& player.hasPermission("minetinker.modifiers.power.use")) {
 			int level = modManager.getModLevel(tool, Power.instance());
 
 			if (level == 1) {
@@ -179,7 +180,8 @@ public class EasyHarvestListener implements Listener {
 			return;
 		}
 
-		if (!(player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE || player.getGameMode() == GameMode.CREATIVE)) {
+		if (!(player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE
+				|| player.getGameMode() == GameMode.CREATIVE)) {
 			return;
 		}
 
@@ -208,7 +210,8 @@ public class EasyHarvestListener implements Listener {
 		}
 
 		//triggers a pseudoevent to find out if the Player can build
-		BlockPlaceEvent placeEvent = new BlockPlaceEvent(block, block.getState(), block, event.getItem(), player, true, EquipmentSlot.HAND);
+		BlockPlaceEvent placeEvent = new BlockPlaceEvent(block, block.getState(), block, event.getItem(), player,
+				true, EquipmentSlot.HAND);
 		Bukkit.getPluginManager().callEvent(placeEvent);
 
 		//check the pseudoevent

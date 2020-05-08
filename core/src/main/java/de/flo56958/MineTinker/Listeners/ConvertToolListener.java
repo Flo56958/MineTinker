@@ -24,7 +24,9 @@ public class ConvertToolListener implements Listener {
 
 	public ConvertToolListener() {
 		for (Material m : ToolType.getAllToolMaterials()) {
-			ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(Main.getPlugin(), m.toString() + "_Converter"), new ItemStack(m, 1));
+			ShapelessRecipe recipe = new ShapelessRecipe(
+					new NamespacedKey(Main.getPlugin(), m.toString() + "_Converter"),
+					new ItemStack(m, 1));
 			recipe.addIngredient(m);
 
 			Bukkit.addRecipe(recipe);

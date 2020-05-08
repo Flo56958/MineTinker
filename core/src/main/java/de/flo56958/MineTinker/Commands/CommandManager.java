@@ -236,7 +236,8 @@ public class CommandManager implements TabExecutor {
 								Player player = Bukkit.getPlayer(uuid);
 								if (player != null) args[i] = player.getName();
 								else {
-									sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound").replace("%p", args[i]));
+									sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound")
+											.replace("%p", args[i]));
 								}
 							} catch (IllegalArgumentException ignored) {
 							}
@@ -249,7 +250,8 @@ public class CommandManager implements TabExecutor {
 						if (rules[index].indexOf('-') != -1) {
 							String[] nums = rules[index].split("-");
 							if (nums.length != 2) {
-								sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+								sendError(sender,
+										LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 								break;
 							}
 							try{
@@ -258,7 +260,8 @@ public class CommandManager implements TabExecutor {
 								int rand = new Random().nextInt(max - min) + min;
 								args[i] = String.valueOf(rand);
 							} catch (NumberFormatException e) {
-								sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+								sendError(sender,
+										LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 							}
 						} else {
 							args[i] = rules[index];
@@ -271,7 +274,8 @@ public class CommandManager implements TabExecutor {
 	}
 
 	public static void sendError(CommandSender sender, String cause) {
-		ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.Failure.Main").replaceAll("%cause", cause));
+		ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.Failure.Main")
+				.replaceAll("%cause", cause));
 	}
 
 	private void sendHelp(CommandSender sender, @Nullable SubCommand command) {

@@ -28,7 +28,8 @@ public class EnchantingListener implements Listener {
 		if (!ToolType.ALL.contains(event.getItem().getType())) { //Something different (like a book)
 			return;
 		}
-		if (!(modManager.isToolViable(event.getItem()) || modManager.isWandViable(event.getItem()) || modManager.isArmorViable(event.getItem()))) { //not a MineTinker Tool
+		if (!(modManager.isToolViable(event.getItem()) || modManager.isWandViable(event.getItem())
+				|| modManager.isArmorViable(event.getItem()))) { //not a MineTinker Tool
 			return;
 		}
 
@@ -42,7 +43,8 @@ public class EnchantingListener implements Listener {
 			// The modifier may be disabled
 			if (modifier != null && modifier.isAllowed()) {
 				for (int i = 0; i < entry.getValue(); i++) {
-					boolean success = modManager.addMod(event.getEnchanter(), event.getItem(), modifier, free, false, true);
+					boolean success = modManager.addMod(event.getEnchanter(), event.getItem(), modifier, free,
+							false, true);
 
 					if (success) {
 						int newLevel = enchants.get(entry.getKey()) - 1;

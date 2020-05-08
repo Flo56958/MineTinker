@@ -79,8 +79,10 @@ public class ArmorListener implements Listener {
 		}
 
 		ArrayList<ItemStack> armor = new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents()));
-		if (ToolType.SHIELD.contains(player.getInventory().getItemInMainHand().getType())) armor.add(player.getInventory().getItemInMainHand());
-		else if (ToolType.SHIELD.contains(player.getInventory().getItemInOffHand().getType())) armor.add(player.getInventory().getItemInOffHand());
+		if (ToolType.SHIELD.contains(player.getInventory().getItemInMainHand().getType()))
+			armor.add(player.getInventory().getItemInMainHand());
+		else if (ToolType.SHIELD.contains(player.getInventory().getItemInOffHand().getType()))
+			armor.add(player.getInventory().getItemInOffHand());
 
 		for (ItemStack piece : armor) {
 			if (!modManager.isArmorViable(piece)) {

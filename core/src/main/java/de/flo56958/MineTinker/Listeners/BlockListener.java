@@ -95,7 +95,8 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		if (event.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS || ToolType.HOE.contains(tool.getType()))) {
+		if (event.getBlock().getType().getHardness() == 0 && !(tool.getType() == Material.SHEARS
+				|| ToolType.HOE.contains(tool.getType()))) {
 			return;
 		}
 
@@ -106,7 +107,8 @@ public class BlockListener implements Listener {
 		FileConfiguration config = Main.getPlugin().getConfig();
 
 		int expAmount = config.getInt("ExpPerBlockBreak");
-		if (!(!config.getBoolean("ExtraExpPerBlock.ApplicableToSilkTouch") && modManager.hasMod(tool, SilkTouch.instance()))) {
+		if (!(!config.getBoolean("ExtraExpPerBlock.ApplicableToSilkTouch")
+				&& modManager.hasMod(tool, SilkTouch.instance()))) {
 			expAmount += config.getInt("ExtraExpPerBlock." + event.getBlock().getType().toString());
 			//adds 0 if not in found in config (negative values are also fine)
 		}
@@ -261,7 +263,8 @@ public class BlockListener implements Listener {
 				apply = true;
 
 			Block b = player.getWorld().getBlockAt(event.getClickedBlock().getLocation().add(0, 1, 0));
-			if (b.getType() != Material.AIR && b.getType() != Material.CAVE_AIR) //Case Block is on top of clicked Block -> No Path created -> no Exp
+			if (b.getType() != Material.AIR && b.getType() != Material.CAVE_AIR)
+				//Case Block is on top of clicked Block -> No Path created -> no Exp
 				apply = false;
 		}
 

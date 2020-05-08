@@ -7,14 +7,14 @@ prefix: MineTinker
 description: ${project.description}
 website: ${project.url}
 database: false
-api-version: 1.13
+api-version: "1.13"
 
 ####################################################
 commands:
   minetinker:
     aliases: [mt]
     description: Main Command of MineTinker
-    usage: /minetinker
+    usage: /minetinker [subcommand]
 
 ####################################################
 permissions:
@@ -150,6 +150,7 @@ permissions:
   minetinker.commands.editconfigbroadcast:
     children:
       minetinker.commands.main: true
+      minetinker.commands.editconfig: true
     description: Allows the player to get notifications when configurations of MineTinker change through /mt editconfig
     default: op
 

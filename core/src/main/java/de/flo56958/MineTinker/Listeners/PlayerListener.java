@@ -7,7 +7,6 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Modifiers.Types.Drilling;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.Datatypes.Pair;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.Utilities.Updater;
 import org.bukkit.ChatColor;
@@ -46,7 +45,8 @@ public class PlayerListener implements Listener {
 			return;
 		}
 
-		if (!(event.getClickedInventory() instanceof PlayerInventory || event.getClickedInventory() instanceof DoubleChestInventory)) {
+		if (!(event.getClickedInventory() instanceof PlayerInventory
+				|| event.getClickedInventory() instanceof DoubleChestInventory)) {
 			return;
 		}
 
@@ -60,7 +60,8 @@ public class PlayerListener implements Listener {
 			return;
 		}
 
-		if (!(Main.getPlugin().getConfig().getBoolean("Repairable") && event.getWhoClicked().hasPermission("minetinker.tool.repair"))) {
+		if (!(Main.getPlugin().getConfig().getBoolean("Repairable")
+				&& event.getWhoClicked().hasPermission("minetinker.tool.repair"))) {
 			return;
 		}
 
@@ -195,17 +196,19 @@ public class PlayerListener implements Listener {
 							.replace("%ver", Updater.getOnlineVersion()));
 				}
 			}
-			if (player.isOp() || player.hasPermission("minetinker.commands.editconfigbroadcast")) {
-				if (LanguageManager.isUsingFallback()) {
-					ChatWriter.sendMessage(player, ChatColor.RED,
-							"MineTinker is using the fallback language en_US as "
-							+ Main.getPlugin().getConfig().getString("Language")
-							+ " is not currently supported. If you want MineTinker to support this language you can help translating on Transifex!");
-				}
-				Pair<Boolean, Long> langCompleteness = LanguageManager.getCompleteness();
-				if (!langCompleteness.x) {
+		}
+		if (player.isOp() || player.hasPermission("minetinker.commands.editconfigbroadcast")) {
+			if (LanguageManager.isUsingFallback()) {
+				ChatWriter.sendMessage(player, ChatColor.RED,
+						"MineTinker is using the fallback language en_US as "
+								+ Main.getPlugin().getConfig().getString("Language")
+								+ " is not currently supported. If you want MineTinker to support this language you "
+								+ "can help translating on Transifex!");
+			} else {
+				if (!LanguageManager.isComplete()) {
+					Long langCompleteness = LanguageManager.getCompleteness();
 					ChatWriter.sendMessage(player, ChatColor.RED, "The translation you are using is only "
-							+ langCompleteness.y / 100 + "." + langCompleteness.y % 100
+							+ langCompleteness / 100 + "." + langCompleteness % 100
 							+ "% complete. The missing strings will be loaded from the Language 'en_US'!");
 				}
 			}

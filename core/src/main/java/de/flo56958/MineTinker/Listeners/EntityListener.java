@@ -37,7 +37,8 @@ public class EntityListener implements Listener {
 			return;
 		}
 
-		if (event.getCause().equals(EntityDamageEvent.DamageCause.SUICIDE) || event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
+		if (event.getCause().equals(EntityDamageEvent.DamageCause.SUICIDE)
+				|| event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
 			return;
 		}
 
@@ -142,7 +143,8 @@ public class EntityListener implements Listener {
 					if (config.getBoolean("ConvertMobDrops.ApplyModifiers", true)) {
 						List<Modifier> mods = modManager.getAllowedMods();
 						for (int i = 0; i < rand.nextInt(config.getInt("ConvertMobDrops.MaximumNumberOfModifiers", 4) + 1); i++) {
-							if (config.getBoolean("ConvertMobDrops.AppliedModifiersConsiderSlots", true) && modManager.getFreeSlots(item) == 0) {
+							if (config.getBoolean("ConvertMobDrops.AppliedModifiersConsiderSlots", true)
+									&& modManager.getFreeSlots(item) == 0) {
 								break;
 							}
 							for (int j = 0; j < 2; j++) { //to give an extra chance
@@ -162,7 +164,8 @@ public class EntityListener implements Listener {
 		}
 
 		if (config.getBoolean("MobDropModifierItems.Enabled", true)) {
-			if (config.getBoolean("MobDropModifierItems.ConsiderIncludedMobs") == config.getStringList("MobDropModifierItems.IncludedMobs").contains(mob.getType().name())) {
+			if (config.getBoolean("MobDropModifierItems.ConsiderIncludedMobs") ==
+					config.getStringList("MobDropModifierItems.IncludedMobs").contains(mob.getType().name())) {
 				Random rand = new Random();
 				if (rand.nextInt(100) < config.getInt("MobDropModifierItems.Chance", 2)) {
 					int amount = rand.nextInt(config.getInt("MobDropModifierItems.MaximumAmount") + 1);

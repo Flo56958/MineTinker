@@ -180,7 +180,8 @@ public class AnvilListener implements Listener {
 				return;
 			}
 		} else {
-			if (Main.getPlugin().getConfig().getBoolean("Upgradeable") && player.hasPermission("minetinker.tool.upgrade")) {
+			if (Main.getPlugin().getConfig().getBoolean("Upgradeable")
+					&& player.hasPermission("minetinker.tool.upgrade")) {
 				ItemStack item = inventory.getItem(1);
 
 				if (item != null) {

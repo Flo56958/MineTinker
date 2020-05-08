@@ -19,7 +19,8 @@ public class EditConfigurationCommand implements SubCommand {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
 		if (!(sender instanceof Player)) {
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerOnlyCommand"));
+			CommandManager.sendError(sender,
+					LanguageManager.getString("Commands.Failure.Cause.PlayerOnlyCommand"));
 			return true;
 		}
 		GUIs.getConfigurationsGUI().show((Player) sender);

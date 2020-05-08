@@ -43,20 +43,24 @@ public class RemoveModifierCommand implements SubCommand {
 								int a = Integer.parseInt(args[2]);
 								toAdd = modManager.getModLevel(tool, m) - a;
 							} catch (NumberFormatException ignored) {
-								CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+								CommandManager.sendError(sender,
+										LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 								return true;
 							}
 						}
 						modManager.removeMod(tool, m);
 						for (int i = 0; i < toAdd; i++) {
-							if (!modManager.addMod(player, tool, m, true, false, true)) break;
+							if (!modManager.addMod(player, tool, m, true, false, true))
+								break;
 						}
 					} else
-						CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidItem"));
+						CommandManager.sendError(sender,
+								LanguageManager.getString("Commands.Failure.Cause.InvalidItem"));
 					return true;
 				}
 			}
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+			CommandManager.sendError(sender,
+					LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 		}
 		return true;
 	}

@@ -35,13 +35,15 @@ public class AddExpCommand implements SubCommand {
 			if (sender instanceof Player) {
 				player = (Player) sender;
 			} else {
-				CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+				CommandManager.sendError(sender,
+						LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 				return true;
 			}
 			try {
 				amount = Integer.parseInt(args[1]);
 			} catch (NumberFormatException e) {
-				CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+				CommandManager.sendError(sender,
+						LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 				return true;
 			}
 		} else if (args.length > 2) {
@@ -49,15 +51,18 @@ public class AddExpCommand implements SubCommand {
 			try {
 				amount = Integer.parseInt(args[2]);
 			} catch (NumberFormatException e) {
-				CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+				CommandManager.sendError(sender,
+						LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 				return true;
 			}
 		} else {
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+			CommandManager.sendError(sender,
+					LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 			return true;
 		}
 		if (player == null) {
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound").replace("%p", args[1]));
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound")
+					.replace("%p", args[1]));
 			return true;
 		}
 

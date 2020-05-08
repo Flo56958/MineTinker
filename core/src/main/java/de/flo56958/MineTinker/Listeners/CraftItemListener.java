@@ -45,7 +45,8 @@ public class CraftItemListener implements Listener {
 		}
 
 		if (tool != null) {
-			ChatWriter.log(false, player.getName() + " crafted " + ChatWriter.getDisplayName(tool) + "! It is now a MineTinker-Item!");
+			ChatWriter.log(false, player.getName() + " crafted " + ChatWriter.getDisplayName(tool)
+					+ "! It is now a MineTinker-Item!");
 		}
 	}
 

@@ -43,14 +43,16 @@ public class GiveModifierItemCommand implements SubCommand {
 						if (sender instanceof Player) {
 							player = (Player) sender;
 						} else {
-							CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
+							CommandManager.sendError(sender,
+									LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 							return true;
 						}
 						break;
 					}
 				}
 				if(mod == null) {
-					CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+					CommandManager.sendError(sender,
+							LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 					return true;
 				}
 				break;
@@ -72,14 +74,16 @@ public class GiveModifierItemCommand implements SubCommand {
 						if (sender instanceof Player) {
 							player = (Player) sender;
 						} else if (modifierIndex == 1){
-							CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
+							CommandManager.sendError(sender,
+									LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 							return true;
 						}
 						break;
 					}
 				}
 				if (mod == null) {
-					CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+					CommandManager.sendError(sender,
+							LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 					return true;
 				}
 
@@ -88,7 +92,8 @@ public class GiveModifierItemCommand implements SubCommand {
 					try {
 						amount = Integer.parseInt(args[amountIndex]);
 					} catch (NumberFormatException ignored) {
-						CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+						CommandManager.sendError(sender,
+								LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 						return true;
 					}
 				}
@@ -105,7 +110,8 @@ public class GiveModifierItemCommand implements SubCommand {
 					}
 				}
 				if (player == null) {
-					CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
+					CommandManager.sendError(sender,
+							LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 					return true;
 				}
 				for (Modifier m : ModManager.instance().getAllowedMods()) {
@@ -115,19 +121,22 @@ public class GiveModifierItemCommand implements SubCommand {
 					}
 				}
 				if (mod == null) {
-					CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+					CommandManager.sendError(sender,
+							LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 					return true;
 				}
 
 				try {
 					amount = Integer.parseInt(args[amountIndex]);
 				} catch (NumberFormatException ignored) {
-					CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+					CommandManager.sendError(sender,
+							LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 					return true;
 				}
 				break;
 			default:
-				CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+				CommandManager.sendError(sender,
+						LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 				return true;
 		}
 		ItemStack item = mod.getModItem().clone();

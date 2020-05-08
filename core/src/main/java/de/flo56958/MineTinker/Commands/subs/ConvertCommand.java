@@ -33,7 +33,8 @@ public class ConvertCommand implements SubCommand {
 			if (sender instanceof Player) {
 				player = (Player) sender;
 			} else {
-				CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+				CommandManager.sendError(sender,
+						LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 				return true;
 			}
 		} else if (args.length > 2) {

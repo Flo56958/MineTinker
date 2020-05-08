@@ -1,7 +1,6 @@
 package de.flo56958.MineTinker.Utilities;
 
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Utilities.Datatypes.Pair;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -19,7 +18,6 @@ public class LanguageManager {
 	private static YamlConfiguration langBackup;
 
 	private static boolean usingFallback = false;
-	private static boolean isComplete = true;
 	private static long completenessPercent = 10_000;
 
 	private static boolean playerLocale;
@@ -46,7 +44,6 @@ public class LanguageManager {
 
 			double percentage = langFile.getKeys(true).size() /  (double) langBackup.getKeys(true).size();
 			if (percentage < 1.0) {
-				isComplete = false;
 				completenessPercent = Math.round(percentage * 10_000);
 				ChatWriter.logColor(ChatColor.RED + "The translation you are using is only "
 						+ completenessPercent / 100 + "." + completenessPercent % 100
@@ -110,7 +107,9 @@ public class LanguageManager {
 		return usingFallback;
 	}
 
-	public static Pair<Boolean, Long> getCompleteness() {
-		return new Pair<>(isComplete, completenessPercent);
+	public static boolean isComplete() { return completenessPercent == 10_000; }
+
+	public static Long getCompleteness() {
+		return completenessPercent;
 	}
 }

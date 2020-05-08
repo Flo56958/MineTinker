@@ -137,7 +137,8 @@ public class GUI implements Listener {
 			}
 
 			if (!window.getGUI().equals(this)) {
-				throw new IllegalArgumentException("GUI (" + this.hashCode() + ") does not manage Window (" + window.hashCode() + ")!");
+				throw new IllegalArgumentException("GUI (" + this.hashCode()
+						+ ") does not manage Window (" + window.hashCode() + ")!");
 			}
 
 			player.openInventory(window.inventory);

@@ -34,7 +34,8 @@ public class ItemStatisticsCommand implements SubCommand {
 			player = Bukkit.getPlayer(args[1]);
 		}
 		if (player == null) {
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound").replace("%p", args[1]));
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound")
+					.replace("%p", args[1]));
 			return true;
 		}
 		ModManager modManager = ModManager.instance();
@@ -42,7 +43,8 @@ public class ItemStatisticsCommand implements SubCommand {
 			if (!modManager.isToolViable(stack) && !modManager.isArmorViable(stack)) continue;
 
 			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Head")
-					.replaceFirst("%toolname", ChatWriter.getDisplayName(stack) + ChatColor.WHITE + " (" + stack.getType().toString() + ")"));
+					.replaceFirst("%toolname", ChatWriter.getDisplayName(stack) + ChatColor.WHITE
+							+ " (" + stack.getType().toString() + ")"));
 			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Level")
 					.replaceFirst("%level", "" + modManager.getLevel(stack)));
 			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Exp")
@@ -54,7 +56,8 @@ public class ItemStatisticsCommand implements SubCommand {
 
 			for (Modifier mod : modManager.getAllowedMods()) {
 				if (NBTUtils.getHandler().hasTag(stack, mod.getKey())) {
-					ChatWriter.sendMessage(sender, ChatColor.WHITE, mod.getColor() + mod.getName() + ChatColor.WHITE + " " + NBTUtils.getHandler().getInt(stack, mod.getKey()));
+					ChatWriter.sendMessage(sender, ChatColor.WHITE, mod.getColor() + mod.getName() + ChatColor.WHITE
+							+ " " + NBTUtils.getHandler().getInt(stack, mod.getKey()));
 				}
 			}
 		}

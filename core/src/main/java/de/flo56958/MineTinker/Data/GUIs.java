@@ -135,9 +135,11 @@ public class GUIs {
 							incompatibilities.append(in.getName()).append(", ");
 						}
 
-						lore.add(ChatColor.DARK_RED + "" + ChatColor.BOLD + LanguageManager.getString("GUIs.Modifiers.IncompatibleWith"));
+						lore.add(ChatColor.DARK_RED + "" + ChatColor.BOLD
+								+ LanguageManager.getString("GUIs.Modifiers.IncompatibleWith"));
 
-						lore.addAll(ChatWriter.splitString(incompatibilities.toString().substring(0, incompatibilities.length() - 2), 30));
+						lore.addAll(ChatWriter.splitString(incompatibilities.toString()
+								.substring(0, incompatibilities.length() - 2), 30));
 					}
 
 					// Applied Enchantments
@@ -211,7 +213,8 @@ public class GUIs {
 
 									try {
 										ItemStack resItem = srec.getIngredientMap().get(c).clone();
-										NBTUtils.getHandler().setLong(resItem, "MT-MODS Recipe Item", Math.round(Math.random() * 42));
+										NBTUtils.getHandler().setLong(resItem, "MT-MODS Recipe Item",
+												Math.round(Math.random() * 42));
 										modRecipe.addButton((slot % 3) + 2, (slot / 3), resItem);
 									} catch (NullPointerException ignored) {
 									}
@@ -243,7 +246,8 @@ public class GUIs {
 		{
 			configurationsGUI = new GUI();
 			int pageNo = 1;
-			GUI.Window currentPage = configurationsGUI.addWindow(6, LanguageManager.getString("GUIs.ConfigurationEditor.Title")
+			GUI.Window currentPage = configurationsGUI.addWindow(6,
+					LanguageManager.getString("GUIs.ConfigurationEditor.Title")
 					.replace("%pageNo", "" + pageNo++));
 			addNavigationButtons(currentPage);
 			ItemStack reload = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
@@ -574,7 +578,8 @@ public class GUIs {
 							broadcastChange(configName + ":" + key, oldValue, input);
 						};
 
-						currentButton.addAction(ClickType.LEFT, new ButtonAction.REQUEST_INPUT(currentButton, pRun, ChatColor.WHITE + configName + ":" + key));
+						currentButton.addAction(ClickType.LEFT, new ButtonAction.REQUEST_INPUT(currentButton, pRun,
+								ChatColor.WHITE + configName + ":" + key));
 					} else if (value instanceof List) {
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type")
 								.replace("%type", LanguageManager.getString("DataType.List")));

@@ -57,7 +57,8 @@ public class NameCommand implements SubCommand {
 			String name_ = name.toString();
 			for (String pattern : Lists.NAME_COMMAND_BLACKLIST) {
 				if (Pattern.compile(pattern).matcher(name_).find()) {
-					CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NameNotAllowed"));
+					CommandManager.sendError(sender,
+							LanguageManager.getString("Commands.Failure.Cause.NameNotAllowed"));
 					return true;
 				}
 			}
