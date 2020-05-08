@@ -2,6 +2,7 @@ Alert.OnItemBreak: "%RED%Scheint so, als ob dein Werkzeug zerstört wurde! Es wu
 Alert.OnItemGrind: "%RED%Du kannst keinen Schleifstein für MineTinker-Items benutzen!"
 Alert.ToolUpgradeFailure: "%RED%Verbesserung ist fehlgeschlagen!"
 Alert.InternalError: "%RED%Ein interner Fehler ist aufgetreten!"
+Alert.OnCooldown: "%RED%Diese Fähigkeit ist noch auf Abklinkzeit!"
 
 StartUp.Commands: "Befehle registriert!"
 StartUp.BuildersWands: "Baumeisterstäbe registriert!"
@@ -75,6 +76,7 @@ GUIs.Modifiers.IncompatibleWith: "Inkompatibel mit:"
 GUIs.Modifiers.EnchantCost: "Verzauberungskosten: %WHITE%%enchantCost"
 GUIs.Modifiers.ClickToRecipe: "Drücke %key, um das Craftingrezept anzuzeigen."
 GUIs.Modifiers.BlockToEnchant: "Drücke %key mit %mat auf %block, um den Modifier zu verzaubern."
+GUIs.Modifiers.SlotCost: "Benötigt Plätze pro Level: %amount"
 GUIs.ConfigurationEditor.ReloadPlugin: "MineTinker neuladen"
 GUIs.ConfigurationEditor.Change: "%key wurde von %old zu %new geändert!"
 GUIs.ConfigurationEditor.Type: "Typ: %type"
@@ -107,7 +109,7 @@ ModifierFailCause.IncompatibleModifiers: "Inkompatible Modifikationen!"
 ModifierFailCause.InvalidToolType: "Ungültiger Werkzeug-Typ!"
 ModifierFailCause.MaximumSlotsReached: "Die maximale Anzahl an Plätzen für Modifikationen wurde erreicht!"
 ModifierFailCause.ModMaxLevel: "Die Modifikation ist bereits auf dem höchsten Level!"
-ModifierFailCause.NoFreeSlots: "Das Item hat keine freien Modifikationsplätze!"
+ModifierFailCause.NoFreeSlots: "Nicht genug freie Modifikationsplätze auf dem Item!"
 ModifierFailCause.NoPermission: "Keine Berechtigung!"
 ModifierFailCause.PlayerFailure: "Spieler hat versagt beim Modifizieren!"
 
@@ -166,6 +168,11 @@ Modifier:
     Description: "Drops von getöteten Mobs oder zerstörten Blöcken wird automatisch dem Inventar hinzugefügt."
     ModifierItemName: "Verbesserter Kompass"
     DescriptionModifierItem: "Modifizierungs-Item für die Direkt-Modifikation"
+  Drilling:
+    Name: "Tiefenbohrung"
+    Description: "Zerstöre mehr Blöcke tiefer in der Welt pro Level!"
+    ModifierItemName: "Verstärkter Bohraufsatz"
+    DescriptionModifierItem: "Modifizierungs-Item für die Tiefenbohrung-Modifikation"
   Ender:
     Name: "Ender"
     Description: "Teleportiert dich, wenn du schleichst, zum Einschlagsort des Pfeils!"
@@ -174,7 +181,7 @@ Modifier:
     TeleportationProhibited: "Du kannst keine Plätze mit diesem Spieler tauschen!"
   Evasive:
     Name: "Ausweichend"
-    Description: "Wahrscheinlichkeit einem Angriff auszuweichen (%chance pro Level) - %sneakX wenn schleichend, %sprintX wenn sprintend"
+    Description: "%chance Wahrscheinlichkeit pro Level Angriffen auszuweichen (Modifikatoren: %sneakX wenn schleichend, %sprintX wenn sprintend, %pvpX wenn in PvP)"
     ModifierItemName: "Schnelle Feder"
     DescriptionModifierItem: "Modifizierungs-Item für die Ausweichend-Modifikation"
   Experienced:
@@ -198,6 +205,11 @@ Modifier:
     Description: "Bringe deine Feinde zum Leuchten!"
     ModifierItemName: "Ender-Glowstone"
     DescriptionModifierItem: "Modifizierungs-Item für die Leuchtend-Modifizierung"
+  Hardened:
+    Name: "Gehärtet"
+    Description: "Verstärke deine Rüstung um %aamount Rüstungspunkte und %tamount Rüstungshärte pro Level! "
+    ModifierItemName: "Diamant-Raffiniertes Eisen"
+    DescriptionModifierItem: "Modifizierungs-Item für die Gehärtet-Modifizierung"
   Haste:
     Name: "Eile"
     Description: "Zerstöre Blöcke und schieße Armbrüste schneller!"
