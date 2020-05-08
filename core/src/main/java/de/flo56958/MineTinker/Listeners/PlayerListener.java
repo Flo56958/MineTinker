@@ -7,6 +7,7 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Modifiers.Types.Drilling;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.Datatypes.Pair;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.Utilities.Updater;
 import org.bukkit.ChatColor;
@@ -184,18 +185,28 @@ public class PlayerListener implements Listener {
 		if (Main.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
 			if (player.hasPermission("minetinker.update.notify")) {
 				if (Updater.hasUpdate()) {
-					ChatWriter.sendMessage(player, ChatColor.GOLD, LanguageManager.getString("Updater.UpdateAvailable", player));
-					ChatWriter.sendMessage(player, ChatColor.WHITE, LanguageManager.getString("Updater.YourVersion", player)
+					ChatWriter.sendMessage(player, ChatColor.GOLD,
+							LanguageManager.getString("Updater.UpdateAvailable", player));
+					ChatWriter.sendMessage(player, ChatColor.WHITE,
+							LanguageManager.getString("Updater.YourVersion", player)
 							.replace("%ver", Main.getPlugin().getDescription().getVersion()));
-					ChatWriter.sendMessage(player, ChatColor.WHITE, LanguageManager.getString("Updater.OnlineVersion", player)
+					ChatWriter.sendMessage(player, ChatColor.WHITE,
+							LanguageManager.getString("Updater.OnlineVersion", player)
 							.replace("%ver", Updater.getOnlineVersion()));
 				}
 			}
-			if (player.isOp()) {
+			if (player.isOp() || player.hasPermission("minetinker.commands.editconfigbroadcast")) {
 				if (LanguageManager.isUsingFallback()) {
-					ChatWriter.sendMessage(player, ChatColor.RED, "MineTinker is using the fallback language en_US as "
+					ChatWriter.sendMessage(player, ChatColor.RED,
+							"MineTinker is using the fallback language en_US as "
 							+ Main.getPlugin().getConfig().getString("Language")
 							+ " is not currently supported. If you want MineTinker to support this language you can help translating on Transifex!");
+				}
+				Pair<Boolean, Long> langCompleteness = LanguageManager.getCompleteness();
+				if (!langCompleteness.x) {
+					ChatWriter.sendMessage(player, ChatColor.RED, "The translation you are using is only "
+							+ langCompleteness.y / 100 + "." + langCompleteness.y % 100
+							+ "% complete. The missing strings will be loaded from the Language 'en_US'!");
 				}
 			}
 		}

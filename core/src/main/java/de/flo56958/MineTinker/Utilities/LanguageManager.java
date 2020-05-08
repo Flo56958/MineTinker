@@ -1,6 +1,8 @@
 package de.flo56958.MineTinker.Utilities;
 
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Utilities.Datatypes.Pair;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +19,8 @@ public class LanguageManager {
 	private static YamlConfiguration langBackup;
 
 	private static boolean usingFallback = false;
+	private static boolean isComplete = true;
+	private static long completenessPercent = 10_000;
 
 	private static boolean playerLocale;
 
@@ -35,7 +39,21 @@ public class LanguageManager {
 			langFile = langBackup;
 			usingFallback = true;
 			ChatWriter.logError(lang + " is currently not supported. If you want MineTinker to support this language you can help translating on Transifex!");
-		} else ChatWriter.logInfo(getString("LanguageManager.LoadedLanguage").replaceFirst("%lang", lang));
+		} else {
+			if (!lang.equals("en_US") && !lang.equals("de_DE")) {
+				ChatWriter.logInfo("You are using a community translation. Therefore the translation is not 100% reviewed and checked! Use with caution!");
+			}
+
+			double percentage = langFile.getKeys(true).size() /  (double) langBackup.getKeys(true).size();
+			if (percentage < 1.0) {
+				isComplete = false;
+				completenessPercent = Math.round(percentage * 10_000);
+				ChatWriter.logColor(ChatColor.RED + "The translation you are using is only "
+						+ completenessPercent / 100 + "." + completenessPercent % 100
+						+ "% complete. The missing strings will be loaded from the Language 'en_US'!");
+			}
+			ChatWriter.logInfo(getString("LanguageManager.LoadedLanguage").replaceFirst("%lang", lang));
+		}
 	}
 
 	public static void cleanup() {
@@ -90,5 +108,9 @@ public class LanguageManager {
 
 	public static boolean isUsingFallback() {
 		return usingFallback;
+	}
+
+	public static Pair<Boolean, Long> getCompleteness() {
+		return new Pair<>(isComplete, completenessPercent);
 	}
 }
