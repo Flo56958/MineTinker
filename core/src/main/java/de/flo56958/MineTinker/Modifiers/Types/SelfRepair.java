@@ -92,7 +92,8 @@ public class SelfRepair extends Modifier implements Listener {
 		this.healthRepair = config.getInt("HealthRepair", 2);
 		this.useMending = config.getBoolean("UseMending", false);
 
-		this.description = this.description.replace("%amount", "" + this.healthRepair).replace("%chance", "" + this.percentagePerLevel);
+		this.description = this.description.replace("%amount", String.valueOf(this.healthRepair))
+				.replace("%chance", String.valueOf(this.percentagePerLevel));
 	}
 
 	@Override

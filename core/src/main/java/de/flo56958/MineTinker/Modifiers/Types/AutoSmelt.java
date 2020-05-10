@@ -181,7 +181,7 @@ public class AutoSmelt extends Modifier implements Listener {
 			if (v instanceof String) conversions.put(Objects.requireNonNull(Material.getMaterial(k)), Objects.requireNonNull(Triplet.fromString((String) v)));
 		});
 
-		this.description = this.description.replace("%chance", "" + this.percentagePerLevel);
+		this.description = this.description.replace("%chance", String.valueOf(this.percentagePerLevel));
 	}
 
 	/**

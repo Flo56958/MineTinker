@@ -65,7 +65,7 @@ public class ExtraModifier extends Modifier {
 		this.slotCost = 0;
 
 		this.gain = config.getInt("ExtraModifierGain", 1);
-		this.description = this.description.replace("%amount", "" + this.gain);
+		this.description = this.description.replace("%amount", String.valueOf(this.gain));
 	}
 
 	@Override

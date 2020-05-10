@@ -99,7 +99,8 @@ public class Webbed extends Modifier implements Listener {
 		this.durationMultiplier = config.getDouble("DurationMultiplier", 1.2);
 		this.effectAmplifier = config.getInt("EffectAmplifier", 2);
 
-		this.description = this.description.replace("%duration", "" + this.duration).replace("%multiplier", "" + this.durationMultiplier);
+		this.description = this.description.replace("%duration", String.valueOf(this.duration))
+				.replace("%multiplier", String.valueOf(this.durationMultiplier));
 	}
 
 	@EventHandler(ignoreCancelled = true)

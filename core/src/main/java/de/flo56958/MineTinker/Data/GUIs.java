@@ -72,7 +72,7 @@ public class GUIs {
 			modGUI = new GUI();
 			GUI modRecipes = new GUI();
 			GUI.Window currentPage = modGUI.addWindow(6, LanguageManager.getString("GUIs.Modifiers.Title")
-					.replaceFirst("%pageNo", "" + ++pageNo));
+					.replaceFirst("%pageNo", String.valueOf(++pageNo)));
 
 			int i = 0;
 
@@ -234,7 +234,7 @@ public class GUIs {
 
 					if (i % 28 == 0) {
 						currentPage = modGUI.addWindow(6, LanguageManager.getString("GUIs.Modifiers.Title")
-								.replace("%pageNo", "" + ++pageNo));
+								.replace("%pageNo", String.valueOf(++pageNo)));
 
 						addNavigationButtons(currentPage);
 						i = 0;
@@ -248,7 +248,7 @@ public class GUIs {
 			int pageNo = 1;
 			GUI.Window currentPage = configurationsGUI.addWindow(6,
 					LanguageManager.getString("GUIs.ConfigurationEditor.Title")
-					.replace("%pageNo", "" + pageNo++));
+					.replace("%pageNo", String.valueOf(pageNo++)));
 			addNavigationButtons(currentPage);
 			ItemStack reload = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
 			ItemMeta meta = reload.getItemMeta();
@@ -300,7 +300,7 @@ public class GUIs {
 				i++;
 				if (i >= 45) {
 					currentPage = configurationsGUI.addWindow(6, LanguageManager.getString("GUIs.ConfigurationEditor.Title")
-							.replace("%pageNo", "" + pageNo++));
+							.replace("%pageNo", String.valueOf(pageNo++)));
 
 					addNavigationButtons(currentPage);
 
@@ -342,7 +342,7 @@ public class GUIs {
 		GUI configGUI = new GUI();
 		int pageNo = 1;
 		GUI.Window currentPage = configGUI.addWindow(6, LanguageManager.getString("GUIs.ConfigurationEditor.TitleConfigs")
-				.replace("%pageNo", "" + pageNo++).replace("%config", configName));
+				.replace("%pageNo", String.valueOf(pageNo++)).replace("%config", configName));
 		if (config != null) {
 			addNavigationButtons(currentPage);
 
@@ -373,7 +373,7 @@ public class GUIs {
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type")
 								.replace("%type", LanguageManager.getString("DataType.Boolean")));
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
-								.replace("%value", "" + value));
+								.replace("%value", String.valueOf(value)));
 						buttonStackLore.add("");
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.ToggleValue")
 								.replace("%key", LanguageManager.getString("GUIs.LeftClick")));
@@ -408,18 +408,18 @@ public class GUIs {
 							}
 
 							lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
-									.replace("%value", "" + newValue));
+									.replace("%value", String.valueOf(newValue)));
 							meta.setLore(lore);
 							buttonStackForRunnable.setItemMeta(meta);
 
-							broadcastChange(configName + ":" + key, !newValue + "", newValue + "");
+							broadcastChange(configName + ":" + key, String.valueOf(!newValue), String.valueOf(newValue));
 						};
 						currentButton.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, buttonRunnable));
 					} else if (value instanceof Integer) {
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type")
 								.replace("%type", LanguageManager.getString("DataType.Integer")));
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
-								.replace("%value", "" + value));
+								.replace("%value", String.valueOf(value)));
 						buttonStackLore.add("");
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.IncrementValueClick")
 								.replace("%key", LanguageManager.getString("GUIs.LeftClick"))
@@ -455,7 +455,7 @@ public class GUIs {
 								}
 
 								lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
-										.replace("%value", "" + newValue));
+										.replace("%value", String.valueOf(newValue)));
 								meta.setLore(lore);
 								buttonStackForRunnable.setItemMeta(meta);
 							}
@@ -467,7 +467,7 @@ public class GUIs {
 									int newValue = config.getInt(key);
 									saveInt(newValue);
 									setAmount(buttonStackForRunnable, newValue);
-									broadcastChange(configName + ":" + key, oldValue + "", newValue + "");
+									broadcastChange(configName + ":" + key, String.valueOf(oldValue), String.valueOf(newValue));
 								};
 							}
 						}
@@ -490,7 +490,7 @@ public class GUIs {
 								helper.saveInt(in);
 								helper.setAmount(buttonStackForRunnable, in);
 
-								broadcastChange(configName + ":" + key, oldValue + "", in + "");
+								broadcastChange(configName + ":" + key, String.valueOf(oldValue), String.valueOf(in));
 							} catch (NumberFormatException e) {
 								ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUIs.ConfigurationEditor.WrongInput")
 										.replace("%type", LanguageManager.getString("DataType.Integer")).replace("%input", input));
@@ -503,7 +503,7 @@ public class GUIs {
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type")
 								.replace("%type", LanguageManager.getString("DataType.Double")));
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
-								.replace("%value", "" + value));
+								.replace("%value", String.valueOf(value)));
 						buttonStackLore.add("");
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.InsertValue")
 								.replace("%key", LanguageManager.getString("GUIs.LeftClick")));
@@ -529,11 +529,11 @@ public class GUIs {
 								}
 
 								lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
-										.replace("%value", "" + in));
+										.replace("%value", String.valueOf(in)));
 								meta.setLore(lore);
 								buttonStackForRunnable.setItemMeta(meta);
 
-								broadcastChange(configName + ":" + key, oldValue + "", input);
+								broadcastChange(configName + ":" + key, String.valueOf(oldValue), input);
 							} catch (NumberFormatException e) {
 								ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUIs.ConfigurationEditor.WrongInput")
 										.replace("%type", LanguageManager.getString("DataType.Double")).replace("%input", input));
@@ -546,7 +546,7 @@ public class GUIs {
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type")
 								.replace("%type", LanguageManager.getString("DataType.String")));
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
-								.replace("%value", "" + value));
+								.replace("%value", String.valueOf(value)));
 						buttonStackLore.add("");
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.InsertValue")
 								.replace("%key", LanguageManager.getString("GUIs.LeftClick")));
@@ -571,7 +571,7 @@ public class GUIs {
 								lore = new LinkedList<>();
 							}
 							lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
-									.replace("%value", "" + input));
+									.replace("%value", String.valueOf(input)));
 							meta.setLore(lore);
 							buttonStackForRunnable.setItemMeta(meta);
 
@@ -584,7 +584,7 @@ public class GUIs {
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type")
 								.replace("%type", LanguageManager.getString("DataType.List")));
 						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
-								.replace("%value", "" + value));
+								.replace("%value", String.valueOf(value)));
 						for (String line : ChatWriter.splitString(LanguageManager.getString("GUIs.ConfigurationEditor.UnsupportedType"), 30)) {
 							buttonStackLore.add(ChatColor.RED + line);
 						}
@@ -606,7 +606,7 @@ public class GUIs {
 				i++;
 				if (i >= 45) {
 					currentPage = configGUI.addWindow(6, LanguageManager.getString("GUIs.ConfigurationEditor.TitleConfigs")
-							.replace("%pageNo", "" + pageNo++).replace("%config", configName));
+							.replace("%pageNo", String.valueOf(pageNo++)).replace("%config", configName));
 
 					addNavigationButtons(currentPage);
 

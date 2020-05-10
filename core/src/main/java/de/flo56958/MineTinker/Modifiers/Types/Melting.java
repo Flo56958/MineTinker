@@ -81,7 +81,7 @@ public class Melting extends Modifier implements Listener {
 		this.bonusMultiplier = config.getDouble("BonusMultiplier", 0.1);
 		this.cancelBurning = config.getBoolean("CancelBurningOnArmor", true);
 
-		this.description = this.description.replaceAll("%amount", "" + (int) (this.bonusMultiplier * 100));
+		this.description = this.description.replaceAll("%amount", String.valueOf(this.bonusMultiplier * 100));
 	}
 
 	@EventHandler(ignoreCancelled = true)

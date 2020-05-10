@@ -597,10 +597,10 @@ public class ModManager {
 
 		for (int i = 0; i < lore.size(); i++) {
 			String s = lore.get(i);
-			s = s.replaceAll("%EXP%", "" + exp_);
-			s = s.replaceAll("%LEVEL%", "" + level_);
-			s = s.replaceAll("%NEXT_LEVEL_EXP%", "" + nextLevelReq_);
-			s = s.replaceAll("%FREE_SLOTS%", "" + freeSlots_);
+			s = s.replaceAll("%EXP%", String.valueOf(exp_));
+			s = s.replaceAll("%LEVEL%", String.valueOf(level_));
+			s = s.replaceAll("%NEXT_LEVEL_EXP%", String.valueOf(nextLevelReq_));
+			s = s.replaceAll("%FREE_SLOTS%", String.valueOf(freeSlots_));
 
 			s = ChatColor.WHITE + s;
 			lore.set(i, s);
@@ -625,7 +625,8 @@ public class ModManager {
 		for (Modifier m : this.mods) {
 			if (nbt.hasTag(is, m.getKey())) {
 				int modLevel = getModLevel(is, m);
-				String modLevel_ = layout.getBoolean("UseRomans.ModifierLevels") ? ChatWriter.toRomanNumerals(modLevel) : String.valueOf(modLevel);
+				String modLevel_ = layout.getBoolean("UseRomans.ModifierLevels")
+						? ChatWriter.toRomanNumerals(modLevel) : String.valueOf(modLevel);
 
 				String s = this.modifierLayout;
 				s = s.replaceAll("%MODIFIER%", m.getColor() + m.getName());
@@ -658,7 +659,10 @@ public class ModManager {
 						}
 						if (removed) continue;
 						for (Modifier m : this.mods) {
-							if (s.contains(m.getColor() + m.getName())) {
+							if (s.matches("[§f]{0,2}" +
+									this.modifierLayout.replace("%MODIFIER%",
+											"[a-zA-Z0-9&§]*" + m.getName())
+											.replace("%MODLEVEL%", "[a-zA-Z0-9&§]+?"))) {
 								toRemove.add(s);
 								break;
 							}

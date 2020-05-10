@@ -371,8 +371,11 @@ public abstract class Modifier {
 
 			ChatWriter.log(false, player.getDisplayName() + " created a " + getName() + "-Modifiers!");
 		} else {
-			ChatWriter.sendActionBar(player, ChatColor.RED + LanguageManager.getString("Modifier.Enchantable.LevelsRequired", player).replace("%amount", "" + getEnchantCost()));
-			ChatWriter.log(false, player.getDisplayName() + " tried to create a " + getName() + "-Modifiers but had not enough levels!");
+			ChatWriter.sendActionBar(player, ChatColor.RED
+					+ LanguageManager.getString("Modifier.Enchantable.LevelsRequired", player)
+					.replace("%amount", String.valueOf(getEnchantCost())));
+			ChatWriter.log(false, player.getDisplayName() + " tried to create a "
+					+ getName() + "-Modifiers but had not enough levels!");
 		}
 	}
 }

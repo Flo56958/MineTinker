@@ -92,7 +92,8 @@ public class Poisonous extends Modifier implements Listener {
 		this.effectAmplifier = config.getInt("EffectAmplifier", 2);
 		this.dropPoisonedMeat = config.getBoolean("DropRottenMeatIfPoisoned", true);
 
-		this.description = this.description.replace("%duration", "" + this.duration).replace("%multiplier", "" + this.durationMultiplier);
+		this.description = this.description.replace("%duration", String.valueOf(this.duration))
+				.replace("%multiplier", String.valueOf(this.durationMultiplier));
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -116,8 +117,10 @@ public class Poisonous extends Modifier implements Listener {
 
 		int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (level - 1)));
 		int amplifier = this.effectAmplifier * (level - 1);
-		((LivingEntity) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration, amplifier, false, false));
-		ChatWriter.log(false, player.getDisplayName() + " triggered Poisonous on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+		((LivingEntity) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration,
+				amplifier, false, false));
+		ChatWriter.log(false, player.getDisplayName() + " triggered Poisonous on "
+				+ ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 	}
 
 	@EventHandler

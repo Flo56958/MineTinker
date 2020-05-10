@@ -91,7 +91,8 @@ public class Lifesteal extends Modifier implements Listener {
 		this.percentPerLevel = config.getInt("PercentOfDamagePerLevel", 10);
 		this.percentToTrigger = config.getInt("PercentToTrigger", 50);
 
-		this.description = this.description.replace("%amount", "" + this.percentPerLevel).replace("%chance", "" + this.percentToTrigger);
+		this.description = this.description.replace("%amount", String.valueOf(this.percentPerLevel))
+				.replace("%chance", String.valueOf(this.percentToTrigger));
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH) //because of Melting

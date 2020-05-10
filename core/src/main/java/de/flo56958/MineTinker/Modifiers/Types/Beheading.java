@@ -81,7 +81,7 @@ public class Beheading extends Modifier implements Listener {
 		init(Material.WITHER_SKELETON_SKULL, true);
 
 		this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
-		this.description = this.description.replace("%chance", "" + this.percentagePerLevel);
+		this.description = this.description.replace("%chance", String.valueOf(this.percentagePerLevel));
 	}
 
 	/**

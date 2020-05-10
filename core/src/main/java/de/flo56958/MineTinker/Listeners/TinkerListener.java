@@ -72,7 +72,7 @@ public class TinkerListener implements Listener {
 				LanguageManager.getString("TinkerListener.ModifierApply", player)
 						.replace("%tool", ChatWriter.getDisplayName(tool) + ChatColor.WHITE)
 						.replace("%mod", mod.getColor() + mod.getName() + ChatColor.WHITE)
-						.replace("%slots", "" + event.getSlotsRemaining()));
+						.replace("%slots", String.valueOf(event.getSlotsRemaining())));
 		ChatWriter.log(false, player.getDisplayName() + " modded " + ChatWriter.getDisplayName(tool)
 				+ ChatColor.GRAY + " (" + tool.getType().toString() + ") with " + mod.getColor() + mod.getName()
 				+ ChatColor.GRAY + " " + modManager.getModLevel(tool, mod) + "!");
@@ -223,7 +223,7 @@ public class TinkerListener implements Listener {
 			ChatWriter.sendActionBar(player,
 					LanguageManager.getString("TinkerListener.ToolLevelUp", player)
 							.replace("%tool", ChatWriter.getDisplayName(tool))
-							.replace("%level", "" + modManager.getLevel(tool)));
+							.replace("%level", String.valueOf(modManager.getLevel(tool))));
 			ChatWriter.log(false, player.getDisplayName() + " leveled up " + ChatWriter.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
 		}
 

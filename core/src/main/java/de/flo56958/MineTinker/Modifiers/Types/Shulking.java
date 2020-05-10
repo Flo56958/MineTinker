@@ -96,7 +96,7 @@ public class Shulking extends Modifier implements Listener {
 		this.duration = config.getInt("Duration", 20);
 		this.effectAmplifier = config.getInt("EffectAmplifier", 2);
 
-		this.description = this.description.replace("%duration", "" + this.duration);
+		this.description = this.description.replace("%duration", String.valueOf(this.duration));
 	}
 
 	@EventHandler(ignoreCancelled = true)

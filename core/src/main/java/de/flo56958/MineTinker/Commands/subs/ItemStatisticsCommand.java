@@ -46,12 +46,12 @@ public class ItemStatisticsCommand implements SubCommand {
 					.replaceFirst("%toolname", ChatWriter.getDisplayName(stack) + ChatColor.WHITE
 							+ " (" + stack.getType().toString() + ")"));
 			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Level")
-					.replaceFirst("%level", "" + modManager.getLevel(stack)));
+					.replaceFirst("%level", String.valueOf(modManager.getLevel(stack))));
 			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Exp")
-					.replaceFirst("%current", "" + modManager.getExp(stack))
-					.replaceFirst("%nextlevel", "" + modManager.getNextLevelReq(modManager.getLevel(stack))));
+					.replaceFirst("%current", String.valueOf(modManager.getExp(stack)))
+					.replaceFirst("%nextlevel", String.valueOf(modManager.getNextLevelReq(modManager.getLevel(stack)))));
 			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.FreeSlots")
-					.replaceFirst("%slots", "" + modManager.getFreeSlots(stack)));
+					.replaceFirst("%slots", String.valueOf(modManager.getFreeSlots(stack))));
 			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Modifiers"));
 
 			for (Modifier mod : modManager.getAllowedMods()) {

@@ -133,7 +133,7 @@ public class Tanky extends Modifier implements Listener {
 
 		init(Material.OBSIDIAN, true);
 
-		this.description = this.description.replace("%amount", "" + this.healthPerLevel / 2.0);
+		this.description = this.description.replace("%amount", String.valueOf(this.healthPerLevel / 2.0));
 	}
 
 	@EventHandler
