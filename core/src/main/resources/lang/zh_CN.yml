@@ -1,4 +1,8 @@
 Alert.OnItemBreak: "%RED%看上去你的工具被用坏了! 已以1耐久返还."
+Alert.OnItemGrind: "%RED%砂轮不能用于MineTinker物品."
+Alert.ToolUpgradeFailure: "%RED%升级失败!"
+Alert.InternalError: "%RED%发生内部错误!"
+Alert.OnCooldown: "%RED%技能尚在冷却!"
 
 StartUp.Commands: "指令已注册!"
 StartUp.BuildersWands: "已启用建造工具杖!"
@@ -54,6 +58,7 @@ Commands.Failure.Cause.PlayerOnlyCommand: "该命令仅能由玩家执行!"
 Commands.Failure.Cause.UnknownCommand: "未知命令!"
 Commands.Failure.Cause.NoPermission: "你没有权限!"
 Commands.Failure.Cause.InvalidItem: "非法物品!"
+Commands.Failure.Cause.NameNotAllowed: "这个名字违规了！"
 
 GUI.ButtonAction.REQUEST_INPUT: "你需要手动为%data键入信息. 你在聊天框中发送的下一个消息会被MineTinker截取作为信息录入."
 
@@ -71,6 +76,7 @@ GUIs.Modifiers.IncompatibleWith: "不兼容模块:"
 GUIs.Modifiers.EnchantCost: "附魔花费: %WHITE%%enchantCost"
 GUIs.Modifiers.ClickToRecipe: "%key以展示合成配方."
 GUIs.Modifiers.BlockToEnchant: "使用%mat对%block%key以附魔物品."
+GUIs.Modifiers.SlotCost: "每级所需空余槽位: %amount"
 GUIs.ConfigurationEditor.ReloadPlugin: "重载MineTinker"
 GUIs.ConfigurationEditor.Change: "已将%key从%old更改为%new!"
 GUIs.ConfigurationEditor.Type: "种类: %type"
@@ -97,13 +103,19 @@ GUIs.ConfigurationEditor.config.logging.metrics: "使用bStats进行匿名统计
 
 ModManager.RegisterModifier: "%GREEN%已从%plugin插件注册了%mod%GREEN%模块."
 ModManager.UnregisterModifier: "%GREEN%已从%plugin插件注销了%mod%GREEN%模块."
+ModManager.IncompatibilityWrongSyntax: "在模块不兼容列表的第%line行发现语法或模块名称错误."
 
 ModifierFailCause.IncompatibleModifiers: "模块冲突!"
 ModifierFailCause.InvalidToolType: "无效工具!"
 ModifierFailCause.MaximumSlotsReached: "可用槽位已达最大值!"
 ModifierFailCause.ModMaxLevel: "模块等级已满!"
-ModifierFailCause.NoFreeSlots: "无可用空余槽位!"
+ModifierFailCause.NoFreeSlots: "物品上没有足够的槽位!"
 ModifierFailCause.NoPermission: "没有权限!"
+ModifierFailCause.PlayerFailure: "模块安装失败!"
+
+GrindStone.PossibleSlotsAfterGrind: "砂磨后可能的空余槽位: %amount"
+
+ActionBar.ExpGain: "已获取%amount经验!"
 
 LanguageManager.LoadedLanguage: "语言管理器已成功加载%lang语言!"
 
@@ -153,14 +165,25 @@ Modifier:
     DescriptionModifierItem: "引雷模块"
   Directing:
     Name: "导向"
-    Description: "生物掉落物直达背包, 无需捡起!"
+    Description: "被杀死的生物或被破坏的方块的掉落物将会直接进入背包!"
     ModifierItemName: "强化指南针"
     DescriptionModifierItem: "导向模块"
+  Drilling:
+    Name: "打钻"
+    Description: "每级增加一格方块的挖掘深度!"
+    ModifierItemName: "强化钻头"
+    DescriptionModifierItem: "打钻模块"
   Ender:
     Name: "末影"
     Description: "箭矢落地时按住潜行将传送你至其落点!"
     ModifierItemName: "特化末影之眼"
     DescriptionModifierItem: "末影模块"
+    TeleportationProhibited: "你无法与该玩家交换位置!"
+  Evasive:
+    Name: "逃脱"
+    Description: "有几率躲避当前攻击(%chance/级) -- 潜行时为%sneakX, 疾跑时为%sprintX, PvP时为%pvpX."
+    ModifierItemName: "疾羽"
+    DescriptionModifierItem: "逃脱模块"
   Experienced:
     Name: "经验加成"
     Description: "使用工具时将有几率掉落更多经验."
@@ -182,6 +205,11 @@ Modifier:
     Description: "让敌人亮起来吧!"
     ModifierItemName: "末影荧石"
     DescriptionModifierItem: "发光模块"
+  Hardened:
+    Name: "硬化"
+    Description: "将你的护甲强化%aamount护甲值与%tamount韧性/级!"
+    ModifierItemName: "钻石精炼铁"
+    DescriptionModifierItem: "硬化模块"
   Haste:
     Name: "急迫"
     Description: "工具可以更快速地破坏方块!"
