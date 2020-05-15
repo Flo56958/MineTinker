@@ -1,4 +1,8 @@
 Alert.OnItemBreak: "%RED%Похоже, что Ваш инструмент сломан! Возвращение с 1 ед. прочности."
+Alert.OnItemGrind: "%RED%Шлифовальный камень не используется для этого предмета!"
+Alert.ToolUpgradeFailure: "%RED%Улучшение не состоялось!"
+Alert.InternalError: "%RED%Произошла внутренняя ошибка!"
+Alert.OnCooldown: "%RED%Способность ещё не готова!"
 
 StartUp.Commands: "Команды зарегистрированы!"
 StartUp.BuildersWands: "Посохи Строителя включены!"
@@ -54,6 +58,7 @@ Commands.Failure.Cause.PlayerOnlyCommand: "Команда только для И
 Commands.Failure.Cause.UnknownCommand: "Неизвестная команда!"
 Commands.Failure.Cause.NoPermission: "Нет прав!"
 Commands.Failure.Cause.InvalidItem: "Неверный предмет!"
+Commands.Failure.Cause.NameNotAllowed: "Имя не поддерживается!"
 
 GUI.ButtonAction.REQUEST_INPUT: "Для %data требуется ввести данные. Следующее Ваше сообщение в чат будет будет услышано MineTinker."
 
@@ -71,6 +76,7 @@ GUIs.Modifiers.IncompatibleWith: "Несовместимо с:"
 GUIs.Modifiers.EnchantCost: "Стоимость зачарования: %WHITE%%enchantCost"
 GUIs.Modifiers.ClickToRecipe: "%key показать рецепты крафта."
 GUIs.Modifiers.BlockToEnchant: "%key с %mat на %block, чтобы зачаровать."
+GUIs.Modifiers.SlotCost: "Нужно свободных слотов за уровень: %amount"
 GUIs.ConfigurationEditor.ReloadPlugin: "Перезагрузка MineTinker"
 GUIs.ConfigurationEditor.Change: "Изменено %key с %old на %new!"
 GUIs.ConfigurationEditor.Type: "Тип: %type"
@@ -97,13 +103,19 @@ GUIs.ConfigurationEditor.config.logging.metrics: "bStats-Metrics собирае�
 
 ModManager.RegisterModifier: "%GREEN%Зарегистрировано %mod %GREEN%модификатор из %plugin."
 ModManager.UnregisterModifier: "%GREEN%Не зарегистрировано %mod %GREEN%модификатор из %plugin."
+ModManager.IncompatibilityWrongSyntax: "Неверный синтаксис строки или название модификатора были найдены в Modifier Incompatibilities в строке '%line'."
 
 ModifierFailCause.IncompatibleModifiers: "Несовместимые модификаторы!"
 ModifierFailCause.InvalidToolType: "Неверный инструмент!"
 ModifierFailCause.MaximumSlotsReached: "Достигнуто максимальное количество слотов!"
 ModifierFailCause.ModMaxLevel: "Достигнут максимальный уровень модификатора!"
-ModifierFailCause.NoFreeSlots: "Отсутствуют свободные слоты!"
+ModifierFailCause.NoFreeSlots: "В предмете недостаточно свободных слотов!"
 ModifierFailCause.NoPermission: "Недостаточно прав!"
+ModifierFailCause.PlayerFailure: "Игроку не удалось наложить модификацию!"
+
+GrindStone.PossibleSlotsAfterGrind: "Возможных свободных слотов: %amount"
+
+ActionBar.ExpGain: "%amount опыта получено!"
 
 LanguageManager.LoadedLanguage: "Менеджер языков загружен %lang успешно!"
 
@@ -156,11 +168,22 @@ Modifier:
     Description: "Добыча с мобов идёт прямо в Ваш инвентарь!"
     ModifierItemName: "Улучшенный компас"
     DescriptionModifierItem: "Модификатор Направления"
+  Drilling:
+    Name: "Дрель"
+    Description: "Копает на один блок глубже за уровень!"
+    ModifierItemName: "Усиленная дрель"
+    DescriptionModifierItem: "Модификатор Дрели"
   Ender:
     Name: "Телепортация"
     Description: "Телепортирует на место упавшей стрелы, работает только вприсядку"
     ModifierItemName: "Особое Око Эндера"
     DescriptionModifierItem: "Модификатор Телепортации"
+    TeleportationProhibited: "Нельзя поменяться местами с этим игроком!"
+  Evasive:
+    Name: "Уклонение"
+    Description: "Шанс увернуться от атак (%chance за уровень) - %sneakX при приседании, %sprintX при беге, %pvpX во время ПвП."
+    ModifierItemName: "Прыткое перо"
+    DescriptionModifierItem: "Модификатор Уклонения"
   Experienced:
     Name: "Опыт"
     Description: "Инструмент имеет %chance% шанс выронить %amount опыта при использовании"
@@ -182,6 +205,11 @@ Modifier:
     Description: "Подсвечивает задетых врагов!"
     ModifierItemName: "Светокамень Эндера"
     DescriptionModifierItem: "Модификатор Свечения"
+  Hardened:
+    Name: "Закалка"
+    Description: "Увеличивает броню на  %aamount ,а твёрдость на %tamount очков за уровень!"
+    ModifierItemName: "Алмасталь"
+    DescriptionModifierItem: "Модификатор Закалки"
   Haste:
     Name: "Скорость"
     Description: "Быстрее ломает, быстрее стреляет из арбалета!"
