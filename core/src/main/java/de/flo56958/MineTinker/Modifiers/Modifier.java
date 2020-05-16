@@ -37,7 +37,7 @@ public abstract class Modifier {
 	private String name;
 	private ChatColor color;
 	private int maxLvl;
-	private ItemStack modItem;
+	private ItemStack modItem = new ItemStack(Material.BEDROCK);
 	protected int slotCost;
 
 	protected int customModelData = -1;
@@ -165,7 +165,7 @@ public abstract class Modifier {
 		this.maxLvl = config.getInt("MaxLevel");
 		this.slotCost = config.getInt("SlotCost", 1);
 
-		if (config.getBoolean("OverrideLanguagesystem", false)) { //use the config values instead
+		if (!source.equals(Main.getPlugin()) || config.getBoolean("OverrideLanguagesystem", false)) { //use the config values instead
 			this.name = config.getString("Name", "");
 			this.description = ChatWriter.addColors(config.getString("Description", ""));
 
@@ -325,6 +325,13 @@ public abstract class Modifier {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public boolean equals(Object o) {
+		if (o instanceof Modifier) {
+			return ((Modifier) o).getKey().equals(this.getKey());
+		}
+		return false;
 	}
 
 	// ---------------------- Enchantable Stuff ----------------------

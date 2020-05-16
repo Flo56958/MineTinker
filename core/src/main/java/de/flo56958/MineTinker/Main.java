@@ -45,12 +45,13 @@ public class Main extends JavaPlugin {
 		LanguageManager.reload(); //Load Language system
 
 		ConfigurationManager.reload();
-		BuildersWandListener.init();
-
-		ChatWriter.reload();
 
 		ModManager.instance();
 		addCoreMods();
+
+		BuildersWandListener.init();
+
+		ChatWriter.reload();
 
 		if (getConfig().getBoolean("PluginIncompatibility.Check")) {
 			incompatibilityCheck();

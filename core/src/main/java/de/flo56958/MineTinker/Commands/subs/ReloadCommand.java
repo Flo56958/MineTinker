@@ -10,19 +10,18 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.Utilities.Updater;
-import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import de.flo56958.MineTinker.api.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ReloadCommand implements SubCommand {
 	@Override
@@ -38,27 +37,7 @@ public class ReloadCommand implements SubCommand {
 		ChatWriter.sendMessage(sender, ChatColor.WHITE,
 				LanguageManager.getString("Commands.Reload.Recipes", player));
 
-		Iterator<Recipe> it = NBTUtils.getHandler().getRecipeIterator();
-		//TODO: Find a different way to remove recipes! Bukkit is bugged atm
-
-		while (it.hasNext()) {
-			ItemStack result = it.next().getResult();
-
-			if (result.getType() != Material.EXPERIENCE_BOTTLE && result.getType() != Material.NETHER_STAR) {
-				//Modifieritems
-				if (ModManager.instance().isModifierItem(result)) {
-					it.remove();
-					continue;
-				}
-
-				//Builderswands
-				if (ModManager.instance().isWandViable(result)) {
-					it.remove();
-				}
-			}
-		}
-
-		ModManager.instance().recipe_Namespaces.clear();
+		ModManager.instance().removeRecipes();
 
 		ChatWriter.sendMessage(sender, ChatColor.WHITE,
 				LanguageManager.getString("Commands.Reload.Configs", player));

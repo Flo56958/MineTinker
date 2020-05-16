@@ -1,5 +1,6 @@
 package de.flo56958.MineTinker.Modifiers;
 
+import de.flo56958.MineTinker.Data.GUIs;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.ToolLevelUpEvent;
 import de.flo56958.MineTinker.Listeners.ActionBarListener;
@@ -23,6 +24,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
@@ -113,6 +115,8 @@ public class ModManager {
 		config = Main.getPlugin().getConfig();
 		layout = ConfigurationManager.getConfig("layout.yml");
 
+		removeRecipes();
+
 		for (Modifier m : allMods) {
 			m.reload();
 
@@ -201,6 +205,8 @@ public class ModManager {
 				}
 			}
 
+			if (mod1 == null || mod2 == null) continue;
+
 			incompatibilities.get(mod1).add(mod2);
 			incompatibilities.get(mod2).add(mod1);
 		}
@@ -244,24 +250,29 @@ public class ModManager {
 	 *
 	 * @param mod the modifier instance
 	 */
-	public void register(Modifier mod) {
+
+	public boolean register(Modifier mod) {
 		if (!allMods.contains(mod)) {
 			mod.reload();
 			allMods.add(mod);
 			incompatibilities.putIfAbsent(mod, new HashSet<>());
 			if(mod.isAllowed()) {
 				mods.add(mod);
+				mod.registerCraftingRecipe();
 			}
 			if (mod instanceof Listener) { //Enable Events
 				Bukkit.getPluginManager().registerEvents((Listener) mod, Main.getPlugin());
 			}
 			if(!mod.getSource().equals(Main.getPlugin())) {
-				reload(); //To get incompatibilities
+				GUIs.reload();
+				//reload(); //TODO: To get incompatibilities
 			}
 			ChatWriter.logColor(LanguageManager.getString("ModManager.RegisterModifier")
 					.replace("%mod", mod.getColor() + mod.getName())
 					.replace("%plugin", mod.getSource().getName()));
+			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -872,6 +883,7 @@ public class ModManager {
 	 * @return if the ItemStack is viable as MineTinker-Modifier-Item
 	 */
 	public boolean isModifierItem(ItemStack item) {
+		if (item == null) return false;
 		return nbt.hasTag(item, "modifierItem")
 				|| item.getType().equals(Experienced.instance().getModItem().getType())
 				|| item.getType().equals(ExtraModifier.instance().getModItem().getType());
@@ -1049,5 +1061,31 @@ public class ModManager {
 			default:
 				return null;
 		}
+	}
+
+	public void removeRecipes() {
+		Iterator<Recipe> it = Bukkit.getServer().recipeIterator();
+		//TODO: Find a different way to remove recipes! Bukkit is bugged atm
+
+		while (it.hasNext()) {
+			ItemStack result = it.next().getResult();
+
+
+			if (result.getType() != Material.EXPERIENCE_BOTTLE && result.getType() != Material.NETHER_STAR) {
+				//Modifieritems
+				if (ModManager.instance().isModifierItem(result)) {
+					System.out.println("Removed " + result);
+					it.remove();
+					continue;
+				}
+
+				//Builderswands
+				if (ModManager.instance().isWandViable(result)) {
+					it.remove();
+				}
+			}
+		}
+
+		ModManager.instance().recipe_Namespaces.clear();
 	}
 }
