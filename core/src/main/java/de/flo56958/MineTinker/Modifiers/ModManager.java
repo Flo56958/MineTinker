@@ -72,7 +72,7 @@ public class ModManager {
 	/**
 	 * stores the list of all MineTinker modifiers
 	 */
-	private final ArrayList<Modifier> allMods = new ArrayList<>();
+	private final HashSet<Modifier> allMods = new HashSet<>();
 	/**
 	 * stores the list of allowed modifiers
 	 */
@@ -87,8 +87,7 @@ public class ModManager {
 	/**
 	 * Class constructor (no parameters)
 	 */
-	private ModManager() {
-	}
+	private ModManager() {}
 
 	/**
 	 * get the instance that contains the modifier list (VERY IMPORTANT)
@@ -118,13 +117,12 @@ public class ModManager {
 			m.reload();
 
 			if (m.isAllowed()) {
-				register(m);
+				mods.add(m);
 			} else {
-				unregister(m);
+				mods.remove(m);
 			}
 		}
 
-		allMods.sort(Comparator.comparing(Modifier::getName));
 		mods.sort(Comparator.comparing(Modifier::getName));
 
 		this.ToolIdentifier = config.getString("ToolIdentifier");
@@ -137,7 +135,7 @@ public class ModManager {
 		//get Modifier incompatibilities
 		incompatibilities.clear();
 		for (Modifier m : this.allMods) {
-			incompatibilities.put(m, new HashSet<>());
+			incompatibilities.putIfAbsent(m, new HashSet<>());
 		}
 		FileConfiguration modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
 		modifierconfig.options().copyDefaults(true);
@@ -202,10 +200,6 @@ public class ModManager {
 					mod2 = m;
 				}
 			}
-			if (mod1 == null || mod2 == null) {
-				Bukkit.getConsoleSender().sendMessage(LanguageManager.getString("ModManager.IncompatibilityWrongSyntax").replace("&line", s));
-				continue;
-			}
 
 			incompatibilities.get(mod1).add(mod2);
 			incompatibilities.get(mod2).add(mod1);
@@ -242,59 +236,6 @@ public class ModManager {
 	 * checks and loads all modifiers with configurations settings into memory
 	 */
 	private void init() {
-		allMods.add(AntiArrowPlating.instance());
-		allMods.add(AntiBlastPlating.instance());
-		allMods.add(Insulating.instance());
-		allMods.add(Aquaphilic.instance());
-		allMods.add(AutoSmelt.instance());
-		allMods.add(Beheading.instance());
-		allMods.add(Berserk.instance());
-		allMods.add(Channeling.instance());
-		allMods.add(Directing.instance());
-		allMods.add(Drilling.instance());
-		allMods.add(Ender.instance());
-		allMods.add(Evasive.instance());
-		allMods.add(Experienced.instance());
-		allMods.add(ExtraModifier.instance());
-		allMods.add(Fiery.instance());
-		allMods.add(Freezing.instance());
-		allMods.add(Glowing.instance());
-		allMods.add(Hardened.instance());
-		allMods.add(Haste.instance());
-		allMods.add(Infinity.instance());
-		allMods.add(KineticPlating.instance());
-		allMods.add(Knockback.instance());
-		allMods.add(Lifesteal.instance());
-		allMods.add(LightWeight.instance());
-		allMods.add(Luck.instance());
-		allMods.add(Magical.instance());
-        allMods.add(Melting.instance());
-		allMods.add(MultiShot.instance());
-		allMods.add(Photosynthesis.instance());
-		allMods.add(Poisonous.instance());
-		allMods.add(Power.instance());
-		allMods.add(Propelling.instance());
-		allMods.add(Protecting.instance());
-		allMods.add(Reinforced.instance());
-		allMods.add(SelfRepair.instance());
-		allMods.add(Sharpness.instance());
-		allMods.add(Shulking.instance());
-		allMods.add(SilkTouch.instance());
-		allMods.add(Smite.instance());
-		allMods.add(Soulbound.instance());
-		allMods.add(Speedy.instance());
-		allMods.add(SpidersBane.instance());
-		allMods.add(Sweeping.instance());
-		allMods.add(Tanky.instance());
-		allMods.add(Thorned.instance());
-		allMods.add(Timber.instance());
-		allMods.add(Webbed.instance());
-
-		if (NBTUtils.isOneFourteenCompatible()) {
-			allMods.add(Piercing.instance());
-		}
-
-		ConfigurationManager.reload(); //To load all Modifier-Configurations in
 		reload();
 	}
 
@@ -304,14 +245,22 @@ public class ModManager {
 	 * @param mod the modifier instance
 	 */
 	public void register(Modifier mod) {
-		if (!mods.contains(mod)) {
-			mods.add(mod);
+		if (!allMods.contains(mod)) {
+			mod.reload();
+			allMods.add(mod);
+			incompatibilities.putIfAbsent(mod, new HashSet<>());
+			if(mod.isAllowed()) {
+				mods.add(mod);
+			}
 			if (mod instanceof Listener) { //Enable Events
 				Bukkit.getPluginManager().registerEvents((Listener) mod, Main.getPlugin());
 			}
+			if(!mod.getSource().equals(Main.getPlugin())) {
+				reload(); //To get incompatibilities
+			}
 			ChatWriter.logColor(LanguageManager.getString("ModManager.RegisterModifier")
 					.replace("%mod", mod.getColor() + mod.getName())
-					.replace("%plugin", Main.getPlugin().getName()));
+					.replace("%plugin", mod.getSource().getName()));
 		}
 	}
 
@@ -321,7 +270,9 @@ public class ModManager {
 	 * @param mod the modifier instance
 	 */
 	public void unregister(Modifier mod) {
+		allMods.remove(mod);
 		mods.remove(mod);
+		incompatibilities.remove(mod);
 		if (mod instanceof Listener) { //Disable Events
 			HandlerList.unregisterAll((Listener) mod);
 		}
@@ -345,11 +296,11 @@ public class ModManager {
 	 * @return the modifier list
 	 */
 	public List<Modifier> getAllowedMods() {
-		return this.mods;
+		return new ArrayList<>(this.mods);
 	}
 
-	public List<Modifier> getAllMods() {
-		return this.allMods;
+	public HashSet<Modifier> getAllMods() {
+		return new HashSet<>(this.allMods);
 	}
 
 	/**
@@ -358,12 +309,12 @@ public class ModManager {
 	 * @param is  the item to add the modifier to
 	 * @param mod the modifier to add
 	 */
-	void addMod(ItemStack is, Modifier mod) {
+	void addMod(ItemStack is, @NotNull Modifier mod) {
 		nbt.setInt(is, mod.getKey(), getModLevel(is, mod) + 1);
 		rewriteLore(is);
 	}
 
-	public boolean addMod(Player player, ItemStack item, Modifier modifier, boolean fromCommand, boolean fromRandom, boolean silent) {
+	public boolean addMod(Player player, ItemStack item, @NotNull Modifier modifier, boolean fromCommand, boolean fromRandom, boolean silent) {
 		if (!modifier.getKey().equals(ExtraModifier.instance().getKey())) {
 			if (!modifier.checkAndAdd(player, item,
 					modifier.getKey().toLowerCase().replace("-", ""), fromCommand, fromRandom, silent)) {
@@ -402,7 +353,7 @@ public class ModManager {
 	 * @param is  the item
 	 * @param mod the modifier
 	 */
-	public int getModLevel(ItemStack is, Modifier mod) {
+	public int getModLevel(ItemStack is, @NotNull Modifier mod) {
 		return nbt.getInt(is, mod.getKey());
 	}
 
@@ -480,7 +431,7 @@ public class ModManager {
 	 * @param mod  The modifier that is checked in tool
 	 * @return if the tool has the mod
 	 */
-	public boolean hasMod(ItemStack tool, Modifier mod) {
+	public boolean hasMod(ItemStack tool, @NotNull Modifier mod) {
 		return mod.isAllowed() && nbt.hasTag(tool, mod.getKey());
 	}
 
@@ -798,7 +749,7 @@ public class ModManager {
 		return true;
 	}
 
-	public void addArmorAttributes(ItemStack is) {
+	public void addArmorAttributes(@NotNull ItemStack is) {
 		double armor = 0.0d;
 		double toughness = 0.0d;
 
@@ -1005,7 +956,7 @@ public class ModManager {
 	 * @param tool the Tool
 	 * @return false: if broken; true: if enough durability
 	 */
-	public boolean durabilityCheck(Cancellable cancellable, Player player, ItemStack tool) {
+	public boolean durabilityCheck(Cancellable cancellable, Player player, @NotNull ItemStack tool) {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta instanceof Damageable) {
@@ -1024,7 +975,7 @@ public class ModManager {
 		return true;
 	}
 
-	public static @Nullable Pair<@Nullable Material, @NotNull Integer> itemUpgrader(Material tool, Material material) {
+	public static @Nullable Pair<@Nullable Material, @NotNull Integer> itemUpgrader(@NotNull Material tool, Material material) {
 		String name = tool.name().split("_")[0].toLowerCase();
 
 		if (name.equals("wooden") && material.name().contains("PLANKS")
@@ -1061,7 +1012,7 @@ public class ModManager {
 		return null;
 	}
 
-	private static Material getToolUpgrade(Material material, String tool) {
+	private static @Nullable Material getToolUpgrade(@NotNull Material material, String tool) {
 		switch (material) {
 			case ACACIA_PLANKS:
 			case BIRCH_PLANKS:
@@ -1083,7 +1034,7 @@ public class ModManager {
 		}
 	}
 
-	private static Material getArmorUpgrade(Material material, String tool) {
+	private static @Nullable Material getArmorUpgrade(@NotNull Material material, String tool) {
 		switch (material) {
 			case LEATHER:
 				return Material.getMaterial("LEATHER_" + tool);

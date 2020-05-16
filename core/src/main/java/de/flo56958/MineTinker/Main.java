@@ -5,8 +5,7 @@ import de.flo56958.MineTinker.Data.GUIs;
 import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Listeners.*;
 import de.flo56958.MineTinker.Modifiers.ModManager;
-import de.flo56958.MineTinker.Modifiers.Types.Drilling;
-import de.flo56958.MineTinker.Modifiers.Types.Power;
+import de.flo56958.MineTinker.Modifiers.Types.*;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
@@ -51,6 +50,7 @@ public class Main extends JavaPlugin {
 		ChatWriter.reload();
 
 		ModManager.instance();
+		addCoreMods();
 
 		if (getConfig().getBoolean("PluginIncompatibility.Check")) {
 			incompatibilityCheck();
@@ -127,6 +127,61 @@ public class Main extends JavaPlugin {
 
 		if (getConfig().getBoolean("CheckForUpdates")) {
 			Bukkit.getScheduler().scheduleAsyncDelayedTask(this, Updater::checkForUpdate, 20);
+		}
+	}
+
+	private void addCoreMods() {
+		ModManager modManager = ModManager.instance();
+		modManager.register(AntiArrowPlating.instance());
+		modManager.register(AntiBlastPlating.instance());
+		modManager.register(Insulating.instance());
+		modManager.register(Aquaphilic.instance());
+		modManager.register(AutoSmelt.instance());
+		modManager.register(Beheading.instance());
+		modManager.register(Berserk.instance());
+		modManager.register(Channeling.instance());
+		modManager.register(Directing.instance());
+		modManager.register(Drilling.instance());
+		modManager.register(Ender.instance());
+		modManager.register(Evasive.instance());
+		modManager.register(Experienced.instance());
+		modManager.register(ExtraModifier.instance());
+		modManager.register(Fiery.instance());
+		modManager.register(Freezing.instance());
+		modManager.register(Glowing.instance());
+		modManager.register(Hardened.instance());
+		modManager.register(Haste.instance());
+		modManager.register(Infinity.instance());
+		modManager.register(KineticPlating.instance());
+		modManager.register(Knockback.instance());
+		modManager.register(Lifesteal.instance());
+		modManager.register(LightWeight.instance());
+		modManager.register(Luck.instance());
+		modManager.register(Magical.instance());
+		modManager.register(Melting.instance());
+		modManager.register(MultiShot.instance());
+		modManager.register(Photosynthesis.instance());
+		modManager.register(Poisonous.instance());
+		modManager.register(Power.instance());
+		modManager.register(Propelling.instance());
+		modManager.register(Protecting.instance());
+		modManager.register(Reinforced.instance());
+		modManager.register(SelfRepair.instance());
+		modManager.register(Sharpness.instance());
+		modManager.register(Shulking.instance());
+		modManager.register(SilkTouch.instance());
+		modManager.register(Smite.instance());
+		modManager.register(Soulbound.instance());
+		modManager.register(Speedy.instance());
+		modManager.register(SpidersBane.instance());
+		modManager.register(Sweeping.instance());
+		modManager.register(Tanky.instance());
+		modManager.register(Thorned.instance());
+		modManager.register(Timber.instance());
+		modManager.register(Webbed.instance());
+
+		if (NBTUtils.isOneFourteenCompatible()) {
+			modManager.register(Piercing.instance());
 		}
 	}
 

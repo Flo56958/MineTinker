@@ -1,11 +1,12 @@
 package de.flo56958.MineTinker.Utilities;
 
 import de.flo56958.MineTinker.Main;
-import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,10 +42,6 @@ public class ConfigurationManager {
 	}
 
 	public static void reload() {
-		//clean up before reload
-		configs.clear();
-		configsFolder.clear();
-
 		loadConfig("", "layout.yml");
 
 		loadConfig("", "BuildersWand.yml");
@@ -52,14 +49,6 @@ public class ConfigurationManager {
 		loadConfig("", "Elytra.yml");
 
 		loadConfig("", "Modifiers.yml");
-
-		for (Modifier modifier : ModManager.instance().getAllMods()) {
-			if (modifier.getFileName().isEmpty()) {
-				continue;
-			}
-
-			loadConfig("Modifiers" + File.separator, modifier.getFileName());
-		}
 
 		//importing Main configuration into system
 		configs.put("config.yml", Main.getPlugin().getConfig());
@@ -74,7 +63,7 @@ public class ConfigurationManager {
 	 */
 	public static void loadConfig(String folder, String file) {
 		File customConfigFile = new File(Main.getPlugin().getDataFolder(), folder + file);
-		YamlConfiguration fileConfiguration = new YamlConfiguration();
+		FileConfiguration fileConfiguration = configs.getOrDefault(file, new YamlConfiguration());
 
 		configsFolder.put(fileConfiguration, customConfigFile);
 		configs.put(file, fileConfiguration);
@@ -88,7 +77,7 @@ public class ConfigurationManager {
 		}
 	}
 
-	public static void saveConfig(FileConfiguration config) {
+	public static void saveConfig(@NotNull FileConfiguration config) {
 		try {
 			config.save(configsFolder.get(config));
 		} catch (IOException e) {
@@ -96,7 +85,8 @@ public class ConfigurationManager {
 		}
 	}
 
-	public static Set<String> getAllConfigNames() {
+	@Contract(pure = true)
+	public static @NotNull Set<String> getAllConfigNames() {
 		return configs.keySet();
 	}
 }

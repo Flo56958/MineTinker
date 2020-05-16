@@ -23,6 +23,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -48,6 +49,7 @@ public abstract class Modifier {
 	 */
 	protected Modifier(Plugin source) {
 		this.fileName = getKey().replace("'", "") + ".yml";
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, this.fileName);
 		this.source = source;
 	}
 
