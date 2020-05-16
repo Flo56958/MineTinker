@@ -12,11 +12,12 @@
     <artifactId>MineTinker-1.15</artifactId>
     <description>A TinkersConstruct (and other mods) inspired server plugin</description>
     <url>https://flo56958.github.io/MineTinker</url>
+    <version>1.0</version>
 
     <parent>
         <groupId>de.flo56958</groupId>
         <artifactId>MineTinker-Parent</artifactId>
-        <version>${revision}</version>
+        <version>1.0</version>
     </parent>
 
     <developers>
@@ -42,6 +43,7 @@
         <dependency>
             <groupId>de.flo56958</groupId>
             <artifactId>MineTinker-NMScore</artifactId>
+            <version>1.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

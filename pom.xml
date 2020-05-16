@@ -1,83 +1,28 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-   <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-   <groupId>de.flo56958</groupId>
-   <artifactId>MineTinker-Parent</artifactId>
-   <version>${revision}</version>
-   <packaging>pom</packaging>
+    <groupId>de.flo56958</groupId>
+    <artifactId>MineTinker-Parent</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
 
-   <url>https://flo56958.github.io/MineTinker</url>
-   <description>A TinkersConstruct (and other mods) inspired server plugin</description>
+    <url>https://flo56958.github.io/MineTinker</url>
+    <description>A TinkersConstruct (and other mods) inspired server plugin</description>
 
-    <properties>
-        <revision>1.4</revision>
-    </properties>
+    <developers>
+        <developer>
+            <id>Flo56958</id>
+            <timezone>Germany/Berlin</timezone>
+        </developer>
+    </developers>
 
-   <developers>
-       <developer>
-           <id>Flo56958</id>
-           <timezone>Germany/Berlin</timezone>
-       </developer>
-   </developers>
-
-   <modules>
-       <module>core</module>
-       <module>MineTinker_NMScore</module>
-       <module>MineTinker_1_15_R1</module>
-       <module>MineTinker_1_14_R1</module>
-       <module>MineTinker_1_13_R2</module>
-       <module>MineTinker_1_13_R1</module>
-   </modules>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>de.flo56958</groupId>
-                <artifactId>core</artifactId>
-                <version>${revision}</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>de.flo56958</groupId>
-                <artifactId>MineTinker-NMScore</artifactId>
-                <version>${revision}</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>de.flo56958</groupId>
-                <artifactId>MineTinker-1.15</artifactId>
-                <version>${revision}</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>de.flo56958</groupId>
-                <artifactId>MineTinker-1.14</artifactId>
-                <version>${revision}</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>de.flo56958</groupId>
-                <artifactId>MineTinker-1.13.2</artifactId>
-                <version>${revision}</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>de.flo56958</groupId>
-                <artifactId>MineTinker-1.13</artifactId>
-                <version>${revision}</version>
-                <scope>compile</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-   <repositories>
-       <repository>
-           <id>spigot-repo</id>
-           <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
-       </repository>
-       <repository>
-           <id>CodeMC</id>
-           <url>https://repo.codemc.org/repository/maven-public</url>
-       </repository>
-   </repositories>
+    <modules>
+        <module>core</module>
+        <module>MineTinker_NMScore</module>
+        <module>MineTinker_1_15_R1</module>
+        <module>MineTinker_1_14_R1</module>
+        <module>MineTinker_1_13_R2</module>
+        <module>MineTinker_1_13_R1</module>
+    </modules>
 </project>
