@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Drilling extends Modifier implements Listener {
 
-	public static final ConcurrentHashMap<Player, AtomicBoolean> HASDRILLING = new ConcurrentHashMap<>();
+	public static final ConcurrentHashMap<Player, AtomicBoolean> HAS_DRILLING = new ConcurrentHashMap<>();
 	private static Drilling instance;
 	private ArrayList<Material> blacklist;
 	private boolean treatAsWhitelist;
@@ -134,7 +134,7 @@ public class Drilling extends Modifier implements Listener {
 			return false;
 		}
 
-		if (HASDRILLING.get(player).get()) {
+		if (HAS_DRILLING.get(player).get()) {
 			return false;
 		}
 
@@ -164,7 +164,7 @@ public class Drilling extends Modifier implements Listener {
 
 		int level = modManager.getModLevel(tool, this);
 
-		HASDRILLING.get(player).set(true); // for the drilling-triggered BlockBreakEvents (prevents endless "recursion")
+		HAS_DRILLING.get(player).set(true); // for the drilling-triggered BlockBreakEvents (prevents endless "recursion")
 
 		BlockFace face = Lists.BLOCKFACE.get(player).getOppositeFace();
 		for (int i = 1; i <= level; i++) {
@@ -173,7 +173,7 @@ public class Drilling extends Modifier implements Listener {
 
 		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType() + ")", "Blockface(" + face.toString() + ")");
 
-		HASDRILLING.get(player).set(false); // so the effect of drilling is not disabled for the Player
+		HAS_DRILLING.get(player).set(false); // so the effect of drilling is not disabled for the Player
 	}
 
 	private boolean drillingBlockBreak(Block block, Block centralBlock, Player player) {

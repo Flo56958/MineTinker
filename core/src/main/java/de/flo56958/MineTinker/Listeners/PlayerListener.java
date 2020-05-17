@@ -180,8 +180,8 @@ public class PlayerListener implements Listener {
 	public void onJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		Lists.BLOCKFACE.put(player, null);
-		Power.HASPOWER.computeIfAbsent(player, p -> new AtomicBoolean(false));
-		Drilling.HASDRILLING.computeIfAbsent(player, p -> new AtomicBoolean(false));
+		Power.HAS_POWER.computeIfAbsent(player, p -> new AtomicBoolean(false));
+		Drilling.HAS_DRILLING.computeIfAbsent(player, p -> new AtomicBoolean(false));
 
 		if (Main.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
 			if (player.hasPermission("minetinker.update.notify")) {
@@ -224,8 +224,8 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		Lists.BLOCKFACE.remove(event.getPlayer());
-		Power.HASPOWER.remove(event.getPlayer());
-		Drilling.HASDRILLING.remove(event.getPlayer());
+		Power.HAS_POWER.remove(event.getPlayer());
+		Drilling.HAS_DRILLING.remove(event.getPlayer());
 	}
 
 	/**

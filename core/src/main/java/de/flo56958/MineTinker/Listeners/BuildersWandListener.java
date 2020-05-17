@@ -319,16 +319,17 @@ public class BuildersWandListener implements Listener {
 			}
 
 			switch (PlayerInfo.getFacingDirection(player)) {
-				case "N":
+				case NORTH:
 					w = new Vector(-1, 0, 0);
 					break;
-				case "E":
+				case EAST:
 					w = new Vector(0, 0, -1);
 					break;
-				case "S":
+				case SOUTH:
 					w = new Vector(1, 0, 0);
 					break;
-				case "W":
+				case WEST:
+				default:
 					w = new Vector(0, 0, 1);
 					break;
 			}

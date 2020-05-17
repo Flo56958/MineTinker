@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Power extends Modifier implements Listener {
 
-	public static final ConcurrentHashMap<Player, AtomicBoolean> HASPOWER = new ConcurrentHashMap<>();
+	public static final ConcurrentHashMap<Player, AtomicBoolean> HAS_POWER = new ConcurrentHashMap<>();
 	private static Power instance;
 	private ArrayList<Material> blacklist;
 	private boolean treatAsWhitelist;
@@ -94,8 +94,7 @@ public class Power extends Modifier implements Listener {
 		config.addDefault("Description", "Tool can destroy more blocks per swing!");
 		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Power-Modifier");
 		config.addDefault("Color", "%GREEN%");
-		config.addDefault("Lv1Vertical", false); // Should the 3x1 at level 1 be horizontal (false) or vertical
-		// (true)
+		config.addDefault("Lv1Vertical", false); // Should the 3x1 at level 1 be horizontal (false) or vertical (true)
 		config.addDefault("Toggleable", true);
 		config.addDefault("OverrideLanguagesystem", false);
 		config.addDefault("MaxLevel", 2); // Algorithm for area of effect (except for level 1): (level * 2) - 1 x
@@ -156,7 +155,7 @@ public class Power extends Modifier implements Listener {
 			return false;
 		}
 
-		if (HASPOWER.get(player).get()) {
+		if (HAS_POWER.get(player).get()) {
 			return false;
 		}
 
@@ -191,20 +190,20 @@ public class Power extends Modifier implements Listener {
 		ChatWriter.log(false, player.getDisplayName() + " triggered Power on " + ChatWriter.getDisplayName(tool)
 				+ ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 
-		HASPOWER.get(player).set(true); // for the power-triggered BlockBreakEvents (prevents endless "recursion")
+		HAS_POWER.get(player).set(true); // for the power-triggered BlockBreakEvents (prevents endless "recursion")
 
 		int level = modManager.getModLevel(tool, this);
+		PlayerInfo.Direction direction = PlayerInfo.getFacingDirection(player);
 
 		if (level == 1) {
 			if (lv1_vertical) {
 				if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
-					if (PlayerInfo.getFacingDirection(player).equals("N") || PlayerInfo.getFacingDirection(player).equals("S")) {
+					if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
 						Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
 						Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
 						powerBlockBreak(b1, block, player);
 						powerBlockBreak(b2, block, player);
-					} else if (PlayerInfo.getFacingDirection(player).equals("W")
-							|| PlayerInfo.getFacingDirection(player).equals("E")) {
+					} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
 						Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
 						Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
 						powerBlockBreak(b1, block, player);
@@ -217,13 +216,12 @@ public class Power extends Modifier implements Listener {
 					powerBlockBreak(b2, block, player);
 				}
 			} else if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
-				if (PlayerInfo.getFacingDirection(player).equals("N") || PlayerInfo.getFacingDirection(player).equals("S")) {
+				if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
 					Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
 					Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
 					powerBlockBreak(b1, block, player);
 					powerBlockBreak(b2, block, player);
-				} else if (PlayerInfo.getFacingDirection(player).equals("W")
-						|| PlayerInfo.getFacingDirection(player).equals("E")) {
+				} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
 					Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
 					Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
 					powerBlockBreak(b1, block, player);
@@ -242,7 +240,7 @@ public class Power extends Modifier implements Listener {
 				powerBlockBreak(b2, block, player);
 			}
 		} else {
-			HASPOWER.get(player).set(true);
+			HAS_POWER.get(player).set(true);
 
 			if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
 				for (int x = -(level - 1); x <= (level - 1); x++) {
@@ -277,7 +275,7 @@ public class Power extends Modifier implements Listener {
 
 		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType().toString() + ")");
 
-		HASPOWER.get(player).set(false); // so the effect of power is not disabled for the Player
+		HAS_POWER.get(player).set(false); // so the effect of power is not disabled for the Player
 	}
 
 	/**
@@ -300,7 +298,7 @@ public class Power extends Modifier implements Listener {
 
 		ChatWriter.logModifier(player, event, this, tool);
 
-		HASPOWER.get(player).set(true);
+		HAS_POWER.get(player).set(true);
 
 		int level = modManager.getModLevel(tool, this);
 		Block block = interactEvent.getClickedBlock();
@@ -313,8 +311,8 @@ public class Power extends Modifier implements Listener {
 			if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
 				Block b1;
 				Block b2;
-
-				if ((PlayerInfo.getFacingDirection(player).equals("N") || PlayerInfo.getFacingDirection(player).equals("S"))) {
+				PlayerInfo.Direction direction = PlayerInfo.getFacingDirection(player);
+				if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
 					if (this.lv1_vertical) {
 						b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
 						b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
@@ -322,8 +320,7 @@ public class Power extends Modifier implements Listener {
 						b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
 						b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
 					}
-				} else if (PlayerInfo.getFacingDirection(player).equals("W")
-						|| PlayerInfo.getFacingDirection(player).equals("E")) {
+				} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
 					if (this.lv1_vertical) {
 						b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
 						b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
@@ -352,7 +349,7 @@ public class Power extends Modifier implements Listener {
 			}
 		}
 
-		HASPOWER.get(player).set(false);
+		HAS_POWER.get(player).set(false);
 	}
 
 	private void powerBlockBreak(Block block, Block centralBlock, Player player) {

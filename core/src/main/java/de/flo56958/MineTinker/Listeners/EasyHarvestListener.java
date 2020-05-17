@@ -38,10 +38,10 @@ public class EasyHarvestListener implements Listener {
 			return;
 		}
 
-		Power.HASPOWER.get(player).set(true);
+		Power.HAS_POWER.get(player).set(true);
 		Material type = block.getType();
 
-		String direction = PlayerInfo.getFacingDirection(player);
+		PlayerInfo.Direction direction = PlayerInfo.getFacingDirection(player);
 		Location location = block.getLocation();
 		World world = location.getWorld();
 
@@ -59,7 +59,7 @@ public class EasyHarvestListener implements Listener {
 				Block b1;
 				Block b2;
 
-				if (direction.equals("N") || direction.equals("S")) {
+				if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
 					if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
 						b1 = world.getBlockAt(location.add(0, 0, 1));
 						b2 = world.getBlockAt(location.add(0, 0, -1));
@@ -67,7 +67,7 @@ public class EasyHarvestListener implements Listener {
 						b1 = world.getBlockAt(location.add(1, 0, 0));
 						b2 = world.getBlockAt(location.add(-1, 0, 0));
 					}
-				} else if (direction.equals("W") || direction.equals("E")) {
+				} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
 					if (config.getBoolean("Modifiers.Power.lv1_vertical")) {
 						b1 = world.getBlockAt(location.add(1, 0, 0));
 						b2 = world.getBlockAt(location.add(-1, 0, 0));
@@ -118,7 +118,7 @@ public class EasyHarvestListener implements Listener {
 		breakBlock(block, player);
 		replantCrops(player, block, type);
 
-		Power.HASPOWER.get(player).set(false);
+		Power.HAS_POWER.get(player).set(false);
 	}
 
 	private static void replantCrops(Player player, Block block, Material material) {

@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,8 +23,7 @@ public class LanguageManager {
 
 	private static boolean playerLocale;
 
-	private LanguageManager() { //only to make it impossible to instantiate an object
-	}
+	private LanguageManager() {} //only to make it impossible to instantiate an object
 
 	public static void reload() {
 		String lang = Main.getPlugin().getConfig().getString("Language", "en_US");
@@ -60,8 +60,8 @@ public class LanguageManager {
 
 	/**
 	 * @param path the Path to the Strings location
-	 * @return "" on failure
-	 * the requested String on success
+	 * @return  "" on failure (empty String)
+	 * 			the requested String on success
 	 */
 	@NotNull
 	public static String getString(@NotNull String path) {
@@ -72,8 +72,14 @@ public class LanguageManager {
 		return ChatWriter.addColors(ret);
 	}
 
+	/**
+	 * This function has the same effect as getString(String path) if the Player in null.
+	 * @param path the Path to the Strings location
+	 * @return  "" on failure (empty String)
+	 * 			the requested String on success
+	 */
 	@NotNull
-	public static String getString(@NotNull String path, Player player) {
+	public static String getString(@NotNull String path, @Nullable Player player) {
 		if (player == null) return getString(path);
 		if (playerLocale && !player.getLocale().equals(Main.getPlugin().getConfig().getString("Language"))) {
 			YamlConfiguration langFile = loadLanguage(player.getLocale());
@@ -103,12 +109,18 @@ public class LanguageManager {
 		return file;
 	}
 
+	@Contract(pure = true)
 	public static boolean isUsingFallback() {
 		return usingFallback;
 	}
 
+	@Contract(pure = true)
 	public static boolean isComplete() { return completenessPercent == 10_000; }
 
+	/**
+	 *  @return the completeness of the used language file in percent * 100. So range is [0, 10000]
+	 */
+	@Contract(pure = true)
 	public static Long getCompleteness() {
 		return completenessPercent;
 	}

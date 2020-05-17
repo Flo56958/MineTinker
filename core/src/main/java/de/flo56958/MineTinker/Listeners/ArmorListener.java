@@ -84,15 +84,17 @@ public class ArmorListener implements Listener {
 		else if (ToolType.SHIELD.contains(player.getInventory().getItemInOffHand().getType()))
 			armor.add(player.getInventory().getItemInOffHand());
 
+		boolean isBlocking = player.isBlocking() && event.getFinalDamage() == 0.0d;
+
 		for (ItemStack piece : armor) {
 			if (!modManager.isArmorViable(piece)) {
 				continue;
 			}
 
 			if (byEntityEvent != null) {
-				Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(player, piece, entity, byEntityEvent));
+				Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(player, piece, entity, byEntityEvent, isBlocking));
 			} else {
-				Bukkit.getPluginManager().callEvent(new MTEntityDamageEvent(player, piece, event));
+				Bukkit.getPluginManager().callEvent(new MTEntityDamageEvent(player, piece, event, isBlocking));
 			}
 		}
 	}
@@ -100,38 +102,32 @@ public class ArmorListener implements Listener {
 	//Handle exp calculation for both armor and weapons
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void expCalculation(MTEntityDamageEvent event) {
-		FileConfiguration config = Main.getPlugin().getConfig();
-
-		int amount = config.getInt("ExpPerEntityHit");
-
-		if (config.getBoolean("EnableDamageExp")) {
-			amount = (int) event.getEvent().getDamage() / 2;
-		}
-
-		if (config.getBoolean("DisableExpFromFalldamage", false)
-				&& event.getEvent().getCause() == EntityDamageEvent.DamageCause.FALL) {
-			return;
-		}
-
-		modManager.addExp(event.getPlayer(), event.getTool(), amount);
+		expCalculation(event.isBlocking(), event.getTool(), event.getEvent(), event.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void expCalculation(MTEntityDamageByEntityEvent event) {
-		FileConfiguration config = Main.getPlugin().getConfig();
+		expCalculation(event.isBlocking(), event.getTool(), event.getEvent(), event.getPlayer());
+	}
 
+	private void expCalculation(boolean isBlocking, ItemStack tool, EntityDamageEvent event, Player player) {
+		//Armor should not get Exp when successfully blocking
+		if(isBlocking && !ToolType.SHIELD.contains(tool.getType()) && ToolType.ARMOR.contains(tool.getType())) return;
+		//Shield should not get Exp when not successfully blocking when getting attacked
+		if(!isBlocking && player.equals(event.getEntity()) && ToolType.SHIELD.contains(tool.getType())) return;
+		FileConfiguration config = Main.getPlugin().getConfig();
 		int amount = config.getInt("ExpPerEntityHit");
 
 		if (config.getBoolean("EnableDamageExp")) {
-			amount = (int) event.getEvent().getDamage() / 2;
+			amount = (int) Math.round(event.getDamage());
 		}
 
 		if (config.getBoolean("DisableExpFromFalldamage", false)
-				&& event.getEvent().getCause() == EntityDamageEvent.DamageCause.FALL) {
+				&& event.getCause() == EntityDamageEvent.DamageCause.FALL) {
 			return;
 		}
 
-		modManager.addExp(event.getPlayer(), event.getTool(), amount);
+		modManager.addExp(player, tool, amount);
 	}
 
 	@EventHandler(ignoreCancelled = true)

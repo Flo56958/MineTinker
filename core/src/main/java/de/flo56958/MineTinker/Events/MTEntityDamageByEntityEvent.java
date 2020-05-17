@@ -19,10 +19,19 @@ public class MTEntityDamageByEntityEvent extends Event implements Cancellable {
 
 	private final Player player;
 	private final ItemStack tool;
+	private final boolean isBlocking;
 
 	private final Entity entity;
 
 	private final EntityDamageByEntityEvent event;
+
+	public MTEntityDamageByEntityEvent(@NotNull Player player, @NotNull ItemStack tool, Entity entity, @NotNull EntityDamageByEntityEvent event, boolean isBlocking) {
+		this.player = player;
+		this.tool = tool;
+		this.entity = entity;
+		this.event = event;
+		this.isBlocking = isBlocking;
+	}
 
 	/**
 	 * Event constructor (used for the Armor-Effects as the Player and the Entity are the same)
@@ -37,6 +46,7 @@ public class MTEntityDamageByEntityEvent extends Event implements Cancellable {
 		this.tool = tool;
 		this.entity = entity;
 		this.event = event;
+		this.isBlocking = false;
 	}
 
 	/**
@@ -51,6 +61,7 @@ public class MTEntityDamageByEntityEvent extends Event implements Cancellable {
 		this.tool = tool;
 		this.entity = event.getEntity();
 		this.event = event;
+		this.isBlocking = false;
 	}
 
 	public static HandlerList getHandlerList() {
@@ -99,5 +110,9 @@ public class MTEntityDamageByEntityEvent extends Event implements Cancellable {
 	@Override
 	public void setCancelled(boolean b) {
 		event.setCancelled(b);
+	}
+
+	public boolean isBlocking() {
+		return isBlocking;
 	}
 }

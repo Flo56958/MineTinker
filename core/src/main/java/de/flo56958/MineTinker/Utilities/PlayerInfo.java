@@ -1,6 +1,8 @@
 package de.flo56958.MineTinker.Utilities;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class PlayerInfo {
 
@@ -8,7 +10,7 @@ public class PlayerInfo {
 	 * @param player The player to get the facing direction of as a single character
 	 * @return The facing direction of the player in Degrees
 	 */
-	public static String getFacingDirection(Player player) {
+	public static Direction getFacingDirection(Player player) {
 		double rot = (player.getLocation().getYaw() - 90) % 360;
 
 		if (rot < 0) {
@@ -22,17 +24,17 @@ public class PlayerInfo {
 	 * @param rot The rotation in degrees
 	 * @return The compass facing direction
 	 */
-	private static String getDirection(double rot) {
+	private @Nullable static Direction getDirection(double rot) {
 		if (0 <= rot && rot < 45) {
-			return "W";
+			return Direction.WEST;
 		} else if (45 <= rot && rot < 135) {
-			return "N";
+			return Direction.NORTH;
 		} else if (135 <= rot && rot < 225) {
-			return "E";
+			return Direction.EAST;
 		} else if (225 <= rot && rot < 315) {
-			return "S";
+			return Direction.SOUTH;
 		} else if (315 <= rot && rot < 360) {
-			return "W";
+			return Direction.WEST;
 		} else {
 			return null;
 		}
@@ -60,8 +62,11 @@ public class PlayerInfo {
 		}
 	}
 
-	// Calculate player's current EXP amount
-	public static int getPlayerExp(Player player) {
+	/**
+	 * @param player The player
+	 * @return the players current total exp amount
+	 */
+	public static int getPlayerExp(@NotNull Player player) {
 		int exp = 0;
 		int level = player.getLevel();
 
@@ -72,5 +77,14 @@ public class PlayerInfo {
 		exp += Math.round(getExpToLevelUp(level) * player.getExp());
 
 		return exp;
+	}
+
+	private PlayerInfo() {}
+
+	public enum Direction {
+		NORTH,
+		WEST,
+		SOUTH,
+		EAST
 	}
 }

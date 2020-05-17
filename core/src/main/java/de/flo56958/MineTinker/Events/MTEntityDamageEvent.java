@@ -18,6 +18,7 @@ public class MTEntityDamageEvent extends Event implements Cancellable {
 
 	private final Player player;
 	private final ItemStack tool;
+	private final boolean isBlocking;
 
 	private final EntityDamageEvent event;
 
@@ -35,6 +36,7 @@ public class MTEntityDamageEvent extends Event implements Cancellable {
 		}
 		this.tool = tool;
 		this.event = event;
+		this.isBlocking = false;
 	}
 
 	/**
@@ -48,6 +50,14 @@ public class MTEntityDamageEvent extends Event implements Cancellable {
 		this.player = player;
 		this.tool = tool;
 		this.event = event;
+		this.isBlocking = false;
+	}
+
+	public MTEntityDamageEvent(@NotNull Player player, @NotNull ItemStack tool, @NotNull EntityDamageEvent event, boolean isBlocking) {
+		this.player = player;
+		this.tool = tool;
+		this.event = event;
+		this.isBlocking = isBlocking;
 	}
 
 	public static HandlerList getHandlerList() {
@@ -92,5 +102,9 @@ public class MTEntityDamageEvent extends Event implements Cancellable {
 	@Override
 	public void setCancelled(boolean b) {
 		event.setCancelled(b);
+	}
+
+	public boolean isBlocking() {
+		return isBlocking;
 	}
 }

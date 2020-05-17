@@ -27,7 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,8 +39,6 @@ public class ModManager {
 	private static FileConfiguration config;
 	private static FileConfiguration layout;
 	private static ModManager instance;
-
-	private static final PluginManager pluginManager = Bukkit.getPluginManager();
 
 	static {
 		nbt = NBTUtils.getHandler();
@@ -66,81 +64,7 @@ public class ModManager {
 		layout.addDefault("ModifierLayout", "%MODIFIER% %WHITE%%MODLEVEL%");
 
 		ConfigurationManager.saveConfig(layout);
-	}
 
-	//TODO: AUTO-DISCOVER RECIPES
-	public final ArrayList<NamespacedKey> recipe_Namespaces = new ArrayList<>();
-	private final HashMap<Modifier, Set<Modifier>> incompatibilities = new HashMap<>();
-	/**
-	 * stores the list of all MineTinker modifiers
-	 */
-	private final HashSet<Modifier> allMods = new HashSet<>();
-	/**
-	 * stores the list of allowed modifiers
-	 */
-	private final ArrayList<Modifier> mods = new ArrayList<>();
-	private String ToolIdentifier;
-	private String ArmorIdentifier;
-	private List<String> loreScheme;
-	private String modifierLayout;
-
-	private boolean allowBookConvert;
-
-	/**
-	 * Class constructor (no parameters)
-	 */
-	private ModManager() {}
-
-	/**
-	 * get the instance that contains the modifier list (VERY IMPORTANT)
-	 *
-	 * @return the instance
-	 */
-	public synchronized static ModManager instance() {
-		synchronized (ModManager.class) {
-			if (instance == null) {
-				instance = new ModManager();
-				instance.init();
-			}
-		}
-
-		return instance;
-	}
-
-	public NBTHandler getNBTHandler() {
-		return nbt;
-	}
-
-	public void reload() {
-		config = Main.getPlugin().getConfig();
-		layout = ConfigurationManager.getConfig("layout.yml");
-
-		removeRecipes();
-
-		for (Modifier m : allMods) {
-			m.reload();
-
-			if (m.isAllowed()) {
-				mods.add(m);
-			} else {
-				mods.remove(m);
-			}
-		}
-
-		mods.sort(Comparator.comparing(Modifier::getName));
-
-		this.ToolIdentifier = config.getString("ToolIdentifier");
-		this.ArmorIdentifier = config.getString("ArmorIdentifier");
-
-		for (Modifier m : this.mods) {
-			m.registerCraftingRecipe();
-		}
-
-		//get Modifier incompatibilities
-		incompatibilities.clear();
-		for (Modifier m : this.allMods) {
-			incompatibilities.putIfAbsent(m, new HashSet<>());
-		}
 		FileConfiguration modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
 		modifierconfig.options().copyDefaults(true);
 
@@ -179,18 +103,172 @@ public class ModManager {
 		modifierconfig.addDefault("CommandIgnoresMaxLevel", false);
 		modifierconfig.addDefault("IgnoreIncompatibilityIfModifierAlreadyApplied", true);
 		modifierconfig.addDefault("UseCustomModelData", false);
+		ConfigurationManager.saveConfig(modifierconfig);
+	}
+
+	//TODO: AUTO-DISCOVER RECIPES
+	public final ArrayList<NamespacedKey> recipe_Namespaces = new ArrayList<>();
+	private final HashMap<Modifier, Set<Modifier>> incompatibilities = new HashMap<>();
+	/**
+	 * stores the list of all MineTinker modifiers
+	 */
+	private final HashSet<Modifier> allMods = new HashSet<>();
+	/**
+	 * stores the list of allowed modifiers
+	 */
+	private final ArrayList<Modifier> mods = new ArrayList<>();
+	private String ToolIdentifier;
+	private String ArmorIdentifier;
+	private List<String> loreScheme;
+	private String modifierLayout;
+
+	private boolean allowBookConvert;
+
+	/**
+	 * Class constructor (no parameters)
+	 */
+	private ModManager() {}
+
+	/**
+	 * get the instance that contains the modifier list (VERY IMPORTANT)
+	 *
+	 * @return the instance
+	 */
+	public static @NotNull ModManager instance() {
+		synchronized (ModManager.class) {
+			if (instance == null) {
+				instance = new ModManager();
+				instance.init();
+			}
+		}
+
+		return instance;
+	}
+
+	public static @Nullable Pair<@Nullable Material, @NotNull Integer> itemUpgrader(@NotNull Material tool, Material material) {
+		String name = tool.name().split("_")[0].toLowerCase();
+
+		if (name.equals("wooden") && material.name().contains("PLANKS")
+				|| name.equals("stone") && material == Material.COBBLESTONE
+				|| name.equals("iron") && material == Material.IRON_INGOT
+				|| name.equals("gold") && material == Material.GOLD_INGOT
+				|| name.equals("diamond") && material == Material.DIAMOND
+				|| name.equals("leather") && material == Material.LEATHER
+				|| name.equals("turtle") && material == Material.SCUTE
+				|| name.equals("chainmail") && material == Material.IRON_BARS) {
+			return null;
+		}
+
+		if (ToolType.SWORD.contains(tool)) {
+			return new Pair<>(getToolUpgrade(material, "SWORD"), 2);
+		} else if (ToolType.PICKAXE.contains(tool)) {
+			return new Pair<>(getToolUpgrade(material, "PICKAXE"), 3);
+		} else if (ToolType.AXE.contains(tool)) {
+			return new Pair<>(getToolUpgrade(material, "AXE"), 3);
+		} else if (ToolType.SHOVEL.contains(tool)) {
+			return new Pair<>(getToolUpgrade(material, "SHOVEL"), 1);
+		} else if (ToolType.HOE.contains(tool)) {
+			return new Pair<>(getToolUpgrade(material, "HOE"), 2);
+		} else if (ToolType.HELMET.contains(tool)) {
+			return new Pair<>(getArmorUpgrade(material, "HELMET"), 5);
+		} else if (ToolType.CHESTPLATE.contains(tool)) {
+			return new Pair<>(getArmorUpgrade(material, "CHESTPLATE"), 8);
+		} else if (ToolType.LEGGINGS.contains(tool)) {
+			return new Pair<>(getArmorUpgrade(material, "LEGGINGS"), 7);
+		} else if (ToolType.BOOTS.contains(tool)) {
+			return new Pair<>(getArmorUpgrade(material, "BOOTS"), 4);
+		}
+
+		return null;
+	}
+
+	private static @Nullable Material getToolUpgrade(@NotNull Material material, String tool) {
+		switch (material) {
+			case ACACIA_PLANKS:
+			case BIRCH_PLANKS:
+			case DARK_OAK_PLANKS:
+			case JUNGLE_PLANKS:
+			case OAK_PLANKS:
+			case SPRUCE_PLANKS:
+				return Material.getMaterial("WOODEN_" + tool);
+			case COBBLESTONE:
+				return Material.getMaterial("STONE_" + tool);
+			case IRON_INGOT:
+				return Material.getMaterial("IRON_" + tool);
+			case GOLD_INGOT:
+				return Material.getMaterial("GOLDEN_" + tool);
+			case DIAMOND:
+				return Material.getMaterial("DIAMOND_" + tool);
+			default:
+				return null;
+		}
+	}
+
+	private static @Nullable Material getArmorUpgrade(@NotNull Material material, String tool) {
+		switch (material) {
+			case LEATHER:
+				return Material.getMaterial("LEATHER_" + tool);
+			case IRON_INGOT:
+				return Material.getMaterial("IRON_" + tool);
+			case GOLD_INGOT:
+				return Material.getMaterial("GOLDEN_" + tool);
+			case DIAMOND:
+				return Material.getMaterial("DIAMOND_" + tool);
+			case IRON_BARS:
+				return Material.getMaterial("CHAINMAIL_" + tool);
+			default:
+				return null;
+		}
+	}
+
+	public @Nullable NBTHandler getNBTHandler() {
+		return nbt;
+	}
+
+	public void reload() {
+		config = Main.getPlugin().getConfig();
+		layout = ConfigurationManager.getConfig("layout.yml");
+
+		removeRecipes();
+
+		for (Modifier m : allMods) {
+			m.reload();
+
+			if (m.isAllowed()) {
+				mods.add(m);
+			} else {
+				mods.remove(m);
+			}
+		}
+
+		mods.sort(Comparator.comparing(Modifier::getName));
+
+		this.ToolIdentifier = config.getString("ToolIdentifier");
+		this.ArmorIdentifier = config.getString("ArmorIdentifier");
+
+		for (Modifier m : this.mods) {
+			m.registerCraftingRecipe();
+		}
+
+		//get Modifier incompatibilities
+		incompatibilities.clear();
+		for (Modifier m : this.allMods) {
+			incompatibilities.putIfAbsent(m, new HashSet<>());
+		}
+		FileConfiguration modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
 
 		List<String> possibleKeys = new ArrayList<>();
-		possibleKeys.add("Do not edit this list; just for documentation of what Keys can be used under Incompatibilities");
 		for (Modifier m : this.allMods) {
 			possibleKeys.add(m.getKey());
 		}
+		possibleKeys.sort(String::compareToIgnoreCase);
+		possibleKeys.add(0, "Do not edit this list; just for documentation of what Keys can be used under Incompatibilities");
 		modifierconfig.set("PossibleKeys", possibleKeys);
 		ConfigurationManager.saveConfig(modifierconfig);
 		ConfigurationManager.loadConfig("", "Modifiers.yml");
 
 		modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
-		incompatibilityList = modifierconfig.getStringList("Incompatibilities");
+		List<String> incompatibilityList = modifierconfig.getStringList("Incompatibilities");
 		for (String s : incompatibilityList) {
 			String[] splits = s.split(":");
 			if (splits.length != 2) continue;
@@ -234,7 +312,7 @@ public class ModManager {
 		this.allowBookConvert = config.getBoolean("ConvertBookToModifier");
 	}
 
-	public Set<Modifier> getIncompatibilities(Modifier m) {
+	public @NotNull HashSet<Modifier> getIncompatibilities(Modifier m) {
 		return new HashSet<>(incompatibilities.get(m));
 	}
 
@@ -250,14 +328,16 @@ public class ModManager {
 	 *
 	 * @param mod the modifier instance
 	 */
-
+	@Contract("null -> false")
 	public boolean register(Modifier mod) {
+		if (mod == null) return false;
 		if (!allMods.contains(mod)) {
 			mod.reload();
 			allMods.add(mod);
 			incompatibilities.putIfAbsent(mod, new HashSet<>());
 			if(mod.isAllowed()) {
 				mods.add(mod);
+				mods.sort(Comparator.comparing(Modifier::getName));
 				mod.registerCraftingRecipe();
 			}
 			if (mod instanceof Listener) { //Enable Events
@@ -281,6 +361,7 @@ public class ModManager {
 	 * @param mod the modifier instance
 	 */
 	public void unregister(Modifier mod) {
+		if (mod == null) return;
 		allMods.remove(mod);
 		mods.remove(mod);
 		incompatibilities.remove(mod);
@@ -297,6 +378,7 @@ public class ModManager {
 	 *
 	 * @return
 	 */
+	@Contract(pure = true)
 	public boolean allowBookToModifier() {
 		return this.allowBookConvert;
 	}
@@ -515,6 +597,7 @@ public class ModManager {
 	 * @param armor the ItemStack
 	 * @return if the ItemStack is viable as MineTinker-Armor
 	 */
+	@Contract(pure = true)
 	public boolean isArmorViable(ItemStack armor) {
 		return armor != null && nbt.hasTag(armor, this.ArmorIdentifier);
 	}
@@ -523,6 +606,7 @@ public class ModManager {
 	 * @param tool the ItemStack
 	 * @return if the ItemStack is viable as MineTinker-Tool
 	 */
+	@Contract(pure = true)
 	public boolean isToolViable(ItemStack tool) {
 		return tool != null && nbt.hasTag(tool, this.ToolIdentifier);
 	}
@@ -531,6 +615,7 @@ public class ModManager {
 	 * @param wand the ItemStack
 	 * @return if the ItemStack is viable as MineTinker-Builderswand
 	 */
+	@Contract(pure = true)
 	public boolean isWandViable(ItemStack wand) {
 		return wand != null && nbt.hasTag(wand, "IdentifierBuilderswand");
 	}
@@ -538,7 +623,7 @@ public class ModManager {
 	/**
 	 * Updates the lore of the Item as everything is stored in the NBT-Data
 	 *
-	 * @param is
+	 * @param is The Itemstack to rewrite the Lore
 	 */
 	private void rewriteLore(ItemStack is) {
 		if (!Main.getPlugin().getConfig().getBoolean("EnableLore")) {
@@ -672,7 +757,7 @@ public class ModManager {
 			damage = ((Damageable) is.getItemMeta()).getDamage();
 		}
 
-		if (!ToolType.ALL.getToolMaterials().contains(m)) {
+		if (!ToolType.ALL.contains(m)) {
 			return false;
 		}
 
@@ -700,7 +785,7 @@ public class ModManager {
 				|| ToolType.FISHINGROD.contains(m)) && !isWandViable(is)) {
 			nbt.setInt(is, this.ToolIdentifier, 0);
 			eligible = true;
-		} 
+		}
 		if (ToolType.BOOTS.contains(m)
 				|| ToolType.CHESTPLATE.contains(m)
 				|| ToolType.HELMET.contains(m)
@@ -854,7 +939,7 @@ public class ModManager {
 		}
 	}
 
-	public ItemStack createModifierItem(Material m, String name, String description, Modifier mod) {
+	public @NotNull ItemStack createModifierItem(@NotNull Material m, @NotNull String name, @NotNull String description, @NotNull Modifier mod) {
 		ItemStack is = new ItemStack(m, 1);
 		ItemMeta meta = is.getItemMeta();
 
@@ -882,6 +967,7 @@ public class ModManager {
 	 * @param item the ItemStack
 	 * @return if the ItemStack is viable as MineTinker-Modifier-Item
 	 */
+	@Contract("null -> false")
 	public boolean isModifierItem(ItemStack item) {
 		if (item == null) return false;
 		return nbt.hasTag(item, "modifierItem")
@@ -893,6 +979,7 @@ public class ModManager {
 	 * @param item the ItemStack
 	 * @return the Modifier of the Modifier-Item (NULL if not found)
 	 */
+	@Nullable
 	public Modifier getModifierFromItem(ItemStack item) {
 		if (!isModifierItem(item)) {
 			return null;
@@ -929,11 +1016,11 @@ public class ModManager {
 	/**
 	 * Gets the first found modifier that applies the supplied enchantment.
 	 *
-	 * @param enchantment
+	 * @param enchantment The enchantment to get the Modifier for
 	 * @return the Modifier or null
 	 */
 	@Nullable
-	public Modifier getModifierFromEnchantment(Enchantment enchantment) {
+	public Modifier getModifierFromEnchantment(@NotNull Enchantment enchantment) {
 		for (Modifier modifier : getAllMods()) {
 			if (modifier.getAppliedEnchantments().contains(enchantment)) {
 				return modifier;
@@ -950,7 +1037,7 @@ public class ModManager {
 	 * @return the Modifier or null
 	 */
 	@Nullable
-	public Modifier getModifierFromAttribute(Attribute attribute) {
+	public Modifier getModifierFromAttribute(@NotNull Attribute attribute) {
 		for (Modifier modifier : getAllMods()) {
 			if (modifier.getAppliedAttributes().contains(attribute)) {
 				return modifier;
@@ -968,7 +1055,7 @@ public class ModManager {
 	 * @param tool the Tool
 	 * @return false: if broken; true: if enough durability
 	 */
-	public boolean durabilityCheck(Cancellable cancellable, Player player, @NotNull ItemStack tool) {
+	public boolean durabilityCheck(@NotNull Cancellable cancellable, @NotNull Player player, @NotNull ItemStack tool) {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta instanceof Damageable) {
@@ -979,88 +1066,10 @@ public class ModManager {
 				if (config.getBoolean("Sound.OnBreaking", true)) {
 					player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
 				}
-
 				return false;
 			}
 		}
-
 		return true;
-	}
-
-	public static @Nullable Pair<@Nullable Material, @NotNull Integer> itemUpgrader(@NotNull Material tool, Material material) {
-		String name = tool.name().split("_")[0].toLowerCase();
-
-		if (name.equals("wooden") && material.name().contains("PLANKS")
-				|| name.equals("stone") && material == Material.COBBLESTONE
-				|| name.equals("iron") && material == Material.IRON_INGOT
-				|| name.equals("gold") && material == Material.GOLD_INGOT
-				|| name.equals("diamond") && material == Material.DIAMOND
-				|| name.equals("leather") && material == Material.LEATHER
-				|| name.equals("turtle") && material == Material.SCUTE
-				|| name.equals("chainmail") && material == Material.IRON_BARS) {
-			return null;
-		}
-
-		if (ToolType.SWORD.contains(tool)) {
-			return new Pair<>(getToolUpgrade(material, "SWORD"), 2);
-		} else if (ToolType.PICKAXE.contains(tool)) {
-			return new Pair<>(getToolUpgrade(material, "PICKAXE"), 3);
-		} else if (ToolType.AXE.contains(tool)) {
-			return new Pair<>(getToolUpgrade(material, "AXE"), 3);
-		} else if (ToolType.SHOVEL.contains(tool)) {
-			return new Pair<>(getToolUpgrade(material, "SHOVEL"), 1);
-		} else if (ToolType.HOE.contains(tool)) {
-			return new Pair<>(getToolUpgrade(material, "HOE"), 2);
-		} else if (ToolType.HELMET.contains(tool)) {
-			return new Pair<>(getArmorUpgrade(material, "HELMET"), 5);
-		} else if (ToolType.CHESTPLATE.contains(tool)) {
-			return new Pair<>(getArmorUpgrade(material, "CHESTPLATE"), 8);
-		} else if (ToolType.LEGGINGS.contains(tool)) {
-			return new Pair<>(getArmorUpgrade(material, "LEGGINGS"), 7);
-		} else if (ToolType.BOOTS.contains(tool)) {
-			return new Pair<>(getArmorUpgrade(material, "BOOTS"), 4);
-		}
-
-		return null;
-	}
-
-	private static @Nullable Material getToolUpgrade(@NotNull Material material, String tool) {
-		switch (material) {
-			case ACACIA_PLANKS:
-			case BIRCH_PLANKS:
-			case DARK_OAK_PLANKS:
-			case JUNGLE_PLANKS:
-			case OAK_PLANKS:
-			case SPRUCE_PLANKS:
-				return Material.getMaterial("WOODEN_" + tool);
-			case COBBLESTONE:
-				return Material.getMaterial("STONE_" + tool);
-			case IRON_INGOT:
-				return Material.getMaterial("IRON_" + tool);
-			case GOLD_INGOT:
-				return Material.getMaterial("GOLDEN_" + tool);
-			case DIAMOND:
-				return Material.getMaterial("DIAMOND_" + tool);
-			default:
-				return null;
-		}
-	}
-
-	private static @Nullable Material getArmorUpgrade(@NotNull Material material, String tool) {
-		switch (material) {
-			case LEATHER:
-				return Material.getMaterial("LEATHER_" + tool);
-			case IRON_INGOT:
-				return Material.getMaterial("IRON_" + tool);
-			case GOLD_INGOT:
-				return Material.getMaterial("GOLDEN_" + tool);
-			case DIAMOND:
-				return Material.getMaterial("DIAMOND_" + tool);
-			case IRON_BARS:
-				return Material.getMaterial("CHAINMAIL_" + tool);
-			default:
-				return null;
-		}
 	}
 
 	public void removeRecipes() {

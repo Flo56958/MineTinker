@@ -121,8 +121,8 @@ public class Main extends JavaPlugin {
 		ChatWriter.log(true, LanguageManager.getString("StartUp.DebugLogging"));
 
 		for (Player current : Bukkit.getServer().getOnlinePlayers()) {
-			Power.HASPOWER.computeIfAbsent(current, player -> new AtomicBoolean(false));
-			Drilling.HASDRILLING.computeIfAbsent(current, player -> new AtomicBoolean(false));
+			Power.HAS_POWER.computeIfAbsent(current, player -> new AtomicBoolean(false));
+			Drilling.HAS_DRILLING.computeIfAbsent(current, player -> new AtomicBoolean(false));
 			Lists.BLOCKFACE.put(current, null);
 		}
 

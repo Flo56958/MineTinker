@@ -99,7 +99,7 @@ public class Timber extends Modifier implements Listener {
 		ItemStack tool = event.getTool();
 		Block block = event.getBlock();
 
-		if (Power.HASPOWER.get(player).get() || player.isSneaking()) {
+		if (Power.HAS_POWER.get(player).get() || player.isSneaking()) {
 			return;
 		}
 
@@ -113,7 +113,7 @@ public class Timber extends Modifier implements Listener {
 
 		if (ToolType.SHEARS.contains(tool.getType())) {
 			if (Lists.getWoodLeaves().contains(block.getType())) {
-				Power.HASPOWER.get(player).set(true);
+				Power.HAS_POWER.get(player).set(true);
 				ArrayList<Location> locs = new ArrayList<>();
 				locs.add(block.getLocation());
 				breakTree(player, block, Collections.singletonList(block.getType()), locs);
@@ -166,14 +166,14 @@ public class Timber extends Modifier implements Listener {
 				return; //TODO: Improve tree check
 			}
 
-			Power.HASPOWER.get(player).set(true);
+			Power.HAS_POWER.get(player).set(true);
 			ArrayList<Location> locs = new ArrayList<>();
 			locs.add(block.getLocation());
 			breakTree(player, block, allowed, locs);
 		}
 		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType().toString() + ")");
 
-		Power.HASPOWER.get(player).set(false);
+		Power.HAS_POWER.get(player).set(false);
 	}
 
 	private void breakTree(Player player, Block block, List<Material> allowed, List<Location> locs) { //TODO: Improve algorythm and performance -> async?

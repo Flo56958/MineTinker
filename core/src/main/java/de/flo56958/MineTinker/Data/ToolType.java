@@ -2,12 +2,17 @@ package de.flo56958.MineTinker.Data;
 
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Material;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 public enum ToolType {
 
 	ALL,
+	ARMOR,
+	TOOLS,
 	AXE,
 	BOOTS,
 	BOW,
@@ -28,7 +33,7 @@ public enum ToolType {
 	TRIDENT;
 
 	private static final EnumMap<ToolType, List<Material>> tools = new EnumMap<>(ToolType.class);
-	private static final List<Material> toolMaterials = new ArrayList<>();
+	private static final HashSet<Material> toolMaterials = new HashSet<>();
 
 	static {
 		tools.put(ToolType.AXE, Arrays.asList(Material.WOODEN_AXE, Material.STONE_AXE, Material.IRON_AXE,
@@ -68,14 +73,34 @@ public enum ToolType {
 
 		ToolType.getTools().values().forEach(toolMaterials::addAll);
 
-		tools.put(ToolType.ALL, getAllToolMaterials());
+		tools.put(ToolType.ARMOR, new ArrayList<>(ToolType.HELMET.getToolMaterials())); //as other lists are unmodifiable
+		tools.get(ToolType.ARMOR).addAll(ToolType.ELYTRA.getToolMaterials());
+		tools.get(ToolType.ARMOR).addAll(ToolType.CHESTPLATE.getToolMaterials());
+		tools.get(ToolType.ARMOR).addAll(ToolType.LEGGINGS.getToolMaterials());
+		tools.get(ToolType.ARMOR).addAll(ToolType.BOOTS.getToolMaterials());
+		tools.get(ToolType.ARMOR).addAll(ToolType.SHIELD.getToolMaterials());
+
+		tools.put(ToolType.TOOLS, new ArrayList<>(ToolType.SWORD.getToolMaterials()));
+		tools.get(ToolType.TOOLS).addAll(ToolType.SHEARS.getToolMaterials());
+		tools.get(ToolType.TOOLS).addAll(ToolType.PICKAXE.getToolMaterials());
+		tools.get(ToolType.TOOLS).addAll(ToolType.SHOVEL.getToolMaterials());
+		tools.get(ToolType.TOOLS).addAll(ToolType.HOE.getToolMaterials());
+		tools.get(ToolType.TOOLS).addAll(ToolType.TRIDENT.getToolMaterials());
+		tools.get(ToolType.TOOLS).addAll(ToolType.FISHINGROD.getToolMaterials());
+		tools.get(ToolType.TOOLS).addAll(ToolType.BOW.getToolMaterials());
+		tools.get(ToolType.TOOLS).addAll(ToolType.CROSSBOW.getToolMaterials());
+		tools.get(ToolType.TOOLS).addAll(ToolType.OTHER.getToolMaterials());
+		tools.get(ToolType.TOOLS).addAll(ToolType.SHIELD.getToolMaterials());
+		tools.get(ToolType.TOOLS).addAll(ToolType.AXE.getToolMaterials());
+
+		tools.put(ToolType.ALL, new ArrayList<>(getAllToolMaterials()));
 	}
 
-	public static EnumMap<ToolType, List<Material>> getTools() {
+	public static @NotNull EnumMap<ToolType, List<Material>> getTools() {
 		return tools;
 	}
 
-	public static List<Material> getAllToolMaterials() {
+	public static @NotNull HashSet<Material> getAllToolMaterials() {
 		return toolMaterials;
 	}
 
@@ -99,7 +124,9 @@ public enum ToolType {
 	 * @param material the material to check
 	 * @return material's tooltype, null if invalid
 	 */
-	public static ToolType get(Material material) {
+	@Contract("null -> null")
+	public static @Nullable ToolType get(@Nullable Material material) {
+		if (material == null) return null;
 		for (ToolType type : values()) {
 			if (type == ToolType.ALL) {
 				continue;
