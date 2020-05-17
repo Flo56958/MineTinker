@@ -7,12 +7,12 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -108,7 +108,7 @@ public class Shulking extends Modifier implements Listener {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		effect(player, tool, event.getEntity());
+		effect(player, tool, event.getEntity(), event);
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -124,10 +124,10 @@ public class Shulking extends Modifier implements Listener {
 			return;
 		}
 
-		effect(player, tool, event.getEvent().getHitEntity());
+		effect(player, tool, event.getEvent().getHitEntity(), event);
 	}
 
-	private void effect(Player player, ItemStack tool, Entity entity) {
+	private void effect(Player player, ItemStack tool, Entity entity, Event event) {
 		if (!player.hasPermission("minetinker.modifiers.shulking.use")) {
 			return;
 		}
@@ -141,7 +141,8 @@ public class Shulking extends Modifier implements Listener {
 
 		((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, this.duration, amplifier, false, false));
 
-		ChatWriter.log(false, player.getDisplayName() + " triggered Shulking on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
-
+		ChatWriter.logModifier(player, event, this, tool,
+				"Amplifier(" + amplifier + ")",
+				"Duration(" + this.duration + ")");
 	}
 }

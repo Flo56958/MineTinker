@@ -9,10 +9,10 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -85,7 +85,7 @@ public class Experienced extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTBlockBreakEvent event) {
-		effect(event.getPlayer(), event.getTool());
+		effect(event.getPlayer(), event.getTool(), event);
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -98,17 +98,17 @@ public class Experienced extends Modifier implements Listener {
 			return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
 		}
 
-		effect(event.getPlayer(), event.getTool());
+		effect(event.getPlayer(), event.getTool(), event);
 	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageEvent event) {
-		effect(event.getPlayer(), event.getTool());
+		effect(event.getPlayer(), event.getTool(), event);
 	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTPlayerInteractEvent event) {
-		effect(event.getPlayer(), event.getTool());
+		effect(event.getPlayer(), event.getTool(), event);
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class Experienced extends Modifier implements Listener {
 	 * @param player    the Player
 	 * @param tool the Tool
 	 */
-	private void effect(Player player, ItemStack tool) {
+	private void effect(Player player, ItemStack tool, Event event) {
 		if (!player.hasPermission("minetinker.modifiers.experienced.use")) {
 			return;
 		}
@@ -130,10 +130,11 @@ public class Experienced extends Modifier implements Listener {
 
 		Random rand = new Random();
 		int n = rand.nextInt(100);
+		int c = this.percentagePerLevel * level;
 
-		if (n <= this.percentagePerLevel * level) {
+		if (n <= c) {
 			player.giveExp(this.amount);
-			ChatWriter.log(false, player.getDisplayName() + " triggered Experienced on " + ChatWriter.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
 		}
+		ChatWriter.logModifier(player, event, this, tool, String.format("Chance(%d/%d)", n, c));
 	}
 }

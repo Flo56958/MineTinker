@@ -8,7 +8,10 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -149,7 +152,11 @@ public class Ender extends Modifier implements Listener {
 			player.removePotionEffect(PotionEffectType.BLINDNESS);
 			player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, this.blindnessDuration, 0, false, false));
 		}
-		ChatWriter.log(false, player.getDisplayName() + " triggered Ender on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+		ChatWriter.logModifier(player, event, this, tool,
+				String.format("Location: (%s: %d/%d/%d -> %d/%d/%d)",
+						loc.getWorld().getName(),
+						oldLoc.getBlockX(), oldLoc.getBlockY(), oldLoc.getBlockZ(),
+						loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
 	}
 
 	/**
@@ -193,12 +200,14 @@ public class Ender extends Modifier implements Listener {
 			//Save Players from getting teleported
 			if (entity.hasPermission("minetinker.modifiers.ender.prohibittp")) {
 				ChatWriter.sendActionBar(player, LanguageManager.getString("Modifier.Ender.TeleportationProhibited", player));
+				ChatWriter.logModifier(player, event, this, tool, "Teleport denied");
 				return;
 			}
 		}
 
 		Location loc = entity.getLocation().clone();
-		entity.teleport(player.getLocation());
+		Location oldLoc = player.getLocation();
+		entity.teleport(oldLoc);
 
 		spawnParticles(player, loc);
 
@@ -229,7 +238,11 @@ public class Ender extends Modifier implements Listener {
 			}
 		}
 
-		ChatWriter.log(false, player.getDisplayName() + " triggered Ender on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+		ChatWriter.logModifier(player, event, this, tool, "Entity(" + entity.getType().toString() + ")",
+				String.format("Location: (%s: %d/%d/%d <-> %d/%d/%d)",
+						loc.getWorld().getName(),
+						oldLoc.getBlockX(), oldLoc.getBlockY(), oldLoc.getBlockZ(),
+						loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
 	}
 
 	private void spawnParticles(Player player, Location oldLoc) {

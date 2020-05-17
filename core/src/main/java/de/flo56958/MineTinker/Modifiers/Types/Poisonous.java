@@ -7,7 +7,6 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
@@ -119,8 +118,10 @@ public class Poisonous extends Modifier implements Listener {
 		int amplifier = this.effectAmplifier * (level - 1);
 		((LivingEntity) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration,
 				amplifier, false, false));
-		ChatWriter.log(false, player.getDisplayName() + " triggered Poisonous on "
-				+ ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+		ChatWriter.logModifier(player, event, this, tool,
+				"Duration(" + duration + ")",
+				"Amplifier(" + amplifier + ")",
+				"Entity(" + event.getEntity().getType().toString() + ")");
 	}
 
 	@EventHandler
@@ -168,6 +169,9 @@ public class Poisonous extends Modifier implements Listener {
 				numberOfPotatoes++;
 			}
 		}
+
+		ChatWriter.logModifier(player, event, this, player.getInventory().getItemInMainHand(),
+				"Entity(" + event.getEntity().getType().toString() + ")");
 
 		if (numberOfMeat > 0) event.getDrops().add(new ItemStack(Material.ROTTEN_FLESH, numberOfMeat));
 		if (numberOfPotatoes > 0) event.getDrops().add(new ItemStack(Material.POISONOUS_POTATO, numberOfPotatoes));

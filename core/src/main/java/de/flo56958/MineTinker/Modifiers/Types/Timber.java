@@ -8,7 +8,6 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -172,10 +171,9 @@ public class Timber extends Modifier implements Listener {
 			locs.add(block.getLocation());
 			breakTree(player, block, allowed, locs);
 		}
+		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType().toString() + ")");
 
 		Power.HASPOWER.get(player).set(false);
-
-		ChatWriter.log(false, player.getDisplayName() + " triggered Timber on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 	}
 
 	private void breakTree(Player player, Block block, List<Material> allowed, List<Location> locs) { //TODO: Improve algorythm and performance -> async?

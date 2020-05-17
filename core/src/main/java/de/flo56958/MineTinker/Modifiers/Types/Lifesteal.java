@@ -6,7 +6,6 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -113,8 +112,10 @@ public class Lifesteal extends Modifier implements Listener {
 		}
 
 		Random rand = new Random();
+		int n = rand.nextInt(100);
 
-		if (rand.nextInt(100) > this.percentToTrigger) {
+		if (n > this.percentToTrigger) {
+			ChatWriter.logModifier(player, event, this, tool, String.format("Chance(%d/%d)", n, this.percentToTrigger));
 			return;
 		}
 
@@ -134,6 +135,7 @@ public class Lifesteal extends Modifier implements Listener {
 			player.setHealth(health);
 		}
 
-		ChatWriter.log(false, player.getDisplayName() + " triggered Lifesteal on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") and got " + recovery + " health back!");
+		ChatWriter.logModifier(player, event, this, tool, String.format("Chance(%d/%d)", n, this.percentToTrigger),
+				String.format("HealthGain(%.2f [%.2f/%.2f = %.4f])", recovery, recovery, damage, recovery/damage));
 	}
 }

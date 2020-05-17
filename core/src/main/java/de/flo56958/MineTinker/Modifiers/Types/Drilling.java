@@ -8,7 +8,6 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -163,10 +162,6 @@ public class Drilling extends Modifier implements Listener {
 			return;
 		}
 
-		ChatWriter.log(false, player.getDisplayName() + " triggered Drilling on " + ChatWriter.getDisplayName(tool)
-				+ ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
-
-
 		int level = modManager.getModLevel(tool, this);
 
 		HASDRILLING.get(player).set(true); // for the drilling-triggered BlockBreakEvents (prevents endless "recursion")
@@ -175,6 +170,8 @@ public class Drilling extends Modifier implements Listener {
 		for (int i = 1; i <= level; i++) {
 			if (!drillingBlockBreak(block.getRelative(face, i), block, player)) break;
 		}
+
+		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType() + ")", "Blockface(" + face.toString() + ")");
 
 		HASDRILLING.get(player).set(false); // so the effect of drilling is not disabled for the Player
 	}

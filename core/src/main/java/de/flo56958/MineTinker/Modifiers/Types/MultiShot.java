@@ -3,6 +3,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import org.bukkit.Bukkit;
@@ -163,6 +164,8 @@ public class MultiShot extends Modifier implements Listener {
 		Location loc = arrow.getLocation().clone();
 
 		boolean hasInfinity = modManager.hasMod(tool, Infinity.instance());
+
+		ChatWriter.logModifier(player, event, this, tool);
 
 		for (int i = 1; i <= modLevel; i++) {
 			if (!player.getGameMode().equals(GameMode.CREATIVE)) {

@@ -4,6 +4,7 @@ import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTEntityDeathEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -124,6 +125,8 @@ public class Directing extends Modifier implements Listener {
 
 			itemIterator.remove();
 		}
+		ChatWriter.logModifier(player, event, this, tool,
+				"Block(" + event.getBlock().getType().toString() + ")");
 	}
 
 	@EventHandler
@@ -166,5 +169,8 @@ public class Directing extends Modifier implements Listener {
 			player.giveExp(event.getEvent().getDroppedExp());
 			event.getEvent().setDroppedExp(0);
 		}
+
+		ChatWriter.logModifier(player, event, this, tool,
+				"Entity(" + event.getEvent().getEntity().getType().toString() + ")");
 	}
 }

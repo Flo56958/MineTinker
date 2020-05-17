@@ -12,6 +12,7 @@ logging:
   standard: false                     #logs important player activities with MineTinker
   debug: false                        #even more information
   metrics: true                       #bStats-Metrics for anonymous statistics about the use of MineTinker
+  modifiers: false                    #Should Modifier-Interactions be logged in the Console
 
 #--MESSAGES--
 chat-messages: true                   #Will turn off command output

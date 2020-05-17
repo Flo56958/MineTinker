@@ -7,12 +7,12 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -111,7 +111,7 @@ public class Webbed extends Modifier implements Listener {
 			return;
 		}
 
-		effect(event.getPlayer(), event.getTool(), event.getEntity());
+		effect(event.getPlayer(), event.getTool(), event.getEntity(), event);
 	}
 
 	@EventHandler
@@ -129,10 +129,10 @@ public class Webbed extends Modifier implements Listener {
 			return;
 		}
 
-		effect(event.getPlayer(), event.getTool(), event.getEvent().getHitEntity());
+		effect(event.getPlayer(), event.getTool(), event.getEvent().getHitEntity(), event);
 	}
 
-	private void effect(Player player, ItemStack tool, Entity entity) {
+	private void effect(Player player, ItemStack tool, Entity entity, Event event) {
 		if (!player.hasPermission("minetinker.modifiers.webbed.use")) {
 			return;
 		}
@@ -152,6 +152,8 @@ public class Webbed extends Modifier implements Listener {
 
 		((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration, amplifier, false, false));
 
-		ChatWriter.log(false, player.getDisplayName() + " triggered Webbed on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+		ChatWriter.logModifier(player, event, this, tool,
+				String.format("Duration(%d [Standard: %d])", duration, this.duration),
+				String.format("Amplifier(%d)", amplifier));
 	}
 }

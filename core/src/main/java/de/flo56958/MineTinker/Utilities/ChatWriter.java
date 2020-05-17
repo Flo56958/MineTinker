@@ -1,17 +1,22 @@
 package de.flo56958.MineTinker.Utilities;
 
 import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Modifiers.Modifier;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.logging.Level;
@@ -104,6 +109,27 @@ public class ChatWriter {
 	 */
 	public static void logColor(String message) {
 		Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + message);
+	}
+
+	public static void logModifier(@NotNull Player p, @Nullable Event event, @NotNull Modifier mod, @NotNull ItemStack tool, String... args) {
+		if (!(Main.getPlugin().getConfig().getBoolean("logging.modifiers"))) return;
+
+		//Example: 0x00FF: Flo56958/Melting - DIAMOND_CHESTPLATE - Damage(30 -> 20)
+		StringBuilder sb = new StringBuilder();
+		if (event != null) {
+			sb.append(event.getEventName()).append("(").append(String.format("%x", event.hashCode() % 0x100)).append(")")
+					.append(": ");
+		} else {
+			sb.append("No event: ");
+		}
+		sb.append(p.getName()).append("/").append(mod.getKey()).append("(")
+				.append(ModManager.instance().getModLevel(tool, mod)).append(")").append(" - ").append(tool.getType());
+		Arrays.sort(args);
+		for (String s : args) {
+			sb.append(" - ").append(s);
+		}
+
+		Bukkit.getLogger().log(Level.INFO, sb.toString());
 	}
 
 	/**

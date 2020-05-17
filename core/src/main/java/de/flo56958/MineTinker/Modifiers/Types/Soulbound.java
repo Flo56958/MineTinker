@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Item;
@@ -123,15 +122,16 @@ public class Soulbound extends Modifier implements Listener {
 				}
 
 				Random rand = new Random();
-				if (rand.nextInt(100) > modManager.getModLevel(itemStack, this) * percentagePerLevel) {
+				int n = rand.nextInt(100);
+				int c = modManager.getModLevel(itemStack, this) * percentagePerLevel;
+				ChatWriter.logModifier(player, event, this, itemStack, String.format("Chance(%d/%d)", n, c));
+				if (n > c) {
 					continue;
 				}
 
 				storedItemStacks.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>()); // ?
 
 				ArrayList<ItemStack> stored = storedItemStacks.get(player.getUniqueId());
-
-				ChatWriter.log(false, player.getDisplayName() + " triggered Soulbound on " + ChatWriter.getDisplayName(itemStack) + ChatColor.GRAY + " (" + itemStack.getType().toString() + ")!");
 
 				if (stored.contains(itemStack)) {
 					continue;
@@ -174,6 +174,7 @@ public class Soulbound extends Modifier implements Listener {
 			if (player.getInventory().addItem(is).size() != 0) { //adds items to (full) inventory
 				player.getWorld().dropItem(player.getLocation(), is);
 			} // no else as it gets added in if
+			ChatWriter.logModifier(player, event, this, is);
 		}
 
 		storedItemStacks.remove(player.getUniqueId());
@@ -200,6 +201,8 @@ public class Soulbound extends Modifier implements Listener {
 		if (toolDropable) {
 			return;
 		}
+
+		ChatWriter.logModifier(event.getPlayer(), event, this, tool, "Tool not droppable");
 
 		event.setCancelled(true);
 	}

@@ -1,8 +1,10 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
@@ -15,7 +17,6 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
@@ -164,6 +165,8 @@ public class Magical extends Modifier implements Listener {
 
 		((Arrow) arrow).setDamage(((Arrow) arrow).getDamage() * Math.pow(this.multiplierDamagePerLevel, modLevel));
 
+		ChatWriter.logModifier(player, event, this, tool, "Cost(" + this.experienceCost + ")");
+
 		Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
 			entity.remove();
 			arrow.remove();
@@ -206,12 +209,12 @@ public class Magical extends Modifier implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onEntityHit(EntityDamageByEntityEvent event) {
+	public void onEntityHit(MTEntityDamageByEntityEvent event) {
 		if (!this.isAllowed()) return;
 
-		if (!(event.getDamager() instanceof Arrow)) return;
+		if (!(event.getEvent().getDamager() instanceof Arrow)) return;
 
-		Arrow arrow = (Arrow) event.getDamager();
+		Arrow arrow = (Arrow) event.getEvent().getDamager();
 		String customName = arrow.getCustomName();
 		if (customName == null) return;
 
@@ -222,7 +225,11 @@ public class Magical extends Modifier implements Listener {
 		try {
 			int modLevel = Integer.parseInt(name[1]);
 
-			event.setDamage(event.getDamage() * Math.pow(this.multiplierDamagePerLevel, modLevel));
+			double oldDamage = event.getEvent().getDamage();
+			double newDamage = oldDamage * Math.pow(this.multiplierDamagePerLevel, modLevel);
+
+			event.getEvent().setDamage(newDamage);
+			ChatWriter.logModifier(event.getPlayer(), event, this, event.getTool(), String.format("Damage(%.2f -> %.2f [%.4f])", oldDamage, newDamage, newDamage/oldDamage));
 
 			if (this.hasKnockback) {
 				event.getEntity().setVelocity(arrow.getVelocity().normalize().multiply(modLevel));

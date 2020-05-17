@@ -7,7 +7,6 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
@@ -111,12 +110,11 @@ public class Melting extends Modifier implements Listener {
 				player.setFireTicks(0);
 			}
 
-			double damage = event.getEvent().getDamage();
-			damage = damage * (1 - this.bonusMultiplier * level);
+			double oldDamage = event.getEvent().getDamage();
+			double newDamage = oldDamage * (1 - this.bonusMultiplier * level);
 
-			event.getEvent().setDamage(damage);
-
-			ChatWriter.log(false, player.getDisplayName() + " triggered Melting on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+			event.getEvent().setDamage(newDamage);
+			ChatWriter.logModifier(player, event, this, tool, String.format("Damage(%.2f -> %.2f [x%.4f])", oldDamage, newDamage, newDamage/oldDamage));
 		} else {
             /*
             The melting effect, if the Player is the Damager
@@ -134,12 +132,11 @@ public class Melting extends Modifier implements Listener {
 					return;
 				}
 
-				double damage = event.getEvent().getDamage();
-				damage = damage * (1 + this.bonusMultiplier * level);
+				double oldDamage = event.getEvent().getDamage();
+				double newDamage = oldDamage * (1 + this.bonusMultiplier * level);
 
-				event.getEvent().setDamage(damage);
-
-				ChatWriter.log(false, player.getDisplayName() + " triggered Melting on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+				event.getEvent().setDamage(newDamage);
+				ChatWriter.logModifier(player, event, this, tool, String.format("Damage(%.2f -> %.2f [x%.4f])", oldDamage, newDamage, newDamage/oldDamage));
 			}
 		}
 	}
@@ -157,10 +154,10 @@ public class Melting extends Modifier implements Listener {
 			return;
 		}
 
-		if (player.getFireTicks() > 0 && cancelBurning) {
+		int ticks = player.getFireTicks();
+		if (ticks > 0 && cancelBurning) {
 			player.setFireTicks(0);
+			ChatWriter.logModifier(player, event, this, tool, "FireTicks(" + ticks + " -> 0)");
 		}
-
-		ChatWriter.log(false, player.getDisplayName() + " triggered Melting on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
 	}
 }

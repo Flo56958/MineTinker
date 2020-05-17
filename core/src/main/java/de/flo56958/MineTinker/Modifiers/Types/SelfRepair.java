@@ -5,7 +5,6 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -134,8 +133,9 @@ public class SelfRepair extends Modifier implements Listener {
 		int level = modManager.getModLevel(tool, this);
 		Random rand = new Random();
 		int n = rand.nextInt(100);
+		int c = this.percentagePerLevel * level;
 
-		if (n <= this.percentagePerLevel * level) {
+		if (n <= c) {
 			if (tool.getItemMeta() instanceof Damageable) {
 				Damageable damageable = (Damageable) tool.getItemMeta();
 				int dura = damageable.getDamage() - this.healthRepair;
@@ -147,9 +147,11 @@ public class SelfRepair extends Modifier implements Listener {
 				damageable.setDamage(dura);
 
 				tool.setItemMeta((ItemMeta) damageable);
-
-				ChatWriter.log(false, event.getPlayer().getDisplayName() + " triggered Self-Repair on " + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+				ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Chance(%d/%d)", n, c),
+						String.format("Repair(%d)", this.healthRepair));
+				return;
 			}
 		}
+		ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Chance(%d/%d)", n, c));
 	}
 }

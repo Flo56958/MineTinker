@@ -3,6 +3,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -123,6 +124,7 @@ public class Infinity extends Modifier implements Listener {
 			} // no else as it gets added in if
 
 			((Arrow) arrow).setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+			ChatWriter.logModifier(player, event, this, tool);
 		}
 	}
 }

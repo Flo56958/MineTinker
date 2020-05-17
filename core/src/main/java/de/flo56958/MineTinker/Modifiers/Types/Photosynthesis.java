@@ -3,6 +3,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -95,14 +96,19 @@ public class Photosynthesis extends Modifier implements Listener {
 
 					ItemMeta meta = item.getItemMeta();
 					if (meta instanceof Damageable) {
-						int damage = ((Damageable) meta).getDamage();
-						if (damage == 0) continue; //no repair needed
+						int oldDamage = ((Damageable) meta).getDamage();
+						if (oldDamage == 0) continue; //no repair needed
 
-						damage -= healthRepair * timeAdvantage * level * daytimeMultiplier;
+						int repair = (int) Math.round(healthRepair * timeAdvantage * level * daytimeMultiplier);
+						int newDamage = oldDamage - repair;
 
-						if (damage < 0) damage = 0;
+						if (newDamage < 0) newDamage = 0;
+						ChatWriter.logModifier(player, null, this, item,
+								String.format("ItemDamage(%d -> %d [%d])", oldDamage, newDamage, repair),
+								"DaytimeMultiplier(" + daytimeMultiplier + ")",
+								String.format("TimeAdvantage(%.2f * (%d / %d) = %.2f)", multiplierPerTick, timeDif / 50, tickTime, timeAdvantage));
 
-						((Damageable) meta).setDamage(damage);
+						((Damageable) meta).setDamage(newDamage);
 						item.setItemMeta(meta);
 					}
 				}

@@ -3,6 +3,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -105,6 +106,9 @@ public class KineticPlating extends Modifier implements Listener {
 		int level = modManager.getModLevel(elytra, this);
 		double damageMod = 1.0 - (this.amount * level);
 		if (damageMod < 0.0) damageMod = 0.0;
-		event.setDamage(event.getDamage() * damageMod);
+		double oldDamage = event.getDamage();
+		double newDamage = oldDamage * damageMod;
+		event.setDamage(newDamage);
+		ChatWriter.logModifier(player, event, this, elytra, String.format("Damage(%.2f -> %.2f [x%.2f])", oldDamage, newDamage, damageMod));
 	}
 }

@@ -6,7 +6,6 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -133,6 +132,7 @@ public class Evasive extends Modifier implements Listener {
 				if (time - cd > this.cooldownInSeconds * 1000) {
 					cooldownTracker.remove(player.getUniqueId().toString());
 				} else {
+					ChatWriter.logModifier(player, event, this, tool, "Cooldown");
 					return; //still on cooldown
 				}
 			}
@@ -143,19 +143,33 @@ public class Evasive extends Modifier implements Listener {
 		int level = modManager.getModLevel(tool, this);
 
 		double chance = this.percentPerLevel * level;
-		if (player.isSneaking())
+		String chanceCalculation = "Chance(" + chance;
+		if (player.isSneaking()) {
 			chance *= this.sneakMultiplier;
-		if (player.isSprinting())
+			chanceCalculation += " ->(Sneak) " + chance;
+		}
+		if (player.isSprinting()) {
 			chance *= this.sprintMultiplier;
-		if (event.getEvent().getDamager() instanceof Player)
+			chanceCalculation += " ->(Sprint) " + chance;
+		}
+		if (event.getEvent().getDamager() instanceof Player) {
 			chance *= this.pvpMultiplier;
-		else if (event.getEvent().getDamager() instanceof Arrow) {
+			chanceCalculation += " ->(PvP) " + chance;
+		} else if (event.getEvent().getDamager() instanceof Arrow) {
 			if (((Arrow) event.getEvent().getDamager()).getShooter() instanceof Player) {
 				chance *= this.pvpMultiplier;
+				chanceCalculation += " ->(PvP) " + chance;
 			}
 		}
 
-		if (rand.nextInt(100) > chance) return;
+		chanceCalculation += ")";
+
+		int c = rand.nextInt(100);
+
+		if (c > chance) {
+			ChatWriter.logModifier(player, event, this, tool, chanceCalculation, "Failed(" + c + "/" + chance + ")");
+			return;
+		}
 
 
 		if (this.cooldownInSeconds > 0)
@@ -165,7 +179,6 @@ public class Evasive extends Modifier implements Listener {
 		if (getConfig().getBoolean("Sound", true))
 			player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 1.0f, 1.0f);
 
-		ChatWriter.log(false, player.getDisplayName() + " triggered Evasive on "
-				+ ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ")");
+		ChatWriter.logModifier(player, event, this, tool, chanceCalculation, "Success(" + c + "/" + chance + ")");
 	}
 }

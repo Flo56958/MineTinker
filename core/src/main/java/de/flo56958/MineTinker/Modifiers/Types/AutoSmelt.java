@@ -6,7 +6,6 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -248,9 +247,7 @@ public class AutoSmelt extends Modifier implements Listener {
 		if (this.hasSound) block.getLocation().getWorld().playSound(block.getLocation(),
 				Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
 
-		ChatWriter.log(false, player.getDisplayName() + " triggered Auto-Smelt on "
-				+ ChatWriter.getDisplayName(tool) + ChatColor.GRAY +
-				" (" + tool.getType().toString() + ") while mining " + breakEvent.getBlock().getType().toString() + "!");
+		ChatWriter.logModifier(player, event, this, tool, "Block(" + breakEvent.getBlock().getType().toString() + ")");
 	}
 
 	private static class Triplet {

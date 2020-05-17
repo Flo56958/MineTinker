@@ -275,6 +275,8 @@ public class Power extends Modifier implements Listener {
 			}
 		}
 
+		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType().toString() + ")");
+
 		HASPOWER.get(player).set(false); // so the effect of power is not disabled for the Player
 	}
 
@@ -296,8 +298,7 @@ public class Power extends Modifier implements Listener {
 			return;
 		}
 
-		ChatWriter.log(false, player.getDisplayName() + " triggered Power on " + ChatWriter.getDisplayName(tool)
-				+ ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+		ChatWriter.logModifier(player, event, this, tool);
 
 		HASPOWER.get(player).set(true);
 

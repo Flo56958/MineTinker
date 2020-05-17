@@ -3,6 +3,7 @@ package de.flo56958.MineTinker.Modifiers.Types;
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -13,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -109,11 +111,13 @@ public class Berserk extends Modifier implements Listener {
 			return;
 		}
 
-		if (player.getInventory().getChestplate() == null) {
+		ItemStack chest = player.getInventory().getChestplate();
+
+		if (chest == null) {
 			return;
 		}
 
-		int modifierLevel = modManager.getModLevel(player.getInventory().getChestplate(), this);
+		int modifierLevel = modManager.getModLevel(chest, this);
 
 		if (modifierLevel <= 0) {
 			return;
@@ -130,6 +134,8 @@ public class Berserk extends Modifier implements Listener {
 
 		if (player.getHealth() / maxHealth > trigger / 100.0 && lifeAfterDamage / maxHealth <= trigger / 100.0) {
 			player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, boostTime, modifierLevel - 1));
+			ChatWriter.logModifier(player, event, this, chest,
+					"Time(" + boostTime + ")", "Amplifier(" + (modifierLevel - 1) + ")");
 		}
 	}
 }
