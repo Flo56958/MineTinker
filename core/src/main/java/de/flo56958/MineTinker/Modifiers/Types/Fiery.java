@@ -1,13 +1,20 @@
 package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -15,7 +22,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-public class Fiery extends Modifier {
+public class Fiery extends Modifier implements Listener {
 
 	//TODO: Add Particle effect
 	private static Fiery instance;
@@ -42,7 +49,7 @@ public class Fiery extends Modifier {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD);
+		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD);
 	}
 
 	@Override
@@ -91,5 +98,49 @@ public class Fiery extends Modifier {
 		}
 
 		return true;
+	}
+
+	@EventHandler
+	public void onShoot(ProjectileLaunchEvent event) {
+		if (!this.isAllowed()) return;
+
+		Projectile arrow = event.getEntity();
+		if (!(arrow instanceof Arrow)) return;
+
+		if (!(arrow.getShooter() instanceof Player)) return;
+
+		Player player = (Player) arrow.getShooter();
+		if(!player.hasPermission("minetinker.modifiers.fiery.use")) return;
+
+		ItemStack tool = player.getInventory().getItemInMainHand();
+
+		if (!ToolType.CROSSBOW.contains(tool.getType())) return;
+
+		if (!modManager.isToolViable(tool)) return;
+
+		if (!modManager.hasMod(tool, this)) return;
+
+		arrow.setFireTicks(2000);
+	}
+
+	@EventHandler(ignoreCancelled = true)
+	public void onHit(MTEntityDamageByEntityEvent event) {
+		if (!this.isAllowed()) return;
+		ItemStack tool = event.getTool();
+		if (!ToolType.CROSSBOW.contains(tool.getType()) && !ToolType.BOW.contains(tool.getType())) return; //The enchantment is working for other tools
+
+		if(event.getEvent().getDamager().equals(event.getPlayer())) return; //Melee interaction
+
+		if(!event.getPlayer().hasPermission("minetinker.modifiers.fiery.use")) return;
+
+		System.out.println(event.getEvent().getDamager().getFireTicks());
+
+		int fireticks = event.getEntity().getFireTicks();
+		int addedFT = 100 * (modManager.getModLevel(tool, this) - 1); //Flame adds 100 Ticks; Fire aspect multiplies that by the level
+
+		if (addedFT == 0) return;
+
+		event.getEntity().setFireTicks(fireticks + addedFT);
+		ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("FireTicks(%d -> %d)", fireticks, fireticks + addedFT));
 	}
 }

@@ -165,7 +165,8 @@ public class MultiShot extends Modifier implements Listener {
 
 		boolean hasInfinity = modManager.hasMod(tool, Infinity.instance());
 
-		ChatWriter.logModifier(player, event, this, tool);
+		boolean hasFiery = modManager.hasMod(tool, Fiery.instance()) && player.hasPermission("minetinker.modifiers.fiery.use");
+		ChatWriter.logModifier(player, event, this, tool, Fiery.instance().getKey() + "(" + hasFiery + ")");
 
 		for (int i = 1; i <= modLevel; i++) {
 			if (!player.getGameMode().equals(GameMode.CREATIVE)) {
@@ -189,6 +190,7 @@ public class MultiShot extends Modifier implements Listener {
 
 			Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
 				Arrow arr = loc.getWorld().spawnArrow(loc, vel, (float) vel.length(), (float) spread);
+				if(hasFiery) arr.setFireTicks(2000);
 				arr.setShooter(player);
 
 				if (hasInfinity || player.getGameMode().equals(GameMode.CREATIVE)) {

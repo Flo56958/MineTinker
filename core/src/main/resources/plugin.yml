@@ -358,11 +358,15 @@ permissions:
     children:
       minetinker.modifiers.fiery.apply: true
       minetinker.modifiers.fiery.craft: true
+      minetinker.modifiers.fiery.use: true
   minetinker.modifiers.fiery.apply:
     description: Allows to apply Fiery to a MineTinker-Tool
     default: true
   minetinker.modifiers.fiery.craft:
     description: Allows to craft a Fiery-Modifiers
+    default: true
+  minetinker.modifiers.fiery.use:
+    description: Allows to use a Fiery-Modifiers on Crossbows
     default: true
 
   minetinker.modifiers.freezing.*:
@@ -405,11 +409,15 @@ permissions:
     children:
       minetinker.modifiers.infinity.apply: true
       minetinker.modifiers.inifinty.craft: true
+      minetinker.modifiers.inifinty.use: true
   minetinker.modifiers.infinity.apply:
     description: Allows to apply Infinity to a MineTinker-Tool
     default: true
   minetinker.modifiers.infinity.craft:
     description: Allows to craft a Infinity-Modifiers
+    default: true
+  minetinker.modifiers.infinity.use:
+    description: Allows to use a Infinity-Modifiers on Crossbows
     default: true
 
   minetinker.modifiers.insulating.*:

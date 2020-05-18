@@ -109,6 +109,7 @@ public class Infinity extends Modifier implements Listener {
 		if (!(arrow.getShooter() instanceof Player)) return;
 
 		Player player = (Player) arrow.getShooter();
+		if (!player.hasPermission("minetinker.modifiers.infinity.use")) return;
 
 		ItemStack tool = player.getInventory().getItemInMainHand();
 
