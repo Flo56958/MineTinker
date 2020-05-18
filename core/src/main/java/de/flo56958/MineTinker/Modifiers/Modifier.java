@@ -322,7 +322,6 @@ public abstract class Modifier {
 				ModManager.instance().recipe_Namespaces.add(nkey);
 			} catch (Exception e) {
 				ChatWriter.logError("Could not register recipe for the " + this.name + "-Modifier!"); //executes if the recipe could not initialize
-				e.printStackTrace();
 			}
 		}
 	}

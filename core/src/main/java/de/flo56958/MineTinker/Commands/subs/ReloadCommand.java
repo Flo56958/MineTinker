@@ -34,10 +34,6 @@ public class ReloadCommand implements SubCommand {
 
 		ChatWriter.sendMessage(sender, ChatColor.RED,
 				LanguageManager.getString("Commands.Reload.Note1", player));
-		ChatWriter.sendMessage(sender, ChatColor.WHITE,
-				LanguageManager.getString("Commands.Reload.Recipes", player));
-
-		ModManager.instance().removeRecipes();
 
 		ChatWriter.sendMessage(sender, ChatColor.WHITE,
 				LanguageManager.getString("Commands.Reload.Configs", player));

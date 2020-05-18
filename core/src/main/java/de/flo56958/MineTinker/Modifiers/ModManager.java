@@ -230,6 +230,7 @@ public class ModManager {
 		layout = ConfigurationManager.getConfig("layout.yml");
 
 		removeRecipes();
+		mods.clear();
 
 		for (Modifier m : allMods) {
 			m.reload();
@@ -246,48 +247,13 @@ public class ModManager {
 		this.ToolIdentifier = config.getString("ToolIdentifier");
 		this.ArmorIdentifier = config.getString("ArmorIdentifier");
 
+		removeRecipes();
 		for (Modifier m : this.mods) {
 			m.registerCraftingRecipe();
 		}
 
 		//get Modifier incompatibilities
-		incompatibilities.clear();
-		for (Modifier m : this.allMods) {
-			incompatibilities.putIfAbsent(m, new HashSet<>());
-		}
-		FileConfiguration modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
-
-		List<String> possibleKeys = new ArrayList<>();
-		for (Modifier m : this.allMods) {
-			possibleKeys.add(m.getKey());
-		}
-		possibleKeys.sort(String::compareToIgnoreCase);
-		possibleKeys.add(0, "Do not edit this list; just for documentation of what Keys can be used under Incompatibilities");
-		modifierconfig.set("PossibleKeys", possibleKeys);
-		ConfigurationManager.saveConfig(modifierconfig);
-		ConfigurationManager.loadConfig("", "Modifiers.yml");
-
-		modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
-		List<String> incompatibilityList = modifierconfig.getStringList("Incompatibilities");
-		for (String s : incompatibilityList) {
-			String[] splits = s.split(":");
-			if (splits.length != 2) continue;
-			Modifier mod1 = null;
-			Modifier mod2 = null;
-			for (Modifier m : this.allMods) {
-				if (m.getKey().equals(splits[0])) {
-					mod1 = m;
-				}
-				if (m.getKey().equals(splits[1])) {
-					mod2 = m;
-				}
-			}
-
-			if (mod1 == null || mod2 == null) continue;
-
-			incompatibilities.get(mod1).add(mod2);
-			incompatibilities.get(mod2).add(mod1);
-		}
+		reloadIncompatibilities();
 
 		if (layout.getBoolean("OverrideLanguagesystem", false)) {
 			this.loreScheme = layout.getStringList("LoreLayout");
@@ -310,6 +276,47 @@ public class ModManager {
 
 		this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
 		this.allowBookConvert = config.getBoolean("ConvertBookToModifier");
+		GUIs.reload();
+	}
+
+	private void reloadIncompatibilities() {
+		FileConfiguration modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
+
+		List<String> possibleKeys = new ArrayList<>();
+		for (Modifier m : this.allMods) {
+			possibleKeys.add(m.getKey());
+		}
+		possibleKeys.sort(String::compareToIgnoreCase);
+		possibleKeys.add(0, "Do not edit this list; just for documentation of what Keys can be used under Incompatibilities");
+		modifierconfig.set("PossibleKeys", possibleKeys);
+		ConfigurationManager.saveConfig(modifierconfig);
+		ConfigurationManager.loadConfig("", "Modifiers.yml");
+		incompatibilities.clear();
+		for (Modifier m : this.allMods) {
+			incompatibilities.putIfAbsent(m, new HashSet<>());
+		}
+		modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
+		List<String> incompatibilityList = modifierconfig.getStringList("Incompatibilities");
+		for (String s : incompatibilityList) {
+			String[] splits = s.split(":");
+			if (splits.length != 2) continue;
+			Modifier mod1 = null;
+			Modifier mod2 = null;
+			for (Modifier m : this.allMods) {
+				if (m.getKey().equals(splits[0])) {
+					mod1 = m;
+				}
+				if (m.getKey().equals(splits[1])) {
+					mod2 = m;
+				}
+			}
+
+			if (mod1 == null || mod2 == null) continue;
+			if (mod1.equals(mod2)) continue; //Modifier can not be incompatible with its self
+
+			incompatibilities.get(mod1).add(mod2);
+			incompatibilities.get(mod2).add(mod1);
+		}
 	}
 
 	public @NotNull HashSet<Modifier> getIncompatibilities(Modifier m) {
@@ -334,7 +341,6 @@ public class ModManager {
 		if (!allMods.contains(mod)) {
 			mod.reload();
 			allMods.add(mod);
-			incompatibilities.putIfAbsent(mod, new HashSet<>());
 			if(mod.isAllowed()) {
 				mods.add(mod);
 				mods.sort(Comparator.comparing(Modifier::getName));
@@ -343,9 +349,9 @@ public class ModManager {
 			if (mod instanceof Listener) { //Enable Events
 				Bukkit.getPluginManager().registerEvents((Listener) mod, Main.getPlugin());
 			}
+			reloadIncompatibilities();
 			if(!mod.getSource().equals(Main.getPlugin())) {
 				GUIs.reload();
-				//reload(); //TODO: To get incompatibilities
 			}
 			ChatWriter.logColor(LanguageManager.getString("ModManager.RegisterModifier")
 					.replace("%mod", mod.getColor() + mod.getName())
@@ -1073,7 +1079,7 @@ public class ModManager {
 	}
 
 	public void removeRecipes() {
-		Iterator<Recipe> it = Bukkit.getServer().recipeIterator();
+		Iterator<Recipe> it = NBTUtils.getHandler().getRecipeIterator();
 		//TODO: Find a different way to remove recipes! Bukkit is bugged atm
 
 		while (it.hasNext()) {
@@ -1083,7 +1089,6 @@ public class ModManager {
 			if (result.getType() != Material.EXPERIENCE_BOTTLE && result.getType() != Material.NETHER_STAR) {
 				//Modifieritems
 				if (ModManager.instance().isModifierItem(result)) {
-					System.out.println("Removed " + result);
 					it.remove();
 					continue;
 				}

@@ -132,7 +132,7 @@ public class GUIs {
 					if (!incomp.isEmpty()) {
 						StringBuilder incompatibilities = new StringBuilder();
 						for (Modifier in : incomp) {
-							incompatibilities.append(in.getName()).append(", ");
+							if(in.isAllowed()) incompatibilities.append(in.getName()).append(", ");
 						}
 
 						lore.add(ChatColor.DARK_RED + "" + ChatColor.BOLD
