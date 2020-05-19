@@ -80,7 +80,7 @@ public class Infinity extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.ARROW, true);
+		init(Material.ARROW);
 	}
 
 	@Override

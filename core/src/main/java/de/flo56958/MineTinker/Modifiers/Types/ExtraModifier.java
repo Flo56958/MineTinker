@@ -13,7 +13,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ExtraModifier extends Modifier {
 
@@ -22,6 +24,7 @@ public class ExtraModifier extends Modifier {
 
 	private ExtraModifier() {
 		super(Main.getPlugin());
+		this.customModelData = 10_047;
 	}
 
 	public static ExtraModifier instance() {
@@ -51,16 +54,32 @@ public class ExtraModifier extends Modifier {
 
 		config.addDefault("Allowed", true);
 		config.addDefault("Name", "Extra-Modifier");
-		config.addDefault("ModifierItem", "NETHER_STAR"); //Needs to be a viable Material-Type
+		config.addDefault("ModifierItemName", "Refined Netherstar");
 		config.addDefault("Description", "Adds a additional Modifiers-Slot to the tool!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Extra-Modifier");
 		config.addDefault("Color", "%WHITE%");
 		config.addDefault("ExtraModifierGain", 1); //How much Slots should be added per Nether-Star
 		config.addDefault("OverrideLanguagesystem", false);
 
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", false);
+
+		config.addDefault("Recipe.Enabled", true);
+		config.addDefault("Recipe.Top", "   ");
+		config.addDefault("Recipe.Middle", " N ");
+		config.addDefault("Recipe.Bottom", "   ");
+
+		Map<String, String> recipeMaterials = new HashMap<>();
+		recipeMaterials.put("N", Material.NETHER_STAR.name());
+
+		config.addDefault("Recipe.Materials", recipeMaterials);
+		config.addDefault("OverrideLanguagesystem", false);
+
+
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.getMaterial(config.getString("ModifierItem", "NETHER_STAR")), false);
+		init(Material.NETHER_STAR);
 
 		this.slotCost = 0;
 

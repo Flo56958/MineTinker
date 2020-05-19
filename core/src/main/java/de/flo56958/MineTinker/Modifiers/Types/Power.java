@@ -123,7 +123,7 @@ public class Power extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.EMERALD, true);
+		init(Material.EMERALD);
 
 		this.lv1_vertical = config.getBoolean("Lv1Vertical", false);
 		this.toggleable = config.getBoolean("Toggleable", true);

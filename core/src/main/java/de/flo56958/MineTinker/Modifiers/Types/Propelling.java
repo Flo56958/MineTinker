@@ -94,7 +94,7 @@ public class Propelling extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.FIREWORK_STAR, true);
+		init(Material.FIREWORK_STAR);
 
 		this.durabilityLoss = config.getInt("Elytra.DurabilityLoss", 10);
 		this.speedPerLevel = config.getDouble("Elytra.SpeedPerLevel", 0.05);

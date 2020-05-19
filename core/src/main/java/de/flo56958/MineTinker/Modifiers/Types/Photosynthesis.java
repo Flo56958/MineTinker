@@ -203,7 +203,7 @@ public class Photosynthesis extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.VINE, true);
+		init(Material.VINE);
 
 		this.healthRepair = config.getInt("HealthRepairPerLevel", 2);
 		this.tickTime = config.getInt("TickTime", 100);

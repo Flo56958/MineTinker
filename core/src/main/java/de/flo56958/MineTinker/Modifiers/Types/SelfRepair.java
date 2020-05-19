@@ -85,7 +85,7 @@ public class SelfRepair extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.MOSSY_COBBLESTONE, true);
+		init(Material.MOSSY_COBBLESTONE);
 
 		this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
 		this.healthRepair = config.getInt("HealthRepair", 2);

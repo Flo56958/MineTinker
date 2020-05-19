@@ -95,7 +95,7 @@ public class Magical extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.ARROW, true);
+		init(Material.ARROW);
 
 		this.multiplierArrowSpeed = config.getDouble("MultiplierArrowSpeed", 0.3);
 		this.multiplierDamagePerLevel = config.getDouble("MultiplierArrowDamagePerLevel", 1.25);

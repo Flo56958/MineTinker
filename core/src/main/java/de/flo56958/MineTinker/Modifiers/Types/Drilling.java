@@ -103,7 +103,7 @@ public class Drilling extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.HOPPER, true);
+		init(Material.HOPPER);
 
 		this.toggleable = config.getBoolean("Toggleable", true);
 		this.treatAsWhitelist = config.getBoolean("TreatAsWhitelist", false);

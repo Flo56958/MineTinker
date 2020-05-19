@@ -131,7 +131,7 @@ public class Tanky extends Modifier implements Listener {
 
 		this.healthPerLevel = config.getInt("HealthPerLevel", 3);
 
-		init(Material.OBSIDIAN, true);
+		init(Material.OBSIDIAN);
 
 		this.description = this.description.replace("%amount", String.valueOf(this.healthPerLevel / 2.0));
 	}

@@ -18,9 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Experienced extends Modifier implements Listener {
 
@@ -30,7 +28,7 @@ public class Experienced extends Modifier implements Listener {
 
 	private Experienced() {
 		super(Main.getPlugin());
-
+		this.customModelData = 10_048;
 	}
 
 	public static Experienced instance() {
@@ -60,20 +58,32 @@ public class Experienced extends Modifier implements Listener {
 
 		config.addDefault("Allowed", true);
 		config.addDefault("Name", "Experienced");
+		config.addDefault("ModifierItemName", "Essence of Experienced");
 		config.addDefault("Description", "Tool has the chance to drop XP while using it!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Experienced-Modifier");
 		config.addDefault("Color", "%GREEN%");
 		config.addDefault("MaxLevel", 10);
 		config.addDefault("SlotCost", 1);
 		config.addDefault("PercentagePerLevel", 2); //= 20% at Level 10 -> every 5th hit / block will trigger Experienced
 		config.addDefault("Amount", 1); //How much XP should be dropped when triggered
 
-		config.addDefault("Recipe.Enabled", false);
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", false);
+		config.addDefault("Recipe.Enabled", true);
+		config.addDefault("Recipe.Top", "   ");
+		config.addDefault("Recipe.Middle", " E ");
+		config.addDefault("Recipe.Bottom", "   ");
+
+		Map<String, String> recipeMaterials = new HashMap<>();
+		recipeMaterials.put("E", Material.EXPERIENCE_BOTTLE.name());
+
+		config.addDefault("Recipe.Materials", recipeMaterials);
 		config.addDefault("OverrideLanguagesystem", false);
 
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.EXPERIENCE_BOTTLE, false);
+		init(Material.EXPERIENCE_BOTTLE);
 
 		this.percentagePerLevel = config.getInt("PercentagePerLevel", 2);
 		this.amount = config.getInt("Amount", 1);

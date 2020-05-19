@@ -73,7 +73,7 @@ public class SilkTouch extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.COBWEB, true);
+		init(Material.COBWEB);
 	}
 
 	@Override

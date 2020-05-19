@@ -81,7 +81,7 @@ public class Smite extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.BONE, true);
+		init(Material.BONE);
 	}
 
 	@Override

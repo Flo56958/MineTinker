@@ -89,7 +89,7 @@ public class Haste extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.REDSTONE_BLOCK, true);
+		init(Material.REDSTONE_BLOCK);
 	}
 
 	@Override

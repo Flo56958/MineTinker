@@ -81,7 +81,7 @@ public class Insulating extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.MAGMA_CREAM, true);
+		init(Material.MAGMA_CREAM);
 	}
 
 	@Override

@@ -81,7 +81,7 @@ public class SpidersBane extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.FERMENTED_SPIDER_EYE, true);
+		init(Material.FERMENTED_SPIDER_EYE);
 	}
 
 	@Override

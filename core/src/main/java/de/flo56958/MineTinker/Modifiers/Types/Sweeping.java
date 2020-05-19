@@ -74,7 +74,7 @@ public class Sweeping extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.IRON_INGOT, true);
+		init(Material.IRON_INGOT);
 	}
 
 	@Override

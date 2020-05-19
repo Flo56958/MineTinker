@@ -84,7 +84,7 @@ public class KineticPlating extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.IRON_BLOCK, true);
+		init(Material.IRON_BLOCK);
 
 		this.amount = config.getInt("Amount", 1);
 		this.description = this.description.replace("%amount", String.valueOf(this.amount));

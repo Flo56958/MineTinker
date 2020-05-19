@@ -91,7 +91,7 @@ public class Shulking extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.SHULKER_SHELL, true);
+		init(Material.SHULKER_SHELL);
 
 		this.duration = config.getInt("Duration", 20);
 		this.effectAmplifier = config.getInt("EffectAmplifier", 2);

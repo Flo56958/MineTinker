@@ -83,7 +83,7 @@ public class AntiArrowPlating extends Modifier {
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
 		// Initialize modifier
-		init(Material.IRON_BLOCK, true);
+		init(Material.IRON_BLOCK);
 	}
 
 	@Override

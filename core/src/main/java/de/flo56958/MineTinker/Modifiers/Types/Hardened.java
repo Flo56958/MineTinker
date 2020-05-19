@@ -176,7 +176,7 @@ public class Hardened extends Modifier implements Listener {
 		this.armorPerLevel = config.getDouble("ArmorPerLevel", 1.0);
 		this.toughnessPerLevel = config.getDouble("ToughnessPerLevel", 0.5);
 
-		init(Material.IRON_BLOCK, true);
+		init(Material.IRON_BLOCK);
 
 		this.description = this.description.replaceAll("%aamount", String.valueOf(this.armorPerLevel))
 				.replaceAll("%tamount", String.valueOf(this.toughnessPerLevel));

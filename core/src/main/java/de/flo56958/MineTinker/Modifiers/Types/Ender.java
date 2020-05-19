@@ -101,7 +101,7 @@ public class Ender extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.ENDER_EYE, true);
+		init(Material.ENDER_EYE);
 
 		this.hasSound = config.getBoolean("Sound", true);
 		this.hasParticles = config.getBoolean("Particles", true);

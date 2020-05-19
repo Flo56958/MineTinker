@@ -92,7 +92,7 @@ public class Berserk extends Modifier implements Listener {
 		this.boostTime = config.getInt("BoostTimeInTicks");
 		this.trigger = config.getInt("TriggerPercent");
 
-		init(Material.REDSTONE, true);
+		init(Material.REDSTONE);
 
 		this.description = this.description
 				.replace("%duration", String.valueOf(this.boostTime / 20))

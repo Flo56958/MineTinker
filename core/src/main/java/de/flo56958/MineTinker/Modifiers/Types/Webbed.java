@@ -93,7 +93,7 @@ public class Webbed extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.COBWEB, true);
+		init(Material.COBWEB);
 
 		this.duration = config.getInt("Duration", 60);
 		this.durationMultiplier = config.getDouble("DurationMultiplier", 1.2);

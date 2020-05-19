@@ -229,15 +229,9 @@ public class EntityListener implements Listener {
 		Player player = (Player) event.getEntity().getShooter();
 		ItemStack tool = player.getInventory().getItemInMainHand();
 
-		// In the check below this, experience bottles are not throwable by default
-		// This is because they're Experienced Modifier Items
-		if (tool.getType() == Material.EXPERIENCE_BOTTLE) {
-			return;
-		}
-
 		// This isn't the best detection, if the player has a non modifier in one hand and
 		// one in the other, this won't know which was actually thrown.
-		// Maybe improve this before release.
+		// TODO: Maybe improve this before release.
 		// It works as a safeguard in general though.
 		if (modManager.isModifierItem(tool) || modManager.isModifierItem(player.getInventory().getItemInOffHand())) {
 			event.setCancelled(true);

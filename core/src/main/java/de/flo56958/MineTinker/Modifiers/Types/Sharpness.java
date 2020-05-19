@@ -83,7 +83,7 @@ public class Sharpness extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.QUARTZ_BLOCK, true);
+		init(Material.QUARTZ_BLOCK);
 	}
 
 	@Override

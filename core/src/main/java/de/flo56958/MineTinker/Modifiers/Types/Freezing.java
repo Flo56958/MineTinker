@@ -83,7 +83,7 @@ public class Freezing extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.DIAMOND, true);
+		init(Material.DIAMOND);
 	}
 
 	@Override

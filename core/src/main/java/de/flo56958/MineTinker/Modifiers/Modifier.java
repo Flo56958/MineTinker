@@ -55,23 +55,27 @@ public abstract class Modifier {
 
 	boolean checkAndAdd(Player player, ItemStack tool, String permission, boolean isCommand, boolean fromRandom, boolean silent) {
 		if ((modManager.getFreeSlots(tool) < this.getSlotCost() && !this.equals(ExtraModifier.instance())) && !isCommand) {
-			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.NO_FREE_SLOTS, false));
+			if (!silent)
+				pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.NO_FREE_SLOTS, false));
 			return false;
 		}
 
 		if (!player.hasPermission("minetinker.modifiers." + permission + ".apply")) {
-			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.NO_PERMISSION, isCommand));
+			if (!silent)
+				pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.NO_PERMISSION, isCommand));
 			return false;
 		}
 
 		FileConfiguration modifiersconfig = ConfigurationManager.getConfig("Modifiers.yml");
 		if (!(modifiersconfig.getBoolean("CommandIgnoresToolTypes") && isCommand && !fromRandom) && !this.isMaterialCompatible(tool.getType())) {
-			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
+			if (!silent)
+				pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
 			return false;
 		}
 
 		if (!(modifiersconfig.getBoolean("CommandIgnoresMaxLevel") && isCommand && !fromRandom) && modManager.getModLevel(tool, this) >= this.getMaxLvl()) {
-			if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.MOD_MAXLEVEL, isCommand));
+			if (!silent)
+				pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.MOD_MAXLEVEL, isCommand));
 			return false;
 		}
 
@@ -81,14 +85,16 @@ public abstract class Modifier {
 
 				for (Modifier m : incompatibility) {
 					if (modManager.hasMod(tool, m)) {
-						if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+						if (!silent)
+							pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
 						return false;
 					}
 					if (modifiersconfig.getBoolean("IncompatibilitiesConsiderEnchants")) {
 						for (Enchantment e : m.getAppliedEnchantments()) {
 							if (!tool.hasItemMeta()) return false;
 							if (tool.getItemMeta().hasEnchant(e)) {
-								if (!silent) pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+								if (!silent)
+									pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
 								return false;
 							}
 						}
@@ -111,7 +117,9 @@ public abstract class Modifier {
 		return true;
 	}
 
-	public int getCustomModelData() { return customModelData; }
+	public int getCustomModelData() {
+		return customModelData;
+	}
 
 	public abstract String getKey();
 
@@ -129,7 +137,9 @@ public abstract class Modifier {
 		return maxLvl;
 	}
 
-	public int getSlotCost() { return slotCost; }
+	public int getSlotCost() {
+		return slotCost;
+	}
 
 	public ItemStack getModItem() {
 		return modItem;
@@ -158,7 +168,7 @@ public abstract class Modifier {
 	/**
 	 * changes the core settings of the Modifier (like a secondary constructor)
 	 */
-	protected void init(Material m, boolean customItem) {
+	protected void init(Material m) {
 		FileConfiguration config = getConfig();
 
 		this.color = ChatWriter.getColor(config.getString("Color", "%WHITE%"));
@@ -169,39 +179,30 @@ public abstract class Modifier {
 			this.name = config.getString("Name", "");
 			this.description = ChatWriter.addColors(config.getString("Description", ""));
 
-			if (customItem) {
-				this.modItem = modManager.createModifierItem(m, this.color + config.getString("ModifierItemName", ""),
-						ChatWriter.addColors(config.getString("DescriptionModifierItem", "")), this);
-			} else {
-				this.modItem = new ItemStack(m, 1);
-			}
+			this.modItem = modManager.createModifierItem(m, this.color + config.getString("ModifierItemName", ""),
+					ChatWriter.addColors(config.getString("DescriptionModifierItem", "")), this);
 		} else { //normal Languagesystem-Integration
 			String langStart = "Modifier." + getKey();
 
 			this.name = LanguageManager.getString(langStart + ".Name");
 			this.description = LanguageManager.getString(langStart + ".Description");
 
-			if (customItem) {
-				this.modItem = modManager.createModifierItem(m, this.color + LanguageManager.getString(langStart + ".ModifierItemName"),
-						ChatColor.WHITE + LanguageManager.getString(langStart + ".DescriptionModifierItem"), this);
-			} else {
-				this.modItem = new ItemStack(m, 1);
-			}
+			this.modItem = modManager.createModifierItem(m, this.color + LanguageManager.getString(langStart + ".ModifierItemName"),
+					ChatColor.WHITE + LanguageManager.getString(langStart + ".DescriptionModifierItem"), this);
+
 		}
 
-		if (customItem) {
-			if (ConfigurationManager.getConfig("Modifiers.yml").getBoolean("UseCustomModelData", false)) {
-				this.modItem.setType(Material.STICK);
-				NBTUtils.getHandler().setInt(this.modItem, "CustomModelData", this.customModelData);
-			}
+		if (ConfigurationManager.getConfig("Modifiers.yml").getBoolean("UseCustomModelData", false)) {
+			this.modItem.setType(Material.STICK);
+			NBTUtils.getHandler().setInt(this.modItem, "CustomModelData", this.customModelData);
 		}
 	}
 
 	/**
 	 * applies the Modifier to the tool
 	 *
-	 * @param player    the Player
-	 * @param tool the Tool to modify
+	 * @param player the Player
+	 * @param tool   the Tool to modify
 	 * @return true if successful
 	 * false if failure
 	 */

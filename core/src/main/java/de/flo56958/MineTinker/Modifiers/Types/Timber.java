@@ -83,7 +83,7 @@ public class Timber extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.EMERALD, true);
+		init(Material.EMERALD);
 		this.maxBlocks = config.getInt("MaximumBlocksPerSwing", 2000);
 		this.maxBlocks = (this.maxBlocks == -1) ? Integer.MAX_VALUE : this.maxBlocks;
 	}

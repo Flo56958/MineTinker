@@ -127,7 +127,8 @@ public class ModManager {
 	/**
 	 * Class constructor (no parameters)
 	 */
-	private ModManager() {}
+	private ModManager() {
+	}
 
 	/**
 	 * get the instance that contains the modifier list (VERY IMPORTANT)
@@ -341,7 +342,7 @@ public class ModManager {
 		if (!allMods.contains(mod)) {
 			mod.reload();
 			allMods.add(mod);
-			if(mod.isAllowed()) {
+			if (mod.isAllowed()) {
 				mods.add(mod);
 				mods.sort(Comparator.comparing(Modifier::getName));
 				mod.registerCraftingRecipe();
@@ -350,7 +351,7 @@ public class ModManager {
 				Bukkit.getPluginManager().registerEvents((Listener) mod, Main.getPlugin());
 			}
 			reloadIncompatibilities();
-			if(!mod.getSource().equals(Main.getPlugin())) {
+			if (!mod.getSource().equals(Main.getPlugin())) {
 				GUIs.reload();
 			}
 			ChatWriter.logColor(LanguageManager.getString("ModManager.RegisterModifier")
@@ -551,7 +552,7 @@ public class ModManager {
 	}
 
 	/**
-	 * @param player      Player that uses the tool
+	 * @param player Player that uses the tool
 	 * @param tool   tool that needs to get exp
 	 * @param amount how much exp should the tool get
 	 */
@@ -976,9 +977,7 @@ public class ModManager {
 	@Contract("null -> false")
 	public boolean isModifierItem(ItemStack item) {
 		if (item == null) return false;
-		return nbt.hasTag(item, "modifierItem")
-				|| item.getType().equals(Experienced.instance().getModItem().getType())
-				|| item.getType().equals(ExtraModifier.instance().getModItem().getType());
+		return nbt.hasTag(item, "modifierItem");
 	}
 
 	/**
@@ -989,15 +988,6 @@ public class ModManager {
 	public Modifier getModifierFromItem(ItemStack item) {
 		if (!isModifierItem(item)) {
 			return null;
-		}
-
-		if (item.getType().equals(Experienced.instance().getModItem().getType())) {
-			return Experienced.instance();
-		}
-
-		if (item.getType().equals(ExtraModifier.instance().getModItem().getType())
-				&& !nbt.hasTag(item, "modifierItem")) {
-			return ExtraModifier.instance();
 		}
 
 		if (!nbt.hasTag(item, "modifierItem")) {
@@ -1056,9 +1046,9 @@ public class ModManager {
 	/**
 	 * Checks the durability of the Tool
 	 *
-	 * @param cancellable    the Event (implements Cancelable)
-	 * @param player    the Player
-	 * @param tool the Tool
+	 * @param cancellable the Event (implements Cancelable)
+	 * @param player      the Player
+	 * @param tool        the Tool
 	 * @return false: if broken; true: if enough durability
 	 */
 	public boolean durabilityCheck(@NotNull Cancellable cancellable, @NotNull Player player, @NotNull ItemStack tool) {
@@ -1085,19 +1075,17 @@ public class ModManager {
 		while (it.hasNext()) {
 			ItemStack result = it.next().getResult();
 
-
-			if (result.getType() != Material.EXPERIENCE_BOTTLE && result.getType() != Material.NETHER_STAR) {
-				//Modifieritems
-				if (ModManager.instance().isModifierItem(result)) {
-					it.remove();
-					continue;
-				}
-
-				//Builderswands
-				if (ModManager.instance().isWandViable(result)) {
-					it.remove();
-				}
+			//Modifieritems
+			if (ModManager.instance().isModifierItem(result)) {
+				it.remove();
+				continue;
 			}
+
+			//Builderswands
+			if (ModManager.instance().isWandViable(result)) {
+				it.remove();
+			}
+
 		}
 
 		ModManager.instance().recipe_Namespaces.clear();

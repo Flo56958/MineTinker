@@ -187,9 +187,13 @@ Modifier:
   Experienced:
     Name: "Experienced"
     Description: "Tool has the %chance% chance per level to drop %amount XP while using it!"
+    ModifierItemName: "Essence of Experience"
+    DescriptionModifierItem: "Modifier-Item for the Experienced-Modifier"
   Extra-Modifier:
     Name: "Extra-Modifier"
     Description: "Adds %amount additional Modifier-Slots to the tool!"
+    ModifierItemName: "Refined Netherstar"
+    DescriptionModifierItem: "Modifier-Item for the Extra-Modifier"
   Fiery:
     Name: "Fiery"
     Description: "One modifier to burn them all!"

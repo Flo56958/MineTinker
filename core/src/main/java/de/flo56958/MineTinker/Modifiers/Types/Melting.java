@@ -75,7 +75,7 @@ public class Melting extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.MAGMA_BLOCK, true);
+		init(Material.MAGMA_BLOCK);
 
 		this.bonusMultiplier = config.getDouble("BonusMultiplier", 0.1);
 		this.cancelBurning = config.getBoolean("CancelBurningOnArmor", true);

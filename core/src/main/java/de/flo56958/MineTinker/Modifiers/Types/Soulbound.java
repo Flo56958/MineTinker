@@ -91,7 +91,7 @@ public class Soulbound extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.BEACON, true);
+		init(Material.BEACON);
 
 		this.toolDropable = config.getBoolean("ToolDropable", true);
 		this.decrementModLevelOnUse = config.getBoolean("DecrementModLevelOnUse", false);

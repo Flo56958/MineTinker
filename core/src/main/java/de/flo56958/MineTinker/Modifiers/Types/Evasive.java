@@ -93,7 +93,7 @@ public class Evasive extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.FEATHER, true);
+		init(Material.FEATHER);
 
 		this.percentPerLevel = config.getInt("PercentPerLevel", 5);
 		this.sneakMultiplier = config.getDouble("SneakMultiplier", 0.5);

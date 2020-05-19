@@ -72,7 +72,7 @@ public class LightWeight extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.FEATHER, true);
+		init(Material.FEATHER);
 	}
 
 	@Override

@@ -77,7 +77,7 @@ public class Beheading extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.WITHER_SKELETON_SKULL, true);
+		init(Material.WITHER_SKELETON_SKULL);
 
 		this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
 		this.description = this.description.replace("%chance", String.valueOf(this.percentagePerLevel));

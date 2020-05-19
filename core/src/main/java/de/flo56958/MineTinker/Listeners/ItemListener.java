@@ -6,7 +6,6 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,8 +34,7 @@ public class ItemListener implements Listener {
 
 		if (!((modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))
 				|| (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")
-				&& modManager.isModifierItem(is)
-				&& !(is.getType() == Material.NETHER_STAR || is.getType() == Material.EXPERIENCE_BOTTLE)))) {
+				&& modManager.isModifierItem(is)))) {
 			return;
 		}
 
@@ -58,17 +56,7 @@ public class ItemListener implements Listener {
 		boolean isMineTinker = false;
 
 		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) {
-			if (!(is.getType() == Material.NETHER_STAR || is.getType() == Material.EXPERIENCE_BOTTLE)) {
-				ItemStack modifierTester = is.clone();
-				modifierTester.setAmount(1);
-
-				for (Modifier m : modManager.getAllowedMods()) {
-					if (m.getModItem().equals(modifierTester)) {
-						isMineTinker = true;
-						break;
-					}
-				}
-			}
+			isMineTinker = modManager.isModifierItem(is);
 		}
 		if (modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is)) {
 			isMineTinker = true;

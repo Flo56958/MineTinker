@@ -85,7 +85,7 @@ public class Piercing extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.ARROW, true);
+		init(Material.ARROW);
 	}
 
 	@Override

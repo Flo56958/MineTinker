@@ -7,7 +7,6 @@ import de.flo56958.MineTinker.Events.MTPlayerInteractEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
-import de.flo56958.MineTinker.Modifiers.Types.Ender;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Modifiers.Types.SilkTouch;
 import org.bukkit.Bukkit;
@@ -131,27 +130,26 @@ public class BlockListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void onClick(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
-		Block block = event.getClickedBlock();
 
-		if (block == null) {
-			return;
+		ItemStack norm = null;
+		if (event.getHand() == EquipmentSlot.HAND) {
+			norm = player.getInventory().getItemInMainHand();
+		} else if (event.getHand() == EquipmentSlot.OFF_HAND) {
+			norm = player.getInventory().getItemInOffHand();
 		}
 
-		if (event.getHand() != EquipmentSlot.HAND) {
-			return;
-		}
-
-		ItemStack norm = player.getInventory().getItemInMainHand();
-
-		if (norm.getType() == Material.EXPERIENCE_BOTTLE) {
-			return;
-		}
+		if (norm == null) return;
 
 		if (event.getAction() == Action.RIGHT_CLICK_AIR) {
-			if (Ender.instance().getModItem().equals(norm)) {
+			if (modManager.isModifierItem(norm)) {
 				event.setCancelled(true);
 			}
 		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			Block block = event.getClickedBlock();
+
+			if (block == null) {
+				return;
+			}
 			if (!player.isSneaking()) {
 				Material type = block.getType();
 

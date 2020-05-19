@@ -87,7 +87,7 @@ public class Glowing extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.GLOWSTONE, true);
+		init(Material.GLOWSTONE);
 
 		this.duration = config.getInt("Duration", 200);
 		this.durationMultiplier = config.getDouble("DurationMultiplier", 1.1);

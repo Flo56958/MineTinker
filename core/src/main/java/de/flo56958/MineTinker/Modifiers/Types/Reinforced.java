@@ -93,7 +93,7 @@ public class Reinforced extends Modifier {
 		this.applyUnbreakableOnMaxLevel = config.getBoolean("ApplyUnbreakableOnMaxLevel", false);
 		this.hideUnbreakableFlag = config.getBoolean("HideUnbreakableFlag", true);
 
-		init(Material.OBSIDIAN, true);
+		init(Material.OBSIDIAN);
 	}
 
 	@Override

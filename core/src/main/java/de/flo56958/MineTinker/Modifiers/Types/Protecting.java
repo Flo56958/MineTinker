@@ -82,7 +82,7 @@ public class Protecting extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.OBSIDIAN, true);
+		init(Material.OBSIDIAN);
 	}
 
 	@Override

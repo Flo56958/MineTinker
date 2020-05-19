@@ -81,7 +81,7 @@ public class Thorned extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.VINE, true);
+		init(Material.VINE);
 	}
 
 	@Override

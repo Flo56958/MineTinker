@@ -84,7 +84,7 @@ public class Poisonous extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.ROTTEN_FLESH, true);
+		init(Material.ROTTEN_FLESH);
 
 		this.duration = config.getInt("Duration", 120);
 		this.durationMultiplier = config.getDouble("DurationMultiplier", 1.1);

@@ -101,7 +101,7 @@ public class MultiShot extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.ARROW, true);
+		init(Material.ARROW);
 
 		this.spread = config.getDouble("ArrowSpread");
 		this.needsArrows = config.getBoolean("NeedsArrows");
@@ -166,7 +166,9 @@ public class MultiShot extends Modifier implements Listener {
 		boolean hasInfinity = modManager.hasMod(tool, Infinity.instance());
 
 		boolean hasFiery = modManager.hasMod(tool, Fiery.instance()) && player.hasPermission("minetinker.modifiers.fiery.use");
-		ChatWriter.logModifier(player, event, this, tool, Fiery.instance().getKey() + "(" + hasFiery + ")");
+		ChatWriter.logModifier(player, event, this, tool,
+				Fiery.instance().getKey() + "(" + hasFiery + ")",
+				Infinity.instance().getKey() + "(" + hasInfinity + ")");
 
 		for (int i = 1; i <= modLevel; i++) {
 			if (!player.getGameMode().equals(GameMode.CREATIVE)) {

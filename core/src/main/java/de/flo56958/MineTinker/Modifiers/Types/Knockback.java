@@ -80,7 +80,7 @@ public class Knockback extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.TNT, true);
+		init(Material.TNT);
 
 		this.worksOnShields = config.getBoolean("WorksOnShields");
 	}

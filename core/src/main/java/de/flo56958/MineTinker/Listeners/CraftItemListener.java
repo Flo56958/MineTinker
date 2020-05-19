@@ -3,7 +3,6 @@ package de.flo56958.MineTinker.Listeners;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -56,7 +55,6 @@ public class CraftItemListener implements Listener {
 		CraftingInventory inv = event.getInventory();
 		for (ItemStack is : inv.getMatrix()) {
 			if (is == null) continue;
-			if (is.getType() == Material.EXPERIENCE_BOTTLE || is.getType() == Material.NETHER_STAR) continue;
 			if (modManager.isModifierItem(is)) {
 				inv.setResult(null);
 				break;

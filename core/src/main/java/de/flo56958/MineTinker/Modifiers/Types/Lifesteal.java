@@ -85,7 +85,7 @@ public class Lifesteal extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.NETHERRACK, true);
+		init(Material.NETHERRACK);
 
 		this.percentPerLevel = config.getInt("PercentOfDamagePerLevel", 10);
 		this.percentToTrigger = config.getInt("PercentToTrigger", 50);

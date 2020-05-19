@@ -95,7 +95,7 @@ public class Luck extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.LAPIS_BLOCK, true);
+		init(Material.LAPIS_BLOCK);
 	}
 
 	@Override
