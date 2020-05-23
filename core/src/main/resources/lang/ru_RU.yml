@@ -187,9 +187,13 @@ Modifier:
   Experienced:
     Name: "Опыт"
     Description: "Инструмент имеет %chance% шанс выронить %amount опыта при использовании"
+    ModifierItemName: " Эссенция Опыта"
+    DescriptionModifierItem: "Модификатор Эссенции Опыта"
   Extra-Modifier:
     Name: "Дополнительный-Модификатор"
     Description: "Добавляет %amount инструменту дополнительные слоты для модификаторов!"
+    ModifierItemName: "Совершенная Звезда Ада"
+    DescriptionModifierItem: "Дополнительный модификатор"
   Fiery:
     Name: "Пламя"
     Description: "Один модификатор спалит их всех!"
