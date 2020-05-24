@@ -85,7 +85,6 @@ public class ArmorListener implements Listener {
 			armor.add(player.getInventory().getItemInOffHand());
 
 		boolean isBlocking = player.isBlocking() && event.getFinalDamage() == 0.0d;
-
 		for (ItemStack piece : armor) {
 			if (!modManager.isArmorViable(piece)) {
 				continue;

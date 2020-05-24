@@ -604,7 +604,7 @@ public class ModManager {
 	 * @param armor the ItemStack
 	 * @return if the ItemStack is viable as MineTinker-Armor
 	 */
-	@Contract(pure = true)
+	@Contract("null -> false")
 	public boolean isArmorViable(ItemStack armor) {
 		return armor != null && nbt.hasTag(armor, this.ArmorIdentifier);
 	}
@@ -613,7 +613,7 @@ public class ModManager {
 	 * @param tool the ItemStack
 	 * @return if the ItemStack is viable as MineTinker-Tool
 	 */
-	@Contract(pure = true)
+	@Contract("null -> false")
 	public boolean isToolViable(ItemStack tool) {
 		return tool != null && nbt.hasTag(tool, this.ToolIdentifier);
 	}
@@ -622,7 +622,7 @@ public class ModManager {
 	 * @param wand the ItemStack
 	 * @return if the ItemStack is viable as MineTinker-Builderswand
 	 */
-	@Contract(pure = true)
+	@Contract("null -> false")
 	public boolean isWandViable(ItemStack wand) {
 		return wand != null && nbt.hasTag(wand, "IdentifierBuilderswand");
 	}
@@ -749,6 +749,7 @@ public class ModManager {
 	 * @param is The {@link ItemStack} to convert.
 	 * @return If the conversion was successful. Also returns false if the item is already MT compatible.
 	 */
+	@Contract("null -> false")
 	public boolean convertItemStack(ItemStack is) {
 		if (is == null) return false;
 

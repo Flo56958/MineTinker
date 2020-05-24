@@ -157,7 +157,7 @@ public class Propelling extends Modifier implements Listener {
 			if (playerTime != null) {
 				if (time - playerTime < this.cooldownInSeconds * 1000) {
 					ChatWriter.logModifier(player, event, this, elytra, "Cooldown");
-					ChatWriter.sendActionBar(player, LanguageManager.getString("Alert.OnCooldown", player));
+					ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getString("Alert.OnCooldown", player));
 					return;
 				} else {
 					this.cooldownTracker.remove(player.getUniqueId().toString());

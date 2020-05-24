@@ -217,6 +217,7 @@ permissions:
       minetinker.modifiers.tanky.*: true
       minetinker.modifiers.thorned.*: true
       minetinker.modifiers.timber.*: true
+      minetinker.modifiers.void-netting.*: true
       minetinker.modifiers.webbed.*: true
 
   minetinker.modifiers.antiarrowplating.*:
@@ -706,10 +707,21 @@ permissions:
       minetinker.modifiers.experienced.apply: true
       minetinker.modifiers.experienced.use: true
   minetinker.modifiers.experienced.apply:
-    description: Allows to apply XP to a MineTinker-Tool
+    description: Allows to apply Experienced to a MineTinker-Tool
     default: true
   minetinker.modifiers.experienced.use:
-    description: Allows to use XP on a MineTinker-Tool
+    description: Allows to use Experienced on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.void-netting.*:
+    children:
+      minetinker.modifiers.void-netting.apply: true
+      minetinker.modifiers.void-netting.use: true
+  minetinker.modifiers.void-netting.apply:
+    description: Allows to apply Void Netting to a MineTinker-Boot
+    default: true
+  minetinker.modifiers.void-netting.use:
+    description: Allows to use Void Netting on a MineTinker-Boot
     default: true
 
   #Builderswands:

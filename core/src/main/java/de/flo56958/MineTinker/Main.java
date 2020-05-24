@@ -179,6 +179,7 @@ public class Main extends JavaPlugin {
 		modManager.register(Tanky.instance());
 		modManager.register(Thorned.instance());
 		modManager.register(Timber.instance());
+		modManager.register(VoidNetting.instance());
 		modManager.register(Webbed.instance());
 
 		if (NBTUtils.isOneFourteenCompatible()) {

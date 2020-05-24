@@ -188,7 +188,7 @@ public class EntityListener implements Listener {
 				+ event.getEntity().getType().toString(), 0));
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onArrowHit(ProjectileHitEvent event) {
 		if (!(event.getEntity().getShooter() instanceof Player)) {
 			return;
@@ -233,10 +233,16 @@ public class EntityListener implements Listener {
 		// one in the other, this won't know which was actually thrown.
 		// TODO: Maybe improve this before release.
 		// It works as a safeguard in general though.
-		if (modManager.isModifierItem(tool) || modManager.isModifierItem(player.getInventory().getItemInOffHand())) {
+		if (modManager.isModifierItem(tool)) {
 			event.setCancelled(true);
 			player.updateInventory();
-			player.setCooldown(Material.ENDER_PEARL, 10);
+			player.setCooldown(tool.getType(), 10);
+			return;
+		} else if (modManager.isModifierItem(player.getInventory().getItemInOffHand())) {
+			event.setCancelled(true);
+			player.updateInventory();
+			player.setCooldown(player.getInventory().getItemInOffHand().getType(), 10);
+			return;
 		}
 
 		if (!modManager.isToolViable(tool)) {

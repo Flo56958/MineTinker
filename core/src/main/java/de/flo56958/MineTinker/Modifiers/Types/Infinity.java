@@ -74,7 +74,6 @@ public class Infinity extends Modifier implements Listener {
 		config.addDefault("Enchantable", true);
 
 		config.addDefault("Recipe.Enabled", false);
-		//Check Ender.yml for Compatibility-option for Ender and Infinity
 		config.addDefault("OverrideLanguagesystem", false);
 
 		ConfigurationManager.saveConfig(config);
