@@ -128,8 +128,9 @@ public class GUIs {
 					lore.add("");
 
 					//Modifier incompatibilities
-					Set<Modifier> incomp = ModManager.instance().getIncompatibilities(m);
+					List<Modifier> incomp = new ArrayList<>(ModManager.instance().getIncompatibilities(m));
 					if (!incomp.isEmpty()) {
+						incomp.sort(Comparator.comparing(Modifier::getName));
 						StringBuilder incompatibilities = new StringBuilder();
 						for (Modifier in : incomp) {
 							if(in.isAllowed()) incompatibilities.append(in.getName()).append(", ");
@@ -145,6 +146,7 @@ public class GUIs {
 					// Applied Enchantments
 					List<Enchantment> enchants = m.getAppliedEnchantments();
 					if (!enchants.isEmpty()) {
+						enchants.sort(Comparator.comparing(e -> LanguageManager.getString("Enchantment." + e.getKey().getKey())));
 						lore.add(ChatColor.BLUE + "" + ChatColor.BOLD + LanguageManager.getString("GUIs.Modifiers.CanApply"));
 
 						StringBuilder e = new StringBuilder();
@@ -163,7 +165,10 @@ public class GUIs {
 
 					builder.append(ChatColor.WHITE);
 
-					for (ToolType toolType : m.getAllowedTools()) {
+					List<ToolType> types = m.getAllowedTools();
+					types.sort(Comparator.comparing(t -> LanguageManager.getString("ToolType." + t.name())));
+
+					for (ToolType toolType : types) {
 						builder.append(LanguageManager.getString("ToolType." + toolType.name())).append(", ");
 					}
 
