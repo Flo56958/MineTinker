@@ -129,11 +129,12 @@ public class GUIs {
 
 					//Modifier incompatibilities
 					List<Modifier> incomp = new ArrayList<>(ModManager.instance().getIncompatibilities(m));
+					incomp.removeIf(mod -> !mod.isAllowed());
 					if (!incomp.isEmpty()) {
 						incomp.sort(Comparator.comparing(Modifier::getName));
 						StringBuilder incompatibilities = new StringBuilder();
 						for (Modifier in : incomp) {
-							if(in.isAllowed()) incompatibilities.append(in.getName()).append(", ");
+							incompatibilities.append(in.getName()).append(", ");
 						}
 
 						lore.add(ChatColor.DARK_RED + "" + ChatColor.BOLD
