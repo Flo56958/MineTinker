@@ -11,9 +11,11 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
@@ -96,52 +98,22 @@ public class Nightseeker extends Modifier implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(MTEntityDamageByEntityEvent event) {
 		Player player = event.getPlayer();
-
-		if (!player.hasPermission("minetinker.modifiers.nightseeker.use")) {
-			return;
-		}
-
 		ItemStack tool = event.getTool();
-		int level = modManager.getModLevel(tool, this);
-		if (level <= 0) return;
-
-		final double damageMultiplier = Math.pow(this.damageMultiplierPerLevel + 1.0, level) - 1.0;
-		long worldtime = player.getWorld().getTime() / 1000;
-		double daytimeMultiplier;
-		if (player.getWorld().getEnvironment() == World.Environment.NORMAL) {
-			if (worldtime < 12) { //value range: -1.0 - 1.0
-				daytimeMultiplier = -(6 - Math.abs(6 - worldtime)) / 6.0;
-			} else {
-				daytimeMultiplier = (6 - Math.abs(18 - worldtime)) / 6.0;
-			}
-		} else if (player.getWorld().getEnvironment() == World.Environment.NETHER) {
-			daytimeMultiplier = -1.0;
-		} else if (player.getWorld().getEnvironment() == World.Environment.THE_END) {
-			daytimeMultiplier = 1.0;
-		} else return;
-		final double oldDamage = event.getEvent().getDamage();
-
-		if (modManager.isToolViable(tool)) { //Player attacked
-			event.getEvent().setDamage(oldDamage * (1.0 + damageMultiplier * daytimeMultiplier));
-		} else if (modManager.isArmorViable(tool)) { //Player got attacked
-			event.getEvent().setDamage(oldDamage / (1.0 + damageMultiplier * daytimeMultiplier));
-		} else return;
-
-		ChatWriter.logModifier(player, event, this, tool,
-				String.format("DamageMultiplier(%.2f * %.2f = %.2f)", damageMultiplier, daytimeMultiplier, damageMultiplier * daytimeMultiplier),
-				String.format("Damage(%.2f -> %.2f)", oldDamage, event.getEvent().getDamage()));
-
+		effect(event, event.getEvent(), tool, player);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onHit(MTEntityDamageEvent event) {
 		Player player = event.getPlayer();
+		ItemStack tool = event.getTool();
+		effect(event, event.getEvent(), tool, player);
+	}
 
+	private void effect(Event e, EntityDamageEvent event, ItemStack tool, Player player) {
 		if (!player.hasPermission("minetinker.modifiers.nightseeker.use")) {
 			return;
 		}
 
-		ItemStack tool = event.getTool();
 		int level = modManager.getModLevel(tool, this);
 		if (level <= 0) return;
 
@@ -159,15 +131,20 @@ public class Nightseeker extends Modifier implements Listener {
 		} else if (player.getWorld().getEnvironment() == World.Environment.THE_END) {
 			daytimeMultiplier = 1.0;
 		} else return;
+		final double oldDamage = event.getDamage();
 
-		final double oldDamage = event.getEvent().getDamage();
-
-		if (modManager.isArmorViable(tool)) {
-			event.getEvent().setDamage(oldDamage / (1.0 + damageMultiplier * daytimeMultiplier));
-		} else return;
-
-		ChatWriter.logModifier(player, event, this, tool,
-				String.format("DamageMultiplier(%.2f * %.2f = %.2f)", damageMultiplier, daytimeMultiplier, damageMultiplier * daytimeMultiplier),
-				String.format("Damage(%.2f -> %.2f)", oldDamage, event.getEvent().getDamage()));
+		double multi = (1.0 + damageMultiplier * daytimeMultiplier);
+		if (multi < 0.0) multi = 0.0;
+		String damagemultiplier = String.format("DamageMultiplier(%.2f * %.2f = %.2f)", damageMultiplier, daytimeMultiplier, damageMultiplier * daytimeMultiplier);
+		if (modManager.isToolViable(tool)) { //Player attacked
+			event.setDamage(oldDamage * multi);
+			ChatWriter.logModifier(player, e, this, tool, damagemultiplier,
+					String.format("Damage(%.2f -> %.2f [x%.2f])", oldDamage, event.getDamage(), multi));
+		} else if (modManager.isArmorViable(tool)) { //Player got attacked
+			if (multi == 0.0) multi = 0.00001;
+			event.setDamage(oldDamage / multi);
+			ChatWriter.logModifier(player, e, this, tool, damagemultiplier,
+					String.format("Damage(%.2f -> %.2f [/%.2f])", oldDamage, event.getDamage(), multi));
+		}
 	}
 }

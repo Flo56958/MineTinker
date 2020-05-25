@@ -1,5 +1,6 @@
 package de.flo56958.MineTinker.Utilities;
 
+import de.flo56958.MineTinker.Events.*;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
@@ -117,8 +118,21 @@ public class ChatWriter {
 		//Example: 0x00FF: Flo56958/Melting - DIAMOND_CHESTPLATE - Damage(30 -> 20)
 		StringBuilder sb = new StringBuilder();
 		if (event != null) {
-			sb.append(event.getEventName()).append("(").append(String.format("%x", event.hashCode() % 0x100)).append(")")
-					.append(": ");
+			sb.append(event.getEventName()).append("(").append(String.format("%x", event.hashCode() % 0x100));
+			if (event instanceof MTBlockBreakEvent) {
+				sb.append("/").append(String.format("%x", ((MTBlockBreakEvent) event).getEvent().hashCode() % 0x100));
+			} else if (event instanceof MTEntityDamageByEntityEvent) {
+				sb.append("/").append(String.format("%x", ((MTEntityDamageByEntityEvent) event).getEvent().hashCode() % 0x100));
+			} else if (event instanceof MTEntityDamageEvent) {
+				sb.append("/").append(String.format("%x", ((MTEntityDamageEvent) event).getEvent().hashCode() % 0x100));
+			} else if (event instanceof MTEntityDeathEvent) {
+				sb.append("/").append(String.format("%x", ((MTEntityDeathEvent) event).getEvent().hashCode() % 0x100));
+			} else if (event instanceof MTPlayerInteractEvent) {
+				sb.append("/").append(String.format("%x", ((MTPlayerInteractEvent) event).getEvent().hashCode() % 0x100));
+			} else if (event instanceof MTProjectileHitEvent) {
+				sb.append("/").append(String.format("%x", ((MTProjectileHitEvent) event).getEvent().hashCode() % 0x100));
+			}
+			sb.append(")").append(": ");
 		} else {
 			sb.append("No event: ");
 		}
