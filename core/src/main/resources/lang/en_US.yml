@@ -271,7 +271,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Multishot-Modifier"
   Nightseeker:
     Name: "Nightseeker"
-    Description: "Deal more or receive less damage (%amountmin% to %amountmax%) when the moon is shining (depends on level and moon position). This effect gets inverted at daytime!"
+    Description: "Deal more or receive less damage (%amountmin% to %amountmax%) when the moon is shining (depends on level and moon position). This effect gets inverted at daytime and in the Nether but has the full effect in the End!"
     ModifierItemName: "Dark Daylight Detector"
     DescriptionModifierItem: "Modifier-Item for the Nightseeker-Modifier"
   Photosynthesis:
@@ -351,7 +351,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Spider's-Bane-Modifier"
   Sunblazer:
     Name: "Sunblazer"
-    Description: "Deal more or receive less damage (%amountmin% to %amountmax%) when the sun is shining (depends on level and sun position). This effect gets inverted at night!"
+    Description: "Deal more or receive less damage (%amountmin% to %amountmax%) when the sun is shining (depends on level and sun position). This effect gets inverted at night and in the End but has the full effect in the Nether!"
     ModifierItemName: "Golden Daylight Detector"
     DescriptionModifierItem: "Modifier-Item for the Sunblazer-Modifier"
   Sweeping:

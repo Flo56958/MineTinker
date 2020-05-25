@@ -26,8 +26,6 @@ public class Nightseeker extends Modifier implements Listener {
 
 	private static Nightseeker instance;
 	private double damageMultiplierPerLevel;
-	private boolean worksOutsideOverworld;
-
 	private Nightseeker() {
 		super(Main.getPlugin());
 		customModelData = 10_051;
@@ -67,7 +65,6 @@ public class Nightseeker extends Modifier implements Listener {
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
 		config.addDefault("DamageMultiplierPerLevel", 0.1);
-		config.addDefault("WorksOutsideOverworld", false);
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
@@ -90,7 +87,6 @@ public class Nightseeker extends Modifier implements Listener {
 
 		init(Material.DAYLIGHT_DETECTOR);
 		this.damageMultiplierPerLevel = config.getDouble("DamageMultiplierPerLevel", 0.1);
-		this.worksOutsideOverworld = config.getBoolean("WorksOutsideOverworld", false);
 
 		this.description = this.description
 				.replaceAll("%amountmin", String.format("%.2f", (Math.pow(this.damageMultiplierPerLevel + 1.0, 1) - 1) * 100))
@@ -105,8 +101,6 @@ public class Nightseeker extends Modifier implements Listener {
 			return;
 		}
 
-		if (player.getWorld().getEnvironment() != World.Environment.NORMAL && !this.worksOutsideOverworld) return;
-
 		ItemStack tool = event.getTool();
 		int level = modManager.getModLevel(tool, this);
 		if (level <= 0) return;
@@ -114,11 +108,17 @@ public class Nightseeker extends Modifier implements Listener {
 		final double damageMultiplier = Math.pow(this.damageMultiplierPerLevel + 1.0, level) - 1.0;
 		long worldtime = player.getWorld().getTime() / 1000;
 		double daytimeMultiplier;
-		if (worldtime < 12) { //value range: -1.0 - 1.0
-			daytimeMultiplier = -(6 - Math.abs(6 - worldtime)) / 6.0;
-		} else {
-			daytimeMultiplier = (6 - Math.abs(18 - worldtime)) / 6.0;
-		}
+		if (player.getWorld().getEnvironment() == World.Environment.NORMAL) {
+			if (worldtime < 12) { //value range: -1.0 - 1.0
+				daytimeMultiplier = -(6 - Math.abs(6 - worldtime)) / 6.0;
+			} else {
+				daytimeMultiplier = (6 - Math.abs(18 - worldtime)) / 6.0;
+			}
+		} else if (player.getWorld().getEnvironment() == World.Environment.NETHER) {
+			daytimeMultiplier = -1.0;
+		} else if (player.getWorld().getEnvironment() == World.Environment.THE_END) {
+			daytimeMultiplier = 1.0;
+		} else return;
 		final double oldDamage = event.getEvent().getDamage();
 
 		if (modManager.isToolViable(tool)) { //Player attacked
@@ -141,8 +141,6 @@ public class Nightseeker extends Modifier implements Listener {
 			return;
 		}
 
-		if (player.getWorld().getEnvironment() != World.Environment.NORMAL && !this.worksOutsideOverworld) return;
-
 		ItemStack tool = event.getTool();
 		int level = modManager.getModLevel(tool, this);
 		if (level <= 0) return;
@@ -150,11 +148,18 @@ public class Nightseeker extends Modifier implements Listener {
 		final double damageMultiplier = Math.pow(this.damageMultiplierPerLevel + 1.0, level) - 1.0;
 		long worldtime = player.getWorld().getTime() / 1000;
 		double daytimeMultiplier;
-		if (worldtime < 12) { //value range: -1.0 - 1.0
-			daytimeMultiplier = -(6 - Math.abs(6 - worldtime)) / 6.0;
-		} else {
-			daytimeMultiplier = (6 - Math.abs(18 - worldtime)) / 6.0;
-		}
+		if (player.getWorld().getEnvironment() == World.Environment.NORMAL) {
+			if (worldtime < 12) { //value range: -1.0 - 1.0
+				daytimeMultiplier = -(6 - Math.abs(6 - worldtime)) / 6.0;
+			} else {
+				daytimeMultiplier = (6 - Math.abs(18 - worldtime)) / 6.0;
+			}
+		} else if (player.getWorld().getEnvironment() == World.Environment.NETHER) {
+			daytimeMultiplier = -1.0;
+		} else if (player.getWorld().getEnvironment() == World.Environment.THE_END) {
+			daytimeMultiplier = 1.0;
+		} else return;
+
 		final double oldDamage = event.getEvent().getDamage();
 
 		if (modManager.isArmorViable(tool)) {
