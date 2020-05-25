@@ -1,0 +1,168 @@
+package de.flo56958.MineTinker.Modifiers.Types;
+
+import de.flo56958.MineTinker.Data.ToolType;
+import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
+import de.flo56958.MineTinker.Events.MTEntityDamageEvent;
+import de.flo56958.MineTinker.Main;
+import de.flo56958.MineTinker.Modifiers.Modifier;
+import de.flo56958.MineTinker.Utilities.ChatWriter;
+import de.flo56958.MineTinker.Utilities.ConfigurationManager;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Sunblazer extends Modifier implements Listener {
+
+	private static Sunblazer instance;
+	private double damageMultiplierPerLevel;
+	private boolean worksOutsideOverworld;
+
+	private Sunblazer() {
+		super(Main.getPlugin());
+		customModelData = 10_050;
+	}
+
+	public static Sunblazer instance() {
+		synchronized (Sunblazer.class) {
+			if (instance == null) {
+				instance = new Sunblazer();
+			}
+		}
+
+		return instance;
+	}
+
+	@Override
+	public String getKey() {
+		return "Sunblazer";
+	}
+
+	@Override
+	public List<ToolType> getAllowedTools() {
+		return Arrays.asList(ToolType.SWORD, ToolType.AXE, ToolType.TRIDENT, ToolType.ELYTRA, ToolType.BOOTS, ToolType.CHESTPLATE, ToolType.CROSSBOW, ToolType.BOW, ToolType.HELMET, ToolType.LEGGINGS);
+	}
+
+	@Override
+	public void reload() {
+		FileConfiguration config = getConfig();
+		config.options().copyDefaults(true);
+
+		config.addDefault("Allowed", true);
+		config.addDefault("Name", "Sunblazer");
+		config.addDefault("ModifierItemName", "Golden Daylight Detector");
+		config.addDefault("Description", "Deal more or receive less damage (%amountmin% to %amountmax%) when the sun is shining (depends on level and sun position). This effect gets inverted at night!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Sunblazer-Modifier");
+		config.addDefault("Color", "%YELLOW%");
+		config.addDefault("MaxLevel", 3);
+		config.addDefault("SlotCost", 1);
+		config.addDefault("DamageMultiplierPerLevel", 0.1);
+		config.addDefault("WorksOutsideOverworld", false);
+		config.addDefault("OverrideLanguagesystem", false);
+
+		config.addDefault("EnchantCost", 10);
+		config.addDefault("Enchantable", false);
+
+		config.addDefault("Recipe.Enabled", true);
+		config.addDefault("Recipe.Top", "GIG");
+		config.addDefault("Recipe.Middle", "IDI");
+		config.addDefault("Recipe.Bottom", "GIG");
+
+		Map<String, String> recipeMaterials = new HashMap<>();
+		recipeMaterials.put("G", Material.GOLD_BLOCK.name());
+		recipeMaterials.put("D", Material.DAYLIGHT_DETECTOR.name());
+		recipeMaterials.put("I", Material.GOLD_INGOT.name());
+
+		config.addDefault("Recipe.Materials", recipeMaterials);
+
+		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+
+		init(Material.DAYLIGHT_DETECTOR);
+		this.damageMultiplierPerLevel = config.getDouble("DamageMultiplierPerLevel", 0.1);
+		this.worksOutsideOverworld = config.getBoolean("WorksOutsideOverworld", false);
+
+		this.description = this.description
+				.replaceAll("%amountmin", String.format("%.2f", (Math.pow(this.damageMultiplierPerLevel + 1.0, 1) - 1) * 100))
+				.replaceAll("%amountmax", String.format("%.2f", (Math.pow(this.damageMultiplierPerLevel + 1.0, this.getMaxLvl()) - 1) * 100));
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onHit(MTEntityDamageByEntityEvent event) {
+		Player player = event.getPlayer();
+
+		if (!player.hasPermission("minetinker.modifiers.sunblazer.use")) {
+			return;
+		}
+
+		if (player.getWorld().getEnvironment() != World.Environment.NORMAL && !this.worksOutsideOverworld) return;
+
+		ItemStack tool = event.getTool();
+		int level = modManager.getModLevel(tool, this);
+		if (level <= 0) return;
+
+		final double damageMultiplier = Math.pow(this.damageMultiplierPerLevel + 1.0, level) - 1.0;
+		long worldtime = player.getWorld().getTime() / 1000;
+		double daytimeMultiplier;
+		if (worldtime >= 12) { //value range: -1.0 - 1.0
+			daytimeMultiplier = -(6 - Math.abs(18 - worldtime)) / 6.0;
+		} else {
+			daytimeMultiplier = (6 - Math.abs(6 - worldtime)) / 6.0;
+		}
+		final double oldDamage = event.getEvent().getDamage();
+
+		if (modManager.isToolViable(tool)) { //Player attacked
+			event.getEvent().setDamage(oldDamage * (1.0 + damageMultiplier * daytimeMultiplier));
+		} else if (modManager.isArmorViable(tool)) { //Player got attacked
+			event.getEvent().setDamage(oldDamage / (1.0 + damageMultiplier * daytimeMultiplier));
+		} else return;
+
+		ChatWriter.logModifier(player, event, this, tool,
+				String.format("DamageMultiplier(%.2f * %.2f = %.2f)", damageMultiplier, daytimeMultiplier, damageMultiplier * daytimeMultiplier),
+				String.format("Damage(%.2f -> %.2f)", oldDamage, event.getEvent().getDamage()));
+
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onHit(MTEntityDamageEvent event) {
+		Player player = event.getPlayer();
+
+		if (!player.hasPermission("minetinker.modifiers.sunblazer.use")) {
+			return;
+		}
+
+		if (player.getWorld().getEnvironment() != World.Environment.NORMAL && !this.worksOutsideOverworld) return;
+
+		ItemStack tool = event.getTool();
+		int level = modManager.getModLevel(tool, this);
+		if (level <= 0) return;
+
+		final double damageMultiplier = Math.pow(this.damageMultiplierPerLevel + 1.0, level) - 1.0;
+		long worldtime = player.getWorld().getTime() / 1000;
+		double daytimeMultiplier;
+		if (worldtime >= 12) { //value range: -1.0 - 1.0
+			daytimeMultiplier = -(6 - Math.abs(18 - worldtime)) / 6.0;
+		} else {
+			daytimeMultiplier = (6 - Math.abs(6 - worldtime)) / 6.0;
+		}
+		final double oldDamage = event.getEvent().getDamage();
+
+		if (modManager.isArmorViable(tool)) {
+			event.getEvent().setDamage(oldDamage / (1.0 + damageMultiplier * daytimeMultiplier));
+		} else return;
+
+		ChatWriter.logModifier(player, event, this, tool,
+				String.format("DamageMultiplier(%.2f * %.2f = %.2f)", damageMultiplier, daytimeMultiplier, damageMultiplier * daytimeMultiplier),
+				String.format("Damage(%.2f -> %.2f)", oldDamage, event.getEvent().getDamage()));
+	}
+}

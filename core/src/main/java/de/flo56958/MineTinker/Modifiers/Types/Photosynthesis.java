@@ -67,7 +67,7 @@ public class Photosynthesis extends Modifier implements Listener {
 				double daytimeMultiplier = 1.0;
 				if (fullEffectAtNoon) {
 					long difference = Math.abs(6 - worldTime);
-					daytimeMultiplier = 1.0 - (10 - difference) / 10.0; //value range: 0.4 - 1.0
+					daytimeMultiplier = 1.0 - (6 - difference) / 6.0; //value range: 0.0 - 1.0
 				}
 
 				long timeDif = System.currentTimeMillis() - tupel.time - (tickTime * 50); //to make effect faster with time (first tick period does not count)

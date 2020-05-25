@@ -198,6 +198,7 @@ permissions:
       minetinker.modifiers.magical.*: true
       minetinker.modifiers.melting.*: true
       minetinker.modifiers.multishot.*: true
+      minetinker.modifiers.nightseeker.*: true
       minetinker.modifiers.photosynthesis.*: true
       minetinker.modifiers.piercing.*: true
       minetinker.modifiers.poisonous.*: true
@@ -213,6 +214,7 @@ permissions:
       minetinker.modifiers.soulbound.*: true
       minetinker.modifiers.speedy.*: true
       minetinker.modifiers.spidersbane.*: true
+      minetinker.modifiers.sunblazer.*: true
       minetinker.modifiers.sweeping.*: true
       minetinker.modifiers.tanky.*: true
       minetinker.modifiers.thorned.*: true
@@ -503,6 +505,28 @@ permissions:
       minetinker.modifiers.spidersbane.apply: true
   minetinker.modifiers.spidersbane.apply:
     description: Allows to apply Spider's Bane to the MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.sunblazer.*:
+    children:
+      minetinker.modifiers.sunblazer.apply: true
+      minetinker.modifiers.sunblazer.use: true
+  minetinker.modifiers.sunblazer.apply:
+    description: Allows to apply Sunblazer to the MineTinker-Tool
+    default: true
+  minetinker.modifiers.sunblazer.use:
+    description: Allows to use Sunblazer on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.nightseeker.*:
+    children:
+      minetinker.modifiers.nightseeker.apply: true
+      minetinker.modifiers.nightseeker.use: true
+  minetinker.modifiers.nightseeker.apply:
+    description: Allows to apply Sunblazer to the MineTinker-Tool
+    default: true
+  minetinker.modifiers.nightseeker.use:
+    description: Allows to use Sunblazer on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.thorned.*:

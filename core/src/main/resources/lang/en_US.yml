@@ -269,6 +269,11 @@ Modifier:
     Description: "Shoot one more Arrow per Level per shot!"
     ModifierItemName: "Multi-Arrow"
     DescriptionModifierItem: "Modifier-Item for the Multishot-Modifier"
+  Nightseeker:
+    Name: "Nightseeker"
+    Description: "Deal more or receive less damage (%amountmin% to %amountmax%) when the moon is shining (depends on level and moon position). This effect gets inverted at daytime!"
+    ModifierItemName: "Dark Daylight Detector"
+    DescriptionModifierItem: "Modifier-Item for the Nightseeker-Modifier"
   Photosynthesis:
     Name: "Photosynthesis"
     Description: "Repair your item with %amount durability per level every %ticks Ticks when standing still while the sun shines. The longer you stand still the faster it repairs. (%multiplier%)"
@@ -344,6 +349,11 @@ Modifier:
     Description: "Weapon does additional damage to spiders!"
     ModifierItemName: "Cleansed Spider Eye"
     DescriptionModifierItem: "Modifier-Item for the Spider's-Bane-Modifier"
+  Sunblazer:
+    Name: "Sunblazer"
+    Description: "Deal more or receive less damage (%amountmin% to %amountmax%) when the sun is shining (depends on level and sun position). This effect gets inverted at night!"
+    ModifierItemName: "Golden Daylight Detector"
+    DescriptionModifierItem: "Modifier-Item for the Sunblazer-Modifier"
   Sweeping:
     Name: "Sweeping"
     Description: "Deal more damage over a greater area!"

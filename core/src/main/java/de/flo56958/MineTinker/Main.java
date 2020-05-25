@@ -161,6 +161,7 @@ public class Main extends JavaPlugin {
 		modManager.register(Magical.instance());
 		modManager.register(Melting.instance());
 		modManager.register(MultiShot.instance());
+		modManager.register(Nightseeker.instance());
 		modManager.register(Photosynthesis.instance());
 		modManager.register(Poisonous.instance());
 		modManager.register(Power.instance());
@@ -175,6 +176,7 @@ public class Main extends JavaPlugin {
 		modManager.register(Soulbound.instance());
 		modManager.register(Speedy.instance());
 		modManager.register(SpidersBane.instance());
+		modManager.register(Sunblazer.instance());
 		modManager.register(Sweeping.instance());
 		modManager.register(Tanky.instance());
 		modManager.register(Thorned.instance());

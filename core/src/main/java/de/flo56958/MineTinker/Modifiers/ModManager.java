@@ -94,6 +94,9 @@ public class ModManager {
 		incompatibilityList.add(SelfRepair.instance().getKey() + ":" + Photosynthesis.instance().getKey());
 		incompatibilityList.add(MultiShot.instance().getKey() + ":" + Magical.instance().getKey());
 		incompatibilityList.add(Magical.instance().getKey() + ":" + Ender.instance().getKey());
+		incompatibilityList.add(Sunblazer.instance().getKey() + ":" + Nightseeker.instance().getKey());
+		incompatibilityList.add(Sunblazer.instance().getKey() + ":" + SelfRepair.instance().getKey());
+		incompatibilityList.add(Photosynthesis.instance().getKey() + ":" + Nightseeker.instance().getKey());
 		incompatibilityList.sort(String::compareToIgnoreCase);
 
 		modifierconfig.addDefault("Incompatibilities", incompatibilityList);

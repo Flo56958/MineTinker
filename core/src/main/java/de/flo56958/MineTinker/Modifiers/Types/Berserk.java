@@ -113,7 +113,7 @@ public class Berserk extends Modifier implements Listener {
 
 		ItemStack chest = player.getInventory().getChestplate();
 
-		if (chest == null) {
+		if (modManager.isArmorViable(chest)) {
 			return;
 		}
 

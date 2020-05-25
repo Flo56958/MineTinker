@@ -72,8 +72,8 @@ public class VoidNetting extends Modifier implements Listener {
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
 		config.addDefault("RadiusPerLevel", 10);
-		config.addDefault("CooldownInSeconds", 300);
-		config.addDefault("CooldownReductionPerLevel", 0.2);
+		config.addDefault("CooldownInSeconds", 3600);
+		config.addDefault("CooldownReductionPerLevel", 0.4);
 		config.addDefault("Particles", true);
 		config.addDefault("Sound", true);
 		config.addDefault("OverrideLanguagesystem", false);
@@ -101,8 +101,8 @@ public class VoidNetting extends Modifier implements Listener {
 		init(Material.COBWEB);
 
 		this.radiusPerLevel = config.getInt("RadiusPerLevel", 5);
-		this.cooldownInSeconds = config.getInt("CooldownInSeconds", 300);
-		this.cooldownReductionPerLevel = config.getDouble("CooldownReductionPerLevel", 0.2);
+		this.cooldownInSeconds = config.getInt("CooldownInSeconds", 3600);
+		this.cooldownReductionPerLevel = config.getDouble("CooldownReductionPerLevel", 0.4);
 		this.particles = config.getBoolean("Particles", true);
 		this.sound = config.getBoolean("Sound", true);
 
