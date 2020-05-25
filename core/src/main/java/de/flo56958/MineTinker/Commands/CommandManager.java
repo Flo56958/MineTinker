@@ -1,6 +1,8 @@
 package de.flo56958.MineTinker.Commands;
 
 import de.flo56958.MineTinker.Commands.subs.*;
+import de.flo56958.MineTinker.Modifiers.ModManager;
+import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.api.SubCommand;
@@ -247,7 +249,14 @@ public class CommandManager implements TabExecutor {
 						//like range 1-5 (inclusive), or from 1,2,3,6,7,8, or all of them combined like 1-5,7-9,11,13
 						String[] rules = args[i].split(",");
 						int index = new Random().nextInt(rules.length);
-						if (rules[index].indexOf('-') != -1) {
+						boolean isMod = false;
+						for (Modifier mod : ModManager.instance().getAllMods()) {
+							if (mod.getName().replace(" ", "_").equals(rules[index])) {
+								isMod = true;
+								break;
+							}
+						}
+						if (!isMod && rules[index].indexOf('-') != -1) {
 							String[] nums = rules[index].split("-");
 							if (nums.length != 2) {
 								sendError(sender,
