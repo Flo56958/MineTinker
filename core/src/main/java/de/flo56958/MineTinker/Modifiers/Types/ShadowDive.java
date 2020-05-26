@@ -12,10 +12,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -137,6 +140,17 @@ public class ShadowDive extends Modifier implements Listener {
 	private void hidePlayer(Player p) {
 		activePlayers.add(p);
 
+		//Clear all mob targets
+		Collection<Entity> nearbyEntities = p.getWorld().getNearbyEntities(p.getLocation(), 64, 64, 64);
+		for (Entity ent : nearbyEntities) {
+			if (ent instanceof Creature) {
+				if (p.equals(((Creature) ent).getTarget())) {
+					((Creature) ent).setTarget(null);
+				}
+			}
+		}
+
+		//Hide from all players
 		for (Player player : Bukkit.getServer().getOnlinePlayers()) {
 			if (!p.equals(player)) {
 				if (!player.hasPotionEffect(PotionEffectType.NIGHT_VISION)) player.hidePlayer(Main.getPlugin(), p);
@@ -163,6 +177,15 @@ public class ShadowDive extends Modifier implements Listener {
 	public void onLeave(PlayerQuitEvent event) {
 		for(Player p : activePlayers) {
 			event.getPlayer().showPlayer(Main.getPlugin(), p);
+		}
+	}
+
+	@EventHandler(ignoreCancelled = true)
+	public void onTarget(EntityTargetLivingEntityEvent event) {
+		if (event.getTarget() instanceof Player) {
+			if (activePlayers.contains(event.getTarget())) {
+				event.setCancelled(true);
+			}
 		}
 	}
 
