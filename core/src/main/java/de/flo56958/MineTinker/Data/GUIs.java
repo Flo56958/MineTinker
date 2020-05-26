@@ -182,6 +182,17 @@ public class GUIs {
 
 					// Setup click actions
 					GUI.Window.Button modButton = currentPage.addButton((i % 7) + 1, (i / 7) + 1, item);
+					//GiveModifierItem-Action
+					modButton.addAction(ClickType.SHIFT_LEFT, new ButtonAction.RUN_RUNNABLE_ON_PLAYER(modButton,
+							(player, input) -> {
+								if (player.hasPermission("minetinker.commands.givemodifieritem")) {
+									if (player.getInventory().addItem(m.getModItem()).size() != 0) { //adds items to (full) inventory
+										player.getWorld().dropItem(player.getLocation(), m.getModItem());
+									} // no else as it gets added in if-clause
+								}
+							}));
+
+					//Recipe Action
 					Recipe rec = null;
 
 					Iterator<Recipe> it = Bukkit.getServer().recipeIterator();
