@@ -517,6 +517,13 @@ permissions:
     description: Allows to apply Smite to the MineTinker-Tool
     default: true
 
+  minetinker.modifiers.hardened.*:
+    children:
+      minetinker.modifiers.hardened.apply: true
+  minetinker.modifiers.hardened.apply:
+    description: Allows to apply Hardened to the MineTinker-Tool
+    default: true
+
   minetinker.modifiers.spidersbane.*:
     children:
       minetinker.modifiers.spidersbane.apply: true

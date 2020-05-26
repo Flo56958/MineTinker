@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -101,6 +102,7 @@ public class Knockback extends Modifier implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	public void onBlock(MTEntityDamageByEntityEvent event) {
 		if (event.getPlayer().equals(event.getEvent().getDamager())) return; //Player is attacking
+		if (event.getEvent().getDamager() instanceof Projectile) return; //Not a melee hit
 		if (!event.isBlocking()) return;
 
 		if (!event.getPlayer().hasPermission("minetinker.modifiers.knockback.use")) return;
