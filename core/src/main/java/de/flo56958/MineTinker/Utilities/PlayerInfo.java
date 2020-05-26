@@ -1,10 +1,57 @@
 package de.flo56958.MineTinker.Utilities;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class PlayerInfo {
+import java.util.HashMap;
+
+public class PlayerInfo implements Listener {
+
+	private static final HashMap<String, Long> combatTagTracker = new HashMap<>();
+
+	public static boolean isCombatTagged(Player player) {
+		Long time = combatTagTracker.getOrDefault(player.getUniqueId().toString(), -1L);
+		if (time == -1L) return false;
+
+		return System.currentTimeMillis() - time < 10 * 1000;
+	}
+
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	public void onCombat(EntityDamageEvent event) {
+		if (event.getEntity() instanceof Player) {
+			combatTagTracker.put(event.getEntity().getUniqueId().toString(), System.currentTimeMillis());
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	public void onCombat(EntityDamageByEntityEvent event) {
+		if (event.getEntity() instanceof Player) {
+			combatTagTracker.put(event.getEntity().getUniqueId().toString(), System.currentTimeMillis());
+		}
+
+		if (event.getDamager() instanceof Player) {
+			combatTagTracker.put(event.getDamager().getUniqueId().toString(), System.currentTimeMillis());
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	public void onDeath(PlayerDeathEvent event) {
+		combatTagTracker.remove(event.getEntity().getUniqueId().toString());
+	}
+
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	public void onDisconnect(PlayerQuitEvent event) {
+		combatTagTracker.remove(event.getPlayer().getUniqueId().toString());
+	}
+
 
 	/**
 	 * @param player The player to get the facing direction of as a single character
@@ -78,8 +125,6 @@ public class PlayerInfo {
 
 		return exp;
 	}
-
-	private PlayerInfo() {}
 
 	public enum Direction {
 		NORTH,

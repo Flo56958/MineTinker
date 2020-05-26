@@ -62,7 +62,7 @@ public class Nightseeker extends Modifier implements Listener {
 		config.addDefault("Name", "Nightseeker");
 		config.addDefault("ModifierItemName", "Dark Daylight Detector");
 		config.addDefault("Description", "Deal more or receive less damage (%amountmin% to %amountmax%) when the moon is shining (depends on level and moon position). This effect gets inverted at daytime!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Sunblazer-Modifier");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Nightseeker-Modifier");
 		config.addDefault("Color", "%DARK_GRAY%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);

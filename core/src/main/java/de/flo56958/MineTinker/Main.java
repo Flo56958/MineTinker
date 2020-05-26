@@ -6,10 +6,7 @@ import de.flo56958.MineTinker.Data.Lists;
 import de.flo56958.MineTinker.Listeners.*;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Types.*;
-import de.flo56958.MineTinker.Utilities.ChatWriter;
-import de.flo56958.MineTinker.Utilities.ConfigurationManager;
-import de.flo56958.MineTinker.Utilities.LanguageManager;
-import de.flo56958.MineTinker.Utilities.Updater;
+import de.flo56958.MineTinker.Utilities.*;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import de.flo56958.MineTinker.api.gui.GUI;
 import org.bstats.bukkit.Metrics;
@@ -80,6 +77,7 @@ public class Main extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new TinkerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new TridentListener(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerInfo(), this);
 		if (NBTUtils.isOneFourteenCompatible())
 			Bukkit.getPluginManager().registerEvents(new GrindstoneListener(), this);
 
@@ -168,6 +166,7 @@ public class Main extends JavaPlugin {
 		modManager.register(Propelling.instance());
 		modManager.register(Protecting.instance());
 		modManager.register(Reinforced.instance());
+		modManager.register(ShadowDive.instance());
 		modManager.register(SelfRepair.instance());
 		modManager.register(Sharpness.instance());
 		modManager.register(Shulking.instance());

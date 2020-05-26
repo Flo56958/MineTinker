@@ -309,9 +309,16 @@ Modifier:
     Description: "Chance to not use durability when using the tool/armor! Makes the tool more durable!"
     ModifierItemName: "Compressed Obsidian"
     DescriptionModifierItem: "Modifier-Item for the Reinforced-Modifier"
+  Shadow-Dive:
+    Name: "Shadow Dive"
+    Description: "Vanish completely from sight when sneaking in dark places!"
+    ModifierItemName: "Vanishing Crystal"
+    DescriptionModifierItem: "Modifier-Item for the Shadow-Dive-Modifier"
+    LightToHigh: "The lightlevel is to high!"
+    InCombat: "You are in combat!"
   Self-Repair:
     Name: "Self-Repair"
-    Description: "%chance% chance per level to repair the tool / armor with %amount durability while using it or applies Mending!"
+    Description: "%chance% chance per level to repair the tool / armor with %amount durability while using it!"
     ModifierItemName: "Enchanted mossy Cobblestone"
     DescriptionModifierItem: "Modifier-Item for the Self-Repair-Modifier"
   Sharpness:
