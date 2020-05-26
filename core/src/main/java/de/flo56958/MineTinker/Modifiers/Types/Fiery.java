@@ -133,8 +133,6 @@ public class Fiery extends Modifier implements Listener {
 
 		if(!event.getPlayer().hasPermission("minetinker.modifiers.fiery.use")) return;
 
-		System.out.println(event.getEvent().getDamager().getFireTicks());
-
 		int fireticks = event.getEntity().getFireTicks();
 		int addedFT = 100 * (modManager.getModLevel(tool, this) - 1); //Flame adds 100 Ticks; Fire aspect multiplies that by the level
 

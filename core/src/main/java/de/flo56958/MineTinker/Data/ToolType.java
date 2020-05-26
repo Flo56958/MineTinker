@@ -128,7 +128,7 @@ public enum ToolType {
 	public static @Nullable ToolType get(@Nullable Material material) {
 		if (material == null) return null;
 		for (ToolType type : values()) {
-			if (type == ToolType.ALL) {
+			if (type == ToolType.ALL || type == ToolType.TOOLS || type == ToolType.ARMOR) {
 				continue;
 			}
 
