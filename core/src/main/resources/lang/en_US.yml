@@ -206,7 +206,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Freezing-Modifier"
   Glowing:
     Name: "Glowing"
-    Description: "Make enemies glow!"
+    Description: "Make enemies glow for %durationmin to %durationmax seconds! (dependent on level)"
     ModifierItemName: "Ender-Glowstone"
     DescriptionModifierItem: "Modifier-Item for the Glowing-Modifier"
   Hardened:

@@ -23,12 +23,6 @@
 
 A Tinker's Construct inspired Spigot plugin. It currently has over 40 modifiers with more planned. 
 Almost everything is configurable: recipes, level caps, which modifiers are enabled, etc.
-
-## Documentation
-The home page can be found [here](https://minetinker.flo56958.de/) and the modifier list [here](https://minetinker.flo56958.de/modifiers.html).
-We try to make all documentation accessible via ingame methods. (Documentation takes time and 
-is not considered high priority. Therefore the documentation on this plugin may be outdated and not to 100% complete) 
-
 ***
 
 ## Development

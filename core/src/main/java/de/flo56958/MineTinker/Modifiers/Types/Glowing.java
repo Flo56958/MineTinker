@@ -67,7 +67,7 @@ public class Glowing extends Modifier implements Listener {
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
 		config.addDefault("Duration", 200); //ticks INTEGER (20 ticks ~ 1 sec)
-		config.addDefault("DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
+		config.addDefault("DurationMultiplier", 1.4); //Duration * (Multiplier^Level) DOUBLE
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
@@ -90,7 +90,10 @@ public class Glowing extends Modifier implements Listener {
 		init(Material.GLOWSTONE);
 
 		this.duration = config.getInt("Duration", 200);
-		this.durationMultiplier = config.getDouble("DurationMultiplier", 1.1);
+		this.durationMultiplier = config.getDouble("DurationMultiplier", 1.4);
+
+		this.description = this.description.replaceAll("%durationmin", String.valueOf(this.duration / 20.0d))
+				.replaceAll("%durationmax", String.valueOf(Math.round(this.duration * Math.pow(this.durationMultiplier, this.getMaxLvl() - 1)) / 20.0d));
 	}
 
 	@EventHandler(ignoreCancelled = true)
