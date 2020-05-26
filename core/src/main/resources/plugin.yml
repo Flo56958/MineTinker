@@ -414,11 +414,15 @@ permissions:
     children:
       minetinker.modifiers.knockback.apply: true
       minetinker.modifiers.knockback.craft: true
+      minetinker.modifiers.knockback.use: true
   minetinker.modifiers.knockback.apply:
     description: Allows to apply Knockback to a MineTinker-Tool
     default: true
   minetinker.modifiers.knockback.craft:
     description: Allows to craft a Knockback-Modifiers
+    default: true
+  minetinker.modifiers.knockback.use:
+    description: Allows to use the Knockback-Modifiers
     default: true
 
   minetinker.modifiers.infinity.*:

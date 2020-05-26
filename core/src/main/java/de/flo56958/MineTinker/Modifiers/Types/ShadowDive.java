@@ -52,7 +52,7 @@ public class ShadowDive extends Modifier implements Listener {
 		return instance;
 	}
 
-	Runnable runnable = new Runnable() {
+	private Runnable runnable = new Runnable() {
 		@Override
 		public void run() {
 			Iterator<Player> iterator = activePlayers.iterator();
