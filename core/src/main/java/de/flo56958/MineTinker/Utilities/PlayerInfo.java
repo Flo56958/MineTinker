@@ -11,28 +11,28 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerInfo implements Listener {
 
-	private static final HashMap<String, Long> combatTagTracker = new HashMap<>();
+	private static final ConcurrentHashMap<String, Long> combatTagTracker = new ConcurrentHashMap<>();
 
 	public static boolean isCombatTagged(Player player) {
 		Long time = combatTagTracker.getOrDefault(player.getUniqueId().toString(), -1L);
 		if (time == -1L) return false;
 
-		return System.currentTimeMillis() - time < 10 * 1000;
+		return System.currentTimeMillis() - time < 5 * 1000;
 	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-	public void onCombat(EntityDamageEvent event) {
+	private void onCombat(EntityDamageEvent event) {
 		if (event.getEntity() instanceof Player) {
 			combatTagTracker.put(event.getEntity().getUniqueId().toString(), System.currentTimeMillis());
 		}
 	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-	public void onCombat(EntityDamageByEntityEvent event) {
+	private void onCombat(EntityDamageByEntityEvent event) {
 		if (event.getEntity() instanceof Player) {
 			combatTagTracker.put(event.getEntity().getUniqueId().toString(), System.currentTimeMillis());
 		}

@@ -141,7 +141,8 @@ public class Scotopic extends Modifier implements Listener {
 			cooldownTracker.put(player.getUniqueId().toString(), time);
 			ChatWriter.logModifier(player, event, this, helmet,
 					String.format("Cooldown(%ds)", cooldownTime / 1000),
-					String.format("LightLevel(%d/%d)", lightlevel, this.requiredLightLevel));
+					String.format("LightLevel(%d/%d)", lightlevel, this.requiredLightLevel),
+					String.format("Duration(%d)", duration));
 		}
 	}
 }

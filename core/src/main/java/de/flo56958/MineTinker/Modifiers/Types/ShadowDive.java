@@ -8,6 +8,7 @@ import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.Utilities.PlayerInfo;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,6 +20,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
@@ -55,14 +57,23 @@ public class ShadowDive extends Modifier implements Listener {
 				Player p = iterator.next();
 				Location loc = p.getLocation();
 				byte lightlevel = p.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()).getLightLevel();
-				if (lightlevel > requiredLightLevel) {
+				if (lightlevel > requiredLightLevel || p.hasPotionEffect(PotionEffectType.GLOWING)) {
 					showPlayer(p);
-					ChatWriter.sendActionBar(p, ShadowDive.instance().getName() + ": "
+					ChatWriter.sendActionBar(p, ChatColor.RED + ShadowDive.instance().getName() + ": "
 							+ LanguageManager.getString("Modifier.Shadow-Dive.LightToHigh", p));
 				} else if (PlayerInfo.isCombatTagged(p)) {
 					showPlayer(p);
-					ChatWriter.sendActionBar(p, ShadowDive.instance().getName() + ": "
+					ChatWriter.sendActionBar(p, ChatColor.RED + ShadowDive.instance().getName() + ": "
 							+ LanguageManager.getString("Modifier.Shadow-Dive.InCombat", p));
+				} else {
+					for(Player pl : Bukkit.getOnlinePlayers()) {
+						if (pl.equals(p)) continue;
+						if (pl.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
+							pl.showPlayer(Main.getPlugin(), p);
+						} else {
+							pl.hidePlayer(Main.getPlugin(), p);
+						}
+					}
 				}
 			}
 		}
@@ -127,7 +138,9 @@ public class ShadowDive extends Modifier implements Listener {
 		activePlayers.add(p);
 
 		for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-			if (!p.equals(player)) player.hidePlayer(Main.getPlugin(), p);
+			if (!p.equals(player)) {
+				if (!player.hasPotionEffect(PotionEffectType.NIGHT_VISION)) player.hidePlayer(Main.getPlugin(), p);
+			}
 		}
 	}
 
@@ -169,14 +182,14 @@ public class ShadowDive extends Modifier implements Listener {
 			ChatWriter.logModifier(player, event, this, boots,
 					String.format("LightLevel(%d/%d)", lightlevel, this.requiredLightLevel),
 					String.format("InCombat(%b)", combatTagged));
-			if (lightlevel > this.requiredLightLevel) {
-				ChatWriter.sendActionBar(player, this.getName() + ": "
+			if (lightlevel > this.requiredLightLevel || player.hasPotionEffect(PotionEffectType.GLOWING)) {
+				ChatWriter.sendActionBar(player, ChatColor.RED + this.getName() + ": "
 						+ LanguageManager.getString("Modifier.Shadow-Dive.LightToHigh", player));
 				return;
 			}
 
 			if (combatTagged) {
-				ChatWriter.sendActionBar(player, this.getName() + ": "
+				ChatWriter.sendActionBar(player, ChatColor.RED + this.getName() + ": "
 						+ LanguageManager.getString("Modifier.Shadow-Dive.InCombat", player));
 				return;
 			}
