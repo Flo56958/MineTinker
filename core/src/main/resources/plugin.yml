@@ -206,6 +206,8 @@ permissions:
       minetinker.modifiers.propelling.*: true
       minetinker.modifiers.protecting.*: true
       minetinker.modifiers.reinforced.*: true
+      minetinker.modifiers.scotopic.*: true
+      minetinker.modifiers.shadowdive.*: true
       minetinker.modifiers.selfrepair.*: true
       minetinker.modifiers.sharpness.*: true
       minetinker.modifiers.shulking.*: true
@@ -219,7 +221,7 @@ permissions:
       minetinker.modifiers.tanky.*: true
       minetinker.modifiers.thorned.*: true
       minetinker.modifiers.timber.*: true
-      minetinker.modifiers.void-netting.*: true
+      minetinker.modifiers.voidnetting.*: true
       minetinker.modifiers.webbed.*: true
 
   minetinker.modifiers.antiarrowplating.*:
@@ -263,6 +265,17 @@ permissions:
     default: true
   minetinker.modifiers.kineticplating.use:
     description: Allows to use Kinetic Plating on a MineTinker-Elytra
+    default: true
+
+  minetinker.modifiers.scotopic.*:
+    children:
+      minetinker.modifiers.scotopic.apply: true
+      minetinker.modifiers.scotopic.use: true
+  minetinker.modifiers.scotopic.apply:
+    description: Allows to apply Scotopic to a MineTinker-Elytra
+    default: true
+  minetinker.modifiers.scotopic.use:
+    description: Allows to use Scotopic on a MineTinker-Elytra
     default: true
 
   minetinker.modifiers.beheading.*:
@@ -737,15 +750,26 @@ permissions:
     description: Allows to use Experienced on a MineTinker-Tool
     default: true
 
-  minetinker.modifiers.void-netting.*:
+  minetinker.modifiers.voidnetting.*:
     children:
-      minetinker.modifiers.void-netting.apply: true
-      minetinker.modifiers.void-netting.use: true
-  minetinker.modifiers.void-netting.apply:
+      minetinker.modifiers.voidnetting.apply: true
+      minetinker.modifiers.voidnetting.use: true
+  minetinker.modifiers.voidnetting.apply:
     description: Allows to apply Void Netting to a MineTinker-Boot
     default: true
-  minetinker.modifiers.void-netting.use:
+  minetinker.modifiers.voidnetting.use:
     description: Allows to use Void Netting on a MineTinker-Boot
+    default: true
+
+  minetinker.modifiers.shadowdive.*:
+    children:
+      minetinker.modifiers.shadowdive.apply: true
+      minetinker.modifiers.shadowdive.use: true
+  minetinker.modifiers.shadowdive.apply:
+    description: Allows to apply Shadow Dive to a MineTinker-Boot
+    default: true
+  minetinker.modifiers.shadowdive.use:
+    description: Allows to use Shadow Dive on a MineTinker-Boot
     default: true
 
   #Builderswands:

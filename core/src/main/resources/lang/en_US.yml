@@ -309,9 +309,14 @@ Modifier:
     Description: "Chance to not use durability when using the tool/armor! Makes the tool more durable!"
     ModifierItemName: "Compressed Obsidian"
     DescriptionModifierItem: "Modifier-Item for the Reinforced-Modifier"
+  Scotopic:
+    Name: "Scotopic"
+    Description: "Grants %amount seconds of Night-Vision per level if the light level drops below %light! Cooldown: %cmax to %cmin seconds (depends on level)"
+    ModifierItemName: "Nightly Eye"
+    DescriptionModifierItem: "Modifier-Item for the Scotopic-Modifier"
   Shadow-Dive:
     Name: "Shadow Dive"
-    Description: "Vanish completely from sight when sneaking in dark places!"
+    Description: "Vanish completely from sight when sneaking in dark places! (Lightlevel <= %level)"
     ModifierItemName: "Vanishing Crystal"
     DescriptionModifierItem: "Modifier-Item for the Shadow-Dive-Modifier"
     LightToHigh: "The lightlevel is to high!"

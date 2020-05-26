@@ -282,48 +282,46 @@ public abstract class Modifier {
 		}
 
 		FileConfiguration config = getConfig();
-		if (config.getBoolean("Recipe.Enabled")) {
-			try {
-				NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Modifier_" + getKey());
-				ShapedRecipe newRecipe = new ShapedRecipe(nkey, this.getModItem()); //reload recipe
-				String top = config.getString("Recipe.Top");
-				String middle = config.getString("Recipe.Middle");
-				String bottom = config.getString("Recipe.Bottom");
-				ConfigurationSection materials = config.getConfigurationSection("Recipe.Materials");
+		try {
+			NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Modifier_" + getKey());
+			ShapedRecipe newRecipe = new ShapedRecipe(nkey, this.getModItem()); //reload recipe
+			String top = config.getString("Recipe.Top");
+			String middle = config.getString("Recipe.Middle");
+			String bottom = config.getString("Recipe.Bottom");
+			ConfigurationSection materials = config.getConfigurationSection("Recipe.Materials");
 
-				newRecipe.shape(top, middle, bottom); //makes recipe
+			newRecipe.shape(top, middle, bottom); //makes recipe
 
-				if (materials != null) {
-					for (String key : materials.getKeys(false)) {
-						String materialName = materials.getString(key);
+			if (materials != null) {
+				for (String key : materials.getKeys(false)) {
+					String materialName = materials.getString(key);
 
-						if (materialName == null) {
-							ChatWriter.logInfo(LanguageManager.getString("Modifier.MaterialEntryNotFound"));
-							return;
-						}
-
-						Material material = Material.getMaterial(materialName);
-
-						if (material == null) {
-							ChatWriter.log(false, "Material [" + materialName + "] is null for mod [" + this.name + "]");
-							return;
-						} else {
-							newRecipe.setIngredient(key.charAt(0), material);
-						}
+					if (materialName == null) {
+						ChatWriter.logInfo(LanguageManager.getString("Modifier.MaterialEntryNotFound"));
+						return;
 					}
-				} else {
-					ChatWriter.logError("Could not register recipe for the " + this.name + "-Modifier!"); //executes if the recipe could not initialize
-					ChatWriter.logError("Cause: Malformed recipe config.");
 
-					return;
+					Material material = Material.getMaterial(materialName);
+
+					if (material == null) {
+						ChatWriter.log(false, "Material [" + materialName + "] is null for mod [" + this.name + "]");
+						return;
+					} else {
+						newRecipe.setIngredient(key.charAt(0), material);
+					}
 				}
-
-				Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
-				ChatWriter.log(false, "Registered recipe for the " + this.name + "-Modifier!");
-				ModManager.instance().recipe_Namespaces.add(nkey);
-			} catch (Exception e) {
+			} else {
 				ChatWriter.logError("Could not register recipe for the " + this.name + "-Modifier!"); //executes if the recipe could not initialize
+				ChatWriter.logError("Cause: Malformed recipe config.");
+
+				return;
 			}
+
+			Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+			ChatWriter.log(false, "Registered recipe for the " + this.name + "-Modifier!");
+			ModManager.instance().recipe_Namespaces.add(nkey);
+		} catch (Exception e) {
+			ChatWriter.logError("Could not register recipe for the " + this.name + "-Modifier!"); //executes if the recipe could not initialize
 		}
 	}
 

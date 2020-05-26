@@ -119,7 +119,7 @@ public class VoidNetting extends Modifier implements Listener {
 
 		Player player = (Player) event.getEntity();
 
-		if (!player.hasPermission("minetinker.void-netting.use")) return;
+		if (!player.hasPermission("minetinker.voidnetting.use")) return;
 
 		ItemStack armor = player.getInventory().getBoots();
 		if (!modManager.isArmorViable(armor)) return;
@@ -176,7 +176,7 @@ public class VoidNetting extends Modifier implements Listener {
 		ChatWriter.logModifier(player, event, this, armor,
 				String.format("Location(%d/%d/%d -> %d/%d/%d)",
 						oldLoc.getBlockX(), oldLoc.getBlockY(), oldLoc.getBlockZ(),
-						loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()), String.format("Cooldown(%ds)", cooldownTime));
+						loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()), String.format("Cooldown(%ds)", cooldownTime / 1000));
 
 		if (this.particles) {
 			loc.getWorld().spawnParticle(Particle.PORTAL, loc, 20);

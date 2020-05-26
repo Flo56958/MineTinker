@@ -19,6 +19,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.util.*;
@@ -29,6 +30,8 @@ public class ShadowDive extends Modifier implements Listener {
 
 	private int requiredLightLevel;
 	private final HashSet<Player> activePlayers = new HashSet<>();
+
+	private BukkitTask task;
 	private ShadowDive() {
 		super(Main.getPlugin());
 		customModelData = 10_052;
@@ -62,8 +65,6 @@ public class ShadowDive extends Modifier implements Listener {
 							+ LanguageManager.getString("Modifier.Shadow-Dive.InCombat", p));
 				}
 			}
-
-			Bukkit.getScheduler().runTaskLater(Main.getPlugin(), this, 5);
 		}
 	};
 
@@ -79,6 +80,10 @@ public class ShadowDive extends Modifier implements Listener {
 
 	@Override
 	public void reload() {
+		if (task != null) {
+			task.cancel();
+			task = null;
+		}
 		FileConfiguration config = getConfig();
 		config.options().copyDefaults(true);
 
@@ -86,7 +91,7 @@ public class ShadowDive extends Modifier implements Listener {
 		config.addDefault("Name", "Shadow Dive");
 		config.addDefault("ModifierItemName", "Vanishing Crystal");
 		config.addDefault("Description", "Vanish completely from sight when sneaking in dark places");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Nightseeker-Modifier");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Shadow-Dive-Modifier");
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 1);
 		config.addDefault("SlotCost", 3);
@@ -113,7 +118,9 @@ public class ShadowDive extends Modifier implements Listener {
 		init(Material.DIAMOND);
 		this.requiredLightLevel = config.getInt("RequiredLightLevel", 6);
 
-		if (this.isAllowed()) Bukkit.getScheduler().runTaskLater(Main.getPlugin(), runnable, 5);
+		this.description = this.description.replaceAll("%level", String.valueOf(this.requiredLightLevel));
+
+		if (this.isAllowed()) task = Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), runnable, 0,5);
 	}
 
 	private void hidePlayer(Player p) {
@@ -160,7 +167,7 @@ public class ShadowDive extends Modifier implements Listener {
 			byte lightlevel = player.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()).getLightLevel();
 			boolean combatTagged = PlayerInfo.isCombatTagged(player);
 			ChatWriter.logModifier(player, event, this, boots,
-					String.format("LightLevel(%d)", lightlevel),
+					String.format("LightLevel(%d/%d)", lightlevel, this.requiredLightLevel),
 					String.format("InCombat(%b)", combatTagged));
 			if (lightlevel > this.requiredLightLevel) {
 				ChatWriter.sendActionBar(player, this.getName() + ": "

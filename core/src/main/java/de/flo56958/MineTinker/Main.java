@@ -166,6 +166,7 @@ public class Main extends JavaPlugin {
 		modManager.register(Propelling.instance());
 		modManager.register(Protecting.instance());
 		modManager.register(Reinforced.instance());
+		modManager.register(Scotopic.instance());
 		modManager.register(ShadowDive.instance());
 		modManager.register(SelfRepair.instance());
 		modManager.register(Sharpness.instance());
