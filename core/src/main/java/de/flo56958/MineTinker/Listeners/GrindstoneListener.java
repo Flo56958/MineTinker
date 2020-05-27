@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -21,10 +22,7 @@ import org.bukkit.inventory.GrindstoneInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class GrindstoneListener implements Listener {
 
@@ -95,6 +93,18 @@ public class GrindstoneListener implements Listener {
 						}
 					}
 					ModManager.instance().removeMod(result, mod);
+				}
+
+				ItemMeta resultMeta = result.getItemMeta();
+				if (resultMeta != null) {
+					Map<Enchantment, Integer> enchants = resultMeta.getEnchants();
+					if (!enchants.isEmpty()) {
+						hadMods = true;
+						for (Enchantment enchant : enchants.keySet()) {
+							resultMeta.removeEnchant(enchant);
+						}
+					}
+					result.setItemMeta(resultMeta);
 				}
 
 				if (!hadMods) {

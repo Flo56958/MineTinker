@@ -188,6 +188,7 @@ permissions:
       minetinker.modifiers.freezing.*: true
       minetinker.modifiers.glowing.*: true
       minetinker.modifiers.haste.*: true
+      minetinker.modifiers.hardened.*: true
       minetinker.modifiers.infinity.*: true
       minetinker.modifiers.insulating.*: true
       minetinker.modifiers.knockback.*: true
