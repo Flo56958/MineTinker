@@ -95,6 +95,7 @@ public class GrindstoneListener implements Listener {
 					ModManager.instance().removeMod(result, mod);
 				}
 
+				//Remove remaining non-modifier enchants
 				ItemMeta resultMeta = result.getItemMeta();
 				if (resultMeta != null) {
 					Map<Enchantment, Integer> enchants = resultMeta.getEnchants();

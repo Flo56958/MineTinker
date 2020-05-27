@@ -224,7 +224,7 @@ public class ChatWriter {
 		return input;
 	}
 
-	public static ChatColor getColor(String input) {
+	public static ChatColor getColor(String input) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
 		return ChatColor.valueOf(input.split("%")[1]);
 	}
 

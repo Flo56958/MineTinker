@@ -123,7 +123,7 @@ public class Drilling extends Modifier implements Listener {
 				blacklist.add(material);
 			} catch (IllegalArgumentException e) {
 				Main.getPlugin().getLogger()
-						.warning("Illegal material name found when loading Power blacklist: " + mat);
+						.warning("Illegal material name found when loading Drilling blacklist: " + mat);
 			}
 		}
 	}
