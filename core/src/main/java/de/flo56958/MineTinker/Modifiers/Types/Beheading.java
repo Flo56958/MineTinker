@@ -27,6 +27,7 @@ public class Beheading extends Modifier implements Listener {
 
 	private static Beheading instance;
 	private int percentagePerLevel;
+	private int dropSpawneggChancePerLevel;
 
 	private Beheading() {
 		super(Main.getPlugin());
@@ -67,6 +68,7 @@ public class Beheading extends Modifier implements Listener {
 		config.addDefault("MaxLevel", 10);
 		config.addDefault("SlotCost", 2);
 		config.addDefault("PercentagePerLevel", 10);  //= 100% at Level 10
+		config.addDefault("DropSpawnEggChancePerLevel", 0);
 
 		config.addDefault("EnchantCost", 25);
 		config.addDefault("Enchantable", true);
@@ -80,6 +82,7 @@ public class Beheading extends Modifier implements Listener {
 		init(Material.WITHER_SKELETON_SKULL);
 
 		this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
+		this.dropSpawneggChancePerLevel = config.getInt("DropSpawnEggChancePerLevel", 0);
 		this.description = this.description.replace("%chance", String.valueOf(this.percentagePerLevel));
 	}
 
@@ -96,20 +99,34 @@ public class Beheading extends Modifier implements Listener {
 		if (player.hasPermission("minetinker.modifiers.beheading.use")) {
 			if (modManager.hasMod(tool, this)) {
 				Random rand = new Random();
+				if(this.dropSpawneggChancePerLevel > 0) {
+					int n = rand.nextInt(100);
+					int i = this.dropSpawneggChancePerLevel * modManager.getModLevel(tool, this);
+					if (n <= i) {
+							Material mat = Material.getMaterial(mob.getType().toString().toUpperCase() + "_SPAWN_EGG");
+							if (mat != null) {
+								ItemStack egg = new ItemStack(mat, 1);
+								event.getEvent().getDrops().add(egg);
+							}
+					}
+					ChatWriter.logModifier(player, event, this, tool,
+							String.format("DropEggChance(%d/%d)", n, i), "Entity(" + mob.getType().toString() + ")");
+				}
 				int n = rand.nextInt(100);
+				int i = this.percentagePerLevel * modManager.getModLevel(tool, this);
 
-				if (n <= this.percentagePerLevel * modManager.getModLevel(tool, this)) {
-					if (mob.getType().equals(EntityType.CREEPER)) {
+				if (n <= i) {
+					if (mob.getType() == EntityType.CREEPER) {
 						loot = new ItemStack(Material.CREEPER_HEAD, 1);
-					} else if (mob.getType().equals(EntityType.SKELETON)) {
+					} else if (mob.getType() == EntityType.SKELETON) {
 						loot = new ItemStack(Material.SKELETON_SKULL, 1);
-					} else if (mob.getType().equals(EntityType.WITHER_SKELETON)) {
+					} else if (mob.getType() == EntityType.WITHER_SKELETON) {
 						loot = new ItemStack(Material.WITHER_SKELETON_SKULL, 1);
-					} else if (mob.getType().equals(EntityType.ZOMBIE)) {
+					} else if (mob.getType() == EntityType.ZOMBIE) {
 						loot = new ItemStack(Material.ZOMBIE_HEAD, 1);
-					} else if (mob.getType().equals(EntityType.ZOMBIE_VILLAGER)) {
+					} else if (mob.getType() == EntityType.ZOMBIE_VILLAGER) {
 						loot = new ItemStack(Material.ZOMBIE_HEAD, 1);
-					} else if (mob.getType().equals(EntityType.PLAYER)) {
+					} else if (mob.getType() == EntityType.PLAYER) {
 						ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
 
 						if (head.getItemMeta() != null) {
@@ -124,7 +141,7 @@ public class Beheading extends Modifier implements Listener {
 					if (loot.getType() != Material.AIR) {
 						event.getEvent().getDrops().add(loot);
 						ChatWriter.logModifier(player, event, this, tool,
-								"Entity(" + mob.getType().toString() + ")");
+								String.format("Chance(%d/%d)", n, i), "Entity(" + mob.getType().toString() + ")");
 					}
 				}
 			}

@@ -84,7 +84,7 @@ public class Poisonous extends Modifier implements Listener {
 		config.addDefault("DropRottenMeatIfPoisoned", true);
 		config.addDefault("EffectHealsPlayer", true);
 
-		config.addDefault("EnchantCost", 10);
+		config.addDefault("EnchantCost", 20);
 		config.addDefault("Enchantable", true);
 
 		config.addDefault("Recipe.Enabled", false);
