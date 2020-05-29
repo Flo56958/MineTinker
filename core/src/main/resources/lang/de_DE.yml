@@ -187,9 +187,13 @@ Modifier:
   Experienced:
     Name: "Erfahrend"
     Description: "Das Werkzeug hat die %chance% Wahrscheinlichkeit pro Level, um bei Benutzung %amount XP fallen zu lassen!"
+    ModifierItemName: "Essenz der Erfahrung"
+    DescriptionModifierItem: "Modifizierungs-Item für die Erfahrend-Modifizierung"
   Extra-Modifier:
     Name: "Zusätzlicher Modifizierungsplatz"
     Description: "Fügt %amount zusätzliche Modifizierungsplätze hinzu!"
+    ModifierItemName: "Rafinierter Netherstern"
+    DescriptionModifierItem: "Modifizierungs-Item für einen zusätzlichen Modifizierungsplatz"
   Fiery:
     Name: "Feurig"
     Description: "Eine Modifizierung sie alle zu verbrennen!"
@@ -202,7 +206,7 @@ Modifier:
     DescriptionModifierItem: "Modifizierungs-Item für die Eisig-Modifizierung"
   Glowing:
     Name: "Leuchtend"
-    Description: "Bringe deine Feinde zum Leuchten!"
+    Description: "Bringe deine Feinde für %durationmin bis zu %durationmax Sekunden zum Leuchten! (abhängig vom Level)"
     ModifierItemName: "Ender-Glowstone"
     DescriptionModifierItem: "Modifizierungs-Item für die Leuchtend-Modifizierung"
   Hardened:
@@ -265,6 +269,11 @@ Modifier:
     Description: "Schieße ein Pfeil pro Level mehr pro Schuss!"
     ModifierItemName: "Multi-Pfeil"
     DescriptionModifierItem: "Modifizierungs-Item für die Multischuss-Modifikation"
+  Nightseeker:
+    Name: "Nachtsucher"
+    Description: "Mache mehr oder bekomme weniger Schaden (%amountmin% - %amountmax%) wenn der Mond scheint (abhängig vom Level und der Mondposition). Dieser Effekt ist invertiert am Tag und im Nether hat aber volle Stärke im Ende!"
+    ModifierItemName: "Dunkler Tageslicht Detektor"
+    DescriptionModifierItem: "Modifizierungs-Item für die Nachtsucher-Modifizierung"
   Photosynthesis:
     Name: "Photosynthese"
     Description: "Repariere dein Item während du still im Sonnenlicht stehst mit %amount Haltbarkeit pro Level jede %ticks Ticks. Je länger du still stehst desto schneller wird das Item repariert. (%multiplier%)"
@@ -300,9 +309,21 @@ Modifier:
     Description: "Erhöht die Wahrscheinlichkeit Haltbarkeit nicht zu verbrauchen bei Benutzung! Macht das Werkzeug haltbarer!"
     ModifierItemName: "Komprimiertes Obsidian"
     DescriptionModifierItem: "Modifizierungs-Item für die Verstärkt-Modifizierung"
+  Scotopic:
+    Name: "Skotopisch"
+    Description: "Bekomme %amount Sekunden Nachtsicht pro Level, wenn das Lichtlevel unter %light fällt! Abklinkzeit: %cmax - %cmin Sekunden (abhängig vom Level)"
+    ModifierItemName: "Nächtliches Auge"
+    DescriptionModifierItem: "Modifizierungs-Item für die Skotopisch-Modifikation"
+  Shadow-Dive:
+    Name: "Schattentaucher"
+    Description: "Werde komplett unsichtbar in dunklen Umgebungen wenn du schleichst! (Licht muss dunkler als %level sein)"
+    ModifierItemName: "Verschwindender Kristall"
+    DescriptionModifierItem: "Modifizierungs-Item für die Schattentaucher-Modifikation"
+    LightToHigh: "Das Lichtlevel ist zu hoch!"
+    InCombat: "Du bist im Kampf!"
   Self-Repair:
     Name: "Selbst-Reparatur"
-    Description: "%chance% Wahrscheinlichkeit per Level das Werkzeug / die Rüstung um %amount Haltbarkeit zu reparieren oder fügt die Verzauberung Reparatur hinzu!"
+    Description: "%chance% Wahscheinlichkeit pro Level das benutzte Item mit %amount Haltbarkeit zu reparieren."
     ModifierItemName: "Verzauberter bemooster Bruchstein"
     DescriptionModifierItem: "Modifizierungs-Item für die Selbst-Reparatur-Modifizierung"
   Sharpness:
@@ -310,6 +331,11 @@ Modifier:
     Description: "Waffe fügt jedem zusätzlichen Schaden zu!"
     ModifierItemName: "Komprimierter Quartzblock"
     DescriptionModifierItem: "Modifizierungs-Item für die Schärfe-Modifizierung"
+  Shrouded:
+    Name: "Verhüllt"
+    Description: "Erschafft eine Partikelwolke, die alle innerhalb erblindet, für %durationmin - %durationmax Sekunden an der Pfeilauftrittstelle! Synergiert mit anderen Modifikationen."
+    ModifierItemName: "Rauchige Flasche"
+    DescriptionModifierItem: "Modifizierungs-Item für die Verhüllt-Modifikation"
   Shulking:
     Name: "Shulkend"
     Description: "Bringe Gegner für %duration Ticks zum Schweben! Der Effekt wird stärker mit jedem Level. "
@@ -340,6 +366,11 @@ Modifier:
     Description: "Waffe fügt Spinnen zusätzlichen Schaden zu!"
     ModifierItemName: "Gereinigtes Spinnenauge"
     DescriptionModifierItem: "Modifizierungs-Item für die Fluch-der-Spinnen-Modifizierung"
+  Sunblazer:
+    Name: "Sonnenanbeter"
+    Description: "Mache mehr oder bekomme weniger Schaden (%amountmin% - %amountmax%) wenn die Sonne scheint (abhängig vom Level und der Sonnenposition). Dieser Effekt ist invertiert in der Nacht und im Ende hat aber volle Stärke im Nether!"
+    ModifierItemName: "Goldener Tageslicht Detektor"
+    DescriptionModifierItem: "Modifizierungs-Item für die Sonnenanbeter-Modifizierung"
   Sweeping:
     Name: "Schwungkraft"
     Description: "Mache mehr Schaden über eine größere Fläche!"
@@ -360,11 +391,22 @@ Modifier:
     Description: "Fälle Bäume durch nur einen abgebauten Block!"
     ModifierItemName: "Hölzerner Smaragd"
     DescriptionModifierItem: "Modifizierungs-Item für die Holzfäller-Modifizierung"
+  Void-Netting:
+    Name: "Leerensicherung"
+    Description: "Teleportiert dich zu einem sicheren Platz in einem Radius von %radius Blöcken pro Level wenn du in die Leere fällst. Abklinkzeit: %cmax - %cmin Sekunden (abhängig vom Level)"
+    ModifierItemName: "Leerennetz"
+    DescriptionModifierItem: "Modifizierungs-Item für die Leerensicherung-Modifikation"
+    CouldNotFindBlock: "Es konnte kein sicherer Platz gefunden werden!"
   Webbed:
     Name: "Vernetzend"
     Description: "Verlangsame Gegner mit jedem Treffer für %duration Ticks * %multiplier per Level!"
     ModifierItemName: "Komprimierte Spinnenweben"
     DescriptionModifierItem: "Modifizierungs-Item für die Vernetzend-Modifizierung"
+  Withered:
+    Name: "Verwelkend"
+    Description: "Macht zusätzlichen Witherschaden für %duration Ticks * %multiplier pro Level!"
+    ModifierItemName: "Verwelkender Witherskelettschädel"
+    DescriptionModifierItem: "Modifizierungs-Item für die Verwelkend-Modifizierung"
 
 DataType.Boolean: "Boolean (wahr/falsch)"
 DataType.String: "String (Zeichenkette)"
