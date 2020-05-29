@@ -8,13 +8,17 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.Arrays;
@@ -114,9 +118,25 @@ public class Glowing extends Modifier implements Listener {
 			return;
 		}
 
-		int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (modManager.getModLevel(tool, this) - 1)));
-		entity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, duration, 0, false, false));
+		if (modManager.hasMod(tool, Shrouded.instance())) { //Should not trigger twice
+			return;
+		}
 
-		ChatWriter.logModifier(player, event, this, tool, "Duration(" + duration + ")");
+		entity.addPotionEffect(getPotionEffect(event, entity, player, tool));
 	}
+
+	public PotionEffect getPotionEffect(@Nullable Event event, @Nullable Entity entity, @NotNull Player player, @NotNull ItemStack tool) {
+		int level = modManager.getModLevel(tool, this);
+		int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (level - 1)));
+		if (entity == null) {
+			ChatWriter.logModifier(player, event, this, tool, "Duration(" + duration + ")");
+		} else {
+			ChatWriter.logModifier(player, event, this, tool,
+					"Duration(" + duration + ")",
+					"Entity(" + entity.getType().toString() + ")");
+		}
+
+		return new PotionEffect(PotionEffectType.GLOWING, duration, 0, false, false);
+	}
+
 }

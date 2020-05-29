@@ -331,6 +331,11 @@ Modifier:
     Description: "Weapon does additional damage to everyone!"
     ModifierItemName: "Compressed Quartzblock"
     DescriptionModifierItem: "Modifier-Item for the Sharpness-Modifier"
+  Shrouded:
+    Name: "Shrouded"
+    Description: "Spawns a Particle cloud that blinds for %durationmin to %durationmax seconds were the arrow lands! Synergizes with other potion effect modifier."
+    ModifierItemName: "Bottle of Smoke"
+    DescriptionModifierItem: "Modifier-Item for the Shrouded-Modifier"
   Shulking:
     Name: "Shulking"
     Description: "Make enemies levitate and immovable for %duration Ticks! The effect gets stronger with each level."
@@ -397,6 +402,11 @@ Modifier:
     Description: "Slow down enemies when you hit them or they hit you for %duration Ticks * %multiplier per level!"
     ModifierItemName: "Compressed Cobweb"
     DescriptionModifierItem: "Modifier-Item for the Webbed-Modifier"
+  Withered:
+    Name: "Withered"
+    Description: "Withers the target for %duration Ticks * %multiplier per level!"
+    ModifierItemName: "Withered Wither Skeleton Skull"
+    DescriptionModifierItem: "Modifier-Item for the Withered-Modifier"
 
 DataType.Boolean: "Boolean (true/false)"
 DataType.String: "String"

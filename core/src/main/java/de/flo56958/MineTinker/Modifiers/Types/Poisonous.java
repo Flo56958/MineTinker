@@ -9,14 +9,18 @@ import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.Arrays;
@@ -112,16 +116,29 @@ public class Poisonous extends Modifier implements Listener {
 			return;
 		}
 
-		int level = modManager.getModLevel(tool, this);
+		if (modManager.hasMod(tool, Shrouded.instance())) { //Should not trigger twice
+			return;
+		}
 
+		((LivingEntity) event.getEntity()).addPotionEffect(getPotionEffect(event, event.getEntity(), player, tool));
+	}
+
+	public PotionEffect getPotionEffect(@Nullable Event event, @Nullable Entity entity, @NotNull Player player, @NotNull ItemStack tool) {
+		int level = modManager.getModLevel(tool, this);
 		int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (level - 1)));
 		int amplifier = this.effectAmplifier * (level - 1);
-		((LivingEntity) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.POISON, duration,
-				amplifier, false, false));
-		ChatWriter.logModifier(player, event, this, tool,
-				"Duration(" + duration + ")",
-				"Amplifier(" + amplifier + ")",
-				"Entity(" + event.getEntity().getType().toString() + ")");
+		if (entity == null) {
+			ChatWriter.logModifier(player, event, this, tool,
+					"Duration(" + duration + ")",
+					"Amplifier(" + amplifier + ")");
+		} else {
+			ChatWriter.logModifier(player, event, this, tool,
+					"Duration(" + duration + ")",
+					"Amplifier(" + amplifier + ")",
+					"Entity(" + entity.getType().toString() + ")");
+		}
+
+		return new PotionEffect(PotionEffectType.POISON, duration, amplifier, false, false);
 	}
 
 	@EventHandler

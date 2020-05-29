@@ -73,7 +73,7 @@ public class SelfRepair extends Modifier implements Listener {
 		config.addDefault("MaxLevel", 25);
 		config.addDefault("SlotCost", 1);
 		config.addDefault("PercentagePerLevel", 10); //100% at Level 10 (not necessary for unbreakable tool in most cases)
-		config.addDefault("HealthRepair", 2); //How much durability should be repaired per trigger
+		config.addDefault("HealthRepair", 3); //How much durability should be repaired per trigger
 		config.addDefault("UseMending", false); //Disables the plugins own system and instead uses the vanilla Mending enchantment
 
 		config.addDefault("EnchantCost", 10);
@@ -88,7 +88,7 @@ public class SelfRepair extends Modifier implements Listener {
 		init(Material.MOSSY_COBBLESTONE);
 
 		this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
-		this.healthRepair = config.getInt("HealthRepair", 2);
+		this.healthRepair = config.getInt("HealthRepair", 3);
 		this.useMending = config.getBoolean("UseMending", false);
 
 		this.description = this.description.replace("%amount", String.valueOf(this.healthRepair))
@@ -138,17 +138,18 @@ public class SelfRepair extends Modifier implements Listener {
 		if (n <= c) {
 			if (tool.getItemMeta() instanceof Damageable) {
 				Damageable damageable = (Damageable) tool.getItemMeta();
-				int dura = damageable.getDamage() - this.healthRepair;
+				int dura = damageable.getDamage();
+				int newDura = dura - this.healthRepair;
 
-				if (dura < 0) {
-					dura = 0;
+				if (newDura < 0) {
+					newDura = 0;
 				}
 
-				damageable.setDamage(dura);
+				damageable.setDamage(newDura);
 
 				tool.setItemMeta((ItemMeta) damageable);
 				ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Chance(%d/%d)", n, c),
-						String.format("Repair(%d)", this.healthRepair));
+						String.format("Repair(%d -> %d)", dura, newDura));
 				return;
 			}
 		}

@@ -171,6 +171,13 @@ public abstract class Modifier {
 	protected void init(Material m) {
 		FileConfiguration config = getConfig();
 
+		try {
+			this.color = ChatWriter.getColor(config.getString("Color", "%WHITE%"));
+		} catch (IllegalArgumentException | ArrayIndexOutOfBoundsException ignored) {
+			this.color = ChatColor.WHITE;
+			ChatWriter.logError("Illegal Color detected for Modifier " + this.getKey());
+		}
+
 		this.maxLvl = config.getInt("MaxLevel");
 		this.slotCost = config.getInt("SlotCost", 1);
 
@@ -194,13 +201,6 @@ public abstract class Modifier {
 		if (ConfigurationManager.getConfig("Modifiers.yml").getBoolean("UseCustomModelData", false)) {
 			this.modItem.setType(Material.STICK);
 			NBTUtils.getHandler().setInt(this.modItem, "CustomModelData", this.customModelData);
-		}
-
-		try {
-			this.color = ChatWriter.getColor(config.getString("Color", "%WHITE%"));
-		} catch (IllegalArgumentException | ArrayIndexOutOfBoundsException ignored) {
-			this.color = ChatColor.WHITE;
-			ChatWriter.logError("Illegal Color detected for Modifier " + this.getKey());
 		}
 	}
 

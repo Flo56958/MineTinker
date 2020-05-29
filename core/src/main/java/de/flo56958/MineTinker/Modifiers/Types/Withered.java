@@ -2,7 +2,6 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
-import de.flo56958.MineTinker.Events.MTProjectileHitEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -27,22 +26,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Webbed extends Modifier implements Listener {
+public class Withered extends Modifier implements Listener {
 
-	private static Webbed instance;
+	private static Withered instance;
 	private int duration;
 	private double durationMultiplier;
 	private int effectAmplifier;
 
-	private Webbed() {
+	private Withered() {
 		super(Main.getPlugin());
-		customModelData = 10_043;
+		customModelData = 10_053;
 	}
 
-	public static Webbed instance() {
-		synchronized (Webbed.class) {
+	public static Withered instance() {
+		synchronized (Withered.class) {
 			if (instance == null) {
-				instance = new Webbed();
+				instance = new Withered();
 			}
 		}
 
@@ -51,12 +50,12 @@ public class Webbed extends Modifier implements Listener {
 
 	@Override
 	public String getKey() {
-		return "Webbed";
+		return "Withered";
 	}
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.FISHINGROD,
+		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT,
 				ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA);
 	}
 
@@ -66,39 +65,39 @@ public class Webbed extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Webbed");
-		config.addDefault("ModifierItemName", "Compressed Cobweb");
-		config.addDefault("Description", "Slowes down enemies!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Webbed-Modifier");
-		config.addDefault("Color", "%WHITE%");
-		config.addDefault("MaxLevel", 3);
+		config.addDefault("Name", "Withered");
+		config.addDefault("ModifierItemName", "Withered Wither Skeleton Skull");
+		config.addDefault("Description", "Wither enemies!");
+		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Withered-Modifier");
+		config.addDefault("Color", "%DARK_GRAY%");
+		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
-		config.addDefault("Duration", 60); //ticks (20 ticks ~ 1 sec)
-		config.addDefault("DurationMultiplier", 1.2);//Duration * (Multiplier^Level)
-		config.addDefault("EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
-		config.addDefault("OverrideLanguagesystem", false);
+		config.addDefault("Duration", 120); //ticks INTEGER (20 ticks ~ 1 sec)
+		config.addDefault("DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
+		config.addDefault("EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...) INTEGER
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
 
 		config.addDefault("Recipe.Enabled", true);
-		config.addDefault("Recipe.Top", "WWW");
-		config.addDefault("Recipe.Middle", "WBW");
-		config.addDefault("Recipe.Bottom", "WWW");
+		config.addDefault("Recipe.Top", " W ");
+		config.addDefault("Recipe.Middle", "WNW");
+		config.addDefault("Recipe.Bottom", " W ");
 
 		Map<String, String> recipeMaterials = new HashMap<>();
-		recipeMaterials.put("W", Material.COBWEB.name());
-		recipeMaterials.put("B", Material.BLUE_ICE.name());
+		recipeMaterials.put("W", Material.WITHER_SKELETON_SKULL.name());
+		recipeMaterials.put("N", Material.NETHER_STAR.name());
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
+		config.addDefault("OverrideLanguagesystem", false);
 
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.COBWEB);
+		init(Material.WITHER_SKELETON_SKULL);
 
-		this.duration = config.getInt("Duration", 60);
-		this.durationMultiplier = config.getDouble("DurationMultiplier", 1.2);
+		this.duration = config.getInt("Duration", 120);
+		this.durationMultiplier = config.getDouble("DurationMultiplier", 1.1);
 		this.effectAmplifier = config.getInt("EffectAmplifier", 2);
 
 		this.description = this.description.replace("%duration", String.valueOf(this.duration))
@@ -111,33 +110,10 @@ public class Webbed extends Modifier implements Listener {
 			return;
 		}
 
-		effect(event.getPlayer(), event.getTool(), event.getEntity(), event);
-	}
+		Player player = event.getPlayer();
+		ItemStack tool = event.getTool();
 
-	@EventHandler
-	public void effect(MTProjectileHitEvent event) {
-		if (!this.isAllowed()) {
-			// Maybe change this to cancellable and ignoreCancelled?
-			return;
-		}
-
-		if (!(event.getEvent().getHitEntity() instanceof LivingEntity)) {
-			return;
-		}
-
-		if (!ToolType.FISHINGROD.contains(event.getTool().getType())) {
-			return;
-		}
-
-		effect(event.getPlayer(), event.getTool(), event.getEvent().getHitEntity(), event);
-	}
-
-	private void effect(Player player, ItemStack tool, Entity entity, Event event) {
-		if (!player.hasPermission("minetinker.modifiers.webbed.use")) {
-			return;
-		}
-
-		if (entity.isDead()) {
+		if (!player.hasPermission("minetinker.modifiers.withered.use")) {
 			return;
 		}
 
@@ -149,7 +125,8 @@ public class Webbed extends Modifier implements Listener {
 			return;
 		}
 
-		((LivingEntity) entity).addPotionEffect(getPotionEffect(event, entity, player, tool));
+		((LivingEntity) event.getEntity()).addPotionEffect(getPotionEffect(event, event.getEntity(), player, tool));
+
 	}
 
 	public PotionEffect getPotionEffect(@Nullable Event event, @Nullable Entity entity, @NotNull Player player, @NotNull ItemStack tool) {
@@ -167,6 +144,6 @@ public class Webbed extends Modifier implements Listener {
 					"Entity(" + entity.getType().toString() + ")");
 		}
 
-		return new PotionEffect(PotionEffectType.SLOW, duration, amplifier, false, false);
+		return new PotionEffect(PotionEffectType.WITHER, duration, amplifier, false, false);
 	}
 }

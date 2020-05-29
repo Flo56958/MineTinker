@@ -224,6 +224,8 @@ permissions:
       minetinker.modifiers.timber.*: true
       minetinker.modifiers.voidnetting.*: true
       minetinker.modifiers.webbed.*: true
+      minetinker.modifiers.withered.*: true
+      minetinker.modifiers.shrouded.*: true
 
   minetinker.modifiers.antiarrowplating.*:
     children:
@@ -255,6 +257,17 @@ permissions:
     default: true
   minetinker.modifiers.autosmelt.use:
     description: Allows to use Auto-Smelt on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.shrouded.*:
+    children:
+      minetinker.modifiers.shrouded.apply: true
+      minetinker.modifiers.shrouded.use: true
+  minetinker.modifiers.shrouded.apply:
+    description: Allows to apply Shrouded to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.shrouded.use:
+    description: Allows to use Shrouded on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.kineticplating.*:
@@ -603,6 +616,21 @@ permissions:
     default: true
   minetinker.modifiers.poisonous.use:
     description: Allows to use Poisonous on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.withered.*:
+    children:
+      minetinker.modifiers.withered.apply: true
+      minetinker.modifiers.withered.craft: true
+      minetinker.modifiers.withered.use: true
+  minetinker.modifiers.withered.apply:
+    description: Allows to apply Withered to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.withered.craft:
+    description: Allows to craft a Withered-Modifiers
+    default: true
+  minetinker.modifiers.withered.use:
+    description: Allows to use Withered on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.power.*:

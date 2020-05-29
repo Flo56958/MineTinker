@@ -2,7 +2,6 @@ package de.flo56958.MineTinker.Modifiers.Types;
 
 import de.flo56958.MineTinker.Data.ToolType;
 import de.flo56958.MineTinker.Events.MTEntityDamageByEntityEvent;
-import de.flo56958.MineTinker.Events.MTProjectileHitEvent;
 import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
@@ -18,6 +17,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.Arrays;
@@ -108,26 +109,6 @@ public class Shulking extends Modifier implements Listener {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		effect(player, tool, event.getEntity(), event);
-	}
-
-	@EventHandler(ignoreCancelled = true)
-	public void effect(MTProjectileHitEvent event) {
-		if (!(event.getEvent().getHitEntity() instanceof LivingEntity)) {
-			return;
-		}
-
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
-
-		if (!ToolType.FISHINGROD.contains(tool.getType())) {
-			return;
-		}
-
-		effect(player, tool, event.getEvent().getHitEntity(), event);
-	}
-
-	private void effect(Player player, ItemStack tool, Entity entity, Event event) {
 		if (!player.hasPermission("minetinker.modifiers.shulking.use")) {
 			return;
 		}
@@ -136,13 +117,27 @@ public class Shulking extends Modifier implements Listener {
 			return;
 		}
 
+		if (modManager.hasMod(tool, Shrouded.instance())) { //Should not trigger twice
+			return;
+		}
+
+		((LivingEntity) event.getEntity()).addPotionEffect(getPotionEffect(event, event.getEntity(), player, tool));
+	}
+
+	public PotionEffect getPotionEffect(@Nullable Event event, @Nullable Entity entity, @NotNull Player player, @NotNull ItemStack tool) {
 		int level = modManager.getModLevel(tool, this);
 		int amplifier = this.effectAmplifier * (level - 1);
+		if (entity == null) {
+			ChatWriter.logModifier(player, event, this, tool,
+					"Duration(" + duration + ")",
+					"Amplifier(" + amplifier + ")");
+		} else {
+			ChatWriter.logModifier(player, event, this, tool,
+					"Duration(" + duration + ")",
+					"Amplifier(" + amplifier + ")",
+					"Entity(" + entity.getType().toString() + ")");
+		}
 
-		((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, this.duration, amplifier, false, false));
-
-		ChatWriter.logModifier(player, event, this, tool,
-				"Amplifier(" + amplifier + ")",
-				"Duration(" + this.duration + ")");
+		return new PotionEffect(PotionEffectType.LEVITATION, this.duration, amplifier, false, false);
 	}
 }

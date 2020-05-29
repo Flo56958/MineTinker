@@ -170,6 +170,7 @@ public class Main extends JavaPlugin {
 		modManager.register(ShadowDive.instance());
 		modManager.register(SelfRepair.instance());
 		modManager.register(Sharpness.instance());
+		modManager.register(Shrouded.instance());
 		modManager.register(Shulking.instance());
 		modManager.register(SilkTouch.instance());
 		modManager.register(Smite.instance());
@@ -183,6 +184,7 @@ public class Main extends JavaPlugin {
 		modManager.register(Timber.instance());
 		modManager.register(VoidNetting.instance());
 		modManager.register(Webbed.instance());
+		modManager.register(Withered.instance());
 
 		if (NBTUtils.isOneFourteenCompatible()) {
 			modManager.register(Piercing.instance());

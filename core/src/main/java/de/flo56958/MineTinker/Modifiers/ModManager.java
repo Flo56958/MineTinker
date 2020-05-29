@@ -71,6 +71,7 @@ public class ModManager {
 		List<String> incompatibilityList = new ArrayList<>();
 		incompatibilityList.add(SelfRepair.instance().getKey() + ":" + Infinity.instance().getKey());
 		incompatibilityList.add(Ender.instance().getKey() + ":" + Infinity.instance().getKey());
+		incompatibilityList.add(Ender.instance().getKey() + ":" + MultiShot.instance().getKey());
 		incompatibilityList.add(AutoSmelt.instance().getKey() + ":" + SilkTouch.instance().getKey());
 		incompatibilityList.add(Luck.instance().getKey() + ":" + SilkTouch.instance().getKey());
 		incompatibilityList.add(Protecting.instance().getKey() + ":" + AntiArrowPlating.instance().getKey());
@@ -88,7 +89,8 @@ public class ModManager {
 		incompatibilityList.add(SpidersBane.instance().getKey() + ":" + Smite.instance().getKey());
 		incompatibilityList.add(Aquaphilic.instance().getKey() + ":" + Freezing.instance().getKey());
 		incompatibilityList.add(Infinity.instance().getKey() + ":" + Propelling.instance().getKey());
-		incompatibilityList.add(MultiShot.instance().getKey() + ":" + Piercing.instance().getKey());
+		if (NBTUtils.isOneFourteenCompatible())
+			incompatibilityList.add(MultiShot.instance().getKey() + ":" + Piercing.instance().getKey());
 		incompatibilityList.add(Power.instance().getKey() + ":" + Timber.instance().getKey());
 		incompatibilityList.add(Drilling.instance().getKey() + ":" + Timber.instance().getKey());
 		incompatibilityList.add(SelfRepair.instance().getKey() + ":" + Photosynthesis.instance().getKey());
@@ -100,6 +102,19 @@ public class ModManager {
 		incompatibilityList.add(Sunblazer.instance().getKey() + ":" + ShadowDive.instance().getKey());
 		incompatibilityList.add(Photosynthesis.instance().getKey() + ":" + Nightseeker.instance().getKey());
 		incompatibilityList.add(Glowing.instance().getKey() + ":" + Nightseeker.instance().getKey());
+		incompatibilityList.add(Poisonous.instance().getKey() + ":" + Glowing.instance().getKey());
+		incompatibilityList.add(Poisonous.instance().getKey() + ":" + Webbed.instance().getKey());
+		incompatibilityList.add(Withered.instance().getKey() + ":" + Poisonous.instance().getKey());
+		incompatibilityList.add(Withered.instance().getKey() + ":" + Glowing.instance().getKey());
+		incompatibilityList.add(Withered.instance().getKey() + ":" + Webbed.instance().getKey());
+		incompatibilityList.add(Webbed.instance().getKey() + ":" + Glowing.instance().getKey());
+		incompatibilityList.add(Shulking.instance().getKey() + ":" + Glowing.instance().getKey());
+		incompatibilityList.add(Shulking.instance().getKey() + ":" + Webbed.instance().getKey());
+		incompatibilityList.add(Shulking.instance().getKey() + ":" + Poisonous.instance().getKey());
+		incompatibilityList.add(Shulking.instance().getKey() + ":" + Withered.instance().getKey());
+		incompatibilityList.add(Shrouded.instance().getKey() + ":" + Ender.instance().getKey());
+		incompatibilityList.add(Shrouded.instance().getKey() + ":" + MultiShot.instance().getKey());
+
 		incompatibilityList.sort(String::compareToIgnoreCase);
 
 		modifierconfig.addDefault("Incompatibilities", incompatibilityList);
