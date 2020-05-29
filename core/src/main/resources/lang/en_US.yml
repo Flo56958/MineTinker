@@ -333,7 +333,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Sharpness-Modifier"
   Shrouded:
     Name: "Shrouded"
-    Description: "Spawns a Particle cloud that blinds for %durationmin to %durationmax seconds were the arrow lands! Synergizes with other potion effect modifier."
+    Description: "Spawns a particle cloud that blinds for %durationmin to %durationmax seconds were the arrow lands! Synergizes with other potion effect modifier."
     ModifierItemName: "Bottle of Smoke"
     DescriptionModifierItem: "Modifier-Item for the Shrouded-Modifier"
   Shulking:
