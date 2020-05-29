@@ -78,6 +78,7 @@ public class Main extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new TinkerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new TridentListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerInfo(), this);
+		Bukkit.getPluginManager().registerEvents(new EnchantingListener(), this);
 		if (NBTUtils.isOneFourteenCompatible())
 			Bukkit.getPluginManager().registerEvents(new GrindstoneListener(), this);
 
@@ -85,10 +86,6 @@ public class Main extends JavaPlugin {
 		elytraConf.options().copyDefaults(true);
 		elytraConf.addDefault("ExpChanceWhileFlying", 10);
 		ConfigurationManager.saveConfig(elytraConf);
-
-		if (getConfig().getBoolean("ConvertEnchantmentsOnEnchant")) {
-			Bukkit.getPluginManager().registerEvents(new EnchantingListener(), this);
-		}
 
 		if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("enabled")) {
 			Bukkit.getPluginManager().registerEvents(new BuildersWandListener(), this);

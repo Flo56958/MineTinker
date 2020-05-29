@@ -25,6 +25,7 @@ public class EnchantingListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onTableEnchant(EnchantItemEvent event) {
+		if (!Main.getPlugin().getConfig().getBoolean("ConvertEnchantmentsOnEnchant", true)) return;
 		if (!ToolType.ALL.contains(event.getItem().getType())) { //Something different (like a book)
 			return;
 		}
@@ -66,7 +67,7 @@ public class EnchantingListener implements Listener {
 		event.getEnchantsToAdd().clear();
 	}
 
-	@EventHandler(ignoreCancelled = true)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onEnchant(EnchantItemEvent event) {
 		if (Lists.WORLDS.contains(event.getEnchanter().getWorld().getName())) {
 			return;
@@ -85,6 +86,7 @@ public class EnchantingListener implements Listener {
 
 	@EventHandler
 	public void onAnvilPrepare(InventoryClickEvent event) {
+		if (!Main.getPlugin().getConfig().getBoolean("ConvertEnchantmentsOnEnchant", true)) return;
 		HumanEntity entity = event.getWhoClicked();
 
 		if (!(entity instanceof Player && event.getClickedInventory() instanceof AnvilInventory)) {
