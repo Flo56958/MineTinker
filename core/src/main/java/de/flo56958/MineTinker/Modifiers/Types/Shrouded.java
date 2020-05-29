@@ -133,23 +133,23 @@ public class Shrouded extends Modifier implements Listener {
 
 		cloud.addCustomEffect(new PotionEffect(PotionEffectType.BLINDNESS, duration, 0, false, false), true);
 		ArrayList<String> extras = new ArrayList<>();
-		if (modManager.hasMod(tool, Glowing.instance())) {
+		if (modManager.hasMod(tool, Glowing.instance()) && player.hasPermission("minetinker.modifiers.glowing.use")) {
 			extras.add(Glowing.instance().getKey());
 			cloud.addCustomEffect(Glowing.instance().getPotionEffect(null, null, player, tool), true);
 		}
-		if (modManager.hasMod(tool, Poisonous.instance())) {
+		if (modManager.hasMod(tool, Poisonous.instance()) && player.hasPermission("minetinker.modifiers.poisonous.use")) {
 			extras.add(Poisonous.instance().getKey());
 			cloud.addCustomEffect(Poisonous.instance().getPotionEffect(null, null, player, tool), true);
 		}
-		if (modManager.hasMod(tool, Shulking.instance())) {
+		if (modManager.hasMod(tool, Shulking.instance()) && player.hasPermission("minetinker.modifiers.shulking.use")) {
 			extras.add(Shulking.instance().getKey());
 			cloud.addCustomEffect(Shulking.instance().getPotionEffect(null, null, player, tool), true);
 		}
-		if (modManager.hasMod(tool, Webbed.instance())) {
+		if (modManager.hasMod(tool, Webbed.instance()) && player.hasPermission("minetinker.modifiers.webbed.use")) {
 			extras.add(Webbed.instance().getKey());
 			cloud.addCustomEffect(Webbed.instance().getPotionEffect(null, null, player, tool), true);
 		}
-		if (modManager.hasMod(tool, Withered.instance())) {
+		if (modManager.hasMod(tool, Withered.instance()) && player.hasPermission("minetinker.modifiers.withered.use")) {
 			extras.add(Withered.instance().getKey());
 			cloud.addCustomEffect(Withered.instance().getPotionEffect(null, null, player, tool), true);
 		}

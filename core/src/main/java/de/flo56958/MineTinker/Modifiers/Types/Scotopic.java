@@ -32,6 +32,7 @@ public class Scotopic extends Modifier implements Listener {
 	private int durationPerLevel;
 	private int cooldownInSeconds;
 	private double cooldownReductionPerLevel;
+	private boolean givesImmunity;
 	private final HashMap<String, Long> cooldownTracker = new HashMap<>();
 
 	private Scotopic() {
@@ -76,6 +77,7 @@ public class Scotopic extends Modifier implements Listener {
 		config.addDefault("CooldownInSeconds", 120); //in seconds
 		config.addDefault("DurationPerLevel", 100); //in ticks
 		config.addDefault("CooldownReductionPerLevel", 0.65);
+		config.addDefault("GivesImmunityToBlindness", true);
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
@@ -100,12 +102,32 @@ public class Scotopic extends Modifier implements Listener {
 		this.durationPerLevel = config.getInt("DurationPerLevel", 100);
 		this.cooldownInSeconds = config.getInt("CooldownInSeconds", 120);
 		this.cooldownReductionPerLevel = config.getDouble("CooldownReductionPerLevel", 0.65);
+		this.givesImmunity = config.getBoolean("GivesImmunityToEffect", true);
 
 		this.description = this.description
 				.replaceAll("%amount", String.valueOf(this.durationPerLevel / 20.0))
 				.replaceAll("%light", String.valueOf(this.requiredLightLevel))
 				.replaceAll("%cmax", String.valueOf(this.cooldownInSeconds))
 				.replaceAll("%cmin", String.valueOf(Math.round(this.cooldownInSeconds * Math.pow(1.0 - this.cooldownReductionPerLevel, this.getMaxLvl() - 1))));
+	}
+
+	@EventHandler(ignoreCancelled = true)
+	public void onMoveImmune(PlayerMoveEvent event) {
+		if (!this.givesImmunity) return;
+
+		Player player = event.getPlayer();
+		if (!player.hasPermission("minetinker.modifiers.scotopic.use")) {
+			return;
+		}
+
+		ItemStack armor = player.getInventory().getHelmet();
+		if (armor == null) return;
+
+		if (!modManager.hasMod(armor, this)) return;
+		if (player.hasPotionEffect(PotionEffectType.BLINDNESS)) {
+			player.removePotionEffect(PotionEffectType.BLINDNESS);
+			ChatWriter.logModifier(player, event, this, armor, "RemoveBlindness");
+		}
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)

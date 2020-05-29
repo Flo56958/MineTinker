@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -33,6 +34,7 @@ public class Webbed extends Modifier implements Listener {
 	private int duration;
 	private double durationMultiplier;
 	private int effectAmplifier;
+	private boolean givesImmunity;
 
 	private Webbed() {
 		super(Main.getPlugin());
@@ -76,6 +78,7 @@ public class Webbed extends Modifier implements Listener {
 		config.addDefault("Duration", 60); //ticks (20 ticks ~ 1 sec)
 		config.addDefault("DurationMultiplier", 1.2);//Duration * (Multiplier^Level)
 		config.addDefault("EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
+		config.addDefault("GivesImmunityToEffect", true);
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
@@ -100,9 +103,37 @@ public class Webbed extends Modifier implements Listener {
 		this.duration = config.getInt("Duration", 60);
 		this.durationMultiplier = config.getDouble("DurationMultiplier", 1.2);
 		this.effectAmplifier = config.getInt("EffectAmplifier", 2);
+		this.givesImmunity = config.getBoolean("GivesImmunityToEffect", true);
 
 		this.description = this.description.replace("%duration", String.valueOf(this.duration))
 				.replace("%multiplier", String.valueOf(this.durationMultiplier));
+	}
+
+	@EventHandler(ignoreCancelled = true)
+	public void onMove(PlayerMoveEvent event) {
+		if (!this.givesImmunity) return;
+
+		Player player = event.getPlayer();
+		if (!player.hasPermission("minetinker.modifiers.webbed.use")) {
+			return;
+		}
+
+		boolean hasWebbed = false;
+		ItemStack armor = null;
+		for (ItemStack stack : player.getInventory().getArmorContents()) {
+			if (stack == null) continue;
+			if (modManager.hasMod(stack, this)) {
+				hasWebbed = true;
+				armor = stack;
+				break;
+			}
+		}
+
+		if (!hasWebbed) return;
+		if (player.hasPotionEffect(PotionEffectType.SLOW)) {
+			player.removePotionEffect(PotionEffectType.SLOW);
+			ChatWriter.logModifier(player, event, this, armor, "RemoveEffect");
+		}
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -114,13 +145,8 @@ public class Webbed extends Modifier implements Listener {
 		effect(event.getPlayer(), event.getTool(), event.getEntity(), event);
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void effect(MTProjectileHitEvent event) {
-		if (!this.isAllowed()) {
-			// Maybe change this to cancellable and ignoreCancelled?
-			return;
-		}
-
 		if (!(event.getEvent().getHitEntity() instanceof LivingEntity)) {
 			return;
 		}

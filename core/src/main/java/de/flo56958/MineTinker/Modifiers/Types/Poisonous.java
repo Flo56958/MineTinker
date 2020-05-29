@@ -8,13 +8,16 @@ import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.ConfigurationManager;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -34,6 +37,7 @@ public class Poisonous extends Modifier implements Listener {
 	private double durationMultiplier;
 	private int effectAmplifier;
 	private boolean dropPoisonedMeat;
+	private boolean effectHealsPlayer;
 
 	private Poisonous() {
 		super(Main.getPlugin());
@@ -78,6 +82,7 @@ public class Poisonous extends Modifier implements Listener {
 		config.addDefault("DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
 		config.addDefault("EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...) INTEGER
 		config.addDefault("DropRottenMeatIfPoisoned", true);
+		config.addDefault("EffectHealsPlayer", true);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", true);
@@ -94,6 +99,7 @@ public class Poisonous extends Modifier implements Listener {
 		this.durationMultiplier = config.getDouble("DurationMultiplier", 1.1);
 		this.effectAmplifier = config.getInt("EffectAmplifier", 2);
 		this.dropPoisonedMeat = config.getBoolean("DropRottenMeatIfPoisoned", true);
+		this.effectHealsPlayer = config.getBoolean("EffectHealsPlayer", true);
 
 		this.description = this.description.replace("%duration", String.valueOf(this.duration))
 				.replace("%multiplier", String.valueOf(this.durationMultiplier));
@@ -121,6 +127,39 @@ public class Poisonous extends Modifier implements Listener {
 		}
 
 		((LivingEntity) event.getEntity()).addPotionEffect(getPotionEffect(event, event.getEntity(), player, tool));
+	}
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+	public void onDamage(EntityDamageEvent event) {
+		if (event.getCause() != EntityDamageEvent.DamageCause.POISON) return;
+		if (!(event.getEntity() instanceof Player)) return;
+		if (!this.effectHealsPlayer) return;
+
+		Player player = (Player) event.getEntity();
+		if (!player.hasPermission("minetinker.modifiers.poisonous.use")) {
+			return;
+		}
+
+		boolean hasPoisonous = false;
+		ItemStack armor = null;
+		for (ItemStack stack : player.getInventory().getArmorContents()) {
+			if (stack == null) continue;
+			if (modManager.hasMod(stack, this)) {
+				hasPoisonous = true;
+				armor = stack;
+				break;
+			}
+		}
+
+		if (!hasPoisonous) return;
+
+		double damage = event.getDamage();
+		if (damage > 0) {
+			event.setDamage(0);
+			double health = player.getHealth();
+			player.setHealth(Math.min(health + damage, player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()));
+			ChatWriter.logModifier(player, event, this, armor, String.format("Health(%.2f -> %.2f)", health, player.getHealth()));
+		}
 	}
 
 	public PotionEffect getPotionEffect(@Nullable Event event, @Nullable Entity entity, @NotNull Player player, @NotNull ItemStack tool) {

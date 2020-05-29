@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -31,6 +32,7 @@ public class Shulking extends Modifier implements Listener {
 	private static Shulking instance;
 	private int duration;
 	private int effectAmplifier;
+	private boolean givesImmunity;
 
 	private Shulking() {
 		super(Main.getPlugin());
@@ -73,6 +75,7 @@ public class Shulking extends Modifier implements Listener {
 		config.addDefault("SlotCost", 1);
 		config.addDefault("Duration", 20); //ticks (20 ticks ~ 1 sec)
 		config.addDefault("EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
+		config.addDefault("GivesImmunityToEffect", true);
 		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
@@ -96,8 +99,36 @@ public class Shulking extends Modifier implements Listener {
 
 		this.duration = config.getInt("Duration", 20);
 		this.effectAmplifier = config.getInt("EffectAmplifier", 2);
+		this.givesImmunity = config.getBoolean("GivesImmunityToEffect", true);
 
 		this.description = this.description.replace("%duration", String.valueOf(this.duration));
+	}
+
+	@EventHandler(ignoreCancelled = true)
+	public void onMove(PlayerMoveEvent event) {
+		if (!this.givesImmunity) return;
+
+		Player player = event.getPlayer();
+		if (!player.hasPermission("minetinker.modifiers.shulking.use")) {
+			return;
+		}
+
+		boolean hasShulking = false;
+		ItemStack armor = null;
+		for (ItemStack stack : player.getInventory().getArmorContents()) {
+			if (stack == null) continue;
+			if (modManager.hasMod(stack, this)) {
+				hasShulking = true;
+				armor = stack;
+				break;
+			}
+		}
+
+		if (!hasShulking) return;
+		if (player.hasPotionEffect(PotionEffectType.LEVITATION)) {
+			player.removePotionEffect(PotionEffectType.LEVITATION);
+			ChatWriter.logModifier(player, event, this, armor, "RemoveEffect");
+		}
 	}
 
 	@EventHandler(ignoreCancelled = true)

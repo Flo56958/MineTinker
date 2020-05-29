@@ -107,11 +107,16 @@ public class ModManager {
 		incompatibilityList.add(Withered.instance().getKey() + ":" + Poisonous.instance().getKey());
 		incompatibilityList.add(Withered.instance().getKey() + ":" + Glowing.instance().getKey());
 		incompatibilityList.add(Withered.instance().getKey() + ":" + Webbed.instance().getKey());
+		incompatibilityList.add(Withered.instance().getKey() + ":" + Beheading.instance().getKey());
 		incompatibilityList.add(Webbed.instance().getKey() + ":" + Glowing.instance().getKey());
 		incompatibilityList.add(Shulking.instance().getKey() + ":" + Glowing.instance().getKey());
 		incompatibilityList.add(Shulking.instance().getKey() + ":" + Webbed.instance().getKey());
 		incompatibilityList.add(Shulking.instance().getKey() + ":" + Poisonous.instance().getKey());
 		incompatibilityList.add(Shulking.instance().getKey() + ":" + Withered.instance().getKey());
+		incompatibilityList.add(Scotopic.instance().getKey() + ":" + Webbed.instance().getKey());
+		incompatibilityList.add(Scotopic.instance().getKey() + ":" + Poisonous.instance().getKey());
+		incompatibilityList.add(Scotopic.instance().getKey() + ":" + Withered.instance().getKey());
+		incompatibilityList.add(Scotopic.instance().getKey() + ":" + Shulking.instance().getKey());
 		incompatibilityList.add(Shrouded.instance().getKey() + ":" + Ender.instance().getKey());
 		incompatibilityList.add(Shrouded.instance().getKey() + ":" + MultiShot.instance().getKey());
 
@@ -475,6 +480,7 @@ public class ModManager {
 	 * @param mod the modifier
 	 */
 	public int getModLevel(ItemStack is, @NotNull Modifier mod) {
+		if (!mod.isAllowed()) return 0;
 		return nbt.getInt(is, mod.getKey());
 	}
 
