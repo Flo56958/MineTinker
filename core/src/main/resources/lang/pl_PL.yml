@@ -187,9 +187,13 @@ Modifier:
   Experienced:
     Name: "Doświadczenie"
     Description: "Narzędzie ma %chance% szans na poziom, aby wydropić %amount XP podczas używania!"
+    ModifierItemName: "Esencja Doświadczenia"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Doświadczenie\""
   Extra-Modifier:
     Name: "Extra-Modyfikator"
     Description: "Dodaje %amount dodatkowe sloty modyfikatora do narzędzia!"
+    ModifierItemName: "Udoskonalona Netherowa Gwiazda"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Extra\""
   Fiery:
     Name: "Ogień"
     Description: "Jeden modyfikator, by wszystkich spalić! Jeden, by wszystkich w popiół zamienić!"
@@ -202,7 +206,7 @@ Modifier:
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Zamrożenie\""
   Glowing:
     Name: "Blask"
-    Description: "Rozjaśnij wrogów!"
+    Description: "Rozjaśnij wrogów na %durationmin do %durationmax sekund (w zależności od poziomu)"
     ModifierItemName: "Enderowy Jasnogłaz"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Blask\""
   Hardened:
@@ -265,6 +269,11 @@ Modifier:
     Description: "Wystrzel jeszcze jedną strzałę na poziom podczas strzału!"
     ModifierItemName: "Wielo-Strzała"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Wielostrzał\""
+  Nightseeker:
+    Name: "Poszukiwacz Nocy"
+    Description: "Zadawaj więcej lub otrzymuj mniej obrażeń (od %amountmin% do %amountmax%), gdy świeci księżyc (zależy od poziomu i pozycji księżyca). Ten efekt zostaje odwrócony w ciągu dnia i w Netherze, ale ma pełną moc w Endzie!"
+    ModifierItemName: "Ciemny Detektor Światła Dziennego"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Poszukiwacz Nocy\""
   Photosynthesis:
     Name: "Fotosynteza"
     Description: "Napraw swój przedmiot z wytrzymałością %amount na poziom co %ticks Tików, gdy stoisz w miejscu, gdzie świeci słońce. Im dłużej stoisz, tym szybciej przedmiot się naprawia. (%multiplier%)"
@@ -300,9 +309,21 @@ Modifier:
     Description: "Możliwe, że nie zużyjesz wytrzymałości podczas używania narzędzia/zbroi! Sprawia, że narzędzie jest bardziej trwałe!"
     ModifierItemName: "Skompresowany Obsydian"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Wzmacniacz\""
+  Scotopic:
+    Name: "Kocie Oczy"
+    Description: "Zapewnia %amount sekund/y widzenia w ciemności na poziom, jeśli poziom światła spadnie poniżej %light! Czas odnowienia: od %cmax do %cmin sekund (w zależności od poziomu)"
+    ModifierItemName: "Nocne Oko"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Kocie Oczy\""
+  Shadow-Dive:
+    Name: "Kamuflaż Cienia"
+    Description: "Zniknij całkowicie z pola widzenia, skradając się w ciemnych miejscach! (Poziom światła <= %level)"
+    ModifierItemName: "Znikający Kryształ"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Kamuflaż Cienia\""
+    LightToHigh: "Poziom światła jest zbyt wysoki!"
+    InCombat: "Jesteś w walce!"
   Self-Repair:
     Name: "Samo-Naprawa"
-    Description: "%chance% szans na poziom, by naprawić podczas używania lub zastosowania zaklęcia \"Naprawa\" narzędzie/zbroję o wytrzymałości %amount !"
+    Description: "%chance% szans na poziom do naprawy narzędzia/zbroi o wytrzymałości %amount podczas używania!"
     ModifierItemName: "Zaklęty Zamszony Bruk"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Samo-Naprawa\""
   Sharpness:
@@ -310,6 +331,11 @@ Modifier:
     Description: "Broń zadaje wszystkim dodatkowe obrażenia!"
     ModifierItemName: "Skompresowany Blok Kwarcu"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Brzytwa\""
+  Shrouded:
+    Name: "Zasłona"
+    Description: "Tworzy chmurę cząstek, która oślepia przez %durationmin do %durationmax sekund, gdy lądują strzały! Synergizuje się z innym modyfikatorem efektu mikstury."
+    ModifierItemName: "Butelka Dymu"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Zasłona\""
   Shulking:
     Name: "Shulkering"
     Description: "Spraw, by wrogowie lewitowali i byli nieruchomi na %duration tików! Efekt staje się silniejszy z każdym poziomem."
@@ -340,6 +366,11 @@ Modifier:
     Description: "Broń zadaje dodatkowe obrażenia pająkom!"
     ModifierItemName: "Oczyszczone Oko Pająka"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Zmora Pająków\""
+  Sunblazer:
+    Name: "Strażnik Światła"
+    Description: "Zadawaj więcej lub otrzymuj mniej obrażeń (od %amountmin% do %amountmax%), gdy świeci słońce (zależy od poziomu i pozycji księżyca). Ten efekt zostaje odwrócony w nocy i w Endzie, ale ma pełną moc w Netherze!"
+    ModifierItemName: "Złoty Detektor Światła Dziennego"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Strażnik Światła\""
   Sweeping:
     Name: "Siła Odśrodkowa"
     Description: "Zadawaj więcej obrażeń na większym obszarze!"
@@ -356,15 +387,26 @@ Modifier:
     ModifierItemName: "Kolczaste Poszycie"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Cierpienie\""
   Timber:
-    Name: "Uwaga, drzewo!"
+    Name: "Rębacz"
     Description: "Ścinaj drzewa w mgnieniu oka!"
     ModifierItemName: "Drewniany Szmaragd"
-    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Uwaga, drzewo!\""
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Rębacz\""
+  Void-Netting:
+    Name: "Siatka Pustki"
+    Description: "Teleportuje cię w bezpieczne miejsce w promieniu %radius bloków na poziom, gdy wpadniesz w próżnię. Czas odnowienia: od %cmax do %cmin sekund (w zależności od poziomu)"
+    ModifierItemName: "Sieć Pustki"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Siatka Pustki\""
+    CouldNotFindBlock: "Nie można znaleźć bezpiecznego miejsca do teleportacji!"
   Webbed:
     Name: "Płetwonogi"
     Description: "Spowolnij wrogów, gdy ich trafisz lub trafią cię oni na %duration tików * %multiplier na poziom!"
     ModifierItemName: "Skompresowana Pajęczyna"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Płetwonogi\""
+  Withered:
+    Name: "Obumarcie"
+    Description: "Cel obumiera przez %duration Tików * %multiplier na poziom!"
+    ModifierItemName: "Czaszka Mrocznego Szkieleta"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Obumarcie\""
 
 DataType.Boolean: "Boolean (prawda/fałsz)"
 DataType.String: "Sznur"
