@@ -64,9 +64,10 @@ BlockToEnchantModifiers: BOOKSHELF    #Block that needs to be right-clicked
 HideEnchants: true                    #Should the vanilla enchantments be hidden on the tool
 HideAttributes: true                  #Should the attributes be hidden on the tool when applied
 DurabilityPercentageRepair: 0.34      #How much durability (relative to maximum durability) should the tool recover per item
-ConvertBookToModifier: false          #Should right clicking a bookshelf with an enchanted book convert enchantments to modifier items
+ConvertBookToModifier: true           #Should right clicking a bookshelf with an enchanted book convert enchantments to modifier items
 EnableLore: true                      #Should the Item have lore to display all Stats on the Tool (like Modifiers, Exp, Level, etc.)
 ConvertEnchantmentsOnEnchant: true    #Should (new) enchantments be converted to modifiers when tools are enchanted
+RefundLostEnchantmentsAsItems: true   #If you want to enchant Sharpness 5 on a tool but MT only allows Sharpness 4 it will drop one Sharpness-Modifier (ConvertEnchantmentsOnEnchant needs to be true)
 ConvertEnchantsAndAttributes: true    #Should enchants and Attributes be also converted if tool is converted
 ToolIdentifier: IdentifierTool        #Changing this will break all current tools; Used to identify Tools
 ArmorIdentifier: IdentifierArmor      #Changing this will break all current armors; Used to identify Armor

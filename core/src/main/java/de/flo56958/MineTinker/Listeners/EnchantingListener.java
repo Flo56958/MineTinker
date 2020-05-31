@@ -45,44 +45,29 @@ public class EnchantingListener implements Listener {
 			// The modifier may be disabled
 			if (modifier != null && modifier.isAllowed()) {
 				for (int i = 0; i < entry.getValue(); i++) {
-					boolean success = modManager.addMod(event.getEnchanter(), event.getItem(), modifier, free,
-							false, true);
-
-					if (success) {
-						int newLevel = enchants.get(entry.getKey()) - 1;
-
-						// If the target level is 0 then just remove from the map instead of setting to 0
-						// Not quite sure what happens if it tries to set an enchant with a level of 0
-						// It may remove it? Which would be adverse.
-						if (newLevel == 0) {
-							enchants.remove(entry.getKey());
-						} else {
-							enchants.put(entry.getKey(), enchants.get(entry.getKey()) - 1);
+					//Adding necessary slots
+					if (free)
+						modManager.setFreeSlots(event.getItem(), modManager.getFreeSlots(event.getItem()) + modifier.getSlotCost());
+					if (!modManager.addMod(event.getEnchanter(), event.getItem(), modifier,
+							false,false, true)) {
+						//Remove slots as they were not needed
+						if (free)
+							modManager.setFreeSlots(event.getItem(), modManager.getFreeSlots(event.getItem()) - modifier.getSlotCost());
+						if (Main.getPlugin().getConfig().getBoolean("RefundLostEnchantmentsAsItems", true)) {
+							for (; i < entry.getValue(); i++) { //Drop lost enchantments due to some error in addMod
+								if (event.getEnchanter().getInventory().addItem(modifier.getModItem()).size() != 0) { //adds items to (full) inventory
+									event.getEnchanter().getWorld().dropItem(event.getEnchanter().getLocation(), modifier.getModItem());
+								} // no else as it gets added in if-clause
+							}
 						}
+						break;
 					}
 				}
 			}
 		}
 
-		// The enchants should be added when calling applyMod
+		// The enchants should be added when calling addMod
 		event.getEnchantsToAdd().clear();
-	}
-
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
-	public void onEnchant(PrepareItemEnchantEvent event) {
-		if (Lists.WORLDS.contains(event.getEnchanter().getWorld().getName())) {
-			return;
-		}
-
-		if (Main.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
-			return;
-		}
-
-		ItemStack tool = event.getItem();
-
-		if (modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool)) {
-			event.setCancelled(true);
-		}
 	}
 
 	@EventHandler
@@ -118,15 +103,47 @@ public class EnchantingListener implements Listener {
 				int difference = entry.getValue() - oldEnchantLevel;
 				Modifier modifier = ModManager.instance().getModifierFromEnchantment(entry.getKey());
 
-				newTool.removeEnchantment(entry.getKey());
 				if (modifier != null) {
 					for (int i = 0; i < difference; i++) {
-						modManager.addMod(player, newTool, modifier, free, false, true);
+						//Adding necessary slots
+						if (free)
+							modManager.setFreeSlots(newTool, modManager.getFreeSlots(newTool) + modifier.getSlotCost());
+						if (!modManager.addMod(player, newTool, modifier,
+								false,false, true)) {
+							//Remove slots as they were not needed
+							if (free)
+								modManager.setFreeSlots(newTool, modManager.getFreeSlots(newTool) - modifier.getSlotCost());
+							if (Main.getPlugin().getConfig().getBoolean("RefundLostEnchantmentsAsItems", true)) {
+								for (; i < difference; i++) { //Drop lost enchantments due to some error in addMod
+									if (player.getInventory().addItem(modifier.getModItem()).size() != 0) { //adds items to (full) inventory
+										player.getWorld().dropItem(player.getLocation(), modifier.getModItem());
+									} // no else as it gets added in if-clause
+								}
+							}
+							break;
+						}
 					}
 				}
 			}
 		}
 
 		// TODO: Refund enchantment levels lost due to removeEnchantment and addMod
+	}
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
+	public void onEnchant(PrepareItemEnchantEvent event) {
+		if (Lists.WORLDS.contains(event.getEnchanter().getWorld().getName())) {
+			return;
+		}
+
+		if (Main.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
+			return;
+		}
+
+		ItemStack tool = event.getItem();
+
+		if (modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool)) {
+			event.setCancelled(true);
+		}
 	}
 }

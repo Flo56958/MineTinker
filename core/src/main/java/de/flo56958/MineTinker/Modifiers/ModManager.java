@@ -571,7 +571,7 @@ public class ModManager {
 	public long getNextLevelReq(int level) {
 		if (config.getBoolean("ProgressionIsLinear")) {
 			return Math.round(Main.getPlugin().getConfig().getInt("LevelStep")
-					* Main.getPlugin().getConfig().getDouble("LevelFactor") * (level - 1));
+					* Main.getPlugin().getConfig().getDouble("LevelFactor") * level);
 		} else {
 			return Math.round(Main.getPlugin().getConfig().getInt("LevelStep")
 					* Math.pow(Main.getPlugin().getConfig().getDouble("LevelFactor"), level - 1));
