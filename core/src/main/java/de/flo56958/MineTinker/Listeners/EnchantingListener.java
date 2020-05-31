@@ -18,6 +18,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashSet;
 import java.util.Map;
 
 public class EnchantingListener implements Listener {
@@ -38,6 +39,7 @@ public class EnchantingListener implements Listener {
 		boolean free = !Main.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true);
 
 		Map<Enchantment, Integer> enchants = event.getEnchantsToAdd();
+		HashSet<Enchantment> toremove = new HashSet<>();
 
 		for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
 			Modifier modifier = modManager.getModifierFromEnchantment(entry.getKey());
@@ -49,7 +51,7 @@ public class EnchantingListener implements Listener {
 					if (free)
 						modManager.setFreeSlots(event.getItem(), modManager.getFreeSlots(event.getItem()) + modifier.getSlotCost());
 					if (!modManager.addMod(event.getEnchanter(), event.getItem(), modifier,
-							false,false, true)) {
+							false, false, true)) {
 						//Remove slots as they were not needed
 						if (free)
 							modManager.setFreeSlots(event.getItem(), modManager.getFreeSlots(event.getItem()) - modifier.getSlotCost());
@@ -63,11 +65,11 @@ public class EnchantingListener implements Listener {
 						break;
 					}
 				}
+				toremove.add(entry.getKey());
 			}
 		}
 
-		// The enchants should be added when calling addMod
-		event.getEnchantsToAdd().clear();
+		toremove.forEach(enchants::remove);
 	}
 
 	@EventHandler
@@ -103,7 +105,7 @@ public class EnchantingListener implements Listener {
 				int difference = entry.getValue() - oldEnchantLevel;
 				Modifier modifier = ModManager.instance().getModifierFromEnchantment(entry.getKey());
 
-				if (modifier != null) {
+				if (modifier != null && modifier.isAllowed()) {
 					for (int i = 0; i < difference; i++) {
 						//Adding necessary slots
 						if (free)
@@ -136,13 +138,15 @@ public class EnchantingListener implements Listener {
 			return;
 		}
 
-		if (Main.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
-			return;
-		}
-
 		ItemStack tool = event.getItem();
 
 		if (modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool)) {
+			if (Main.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
+				if (Main.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true) && modManager.getFreeSlots(tool) == 0) {
+					event.setCancelled(true);
+				}
+				return;
+			}
 			event.setCancelled(true);
 		}
 	}
