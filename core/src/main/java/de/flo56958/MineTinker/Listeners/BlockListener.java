@@ -9,6 +9,7 @@ import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Modifiers.Types.Power;
 import de.flo56958.MineTinker.Modifiers.Types.SilkTouch;
+import de.flo56958.MineTinker.Utilities.Integrations.CoreProtectIntegration;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -105,14 +106,17 @@ public class BlockListener implements Listener {
 
 		FileConfiguration config = Main.getPlugin().getConfig();
 
-		int expAmount = config.getInt("ExpPerBlockBreak");
-		if (!(!config.getBoolean("ExtraExpPerBlock.ApplicableToSilkTouch")
-				&& modManager.hasMod(tool, SilkTouch.instance()))) {
-			expAmount += config.getInt("ExtraExpPerBlock." + event.getBlock().getType().toString());
-			//adds 0 if not in found in config (negative values are also fine)
-		}
+		//--------------------------------------EXP-CALCULATIONS--------------------------------------------
+		if (player.getGameMode() != GameMode.CREATIVE && CoreProtectIntegration.checkBlock(player, event.getBlock())) {
+			int expAmount = config.getInt("ExpPerBlockBreak");
+			if (!(!config.getBoolean("ExtraExpPerBlock.ApplicableToSilkTouch")
+					&& modManager.hasMod(tool, SilkTouch.instance()))) {
+				expAmount += config.getInt("ExtraExpPerBlock." + event.getBlock().getType().toString());
+				//adds 0 if not in found in config (negative values are also fine)
+			}
 
-		modManager.addExp(player, tool, expAmount);
+			modManager.addExp(player, tool, expAmount);
+		}
 
 		//-------------------------------------------POWERCHECK---------------------------------------------
 		if (Power.HAS_POWER.get(player).get() && !ToolType.PICKAXE.contains(tool.getType())

@@ -158,3 +158,8 @@ EasyHarvest:
   BannedWorlds:                       #Worlds where EasyHarvest can't be used
     - bannedExample1
     - bannedExample2
+
+#------------------INTEGRATIONS-------------------
+CoreProtect:
+  BlockExpCooldownInSeconds: 60       #How much cooldown should the placed block have until it gives Exp again
+  CheckOnlyForSpecificPlayer: true    #Should the lookup only be for the player that has broken the block or all

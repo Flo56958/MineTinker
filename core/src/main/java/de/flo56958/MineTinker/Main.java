@@ -7,6 +7,7 @@ import de.flo56958.MineTinker.Listeners.*;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Types.*;
 import de.flo56958.MineTinker.Utilities.*;
+import de.flo56958.MineTinker.Utilities.Integrations.CoreProtectIntegration;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import de.flo56958.MineTinker.api.gui.GUI;
 import org.bstats.bukkit.Metrics;
@@ -120,6 +121,8 @@ public class Main extends JavaPlugin {
 			Drilling.HAS_DRILLING.computeIfAbsent(current, player -> new AtomicBoolean(false));
 			Lists.BLOCKFACE.put(current, null);
 		}
+
+		CoreProtectIntegration.init();
 
 		if (getConfig().getBoolean("CheckForUpdates")) {
 			Bukkit.getScheduler().scheduleAsyncDelayedTask(this, Updater::checkForUpdate, 20);
