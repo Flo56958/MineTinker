@@ -2,12 +2,14 @@ package de.flo56958.MineTinker.Commands.subs;
 
 import de.flo56958.MineTinker.Commands.ArgumentType;
 import de.flo56958.MineTinker.Commands.CommandManager;
+import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import de.flo56958.MineTinker.Utilities.LanguageManager;
 import de.flo56958.MineTinker.Utilities.nms.NBTUtils;
 import de.flo56958.MineTinker.api.SubCommand;
+import de.flo56958.MineTinker.api.gui.GUI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.BlockState;
@@ -39,25 +41,40 @@ public class ItemStatisticsCommand implements SubCommand {
 			return true;
 		}
 		ModManager modManager = ModManager.instance();
+		List<ItemStack> items = new ArrayList<>();
 		for (ItemStack stack : player.getInventory().getContents()) {
 			if (!modManager.isToolViable(stack) && !modManager.isArmorViable(stack)) continue;
+			items.add(stack);
+		}
+		items.sort(Comparator.comparing(modManager::getExp)); //Sorting
 
-			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Head")
-					.replaceFirst("%toolname", ChatWriter.getDisplayName(stack) + ChatColor.WHITE
-							+ " (" + stack.getType().toString() + ")"));
-			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Level")
-					.replaceFirst("%level", String.valueOf(modManager.getLevel(stack))));
-			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Exp")
-					.replaceFirst("%current", String.valueOf(modManager.getExp(stack)))
-					.replaceFirst("%nextlevel", String.valueOf(modManager.getNextLevelReq(modManager.getLevel(stack)))));
-			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.FreeSlots")
-					.replaceFirst("%slots", String.valueOf(modManager.getFreeSlots(stack))));
-			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Modifiers"));
+		if (sender instanceof Player && Main.getPlugin().getConfig().getBoolean("EnableLore", true)) { //GUI instead of Wall of Text through chat
+			int amount = items.size();
+			GUI gui = new GUI();
+			GUI.Window window = gui.addWindow((int) Math.ceil(amount / 9.0), player.getDisplayName());
+			for (int i = 0; i < amount; i++) {
+				window.addButton(i, items.get(i));
+			}
+			gui.show((Player) sender);
+		} else {
+			for (ItemStack stack : items) {
+				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Head")
+						.replaceFirst("%toolname", ChatWriter.getDisplayName(stack) + ChatColor.WHITE
+								+ " (" + stack.getType().toString() + ")"));
+				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Level")
+						.replaceFirst("%level", String.valueOf(modManager.getLevel(stack))));
+				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Exp")
+						.replaceFirst("%current", String.valueOf(modManager.getExp(stack)))
+						.replaceFirst("%nextlevel", String.valueOf(modManager.getNextLevelReq(modManager.getLevel(stack)))));
+				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.FreeSlots")
+						.replaceFirst("%slots", String.valueOf(modManager.getFreeSlots(stack))));
+				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Modifiers"));
 
-			for (Modifier mod : modManager.getAllowedMods()) {
-				if (NBTUtils.getHandler().hasTag(stack, mod.getKey())) {
-					ChatWriter.sendMessage(sender, ChatColor.WHITE, mod.getColor() + mod.getName() + ChatColor.WHITE
-							+ " " + NBTUtils.getHandler().getInt(stack, mod.getKey()));
+				for (Modifier mod : modManager.getAllowedMods()) {
+					if (NBTUtils.getHandler().hasTag(stack, mod.getKey())) {
+						ChatWriter.sendMessage(sender, ChatColor.WHITE, mod.getColor() + mod.getName() + ChatColor.WHITE
+								+ " " + NBTUtils.getHandler().getInt(stack, mod.getKey()));
+					}
 				}
 			}
 		}
