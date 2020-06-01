@@ -14,6 +14,8 @@ StartUp.DebugLogging: "Debug Logging включён. Лучше отключит
 StartUp.Incompatible:
   Start: "Начался поиск несовместимых плагинов... Вы можете отключить эту функцию в основном конфиге!"
   Found: "%plugin найден. Настраиваем MineTinker для лучшей совместимости!"
+StartUp.CoreProtect.Success: "Обнаружен CoreProtect и включена интеграция!"
+StartUp.CoreProtect.Failure: "Обнаружен CoreProtect, но API имеет неправильную версию!"
 
 Builderswand.NameWood: "Деревянный Посох Строителя"
 Builderswand.NameStone: "Каменный Посох Строителя"
@@ -32,8 +34,6 @@ Commands.Info.Line2: "За основу плагина взяты различн
 Commands.InvalidArguments: "Вы ввели неверные аргументы команды!"
 Commands.InvalidTool: "Вам нужно держать правильный инструмент в основной руке, чтобы выполнить эту команду!"
 Commands.NoPermission: "Вы не можете выполнить это действие!"
-Commands.Help.Website: "Для большей информации посетите:"
-Commands.Help.Discord: "Или задайте вопрос на официальным сервере дискорда MineTinker:"
 Commands.Reload.Note1: "Внимание: плагин может работать некорректно после его перезагрузки! Рекомендуется перезапуск сервера!"
 Commands.Reload.Recipes: "Очистка Рецептов!"
 Commands.Reload.Configs: "Перезагрузка Конфигурации!"
@@ -206,7 +206,7 @@ Modifier:
     DescriptionModifierItem: "Модификатор Ледохода"
   Glowing:
     Name: "Свечение"
-    Description: "Подсвечивает задетых врагов!"
+    Description: "Подсвечивает существ от %durationmin до %durationmax секунд! (в зависимости от уровня)"
     ModifierItemName: "Светокамень Эндера"
     DescriptionModifierItem: "Модификатор Свечения"
   Hardened:
@@ -269,6 +269,11 @@ Modifier:
     Description: "За каждый уровень стреляет дополнительной стрелой!"
     ModifierItemName: "Мультистрела"
     DescriptionModifierItem: "Модификатор Мультивыстрела"
+  Nightseeker:
+    Name: "Ночной охотник"
+    Description: "Наносит больше или получает меньше урона (от %amountmin% до %amountmax%) когда луна сияет (в зависимости от позиции луны и уровня). Этот эффект инвертируется в дневное время и в Аду, но имеет максимальную силу в Крае!"
+    ModifierItemName: "Темный датчик света"
+    DescriptionModifierItem: "Предмет-модификатор Ночного охотника"
   Photosynthesis:
     Name: "Фотосинтез"
     Description: "Чинит Ваш предмет на %amount прочности за уровень каждые %ticks Тиков, если Вы стоите под солнцем. Чем дольше Вы стоите, тем быстрее идёт починка. (%multiplier%)"
@@ -304,9 +309,21 @@ Modifier:
     Description: "Даёт шанс не потратить прочность предмета при использовании! Предмет дольше служит Вам!"
     ModifierItemName: "Сжатый Обсидиан"
     DescriptionModifierItem: "Модификатор Укрепления"
+  Scotopic:
+    Name: "Ночное зрение"
+    Description: "Дает %amount секунд Ночного зрения за уровень, если уровень света падает ниже %light! Перезарядка: от %cmax до %cmin секунд (в зависимости от уровня)"
+    ModifierItemName: "Ночной глаз"
+    DescriptionModifierItem: "Предмет-модификатор Ночного зрения"
+  Shadow-Dive:
+    Name: "Теневое погружение"
+    Description: "Полностью исчезните из поля зрения пока приседаете в темноте! (Уровень света <= %level)"
+    ModifierItemName: "Кристалл исчезновения"
+    DescriptionModifierItem: "Предмет-модификатор Теневого погружения"
+    LightToHigh: "Уровень света слишком высокий!"
+    InCombat: "Вы в бою!"
   Self-Repair:
     Name: "Авто-Починка"
-    Description: "За каждый уровень даёт предмету %chance% шанс восстановить %amount прочности при использовании!"
+    Description: "Шанс %chance% починки предмета / брони за каждый уровень на %amount прочности, во время использования."
     ModifierItemName: "Зачарованный Замшелый Булыжник"
     DescriptionModifierItem: "Модификатор Авто-Починки"
   Sharpness:
@@ -314,6 +331,11 @@ Modifier:
     Description: "Ваше оружие наносит больше урона!"
     ModifierItemName: "Сжатый Кварцевый Блок"
     DescriptionModifierItem: "Модификатор Остроты"
+  Shrouded:
+    Name: "Завеса"
+    Description: "Создает облако частиц, которое дает слепоту от %durationmin до %durationmax секунд в том месте, где упала стрела! Совмещаемо с другими модификаторами зелий."
+    ModifierItemName: "Бутылочка дыма"
+    DescriptionModifierItem: "Предмет-модификатор для Завесы"
   Shulking:
     Name: "Шалкер"
     Description: "Заставляет врагов левитировать и обездвиживает их на %duration Тиков! С каждым уровнем эффект становится сильнее!"
@@ -344,6 +366,11 @@ Modifier:
     Description: "Оружие наносит дополнительный урон по паукам!"
     ModifierItemName: "Очищенный Глаз Паука"
     DescriptionModifierItem: "Модификатор Гибели Насекомых"
+  Sunblazer:
+    Name: "Дневной охотник"
+    Description: "Наносите больше или получайте меньше урона (от %amountmin% до %amountmax%) во время свечения солнца (зависит от уровня и позиции солнца). Этот эффект инвертируется в ночное время и в Крае, но имеет полную силу в Аду!"
+    ModifierItemName: "Золотой датчик света"
+    DescriptionModifierItem: "Предмет-модификатор для Дневного охотника"
   Sweeping:
     Name: "Разящий-клинок"
     Description: "Наносит урон всем врагам вокруг основной цели!"
@@ -364,11 +391,22 @@ Modifier:
     Description: "Мгновенно рубит деревья!"
     ModifierItemName: "Деревянный изумруд"
     DescriptionModifierItem: "Модификатор Дровосека"
+  Void-Netting:
+    Name: "Пустотная сеть"
+    Description: "Телепортирует вас в безопасное место в радиусе %radius блоков за уровень, когда вы падаете в пустоту. Перезарядка: от %cmax до %cmin секунд (в зависимости от уровня)"
+    ModifierItemName: "Сеть пустоты"
+    DescriptionModifierItem: "Предмет-модификатор для Пустотной сети"
+    CouldNotFindBlock: "Не удалось найти безопасное место для телепортации!"
   Webbed:
     Name: "Замедление"
     Description: "Удары оружия или удары по броне замедляют противников на %duration Тиков * %multiplier за уровень!"
     ModifierItemName: "Сжатая Паутина"
     DescriptionModifierItem: "Модификатор Замедления"
+  Withered:
+    Name: "Иссушение"
+    Description: "Накладывает иссушение на оппонента на %duration тиков * %multiplier за уровень!"
+    ModifierItemName: "Иссушенный череп Иссушителя"
+    DescriptionModifierItem: "Предмет-модификатор для Иссушения"
 
 DataType.Boolean: "Логический тип (Да/Нет)"
 DataType.String: "Строка"
