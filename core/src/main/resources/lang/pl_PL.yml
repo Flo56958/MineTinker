@@ -14,6 +14,8 @@ StartUp.DebugLogging: "Rejestrowanie debugowania jest włączone. Powinieneś wy
 StartUp.Incompatible:
   Start: "Rozpoczęcie wyszukiwania niezgodnych pluginów... Możesz wyłączyć tę funkcję w głównej konfiguracji!"
   Found: "Znaleziono %plugin. Ulepszenie MineTinker dla najlepszej kompatybilności!"
+StartUp.CoreProtect.Success: "Znaleziono CoreProtect i włączono integrację!"
+StartUp.CoreProtect.Failure: "Znaleziono CoreProtect, ale API ma niewłaściwą wersję!"
 
 Builderswand.NameWood: "Różdżka Budowniczego z drewna"
 Builderswand.NameStone: "Różdżka Budowniczego z kamienia"
@@ -32,8 +34,6 @@ Commands.Info.Line2: "Jest inspirowany różnymi modami (np. TinkersConstruct)"
 Commands.InvalidArguments: "Wprowadziłeś nieprawidłowe argumenty polecenia!"
 Commands.InvalidTool: "Aby wykonać to polecenie, musisz trzymać prawidłowe narzędzie w ręce!"
 Commands.NoPermission: "Nie masz uprawnień do wykonania tej akcji!"
-Commands.Help.Website: "Aby uzyskać bardziej szczegółową pomoc odwiedź:"
-Commands.Help.Discord: "Lub zapytaj na oficjalnym serwerze discord MineTinker:"
 Commands.Reload.Note1: "UWAGA: Możliwe, że plugin nie będzie działać poprawnie po przeładowaniu! Zalecane jest ponowne uruchomienie serwera!"
 Commands.Reload.Recipes: "Czyszczenie przepisów!"
 Commands.Reload.Configs: "Przeładowywanie konfiguracji!"
