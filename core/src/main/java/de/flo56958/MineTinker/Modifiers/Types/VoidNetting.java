@@ -144,47 +144,54 @@ public class VoidNetting extends Modifier implements Listener {
 			}
 		}
 
-		Location loc = player.getLocation();
-		for (int i = 0; i < level * radiusPerLevel; i++) {
-			for (int d = -i; d <= i; d++) {
-				int y = loc.getWorld().getHighestBlockYAt(loc.getBlockX() + d, loc.getBlockZ() + i - Math.abs(d));
-				if (y > 1) {
-					loc = new Location(loc.getWorld(), loc.getBlockX() + d, y + 2, loc.getBlockZ() + i - Math.abs(d));
-					break;
+		cooldownTracker.put(player.getUniqueId().toString(), time - Math.round(this.cooldownInSeconds * 0.95)); //Add small cooldown to improve server performance
+
+		Bukkit.getScheduler().runTaskAsynchronously(Main.getPlugin(), () -> { //run effect async as it does not need to stop all action on server if search takes to long
+			Location loc = player.getLocation();
+			for (int i = 0; i < level * radiusPerLevel; i++) {
+				for (int d = -i; d <= i; d++) {
+					int y = loc.getWorld().getHighestBlockYAt(loc.getBlockX() + d, loc.getBlockZ() + i - Math.abs(d));
+					if (y > 1) {
+						loc = new Location(loc.getWorld(), loc.getBlockX() + d, y + 2, loc.getBlockZ() + i - Math.abs(d));
+						break;
+					}
+				}
+				for (int d = -i + 1; d < i; d++) {
+					int y = loc.getWorld().getHighestBlockYAt(loc.getBlockX() + d, loc.getBlockZ() + Math.abs(d) - i);
+					if (y > 1) {
+						loc = new Location(loc.getWorld(), loc.getBlockX() + d, y + 2,loc.getBlockZ() + Math.abs(d) - i);
+						break;
+					}
 				}
 			}
-			for (int d = -i + 1; d < i; d++) {
-				int y = loc.getWorld().getHighestBlockYAt(loc.getBlockX() + d, loc.getBlockZ() + Math.abs(d) - i);
-				if (y > 1) {
-					loc = new Location(loc.getWorld(), loc.getBlockX() + d, y + 2,loc.getBlockZ() + Math.abs(d) - i);
-					break;
-				}
+
+			if (loc.equals(player.getLocation())) {
+				//No suitable place found
+				ChatWriter.logModifier(player, event, this, armor, "Could not find suitable Block to teleport!");
+				ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getString("Modifier.Void-Netting.CouldNotFindBlock", player));
+				return;
 			}
-		}
+			Location oldLoc = player.getLocation().clone();
+			cooldownTracker.put(player.getUniqueId().toString(), time);
+			ChatWriter.logModifier(player, event, this, armor,
+					String.format("Location(%d/%d/%d -> %d/%d/%d)",
+							oldLoc.getBlockX(), oldLoc.getBlockY(), oldLoc.getBlockZ(),
+							loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()), String.format("Cooldown(%ds)", cooldownTime / 1000));
 
-		if (loc.equals(player.getLocation())) {
-			//No suitable place found
-			ChatWriter.logModifier(player, event, this, armor, "Could not find suitable Block to teleport!");
-			ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getString("Modifier.Void-Netting.CouldNotFindBlock", player));
-			return;
-		}
+			Location finalLoc = loc;
+			Bukkit.getScheduler().runTask(Main.getPlugin(), () -> { //Teleport needs to be in sync
+				player.teleport(finalLoc);
+				player.setVelocity(new Vector(0, 0.3, 0)); //Slow the fall
 
-		Location oldLoc = player.getLocation().clone();
-		player.teleport(loc);
-		player.setVelocity(new Vector(0, 0.1, 0)); //Slow the fall
-		cooldownTracker.put(player.getUniqueId().toString(), time);
-		ChatWriter.logModifier(player, event, this, armor,
-				String.format("Location(%d/%d/%d -> %d/%d/%d)",
-						oldLoc.getBlockX(), oldLoc.getBlockY(), oldLoc.getBlockZ(),
-						loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()), String.format("Cooldown(%ds)", cooldownTime / 1000));
-
-		if (this.particles) {
-			loc.getWorld().spawnParticle(Particle.PORTAL, loc, 20);
-			loc.getWorld().spawnParticle(Particle.PORTAL, oldLoc, 20);
-		}
-		if (this.sound) {
-			player.getWorld().playSound(loc, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
-			player.getWorld().playSound(oldLoc, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
-		}
+				if (this.particles) {
+					finalLoc.getWorld().spawnParticle(Particle.PORTAL, finalLoc, 20);
+					finalLoc.getWorld().spawnParticle(Particle.PORTAL, oldLoc, 20);
+				}
+				if (this.sound) {
+					player.getWorld().playSound(finalLoc, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+					player.getWorld().playSound(oldLoc, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+				}
+			});
+		});
 	}
 }
