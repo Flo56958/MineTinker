@@ -117,7 +117,7 @@ public class AddExpCommand implements SubCommand {
 
 	@Override @NotNull
 	public String getPermission() {
-		return "minetinker.commands.convert";
+		return "minetinker.commands.addexp";
 	}
 
 	@Override @NotNull
