@@ -1,6 +1,6 @@
 package de.flo56958.minetinker.listeners;
 
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
@@ -37,7 +37,7 @@ public class GrindstoneListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onGrind(InventoryClickEvent event) {
-		FileConfiguration config = Main.getPlugin().getConfig();
+		FileConfiguration config = MineTinker.getPlugin().getConfig();
 
 		if (!(event.getInventory() instanceof GrindstoneInventory)) {
 			return;
@@ -63,7 +63,7 @@ public class GrindstoneListener implements Listener {
 					//Illegal state
 					if (modManager.isToolViable(cursorItem) || modManager.isArmorViable(cursorItem)) {
 						event.setResult(Event.Result.DENY);
-						Bukkit.getScheduler().runTaskLater(Main.getPlugin(),
+						Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
 								() -> event.getClickedInventory().setItem(2, null), 1);
 					}
 					return;
@@ -109,7 +109,7 @@ public class GrindstoneListener implements Listener {
 				}
 
 				if (!hadMods) {
-					Bukkit.getScheduler().runTaskLater(Main.getPlugin(),
+					Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
 							() -> event.getClickedInventory().setItem(2, null), 1);
 					return;
 				}
@@ -126,7 +126,7 @@ public class GrindstoneListener implements Listener {
 
 				event.setResult(Event.Result.ALLOW);
 				//so the item gets not overwritten by vanilla
-				Bukkit.getScheduler().runTaskLater(Main.getPlugin(),
+				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
 						() -> event.getClickedInventory().setItem(2, result), 1);
 				save.put(player, gs);
 			} else if (event.getSlotType() == InventoryType.SlotType.RESULT) { //on Gridstone use

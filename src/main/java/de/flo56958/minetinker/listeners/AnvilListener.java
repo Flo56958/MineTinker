@@ -5,7 +5,7 @@ import de.flo56958.minetinker.data.ModifierFailCause;
 import de.flo56958.minetinker.events.ModifierApplyEvent;
 import de.flo56958.minetinker.events.ModifierFailEvent;
 import de.flo56958.minetinker.events.ToolUpgradeEvent;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.datatypes.Pair;
@@ -69,7 +69,7 @@ public class AnvilListener implements Listener {
 		if (!modManager.isModifierItem(modifier)) { //upgrade
 			if (tool.getType().equals(newTool.getType())) return; //Not an upgrade
 
-			if (new Random().nextInt(100) < Main.getPlugin().getConfig().getInt("ChanceToFailToolUpgrade")) {
+			if (new Random().nextInt(100) < MineTinker.getPlugin().getConfig().getInt("ChanceToFailToolUpgrade")) {
 				newTool = tool;
 				Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, false));
 			} else {
@@ -98,7 +98,7 @@ public class AnvilListener implements Listener {
 
 			modifier.setAmount(modifier.getAmount() - 1);
 
-			if (new Random().nextInt(100) < Main.getPlugin().getConfig().getInt("ChanceToFailModifierApply")) {
+			if (new Random().nextInt(100) < MineTinker.getPlugin().getConfig().getInt("ChanceToFailModifierApply")) {
 				newTool = tool;
 				Bukkit.getPluginManager().callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.PLAYER_FAILURE, false));
 			} else {
@@ -160,7 +160,7 @@ public class AnvilListener implements Listener {
 		}
 
 		if (modifier.getType().equals(Material.ENCHANTED_BOOK)) { //So no Tools can be enchanted via books, if enchanting is disabled
-			if (Main.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
+			if (MineTinker.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
 				// If enchanting is allowed, don't do anything
 				return;
 			} else {
@@ -180,7 +180,7 @@ public class AnvilListener implements Listener {
 				return;
 			}
 		} else {
-			if (Main.getPlugin().getConfig().getBoolean("Upgradeable")
+			if (MineTinker.getPlugin().getConfig().getBoolean("Upgradeable")
 					&& player.hasPermission("minetinker.tool.upgrade")) {
 				ItemStack item = inventory.getItem(1);
 

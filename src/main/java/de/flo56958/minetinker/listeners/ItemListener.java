@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.listeners;
 
 import de.flo56958.minetinker.data.Lists;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.LanguageManager;
@@ -33,12 +33,12 @@ public class ItemListener implements Listener {
 		ItemStack is = item.getItemStack();
 
 		if (!((modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))
-				|| (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")
+				|| (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")
 				&& modManager.isModifierItem(is)))) {
 			return;
 		}
 
-		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetPersistent")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.SetPersistent")) {
 			event.setCancelled(true);
 			item.setTicksLived(1);
 		}
@@ -46,7 +46,7 @@ public class ItemListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onItemDrop(PlayerDropItemEvent event) {
-		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
 			return;
 		}
 
@@ -55,7 +55,7 @@ public class ItemListener implements Listener {
 
 		boolean isMineTinker = false;
 
-		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) {
 			isMineTinker = modManager.isModifierItem(is);
 		}
 		if (modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is)) {
@@ -66,16 +66,16 @@ public class ItemListener implements Listener {
 			return;
 		}
 
-		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ShowName") && is.getItemMeta() != null) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ShowName") && is.getItemMeta() != null) {
 			item.setCustomName(is.getItemMeta().getDisplayName());
 			item.setCustomNameVisible(true);
 		}
 
-		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetGlowing")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.SetGlowing")) {
 			item.setGlowing(true);
 		}
 
-		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.SetInvulnerable")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.SetInvulnerable")) {
 			item.setInvulnerable(true);
 		}
 	}
@@ -89,7 +89,7 @@ public class ItemListener implements Listener {
 		Player player = event.getEntity();
 		Inventory inventory = player.getInventory();
 
-		if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ApplyOnPlayerDeath", true)) { //For DeadSouls and other Grave-Plugins
+		if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ApplyOnPlayerDeath", true)) { //For DeadSouls and other Grave-Plugins
 			// TODO: Try to find better handling of this Event or with these Plugins
 			return;
 		}
@@ -101,7 +101,7 @@ public class ItemListener implements Listener {
 
 			boolean isMineTinker = false;
 
-			if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) { //Modifieritems
+			if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) { //Modifieritems
 				ItemStack modifierTester = itemStack.clone();
 				modifierTester.setAmount(1);
 
@@ -121,7 +121,7 @@ public class ItemListener implements Listener {
 				continue;
 			}
 
-			if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
+			if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
 				PlayerDropItemEvent dropItemEvent = new PlayerDropItemEvent(player, player.getWorld().dropItem(player.getLocation(), itemStack));
 				Bukkit.getPluginManager().callEvent(dropItemEvent); //To trigger item behaviour
 				itemStack.setAmount(0);
@@ -142,11 +142,11 @@ public class ItemListener implements Listener {
 			return;
 		}
 
-		if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.StopBreakEvent")) {
+		if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.StopBreakEvent")) {
 			return;
 		}
 
-		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.AlertPlayerOnBreak")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.AlertPlayerOnBreak")) {
 			player.sendMessage(LanguageManager.getString("Alert.OnItemBreak", player));
 		}
 
@@ -163,7 +163,7 @@ public class ItemListener implements Listener {
 		item.setItemMeta(meta);
 
 		if (player.getInventory().addItem(item).size() != 0) { //adds items to (full) inventory
-			if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
+			if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
 				PlayerDropItemEvent dropItemEvent = new PlayerDropItemEvent(player, player.getWorld().dropItem(player.getLocation(), item));
 				Bukkit.getPluginManager().callEvent(dropItemEvent); //To trigger item behaviour
 			} else {

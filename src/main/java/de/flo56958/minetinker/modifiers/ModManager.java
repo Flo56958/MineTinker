@@ -4,7 +4,7 @@ import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.ToolLevelUpEvent;
 import de.flo56958.minetinker.listeners.ActionBarListener;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.types.*;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -40,7 +40,7 @@ public class ModManager {
 	private static ModManager instance;
 
 	static {
-		config = Main.getPlugin().getConfig();
+		config = MineTinker.getPlugin().getConfig();
 
 		layout = ConfigurationManager.getConfig("layout.yml");
 		layout.options().copyDefaults(true);
@@ -246,7 +246,7 @@ public class ModManager {
 	}
 
 	public void reload() {
-		config = Main.getPlugin().getConfig();
+		config = MineTinker.getPlugin().getConfig();
 		layout = ConfigurationManager.getConfig("layout.yml");
 
 		removeRecipes();
@@ -367,10 +367,10 @@ public class ModManager {
 				mod.registerCraftingRecipe();
 			}
 			if (mod instanceof Listener) { //Enable Events
-				Bukkit.getPluginManager().registerEvents((Listener) mod, Main.getPlugin());
+				Bukkit.getPluginManager().registerEvents((Listener) mod, MineTinker.getPlugin());
 			}
 			reloadIncompatibilities();
-			if (!mod.getSource().equals(Main.getPlugin())) {
+			if (!mod.getSource().equals(MineTinker.getPlugin())) {
 				GUIs.reload();
 			}
 			ChatWriter.logColor(LanguageManager.getString("ModManager.RegisterModifier")
@@ -396,7 +396,7 @@ public class ModManager {
 		}
 		ChatWriter.logColor(LanguageManager.getString("ModManager.UnregisterModifier")
 				.replace("%mod", mod.getColor() + mod.getName())
-				.replace("%plugin", Main.getPlugin().getName()));
+				.replace("%plugin", MineTinker.getPlugin().getName()));
 	}
 
 	/**
@@ -447,13 +447,13 @@ public class ModManager {
 			ItemMeta meta = item.getItemMeta();
 
 			if (meta != null) {
-				if (Main.getPlugin().getConfig().getBoolean("HideEnchants", true)) {
+				if (MineTinker.getPlugin().getConfig().getBoolean("HideEnchants", true)) {
 					meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 				} else {
 					meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
 				}
 
-				if (Main.getPlugin().getConfig().getBoolean("HideAttributes", true)) {
+				if (MineTinker.getPlugin().getConfig().getBoolean("HideAttributes", true)) {
 					meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 				} else {
 					meta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -563,11 +563,11 @@ public class ModManager {
 	 */
 	public long getNextLevelReq(int level) {
 		if (config.getBoolean("ProgressionIsLinear")) {
-			return Math.round(Main.getPlugin().getConfig().getInt("LevelStep")
-					* Main.getPlugin().getConfig().getDouble("LevelFactor") * level);
+			return Math.round(MineTinker.getPlugin().getConfig().getInt("LevelStep")
+					* MineTinker.getPlugin().getConfig().getDouble("LevelFactor") * level);
 		} else {
-			return Math.round(Main.getPlugin().getConfig().getInt("LevelStep")
-					* Math.pow(Main.getPlugin().getConfig().getDouble("LevelFactor"), level - 1));
+			return Math.round(MineTinker.getPlugin().getConfig().getInt("LevelStep")
+					* Math.pow(MineTinker.getPlugin().getConfig().getDouble("LevelFactor"), level - 1));
 		}
 	}
 
@@ -591,7 +591,7 @@ public class ModManager {
 		}
 
 		if (exp + 1 < 0 || level + 1 < 0) {
-			if (Main.getPlugin().getConfig().getBoolean("ResetAtIntOverflow")) { //secures a "good" exp-system if the Values get to big
+			if (MineTinker.getPlugin().getConfig().getBoolean("ResetAtIntOverflow")) { //secures a "good" exp-system if the Values get to big
 				level = 1;
 				setLevel(tool, level);
 				exp = 0;
@@ -653,7 +653,7 @@ public class ModManager {
 	 * @param is The Itemstack to rewrite the Lore
 	 */
 	private void rewriteLore(ItemStack is) {
-		if (!Main.getPlugin().getConfig().getBoolean("EnableLore")) {
+		if (!MineTinker.getPlugin().getConfig().getBoolean("EnableLore")) {
 			return;
 		}
 
@@ -789,7 +789,7 @@ public class ModManager {
 			return false;
 		}
 
-		if (!Main.getPlugin().getConfig().getBoolean("ConvertEnchantsAndAttributes")) {
+		if (!MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantsAndAttributes")) {
 			ItemMeta meta = new ItemStack(is.getType(), is.getAmount()).getItemMeta();
 
 			if (meta instanceof Damageable) {
@@ -836,7 +836,7 @@ public class ModManager {
 		ItemMeta meta = is.getItemMeta();
 
 		if (meta != null) {
-			if (Main.getPlugin().getConfig().getBoolean("ConvertEnchantsAndAttributes")) {
+			if (MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantsAndAttributes")) {
 
 				for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
 					Modifier modifier = getModifierFromEnchantment(entry.getKey());
@@ -955,7 +955,7 @@ public class ModManager {
 				meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
 			}
 
-			if (Main.getPlugin().getConfig().getBoolean("HideAttributes")) {
+			if (MineTinker.getPlugin().getConfig().getBoolean("HideAttributes")) {
 				meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 			} else {
 				meta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);

@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Material;
@@ -22,7 +22,7 @@ public class Sharpness extends Modifier {
 	private static Sharpness instance;
 
 	private Sharpness() {
-		super(Main.getPlugin());
+		super(MineTinker.getPlugin());
 		customModelData = 10_032;
 	}
 

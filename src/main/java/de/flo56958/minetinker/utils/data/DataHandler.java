@@ -1,6 +1,6 @@
 package de.flo56958.minetinker.utils.data;
 
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
@@ -24,7 +24,7 @@ public class DataHandler {
 
     public static int getInt(ItemStack item, String key) {
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-        Integer value = container.get(new NamespacedKey(Main.getPlugin(), key), PersistentDataType.INTEGER);
+        Integer value = container.get(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.INTEGER);
 
         if (value != null) {
             return value;
@@ -35,7 +35,7 @@ public class DataHandler {
 
     public static long getLong(ItemStack item, String key) {
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-        Long value = container.get(new NamespacedKey(Main.getPlugin(), key), PersistentDataType.LONG);
+        Long value = container.get(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.LONG);
 
         if (value != null) {
             return value;
@@ -47,12 +47,12 @@ public class DataHandler {
     public static String getString(ItemStack item, String key) {
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
 
-        return container.get(new NamespacedKey(Main.getPlugin(), key), PersistentDataType.STRING);
+        return container.get(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.STRING);
     }
 
     public static List<String> getStringList(ItemStack item, String key) {
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-        String[] array = container.get(new NamespacedKey(Main.getPlugin(), key), STRING_ARRAY);
+        String[] array = container.get(new NamespacedKey(MineTinker.getPlugin(), key), STRING_ARRAY);
 
         if (array == null) {
             return null;
@@ -64,37 +64,37 @@ public class DataHandler {
     public static void setInt(ItemStack item, String key, int value) {
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
 
-        container.set(new NamespacedKey(Main.getPlugin(), key), PersistentDataType.INTEGER, value);
+        container.set(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.INTEGER, value);
     }
 
     public static void setLong(ItemStack item, String key, long value) {
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
 
-        container.set(new NamespacedKey(Main.getPlugin(), key), PersistentDataType.LONG, value);
+        container.set(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.LONG, value);
     }
 
     public static void setString(ItemStack item, String key, String value) {
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
 
-        container.set(new NamespacedKey(Main.getPlugin(), key), PersistentDataType.STRING, value);
+        container.set(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.STRING, value);
     }
 
     public static void setStringList(ItemStack item, String key, String ... value) {
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
 
-        container.set(new NamespacedKey(Main.getPlugin(), key), STRING_ARRAY, value);
+        container.set(new NamespacedKey(MineTinker.getPlugin(), key), STRING_ARRAY, value);
     }
 
     public static boolean hasTag(ItemStack item, String key, PersistentDataType dataType) {
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
 
-        return container.has(new NamespacedKey(Main.getPlugin(), key), dataType);
+        return container.has(new NamespacedKey(MineTinker.getPlugin(), key), dataType);
     }
 
     public static void removeTag(ItemStack item, String key) {
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
 
-        container.remove(new NamespacedKey(Main.getPlugin(), key));
+        container.remove(new NamespacedKey(MineTinker.getPlugin(), key));
     }
 
     public static boolean playerBreakBlock(Player player, Block block) {

@@ -1,6 +1,6 @@
 package de.flo56958.minetinker.data;
 
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -14,7 +14,7 @@ import java.util.List;
 public class Lists {
 
 	public static final HashMap<Player, BlockFace> BLOCKFACE = new HashMap<>();
-	private static final FileConfiguration config = Main.getPlugin().getConfig();
+	private static final FileConfiguration config = MineTinker.getPlugin().getConfig();
 	public static final List<String> DROPLOOT = config.getStringList("LevelUpEvents.DropLoot.Items");
 	public static List<String> WORLDS;
 	public static List<String> WORLDS_BUILDERSWANDS;

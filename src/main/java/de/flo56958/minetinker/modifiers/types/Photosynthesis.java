@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -137,7 +137,7 @@ public class Photosynthesis extends Modifier implements Listener {
 	//location, time since started
 
 	private Photosynthesis() {
-		super(Main.getPlugin());
+		super(MineTinker.getPlugin());
 		customModelData = 10_024;
 	}
 
@@ -222,7 +222,7 @@ public class Photosynthesis extends Modifier implements Listener {
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				data.putIfAbsent(player.getUniqueId(), new Tupel(player.getLocation(), System.currentTimeMillis(), false));
 			}
-			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), this.runnable, 5 * 20L, this.tickTime);
+			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MineTinker.getPlugin(), this.runnable, 5 * 20L, this.tickTime);
 		} else {
 			this.taskID = -1;
 		}

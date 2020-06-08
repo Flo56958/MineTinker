@@ -1,6 +1,6 @@
 package de.flo56958.minetinker.listeners;
 
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.utils.ChatWriter;
 import org.bukkit.Sound;
@@ -25,7 +25,7 @@ public class CraftItemListener implements Listener {
 		}
 
 		Player player = (Player) event.getWhoClicked();
-		FileConfiguration config = Main.getPlugin().getConfig();
+		FileConfiguration config = MineTinker.getPlugin().getConfig();
 
 		if (config.getBoolean("Sound.OnEveryCrafting")) {
 			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
@@ -51,7 +51,7 @@ public class CraftItemListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPrepare(PrepareItemCraftEvent event) {
-		if (Main.getPlugin().getConfig().getBoolean("ModifiersCanBeUsedForCrafting")) return;
+		if (MineTinker.getPlugin().getConfig().getBoolean("ModifiersCanBeUsedForCrafting")) return;
 		CraftingInventory inv = event.getInventory();
 		for (ItemStack is : inv.getMatrix()) {
 			if (is == null) continue;

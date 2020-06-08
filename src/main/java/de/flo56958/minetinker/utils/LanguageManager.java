@@ -1,6 +1,6 @@
 package de.flo56958.minetinker.utils;
 
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -26,12 +26,12 @@ public class LanguageManager {
 	private LanguageManager() {} //only to make it impossible to instantiate an object
 
 	public static void reload() {
-		String lang = Main.getPlugin().getConfig().getString("Language", "en_US");
+		String lang = MineTinker.getPlugin().getConfig().getString("Language", "en_US");
 
 		langFile = loadLanguage(lang);
 		langBackup = loadLanguage("en_US");
 
-		playerLocale = Main.getPlugin().getConfig().getBoolean("EnablePlayerLocale", false);
+		playerLocale = MineTinker.getPlugin().getConfig().getBoolean("EnablePlayerLocale", false);
 
 		if (langFile == null) {
 			langFile = langBackup;
@@ -81,7 +81,7 @@ public class LanguageManager {
 	@NotNull
 	public static String getString(@NotNull String path, @Nullable Player player) {
 		if (player == null) return getString(path);
-		if (playerLocale && !player.getLocale().equals(Main.getPlugin().getConfig().getString("Language"))) {
+		if (playerLocale && !player.getLocale().equals(MineTinker.getPlugin().getConfig().getString("Language"))) {
 			YamlConfiguration langFile = loadLanguage(player.getLocale());
 			if (langFile != null) {
 				String ret = langFile.getString(path);

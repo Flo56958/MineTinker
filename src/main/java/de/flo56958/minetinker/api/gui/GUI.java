@@ -1,6 +1,6 @@
 package de.flo56958.minetinker.api.gui;
 
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -163,7 +163,7 @@ public class GUI implements Listener {
 				return;
 			}
 
-			Bukkit.getPluginManager().registerEvents(this, Main.getPlugin());
+			Bukkit.getPluginManager().registerEvents(this, MineTinker.getPlugin());
 			isClosed = false;
 		}
 	}

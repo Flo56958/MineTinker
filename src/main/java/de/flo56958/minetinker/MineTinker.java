@@ -21,7 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Main extends JavaPlugin {
+public class MineTinker extends JavaPlugin {
 
 	private static JavaPlugin plugin;
 

@@ -1,6 +1,6 @@
 package de.flo56958.minetinker.utils;
 
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -51,8 +51,8 @@ public class ConfigurationManager {
 		loadConfig("", "Modifiers.yml");
 
 		//importing Main configuration into system
-		configs.put("config.yml", Main.getPlugin().getConfig());
-		configsFolder.put(Main.getPlugin().getConfig(), new File(Main.getPlugin().getDataFolder(), "config.yml"));
+		configs.put("config.yml", MineTinker.getPlugin().getConfig());
+		configsFolder.put(MineTinker.getPlugin().getConfig(), new File(MineTinker.getPlugin().getDataFolder(), "config.yml"));
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class ConfigurationManager {
 	 * @param file   The name of the file
 	 */
 	public static void loadConfig(String folder, String file) {
-		File customConfigFile = new File(Main.getPlugin().getDataFolder(), folder + file);
+		File customConfigFile = new File(MineTinker.getPlugin().getDataFolder(), folder + file);
 		FileConfiguration fileConfiguration = configs.getOrDefault(file, new YamlConfiguration());
 
 		configsFolder.put(fileConfiguration, customConfigFile);

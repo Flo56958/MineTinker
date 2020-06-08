@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.utils;
 
 import de.flo56958.minetinker.events.*;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import net.md_5.bungee.api.ChatMessageType;
@@ -28,7 +28,7 @@ public class ChatWriter {
 	public static String CHAT_PREFIX;
 
 	static {
-		CHAT_PREFIX = Main.getPlugin().getConfig().getString("chat-prefix");
+		CHAT_PREFIX = MineTinker.getPlugin().getConfig().getString("chat-prefix");
 		map.put(1000000, "%BOLD%%UNDERLINE%M%RESET%");
 		map.put(500000, "%BOLD%%UNDERLINE%D%RESET%");
 		map.put(100000, "%BOLD%%UNDERLINE%C%RESET%");
@@ -51,7 +51,7 @@ public class ChatWriter {
 	}
 
 	public static void reload() {
-		CHAT_PREFIX = Main.getPlugin().getConfig().getString("chat-prefix");
+		CHAT_PREFIX = MineTinker.getPlugin().getConfig().getString("chat-prefix");
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class ChatWriter {
 	 * @param message
 	 */
 	public static void sendMessage(CommandSender receiver, ChatColor color, String message) {
-		if (Main.getPlugin().getConfig().getBoolean("chat-messages")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("chat-messages")) {
 			receiver.sendMessage(CHAT_PREFIX + " " + color + message);
 		}
 	}
@@ -75,11 +75,11 @@ public class ChatWriter {
 	 */
 	public static void log(boolean debug, String message) {
 		if (debug) {
-			if (Main.getPlugin().getConfig().getBoolean("logging.debug")) {
+			if (MineTinker.getPlugin().getConfig().getBoolean("logging.debug")) {
 				Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + ChatColor.RED + message);
 			}
 		} else {
-			if (Main.getPlugin().getConfig().getBoolean("logging.standard")) {
+			if (MineTinker.getPlugin().getConfig().getBoolean("logging.standard")) {
 				Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + message);
 			}
 		}
@@ -113,7 +113,7 @@ public class ChatWriter {
 	}
 
 	public static void logModifier(@NotNull Player p, @Nullable Event event, @NotNull Modifier mod, @NotNull ItemStack tool, String... args) {
-		if (!(Main.getPlugin().getConfig().getBoolean("logging.modifiers"))) return;
+		if (!(MineTinker.getPlugin().getConfig().getBoolean("logging.modifiers"))) return;
 
 		//Example: 0x00FF: Flo56958/Melting - DIAMOND_CHESTPLATE - Damage(30 -> 20)
 		StringBuilder sb = new StringBuilder();
@@ -153,7 +153,7 @@ public class ChatWriter {
 	 * @param message
 	 */
 	public static void sendActionBar(Player player, String message) { //Extract from the source code of the Actionbar-API (altered)
-		if (!Main.getPlugin().getConfig().getBoolean("actionbar-messages")) {
+		if (!MineTinker.getPlugin().getConfig().getBoolean("actionbar-messages")) {
 			return;
 		}
 
@@ -181,7 +181,7 @@ public class ChatWriter {
 				public void run() {
 					sendActionBar(player, "");
 				}
-			}.runTaskLater(Main.getPlugin(), duration + 1);
+			}.runTaskLater(MineTinker.getPlugin(), duration + 1);
 		}
 
 		// Re-sends the messages every 3 seconds so it doesn't go away from the player's screen.
@@ -193,7 +193,7 @@ public class ChatWriter {
 				public void run() {
 					sendActionBar(player, message);
 				}
-			}.runTaskLater(Main.getPlugin(), duration);
+			}.runTaskLater(MineTinker.getPlugin(), duration);
 		}
 	}
 

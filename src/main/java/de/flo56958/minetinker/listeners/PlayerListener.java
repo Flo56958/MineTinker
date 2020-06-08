@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.listeners;
 
 import de.flo56958.minetinker.data.Lists;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.modifiers.types.Drilling;
@@ -60,7 +60,7 @@ public class PlayerListener implements Listener {
 			return;
 		}
 
-		if (!(Main.getPlugin().getConfig().getBoolean("Repairable")
+		if (!(MineTinker.getPlugin().getConfig().getBoolean("Repairable")
 				&& event.getWhoClicked().hasPermission("minetinker.tool.repair"))) {
 			return;
 		}
@@ -151,7 +151,7 @@ public class PlayerListener implements Listener {
 			int dura = meta.getDamage();
 			short maxDura = tool.getType().getMaxDurability();
 			int amount = event.getWhoClicked().getItemOnCursor().getAmount();
-			float percent = (float) Main.getPlugin().getConfig().getDouble("DurabilityPercentageRepair");
+			float percent = (float) MineTinker.getPlugin().getConfig().getDouble("DurabilityPercentageRepair");
 
 			while (amount > 0 && dura > 0) {
 				dura = Math.round(dura - (maxDura * percent));
@@ -183,14 +183,14 @@ public class PlayerListener implements Listener {
 		Power.HAS_POWER.computeIfAbsent(player, p -> new AtomicBoolean(false));
 		Drilling.HAS_DRILLING.computeIfAbsent(player, p -> new AtomicBoolean(false));
 
-		if (Main.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
 			if (player.hasPermission("minetinker.update.notify")) {
 				if (Updater.hasUpdate()) {
 					ChatWriter.sendMessage(player, ChatColor.GOLD,
 							LanguageManager.getString("Updater.UpdateAvailable", player));
 					ChatWriter.sendMessage(player, ChatColor.WHITE,
 							LanguageManager.getString("Updater.YourVersion", player)
-							.replace("%ver", Main.getPlugin().getDescription().getVersion()));
+							.replace("%ver", MineTinker.getPlugin().getDescription().getVersion()));
 					ChatWriter.sendMessage(player, ChatColor.WHITE,
 							LanguageManager.getString("Updater.OnlineVersion", player)
 							.replace("%ver", Updater.getOnlineVersion()));
@@ -201,12 +201,12 @@ public class PlayerListener implements Listener {
 			if (LanguageManager.isUsingFallback()) {
 				ChatWriter.sendMessage(player, ChatColor.RED,
 						"MineTinker is using the fallback language en_US as "
-								+ Main.getPlugin().getConfig().getString("Language")
+								+ MineTinker.getPlugin().getConfig().getString("Language")
 								+ " is not currently supported. If you want MineTinker to support this language you "
 								+ "can help translating on Transifex!");
 			} else {
 				if (!LanguageManager.isComplete()
-						&& Main.getPlugin().getConfig().getBoolean("LanguageManagerNotifyOP", true)) {
+						&& MineTinker.getPlugin().getConfig().getBoolean("LanguageManagerNotifyOP", true)) {
 					Long langCompleteness = LanguageManager.getCompleteness();
 					ChatWriter.sendMessage(player, ChatColor.RED, "The translation you are using is only "
 							+ langCompleteness / 100 + "." + langCompleteness % 100

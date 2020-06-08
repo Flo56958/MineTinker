@@ -4,7 +4,7 @@ import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.events.MTPlayerInteractEvent;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -42,7 +42,7 @@ public class Power extends Modifier implements Listener {
 	private boolean toggleable;
 
 	private Power() {
-		super(Main.getPlugin());
+		super(MineTinker.getPlugin());
 		customModelData = 10_027;
 	}
 
@@ -143,7 +143,7 @@ public class Power extends Modifier implements Listener {
 
 				blacklist.add(material);
 			} catch (IllegalArgumentException e) {
-				Main.getPlugin().getLogger()
+				MineTinker.getPlugin().getLogger()
 						.warning("Illegal material name found when loading Power blacklist: " + mat);
 			}
 		}

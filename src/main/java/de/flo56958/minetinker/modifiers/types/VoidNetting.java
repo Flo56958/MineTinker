@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -34,7 +34,7 @@ public class VoidNetting extends Modifier implements Listener {
 	private final HashMap<String, Long> cooldownTracker = new HashMap<>();
 
 	private VoidNetting() {
-		super(Main.getPlugin());
+		super(MineTinker.getPlugin());
 		customModelData = 10_049;
 	}
 
@@ -146,7 +146,7 @@ public class VoidNetting extends Modifier implements Listener {
 
 		cooldownTracker.put(player.getUniqueId().toString(), time - Math.round(this.cooldownInSeconds * 0.95)); //Add small cooldown to improve server performance
 
-		Bukkit.getScheduler().runTaskAsynchronously(Main.getPlugin(), () -> { //run effect async as it does not need to stop all action on server if search takes to long
+		Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> { //run effect async as it does not need to stop all action on server if search takes to long
 			Location loc = player.getLocation();
 			for (int i = 0; i < level * radiusPerLevel; i++) {
 				for (int d = -i; d <= i; d++) {
@@ -179,7 +179,7 @@ public class VoidNetting extends Modifier implements Listener {
 							loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()), String.format("Cooldown(%ds)", cooldownTime / 1000));
 
 			Location finalLoc = loc;
-			Bukkit.getScheduler().runTask(Main.getPlugin(), () -> { //Teleport needs to be in sync
+			Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> { //Teleport needs to be in sync
 				player.teleport(finalLoc);
 				player.setVelocity(new Vector(0, 0.3, 0)); //Slow the fall
 

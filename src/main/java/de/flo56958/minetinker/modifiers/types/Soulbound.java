@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -32,7 +32,7 @@ public class Soulbound extends Modifier implements Listener {
 	private int percentagePerLevel;
 
 	private Soulbound() {
-		super(Main.getPlugin());
+		super(MineTinker.getPlugin());
 		customModelData = 10_036;
 	}
 

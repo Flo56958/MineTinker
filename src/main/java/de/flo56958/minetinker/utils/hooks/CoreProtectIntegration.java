@@ -1,6 +1,6 @@
 package de.flo56958.minetinker.utils.hooks;
 
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
 import net.coreprotect.CoreProtect;
@@ -55,7 +55,7 @@ public class CoreProtectIntegration {
 	 */
 	public static boolean checkBlock(Player player, Block b) {
 		if (api == null) return true; //CoreProtect is not loaded
-		FileConfiguration config = Main.getPlugin().getConfig();
+		FileConfiguration config = MineTinker.getPlugin().getConfig();
 		int seconds = config.getInt("CoreProtect.BlockExpCooldownInSeconds", 60);
 		if (seconds <= 0) return true;
 		List<String[]> lookup = api.blockLookup(b, seconds);

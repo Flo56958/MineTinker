@@ -1,6 +1,6 @@
 package de.flo56958.minetinker.api;
 
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -83,6 +83,6 @@ public class MineTinkerAPI {
 	}
 
 	public Plugin getPlugin() {
-		return Main.getPlugin();
+		return MineTinker.getPlugin();
 	}
 }

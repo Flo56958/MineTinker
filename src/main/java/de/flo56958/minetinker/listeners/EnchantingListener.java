@@ -2,7 +2,7 @@ package de.flo56958.minetinker.listeners;
 
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import org.bukkit.Material;
@@ -27,7 +27,7 @@ public class EnchantingListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onTableEnchant(EnchantItemEvent event) {
-		if (!Main.getPlugin().getConfig().getBoolean("ConvertEnchantmentsOnEnchant", true)) return;
+		if (!MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantmentsOnEnchant", true)) return;
 		if (!ToolType.ALL.contains(event.getItem().getType())) { //Something different (like a book)
 			return;
 		}
@@ -36,7 +36,7 @@ public class EnchantingListener implements Listener {
 			return;
 		}
 
-		boolean free = !Main.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true);
+		boolean free = !MineTinker.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true);
 
 		Map<Enchantment, Integer> enchants = event.getEnchantsToAdd();
 		HashSet<Enchantment> toremove = new HashSet<>();
@@ -55,7 +55,7 @@ public class EnchantingListener implements Listener {
 						//Remove slots as they were not needed
 						if (free)
 							modManager.setFreeSlots(event.getItem(), modManager.getFreeSlots(event.getItem()) - modifier.getSlotCost());
-						if (Main.getPlugin().getConfig().getBoolean("RefundLostEnchantmentsAsItems", true)) {
+						if (MineTinker.getPlugin().getConfig().getBoolean("RefundLostEnchantmentsAsItems", true)) {
 							for (; i < entry.getValue(); i++) { //Drop lost enchantments due to some error in addMod
 								if (event.getEnchanter().getInventory().addItem(modifier.getModItem()).size() != 0) { //adds items to (full) inventory
 									event.getEnchanter().getWorld().dropItem(event.getEnchanter().getLocation(), modifier.getModItem());
@@ -74,7 +74,7 @@ public class EnchantingListener implements Listener {
 
 	@EventHandler
 	public void onAnvilPrepare(InventoryClickEvent event) {
-		if (!Main.getPlugin().getConfig().getBoolean("ConvertEnchantmentsOnEnchant", true)) return;
+		if (!MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantmentsOnEnchant", true)) return;
 		HumanEntity entity = event.getWhoClicked();
 
 		if (!(entity instanceof Player && event.getClickedInventory() instanceof AnvilInventory)) {
@@ -96,7 +96,7 @@ public class EnchantingListener implements Listener {
 			return;
 		}
 
-		boolean free = !Main.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true);
+		boolean free = !MineTinker.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true);
 
 		for (Map.Entry<Enchantment, Integer> entry : newTool.getEnchantments().entrySet()) {
 			int oldEnchantLevel = tool.getEnchantmentLevel(entry.getKey());
@@ -115,7 +115,7 @@ public class EnchantingListener implements Listener {
 							//Remove slots as they were not needed
 							if (free)
 								modManager.setFreeSlots(newTool, modManager.getFreeSlots(newTool) - modifier.getSlotCost());
-							if (Main.getPlugin().getConfig().getBoolean("RefundLostEnchantmentsAsItems", true)) {
+							if (MineTinker.getPlugin().getConfig().getBoolean("RefundLostEnchantmentsAsItems", true)) {
 								for (; i < difference; i++) { //Drop lost enchantments due to some error in addMod
 									if (player.getInventory().addItem(modifier.getModItem()).size() != 0) { //adds items to (full) inventory
 										player.getWorld().dropItem(player.getLocation(), modifier.getModItem());
@@ -141,8 +141,8 @@ public class EnchantingListener implements Listener {
 		ItemStack tool = event.getItem();
 
 		if (modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool)) {
-			if (Main.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
-				if (Main.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true) && modManager.getFreeSlots(tool) == 0) {
+			if (MineTinker.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
+				if (MineTinker.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true) && modManager.getFreeSlots(tool) == 0) {
 					event.setCancelled(true);
 				}
 				return;

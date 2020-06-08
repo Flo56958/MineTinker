@@ -2,7 +2,7 @@ package de.flo56958.minetinker.listeners;
 
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.types.Power;
 import de.flo56958.minetinker.utils.PlayerInfo;
@@ -45,7 +45,7 @@ public class EasyHarvestListener implements Listener {
 		Location location = block.getLocation();
 		World world = location.getWorld();
 
-		FileConfiguration config = Main.getPlugin().getConfig();
+		FileConfiguration config = MineTinker.getPlugin().getConfig();
 
 		if (world == null) {
 			return;
@@ -122,7 +122,7 @@ public class EasyHarvestListener implements Listener {
 	}
 
 	private static void replantCrops(Player player, Block block, Material material) {
-		if (Main.getPlugin().getConfig().getBoolean("EasyHarvest.replant")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("EasyHarvest.replant")) {
 			if (!player.hasPermission("minetinker.easyharvest.replant")) {
 				return;
 			}
@@ -159,7 +159,7 @@ public class EasyHarvestListener implements Listener {
 	}
 
 	private static void playSound(Block block) {
-		if (Main.getPlugin().getConfig().getBoolean("EasyHarvest.Sound")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("EasyHarvest.Sound")) {
 			block.getWorld().playSound(block.getLocation(), Sound.ITEM_HOE_TILL, 1.0F, 0.5F);
 		}
 	}

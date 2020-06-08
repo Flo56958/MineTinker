@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -38,7 +38,7 @@ public class ShadowDive extends Modifier implements Listener {
 
 	private BukkitTask task;
 	private ShadowDive() {
-		super(Main.getPlugin());
+		super(MineTinker.getPlugin());
 		customModelData = 10_052;
 	}
 
@@ -72,9 +72,9 @@ public class ShadowDive extends Modifier implements Listener {
 					for(Player pl : Bukkit.getOnlinePlayers()) {
 						if (pl.equals(p)) continue;
 						if (pl.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
-							pl.showPlayer(Main.getPlugin(), p);
+							pl.showPlayer(MineTinker.getPlugin(), p);
 						} else {
-							pl.hidePlayer(Main.getPlugin(), p);
+							pl.hidePlayer(MineTinker.getPlugin(), p);
 						}
 					}
 				}
@@ -134,7 +134,7 @@ public class ShadowDive extends Modifier implements Listener {
 
 		this.description = this.description.replaceAll("%level", String.valueOf(this.requiredLightLevel));
 
-		if (this.isAllowed()) task = Bukkit.getScheduler().runTaskTimer(Main.getPlugin(), runnable, 0,5);
+		if (this.isAllowed()) task = Bukkit.getScheduler().runTaskTimer(MineTinker.getPlugin(), runnable, 0,5);
 	}
 
 	private void hidePlayer(Player p) {
@@ -153,7 +153,7 @@ public class ShadowDive extends Modifier implements Listener {
 		//Hide from all players
 		for (Player player : Bukkit.getServer().getOnlinePlayers()) {
 			if (!p.equals(player)) {
-				if (!player.hasPotionEffect(PotionEffectType.NIGHT_VISION)) player.hidePlayer(Main.getPlugin(), p);
+				if (!player.hasPotionEffect(PotionEffectType.NIGHT_VISION)) player.hidePlayer(MineTinker.getPlugin(), p);
 			}
 		}
 	}
@@ -161,7 +161,7 @@ public class ShadowDive extends Modifier implements Listener {
 	private void showPlayer(Player p) {
 		if (activePlayers.remove(p)) {
 			for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-				if (!p.equals(player)) player.showPlayer(Main.getPlugin(), p);
+				if (!p.equals(player)) player.showPlayer(MineTinker.getPlugin(), p);
 			}
 		}
 	}
@@ -169,14 +169,14 @@ public class ShadowDive extends Modifier implements Listener {
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onJoin(PlayerJoinEvent event) {
 		for(Player p : activePlayers) {
-			event.getPlayer().hidePlayer(Main.getPlugin(), p);
+			event.getPlayer().hidePlayer(MineTinker.getPlugin(), p);
 		}
 	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onLeave(PlayerQuitEvent event) {
 		for(Player p : activePlayers) {
-			event.getPlayer().showPlayer(Main.getPlugin(), p);
+			event.getPlayer().showPlayer(MineTinker.getPlugin(), p);
 		}
 	}
 

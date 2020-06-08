@@ -1,6 +1,6 @@
 package de.flo56958.minetinker.utils;
 
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Updater {
 
-	private static final String version = Main.getPlugin().getDescription().getVersion();
+	private static final String version = MineTinker.getPlugin().getDescription().getVersion();
 	private static String onlineVersion;
 
 	public static String getOnlineVersion() {

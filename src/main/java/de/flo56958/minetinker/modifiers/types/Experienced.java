@@ -5,7 +5,7 @@ import de.flo56958.minetinker.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.events.MTEntityDamageEvent;
 import de.flo56958.minetinker.events.MTPlayerInteractEvent;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -27,7 +27,7 @@ public class Experienced extends Modifier implements Listener {
 	private int amount;
 
 	private Experienced() {
-		super(Main.getPlugin());
+		super(MineTinker.getPlugin());
 		this.customModelData = 10_048;
 	}
 

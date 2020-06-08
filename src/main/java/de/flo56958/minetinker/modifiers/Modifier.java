@@ -4,7 +4,7 @@ import de.flo56958.minetinker.data.ModifierFailCause;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.ModifierApplyEvent;
 import de.flo56958.minetinker.events.ModifierFailEvent;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.types.ExtraModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -181,7 +181,7 @@ public abstract class Modifier {
 		this.maxLvl = config.getInt("MaxLevel");
 		this.slotCost = config.getInt("SlotCost", 1);
 
-		if (!source.equals(Main.getPlugin()) || config.getBoolean("OverrideLanguagesystem", false)) { //use the config values instead
+		if (!source.equals(MineTinker.getPlugin()) || config.getBoolean("OverrideLanguagesystem", false)) { //use the config values instead
 			this.name = config.getString("Name", "");
 			this.description = ChatWriter.addColors(config.getString("Description", ""));
 
@@ -289,7 +289,7 @@ public abstract class Modifier {
 
 		FileConfiguration config = getConfig();
 		try {
-			NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Modifier_" + getKey());
+			NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Modifier_" + getKey());
 			ShapedRecipe newRecipe = new ShapedRecipe(nkey, this.getModItem()); //reload recipe
 			String top = config.getString("Recipe.Top");
 			String middle = config.getString("Recipe.Middle");
@@ -323,7 +323,7 @@ public abstract class Modifier {
 				return;
 			}
 
-			Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 			ChatWriter.log(false, "Registered recipe for the " + this.name + "-Modifier!");
 			ModManager.instance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
@@ -362,7 +362,7 @@ public abstract class Modifier {
 				world.dropItem(location, getModItem());
 			} // no else as it gets added in if
 
-			if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
+			if (MineTinker.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
 				player.playSound(location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
 			}
 
@@ -378,7 +378,7 @@ public abstract class Modifier {
 				world.dropItem(location, getModItem());
 			} // no else as it gets added in if
 
-			if (Main.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
+			if (MineTinker.getPlugin().getConfig().getBoolean("Sound.OnEnchanting")) {
 				player.playSound(location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
 			}
 

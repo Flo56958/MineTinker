@@ -1,7 +1,7 @@
 name: MineTinker
 authors: [Flo56958, Vicarious]
 version: ${project.version}
-main: ${project.groupId}.MineTinker.Main
+main: de.flo56958.minetinker.Minetinker
 prefix: MineTinker
 
 description: ${project.description}

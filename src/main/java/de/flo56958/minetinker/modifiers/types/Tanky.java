@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Bukkit;
@@ -32,7 +32,7 @@ public class Tanky extends Modifier implements Listener {
 	private int healthPerLevel;
 
 	private Tanky() {
-		super(Main.getPlugin());
+		super(MineTinker.getPlugin());
 		customModelData = 10_040;
 	}
 
@@ -140,7 +140,7 @@ public class Tanky extends Modifier implements Listener {
 	public void onJoin(PlayerJoinEvent event) {
 		Double health = playerHealth.get(event.getPlayer().getUniqueId());
 		if (health != null) {
-			Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> event.getPlayer().setHealth(health), 10L);
+			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> event.getPlayer().setHealth(health), 10L);
 		}
 		playerHealth.remove(event.getPlayer().getUniqueId());
 	}

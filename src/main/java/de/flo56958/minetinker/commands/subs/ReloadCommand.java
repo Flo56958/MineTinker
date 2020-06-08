@@ -4,7 +4,7 @@ import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.listeners.BuildersWandListener;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -37,7 +37,7 @@ public class ReloadCommand implements SubCommand {
 
 		ChatWriter.sendMessage(sender, ChatColor.WHITE,
 				LanguageManager.getString("Commands.Reload.Configs", player));
-		Main.getPlugin().reloadConfig();
+		MineTinker.getPlugin().reloadConfig();
 		ChatWriter.reload();
 		ConfigurationManager.reload();
 		Lists.reload();
@@ -59,8 +59,8 @@ public class ReloadCommand implements SubCommand {
 		ChatWriter.sendMessage(sender, ChatColor.WHITE,
 				LanguageManager.getString("Commands.Reload.Finish", player));
 
-		if (Main.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
-			Bukkit.getScheduler().scheduleAsyncDelayedTask(Main.getPlugin(), Updater::checkForUpdate, 20);
+		if (MineTinker.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
+			Bukkit.getScheduler().scheduleAsyncDelayedTask(MineTinker.getPlugin(), Updater::checkForUpdate, 20);
 		}
 		return true;
 	}

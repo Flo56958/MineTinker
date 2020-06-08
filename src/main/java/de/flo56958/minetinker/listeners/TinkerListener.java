@@ -5,7 +5,7 @@ import de.flo56958.minetinker.events.ModifierApplyEvent;
 import de.flo56958.minetinker.events.ModifierFailEvent;
 import de.flo56958.minetinker.events.ToolLevelUpEvent;
 import de.flo56958.minetinker.events.ToolUpgradeEvent;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.modifiers.types.ExtraModifier;
@@ -37,7 +37,7 @@ public class TinkerListener implements Listener {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		FileConfiguration config = Main.getPlugin().getConfig();
+		FileConfiguration config = MineTinker.getPlugin().getConfig();
 
 		if (event.isSuccessful()) {
 			if (config.getBoolean("Sound.OnUpgrade")) {
@@ -64,7 +64,7 @@ public class TinkerListener implements Listener {
 		ItemStack tool = event.getTool();
 		Modifier mod = event.getMod();
 
-		if (Main.getPlugin().getConfig().getBoolean("Sound.OnModding")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("Sound.OnModding")) {
 			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
 		}
 
@@ -84,7 +84,7 @@ public class TinkerListener implements Listener {
 		ItemStack tool = event.getTool();
 		Modifier mod = event.getMod();
 
-		if (Main.getPlugin().getConfig().getBoolean("Sound.OnFail")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("Sound.OnFail")) {
 			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
 		}
 

@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.data;
 
 import de.flo56958.minetinker.commands.subs.ReloadCommand;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
@@ -110,7 +110,7 @@ public class GUIs {
 						lore.add(cost.replaceFirst("%enchantCost", ChatWriter.toRomanNumerals(m.getEnchantCost())));
 						lore.addAll(ChatWriter.splitString(LanguageManager.getString("GUIs.Modifiers.BlockToEnchant")
 								.replace("%block", ChatColor.ITALIC
-										+ Main.getPlugin().getConfig().getString("BlockToEnchantModifiers", "")
+										+ MineTinker.getPlugin().getConfig().getString("BlockToEnchantModifiers", "")
 										+ ChatColor.RESET + "" + ChatColor.WHITE)
 								.replace("%mat", m.getModItem().getType().name()).replace("%key",
 										LanguageManager.getString("GUIs.RightClick")), 30));
@@ -641,7 +641,7 @@ public class GUIs {
 		ChatWriter.logInfo(LanguageManager.getString("GUIs.ConfigurationEditor.Change")
 				.replace("%key", configSetting).replace("%old", oldValue).replace("%new", newValue));
 
-		if (Main.getPlugin().getConfig().getBoolean("BroadcastConfigChanges") || configSetting.equals("config.yml:BroadcastConfigChanges")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("BroadcastConfigChanges") || configSetting.equals("config.yml:BroadcastConfigChanges")) {
 			for (Player player : Bukkit.getServer().getOnlinePlayers()) {
 				if (player.hasPermission("minetinker.commands.editconfigbroadcast")) {
 					ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUIs.ConfigurationEditor.Change")

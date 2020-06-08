@@ -2,7 +2,7 @@ package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -32,7 +32,7 @@ public class Magical extends Modifier implements Listener {
 	private boolean hasKnockback;
 
 	private Magical() {
-		super(Main.getPlugin());
+		super(MineTinker.getPlugin());
 		customModelData = 10_021;
 	}
 
@@ -150,7 +150,7 @@ public class Magical extends Modifier implements Listener {
 			((LivingEntity) entity).setCollidable(false);
 
 			for (int i = 5; i < 10 * 20; i = i + 5) {
-				Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
+				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
 					entity.teleport(arrow.getLocation().add(arrow.getVelocity().normalize().multiply(-0.4)));
 					entity.setVelocity(arrow.getVelocity()); //does not work
 				}, i);
@@ -158,7 +158,7 @@ public class Magical extends Modifier implements Listener {
 		}
 		arrow.setCustomName(this.getKey() + ":" + modLevel + ":" + entity.getUniqueId());
 
-		arrow.addAttachment(Main.getPlugin(), this.getKey() + ":" + modLevel, true);
+		arrow.addAttachment(MineTinker.getPlugin(), this.getKey() + ":" + modLevel, true);
 
 		arrow.setVelocity(arrow.getVelocity().multiply(this.multiplierArrowSpeed));
 
@@ -166,13 +166,13 @@ public class Magical extends Modifier implements Listener {
 
 		ChatWriter.logModifier(player, event, this, tool, "Cost(" + this.experienceCost + ")");
 
-		Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
+		Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
 			entity.remove();
 			arrow.remove();
 		}, 10 * 20L);
 
 		if (arrow.getWorld().getDifficulty() != Difficulty.PEACEFUL) {
-			Bukkit.getScheduler().runTaskLater(Main.getPlugin(), arrow::remove, 2);
+			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), arrow::remove, 2);
 		}
 	}
 

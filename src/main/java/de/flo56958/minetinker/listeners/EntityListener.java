@@ -5,7 +5,7 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.events.MTEntityDeathEvent;
 import de.flo56958.minetinker.events.MTProjectileHitEvent;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import org.bukkit.Bukkit;
@@ -98,7 +98,7 @@ public class EntityListener implements Listener {
 		Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(player, tool, event.getEntity(), event));
 
 		modManager.addExp(player, tool,
-				Main.getPlugin().getConfig().getInt("ExtraExpPerEntityHit."
+				MineTinker.getPlugin().getConfig().getInt("ExtraExpPerEntityHit."
 						+ event.getEntity().getType().toString(), 0));
 	}
 
@@ -121,7 +121,7 @@ public class EntityListener implements Listener {
 			return;
 		}
 
-		FileConfiguration config = Main.getPlugin().getConfig();
+		FileConfiguration config = MineTinker.getPlugin().getConfig();
 
 		if (config.getBoolean("ConvertMobDrops.Enabled", true)) {
 			for (ItemStack item : event.getDrops()) {
@@ -183,7 +183,7 @@ public class EntityListener implements Listener {
 		MTEntityDeathEvent deathEvent = new MTEntityDeathEvent(player, tool, event);
 		Bukkit.getPluginManager().callEvent(deathEvent);
 
-		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExtraExpPerEntityDeath."
+		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExtraExpPerEntityDeath."
 				+ event.getEntity().getType().toString(), 0));
 	}
 
@@ -252,7 +252,7 @@ public class EntityListener implements Listener {
 			return;
 		}
 
-		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerArrowShot"));
+		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerArrowShot"));
 
         /*
         Self-Repair and Experienced will no longer trigger on bowfire

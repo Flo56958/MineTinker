@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.listeners;
 
 import de.flo56958.minetinker.data.Lists;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -151,7 +151,7 @@ public class BuildersWandListener implements Listener {
 	 */
 	private static void registerBuildersWands() {
 		try {
-			NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Wood");
+			NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Wood");
 			ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(0)); //init recipe
 			String top = config.getString("Recipes.Wood.Top");
 			String middle = config.getString("Recipes.Wood.Middle");
@@ -165,14 +165,14 @@ public class BuildersWandListener implements Listener {
 				newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
 			}
 
-			Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 			ModManager.instance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
 			ChatWriter.logError(LanguageManager.getString("Builderswand.Error.CraftWood")); //executes if the recipe could not initialize
 			e.printStackTrace();
 		}
 		try {
-			NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Stone");
+			NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Stone");
 			ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(1)); //init recipe
 			String top = config.getString("Recipes.Stone.Top");
 			String middle = config.getString("Recipes.Stone.Middle");
@@ -186,14 +186,14 @@ public class BuildersWandListener implements Listener {
 				newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
 			}
 
-			Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 			ModManager.instance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
 			ChatWriter.logError(LanguageManager.getString("Builderswand.Error.CraftStone")); //executes if the recipe could not initialize
 			e.printStackTrace();
 		}
 		try {
-			NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Iron");
+			NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Iron");
 			ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(2)); //init recipe
 			String top = config.getString("Recipes.Iron.Top");
 			String middle = config.getString("Recipes.Iron.Middle");
@@ -206,14 +206,14 @@ public class BuildersWandListener implements Listener {
 				newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
 			}
 
-			Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 			ModManager.instance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
 			ChatWriter.logError(LanguageManager.getString("Builderswand.Error.CraftIron")); //executes if the recipe could not initialize
 			e.printStackTrace();
 		}
 		try {
-			NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Gold");
+			NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Gold");
 			ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(3)); //init recipe
 			String top = config.getString("Recipes.Gold.Top");
 			String middle = config.getString("Recipes.Gold.Middle");
@@ -227,14 +227,14 @@ public class BuildersWandListener implements Listener {
 				newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
 			}
 
-			Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 			ModManager.instance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
 			ChatWriter.logError(LanguageManager.getString("Builderswand.Error.CraftGold")); //executes if the recipe could not initialize
 			e.printStackTrace();
 		}
 		try {
-			NamespacedKey nkey = new NamespacedKey(Main.getPlugin(), "Builderswand_Diamond");
+			NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Diamond");
 			ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(4)); //init recipe
 			String top = config.getString("Recipes.Diamond.Top");
 			String middle = config.getString("Recipes.Diamond.Middle");
@@ -247,7 +247,7 @@ public class BuildersWandListener implements Listener {
 				newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
 			}
 
-			Main.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 		} catch (Exception e) {
 			ChatWriter.logError(LanguageManager.getString("Builderswand.Error.CraftDiamond")); //executes if the recipe could not initialize
 		}

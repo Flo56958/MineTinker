@@ -4,7 +4,7 @@ import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.events.MTPlayerInteractEvent;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.modifiers.types.Power;
@@ -68,7 +68,7 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
+		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
 
 		MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
 		Bukkit.getPluginManager().callEvent(interactEvent);
@@ -104,7 +104,7 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		FileConfiguration config = Main.getPlugin().getConfig();
+		FileConfiguration config = MineTinker.getPlugin().getConfig();
 
 		//--------------------------------------EXP-CALCULATIONS--------------------------------------------
 		if (player.getGameMode() != GameMode.CREATIVE && CoreProtectIntegration.checkBlock(player, event.getBlock())) {
@@ -172,7 +172,7 @@ public class BlockListener implements Listener {
 				return;
 			}
 
-			if (block.getType() == Material.getMaterial(Main.getPlugin().getConfig().getString("BlockToEnchantModifiers", Material.BOOKSHELF.name()))) {
+			if (block.getType() == Material.getMaterial(MineTinker.getPlugin().getConfig().getString("BlockToEnchantModifiers", Material.BOOKSHELF.name()))) {
 				ItemStack item = player.getInventory().getItemInMainHand();
 
 				for (Modifier m : modManager.getAllMods()) {
@@ -230,7 +230,7 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
+		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
 
 		MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
 		Bukkit.getPluginManager().callEvent(interactEvent);
@@ -278,7 +278,7 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		modManager.addExp(player, tool, Main.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
+		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
 
 		MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
 		Bukkit.getPluginManager().callEvent(interactEvent);

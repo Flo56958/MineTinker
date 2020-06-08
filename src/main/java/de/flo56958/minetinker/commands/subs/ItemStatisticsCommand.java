@@ -2,7 +2,7 @@ package de.flo56958.minetinker.commands.subs;
 
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
-import de.flo56958.minetinker.Main;
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
@@ -49,7 +49,7 @@ public class ItemStatisticsCommand implements SubCommand {
 		}
 		items.sort(Comparator.comparing(modManager::getExp)); //Sorting
 
-		if (sender instanceof Player && Main.getPlugin().getConfig().getBoolean("EnableLore", true)) { //GUI instead of Wall of Text through chat
+		if (sender instanceof Player && MineTinker.getPlugin().getConfig().getBoolean("EnableLore", true)) { //GUI instead of Wall of Text through chat
 			int amount = items.size();
 			GUI gui = new GUI();
 			GUI.Window window = gui.addWindow((int) Math.ceil(amount / 9.0), player.getDisplayName());
