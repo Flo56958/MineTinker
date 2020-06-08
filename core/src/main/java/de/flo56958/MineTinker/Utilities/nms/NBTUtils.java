@@ -1,5 +1,6 @@
 package de.flo56958.MineTinker.Utilities.nms;
 
+import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Utilities.ChatWriter;
 import org.bukkit.Bukkit;
 
@@ -29,23 +30,15 @@ public class NBTUtils {
 
 		switch (version) {
 			case "v1_15_R1":
-				handler = new NBTHandler_v1_15_R1();
+				handler = new NBTHandler_v1_15_R1(Main.getPlugin());
 				oneFifteenCompatible = true;
 				oneThirteenCompatible = true;
 				oneFourteenCompatible = true;
 				break;
 			case "v1_14_R1":
-				handler = new NBTHandler_v1_14_R1();
+				handler = new NBTHandler_v1_14_R1(Main.getPlugin());
 				oneThirteenCompatible = true;
 				oneFourteenCompatible = true;
-				break;
-			case "v1_13_R2":
-				handler = new NBTHandler_v1_13_R2();
-				oneThirteenCompatible = true;
-				break;
-			case "v1_13_R1":
-				handler = new NBTHandler_v1_13_R1();
-				oneThirteenCompatible = true;
 				break;
 			default:
 				ChatWriter.logError("Unsupported version: " + version);
@@ -57,14 +50,6 @@ public class NBTUtils {
 
 	public static NBTHandler getHandler() {
 		return handler;
-	}
-
-	public static boolean isOneThirteenCompatible() {
-		return oneThirteenCompatible;
-	}
-
-	public static boolean isOneFourteenCompatible() {
-		return oneFourteenCompatible;
 	}
 
 	public static boolean isOneFifteenCompatible() {

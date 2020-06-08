@@ -80,8 +80,7 @@ public class Main extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new TridentListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerInfo(), this);
 		Bukkit.getPluginManager().registerEvents(new EnchantingListener(), this);
-		if (NBTUtils.isOneFourteenCompatible())
-			Bukkit.getPluginManager().registerEvents(new GrindstoneListener(), this);
+		Bukkit.getPluginManager().registerEvents(new GrindstoneListener(), this);
 
 		FileConfiguration elytraConf = ConfigurationManager.getConfig("Elytra.yml");
 		elytraConf.options().copyDefaults(true);
@@ -185,10 +184,7 @@ public class Main extends JavaPlugin {
 		modManager.register(VoidNetting.instance());
 		modManager.register(Webbed.instance());
 		modManager.register(Withered.instance());
-
-		if (NBTUtils.isOneFourteenCompatible()) {
-			modManager.register(Piercing.instance());
-		}
+		modManager.register(Piercing.instance());
 	}
 
 	/**

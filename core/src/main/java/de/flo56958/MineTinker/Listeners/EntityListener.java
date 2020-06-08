@@ -274,11 +274,9 @@ public class EntityListener implements Listener {
 
 			if (mod != null && mod.getModItem().getType() == Material.ARROW) {
 				event.setCancelled(true);
-				player.updateInventory();
 
-				if (NBTUtils.isOneFourteenCompatible()) {
-					player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
-				}
+				player.updateInventory();
+				player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
 
 				return;
 			}
@@ -296,10 +294,7 @@ public class EntityListener implements Listener {
 					event.setCancelled(true);
 
 					player.updateInventory();
-
-					if (NBTUtils.isOneFourteenCompatible()) {
-						player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
-					}
+					player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
 
 					return;
 				}

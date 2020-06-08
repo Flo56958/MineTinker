@@ -43,13 +43,7 @@ public enum ToolType {
 		tools.put(ToolType.BOW, Collections.singletonList(Material.BOW));
 		tools.put(ToolType.CHESTPLATE, Arrays.asList(Material.LEATHER_CHESTPLATE, Material.CHAINMAIL_CHESTPLATE,
 				Material.IRON_CHESTPLATE, Material.GOLDEN_CHESTPLATE, Material.DIAMOND_CHESTPLATE));
-
-		if (NBTUtils.isOneFourteenCompatible()) {
-			tools.put(ToolType.CROSSBOW, Collections.singletonList(Material.CROSSBOW));
-		} else {
-			tools.put(ToolType.CROSSBOW, Collections.emptyList());
-		}
-
+		tools.put(ToolType.CROSSBOW, Collections.singletonList(Material.CROSSBOW));
 		tools.put(ToolType.ELYTRA, Collections.singletonList(Material.ELYTRA));
 		tools.put(ToolType.HELMET, Arrays.asList(Material.LEATHER_HELMET, Material.CHAINMAIL_HELMET,
 				Material.IRON_HELMET, Material.GOLDEN_HELMET, Material.DIAMOND_HELMET, Material.TURTLE_HELMET));

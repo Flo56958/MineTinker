@@ -59,11 +59,7 @@ public class MultiShot extends Modifier implements Listener {
 
 	@Override
 	public List<Enchantment> getAppliedEnchantments() {
-		if (NBTUtils.isOneFourteenCompatible()) {
-			return Collections.singletonList(Enchantment.MULTISHOT);
-		} else {
-			return new ArrayList<>();
-		}
+		return Collections.singletonList(Enchantment.MULTISHOT);
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -71,7 +72,7 @@ public class ItemStatisticsCommand implements SubCommand {
 				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Modifiers"));
 
 				for (Modifier mod : modManager.getAllowedMods()) {
-					if (NBTUtils.getHandler().hasTag(stack, mod.getKey())) {
+					if (NBTUtils.getHandler().hasTag(stack, mod.getKey(), PersistentDataType.INTEGER)) {
 						ChatWriter.sendMessage(sender, ChatColor.WHITE, mod.getColor() + mod.getName() + ChatColor.WHITE
 								+ " " + NBTUtils.getHandler().getInt(stack, mod.getKey()));
 					}

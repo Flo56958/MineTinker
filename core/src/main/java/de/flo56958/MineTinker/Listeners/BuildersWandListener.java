@@ -140,7 +140,7 @@ public class BuildersWandListener implements Listener {
 		}
 
 		modManager.getNBTHandler().setStringList(wand, "CanDestroy", "minecraft:air");
-		modManager.getNBTHandler().setInt(wand, "IdentifierBuilderswand", 0);
+		modManager.getNBTHandler().setInt(wand, "identifier_builderswand", 0);
 
 		return wand;
 	}

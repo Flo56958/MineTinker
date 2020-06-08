@@ -49,11 +49,7 @@ public class Haste extends Modifier {
 
 	@Override
 	public List<Enchantment> getAppliedEnchantments() {
-		if (NBTUtils.isOneFourteenCompatible()) {
-			return Arrays.asList(Enchantment.LURE, Enchantment.DIG_SPEED, Enchantment.QUICK_CHARGE);
-		}
-
-		return Arrays.asList(Enchantment.LURE, Enchantment.DIG_SPEED);
+		return Arrays.asList(Enchantment.LURE, Enchantment.DIG_SPEED, Enchantment.QUICK_CHARGE);
 	}
 
 	@Override
@@ -100,8 +96,7 @@ public class Haste extends Modifier {
 			if (ToolType.FISHINGROD.contains(tool.getType())) {
 				meta.addEnchant(Enchantment.LURE, modManager.getModLevel(tool, this), true);
 			} else if (ToolType.CROSSBOW.contains(tool.getType())) {
-				if (NBTUtils.isOneFourteenCompatible())
-					meta.addEnchant(Enchantment.QUICK_CHARGE, modManager.getModLevel(tool, this), true);
+				meta.addEnchant(Enchantment.QUICK_CHARGE, modManager.getModLevel(tool, this), true);
 			} else {
 				meta.addEnchant(Enchantment.DIG_SPEED, modManager.getModLevel(tool, this), true);
 			}

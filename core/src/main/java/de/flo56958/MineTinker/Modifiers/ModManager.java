@@ -27,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -89,8 +90,7 @@ public class ModManager {
 		incompatibilityList.add(SpidersBane.instance().getKey() + ":" + Smite.instance().getKey());
 		incompatibilityList.add(Aquaphilic.instance().getKey() + ":" + Freezing.instance().getKey());
 		incompatibilityList.add(Infinity.instance().getKey() + ":" + Propelling.instance().getKey());
-		if (NBTUtils.isOneFourteenCompatible())
-			incompatibilityList.add(MultiShot.instance().getKey() + ":" + Piercing.instance().getKey());
+		incompatibilityList.add(MultiShot.instance().getKey() + ":" + Piercing.instance().getKey());
 		incompatibilityList.add(Power.instance().getKey() + ":" + Timber.instance().getKey());
 		incompatibilityList.add(Drilling.instance().getKey() + ":" + Timber.instance().getKey());
 		incompatibilityList.add(SelfRepair.instance().getKey() + ":" + Photosynthesis.instance().getKey());
@@ -559,7 +559,7 @@ public class ModManager {
 	 * @return if the tool has the mod
 	 */
 	public boolean hasMod(ItemStack tool, @NotNull Modifier mod) {
-		return mod.isAllowed() && nbt.hasTag(tool, mod.getKey());
+		return mod.isAllowed() && nbt.hasTag(tool, mod.getKey(), PersistentDataType.INTEGER);
 	}
 
 	/**
@@ -633,7 +633,7 @@ public class ModManager {
 	 */
 	@Contract("null -> false")
 	public boolean isArmorViable(ItemStack armor) {
-		return armor != null && nbt.hasTag(armor, this.ArmorIdentifier);
+		return armor != null && nbt.hasTag(armor, this.ArmorIdentifier, PersistentDataType.STRING);
 	}
 
 	/**
@@ -642,7 +642,7 @@ public class ModManager {
 	 */
 	@Contract("null -> false")
 	public boolean isToolViable(ItemStack tool) {
-		return tool != null && nbt.hasTag(tool, this.ToolIdentifier);
+		return tool != null && nbt.hasTag(tool, this.ToolIdentifier, PersistentDataType.STRING);
 	}
 
 	/**
@@ -651,7 +651,7 @@ public class ModManager {
 	 */
 	@Contract("null -> false")
 	public boolean isWandViable(ItemStack wand) {
-		return wand != null && nbt.hasTag(wand, "IdentifierBuilderswand");
+		return wand != null && nbt.hasTag(wand, "identifier_builderswand", PersistentDataType.INTEGER);
 	}
 
 	/**
@@ -704,7 +704,7 @@ public class ModManager {
 		lore.remove(index);
 
 		for (Modifier m : this.mods) {
-			if (nbt.hasTag(is, m.getKey())) {
+			if (nbt.hasTag(is, m.getKey(), PersistentDataType.INTEGER)) {
 				int modLevel = getModLevel(is, m);
 				String modLevel_ = layout.getBoolean("UseRomans.ModifierLevels")
 						? ChatWriter.toRomanNumerals(modLevel) : String.valueOf(modLevel);
@@ -992,7 +992,7 @@ public class ModManager {
 			is.setItemMeta(meta);
 		}
 
-		nbt.setString(is, "modifierItem", mod.getKey());
+		nbt.setString(is, "modifier_item", mod.getKey());
 		nbt.setStringList(is, "CanPlaceOn", "minecraft:air");
 
 		return is;
@@ -1005,7 +1005,7 @@ public class ModManager {
 	@Contract("null -> false")
 	public boolean isModifierItem(ItemStack item) {
 		if (item == null) return false;
-		return nbt.hasTag(item, "modifierItem");
+		return nbt.hasTag(item, "modifier_item", PersistentDataType.STRING);
 	}
 
 	/**
@@ -1018,11 +1018,11 @@ public class ModManager {
 			return null;
 		}
 
-		if (!nbt.hasTag(item, "modifierItem")) {
+		if (!nbt.hasTag(item, "modifier_item", PersistentDataType.STRING)) {
 			return null;
 		}
 
-		String name = nbt.getString(item, "modifierItem");
+		String name = nbt.getString(item, "modifier_item");
 
 		if (name == null) {
 			return null;
