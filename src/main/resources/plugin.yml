@@ -8,7 +8,7 @@ description: ${project.description}
 website: ${project.url}
 database: false
 softdepend: [CoreProtect]
-api-version: "1.13"
+api-version: "1.14"
 
 ####################################################
 commands:
