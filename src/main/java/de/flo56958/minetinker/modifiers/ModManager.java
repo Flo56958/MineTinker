@@ -1,16 +1,16 @@
 package de.flo56958.minetinker.modifiers;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.ToolLevelUpEvent;
 import de.flo56958.minetinker.listeners.ActionBarListener;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.types.*;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
-import de.flo56958.minetinker.utils.datatypes.Pair;
 import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
+import de.flo56958.minetinker.utils.datatypes.Pair;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -626,7 +626,7 @@ public class ModManager {
 	 */
 	@Contract("null -> false")
 	public boolean isArmorViable(ItemStack armor) {
-		return armor != null && DataHandler.hasTag(armor, this.ArmorIdentifier, PersistentDataType.STRING);
+		return armor != null && DataHandler.hasTag(armor, this.ArmorIdentifier, PersistentDataType.INTEGER);
 	}
 
 	/**
@@ -635,7 +635,7 @@ public class ModManager {
 	 */
 	@Contract("null -> false")
 	public boolean isToolViable(ItemStack tool) {
-		return tool != null && DataHandler.hasTag(tool, this.ToolIdentifier, PersistentDataType.STRING);
+		return tool != null && DataHandler.hasTag(tool, this.ToolIdentifier, PersistentDataType.INTEGER);
 	}
 
 	/**
@@ -811,7 +811,7 @@ public class ModManager {
 				|| ToolType.SHEARS.contains(m)
 				|| ToolType.SHIELD.contains(m)
 				|| ToolType.FISHINGROD.contains(m)) && !isWandViable(is)) {
-			DataHandler.setInt(is, this.ToolIdentifier, 0);
+			DataHandler.setInt(is, this.ToolIdentifier, 56958);
 			eligible = true;
 		}
 		if (ToolType.BOOTS.contains(m)
@@ -820,7 +820,7 @@ public class ModManager {
 				|| ToolType.LEGGINGS.contains(m)
 				|| ToolType.ELYTRA.contains(m)
 				|| ToolType.SHIELD.contains(m)) {
-			DataHandler.setInt(is, this.ArmorIdentifier, 0);
+			DataHandler.setInt(is, this.ArmorIdentifier, 56958);
 			eligible = true;
 		}
 

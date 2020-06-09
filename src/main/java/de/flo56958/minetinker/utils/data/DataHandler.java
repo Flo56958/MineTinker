@@ -80,6 +80,7 @@ public class DataHandler {
         PersistentDataContainer container = meta.getPersistentDataContainer();
 
         container.set(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.INTEGER, value);
+        item.setItemMeta(meta);
     }
 
     public static void setLong(@NotNull ItemStack item, @NotNull String key, long value) {
@@ -88,6 +89,7 @@ public class DataHandler {
         PersistentDataContainer container = meta.getPersistentDataContainer();
 
         container.set(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.LONG, value);
+        item.setItemMeta(meta);
     }
 
     public static void setString(@NotNull ItemStack item, @NotNull String key, String value) {
@@ -96,6 +98,7 @@ public class DataHandler {
         PersistentDataContainer container = meta.getPersistentDataContainer();
 
         container.set(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.STRING, value);
+        item.setItemMeta(meta);
     }
 
     public static void setStringList(@NotNull ItemStack item, @NotNull String key, String ... value) {
@@ -104,6 +107,7 @@ public class DataHandler {
         PersistentDataContainer container = meta.getPersistentDataContainer();
 
         container.set(new NamespacedKey(MineTinker.getPlugin(), key), STRING_ARRAY, value);
+        item.setItemMeta(meta);
     }
 
     public static <T, Z> boolean hasTag(ItemStack item, String key, PersistentDataType<T, Z> dataType) {
@@ -120,6 +124,7 @@ public class DataHandler {
         PersistentDataContainer container = meta.getPersistentDataContainer();
 
         container.remove(new NamespacedKey(MineTinker.getPlugin(), key));
+        item.setItemMeta(meta);
     }
 
     public static boolean playerBreakBlock(Player player, Block block) {
