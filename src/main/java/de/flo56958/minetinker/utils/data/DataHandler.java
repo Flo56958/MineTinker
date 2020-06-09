@@ -9,8 +9,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
@@ -20,10 +23,12 @@ import java.util.stream.Collectors;
 
 public class DataHandler {
 
-    private static StringArrayItemTagType STRING_ARRAY = new StringArrayItemTagType(Charset.defaultCharset());
+    private static final StringArrayItemTagType STRING_ARRAY = new StringArrayItemTagType(Charset.defaultCharset());
 
-    public static int getInt(ItemStack item, String key) {
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+    public static int getInt(@NotNull ItemStack item, @NotNull String key) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return 0;
+        PersistentDataContainer container = meta.getPersistentDataContainer();
         Integer value = container.get(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.INTEGER);
 
         if (value != null) {
@@ -33,8 +38,10 @@ public class DataHandler {
         return 0;
     }
 
-    public static long getLong(ItemStack item, String key) {
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+    public static long getLong(@NotNull ItemStack item, @NotNull String key) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return 0L;
+        PersistentDataContainer container = meta.getPersistentDataContainer();
         Long value = container.get(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.LONG);
 
         if (value != null) {
@@ -44,14 +51,20 @@ public class DataHandler {
         return 0;
     }
 
-    public static String getString(ItemStack item, String key) {
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+    @Nullable
+    public static String getString(@NotNull ItemStack item, @NotNull String key) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return null;
+        PersistentDataContainer container = meta.getPersistentDataContainer();
 
         return container.get(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.STRING);
     }
 
-    public static List<String> getStringList(ItemStack item, String key) {
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+    @Nullable
+    public static List<String> getStringList(@NotNull ItemStack item, @NotNull String key) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return null;
+        PersistentDataContainer container = meta.getPersistentDataContainer();
         String[] array = container.get(new NamespacedKey(MineTinker.getPlugin(), key), STRING_ARRAY);
 
         if (array == null) {
@@ -61,38 +74,50 @@ public class DataHandler {
         return Arrays.asList(array);
     }
 
-    public static void setInt(ItemStack item, String key, int value) {
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+    public static void setInt(@NotNull ItemStack item, @NotNull String key, int value) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return;
+        PersistentDataContainer container = meta.getPersistentDataContainer();
 
         container.set(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.INTEGER, value);
     }
 
-    public static void setLong(ItemStack item, String key, long value) {
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+    public static void setLong(@NotNull ItemStack item, @NotNull String key, long value) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return;
+        PersistentDataContainer container = meta.getPersistentDataContainer();
 
         container.set(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.LONG, value);
     }
 
-    public static void setString(ItemStack item, String key, String value) {
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+    public static void setString(@NotNull ItemStack item, @NotNull String key, String value) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return;
+        PersistentDataContainer container = meta.getPersistentDataContainer();
 
         container.set(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.STRING, value);
     }
 
-    public static void setStringList(ItemStack item, String key, String ... value) {
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+    public static void setStringList(@NotNull ItemStack item, @NotNull String key, String ... value) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return;
+        PersistentDataContainer container = meta.getPersistentDataContainer();
 
         container.set(new NamespacedKey(MineTinker.getPlugin(), key), STRING_ARRAY, value);
     }
 
-    public static boolean hasTag(ItemStack item, String key, PersistentDataType dataType) {
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+    public static <T, Z> boolean hasTag(ItemStack item, String key, PersistentDataType<T, Z> dataType) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return false;
+        PersistentDataContainer container = meta.getPersistentDataContainer();
 
         return container.has(new NamespacedKey(MineTinker.getPlugin(), key), dataType);
     }
 
     public static void removeTag(ItemStack item, String key) {
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return;
+        PersistentDataContainer container = meta.getPersistentDataContainer();
 
         container.remove(new NamespacedKey(MineTinker.getPlugin(), key));
     }
@@ -106,9 +131,8 @@ public class DataHandler {
         if (!breakEvent.isCancelled() && position.breakNaturally(itemStack)) {
             Collection<ItemStack> items = position.getDrops(itemStack);
 
-            List<Item> itemEntities = items.stream().map(entry -> {
-                return (Item)player.getWorld().spawnEntity(player.getLocation(), EntityType.DROPPED_ITEM);
-            }).collect(Collectors.toList());
+            List<Item> itemEntities = items.stream().map(entry ->
+                    (Item)player.getWorld().spawnEntity(player.getLocation(), EntityType.DROPPED_ITEM)).collect(Collectors.toList());
 
             BlockDropItemEvent event = new BlockDropItemEvent(position, position.getState(), player, itemEntities);
 

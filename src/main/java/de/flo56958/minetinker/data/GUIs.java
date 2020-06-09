@@ -1,15 +1,15 @@
 package de.flo56958.minetinker.data;
 
-import de.flo56958.minetinker.commands.subs.ReloadCommand;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.gui.ButtonAction;
+import de.flo56958.minetinker.api.gui.GUI;
+import de.flo56958.minetinker.commands.subs.ReloadCommand;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
-import de.flo56958.minetinker.api.gui.ButtonAction;
-import de.flo56958.minetinker.api.gui.GUI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -230,7 +230,7 @@ public class GUIs {
 
 									try {
 										ItemStack resItem = srec.getIngredientMap().get(c).clone();
-										DataHandler.setLong(resItem, "MT-MODS Recipe Item",
+										DataHandler.setLong(resItem, "MT-MODSRecipeItem",
 												Math.round(Math.random() * 42));
 										modRecipe.addButton((slot % 3) + 2, (slot / 3), resItem);
 									} catch (NullPointerException ignored) {
