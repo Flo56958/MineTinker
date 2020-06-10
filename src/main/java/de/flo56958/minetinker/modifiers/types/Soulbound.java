@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
-import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -144,7 +144,7 @@ public class Soulbound extends Modifier implements Listener {
 					if (newLevel == 0) {
 						modManager.removeMod(itemStack, this);
 					} else {
-						DataHandler.setInt(itemStack, getKey(), modManager.getModLevel(itemStack, this) - 1);
+						DataHandler.setInt(itemStack, getKey(), modManager.getModLevel(itemStack, this) - 1, false);
 					}
 				}
 

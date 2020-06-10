@@ -429,7 +429,7 @@ public class ModManager {
 	 * @param mod the modifier to add
 	 */
 	void addMod(ItemStack is, @NotNull Modifier mod) {
-		DataHandler.setInt(is, mod.getKey(), getModLevel(is, mod) + 1);
+		DataHandler.setInt(is, mod.getKey(), getModLevel(is, mod) + 1, false);
 		rewriteLore(is);
 	}
 
@@ -474,7 +474,7 @@ public class ModManager {
 	 */
 	public int getModLevel(ItemStack is, @NotNull Modifier mod) {
 		if (!mod.isAllowed()) return 0;
-		return DataHandler.getInt(is, mod.getKey());
+		return DataHandler.getInt(is, mod.getKey(), false);
 	}
 
 	/**
@@ -485,7 +485,7 @@ public class ModManager {
 	 */
 	public void removeMod(ItemStack is, Modifier mod) {
 		if (hasMod(is, mod)) {
-			DataHandler.removeTag(is, mod.getKey());
+			DataHandler.removeTag(is, mod.getKey(), false);
 			mod.removeMod(is);
 			rewriteLore(is);
 		}
@@ -497,7 +497,7 @@ public class ModManager {
 	 * @param is the item to get the information from
 	 */
 	public int getFreeSlots(ItemStack is) {
-		return DataHandler.getInt(is, "FreeSlots");
+		return DataHandler.getInt(is, "FreeSlots", false);
 	}
 
 	/**
@@ -506,7 +506,7 @@ public class ModManager {
 	 * @param is the item to set the information to
 	 */
 	public void setFreeSlots(ItemStack is, int freeSlots) {
-		DataHandler.setInt(is, "FreeSlots", freeSlots);
+		DataHandler.setInt(is, "FreeSlots", freeSlots, false);
 		rewriteLore(is);
 	}
 
@@ -516,7 +516,7 @@ public class ModManager {
 	 * @param is the item to get the information from
 	 */
 	public int getLevel(ItemStack is) {
-		return DataHandler.getInt(is, "Level");
+		return DataHandler.getInt(is, "Level", false);
 	}
 
 	/**
@@ -525,7 +525,7 @@ public class ModManager {
 	 * @param is the item to get the information from
 	 */
 	private void setLevel(ItemStack is, int level) {
-		DataHandler.setInt(is, "Level", level);
+		DataHandler.setInt(is, "Level", level, false);
 	}
 
 	/**
@@ -534,7 +534,7 @@ public class ModManager {
 	 * @param is the item to get the information from
 	 */
 	public long getExp(ItemStack is) {
-		return DataHandler.getLong(is, "Exp");
+		return DataHandler.getLong(is, "Exp", false);
 	}
 
 	/**
@@ -543,7 +543,7 @@ public class ModManager {
 	 * @param is the item to get the information from
 	 */
 	private void setExp(ItemStack is, long exp) {
-		DataHandler.setLong(is, "Exp", exp);
+		DataHandler.setLong(is, "Exp", exp, false);
 	}
 
 	/**
@@ -552,7 +552,7 @@ public class ModManager {
 	 * @return if the tool has the mod
 	 */
 	public boolean hasMod(ItemStack tool, @NotNull Modifier mod) {
-		return mod.isAllowed() && DataHandler.hasTag(tool, mod.getKey(), PersistentDataType.INTEGER);
+		return mod.isAllowed() && DataHandler.hasTag(tool, mod.getKey(), PersistentDataType.INTEGER, false);
 	}
 
 	/**
@@ -626,7 +626,7 @@ public class ModManager {
 	 */
 	@Contract("null -> false")
 	public boolean isArmorViable(ItemStack armor) {
-		return armor != null && DataHandler.hasTag(armor, this.ArmorIdentifier, PersistentDataType.INTEGER);
+		return armor != null && DataHandler.hasTag(armor, this.ArmorIdentifier, PersistentDataType.INTEGER, false);
 	}
 
 	/**
@@ -635,7 +635,7 @@ public class ModManager {
 	 */
 	@Contract("null -> false")
 	public boolean isToolViable(ItemStack tool) {
-		return tool != null && DataHandler.hasTag(tool, this.ToolIdentifier, PersistentDataType.INTEGER);
+		return tool != null && DataHandler.hasTag(tool, this.ToolIdentifier, PersistentDataType.INTEGER, false);
 	}
 
 	/**
@@ -644,7 +644,7 @@ public class ModManager {
 	 */
 	@Contract("null -> false")
 	public boolean isWandViable(ItemStack wand) {
-		return wand != null && DataHandler.hasTag(wand, "identifier_builderswand", PersistentDataType.INTEGER);
+		return wand != null && DataHandler.hasTag(wand, "identifier_builderswand", PersistentDataType.INTEGER, false);
 	}
 
 	/**
@@ -697,7 +697,7 @@ public class ModManager {
 		lore.remove(index);
 
 		for (Modifier m : this.mods) {
-			if (DataHandler.hasTag(is, m.getKey(), PersistentDataType.INTEGER)) {
+			if (DataHandler.hasTag(is, m.getKey(), PersistentDataType.INTEGER, false)) {
 				int modLevel = getModLevel(is, m);
 				String modLevel_ = layout.getBoolean("UseRomans.ModifierLevels")
 						? ChatWriter.toRomanNumerals(modLevel) : String.valueOf(modLevel);
@@ -811,7 +811,7 @@ public class ModManager {
 				|| ToolType.SHEARS.contains(m)
 				|| ToolType.SHIELD.contains(m)
 				|| ToolType.FISHINGROD.contains(m)) && !isWandViable(is)) {
-			DataHandler.setInt(is, this.ToolIdentifier, 56958);
+			DataHandler.setInt(is, this.ToolIdentifier, 56958, false);
 			eligible = true;
 		}
 		if (ToolType.BOOTS.contains(m)
@@ -820,7 +820,7 @@ public class ModManager {
 				|| ToolType.LEGGINGS.contains(m)
 				|| ToolType.ELYTRA.contains(m)
 				|| ToolType.SHIELD.contains(m)) {
-			DataHandler.setInt(is, this.ArmorIdentifier, 56958);
+			DataHandler.setInt(is, this.ArmorIdentifier, 56958, false);
 			eligible = true;
 		}
 
@@ -975,9 +975,7 @@ public class ModManager {
 			meta.setDisplayName(name);
 
 			ArrayList<String> lore = new ArrayList<>();
-			for (String descPart : ChatWriter.splitString(description, 40)) {
-				lore.add(ChatColor.WHITE + descPart);
-			}
+			lore.addAll(ChatWriter.splitString(description, 40));
 			meta.setLore(lore);
 
 			meta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
@@ -985,8 +983,8 @@ public class ModManager {
 			is.setItemMeta(meta);
 		}
 
-		DataHandler.setString(is, "modifier_item", mod.getKey());
-		DataHandler.setStringList(is, "CanPlaceOn", "minecraft:air");
+		DataHandler.setString(is, "modifier_item", mod.getKey(), false);
+		//TODO: DataHandler.setStringList(is, "CanPlaceOn", true, "minecraft:air");
 
 		return is;
 	}
@@ -998,7 +996,7 @@ public class ModManager {
 	@Contract("null -> false")
 	public boolean isModifierItem(ItemStack item) {
 		if (item == null) return false;
-		return DataHandler.hasTag(item, "modifier_item", PersistentDataType.STRING);
+		return DataHandler.hasTag(item, "modifier_item", PersistentDataType.STRING, false);
 	}
 
 	/**
@@ -1011,11 +1009,11 @@ public class ModManager {
 			return null;
 		}
 
-		if (!DataHandler.hasTag(item, "modifier_item", PersistentDataType.STRING)) {
+		if (!DataHandler.hasTag(item, "modifier_item", PersistentDataType.STRING, false)) {
 			return null;
 		}
 
-		String name = DataHandler.getString(item, "modifier_item");
+		String name = DataHandler.getString(item, "modifier_item", false);
 
 		if (name == null) {
 			return null;

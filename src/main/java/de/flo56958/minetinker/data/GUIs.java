@@ -210,7 +210,7 @@ public class GUIs {
 						if (rec instanceof ShapedRecipe) {
 							ShapedRecipe srec = (ShapedRecipe) rec;
 							ItemStack modItem = m.getModItem().clone();
-							DataHandler.setInt(modItem, "Showcase", (int) Math.round(Math.random() * 1000));
+							DataHandler.setInt(modItem, "Showcase", (int) Math.round(Math.random() * 1000), false);
 							GUI.Window.Button result = modRecipe.addButton(6, 1, modItem);
 							result.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(result, currentPage));
 
@@ -231,7 +231,7 @@ public class GUIs {
 									try {
 										ItemStack resItem = srec.getIngredientMap().get(c).clone();
 										DataHandler.setLong(resItem, "MT-MODSRecipeItem",
-												Math.round(Math.random() * 42));
+												Math.round(Math.random() * 42), false);
 										modRecipe.addButton((slot % 3) + 2, (slot / 3), resItem);
 									} catch (NullPointerException ignored) {
 									}

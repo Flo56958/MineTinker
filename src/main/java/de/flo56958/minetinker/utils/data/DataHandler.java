@@ -26,11 +26,11 @@ public class DataHandler {
 
     private static final StringArrayItemTagType STRING_ARRAY = new StringArrayItemTagType(Charset.defaultCharset());
 
-    public static int getInt(@NotNull ItemStack item, @NotNull String key) {
+    public static int getInt(@NotNull ItemStack item, @NotNull String key, boolean useMinecraft) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return 0;
         PersistentDataContainer container = meta.getPersistentDataContainer();
-        Integer value = container.get(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.INTEGER);
+        Integer value = container.get((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)), PersistentDataType.INTEGER);
 
         if (value != null) {
             return value;
@@ -39,11 +39,11 @@ public class DataHandler {
         return 0;
     }
 
-    public static long getLong(@NotNull ItemStack item, @NotNull String key) {
+    public static long getLong(@NotNull ItemStack item, @NotNull String key, boolean useMinecraft) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return 0L;
         PersistentDataContainer container = meta.getPersistentDataContainer();
-        Long value = container.get(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.LONG);
+        Long value = container.get((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)), PersistentDataType.LONG);
 
         if (value != null) {
             return value;
@@ -53,20 +53,20 @@ public class DataHandler {
     }
 
     @Nullable
-    public static String getString(@NotNull ItemStack item, @NotNull String key) {
+    public static String getString(@NotNull ItemStack item, @NotNull String key, boolean useMinecraft) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return null;
         PersistentDataContainer container = meta.getPersistentDataContainer();
 
-        return container.get(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.STRING);
+        return container.get((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)), PersistentDataType.STRING);
     }
 
     @Nullable
-    public static List<String> getStringList(@NotNull ItemStack item, @NotNull String key) {
+    public static List<String> getStringList(@NotNull ItemStack item, @NotNull String key, boolean useMinecraft) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return null;
         PersistentDataContainer container = meta.getPersistentDataContainer();
-        String[] array = container.get(new NamespacedKey(MineTinker.getPlugin(), key), STRING_ARRAY);
+        String[] array = container.get((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)), STRING_ARRAY);
 
         if (array == null) {
             return null;
@@ -75,56 +75,56 @@ public class DataHandler {
         return Arrays.asList(array);
     }
 
-    public static void setInt(@NotNull ItemStack item, @NotNull String key, int value) {
+    public static void setInt(@NotNull ItemStack item, @NotNull String key, int value, boolean useMinecraft) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
         PersistentDataContainer container = meta.getPersistentDataContainer();
 
-        container.set(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.INTEGER, value);
+        container.set((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)), PersistentDataType.INTEGER, value);
         item.setItemMeta(meta);
     }
 
-    public static void setLong(@NotNull ItemStack item, @NotNull String key, long value) {
+    public static void setLong(@NotNull ItemStack item, @NotNull String key, long value, boolean useMinecraft) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
         PersistentDataContainer container = meta.getPersistentDataContainer();
 
-        container.set(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.LONG, value);
+        container.set((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)), PersistentDataType.LONG, value);
         item.setItemMeta(meta);
     }
 
-    public static void setString(@NotNull ItemStack item, @NotNull String key, String value) {
+    public static void setString(@NotNull ItemStack item, @NotNull String key, String value, boolean useMinecraft) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
         PersistentDataContainer container = meta.getPersistentDataContainer();
 
-        container.set(new NamespacedKey(MineTinker.getPlugin(), key), PersistentDataType.STRING, value);
+        container.set((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)), PersistentDataType.STRING, value);
         item.setItemMeta(meta);
     }
 
-    public static void setStringList(@NotNull ItemStack item, @NotNull String key, String ... value) {
+    public static void setStringList(@NotNull ItemStack item, @NotNull String key, boolean useMinecraft, String... value) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
         PersistentDataContainer container = meta.getPersistentDataContainer();
 
-        container.set(new NamespacedKey(MineTinker.getPlugin(), key), STRING_ARRAY, value);
+        container.set((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)), STRING_ARRAY, value);
         item.setItemMeta(meta);
     }
 
-    public static <T, Z> boolean hasTag(ItemStack item, String key, PersistentDataType<T, Z> dataType) {
+    public static <T, Z> boolean hasTag(@NotNull ItemStack item, @NotNull String key, PersistentDataType<T, Z> dataType, boolean useMinecraft) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return false;
         PersistentDataContainer container = meta.getPersistentDataContainer();
 
-        return container.has(new NamespacedKey(MineTinker.getPlugin(), key), dataType);
+        return container.has((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)), dataType);
     }
 
-    public static void removeTag(ItemStack item, String key) {
+    public static void removeTag(@NotNull ItemStack item, @NotNull String key, boolean useMinecraft) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
         PersistentDataContainer container = meta.getPersistentDataContainer();
 
-        container.remove(new NamespacedKey(MineTinker.getPlugin(), key));
+        container.remove((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)));
         item.setItemMeta(meta);
     }
 

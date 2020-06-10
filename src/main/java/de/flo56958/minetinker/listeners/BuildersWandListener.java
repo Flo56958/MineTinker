@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.listeners;
 
-import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -140,8 +140,8 @@ public class BuildersWandListener implements Listener {
 			wand.setItemMeta(meta);
 		}
 
-		DataHandler.setStringList(wand, "CanDestroy", "minecraft:air");
-		DataHandler.setInt(wand, "identifier_builderswand", 0);
+		//TODO: DataHandler.setStringList(wand, "CanDestroy", true, "minecraft:air");
+		DataHandler.setInt(wand, "identifier_builderswand", 0, false);
 
 		return wand;
 	}

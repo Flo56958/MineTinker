@@ -1,15 +1,14 @@
 package de.flo56958.minetinker.modifiers;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ModifierFailCause;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.ModifierApplyEvent;
 import de.flo56958.minetinker.events.ModifierFailEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.types.ExtraModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
-import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
@@ -198,9 +197,11 @@ public abstract class Modifier {
 
 		}
 
+		ItemMeta itemMeta = this.modItem.getItemMeta();
+		if (itemMeta != null) itemMeta.setCustomModelData(this.customModelData);
+		this.modItem.setItemMeta(itemMeta);
 		if (ConfigurationManager.getConfig("Modifiers.yml").getBoolean("UseCustomModelData", false)) {
 			this.modItem.setType(Material.STICK);
-			DataHandler.setInt(this.modItem, "CustomModelData", this.customModelData);
 		}
 	}
 
