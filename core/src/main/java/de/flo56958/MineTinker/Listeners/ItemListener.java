@@ -15,6 +15,7 @@ import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CrossbowMeta;
@@ -170,5 +171,20 @@ public class ItemListener implements Listener {
 				player.getWorld().dropItem(player.getLocation(), item);
 			}
 		} // no else as it gets added in if-clause
+	}
+
+	@EventHandler
+	public void onItemUse(PlayerItemDamageEvent event) {
+		ItemStack item = event.getItem();
+
+		if (modManager.isToolViable(item) && modManager.isArmorViable(item)) {
+			return;
+		}
+
+		if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ConvertItemsOnUse", true)) {
+			return;
+		}
+
+		modManager.convertItemStack(event.getItem());
 	}
 }
