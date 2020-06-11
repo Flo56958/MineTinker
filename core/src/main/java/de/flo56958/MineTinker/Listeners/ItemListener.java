@@ -177,7 +177,7 @@ public class ItemListener implements Listener {
 	public void onItemUse(PlayerItemDamageEvent event) {
 		ItemStack item = event.getItem();
 
-		if (modManager.isToolViable(item) && modManager.isArmorViable(item)) {
+		if (modManager.isToolViable(item) && modManager.isArmorViable(item) && modManager.isWandViable(item)) {
 			return;
 		}
 
