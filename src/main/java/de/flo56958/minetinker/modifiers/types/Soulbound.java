@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.util.*;
@@ -144,7 +145,7 @@ public class Soulbound extends Modifier implements Listener {
 					if (newLevel == 0) {
 						modManager.removeMod(itemStack, this);
 					} else {
-						DataHandler.setInt(itemStack, getKey(), modManager.getModLevel(itemStack, this) - 1, false);
+						DataHandler.setTag(itemStack, getKey(), modManager.getModLevel(itemStack, this) - 1, PersistentDataType.INTEGER, false);
 					}
 				}
 

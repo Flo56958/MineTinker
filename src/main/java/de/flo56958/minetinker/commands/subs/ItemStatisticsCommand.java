@@ -74,7 +74,7 @@ public class ItemStatisticsCommand implements SubCommand {
 				for (Modifier mod : modManager.getAllowedMods()) {
 					if (DataHandler.hasTag(stack, mod.getKey(), PersistentDataType.INTEGER, false)) {
 						ChatWriter.sendMessage(sender, ChatColor.WHITE, mod.getColor() + mod.getName() + ChatColor.WHITE
-								+ " " + DataHandler.getInt(stack, mod.getKey(), false));
+								+ " " + DataHandler.getTag(stack, mod.getKey(), PersistentDataType.INTEGER, false));
 					}
 				}
 			}

@@ -28,6 +28,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -141,7 +142,7 @@ public class BuildersWandListener implements Listener {
 		}
 
 		//TODO: DataHandler.setStringList(wand, "CanDestroy", true, "minecraft:air");
-		DataHandler.setInt(wand, "identifier_builderswand", 0, false);
+		DataHandler.setTag(wand, "identifier_builderswand", 0, PersistentDataType.INTEGER, false);
 
 		return wand;
 	}
