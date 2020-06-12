@@ -1,9 +1,11 @@
 package de.flo56958.minetinker.modifiers.types;
 
-import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
+import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -17,6 +19,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.util.*;
@@ -24,10 +27,6 @@ import java.util.*;
 public class Tanky extends Modifier implements Listener {
 
 	private static Tanky instance;
-
-	private final HashMap<UUID, Double> playerHealth = new HashMap<>(); //used to track Player health when quiting and rejoining
-	//TODO: Save this data to a more suitable location, this one gets deleted on reload
-	//Maybe a database
 
 	private int healthPerLevel;
 
@@ -138,17 +137,41 @@ public class Tanky extends Modifier implements Listener {
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
-		Double health = playerHealth.get(event.getPlayer().getUniqueId());
-		if (health != null) {
-			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> event.getPlayer().setHealth(health), 10L);
+		Double health;
+		ItemStack chest = event.getPlayer().getInventory().getChestplate();
+		if (modManager.isArmorViable(chest) && modManager.hasMod(chest, this)) {
+			health = DataHandler.getTag(chest, "modifier_berserk_health_save", PersistentDataType.DOUBLE, false);
+			if (health != null) {
+				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> event.getPlayer().setHealth(health), 10L);
+			}
+		} else {
+			chest = event.getPlayer().getInventory().getLeggings();
+			if (modManager.isArmorViable(chest) && modManager.hasMod(chest, this)) {
+				health = DataHandler.getTag(chest, "modifier_berserk_health_save", PersistentDataType.DOUBLE, false);
+				if (health != null) {
+					Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> event.getPlayer().setHealth(health), 10L);
+				}
+			} else {
+				return;
+			}
 		}
-		playerHealth.remove(event.getPlayer().getUniqueId());
+		ChatWriter.logModifier(event.getPlayer(), event, this, chest, String.format("ApplyHealth(%.2f -> %.2f)", event.getPlayer().getHealth(), health));
 	}
 
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		if (event.getPlayer().getHealth() >= 20.0) { //has Tanky and enough health
-			playerHealth.put(event.getPlayer().getUniqueId(), event.getPlayer().getHealth());
+			ItemStack chest = event.getPlayer().getInventory().getChestplate();
+			if (modManager.isArmorViable(chest) && modManager.hasMod(chest, this)) {
+				DataHandler.setTag(chest, "modifier_berserk_health_save", event.getPlayer().getHealth(),
+						PersistentDataType.DOUBLE, false);
+				return;
+			}
+			chest = event.getPlayer().getInventory().getLeggings();
+			if (modManager.isArmorViable(chest) && modManager.hasMod(chest, this)) {
+				DataHandler.setTag(chest, "modifier_berserk_health_save", event.getPlayer().getHealth(),
+						PersistentDataType.DOUBLE, false);
+			}
 		}
 	}
 }

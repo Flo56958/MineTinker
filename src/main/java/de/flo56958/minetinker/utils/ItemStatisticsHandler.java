@@ -34,7 +34,9 @@ public class ItemStatisticsHandler implements Listener {
 	public static GUI getGUI(final ItemStack item) {
 		GUI gui = new GUI();
 
-		GUI.Window window = gui.addWindow(1, LanguageManager.getString("GUIs.Statistics.Title").replaceAll("%tool", ChatWriter.getDisplayName(item)));
+		GUI.Window window = gui.addWindow(1,
+				LanguageManager.getString("GUIs.Statistics.Title")
+						.replaceAll("%tool", ChatWriter.getDisplayName(item)));
 
 		{
 			ItemStack itemStack = new ItemStack(item.getType());
@@ -42,12 +44,15 @@ public class ItemStatisticsHandler implements Listener {
 			if (itemMeta != null) {
 				ArrayList<String> lore = new ArrayList<>();
 				OfflinePlayer player = ModManager.instance().getCreator(item);
-				if (player != null) lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Statistics.General.Creator").replace("%player", player.getName()));
+				if (player != null) lore.add(ChatColor.WHITE
+						+ LanguageManager.getString("GUIs.Statistics.General.Creator")
+						.replace("%player", player.getName()));
 				Long date = DataHandler.getTag(item, "creation_date", PersistentDataType.LONG, false);
 				if (date != null) {
 					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
 					Date date_ = new Date(System.currentTimeMillis());
-					lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Statistics.General.Created").replace("%date", formatter.format(date_)));
+					lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Statistics.General.Created")
+							.replace("%date", formatter.format(date_)));
 				}
 				itemMeta.setLore(lore);
 				itemMeta.setDisplayName(ChatColor.GOLD + LanguageManager.getString("GUIs.Statistics.General.Title"));
@@ -71,7 +76,9 @@ public class ItemStatisticsHandler implements Listener {
 				GUI blockStats = new GUI();
 				{
 					int pageNo = 0;
-					GUI.Window currentPage = blockStats.addWindow(6, LanguageManager.getString("GUIs.Statistics.Blocks.TitlePage").replace("%tool", ChatWriter.getDisplayName(item))
+					GUI.Window currentPage = blockStats.addWindow(6,
+							LanguageManager.getString("GUIs.Statistics.Blocks.TitlePage")
+									.replace("%tool", ChatWriter.getDisplayName(item))
 							.replaceFirst("%pageNo", String.valueOf(++pageNo)));
 
 					int i = 0;
@@ -86,7 +93,9 @@ public class ItemStatisticsHandler implements Listener {
 						ItemMeta meta = is.getItemMeta();
 
 						if (meta != null) {
-							meta.setLore(Collections.singletonList(ChatColor.WHITE + LanguageManager.getString("GUIs.Statistics.Blocks.AmountBroken").replace("%amount", String.valueOf(map.get(m)))));
+							meta.setLore(Collections.singletonList(ChatColor.WHITE
+									+ LanguageManager.getString("GUIs.Statistics.Blocks.AmountBroken")
+									.replace("%amount", String.valueOf(map.get(m)))));
 							is.setItemMeta(meta);
 						}
 
@@ -94,7 +103,9 @@ public class ItemStatisticsHandler implements Listener {
 						i++;
 
 						if (i % 28 == 0) {
-							currentPage = blockStats.addWindow(6, LanguageManager.getString("GUIs.Statistics.Blocks.TitlePage").replace("%tool", ChatWriter.getDisplayName(item))
+							currentPage = blockStats.addWindow(6,
+									LanguageManager.getString("GUIs.Statistics.Blocks.TitlePage")
+											.replace("%tool", ChatWriter.getDisplayName(item))
 									.replace("%pageNo", String.valueOf(++pageNo)));
 
 							GUIs.addNavigationButtons(currentPage);
@@ -103,7 +114,8 @@ public class ItemStatisticsHandler implements Listener {
 					}
 				}
 				GUI.Window.Button button = window.addButton(4, itemStack);
-				button.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(button, blockStats.getWindow(0)));
+				button.addAction(ClickType.LEFT,
+						new ButtonAction.PAGE_GOTO(button, blockStats.getWindow(0)));
 			}
 		}
 
@@ -121,8 +133,12 @@ public class ItemStatisticsHandler implements Listener {
 			if (itemMeta != null) {
 				itemMeta.setDisplayName(ChatColor.GOLD + LanguageManager.getString("GUIs.Statistics.Combat.Title"));
 				ArrayList<String> lore = new ArrayList<>();
-				if (damageDealt != null) lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Statistics.Combat.DamageDealt").replace("%amount", String.valueOf(Math.round(damageDealt))));
-				if (damageReceived != null) lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Statistics.Combat.DamageReceived").replace("%amount", String.valueOf(Math.round(damageReceived))));
+				if (damageDealt != null) lore.add(ChatColor.WHITE
+						+ LanguageManager.getString("GUIs.Statistics.Combat.DamageDealt")
+						.replace("%amount", String.valueOf(Math.round(damageDealt))));
+				if (damageReceived != null) lore.add(ChatColor.WHITE
+						+ LanguageManager.getString("GUIs.Statistics.Combat.DamageReceived")
+						.replace("%amount", String.valueOf(Math.round(damageReceived))));
 				itemMeta.setLore(lore);
 				itemStack.setItemMeta(itemMeta);
 			}
@@ -130,11 +146,13 @@ public class ItemStatisticsHandler implements Listener {
 			GUI.Window.Button button = window.addButton(5, itemStack);
 
 			if (map != null) {
-				//Setting up BlockStats GUI
+				//Setting up CombatStats GUI
 				GUI combatStats = new GUI();
 				{
 					int pageNo = 0;
-					GUI.Window currentPage = combatStats.addWindow(6, LanguageManager.getString("GUIs.Statistics.Combat.TitlePage").replace("%tool", ChatWriter.getDisplayName(item))
+					GUI.Window currentPage = combatStats.addWindow(6,
+							LanguageManager.getString("GUIs.Statistics.Combat.TitlePage")
+									.replace("%tool", ChatWriter.getDisplayName(item))
 							.replace("%pageNo", String.valueOf(++pageNo)));
 
 					int i = 0;
@@ -151,7 +169,9 @@ public class ItemStatisticsHandler implements Listener {
 
 						if (meta != null) {
 							if (mat == null) meta.setDisplayName(ChatColor.WHITE + t.toString());
-							meta.setLore(Collections.singletonList(ChatColor.WHITE + LanguageManager.getString("GUIs.Statistics.Combat.AmountKilled").replace("%amount", String.valueOf(map.get(t)))));
+							meta.setLore(Collections.singletonList(ChatColor.WHITE
+									+ LanguageManager.getString("GUIs.Statistics.Combat.AmountKilled")
+									.replace("%amount", String.valueOf(map.get(t)))));
 							is.setItemMeta(meta);
 						}
 
@@ -159,7 +179,9 @@ public class ItemStatisticsHandler implements Listener {
 						i++;
 
 						if (i % 28 == 0) {
-							currentPage = combatStats.addWindow(6, LanguageManager.getString("GUIs.Statistics.Combat.TitlePage").replace("%tool", ChatWriter.getDisplayName(item))
+							currentPage = combatStats.addWindow(6,
+									LanguageManager.getString("GUIs.Statistics.Combat.TitlePage")
+											.replace("%tool", ChatWriter.getDisplayName(item))
 									.replace("%pageNo", String.valueOf(++pageNo)));
 
 							GUIs.addNavigationButtons(currentPage);
@@ -167,7 +189,8 @@ public class ItemStatisticsHandler implements Listener {
 						}
 					}
 				}
-				button.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(button, combatStats.getWindow(0)));
+				button.addAction(ClickType.LEFT,
+						new ButtonAction.PAGE_GOTO(button, combatStats.getWindow(0)));
 			}
 		}
 
