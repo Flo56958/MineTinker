@@ -721,13 +721,22 @@ public class ModManager {
 
 		if (meta != null) {
 			if (layout.getBoolean("UsePatternMatcher", false)) {
+
+				char[] specials ={ '/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\' };
 				List<String> oldLore = meta.getLore();
 				if (oldLore != null) {
 					//clean up lore from old MineTinker-Lore
 					ArrayList<String> toRemove = new ArrayList<>();
+					String mod = this.modifierLayout;
+					for (char c : specials) {
+						mod = mod.replaceAll(String.valueOf(c), "\\" + c);
+					}
 					for (String s : oldLore) {
 						boolean removed = false;
 						for (String m : this.loreScheme) {
+							for (char c : specials) {
+								m = m.replaceAll(String.valueOf(c), "\\" + c);
+							}
 							if (s.matches("[§f]{0,2}" +
 									m.replace("%LEVEL%", "[a-zA-Z0-9&§]+?")
 											.replace("%EXP%", "[a-zA-Z0-9&§]+?")
@@ -741,8 +750,7 @@ public class ModManager {
 						if (removed) continue;
 						for (Modifier m : this.mods) {
 							if (s.matches("[§f]{0,2}" +
-									this.modifierLayout.replace("%MODIFIER%",
-											"[a-zA-Z0-9&§]*" + m.getName())
+									mod.replace("%MODIFIER%", "[a-zA-Z0-9&§]*" + m.getName())
 											.replace("%MODLEVEL%", "[a-zA-Z0-9&§]+?"))) {
 								toRemove.add(s);
 								break;
