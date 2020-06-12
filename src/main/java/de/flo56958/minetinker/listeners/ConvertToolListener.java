@@ -23,10 +23,14 @@ public class ConvertToolListener implements Listener {
 		boolean canConvert = false;
 		World world = null;
 
+		HumanEntity humanEntity = null;
+
 		for (HumanEntity human : inv.getViewers()) {
 			if (human.hasPermission("minetinker.tool.create")) {
 				canConvert = true;
 				world = human.getWorld();
+				humanEntity = human;
+				break;
 			}
 		}
 
@@ -56,7 +60,7 @@ public class ConvertToolListener implements Listener {
 
 			if (ToolType.isMaterialCompatible(lastItem.getType())) {
 				inv.setResult(lastItem);
-				modManager.convertItemStack(event.getInventory().getResult());
+				modManager.convertItemStack(event.getInventory().getResult(), humanEntity);
 				inv.getResult().setAmount(1);
 			}
 		}

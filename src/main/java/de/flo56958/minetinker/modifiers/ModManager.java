@@ -10,12 +10,14 @@ import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
+import de.flo56958.minetinker.utils.data.UUIDTagType;
 import de.flo56958.minetinker.utils.datatypes.Pair;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
@@ -777,8 +779,8 @@ public class ModManager {
 	 * @param is The {@link ItemStack} to convert.
 	 * @return If the conversion was successful. Also returns false if the item is already MT compatible.
 	 */
-	@Contract("null -> false")
-	public boolean convertItemStack(ItemStack is) {
+	@Contract("null, _ -> false")
+	public boolean convertItemStack(ItemStack is, @Nullable Entity entity) {
 		if (is == null) return false;
 
 		Material m = is.getType();
@@ -834,6 +836,8 @@ public class ModManager {
 
 		if (!eligible) return false;
 
+		if (entity != null) setCreator(is, entity);
+		DataHandler.setTag(is, "creation_date", System.currentTimeMillis(), PersistentDataType.LONG, false); //Set creation date
 		setExp(is, 0);
 		setLevel(is, 1);
 		setFreeSlots(is, config.getInt("StartingModifierSlots"));
@@ -879,6 +883,18 @@ public class ModManager {
 			}
 		}
 		return true;
+	}
+
+	private void setCreator(ItemStack is, Entity entity) {
+		if (is == null || entity == null) return;
+		DataHandler.setTag(is, "creator", entity.getUniqueId(), UUIDTagType.instance, false);
+	}
+
+	public OfflinePlayer getCreator(ItemStack is) {
+		if (is == null) return null;
+		UUID creator = DataHandler.getTag(is, "creator", UUIDTagType.instance, false);
+		if (creator == null) return null;
+		return Bukkit.getOfflinePlayer(creator);
 	}
 
 	public void addArmorAttributes(@NotNull ItemStack is) {

@@ -76,6 +76,7 @@ ChanceToFailToolUpgrade: 0            #Chance the tool does not get upgraded and
 
 #---------------ITEMBEHAVIOUR--------------
 ItemBehaviour:
+  TrackStatistics: true               #Should MT track statistics for a item
   ShowName: true                      #Shows the name of the ItemStack (if has one) when on the ground
   SetGlowing: true                    #Item glowes on the ground
   SetInvulnerable: true               #Item can not be damaged or destroyed

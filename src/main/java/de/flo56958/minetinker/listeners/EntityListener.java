@@ -1,11 +1,11 @@
 package de.flo56958.minetinker.listeners;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.events.MTEntityDeathEvent;
 import de.flo56958.minetinker.events.MTProjectileHitEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import org.bukkit.Bukkit;
@@ -127,7 +127,7 @@ public class EntityListener implements Listener {
 			for (ItemStack item : event.getDrops()) {
 				Random rand = new Random();
 				if (rand.nextInt(100) < config.getInt("ConvertMobDrops.Chance", 100)) {
-					if (!modManager.convertItemStack(item)) continue;
+					if (!modManager.convertItemStack(item, null)) continue;
 
 					if (config.getBoolean("ConvertMobDrops.ApplyExp", true)) {
 						int exp = rand.nextInt(config.getInt("ConvertMobDrops.MaximumNumberOfExp", 650));

@@ -334,7 +334,7 @@ public class GUIs {
 		}
 	}
 
-	private static void addNavigationButtons(GUI.Window currentPage) {
+	public static void addNavigationButtons(GUI.Window currentPage) {
 		ItemMeta forwardMeta = forwardStack.getItemMeta();
 		if (forwardMeta != null) {
 			forwardMeta.setDisplayName(ChatColor.GREEN + LanguageManager.getString("GUIs.Forward"));

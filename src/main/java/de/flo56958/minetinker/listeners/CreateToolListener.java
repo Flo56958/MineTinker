@@ -91,6 +91,6 @@ public class CreateToolListener implements Listener {
 			currentItem.setAmount(1);
 		}
 
-		modManager.convertItemStack(currentItem);
+		modManager.convertItemStack(event.getInventory().getResult(), player);
 	}
 }

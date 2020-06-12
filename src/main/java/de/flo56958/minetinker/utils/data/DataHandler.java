@@ -56,7 +56,7 @@ public class DataHandler {
         item.setItemMeta(meta);
     }
 
-    public static boolean playerBreakBlock(Player player, Block block) {
+    public static boolean playerBreakBlock(@NotNull Player player, Block block) {
         ItemStack itemStack = player.getInventory().getItemInMainHand();
 
         BlockBreakEvent breakEvent = new BlockBreakEvent(block, player);

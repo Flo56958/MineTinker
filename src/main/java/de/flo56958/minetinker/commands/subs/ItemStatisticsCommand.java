@@ -2,12 +2,14 @@ package de.flo56958.minetinker.commands.subs;
 
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.SubCommand;
+import de.flo56958.minetinker.api.gui.ButtonAction;
 import de.flo56958.minetinker.api.gui.GUI;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
+import de.flo56958.minetinker.utils.ItemStatisticsHandler;
 import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.Bukkit;
@@ -16,6 +18,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
@@ -54,7 +57,10 @@ public class ItemStatisticsCommand implements SubCommand {
 			GUI gui = new GUI();
 			GUI.Window window = gui.addWindow((int) Math.ceil(amount / 9.0), player.getDisplayName());
 			for (int i = 0; i < amount; i++) {
-				window.addButton(i, items.get(i));
+				GUI.Window.Button button = window.addButton(i, items.get(i));
+				GUI statisticGUI = ItemStatisticsHandler.getGUI(items.get(i));
+				button.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(button, Objects.requireNonNull(statisticGUI.getWindow(0))));
+
 			}
 			gui.show((Player) sender);
 		} else {

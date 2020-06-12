@@ -1,5 +1,6 @@
 package de.flo56958.minetinker;
 
+import de.flo56958.minetinker.api.gui.GUI;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.data.Lists;
@@ -8,7 +9,6 @@ import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.types.*;
 import de.flo56958.minetinker.utils.*;
 import de.flo56958.minetinker.utils.hooks.CoreProtectIntegration;
-import de.flo56958.minetinker.api.gui.GUI;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -95,6 +95,10 @@ public class MineTinker extends JavaPlugin {
 
 		if (getConfig().getBoolean("actionbar-on-exp-gain", false)) {
 			Bukkit.getPluginManager().registerEvents(new ActionBarListener(), this);
+		}
+
+		if (getConfig().getBoolean("ItemBehaviour.TrackStatistics", true)) {
+			Bukkit.getPluginManager().registerEvents(new ItemStatisticsHandler(), this);
 		}
 
 		ChatWriter.log(false, LanguageManager.getString("StartUp.Events"));
