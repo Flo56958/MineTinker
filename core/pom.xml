@@ -12,7 +12,7 @@
     <artifactId>MineTinker-Core</artifactId>
     <description>A TinkersConstruct (and other mods) inspired server plugin</description>
     <url>https://flo56958.github.io/MineTinker</url>
-    <version>1.5.1</version>
+    <version>1.5.2</version>
 
     <parent>
         <groupId>de.flo56958</groupId>
