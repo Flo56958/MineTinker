@@ -1,4 +1,8 @@
 Alert.OnItemBreak: "%RED%Il semblerait que votre outil se soit cassé! Ré-assemblage avec une durabilité de 1."
+Alert.OnItemGrind: "%RED%Tu ne peux pas utiliser le Grindstone avec les outils MineTinker !"
+Alert.ToolUpgradeFailure: "%RED%L'upgrade n'a pas fonctionné !"
+Alert.InternalError: "%RED%Erreur interne !"
+Alert.OnCooldown: ""
 
 StartUp.Commands: "Commandes enregistrées !"
 StartUp.BuildersWands: "Outil de construction Activé!"
@@ -10,6 +14,8 @@ StartUp.DebugLogging: "Le mode Debug est activée Vous devriez le désactiver da
 StartUp.Incompatible:
   Start: "Démarrage de la recherche de plugins incompatibles... Vous pouvez désactiver cette fonctionnalité dans la configuration principale!"
   Found: "%plugin trouvé. Modifications de MineTinker pour une meilleure compatibilité!"
+StartUp.CoreProtect.Success: ""
+StartUp.CoreProtect.Failure: ""
 
 Builderswand.NameWood: "Outil de construction en bois"
 Builderswand.NameStone: "Outil de construction en pierre"
@@ -28,8 +34,6 @@ Commands.Info.Line2: "il est inspiré par différents mods (Ex: TinkersConstruct
 Commands.InvalidArguments: "Vous avez entrer un argument de commande invalide!"
 Commands.InvalidTool: "Vous devez avoir un outil valide dans votre main principale pour exécuter cette commande!"
 Commands.NoPermission: "Vous n'avez pas la permission pour effectuer cette action!"
-Commands.Help.Website: "Pour plus d'aide visiter:"
-Commands.Help.Discord: "Ou demander sur le serveur discord MineTinker"
 Commands.Reload.Note1: "Note: Il est possible que le plugin ne fonctionne pas correctement après le rechargement! Il est recommandé de redémarrer le serveur!"
 Commands.Reload.Recipes: "Recettes effacer!"
 Commands.Reload.Configs: "Configuration recharger!"
@@ -52,17 +56,18 @@ Commands.Failure.Cause.InvalidArguments: ""
 Commands.Failure.Cause.NumberFormatException: ""
 Commands.Failure.Cause.PlayerOnlyCommand: ""
 Commands.Failure.Cause.UnknownCommand: ""
-Commands.Failure.Cause.NoPermission: ""
+Commands.Failure.Cause.NoPermission: "Pas la permission !"
 Commands.Failure.Cause.InvalidItem: ""
+Commands.Failure.Cause.NameNotAllowed: ""
 
 GUI.ButtonAction.REQUEST_INPUT: "Votre entrée est requise pour %data. Le prochain message que vous allez envoyer sera enregistré par MineTinker et sera votre entrée."
 
-GUIs.Forward: "Avant"
+GUIs.Forward: "Suivant"
 GUIs.Back: "Retour"
 GUIs.LeftClick: "Clique gauche"
 GUIs.RightClick: "Clique droit"
 GUIs.MiddleClick: "Clique molette"
-GUIs.BackOtherMenu: "Retour à l'autre Menu"
+GUIs.BackOtherMenu: "Retour au menu principal"
 GUIs.Modifiers.Title: "MineTinker-Modificateur, %pageNo"
 GUIs.Modifiers.MaxLevel: "Niveau Maximal: %maxLevel"
 GUIs.Modifiers.WorksOn: "Fonctionne en:"
@@ -71,6 +76,7 @@ GUIs.Modifiers.IncompatibleWith: "Incompatible avec:"
 GUIs.Modifiers.EnchantCost: "Coût de l'enchantement: %WHITE%%enchantCost"
 GUIs.Modifiers.ClickToRecipe: "%key pour voir la recette d'un craft."
 GUIs.Modifiers.BlockToEnchant: "%key avec %mat sur %block pour enchanter l’item."
+GUIs.Modifiers.SlotCost: ""
 GUIs.ConfigurationEditor.ReloadPlugin: "Recharge MineTinker"
 GUIs.ConfigurationEditor.Change: "Modification de %key de %old à %new !"
 GUIs.ConfigurationEditor.Type: "Type: %type"
@@ -97,13 +103,19 @@ GUIs.ConfigurationEditor.config.logging.metrics: "bStats-Métriques pour statist
 
 ModManager.RegisterModifier: "%GREEN%Enregistrement du %mod %GREEN%modificateur de %plugin."
 ModManager.UnregisterModifier: "%GREEN%Non enregistré le %mod %GREEN%modifier de %plugin."
+ModManager.IncompatibilityWrongSyntax: ""
 
 ModifierFailCause.IncompatibleModifiers: "Modifications Incompatibles !"
 ModifierFailCause.InvalidToolType: "Type d’outil invalide !"
 ModifierFailCause.MaximumSlotsReached: "Quantité maximum d'emplacements atteints !"
 ModifierFailCause.ModMaxLevel: "Le modificateur est déjà au niveau maximum !"
-ModifierFailCause.NoFreeSlots: "Pas de slots libres sur l’item!"
+ModifierFailCause.NoFreeSlots: "Pas assez de slots de libre sur l'item !"
 ModifierFailCause.NoPermission: "Pas la permission !"
+ModifierFailCause.PlayerFailure: ""
+
+GrindStone.PossibleSlotsAfterGrind: ""
+
+ActionBar.ExpGain: "%amount exp gagné"
 
 LanguageManager.LoadedLanguage: "LanguageManager charger %lang successfully!"
 
@@ -117,7 +129,7 @@ Modifier:
   Enchantable:
     LevelsRequired: "%amount Niveaux requis !"
   Anti-Arrow-Plating:
-    Name: "Paque-Anti-Flèche"
+    Name: "Plaque-Anti-Flèche"
     Description: "Armure atténuant les dégâts de projectiles!"
     ModifierItemName: "Métal résistant à la perforation"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Plaque Anti-Flèche"
@@ -156,17 +168,32 @@ Modifier:
     Description: "Le butin des mobs tués va directement dans votre inventaire !"
     ModifierItemName: "Compas Enchanté"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Niffleur"
+  Drilling:
+    Name: "Perceur"
+    Description: "Perce d'un block plus profond par level !"
+    ModifierItemName: "Perceur renforcé"
+    DescriptionModifierItem: "Objet Modificateur pour la modification Perceur"
   Ender:
     Name: "Ender"
     Description: "Vous téléporte tout en se faufilant à l’emplacement d’atterrissage des flèches!"
     ModifierItemName: "Oeil de l'end spécial"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Ender"
+    TeleportationProhibited: ""
+  Evasive:
+    Name: "Esquive"
+    Description: "Vous donne une chance d'esquiver les attaques (%chance par level). %sneakX en sneak, %sprintX en courant, %pvpX en PvP"
+    ModifierItemName: "Plume d'ésquive"
+    DescriptionModifierItem: "Objet Modificateur pour la Modification Esquive"
   Experienced:
     Name: "Expérimenté"
     Description: "L’outil a %chance% chances par niveau de déposer %amount XP tout en l’utilisant!"
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Extra-Modifier:
     Name: "Modificateur-Supplémentaire"
     Description: "Ajoute %amount Slots de Modification supplémentaires à l'outil !"
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Fiery:
     Name: "Enflammé"
     Description: "Un modificateur pour tous les brûler !"
@@ -179,12 +206,17 @@ Modifier:
     DescriptionModifierItem: "Objet Modificateur pour la Modification Congélation"
   Glowing:
     Name: "Brillant"
-    Description: "Fais briller les ennemis !"
+    Description: ""
     ModifierItemName: "Pierre-End-Lumineux"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Brillant"
+  Hardened:
+    Name: "Endurcis"
+    Description: "Endurcis votre armure par %aamount en protection et en ténacité par %tamount points par level!"
+    ModifierItemName: "Diamant endurcis"
+    DescriptionModifierItem: "Objet Modificateur pour la Modification Endurcis"
   Haste:
     Name: "Hâte"
-    Description: "Détruisez les blocs et tirez arbalètes plus vite!"
+    Description: "Détruisez les blocs et tirez avec votre arbalètes plus vite!"
     ModifierItemName: "Bloc de Redstone Compressé"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Hâte"
   Infinity:
@@ -199,22 +231,22 @@ Modifier:
     DescriptionModifierItem: "Objet Modificateur pour la Modification Isolant"
   KineticPlating:
     Name: "Plaque Cinétique"
-    Description: "Réduit les dommages subis en tombant avec un Elytra de %amount% par niveau."
+    Description: "Réduit les dommages subis en tombant avec unu paire d'Elytre de %amount% par niveau."
     ModifierItemName: "Plaque Cinétique"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Plaque Cinétique"
   Knockback:
     Name: "Repoussement"
-    Description: "Repoussez vos ennemis à chaque coup de poing !"
+    Description: "Repoussez vos ennemis à chaque coups !"
     ModifierItemName: "TNT Enchantée"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Repoussement"
   Lifesteal:
     Name: "Sangsue"
-    Description: "Vous guérit de %amount% des dommages infligés. %chance% de ce déclancher."
+    Description: "Vous guérit de %amount% des dommages infligés. %chance% de chance de se déclencher."
     ModifierItemName: "Netherrack Infusé de sang"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Sangsue"
   Light-Weight:
     Name: "Poids-Plume"
-    Description: "Tu tombes comme une plume - une sorte de..."
+    Description: "Tu tombes comme une plume..."
     ModifierItemName: "Plume Enchantée"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Poids-Plume"
   Luck:
@@ -237,6 +269,11 @@ Modifier:
     Description: "Tir une flèche de plus par niveau par coup!"
     ModifierItemName: "Flèche Multiple"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Tir-Multiple"
+  Nightseeker:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Photosynthesis:
     Name: "Photosynthèse"
     Description: "Réparez votre item avec %amount durabilité par niveau chaque %ticks tiques en restant immobile alors que le soleil brille. Plus vous restez longtemps, plus les réparations sont rapides. (%multiplier%)"
@@ -272,9 +309,21 @@ Modifier:
     Description: "Chance de ne pas utiliser la durabilité lors de l’utilisation de l’outil / armure! Rend l’outil plus durable!"
     ModifierItemName: "Obsidienne Comprimée"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Renforcement"
+  Scotopic:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
+  Shadow-Dive:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
+    LightToHigh: ""
+    InCombat: ""
   Self-Repair:
     Name: "Auto-Réparation"
-    Description: "%chance% de chance par niveau de réparer l'outil / armure avec %quantité de durabilité tout en l'utilisant ou en le réparant !"
+    Description: ""
     ModifierItemName: "Pierre Moussue Enchantée"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Réparation"
   Sharpness:
@@ -282,9 +331,14 @@ Modifier:
     Description: "L’arme fait des dégâts supplémentaires à tout le monde!"
     ModifierItemName: "Bloc de Quartz Compressé "
     DescriptionModifierItem: "Objet Modificateur pour la Modification Tranchant"
+  Shrouded:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Shulking:
     Name: "Shulking"
-    Description: "Faire léviter et immobiliser les ennemis pour %duration tiques! L’effet devient plus fort à chaque niveau."
+    Description: "Faire léviter et immobiliser les ennemis pour %duration ticks! L’effet devient plus fort à chaque niveau."
     ModifierItemName: "Boîte de Shulker Enchantée"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Shulking"
   Silk-Touch:
@@ -304,7 +358,7 @@ Modifier:
     DescriptionModifierItem: "Objet Modificateur pour la Modification Lié à l'Âme"
   Speedy:
     Name: "Accélérant"
-    Description: "Je dois aller vite! Vous fait marcher et sprint %montant% plus rapide par niveau!"
+    Description: "Je dois aller vite! Vous fait marcher et sprint %amount% plus rapide par niveau !"
     ModifierItemName: "Peau de Lapin Enchanté"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Accélérant"
   Spiders-Bane:
@@ -312,9 +366,14 @@ Modifier:
     Description: "L’arme fait des dégâts supplémentaires aux araignées !"
     ModifierItemName: "Oeil d'araignée nettoyée"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Fléau des Araignées"
+  Sunblazer:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Sweeping:
     Name: "Balayage"
-    Description: "Infliger plus de dégâts sur une plus grande zone!"
+    Description: "Infligez plus de dégâts sur une plus grande zone!"
     ModifierItemName: "Lingot de fer enchanté"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Balayage"
   Tanky:
@@ -324,19 +383,30 @@ Modifier:
     DescriptionModifierItem: "Objet Modificateur pour la Modification Tank"
   Thorned:
     Name: "Epineux"
-    Description: "Votre armure blesse les autres lorsqu'ils vous frappent!"
+    Description: "Votre armure blesse les autres lorsqu'ils vous frappent !"
     ModifierItemName: "Plaque à Pointes"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Épines "
   Timber:
     Name: "Charpente"
-    Description: "Coupe les arbres en un instant!"
+    Description: "Coupe les arbres en un instant !"
     ModifierItemName: "Emeraude en bois"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Charpente"
+  Void-Netting:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
+    CouldNotFindBlock: ""
   Webbed:
     Name: "Toile"
-    Description: "Ralentissez les ennemis lorsque vous les frappez ou qu’ils vous frappent pour %duratiion Tique * %multiplier par niveau!"
+    Description: "Ralentissez les ennemis lorsque vous les frappez ou qu’ils vous frappent pour %duration ticks x %multiplier par niveau !"
     ModifierItemName: "Toile d'araignée compressée"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Toile"
+  Withered:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
 
 DataType.Boolean: "Booléen (vrai/faux)"
 DataType.String: "Ficelle"
