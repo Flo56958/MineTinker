@@ -66,7 +66,7 @@ public class LanguageManager {
 	@NotNull
 	public static String getString(@NotNull String path) {
 		String ret = langFile.getString(path);
-		if (ret == null) {
+		if (ret == null || ret.equals("")) {
 			ret = langBackup.getString(path, "");
 		}
 		return ChatWriter.addColors(ret);
@@ -85,7 +85,7 @@ public class LanguageManager {
 			YamlConfiguration langFile = loadLanguage(player.getLocale());
 			if (langFile != null) {
 				String ret = langFile.getString(path);
-				if (ret != null) {
+				if (ret != null && !ret.equals("")) {
 					return ChatWriter.addColors(ret);
 				}
 			}
