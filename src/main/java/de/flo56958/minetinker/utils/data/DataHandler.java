@@ -2,9 +2,11 @@ package de.flo56958.minetinker.utils.data;
 
 import de.flo56958.minetinker.MineTinker;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -16,6 +18,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,28 +59,46 @@ public class DataHandler {
         item.setItemMeta(meta);
     }
 
-    public static boolean playerBreakBlock(@NotNull Player player, Block block) {
-        ItemStack itemStack = player.getInventory().getItemInMainHand();
-
+    public static boolean playerBreakBlock(@NotNull Player player, Block block, @NotNull ItemStack itemStack) {
+        //Trigger BlockBreakEvent
         BlockBreakEvent breakEvent = new BlockBreakEvent(block, player);
         Bukkit.getPluginManager().callEvent(breakEvent);
 
-        if (!breakEvent.isCancelled() && block.breakNaturally(itemStack)) {
+        //Check if Event got cancelled and if not destroy the block and check if the player can successfully break the blocks (incl. drops)
+        //Block#breakNaturally(ItemStack itemStack) can not be used as it drops Items itself (without Event and we don't want that)
+        if (!breakEvent.isCancelled()) {
+            //Get all drops to drop
             Collection<ItemStack> items = block.getDrops(itemStack);
 
-            List<Item> itemEntities = items.stream().map(entry ->
-                    (Item)player.getWorld().spawnEntity(player.getLocation(), EntityType.DROPPED_ITEM)).collect(Collectors.toList());
+            //Set Block to Material.AIR (effectively breaks the Block)
+            block.setType(Material.AIR);
+            //TODO: Play Sound?
 
-            BlockDropItemEvent event = new BlockDropItemEvent(block, block.getState(), player, itemEntities);
-            Bukkit.getPluginManager().callEvent(event);
+            //Check if items need to be dropped
+            if (breakEvent.isDropItems()) {
+                List<Item> itemEntities = items.stream()
+                        .map(entry -> player.getWorld().dropItemNaturally(block.getLocation(), entry)) //World#spawnEntity() does not work for Items
+                        .collect(Collectors.toList());
 
-            if (!event.isCancelled()) {
-                for (Item item : event.getItems()) {
-                    player.getWorld().dropItemNaturally(block.getLocation(), item.getItemStack());
+                //Trigger BlockDropItemEvent (internally also used for Directing)
+                BlockDropItemEvent event = new BlockDropItemEvent(block, block.getState(), player, new ArrayList<>(itemEntities));
+                Bukkit.getPluginManager().callEvent(event);
+
+                //check if Event got cancelled
+                if (!event.isCancelled()) {
+                    //Remove all drops that should be dropped
+                    itemEntities.removeIf(element -> event.getItems().contains(element));
                 }
+                itemEntities.forEach(Item::remove);
             }
 
-            // TODO: drop experience
+            //Check if Exp needs to be dropped
+            //TODO: Get real Exp amount for the Event somehow from the block
+            if (breakEvent.getExpToDrop() > 0) {
+                //Spawn Experience Orb
+                ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
+                orb.setExperience(breakEvent.getExpToDrop());
+            }
 
             return true;
         }

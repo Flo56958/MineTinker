@@ -1,8 +1,8 @@
 package de.flo56958.minetinker.listeners;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.types.Power;
 import de.flo56958.minetinker.utils.PlayerInfo;
@@ -81,7 +81,7 @@ public class EasyHarvestListener implements Listener {
 				if (b1.getBlockData() instanceof Ageable) {
 					Ageable blockOneAgeable = (Ageable) b1.getBlockData();
 					if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
-						breakBlock(b1, player);
+						breakBlock(b1, player, tool);
 						replantCrops(player, b1, type);
 					}
 				}
@@ -89,7 +89,7 @@ public class EasyHarvestListener implements Listener {
 				if (b2.getBlockData() instanceof Ageable) {
 					Ageable blockTwoAgeable = (Ageable) b2.getBlockData();
 					if (b2.getType().equals(block.getType()) && (blockTwoAgeable.getAge() == blockTwoAgeable.getMaximumAge())) {
-						breakBlock(b2, player);
+						breakBlock(b2, player, tool);
 						replantCrops(player, b2, type);
 					}
 				}
@@ -106,7 +106,7 @@ public class EasyHarvestListener implements Listener {
 							Ageable blockOneAgeable = (Ageable) b1.getBlockData();
 
 							if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
-								breakBlock(b1, player);
+								breakBlock(b1, player, tool);
 								replantCrops(player, b1, type);
 							}
 						}
@@ -115,7 +115,7 @@ public class EasyHarvestListener implements Listener {
 			}
 		}
 
-		breakBlock(block, player);
+		breakBlock(block, player, tool);
 		replantCrops(player, block, type);
 
 		Power.HAS_POWER.get(player).set(false);
@@ -164,8 +164,8 @@ public class EasyHarvestListener implements Listener {
 		}
 	}
 
-	private static void breakBlock(Block block, Player player) {
-		DataHandler.playerBreakBlock(player, block);
+	private static void breakBlock(Block block, Player player, ItemStack tool) {
+		DataHandler.playerBreakBlock(player, block, tool);
 	}
 
 	@EventHandler

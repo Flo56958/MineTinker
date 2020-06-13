@@ -1,9 +1,9 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTBlockBreakEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -168,7 +168,7 @@ public class Drilling extends Modifier implements Listener {
 
 		BlockFace face = Lists.BLOCKFACE.get(player).getOppositeFace();
 		for (int i = 1; i <= level; i++) {
-			if (!drillingBlockBreak(block.getRelative(face, i), block, player)) break;
+			if (!drillingBlockBreak(block.getRelative(face, i), block, player, tool)) break;
 		}
 
 		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType() + ")", "Blockface(" + face.toString() + ")");
@@ -176,7 +176,7 @@ public class Drilling extends Modifier implements Listener {
 		HAS_DRILLING.get(player).set(false); // so the effect of drilling is not disabled for the Player
 	}
 
-	private boolean drillingBlockBreak(Block block, Block centralBlock, Player player) {
+	private boolean drillingBlockBreak(Block block, Block centralBlock, Player player, ItemStack tool) {
 		if (treatAsWhitelist ^ blacklist.contains(block.getType())) {
 			return false;
 		}
@@ -189,7 +189,6 @@ public class Drilling extends Modifier implements Listener {
 			return false; //So Obsidian can not be mined using Cobblestone and Power
 		}
 
-		DataHandler.playerBreakBlock(player, block);
-		return true;
+		return DataHandler.playerBreakBlock(player, block, tool);
 	}
 }

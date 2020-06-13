@@ -1,10 +1,10 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.events.MTPlayerInteractEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -201,43 +201,43 @@ public class Power extends Modifier implements Listener {
 					if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
 						Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
 						Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
-						powerBlockBreak(b1, block, player);
-						powerBlockBreak(b2, block, player);
+						powerBlockBreak(b1, block, player, tool);
+						powerBlockBreak(b2, block, player, tool);
 					} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
 						Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
 						Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
-						powerBlockBreak(b1, block, player);
-						powerBlockBreak(b2, block, player);
+						powerBlockBreak(b1, block, player, tool);
+						powerBlockBreak(b2, block, player, tool);
 					}
 				} else {
 					Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
 					Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, -1, 0));
-					powerBlockBreak(b1, block, player);
-					powerBlockBreak(b2, block, player);
+					powerBlockBreak(b1, block, player, tool);
+					powerBlockBreak(b2, block, player, tool);
 				}
 			} else if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
 				if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
 					Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
 					Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
-					powerBlockBreak(b1, block, player);
-					powerBlockBreak(b2, block, player);
+					powerBlockBreak(b1, block, player, tool);
+					powerBlockBreak(b2, block, player, tool);
 				} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
 					Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
 					Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
-					powerBlockBreak(b1, block, player);
-					powerBlockBreak(b2, block, player);
+					powerBlockBreak(b1, block, player, tool);
+					powerBlockBreak(b2, block, player, tool);
 				}
 			} else if (Lists.BLOCKFACE.get(player).equals(BlockFace.NORTH)
 					|| Lists.BLOCKFACE.get(player).equals(BlockFace.SOUTH)) {
 				Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
 				Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
-				powerBlockBreak(b1, block, player);
-				powerBlockBreak(b2, block, player);
+				powerBlockBreak(b1, block, player, tool);
+				powerBlockBreak(b2, block, player, tool);
 			} else if (Lists.BLOCKFACE.get(player).equals(BlockFace.WEST) || Lists.BLOCKFACE.get(player).equals(BlockFace.EAST)) {
 				Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
 				Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
-				powerBlockBreak(b1, block, player);
-				powerBlockBreak(b2, block, player);
+				powerBlockBreak(b1, block, player, tool);
+				powerBlockBreak(b2, block, player, tool);
 			}
 		} else {
 			HAS_POWER.get(player).set(true);
@@ -247,7 +247,7 @@ public class Power extends Modifier implements Listener {
 					for (int z = -(level - 1); z <= (level - 1); z++) {
 						if (!(x == 0 && z == 0)) {
 							Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
-							powerBlockBreak(b1, block, player);
+							powerBlockBreak(b1, block, player, tool);
 						}
 					}
 				}
@@ -257,7 +257,7 @@ public class Power extends Modifier implements Listener {
 					for (int y = -(level - 1); y <= (level - 1); y++) {
 						if (!(x == 0 && y == 0)) {
 							Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, y, 0));
-							powerBlockBreak(b1, block, player);
+							powerBlockBreak(b1, block, player, tool);
 						}
 					}
 				}
@@ -266,7 +266,7 @@ public class Power extends Modifier implements Listener {
 					for (int y = -(level - 1); y <= (level - 1); y++) {
 						if (!(z == 0 && y == 0)) {
 							Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, y, z));
-							powerBlockBreak(b1, block, player);
+							powerBlockBreak(b1, block, player, tool);
 						}
 					}
 				}
@@ -352,7 +352,7 @@ public class Power extends Modifier implements Listener {
 		HAS_POWER.get(player).set(false);
 	}
 
-	private void powerBlockBreak(Block block, Block centralBlock, Player player) {
+	private void powerBlockBreak(Block block, Block centralBlock, Player player, ItemStack tool) {
 		if (treatAsWhitelist ^ blacklist.contains(block.getType())) {
 			return;
 		}
@@ -365,6 +365,6 @@ public class Power extends Modifier implements Listener {
 			return; //So Obsidian can not be mined using Cobblestone and Power
 		}
 
-		DataHandler.playerBreakBlock(player, block);
+		DataHandler.playerBreakBlock(player, block, tool);
 	}
 }

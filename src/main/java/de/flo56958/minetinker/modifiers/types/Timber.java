@@ -1,9 +1,9 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTBlockBreakEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -116,7 +116,7 @@ public class Timber extends Modifier implements Listener {
 				Power.HAS_POWER.get(player).set(true);
 				ArrayList<Location> locs = new ArrayList<>();
 				locs.add(block.getLocation());
-				breakTree(player, block, Collections.singletonList(block.getType()), locs);
+				breakTree(player, tool, block, Collections.singletonList(block.getType()), locs);
 			}
 		} else {
 			ArrayList<Material> allowed = new ArrayList<>();
@@ -169,14 +169,14 @@ public class Timber extends Modifier implements Listener {
 			Power.HAS_POWER.get(player).set(true);
 			ArrayList<Location> locs = new ArrayList<>();
 			locs.add(block.getLocation());
-			breakTree(player, block, allowed, locs);
+			breakTree(player, tool, block, allowed, locs);
 		}
 		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType().toString() + ")");
 
 		Power.HAS_POWER.get(player).set(false);
 	}
 
-	private void breakTree(Player player, Block block, List<Material> allowed, List<Location> locs) { //TODO: Improve algorythm and performance -> async?
+	private void breakTree(Player player, ItemStack tool, Block block, List<Material> allowed, List<Location> locs) { //TODO: Improve algorithm and performance -> async?
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dy = -1; dy <= 1; dy++) {
 				for (int dz = -1; dz <= 1; dz++) {
@@ -199,8 +199,8 @@ public class Timber extends Modifier implements Listener {
 
 					Block toBreak = player.getWorld().getBlockAt(loc);
 					if (allowed.contains(toBreak.getType())) {
-						breakTree(player, toBreak, allowed, locs);
-						DataHandler.playerBreakBlock(player, toBreak);
+						breakTree(player, tool, toBreak, allowed, locs);
+						DataHandler.playerBreakBlock(player, toBreak, tool);
 					}
 				}
 			}

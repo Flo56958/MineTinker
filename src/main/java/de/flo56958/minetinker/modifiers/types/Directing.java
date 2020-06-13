@@ -1,11 +1,12 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDeathEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Item;
@@ -108,25 +109,23 @@ public class Directing extends Modifier implements Listener {
 		}
 
 		Iterator<Item> itemIterator = event.getItems().iterator();
-		Item next;
 
 		while (itemIterator.hasNext()) {
-			next = itemIterator.next();
+			Item item = itemIterator.next();
 
-			HashMap<Integer, ItemStack> refusedItems = player.getInventory().addItem(next.getItemStack());
+			HashMap<Integer, ItemStack> refusedItems = player.getInventory().addItem(item.getItemStack());
 
 			if (!refusedItems.isEmpty()) {
 				for (ItemStack itemStack : refusedItems.values()) {
-					if (player.getInventory().addItem(itemStack).size() != 0) { //adds items to (full) inventory
-						player.getWorld().dropItem(player.getLocation(), itemStack);
-					} // no else as it gets added in if-clause
+					player.getWorld().dropItem(player.getLocation(), itemStack);
 				}
 			}
 
 			itemIterator.remove();
 		}
+		Location loc = event.getBlock().getLocation();
 		ChatWriter.logModifier(player, event, this, tool,
-				"Block(" + event.getBlock().getType().toString() + ")");
+				String.format("Block(%d/%d/%d)", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
 	}
 
 	@EventHandler
