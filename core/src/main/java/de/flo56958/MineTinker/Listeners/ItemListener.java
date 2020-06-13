@@ -130,10 +130,14 @@ public class ItemListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onItemBreak(PlayerItemBreakEvent event) {
 		Player player = event.getPlayer();
 		ItemStack item = event.getBrokenItem();
+
+		if (!Main.getPlugin().getConfig().getBoolean("UnbreakableTools", true)) {
+			return;
+		}
 
 		if (Lists.WORLDS.contains(player.getWorld().getName())) {
 			return;
@@ -143,11 +147,11 @@ public class ItemListener implements Listener {
 			return;
 		}
 
-		if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.StopBreakEvent")) {
+		if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.StopBreakEvent", true)) {
 			return;
 		}
 
-		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.AlertPlayerOnBreak")) {
+		if (Main.getPlugin().getConfig().getBoolean("ItemBehaviour.AlertPlayerOnBreak", true)) {
 			player.sendMessage(LanguageManager.getString("Alert.OnItemBreak", player));
 		}
 
