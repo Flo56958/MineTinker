@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.listeners;
 
-import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.LanguageManager;
@@ -129,10 +129,14 @@ public class ItemListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onItemBreak(PlayerItemBreakEvent event) {
 		Player player = event.getPlayer();
 		ItemStack item = event.getBrokenItem();
+
+		if (!MineTinker.getPlugin().getConfig().getBoolean("UnbreakableTools", true)) {
+			return;
+		}
 
 		if (Lists.WORLDS.contains(player.getWorld().getName())) {
 			return;
@@ -142,11 +146,11 @@ public class ItemListener implements Listener {
 			return;
 		}
 
-		if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.StopBreakEvent")) {
+		if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.StopBreakEvent", true)) {
 			return;
 		}
 
-		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.AlertPlayerOnBreak")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.AlertPlayerOnBreak", true)) {
 			player.sendMessage(LanguageManager.getString("Alert.OnItemBreak", player));
 		}
 
