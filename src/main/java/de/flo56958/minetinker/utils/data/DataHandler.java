@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Item;
@@ -21,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class DataHandler {
@@ -62,6 +64,8 @@ public class DataHandler {
     public static boolean playerBreakBlock(@NotNull Player player, Block block, @NotNull ItemStack itemStack) {
         //Trigger BlockBreakEvent
         BlockBreakEvent breakEvent = new BlockBreakEvent(block, player);
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta != null && meta.hasEnchant(Enchantment.SILK_TOUCH)) breakEvent.setExpToDrop(calculateExp(block.getType()));
         Bukkit.getPluginManager().callEvent(breakEvent);
 
         //Check if Event got cancelled and if not destroy the block and check if the player can successfully break the blocks (incl. drops)
@@ -93,7 +97,6 @@ public class DataHandler {
             }
 
             //Check if Exp needs to be dropped
-            //TODO: Get real Exp amount for the Event somehow from the block
             if (breakEvent.getExpToDrop() > 0) {
                 //Spawn Experience Orb
                 ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
@@ -104,5 +107,25 @@ public class DataHandler {
         }
 
         return false;
+    }
+
+    private static int calculateExp(Material type) {
+        //TODO: Find better method then hardcoded values
+        switch(type) {
+            case COAL_ORE: //0-2
+                return new Random().nextInt(3);
+            case DIAMOND_ORE: //3-7
+            case EMERALD_ORE:
+                return new Random().nextInt(5) + 3;
+            case NETHER_QUARTZ_ORE: //2-5
+            case LAPIS_ORE:
+                return new Random().nextInt(4) + 2;
+            case REDSTONE_ORE: //1-5
+                return new Random().nextInt(4) + 1;
+            case SPAWNER: //15-43
+                return new Random().nextInt(29) + 15;
+            default:
+                return 0;
+        }
     }
 }
