@@ -14,6 +14,8 @@ StartUp.DebugLogging: "Debug Logging ist aktiviert. Sie sollten es in der Konfig
 StartUp.Incompatible:
   Start: "Die Suche nach inkompatiblen Plugins wurde gestartet... Du kannst diese Funktion jederzeit in der Haupt-Konfiguration abschalten!"
   Found: "%plugin wurde gefunden. MineTinker versucht die Konfigurationen für beste Kompatibilität anzupassen!"
+StartUp.CoreProtect.Success: "CoreProtect wurde gefunden und die Integration wurde aktiviert!"
+StartUp.CoreProtect.Failure: "CoreProtect wurde gefunden aber die API hat eine falsche Version"
 
 Builderswand.NameWood: "Hölzerner Baumeisterstab"
 Builderswand.NameStone: "Steinerner Baumeisterstab"
@@ -32,8 +34,6 @@ Commands.Info.Line2: "Es ist inspiriert von verschiedenen Modifikationen (z.B. T
 Commands.InvalidArguments: "Sie haben ungültige Befehlsargumente eingegeben!"
 Commands.InvalidTool: "Sie müssen ein valides Item in der Haupthand halten, um diesen Befehl auszuführen!"
 Commands.NoPermission: "Du hast nicht die erforderlichen Befugnisse, um diese Aktion durchzuführen!"
-Commands.Help.Website: "Für mehr tiefgründige Hilfe besuche:"
-Commands.Help.Discord: "Oder frage auf dem offiziellen MineTinker-Discordserver nach:"
 Commands.Reload.Note1: "BEACHTE: Es ist möglich, dass das Plugin nach einem Neuladen nicht mehr richtig funktioniert und es zu Fehlern kommen könnte. Ein Neustarten des Servers ist empfohlen!"
 Commands.Reload.Recipes: "Entfernen der Crafting Rezepte!"
 Commands.Reload.Configs: "Neuladen der Konfigurationen!"
@@ -333,7 +333,7 @@ Modifier:
     DescriptionModifierItem: "Modifizierungs-Item für die Schärfe-Modifizierung"
   Shrouded:
     Name: "Verhüllt"
-    Description: "Erschafft eine Partikelwolke, die alle innerhalb erblindet, für %durationmin - %durationmax Sekunden an der Pfeilauftrittstelle! Synergiert mit anderen Modifikationen."
+    Description: ""
     ModifierItemName: "Rauchige Flasche"
     DescriptionModifierItem: "Modifizierungs-Item für die Verhüllt-Modifikation"
   Shulking:
