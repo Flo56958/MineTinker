@@ -1,15 +1,14 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.PlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
-import org.bukkit.Difficulty;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
@@ -171,9 +170,7 @@ public class Magical extends Modifier implements Listener {
 			arrow.remove();
 		}, 10 * 20L);
 
-		if (arrow.getWorld().getDifficulty() != Difficulty.PEACEFUL) {
-			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), arrow::remove, 2);
-		}
+		//TODO: Find a way to hide the arrow from clients
 	}
 
 	@EventHandler

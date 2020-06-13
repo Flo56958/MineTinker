@@ -28,7 +28,7 @@ public class Soulbound extends Modifier implements Listener {
 	private static Soulbound instance;
 	//Must be UUID as if the Player reconnects the Player-Object gets recreated and is not the same anymore
  	private final HashMap<UUID, ArrayList<ItemStack>> storedItemStacks = new HashMap<>(); //saves ItemStacks until reload (if the player does not respawn instantly)
-	private boolean toolDropable;
+	private boolean toolDroppable;
 	private boolean decrementModLevelOnUse;
 	private int percentagePerLevel;
 
@@ -95,7 +95,7 @@ public class Soulbound extends Modifier implements Listener {
 
 		init(Material.BEACON);
 
-		this.toolDropable = config.getBoolean("ToolDropable", true);
+		this.toolDroppable = config.getBoolean("ToolDropable", true);
 		this.decrementModLevelOnUse = config.getBoolean("DecrementModLevelOnUse", false);
 		this.percentagePerLevel = config.getInt("PercentagePerLevel", 100);
 	}
@@ -200,7 +200,7 @@ public class Soulbound extends Modifier implements Listener {
 			return;
 		}
 
-		if (toolDropable) {
+		if (toolDroppable) {
 			return;
 		}
 
