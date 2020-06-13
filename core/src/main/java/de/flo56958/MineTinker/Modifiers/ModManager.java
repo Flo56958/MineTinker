@@ -722,26 +722,20 @@ public class ModManager {
 		if (meta != null) {
 			if (layout.getBoolean("UsePatternMatcher", false)) {
 
-				char[] specials ={ '/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\' };
 				List<String> oldLore = meta.getLore();
 				if (oldLore != null) {
 					//clean up lore from old MineTinker-Lore
 					ArrayList<String> toRemove = new ArrayList<>();
-					String mod = this.modifierLayout;
-					for (char c : specials) {
-						mod = mod.replaceAll(String.valueOf(c), "\\" + c);
-					}
+					String mod = "\\Q" + this.modifierLayout + "\\E";
 					for (String s : oldLore) {
 						boolean removed = false;
 						for (String m : this.loreScheme) {
-							for (char c : specials) {
-								m = m.replaceAll(String.valueOf(c), "\\" + c);
-							}
+							m = "\\Q" + m + "\\E";
 							if (s.matches("[§f]{0,2}" +
-									m.replace("%LEVEL%", "[a-zA-Z0-9&§]+?")
-											.replace("%EXP%", "[a-zA-Z0-9&§]+?")
-											.replace("%FREE_SLOTS%", "[a-zA-Z0-9&§]+?")
-											.replace("%NEXT_LEVEL_EXP%", "[a-zA-Z0-9&§]+?"))) {
+									m.replace("%LEVEL%", "\\E[a-zA-Z0-9&§]+?\\Q")
+											.replace("%EXP%", "\\E[a-zA-Z0-9&§]+?\\Q")
+											.replace("%FREE_SLOTS%", "\\E[a-zA-Z0-9&§]+?\\Q")
+											.replace("%NEXT_LEVEL_EXP%", "\\E[a-zA-Z0-9&§]+?\\Q"))) {
 								toRemove.add(s);
 								removed = true;
 								break;
@@ -750,8 +744,8 @@ public class ModManager {
 						if (removed) continue;
 						for (Modifier m : this.mods) {
 							if (s.matches("[§f]{0,2}" +
-									mod.replace("%MODIFIER%", "[a-zA-Z0-9&§]*" + m.getName())
-											.replace("%MODLEVEL%", "[a-zA-Z0-9&§]+?"))) {
+									mod.replace("%MODIFIER%", "\\E.+\\Q" + m.getName())
+											.replace("%MODLEVEL%", "\\E[a-zA-Z0-9&§]+?\\Q"))) {
 								toRemove.add(s);
 								break;
 							}
