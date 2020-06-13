@@ -286,7 +286,7 @@ Modifier:
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Przeszycie\""
   Poisonous:
     Name: "Trutka"
-    Description: "Zatruwa cel na %duration tików * %multiplier na poziom!"
+    Description: "Zatruwa cel na %duration Tików * %multiplier na poziom!"
     ModifierItemName: "Zaklęte Zgniłe Mięso"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Trutka\""
   Power:
@@ -338,7 +338,7 @@ Modifier:
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Zasłona\""
   Shulking:
     Name: "Shulkering"
-    Description: "Spraw, by wrogowie lewitowali i byli nieruchomi na %duration tików! Efekt staje się silniejszy z każdym poziomem."
+    Description: "Spraw, by wrogowie lewitowali i byli nieruchomi na %duration Tików! Efekt staje się silniejszy z każdym poziomem."
     ModifierItemName: "Ulepszona Skorupa Shulkera"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Shulkering\""
   Silk-Touch:
@@ -399,7 +399,7 @@ Modifier:
     CouldNotFindBlock: "Nie można znaleźć bezpiecznego miejsca do teleportacji!"
   Webbed:
     Name: "Płetwonogi"
-    Description: "Spowolnij wrogów, gdy ich trafisz lub trafią cię oni na %duration tików * %multiplier na poziom!"
+    Description: "Spowolnij wrogów, gdy ich trafisz lub trafią cię oni na %duration Tików * %multiplier na poziom!"
     ModifierItemName: "Skompresowana Pajęczyna"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Płetwonogi\""
   Withered:
