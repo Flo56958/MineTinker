@@ -143,6 +143,9 @@ public class Tanky extends Modifier implements Listener {
 			health = DataHandler.getTag(chest, "modifier_berserk_health_save", PersistentDataType.DOUBLE, false);
 			if (health != null) {
 				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> event.getPlayer().setHealth(health), 10L);
+				DataHandler.removeTag(chest, "modifier_berserk_health_save", false);
+			} else {
+				return;
 			}
 		} else {
 			chest = event.getPlayer().getInventory().getLeggings();
@@ -150,6 +153,9 @@ public class Tanky extends Modifier implements Listener {
 				health = DataHandler.getTag(chest, "modifier_berserk_health_save", PersistentDataType.DOUBLE, false);
 				if (health != null) {
 					Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> event.getPlayer().setHealth(health), 10L);
+					DataHandler.removeTag(chest, "modifier_berserk_health_save", false);
+				} else {
+					return;
 				}
 			} else {
 				return;

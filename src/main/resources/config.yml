@@ -45,6 +45,7 @@ ExtraExpPerEntityDeath:               #Extra Exp for entity death
   ENDER_DRAGON: 500
   WITHER: 250
 EnableDamageExp: true                 #When true: Sword/Bow will gain XP equal to the damage dealt
+BlockExpCooldownInSeconds: 60         #How much cooldown should the placed block have until it gives Exp again
 
 #---------------TOOL-SETTINGS--------------
 AddModifierSlotsPerLevel: 1           #Amount of new free Modifier-Slots for each Level-Up (must be positive or zero)
@@ -159,8 +160,3 @@ EasyHarvest:
   BannedWorlds:                       #Worlds where EasyHarvest can't be used
     - bannedExample1
     - bannedExample2
-
-#------------------INTEGRATIONS-------------------
-CoreProtect:
-  BlockExpCooldownInSeconds: 60       #How much cooldown should the placed block have until it gives Exp again
-  CheckOnlyForSpecificPlayer: true    #Should the lookup only be for the player that has broken the block or all

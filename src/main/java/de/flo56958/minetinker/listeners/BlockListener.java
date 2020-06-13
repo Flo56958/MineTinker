@@ -1,15 +1,14 @@
 package de.flo56958.minetinker.listeners;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.events.MTPlayerInteractEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.modifiers.types.Power;
 import de.flo56958.minetinker.modifiers.types.SilkTouch;
-import de.flo56958.minetinker.utils.hooks.CoreProtectIntegration;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -21,9 +20,14 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+
+import java.util.List;
 
 public class BlockListener implements Listener {
 
@@ -107,15 +111,34 @@ public class BlockListener implements Listener {
 		FileConfiguration config = MineTinker.getPlugin().getConfig();
 
 		//--------------------------------------EXP-CALCULATIONS--------------------------------------------
-		if (player.getGameMode() != GameMode.CREATIVE && CoreProtectIntegration.checkBlock(player, event.getBlock())) {
-			int expAmount = config.getInt("ExpPerBlockBreak");
-			if (!(!config.getBoolean("ExtraExpPerBlock.ApplicableToSilkTouch")
-					&& modManager.hasMod(tool, SilkTouch.instance()))) {
-				expAmount += config.getInt("ExtraExpPerBlock." + event.getBlock().getType().toString());
-				//adds 0 if not in found in config (negative values are also fine)
+		if (player.getGameMode() != GameMode.CREATIVE) {
+			long cooldown = MineTinker.getPlugin().getConfig().getLong("BlockExpCooldownInSeconds", 60) * 1000;
+			boolean eligible = true;
+			if (cooldown > 0) {
+				List<MetadataValue> blockPlaced = event.getBlock().getMetadata("blockPlaced");
+				for(MetadataValue val : blockPlaced) {
+					if (val == null) continue;
+					if (!MineTinker.getPlugin().equals(val.getOwningPlugin())) continue; //Not MTs value
+
+					Object value = val.value();
+					if (value instanceof Long) {
+						long time = (long) value;
+						eligible = System.currentTimeMillis() - cooldown > time;
+						break;
+					}
+				}
 			}
 
-			modManager.addExp(player, tool, expAmount);
+			if (eligible) {
+				int expAmount = config.getInt("ExpPerBlockBreak");
+				if (!(!config.getBoolean("ExtraExpPerBlock.ApplicableToSilkTouch")
+						&& modManager.hasMod(tool, SilkTouch.instance()))) {
+					expAmount += config.getInt("ExtraExpPerBlock." + event.getBlock().getType().toString());
+					//adds 0 if not in found in config (negative values are also fine)
+				}
+
+				modManager.addExp(player, tool, expAmount);
+			}
 		}
 
 		//-------------------------------------------POWERCHECK---------------------------------------------
@@ -282,5 +305,11 @@ public class BlockListener implements Listener {
 
 		MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
 		Bukkit.getPluginManager().callEvent(interactEvent);
+	}
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+	public void onPlace(BlockPlaceEvent event) {
+		Block block = event.getBlock();
+		block.setMetadata("blockPlaced", new FixedMetadataValue(MineTinker.getPlugin(), System.currentTimeMillis()));
 	}
 }

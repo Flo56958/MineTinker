@@ -34,10 +34,6 @@
             <id>CodeMC</id>
             <url>https://repo.codemc.org/repository/maven-public</url>
         </repository>
-        <repository>
-            <id>coreprotect-repo</id>
-            <url>http://maven.playpro.com/</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -58,12 +54,6 @@
             <artifactId>bstats-bukkit</artifactId>
             <version>1.5</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.coreprotect</groupId>
-            <artifactId>coreprotect</artifactId>
-            <version>2.18.2</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

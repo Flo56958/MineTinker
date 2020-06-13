@@ -7,7 +7,6 @@ prefix: MineTinker
 description: ${project.description}
 website: ${project.url}
 database: false
-softdepend: [CoreProtect]
 api-version: "1.14"
 
 ####################################################

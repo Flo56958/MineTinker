@@ -8,7 +8,6 @@ import de.flo56958.minetinker.listeners.*;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.types.*;
 import de.flo56958.minetinker.utils.*;
-import de.flo56958.minetinker.utils.hooks.CoreProtectIntegration;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -119,8 +118,6 @@ public class MineTinker extends JavaPlugin {
 			Drilling.HAS_DRILLING.computeIfAbsent(current, player -> new AtomicBoolean(false));
 			Lists.BLOCKFACE.put(current, null);
 		}
-
-		CoreProtectIntegration.init();
 
 		if (getConfig().getBoolean("CheckForUpdates")) {
 			Bukkit.getScheduler().scheduleAsyncDelayedTask(this, Updater::checkForUpdate, 20);
