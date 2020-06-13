@@ -6,7 +6,9 @@ import de.flo56958.MineTinker.Main;
 import de.flo56958.MineTinker.Modifiers.ModManager;
 import de.flo56958.MineTinker.Modifiers.Modifier;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,6 +19,7 @@ import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -24,6 +27,48 @@ import java.util.Map;
 public class EnchantingListener implements Listener {
 
 	private final ModManager modManager = ModManager.instance();
+
+	private static final Enchantment fakeEnchant = new Enchantment(new NamespacedKey(Main.getPlugin(), "fake_enchant")) {
+		@Override
+		public @NotNull String getName() {
+			return "MineTinker Fake Enchant";
+		}
+
+		@Override
+		public int getMaxLevel() {
+			return 1;
+		}
+
+		@Override
+		public int getStartLevel() {
+			return 1;
+		}
+
+		@Override
+		public @NotNull EnchantmentTarget getItemTarget() {
+			return EnchantmentTarget.ALL;
+		}
+
+		@Override
+		public boolean isTreasure() {
+			return false;
+		}
+
+		@Override
+		public boolean isCursed() {
+			return false;
+		}
+
+		@Override
+		public boolean conflictsWith(@NotNull Enchantment other) {
+			return false;
+		}
+
+		@Override
+		public boolean canEnchantItem(@NotNull ItemStack item) {
+			return ModManager.instance().isArmorViable(item) || ModManager.instance().isToolViable(item);
+		}
+	};
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onTableEnchant(EnchantItemEvent event) {
@@ -70,6 +115,10 @@ public class EnchantingListener implements Listener {
 		}
 
 		toremove.forEach(enchants::remove);
+		if (enchants.size() == 0) { //This Map should never be empty as the
+			enchants.put(fakeEnchant, 1);
+			Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> event.getItem().removeEnchantment(fakeEnchant), 1);
+		}
 	}
 
 	@EventHandler
