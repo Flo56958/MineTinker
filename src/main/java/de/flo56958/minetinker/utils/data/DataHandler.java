@@ -65,7 +65,7 @@ public class DataHandler {
         //Trigger BlockBreakEvent
         BlockBreakEvent breakEvent = new BlockBreakEvent(block, player);
         ItemMeta meta = itemStack.getItemMeta();
-        if (meta != null && meta.hasEnchant(Enchantment.SILK_TOUCH)) breakEvent.setExpToDrop(calculateExp(block.getType()));
+        if (meta != null && !meta.hasEnchant(Enchantment.SILK_TOUCH)) breakEvent.setExpToDrop(calculateExp(block.getType()));
         Bukkit.getPluginManager().callEvent(breakEvent);
 
         //Check if Event got cancelled and if not destroy the block and check if the player can successfully break the blocks (incl. drops)
