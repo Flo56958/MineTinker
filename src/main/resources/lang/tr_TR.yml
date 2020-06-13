@@ -1,8 +1,4 @@
 Alert.OnItemBreak: "%RED%Görünüşe göre aletin kırılmış! 1 sağlamlıkla geri veriyorum."
-Alert.OnItemGrind: ""
-Alert.ToolUpgradeFailure: ""
-Alert.InternalError: ""
-Alert.OnCooldown: ""
 
 StartUp.Commands: "Kayıtlı komutlar!"
 StartUp.BuildersWands: "İnşaatçı Asaları etkinleştirildi!"
@@ -14,8 +10,6 @@ StartUp.DebugLogging: "Hata Ayıklama Günlüklemesi etkin. Günlükleme'nin iç
 StartUp.Incompatible:
   Start: "Uyuşmayan eklentiler için arama başlatılıyor... Bunu Ana Ayarlar'dan kapatabilirsiniz."
   Found: "%plugin bulundu. En iyi uyumluluk için MineTinker'a ince ayarlar yapılıyor!"
-StartUp.CoreProtect.Success: ""
-StartUp.CoreProtect.Failure: ""
 
 Builderswand.NameWood: "Tahta İnşaatçı Asası"
 Builderswand.NameStone: "Taş İnşaatçı Asası"
@@ -58,7 +52,6 @@ Commands.Failure.Cause.PlayerOnlyCommand: "Komut oyuncuya özel!"
 Commands.Failure.Cause.UnknownCommand: "Bilinmeyen komut!"
 Commands.Failure.Cause.NoPermission: "İzin yok!"
 Commands.Failure.Cause.InvalidItem: "Geçersiz eşya!"
-Commands.Failure.Cause.NameNotAllowed: ""
 
 GUI.ButtonAction.REQUEST_INPUT: "Girişiniz %data için gerekiyor. Sonraki sohbet mesajınız MineTinker tarafından yakalanacak ve girişiniz olacak."
 
@@ -76,7 +69,6 @@ GUIs.Modifiers.IncompatibleWith: "Şunlarla Uyumsuzdur:"
 GUIs.Modifiers.EnchantCost: "Efsun Masrafı: %WHITE%%enchantCost"
 GUIs.Modifiers.ClickToRecipe: "Üretim tarifini göstermek için %key tuşuna basın."
 GUIs.Modifiers.BlockToEnchant: "%mat eşyasını %block bloğunun üzerine %key tuşuyla yerleştirin ve efsunlayın."
-GUIs.Modifiers.SlotCost: ""
 GUIs.ConfigurationEditor.ReloadPlugin: "MineTinker'ı yeniden yükle"
 GUIs.ConfigurationEditor.Change: "%key artık %old değil, %new!"
 GUIs.ConfigurationEditor.Type: "Çeşit: %type"
@@ -103,19 +95,12 @@ GUIs.ConfigurationEditor.config.logging.metrics: "MineTinker'ın anonim kullanı
 
 ModManager.RegisterModifier: "%mod %GREEN%modifikasyonu %plugin %GREEN%tarafından kaydedildi."
 ModManager.UnregisterModifier: "%mod %GREEN%modifikasyonu %plugin %GREEN%tarafından kaldırıldı."
-ModManager.IncompatibilityWrongSyntax: ""
 
 ModifierFailCause.IncompatibleModifiers: "Modifikasyonlar uyuşmuyor!"
 ModifierFailCause.InvalidToolType: "Geçersiz Alet Tipi (ToolType)!"
 ModifierFailCause.MaximumSlotsReached: "Maksimum yuva adedine ulaşıldı!"
 ModifierFailCause.ModMaxLevel: "Modifikasyon zaten maksimum seviyede!"
-ModifierFailCause.NoFreeSlots: ""
 ModifierFailCause.NoPermission: "Yetkin yok!"
-ModifierFailCause.PlayerFailure: ""
-
-GrindStone.PossibleSlotsAfterGrind: ""
-
-ActionBar.ExpGain: ""
 
 LanguageManager.LoadedLanguage: "DilYöneticisi başarıyla %lang dilini yükledi!"
 
@@ -168,32 +153,17 @@ Modifier:
     Description: ""
     ModifierItemName: "Geliştirilmiş Pusula"
     DescriptionModifierItem: "Yönlendirme-Modifikasyonu için Modifikasyon-Eşyası"
-  Drilling:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Ender:
     Name: "Ender"
     Description: "Sen eğilirken okun indiği yere ışınlanırsın!"
     ModifierItemName: "Özel Ender Gözü"
     DescriptionModifierItem: "Ender-Modifikasyonu için Modifikasyon-Eşyası"
-    TeleportationProhibited: ""
-  Evasive:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Experienced:
     Name: "Deneyimli"
     Description: "Alet, onu kullanırken %chance ihtimalle %amount XP düşürür!"
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Extra-Modifier:
     Name: "Ekstra-Modifikasyo"
     Description: "Alete fazladan %amount Modifikasyon-Yuvası ekler!"
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Fiery:
     Name: "Ateşli"
     Description: "Hepsini yakmak için tek modifikasyon!"
@@ -206,14 +176,8 @@ Modifier:
     DescriptionModifierItem: "Dondurma-Modifikasyonu için Modifikasyon-Eşyası"
   Glowing:
     Name: "Parlama"
-    Description: ""
     ModifierItemName: "Ender Parlayan Taş"
     DescriptionModifierItem: "Parlama-Modifikasyonu için Modifikasyon-Eşyası"
-  Hardened:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Haste:
     Name: "Hız"
     Description: "Blokları daha hızlı kır ve arbaletini daha hızlı sık!"
@@ -269,11 +233,6 @@ Modifier:
     Description: "Her seviye başına fazladan bir ok daha sıkın!"
     ModifierItemName: "Çoklu-Ok"
     DescriptionModifierItem: "Çoklu-Sıkım-Modifikasyonu için Modifikasyon-Eşyası"
-  Nightseeker:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Photosynthesis:
     Name: "Fotosentez"
     Description: "Gün ışığı altında dururken, her %ticks tikte bir, eşyanın %amount hasarını tamir et! Ne kadar durursan o kadar hızlı tamir olur. (%%multiplier)"
@@ -309,18 +268,6 @@ Modifier:
     Description: "Bir ihtimalle kullandığın aletin/zırhın sağlamlığını kaybetme! Aleti daha sağlam yapar!"
     ModifierItemName: "Sıkılaştırılmış Obsidyen"
     DescriptionModifierItem: "Sağlamlaştırılmış-Modifikasyonu için Modifikasyon-Eşyası"
-  Scotopic:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-  Shadow-Dive:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    LightToHigh: ""
-    InCombat: ""
   Self-Repair:
     Name: "Kendini-Tamir-Etme"
     Description: ""
@@ -331,11 +278,6 @@ Modifier:
     Description: "Silahın herekese karşı daha çok hasar vuruyor!"
     ModifierItemName: "Sıkılaştırılmış Kuvars Bloğu"
     DescriptionModifierItem: "Keskinlik-Modifikasyonu için Modifikasyon-Eşyası"
-  Shrouded:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Shulking:
     Name: "Yükselme"
     Description: "Düşamnlarını %duration tik boyunca yükselt ve hareketsiz kıl! Bu efekt her seviye artışıyla daha da güçlenir."
@@ -366,11 +308,6 @@ Modifier:
     Description: "Silahın örümceklere daha fazla hasar verir!"
     ModifierItemName: "Temizlenmiş Örümcek Gözü"
     DescriptionModifierItem: "Örümceklerin-Kabusu-Modifikasyonu için Modifikasyon-Eşyası"
-  Sunblazer:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Sweeping:
     Name: "Süpürücü-Kenar"
     Description: "Daha büyük bir bölgeye hasar ver!"
@@ -391,22 +328,11 @@ Modifier:
     Description: "Ağaçları göz açıp kapayıncaya kadar devir!"
     ModifierItemName: "Tahta Zümrüt"
     DescriptionModifierItem: "Oduncu-Modifikasyonu için Modifikasyon-Eşyası"
-  Void-Netting:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    CouldNotFindBlock: ""
   Webbed:
     Name: "Ağlı"
     Description: "Düşmanlar sana vurduğunda ya da sen onlara vurduğunda onları seviye başına %multiplier * %duration tik boyunca yavaşlat!"
     ModifierItemName: "Sıkılaştırılmış Örümcek Ağı"
     DescriptionModifierItem: "Ağlı-Modifikasyonu için Modifikasyon-Eşyası"
-  Withered:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
 
 DataType.Boolean: "Doğruluk (true/false)"
 DataType.String: "Yazı/Dizge"

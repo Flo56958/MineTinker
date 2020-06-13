@@ -185,10 +185,10 @@ public class ItemListener implements Listener {
 			return;
 		}
 
-		if (!Main.getPlugin().getConfig().getBoolean("ItemBehaviour.ConvertItemsOnUse", true)) {
+		if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ConvertItemsOnUse", true)) {
 			return;
 		}
 
-		modManager.convertItemStack(event.getItem());
+		modManager.convertItemStack(event.getItem(), event.getPlayer());
 	}
 }

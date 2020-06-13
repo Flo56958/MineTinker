@@ -14,8 +14,6 @@ StartUp.DebugLogging: "Debug Logging is enabled. You should disable it in the co
 StartUp.Incompatible:
   Start: "Starting search for incompatible Plugins... You can disable this feature in the main config!"
   Found: "%plugin found. Tweaking MineTinker for best compatibility!"
-StartUp.CoreProtect.Success: "Found CoreProtect and enabled Integration!"
-StartUp.CoreProtect.Failure: "Found CoreProtect but API has the wrong version!"
 
 Builderswand.NameWood: "Wooden Builderswand"
 Builderswand.NameStone: "Stone Builderswand"

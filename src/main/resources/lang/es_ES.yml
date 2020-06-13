@@ -1,8 +1,4 @@
 Alert.OnItemBreak: "%RED%Parece que tu herramienta se ha roto! Te la hemos devuelto con 1 de durabilidad!"
-Alert.OnItemGrind: ""
-Alert.ToolUpgradeFailure: ""
-Alert.InternalError: ""
-Alert.OnCooldown: ""
 
 StartUp.Commands: "¡Comandos registrados!"
 StartUp.BuildersWands: "¡Se han activado las varitas de construcción!"
@@ -14,8 +10,6 @@ StartUp.DebugLogging: "¡El registro de depuración está habilitado. Usted pued
 StartUp.Incompatible:
   Start: "Iniciando la busqueda de Plugins incompatibles... ¡Puedes desactivar esta función en la configuración principal!"
   Found: "Se encontró %plugin. ¡Ajustando MineTinker con la mejor compatibilidad!"
-StartUp.CoreProtect.Success: ""
-StartUp.CoreProtect.Failure: ""
 
 Builderswand.NameWood: "Bastón constructor de Madera"
 Builderswand.NameStone: "Bastón constructor de Piedra"
@@ -49,16 +43,7 @@ Commands.ItemStatistics.Level: "%GOLD%Nivel: %WHITE%%level"
 Commands.ItemStatistics.Exp: "%GOLD%Exp: %WHITE%%current / %nextlevel"
 Commands.ItemStatistics.FreeSlots: "%GOLD%Huecos disponibles: %WHITE%%slots"
 Commands.ItemStatistics.Modifiers: "%WHITE%Modificadores:"
-Commands.Failure.Main: ""
-Commands.Failure.Cause.PlayerNotFound: ""
-Commands.Failure.Cause.PlayerMissing: ""
-Commands.Failure.Cause.InvalidArguments: ""
-Commands.Failure.Cause.NumberFormatException: ""
-Commands.Failure.Cause.PlayerOnlyCommand: ""
-Commands.Failure.Cause.UnknownCommand: ""
 Commands.Failure.Cause.NoPermission: "¡Sin permisos!"
-Commands.Failure.Cause.InvalidItem: ""
-Commands.Failure.Cause.NameNotAllowed: ""
 
 GUI.ButtonAction.REQUEST_INPUT: "Su entrada es necesaria para %data. MineTinker capturará el siguiente mensaje de chat que envíe y será su entrada."
 
@@ -76,7 +61,6 @@ GUIs.Modifiers.IncompatibleWith: "Incompatible con:"
 GUIs.Modifiers.EnchantCost: "Costo de encantamiento: %WHITE%%enchantCost"
 GUIs.Modifiers.ClickToRecipe: "%key para mostrar la receta de elaboración."
 GUIs.Modifiers.BlockToEnchant: "%key con %mat sobre %block para encantar el objeto."
-GUIs.Modifiers.SlotCost: ""
 GUIs.ConfigurationEditor.ReloadPlugin: "Recargando MineTinker"
 GUIs.ConfigurationEditor.Change: "¡Cambiado %key de %old a %new!"
 GUIs.ConfigurationEditor.Type: "Tipo: %type"
@@ -103,19 +87,12 @@ GUIs.ConfigurationEditor.config.logging.metrics: "bStats-Metrics para estadísti
 
 ModManager.RegisterModifier: "%GREEN%Registrado el modificador %mod %GREEN%de %plugin."
 ModManager.UnregisterModifier: "%GREEN%Quitando el registro del modificador %mod %GREEN%de %plugin."
-ModManager.IncompatibilityWrongSyntax: ""
 
 ModifierFailCause.IncompatibleModifiers: "¡Modificadores incompatibles!"
 ModifierFailCause.InvalidToolType: "¡Tipo de herramienta inválida!"
 ModifierFailCause.MaximumSlotsReached: "¡Máxima cantidad de slots alcanzada!"
 ModifierFailCause.ModMaxLevel: "¡El modificador ya está al máximo nivel!"
-ModifierFailCause.NoFreeSlots: ""
 ModifierFailCause.NoPermission: "¡Sin permisos!"
-ModifierFailCause.PlayerFailure: ""
-
-GrindStone.PossibleSlotsAfterGrind: ""
-
-ActionBar.ExpGain: ""
 
 LanguageManager.LoadedLanguage: "¡El Manejador de lenguaje a cargado %lang de forma satisfactoria!"
 
@@ -168,32 +145,17 @@ Modifier:
     Description: ""
     ModifierItemName: "Brújula mejorada"
     DescriptionModifierItem: "Item para el modificador Dirigente"
-  Drilling:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Ender:
     Name: "Ender"
     Description: "¡Te teletransporta mientras te escabullas al lugar de aterrizaje de las flechas!"
     ModifierItemName: "Ojo de ender especial"
     DescriptionModifierItem: "Item para el modificador Ender"
-    TeleportationProhibited: ""
-  Evasive:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Experienced:
     Name: "Experimentado"
     Description: "¡La herramienta tiene una probabilidad del %chance% por nivel para dropear %amount de XP mientras se usa!"
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Extra-Modifier:
     Name: "Modificador-Extra"
     Description: "¡Añade %amount hueco adicional para modificadores en la herramienta!"
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Fiery:
     Name: "Fiery"
     Description: "¡Un modificador para quemarlos a todos!"
@@ -206,14 +168,8 @@ Modifier:
     DescriptionModifierItem: "Item para el modificador Congelación"
   Glowing:
     Name: "Glowing"
-    Description: ""
     ModifierItemName: "Glowstone de Ender"
     DescriptionModifierItem: "Item para el modificador Glowing"
-  Hardened:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Haste:
     Name: "Prisa"
     Description: "¡Destruye bloques y dispara ballestas más rápido!"
@@ -269,11 +225,6 @@ Modifier:
     Description: "Dispara una flecha extra por nivel por disparo"
     ModifierItemName: "Múlti-Flecha"
     DescriptionModifierItem: "Item para el modificador Disparo múltiple"
-  Nightseeker:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Photosynthesis:
     Name: "Fotosíntesis"
     Description: "Repara tus objetos con %amount de durabilidad por nivel cada %ticks Ticks cuando estás en el brillo del sol. Cuanto más tiempo te quedes quieto, más rápido se reparará. (%multiplier%)"
@@ -309,18 +260,6 @@ Modifier:
     Description: "¡Posibilidad de no usar durabilidad al usar la herramienta / armadura! ¡Hace que la herramienta sea más duradera!"
     ModifierItemName: "Obsidiana Comprimida"
     DescriptionModifierItem: "Item para el modificador Reforzado"
-  Scotopic:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-  Shadow-Dive:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    LightToHigh: ""
-    InCombat: ""
   Self-Repair:
     Name: "Auto-reparación"
     Description: ""
@@ -331,11 +270,6 @@ Modifier:
     Description: "¡El arma hace daño adicional a todos!"
     ModifierItemName: "Bloque de cuarzo comprimido"
     DescriptionModifierItem: "Item para el modificador para Afilado"
-  Shrouded:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Shulking:
     Name: "Shulking"
     Description: "¡Haz que los enemigos leviten e inmóviles por %duration Ticks de duración! El efecto se hace más fuerte con cada nivel."
@@ -366,11 +300,6 @@ Modifier:
     Description: "¡El arma hace daño adicional a las arañas!"
     ModifierItemName: "Ojo de araña purificado"
     DescriptionModifierItem: "Item para el modificador Perdición para los arácnidos"
-  Sunblazer:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Sweeping:
     Name: "Barrido"
     Description: "¡Inflige más daño en un área mayor!"
@@ -391,22 +320,11 @@ Modifier:
     Description: "¡Corta árboles en un instante!"
     ModifierItemName: "Esmeralda de madera"
     DescriptionModifierItem: "Item para el modificador Enmaderar"
-  Void-Netting:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    CouldNotFindBlock: ""
   Webbed:
     Name: "Enteleñarado"
     Description: "¡Disminuye la velocidad de los enemigos cuando los golpeas o te golpean por %duration Ticks * %multiplier por nivel!"
     ModifierItemName: "Telaraña comprimida"
     DescriptionModifierItem: "Item para el modificador Entelerañado"
-  Withered:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
 
 DataType.Boolean: "Booleano (verdadero / falso)"
 DataType.String: "Cadena"

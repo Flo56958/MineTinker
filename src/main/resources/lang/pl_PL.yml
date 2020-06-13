@@ -14,8 +14,6 @@ StartUp.DebugLogging: "Rejestrowanie debugowania jest włączone. Powinieneś wy
 StartUp.Incompatible:
   Start: "Rozpoczęcie wyszukiwania niezgodnych pluginów... Możesz wyłączyć tę funkcję w głównej konfiguracji!"
   Found: "Znaleziono %plugin. Ulepszenie MineTinker dla najlepszej kompatybilności!"
-StartUp.CoreProtect.Success: "Znaleziono CoreProtect i włączono integrację!"
-StartUp.CoreProtect.Failure: "Znaleziono CoreProtect, ale API ma niewłaściwą wersję!"
 
 Builderswand.NameWood: "Różdżka Budowniczego z drewna"
 Builderswand.NameStone: "Różdżka Budowniczego z kamienia"

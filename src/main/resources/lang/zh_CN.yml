@@ -14,8 +14,6 @@ StartUp.DebugLogging: "调试信息日志已启用. 你应该在在配置文件�
 StartUp.Incompatible:
   Start: "正在搜索%RED%不兼容%WHITE%插件... 你可以在配置文件中关闭这一功能!"
   Found: "%plugin插件已找到. 正在调整MineTinker以获得最佳兼容性!"
-StartUp.CoreProtect.Success: ""
-StartUp.CoreProtect.Failure: "发现了CoreProtect插件，但API版本有误！"
 
 Builderswand.NameWood: "木制建造杖"
 Builderswand.NameStone: "石制建造杖"
@@ -187,12 +185,9 @@ Modifier:
   Experienced:
     Name: "经验加成"
     Description: "使用工具时将有几率掉落更多经验."
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Extra-Modifier:
     Name: "附加模块槽位"
     Description: "增加一个模块槽位."
-    ModifierItemName: ""
     DescriptionModifierItem: "升级模块"
   Fiery:
     Name: "炎上"
@@ -206,7 +201,6 @@ Modifier:
     DescriptionModifierItem: "霜冻模块"
   Glowing:
     Name: "发光"
-    Description: ""
     ModifierItemName: "末影荧石"
     DescriptionModifierItem: "发光模块"
   Hardened:
@@ -269,11 +263,6 @@ Modifier:
     Description: "允许你一发射出更多箭矢, 每增加一级多射击一根."
     ModifierItemName: "集束箭矢"
     DescriptionModifierItem: "多重射击模块"
-  Nightseeker:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Photosynthesis:
     Name: "光合作用"
     Description: "站定在阳光下以修复你的物品. 每%ticks游戏刻恢复%amount耐久. 站定越久回复越快(%multiplier%)."
@@ -309,21 +298,14 @@ Modifier:
     Description: "使用工具时有几率不损耗耐久!"
     ModifierItemName: "压缩黑曜石"
     DescriptionModifierItem: "强化模块"
-  Scotopic:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Shadow-Dive:
     Name: "夜行靴"
     Description: "在暗处潜行以完全隐身！（亮度 <= %level）"
     ModifierItemName: "隐身水晶"
     DescriptionModifierItem: "夜行靴模块"
     LightToHigh: "亮度太高了！"
-    InCombat: ""
   Self-Repair:
     Name: "自我修复"
-    Description: ""
     ModifierItemName: "附魔苔石"
     DescriptionModifierItem: "自我修复模块"
   Sharpness:

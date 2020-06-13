@@ -2,7 +2,6 @@ Alert.OnItemBreak: "%RED%Il semblerait que votre outil se soit cassé! Ré-assem
 Alert.OnItemGrind: "%RED%Tu ne peux pas utiliser le Grindstone avec les outils MineTinker !"
 Alert.ToolUpgradeFailure: "%RED%L'upgrade n'a pas fonctionné !"
 Alert.InternalError: "%RED%Erreur interne !"
-Alert.OnCooldown: ""
 
 StartUp.Commands: "Commandes enregistrées !"
 StartUp.BuildersWands: "Outil de construction Activé!"
@@ -14,8 +13,6 @@ StartUp.DebugLogging: "Le mode Debug est activée Vous devriez le désactiver da
 StartUp.Incompatible:
   Start: "Démarrage de la recherche de plugins incompatibles... Vous pouvez désactiver cette fonctionnalité dans la configuration principale!"
   Found: "%plugin trouvé. Modifications de MineTinker pour une meilleure compatibilité!"
-StartUp.CoreProtect.Success: ""
-StartUp.CoreProtect.Failure: ""
 
 Builderswand.NameWood: "Outil de construction en bois"
 Builderswand.NameStone: "Outil de construction en pierre"
@@ -41,7 +38,7 @@ Commands.Reload.ModManager: "ModManager recharger!"
 Commands.Reload.Builderswands: "Builderswands recharger!"
 Commands.Reload.GUIs: "GUI recharger!"
 Commands.Reload.Finish: "Rechargement finis!"
-Commands.ModList: "Modificateurs possible : "
+Commands.ModList: "Modificateurs possible: "
 Commands.CheckUpdate.Start: "Vérification des mises à jour..."
 Commands.CheckUpdate.Disabled: "La vérification des mises à jour est désactivée par l'administrateur du serveur!"
 Commands.ItemStatistics.Head: "Item-Statistiques pour %toolname"
@@ -49,16 +46,7 @@ Commands.ItemStatistics.Level: "Niveau: %level"
 Commands.ItemStatistics.Exp: "Expérience: %current / %nextlevel"
 Commands.ItemStatistics.FreeSlots: "Slots de Modification Libre: %slots"
 Commands.ItemStatistics.Modifiers: "Modificateurs:"
-Commands.Failure.Main: ""
-Commands.Failure.Cause.PlayerNotFound: ""
-Commands.Failure.Cause.PlayerMissing: ""
-Commands.Failure.Cause.InvalidArguments: ""
-Commands.Failure.Cause.NumberFormatException: ""
-Commands.Failure.Cause.PlayerOnlyCommand: ""
-Commands.Failure.Cause.UnknownCommand: ""
-Commands.Failure.Cause.NoPermission: "Pas la permission !"
-Commands.Failure.Cause.InvalidItem: ""
-Commands.Failure.Cause.NameNotAllowed: ""
+Commands.Failure.Cause.NoPermission: "Pas la permission!"
 
 GUI.ButtonAction.REQUEST_INPUT: "Votre entrée est requise pour %data. Le prochain message que vous allez envoyer sera enregistré par MineTinker et sera votre entrée."
 
@@ -76,7 +64,6 @@ GUIs.Modifiers.IncompatibleWith: "Incompatible avec:"
 GUIs.Modifiers.EnchantCost: "Coût de l'enchantement: %WHITE%%enchantCost"
 GUIs.Modifiers.ClickToRecipe: "%key pour voir la recette d'un craft."
 GUIs.Modifiers.BlockToEnchant: "%key avec %mat sur %block pour enchanter l’item."
-GUIs.Modifiers.SlotCost: ""
 GUIs.ConfigurationEditor.ReloadPlugin: "Recharge MineTinker"
 GUIs.ConfigurationEditor.Change: "Modification de %key de %old à %new !"
 GUIs.ConfigurationEditor.Type: "Type: %type"
@@ -103,7 +90,6 @@ GUIs.ConfigurationEditor.config.logging.metrics: "bStats-Métriques pour statist
 
 ModManager.RegisterModifier: "%GREEN%Enregistrement du %mod %GREEN%modificateur de %plugin."
 ModManager.UnregisterModifier: "%GREEN%Non enregistré le %mod %GREEN%modifier de %plugin."
-ModManager.IncompatibilityWrongSyntax: ""
 
 ModifierFailCause.IncompatibleModifiers: "Modifications Incompatibles !"
 ModifierFailCause.InvalidToolType: "Type d’outil invalide !"
@@ -111,9 +97,6 @@ ModifierFailCause.MaximumSlotsReached: "Quantité maximum d'emplacements atteint
 ModifierFailCause.ModMaxLevel: "Le modificateur est déjà au niveau maximum !"
 ModifierFailCause.NoFreeSlots: "Pas assez de slots de libre sur l'item !"
 ModifierFailCause.NoPermission: "Pas la permission !"
-ModifierFailCause.PlayerFailure: ""
-
-GrindStone.PossibleSlotsAfterGrind: ""
 
 ActionBar.ExpGain: "%amount exp gagné"
 
@@ -187,13 +170,9 @@ Modifier:
   Experienced:
     Name: "Expérimenté"
     Description: "L’outil a %chance% chances par niveau de déposer %amount XP tout en l’utilisant!"
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Extra-Modifier:
     Name: "Modificateur-Supplémentaire"
     Description: "Ajoute %amount Slots de Modification supplémentaires à l'outil !"
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Fiery:
     Name: "Enflammé"
     Description: "Un modificateur pour tous les brûler !"
@@ -269,11 +248,6 @@ Modifier:
     Description: "Tir une flèche de plus par niveau par coup!"
     ModifierItemName: "Flèche Multiple"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Tir-Multiple"
-  Nightseeker:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Photosynthesis:
     Name: "Photosynthèse"
     Description: "Réparez votre item avec %amount durabilité par niveau chaque %ticks tiques en restant immobile alors que le soleil brille. Plus vous restez longtemps, plus les réparations sont rapides. (%multiplier%)"
@@ -281,17 +255,17 @@ Modifier:
     DescriptionModifierItem: "Objet Modificateur pour la Modification Photosynthèse"
   Piercing:
     Name: "Perforation"
-    Description: "Les flèches traversent plusieurs ennemis !"
+    Description: "Les flèches traversent plusieurs ennemis!"
     ModifierItemName: "Pointe Bodkin"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Perforation"
   Poisonous:
     Name: "Empoisonné"
-    Description: "Empoisonne la cible pour %duration Ticks * %multiplier par niveau !"
+    Description: "Empoisonne la cible pour %duration Ticks * %multiplier par niveau!"
     ModifierItemName: "Chair Putréfiée Enchantée"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Empoisonné"
   Power:
     Name: "Puissance"
-    Description: "Détruisez plus de blocs par utilisation de votre outil !"
+    Description: "Détruisez plus de blocs par utilisation de votre outil!"
     ModifierItemName: "Émeraude Enchantée "
     DescriptionModifierItem: "Objet Modificateur pour la Modification Puissance"
   Propelling:
@@ -309,18 +283,6 @@ Modifier:
     Description: "Chance de ne pas utiliser la durabilité lors de l’utilisation de l’outil / armure! Rend l’outil plus durable!"
     ModifierItemName: "Obsidienne Comprimée"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Renforcement"
-  Scotopic:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-  Shadow-Dive:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    LightToHigh: ""
-    InCombat: ""
   Self-Repair:
     Name: "Auto-Réparation"
     Description: ""
@@ -331,11 +293,6 @@ Modifier:
     Description: "L’arme fait des dégâts supplémentaires à tout le monde!"
     ModifierItemName: "Bloc de Quartz Compressé "
     DescriptionModifierItem: "Objet Modificateur pour la Modification Tranchant"
-  Shrouded:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Shulking:
     Name: "Shulking"
     Description: "Faire léviter et immobiliser les ennemis pour %duration ticks! L’effet devient plus fort à chaque niveau."
@@ -366,11 +323,6 @@ Modifier:
     Description: "L’arme fait des dégâts supplémentaires aux araignées !"
     ModifierItemName: "Oeil d'araignée nettoyée"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Fléau des Araignées"
-  Sunblazer:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Sweeping:
     Name: "Balayage"
     Description: "Infligez plus de dégâts sur une plus grande zone!"
@@ -391,22 +343,11 @@ Modifier:
     Description: "Coupe les arbres en un instant !"
     ModifierItemName: "Emeraude en bois"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Charpente"
-  Void-Netting:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    CouldNotFindBlock: ""
   Webbed:
     Name: "Toile"
     Description: "Ralentissez les ennemis lorsque vous les frappez ou qu’ils vous frappent pour %duration ticks x %multiplier par niveau !"
     ModifierItemName: "Toile d'araignée compressée"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Toile"
-  Withered:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
 
 DataType.Boolean: "Booléen (vrai/faux)"
 DataType.String: "Ficelle"
