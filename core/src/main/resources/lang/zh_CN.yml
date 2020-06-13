@@ -14,6 +14,8 @@ StartUp.DebugLogging: "调试信息日志已启用. 你应该在在配置文件�
 StartUp.Incompatible:
   Start: "正在搜索%RED%不兼容%WHITE%插件... 你可以在配置文件中关闭这一功能!"
   Found: "%plugin插件已找到. 正在调整MineTinker以获得最佳兼容性!"
+StartUp.CoreProtect.Success: ""
+StartUp.CoreProtect.Failure: "发现了CoreProtect插件，但API版本有误！"
 
 Builderswand.NameWood: "木制建造杖"
 Builderswand.NameStone: "石制建造杖"
@@ -32,8 +34,6 @@ Commands.Info.Line2: "本插件受到多个模组的启发! (如: TinkersConstru
 Commands.InvalidArguments: "你输入了无效的命令参数!"
 Commands.InvalidTool: "你需要主手手持有效的工具才能执行该命令!"
 Commands.NoPermission: "你没有权限这么做!"
-Commands.Help.Website: "更多帮助请参阅:"
-Commands.Help.Discord: "或者在官方的MineTinker Discord服务器上面提问吧!"
 Commands.Reload.Note1: "注意: 该插件有可能在重载过后出现问题! 推荐重启服务器!"
 Commands.Reload.Recipes: "正在清除合成表!"
 Commands.Reload.Configs: "正在重载配置文件!"
@@ -187,9 +187,13 @@ Modifier:
   Experienced:
     Name: "经验加成"
     Description: "使用工具时将有几率掉落更多经验."
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Extra-Modifier:
     Name: "附加模块槽位"
     Description: "增加一个模块槽位."
+    ModifierItemName: ""
+    DescriptionModifierItem: "升级模块"
   Fiery:
     Name: "炎上"
     Description: "点燃敌人!"
@@ -202,7 +206,7 @@ Modifier:
     DescriptionModifierItem: "霜冻模块"
   Glowing:
     Name: "发光"
-    Description: "让敌人亮起来吧!"
+    Description: ""
     ModifierItemName: "末影荧石"
     DescriptionModifierItem: "发光模块"
   Hardened:
@@ -265,6 +269,11 @@ Modifier:
     Description: "允许你一发射出更多箭矢, 每增加一级多射击一根."
     ModifierItemName: "集束箭矢"
     DescriptionModifierItem: "多重射击模块"
+  Nightseeker:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Photosynthesis:
     Name: "光合作用"
     Description: "站定在阳光下以修复你的物品. 每%ticks游戏刻恢复%amount耐久. 站定越久回复越快(%multiplier%)."
@@ -300,9 +309,21 @@ Modifier:
     Description: "使用工具时有几率不损耗耐久!"
     ModifierItemName: "压缩黑曜石"
     DescriptionModifierItem: "强化模块"
+  Scotopic:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
+  Shadow-Dive:
+    Name: "夜行靴"
+    Description: "在暗处潜行以完全隐身！（亮度 <= %level）"
+    ModifierItemName: "隐身水晶"
+    DescriptionModifierItem: "夜行靴模块"
+    LightToHigh: "亮度太高了！"
+    InCombat: ""
   Self-Repair:
     Name: "自我修复"
-    Description: "使用工具时其将修复自身! 每一等级增加%chance%的修复几率. 或者由服主决定其是否被赋予经验修复附魔."
+    Description: ""
     ModifierItemName: "附魔苔石"
     DescriptionModifierItem: "自我修复模块"
   Sharpness:
@@ -310,6 +331,11 @@ Modifier:
     Description: "武器将给予更多伤害!"
     ModifierItemName: "压缩石英块"
     DescriptionModifierItem: "锋利模块"
+  Shrouded:
+    Name: "穹顶"
+    Description: "箭射中的地方会产生一朵%durationmin到%durationmax秒的失明效果粒子云。该模块与其他药水效果兼容！"
+    ModifierItemName: "烟雾瓶"
+    DescriptionModifierItem: "穹顶模块"
   Shulking:
     Name: "飘浮"
     Description: "让敌人无法移动且浮空%duration游戏刻! 效果随模块等级增加而加强."
@@ -340,6 +366,11 @@ Modifier:
     Description: "武器对节肢生物有伤害加成!"
     ModifierItemName: "洁净蜘蛛眼"
     DescriptionModifierItem: "节肢杀手模块"
+  Sunblazer:
+    Name: "太阳能"
+    Description: "在太阳照射时造成更多或更少的伤害（%amountmin% - %amountmax%）（取决于等级和太阳高度）。在晚上或末地时，模块效果会被完全颠倒。在下界时会获得最高等级效果！"
+    ModifierItemName: "金质阳光探测器"
+    DescriptionModifierItem: "太阳能模块"
   Sweeping:
     Name: "横扫"
     Description: "横扫覆盖面积更广!"
@@ -360,11 +391,22 @@ Modifier:
     Description: "瞬间伐倒树木!"
     ModifierItemName: "镶木绿宝石"
     DescriptionModifierItem: "伐木模块"
+  Void-Netting:
+    Name: "虚空之网"
+    Description: "当你掉入虚空时，自动将你传送到半径%radius方块的安全区。冷却时间：%cmax到%cmin秒。（取决于模块等级）"
+    ModifierItemName: "虚空之网"
+    DescriptionModifierItem: "虚空之网模块"
+    CouldNotFindBlock: "附近没有安全区，无法传送。"
   Webbed:
     Name: "缠网"
     Description: "当敌人击中你/你击中敌人时, 他们将被施予每级%duration刻的缓慢效果."
     ModifierItemName: "压缩蛛网"
     DescriptionModifierItem: "缠网模块"
+  Withered:
+    Name: "凋零"
+    Description: "给你的攻击目标给予每级%duration Ticks * %multiplier的凋零效果！"
+    ModifierItemName: "复合凋零骷髅头"
+    DescriptionModifierItem: "凋零模块"
 
 DataType.Boolean: "布尔值(真(true)/假(false))"
 DataType.String: "字符串"
