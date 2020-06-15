@@ -7,13 +7,14 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <revision>1.6</revision>
     </properties>
 
     <groupId>de.flo56958</groupId>
     <artifactId>MineTinker</artifactId>
     <description>A TinkersConstruct (and other mods) inspired server plugin</description>
     <url>https://flo56958.github.io/MineTinker</url>
-    <version>1.6</version>
+    <version>${revision}</version>
 
     <developers>
         <developer>
@@ -40,7 +41,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.15.1-R0.1-SNAPSHOT</version>
+            <version>1.15.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -94,8 +95,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
         </plugins>
