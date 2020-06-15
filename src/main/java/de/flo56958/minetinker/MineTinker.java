@@ -103,7 +103,7 @@ public class MineTinker extends JavaPlugin {
 		ChatWriter.log(false, LanguageManager.getString("StartUp.Events"));
 
 		if (getConfig().getBoolean("logging.metrics", true)) {
-			Metrics met = new Metrics(this);
+			Metrics met = new Metrics(this, 	2833);
 			met.addCustomChart(new Metrics.SimplePie("used_language", () -> getConfig().getString("Language", "en_US")));
 		}
 
