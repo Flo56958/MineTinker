@@ -18,7 +18,7 @@ logging:
 chat-messages: true                   #Will turn off command output
 actionbar-messages: true
 actionbar-on-exp-gain: false
-BroadcastConfigChanges: true
+BroadcastConfigChanges: true          #Broadcast config changes via /mt ec
 LanguageManagerNotifyOP: true         #Should the LanguageManager notify the server operators if the language settings might be wrong or incomplete
 
 #--COMMANDS--
