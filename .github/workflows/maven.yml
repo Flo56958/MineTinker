@@ -23,16 +23,16 @@ jobs:
         java-version: 1.8
         
     - name: Preparing pom.xml # <- Only necessary for publishing - changes the revision number dependent on the commit sha
-      if: github.event_name == 'push'
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
       run: sed -i 's/<\/revision>/-${{ github.sha }}<\/revision>/g' ./pom.xml
 
     - name: Build with Maven # <- Executes the MineTinker Maven goal
       run: mvn -B package -e --file pom.xml
       
     - name: Setting up Python for publishing
-      if: github.event_name == 'push'
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
       run: pip3 install requests # Request is needed for publishing over web hook
     
     - name: Publishing Build
-      if: github.event_name == 'push'
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
       run: python3 .github/workflows/scripts/publish.py ./target/MineTinker.jar MineTinker ${{ secrets.DiscordWebHook }} ${{ github.sha }}
