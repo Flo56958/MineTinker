@@ -64,14 +64,14 @@ public class GUIs {
 	}
 
 	public static void reload() {
-		GUI.guis.forEach(GUI::close);
-		GUI.guis.clear(); //TODO: Remove if GUI-class is part of public API
+		if (modGUI != null) modGUI.close();
+		if (configurationsGUI != null) configurationsGUI.close();
 
 		/*/mt mods GUIs*/
 		{
 			int pageNo = 0;
-			modGUI = new GUI();
-			GUI modRecipes = new GUI();
+			modGUI = new GUI(MineTinker.getPlugin());
+			GUI modRecipes = new GUI(MineTinker.getPlugin());
 			GUI.Window currentPage = modGUI.addWindow(6, LanguageManager.getString("GUIs.Modifiers.Title")
 					.replaceFirst("%pageNo", String.valueOf(++pageNo)));
 
@@ -262,7 +262,7 @@ public class GUIs {
 		}
 		/* Main Configuration Manager*/
 		{
-			configurationsGUI = new GUI();
+			configurationsGUI = new GUI(MineTinker.getPlugin());
 			int pageNo = 1;
 			GUI.Window currentPage = configurationsGUI.addWindow(6,
 					LanguageManager.getString("GUIs.ConfigurationEditor.Title")
@@ -357,7 +357,7 @@ public class GUIs {
 	@NotNull
 	private static GUI getGUIforConfig(String configName, GUI.Window backPage) {
 		FileConfiguration config = ConfigurationManager.getConfig(configName);
-		GUI configGUI = new GUI();
+		GUI configGUI = new GUI(MineTinker.getPlugin());
 		int pageNo = 1;
 		GUI.Window currentPage = configGUI.addWindow(6, LanguageManager.getString("GUIs.ConfigurationEditor.TitleConfigs")
 				.replace("%pageNo", String.valueOf(pageNo++)).replace("%config", configName));

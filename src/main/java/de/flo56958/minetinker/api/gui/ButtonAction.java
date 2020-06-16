@@ -78,7 +78,7 @@ public abstract class ButtonAction {
 	public static class PAGE_GOTO extends ButtonAction implements PlayerAction {
 
 		private final int page;
-		private final GUI.Window window;
+		protected final GUI.Window window;
 
 		public PAGE_GOTO(@NotNull GUI.Window.Button button, int page) {
 			super(button);

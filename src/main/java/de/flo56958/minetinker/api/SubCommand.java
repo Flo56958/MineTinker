@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface SubCommand {
+	@SuppressWarnings("SameReturnValue")
 	boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args);
 
 	/**

@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.utils;
 
-import de.flo56958.minetinker.events.*;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.events.*;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import net.md_5.bungee.api.ChatMessageType;
@@ -12,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -162,39 +161,6 @@ public class ChatWriter {
 		}
 
 		player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
-	}
-
-	/**
-	 * Send a message to the players actionbar over a specific period of time
-	 *
-	 * @param player
-	 * @param message
-	 * @param duration in ticks
-	 */
-	public static void sendActionBar(Player player, String message, int duration) { //Extract from the source code of the Actionbar-API (altered)
-		sendActionBar(player, message);
-
-		if (duration >= 0) {
-			// Sends empty message at the end of the duration. Allows messages shorter than 3 seconds, ensures precision.
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					sendActionBar(player, "");
-				}
-			}.runTaskLater(MineTinker.getPlugin(), duration + 1);
-		}
-
-		// Re-sends the messages every 3 seconds so it doesn't go away from the player's screen.
-		while (duration > 40) {
-			duration -= 40;
-
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					sendActionBar(player, message);
-				}
-			}.runTaskLater(MineTinker.getPlugin(), duration);
-		}
 	}
 
 	public static String addColors(@NotNull String input) {

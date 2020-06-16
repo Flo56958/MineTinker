@@ -121,6 +121,7 @@ public class LanguageManager {
 		return getString(path);
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	@Nullable
 	private static YamlConfiguration loadLanguage(@NotNull String lang) {
 		//Load default language file from jar
@@ -141,7 +142,7 @@ public class LanguageManager {
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 			InputStreamReader fileReader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
-			YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(file);
+			YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(fileReader);
 			langConfig.setDefaults(def);
 			langConfig.options().copyDefaults(true);
 

@@ -1,5 +1,6 @@
 package de.flo56958.minetinker.utils;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.gui.ButtonAction;
 import de.flo56958.minetinker.api.gui.GUI;
 import de.flo56958.minetinker.data.GUIs;
@@ -32,7 +33,7 @@ public class ItemStatisticsHandler implements Listener {
 
 	@NotNull
 	public static GUI getGUI(final ItemStack item) {
-		GUI gui = new GUI();
+		GUI gui = new GUI(MineTinker.getPlugin());
 
 		GUI.Window window = gui.addWindow(1,
 				LanguageManager.getString("GUIs.Statistics.Title")
@@ -73,7 +74,7 @@ public class ItemStatisticsHandler implements Listener {
 				}
 
 				//Setting up BlockStats GUI
-				GUI blockStats = new GUI();
+				GUI blockStats = new GUI(MineTinker.getPlugin());
 				{
 					int pageNo = 0;
 					GUI.Window currentPage = blockStats.addWindow(6,
@@ -147,7 +148,7 @@ public class ItemStatisticsHandler implements Listener {
 
 			if (map != null) {
 				//Setting up CombatStats GUI
-				GUI combatStats = new GUI();
+				GUI combatStats = new GUI(MineTinker.getPlugin());
 				{
 					int pageNo = 0;
 					GUI.Window currentPage = combatStats.addWindow(6,

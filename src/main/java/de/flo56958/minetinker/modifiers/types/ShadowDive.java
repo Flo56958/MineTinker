@@ -52,10 +52,11 @@ public class ShadowDive extends Modifier implements Listener {
 		return instance;
 	}
 
-	private Runnable runnable = new Runnable() {
+	private final Runnable runnable = new Runnable() {
 		@Override
 		public void run() {
 			Iterator<Player> iterator = activePlayers.iterator();
+			//noinspection WhileLoopReplaceableByForEach
 			while (iterator.hasNext()) {
 				Player p = iterator.next();
 				Location loc = p.getLocation();
@@ -178,6 +179,7 @@ public class ShadowDive extends Modifier implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	public void onTarget(EntityTargetLivingEntityEvent event) {
 		if (event.getTarget() instanceof Player) {
+			//noinspection SuspiciousMethodCalls
 			if (activePlayers.contains(event.getTarget())) {
 				event.setCancelled(true);
 			}

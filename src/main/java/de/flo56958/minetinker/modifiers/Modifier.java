@@ -116,10 +116,6 @@ public abstract class Modifier {
 		return true;
 	}
 
-	public int getCustomModelData() {
-		return customModelData;
-	}
-
 	public abstract String getKey();
 
 	public abstract List<ToolType> getAllowedTools();

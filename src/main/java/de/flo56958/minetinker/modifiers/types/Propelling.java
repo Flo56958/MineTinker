@@ -32,7 +32,7 @@ public class Propelling extends Modifier implements Listener {
 	private boolean useLessDurability;
 
 	private int cooldownInSeconds;
-	private HashMap<String, Long> cooldownTracker = new HashMap<>();
+	private final HashMap<String, Long> cooldownTracker = new HashMap<>();
 
 	private Propelling() {
 		super(MineTinker.getPlugin());

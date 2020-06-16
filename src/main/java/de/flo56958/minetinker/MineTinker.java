@@ -1,6 +1,5 @@
 package de.flo56958.minetinker;
 
-import de.flo56958.minetinker.api.gui.GUI;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.data.Lists;
@@ -14,8 +13,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -24,7 +23,7 @@ public class MineTinker extends JavaPlugin {
 
 	private static JavaPlugin plugin;
 
-	public static Plugin getPlugin() { // necessary to do getConfig() in other classes
+	public static JavaPlugin getPlugin() { // necessary to do getConfig() in other classes
 		return plugin;
 	}
 
@@ -120,7 +119,7 @@ public class MineTinker extends JavaPlugin {
 		}
 
 		if (getConfig().getBoolean("CheckForUpdates")) {
-			Bukkit.getScheduler().scheduleAsyncDelayedTask(this, Updater::checkForUpdate, 20);
+			Bukkit.getScheduler().runTaskLaterAsynchronously(this, (@NotNull Runnable) Updater::checkForUpdate, 20);
 		}
 	}
 
@@ -259,8 +258,7 @@ public class MineTinker extends JavaPlugin {
 
 	public void onDisable() {
 		ChatWriter.logInfo("Shutting down!");
-		LanguageManager.cleanup();
-		GUI.guis.forEach(GUI::close); //To negate exploit that you could use the Items in the GUIs
+		LanguageManager.cleanup(); //TODO: Replace with PluginDisableEvent
 	}
 
 	/**
