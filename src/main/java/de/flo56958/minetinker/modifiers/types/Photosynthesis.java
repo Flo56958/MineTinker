@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
-import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -171,10 +171,6 @@ public class Photosynthesis extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Photosynthesis");
-		config.addDefault("ModifierItemName", "Extracted Chlorophyll");
-		config.addDefault("Description", "Repair your item with %amount durability per level every %ticks Ticks when standing still while the sun shines. The longer you stand still the faster it repairs. (%multiplier%)");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Photosynthesis-Modifier");
 		config.addDefault("Color", "%GREEN%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
@@ -197,8 +193,6 @@ public class Photosynthesis extends Modifier implements Listener {
 		recipeMaterials.put("G", Material.GRASS_BLOCK.name());
 		recipeMaterials.put("V", Material.VINE.name());
 		config.addDefault("Recipe.Materials", recipeMaterials);
-
-		config.addDefault("OverrideLanguagesystem", false);
 
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());

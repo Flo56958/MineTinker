@@ -1,9 +1,9 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -71,10 +71,6 @@ public class Poisonous extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Poisonous");
-		config.addDefault("ModifierItemName", "Enhanced Rotten Flesh");
-		config.addDefault("Description", "Poisons enemies!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Poisonous-Modifier");
 		config.addDefault("Color", "%DARK_GREEN%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
@@ -88,7 +84,6 @@ public class Poisonous extends Modifier implements Listener {
 		config.addDefault("Enchantable", true);
 
 		config.addDefault("Recipe.Enabled", false);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());

@@ -1,8 +1,8 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -56,16 +56,11 @@ public class Lifesteal extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Lifesteal");
-		config.addDefault("ModifierItemName", "Bloodinfused Netherrack");
-		config.addDefault("Description", "Get HP when hitting enemies!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Lifesteal-Modifier");
 		config.addDefault("Color", "%DARK_RED%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
 		config.addDefault("PercentToTrigger", 50);
 		config.addDefault("PercentOfDamagePerLevel", 10);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);

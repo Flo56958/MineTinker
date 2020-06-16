@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
-import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Material;
@@ -54,14 +54,9 @@ public class Thorned extends Modifier {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Thorned");
-		config.addDefault("ModifierItemName", "Spiked Plating");
-		config.addDefault("Description", "Your armor harms others when they damage you!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Thorned-Modifier");
 		config.addDefault("Color", "%DARK_GREEN%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);

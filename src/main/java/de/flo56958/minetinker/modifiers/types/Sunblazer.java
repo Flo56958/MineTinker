@@ -1,9 +1,9 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.events.MTEntityDamageEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -59,15 +59,10 @@ public class Sunblazer extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Sunblazer");
-		config.addDefault("ModifierItemName", "Golden Daylight Detector");
-		config.addDefault("Description", "Deal more or receive less damage (%amountmin% to %amountmax%) when the sun is shining (depends on level and sun position). This effect gets inverted at night!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Sunblazer-Modifier");
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
 		config.addDefault("DamageMultiplierPerLevel", 0.1);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);

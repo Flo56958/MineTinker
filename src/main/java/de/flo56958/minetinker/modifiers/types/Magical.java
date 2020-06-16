@@ -61,10 +61,6 @@ public class Magical extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Magical");
-		config.addDefault("ModifierItemName", "Magic Arrow");
-		config.addDefault("Description", "Shoot a magic orb that is not affected by gravity but flies %amount% slower! If the orb hits a target it does %min% to %max% more damage (depending on level)!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Magical-Modifier");
 		config.addDefault("Color", "%DARK_PURPLE%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
@@ -81,7 +77,6 @@ public class Magical extends Modifier implements Listener {
 		config.addDefault("Recipe.Top", "BPB");
 		config.addDefault("Recipe.Middle", "PAP");
 		config.addDefault("Recipe.Bottom", "BPB");
-		config.addDefault("OverrideLanguagesystem", false);
 
 		Map<String, String> recipeMaterials = new HashMap<>();
 		recipeMaterials.put("B", Material.DRAGON_BREATH.name());

@@ -1,11 +1,11 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.events.MTEntityDamageEvent;
 import de.flo56958.minetinker.events.MTPlayerInteractEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -57,10 +57,6 @@ public class Experienced extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Experienced");
-		config.addDefault("ModifierItemName", "Essence of Experienced");
-		config.addDefault("Description", "Tool has the chance to drop XP while using it!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Experienced-Modifier");
 		config.addDefault("Color", "%GREEN%");
 		config.addDefault("MaxLevel", 10);
 		config.addDefault("SlotCost", 1);
@@ -78,7 +74,6 @@ public class Experienced extends Modifier implements Listener {
 		recipeMaterials.put("E", Material.EXPERIENCE_BOTTLE.name());
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());

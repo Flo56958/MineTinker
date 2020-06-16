@@ -63,17 +63,12 @@ public class Soulbound extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Soulbound");
-		config.addDefault("ModifierItemName", "Powerinfused Beacon");
-		config.addDefault("Description", "Do not lose the tool when dying.");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Soulbound-Modifier");
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 1);
 		config.addDefault("SlotCost", 2);
 		config.addDefault("PercentagePerLevel", 100);
 		config.addDefault("DecrementModLevelOnUse", false);
 		config.addDefault("ToolDropable", true);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);

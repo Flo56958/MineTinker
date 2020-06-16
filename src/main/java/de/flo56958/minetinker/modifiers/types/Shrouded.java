@@ -1,9 +1,9 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.events.MTProjectileHitEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -62,10 +62,6 @@ public class Shrouded extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Shrouded");
-		config.addDefault("ModifierItemName", "Bottle of Smoke");
-		config.addDefault("Description", "Spawns a Particle cloud that blinds for %durationmin to %durationmax seconds were the arrow lands! Synergizes with other potion effect modifier.");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Shrouded-Modifier");
 		config.addDefault("Color", "%DARK_GREEN%");
 		config.addDefault("MaxLevel", 2);
 		config.addDefault("RadiusPerLevel", 1.5);
@@ -86,7 +82,6 @@ public class Shrouded extends Modifier implements Listener {
 		recipeMaterials.put("D", Material.DRAGON_BREATH.name());
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());

@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
-import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Material;
@@ -57,14 +57,10 @@ public class Haste extends Modifier {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Haste");
-		config.addDefault("ModifierItemName", "Compressed Redstoneblock");
-		config.addDefault("Description", "Tool can destroy blocks faster!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Haste-Modifier");
+
 		config.addDefault("Color", "%DARK_RED%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);

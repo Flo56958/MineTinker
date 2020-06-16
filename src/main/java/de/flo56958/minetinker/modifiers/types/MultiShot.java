@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
-import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -67,10 +67,6 @@ public class MultiShot extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Multishot");
-		config.addDefault("ModifierItemName", "Multi-Arrow");
-		config.addDefault("Description", "Shoot more Arrows per shot! (One Arrow more per Level)");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Multishot-Modifier");
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
@@ -85,7 +81,6 @@ public class MultiShot extends Modifier implements Listener {
 		config.addDefault("Recipe.Top", "QQQ");
 		config.addDefault("Recipe.Middle", "AAA");
 		config.addDefault("Recipe.Bottom", "QQQ");
-		config.addDefault("OverrideLanguagesystem", false);
 
 		Map<String, String> recipeMaterials = new HashMap<>();
 		recipeMaterials.put("Q", Material.QUARTZ_BLOCK.name());

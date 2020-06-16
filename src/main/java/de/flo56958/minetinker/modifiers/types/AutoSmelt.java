@@ -1,8 +1,8 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTBlockBreakEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -65,10 +65,6 @@ public class AutoSmelt extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Auto-Smelt");
-		config.addDefault("ModifierItemName", "Enhanced Furnace");
-		config.addDefault("Description", "Chance to smelt ore when mined!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Auto-Smelt-Modifier");
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
@@ -77,7 +73,6 @@ public class AutoSmelt extends Modifier implements Listener {
 		config.addDefault("Particles", true); //Auto-Smelt will create a particle effect when triggered
 		config.addDefault("WorksUnderWater", true);
 		config.addDefault("Toggleable", false);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);

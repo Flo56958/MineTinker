@@ -128,7 +128,6 @@ public class MineTinker extends JavaPlugin {
 		ModManager modManager = ModManager.instance();
 		modManager.register(AntiArrowPlating.instance());
 		modManager.register(AntiBlastPlating.instance());
-		modManager.register(Insulating.instance());
 		modManager.register(Aquaphilic.instance());
 		modManager.register(AutoSmelt.instance());
 		modManager.register(Beheading.instance());
@@ -146,6 +145,7 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(Hardened.instance());
 		modManager.register(Haste.instance());
 		modManager.register(Infinity.instance());
+		modManager.register(Insulating.instance());
 		modManager.register(KineticPlating.instance());
 		modManager.register(Knockback.instance());
 		modManager.register(Lifesteal.instance());

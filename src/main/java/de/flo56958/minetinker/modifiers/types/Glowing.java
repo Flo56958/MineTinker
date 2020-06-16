@@ -1,8 +1,8 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -63,16 +63,11 @@ public class Glowing extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Glowing");
-		config.addDefault("ModifierItemName", "Ender-Glowstone");
-		config.addDefault("Description", "Makes Enemies glow!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Glowing-Modifier");
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
 		config.addDefault("Duration", 200); //ticks INTEGER (20 ticks ~ 1 sec)
 		config.addDefault("DurationMultiplier", 1.4); //Duration * (Multiplier^Level) DOUBLE
-		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);

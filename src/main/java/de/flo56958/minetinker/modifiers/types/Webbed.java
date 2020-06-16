@@ -1,9 +1,9 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.events.MTProjectileHitEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -68,10 +68,6 @@ public class Webbed extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Webbed");
-		config.addDefault("ModifierItemName", "Compressed Cobweb");
-		config.addDefault("Description", "Slowes down enemies!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Webbed-Modifier");
 		config.addDefault("Color", "%WHITE%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
@@ -79,7 +75,6 @@ public class Webbed extends Modifier implements Listener {
 		config.addDefault("DurationMultiplier", 1.2);//Duration * (Multiplier^Level)
 		config.addDefault("EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...)
 		config.addDefault("GivesImmunityToEffect", true);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);

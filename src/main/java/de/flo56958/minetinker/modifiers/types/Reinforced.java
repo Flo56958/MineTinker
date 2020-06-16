@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
-import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Material;
@@ -61,16 +61,11 @@ public class Reinforced extends Modifier {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Reinforced");
-		config.addDefault("ModifierItemName", "Compressed Obsidian");
-		config.addDefault("Description", "Chance to not use durability when using the tool/armor!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Reinforced-Modifier");
 		config.addDefault("Color", "%DARK_GRAY%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
 		config.addDefault("ApplyUnbreakableOnMaxLevel", false);
 		config.addDefault("HideUnbreakableFlag", true);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);

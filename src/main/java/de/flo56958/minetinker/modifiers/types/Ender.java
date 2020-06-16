@@ -1,9 +1,9 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.events.MTProjectileHitEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -69,10 +69,6 @@ public class Ender extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Ender");
-		config.addDefault("ModifierItemName", "Special Endereye");
-		config.addDefault("Description", "Teleports you while sneaking to the arrow location!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Ender-Modifier");
 		config.addDefault("Color", "%DARK_GREEN%");
 		config.addDefault("MaxLevel", 2);
 		config.addDefault("SlotCost", 2);
@@ -82,7 +78,6 @@ public class Ender extends Modifier implements Listener {
 		config.addDefault("NauseaDuration", 5); //seconds
 		config.addDefault("GiveBlindnessOnUse", true);
 		config.addDefault("BlindnessDuration", 3); //seconds
-		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);

@@ -1,8 +1,8 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -69,10 +69,6 @@ public class Withered extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Withered");
-		config.addDefault("ModifierItemName", "Withered Wither Skeleton Skull");
-		config.addDefault("Description", "Wither enemies!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Withered-Modifier");
 		config.addDefault("Color", "%DARK_GRAY%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
@@ -94,7 +90,6 @@ public class Withered extends Modifier implements Listener {
 		recipeMaterials.put("N", Material.NETHER_STAR.name());
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());

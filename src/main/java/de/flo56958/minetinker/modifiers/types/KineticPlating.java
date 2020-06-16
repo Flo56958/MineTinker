@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
-import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -56,10 +56,6 @@ public class KineticPlating extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Kinetic Plating");
-		config.addDefault("ModifierItemName", "Kinetic Plate");
-		config.addDefault("Description", "Reduces the damage taken by crashing with an Elytra by %amount% per Level.");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Kinetic-Plating-Modifier");
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
@@ -78,8 +74,6 @@ public class KineticPlating extends Modifier implements Listener {
 		recipeMaterials.put("P", Material.PHANTOM_MEMBRANE.name());
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
-
-		config.addDefault("OverrideLanguagesystem", false);
 
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());

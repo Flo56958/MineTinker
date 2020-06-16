@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
-import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -61,16 +61,11 @@ public class Berserk extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Berserk");
-		config.addDefault("ModifierItemName", "Bloody Redstone");
-		config.addDefault("Description", "Gain an extra strength boost for %duration seconds when your health drops below %percent%!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Berserk-Modifier");
 		config.addDefault("Color", "%DARK_RED%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
 		config.addDefault("BoostTimeInTicks", 200);
 		config.addDefault("TriggerPercent", 20);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);

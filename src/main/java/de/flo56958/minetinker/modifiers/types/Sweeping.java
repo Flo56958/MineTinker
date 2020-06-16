@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
-import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Material;
@@ -57,10 +57,6 @@ public class Sweeping extends Modifier {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Sweeping");
-		config.addDefault("ModifierItemName", "Enchanted Iron Ingot");
-		config.addDefault("Description", "More damage over a greater area!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Sweeping-Modifier");
 		config.addDefault("Color", "%RED%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
@@ -69,7 +65,6 @@ public class Sweeping extends Modifier {
 		config.addDefault("Enchantable", true);
 
 		config.addDefault("Recipe.Enabled", false);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());

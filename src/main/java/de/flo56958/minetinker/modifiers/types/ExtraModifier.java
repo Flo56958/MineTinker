@@ -1,9 +1,9 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ModifierFailCause;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.ModifierFailEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Material;
@@ -53,13 +53,8 @@ public class ExtraModifier extends Modifier {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Extra-Modifier");
-		config.addDefault("ModifierItemName", "Refined Netherstar");
-		config.addDefault("Description", "Adds a additional Modifiers-Slot to the tool!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Extra-Modifier");
 		config.addDefault("Color", "%WHITE%");
 		config.addDefault("ExtraModifierGain", 1); //How much Slots should be added per Nether-Star
-		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);

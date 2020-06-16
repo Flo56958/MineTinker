@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
-import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -62,10 +62,6 @@ public class Infinity extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Infinity");
-		config.addDefault("ModifierItemName", "Enchanted Arrow");
-		config.addDefault("Description", "You only need one Arrow to shoot a bow and the Trident comes back!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Infinity-Modifier");
 		config.addDefault("MaxLevel", 3); //higher values than 1 have no effect on Infinity
 		config.addDefault("SlotCost", 2);
 		config.addDefault("Color", "%WHITE%");
@@ -74,7 +70,6 @@ public class Infinity extends Modifier implements Listener {
 		config.addDefault("Enchantable", true);
 
 		config.addDefault("Recipe.Enabled", false);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());

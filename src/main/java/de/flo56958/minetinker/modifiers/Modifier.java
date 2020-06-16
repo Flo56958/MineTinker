@@ -180,13 +180,7 @@ public abstract class Modifier {
 		this.maxLvl = config.getInt("MaxLevel");
 		this.slotCost = config.getInt("SlotCost", 1);
 
-		if (!source.equals(MineTinker.getPlugin()) || config.getBoolean("OverrideLanguagesystem", false)) { //use the config values instead
-			this.name = config.getString("Name", "");
-			this.description = ChatWriter.addColors(config.getString("Description", ""));
-
-			this.modItem = modManager.createModifierItem(m, this.color + config.getString("ModifierItemName", ""),
-					ChatWriter.addColors(config.getString("DescriptionModifierItem", "")), this);
-		} else { //normal Languagesystem-Integration
+		if (source.equals(MineTinker.getPlugin())) { //normal Languagesystem-Integration
 			String langStart = "Modifier." + getKey();
 
 			this.name = LanguageManager.getString(langStart + ".Name");
@@ -194,7 +188,12 @@ public abstract class Modifier {
 
 			this.modItem = modManager.createModifierItem(m, this.color + LanguageManager.getString(langStart + ".ModifierItemName"),
 					ChatColor.WHITE + LanguageManager.getString(langStart + ".DescriptionModifierItem"), this);
+		} else { //use the config values instead
+			this.name = config.getString("Name", "");
+			this.description = ChatWriter.addColors(config.getString("Description", ""));
 
+			this.modItem = modManager.createModifierItem(m, this.color + config.getString("ModifierItemName", ""),
+					ChatWriter.addColors(config.getString("DescriptionModifierItem", "")), this);
 		}
 
 		ItemMeta itemMeta = this.modItem.getItemMeta();

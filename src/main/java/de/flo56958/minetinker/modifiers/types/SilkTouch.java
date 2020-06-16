@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
-import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Material;
@@ -56,10 +56,6 @@ public class SilkTouch extends Modifier {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Silk-Touch");
-		config.addDefault("ModifierItemName", "Enhanced Cobweb");
-		config.addDefault("Description", "Applies Silk-Touch!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Silk-Touch-Modifier");
 		config.addDefault("Color", "%WHITE%");
 		config.addDefault("MaxLevel", 1); //IF 2: Epic Spawners work with MT-SilkTouch
 		config.addDefault("SlotCost", 1);
@@ -68,7 +64,6 @@ public class SilkTouch extends Modifier {
 		config.addDefault("Enchantable", true);
 
 		config.addDefault("Recipe.Enabled", false);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());

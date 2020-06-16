@@ -89,14 +89,9 @@ public class Power extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Power");
-		config.addDefault("ModifierItemName", "Enchanted Emerald");
-		config.addDefault("Description", "Tool can destroy more blocks per swing!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Power-Modifier");
 		config.addDefault("Color", "%GREEN%");
 		config.addDefault("Lv1Vertical", false); // Should the 3x1 at level 1 be horizontal (false) or vertical (true)
 		config.addDefault("Toggleable", true);
-		config.addDefault("OverrideLanguagesystem", false);
 		config.addDefault("MaxLevel", 2); // Algorithm for area of effect (except for level 1): (level * 2) - 1 x
 		config.addDefault("SlotCost", 2);
 

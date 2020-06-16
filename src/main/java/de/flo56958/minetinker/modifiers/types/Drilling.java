@@ -60,13 +60,8 @@ public class Drilling extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Drilling");
-		config.addDefault("ModifierItemName", "Reinforced Drill");
-		config.addDefault("Description", "Drill one block deeper into the earth per level!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Drilling-Modifier");
 		config.addDefault("Color", "%GREEN%");
 		config.addDefault("Toggleable", true);
-		config.addDefault("OverrideLanguagesystem", false);
 		config.addDefault("MaxLevel", 4);
 		config.addDefault("SlotCost", 1);
 

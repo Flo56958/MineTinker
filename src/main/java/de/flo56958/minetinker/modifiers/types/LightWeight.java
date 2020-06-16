@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
-import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Material;
@@ -55,10 +55,6 @@ public class LightWeight extends Modifier {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Light-Weight");
-		config.addDefault("ModifierItemName", "Enhanced Feather");
-		config.addDefault("Description", "You fall like a feather - sort of...");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Light-Weight-Modifier");
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 4);
 		config.addDefault("SlotCost", 1);
@@ -67,7 +63,6 @@ public class LightWeight extends Modifier {
 		config.addDefault("Enchantable", true);
 
 		config.addDefault("Recipe.Enabled", false);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());

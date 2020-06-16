@@ -1,8 +1,8 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -62,10 +62,6 @@ public class Evasive extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Evasive");
-		config.addDefault("ModifierItemName", "Quick Feather");
-		config.addDefault("Description", "Chance to dodge incoming attacks (%chance per Level) - %sneakX when sneaking, %sprintX when sprinting, %pvpX when in PvP");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Evasive-Modifier");
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 3);
@@ -75,7 +71,6 @@ public class Evasive extends Modifier implements Listener {
 		config.addDefault("PvPMultiplier", 0.5);
 		config.addDefault("CooldownInSeconds", 5);
 		config.addDefault("Sound", true);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);

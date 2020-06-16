@@ -100,10 +100,6 @@ public class Tanky extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Tanky");
-		config.addDefault("ModifierItemName", "Bloodinfused Obsidian");
-		config.addDefault("Description", "Makes you extra tanky!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Tanky-Modifier");
 		config.addDefault("Color", "%DARK_GRAY%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
@@ -116,7 +112,6 @@ public class Tanky extends Modifier implements Listener {
 		config.addDefault("Recipe.Top", "RBR");
 		config.addDefault("Recipe.Middle", "BOB");
 		config.addDefault("Recipe.Bottom", "RBR");
-		config.addDefault("OverrideLanguagesystem", false);
 
 		Map<String, String> recipeMaterials = new HashMap<>();
 		recipeMaterials.put("B", Material.BONE.name());

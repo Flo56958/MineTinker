@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
-import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Material;
@@ -145,10 +145,6 @@ public class Hardened extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Hardened");
-		config.addDefault("ModifierItemName", "Diamond refined Iron");
-		config.addDefault("Description", "Harden your armor by %aamount and toughness by %tamount per level!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Hardened-Modifier");
 		config.addDefault("Color", "%DARK_GRAY%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
@@ -162,7 +158,6 @@ public class Hardened extends Modifier implements Listener {
 		config.addDefault("Recipe.Top", "D D");
 		config.addDefault("Recipe.Middle", "III");
 		config.addDefault("Recipe.Bottom", "D D");
-		config.addDefault("OverrideLanguagesystem", false);
 
 		Map<String, String> recipeMaterials = new HashMap<>();
 		recipeMaterials.put("D", Material.DIAMOND.name());

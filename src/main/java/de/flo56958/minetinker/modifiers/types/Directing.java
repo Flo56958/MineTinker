@@ -58,17 +58,12 @@ public class Directing extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Directing");
-		config.addDefault("ModifierItemName", "Enhanced Compass");
-		config.addDefault("Description", "Loot goes directly into Inventory!");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Directing-Modifier");
 		config.addDefault("MaxLevel", 1);
 		config.addDefault("SlotCost", 1);
 		config.addDefault("WorksOnXP", true);
 		config.addDefault("MinimumLevelToGetXP", 1); //Modifier-Level to give Player XP
 		config.addDefault("WorkInPVP", true);
 		config.addDefault("Color", "%GRAY%");
-		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);

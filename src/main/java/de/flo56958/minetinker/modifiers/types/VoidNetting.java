@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
-import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -64,10 +64,6 @@ public class VoidNetting extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Void Netting");
-		config.addDefault("ModifierItemName", "Net of the Void");
-		config.addDefault("Description", "Teleports you to a safe place in a radius of %radius blocks per level when you fall into the void. Cooldown: %cmax to %cmin seconds (depends on level)");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Void-Netting-Modifier");
 		config.addDefault("Color", "%DARK_GRAY%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
@@ -76,7 +72,6 @@ public class VoidNetting extends Modifier implements Listener {
 		config.addDefault("CooldownReductionPerLevel", 0.4);
 		config.addDefault("Particles", true);
 		config.addDefault("Sound", true);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);

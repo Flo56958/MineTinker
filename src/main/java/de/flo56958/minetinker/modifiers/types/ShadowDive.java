@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
-import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -102,15 +102,10 @@ public class ShadowDive extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Name", "Shadow Dive");
-		config.addDefault("ModifierItemName", "Vanishing Crystal");
-		config.addDefault("Description", "Vanish completely from sight when sneaking in dark places");
-		config.addDefault("DescriptionModifierItem", "%WHITE%Modifier-Item for the Shadow-Dive-Modifier");
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 1);
 		config.addDefault("SlotCost", 3);
 		config.addDefault("RequiredLightLevel", 6);
-		config.addDefault("OverrideLanguagesystem", false);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
