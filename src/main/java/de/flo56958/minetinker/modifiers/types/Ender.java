@@ -93,8 +93,8 @@ public class Ender extends Modifier implements Listener {
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
 
-		ConfigurationManager.saveConfig(config);
-		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.getInstance().saveConfig(config);
+		ConfigurationManager.getInstance().loadConfig("Modifiers" + File.separator, getFileName());
 
 		init(Material.ENDER_EYE);
 
@@ -194,7 +194,7 @@ public class Ender extends Modifier implements Listener {
 		if (entity instanceof Player) {
 			//Save Players from getting teleported
 			if (entity.hasPermission("minetinker.modifiers.ender.prohibittp")) {
-				ChatWriter.sendActionBar(player, LanguageManager.getString("Modifier.Ender.TeleportationProhibited", player));
+				ChatWriter.sendActionBar(player, LanguageManager.getInstance().getString("Modifier.Ender.TeleportationProhibited", player));
 				ChatWriter.logModifier(player, event, this, tool, "Teleport denied");
 				return;
 			}

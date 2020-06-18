@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class ConvertToolListener implements Listener {
 
-	private static final ModManager modManager = ModManager.instance();
+	private static final ModManager modManager = ModManager.getInstance();
 
 	@EventHandler
 	public void onCraft(PrepareItemCraftEvent event) {

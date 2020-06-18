@@ -3,6 +3,7 @@ package de.flo56958.minetinker.modifiers;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.data.ToolType;
+import de.flo56958.minetinker.events.PluginReloadEvent;
 import de.flo56958.minetinker.events.ToolLevelUpEvent;
 import de.flo56958.minetinker.listeners.ActionBarListener;
 import de.flo56958.minetinker.modifiers.types.*;
@@ -19,9 +20,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
+import org.bukkit.event.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -35,16 +34,135 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class ModManager {
+public class ModManager implements Listener{
 
 	private static FileConfiguration config;
 	private static FileConfiguration layout;
 	private static ModManager instance;
 
-	static {
+	private static ConfigurationManager configurationManager = ConfigurationManager.getInstance().getInstance();
+
+	//TODO: AUTO-DISCOVER RECIPES
+	public final ArrayList<NamespacedKey> recipe_Namespaces = new ArrayList<>();
+	private final HashMap<Modifier, Set<Modifier>> incompatibilities = new HashMap<>();
+	/**
+	 * stores the list of all MineTinker modifiers
+	 */
+	private final HashSet<Modifier> allMods = new HashSet<>();
+	/**
+	 * stores the list of allowed modifiers
+	 */
+	private final ArrayList<Modifier> mods = new ArrayList<>();
+	private String ToolIdentifier;
+	private String ArmorIdentifier;
+	private List<String> loreScheme;
+	private String modifierLayout;
+
+	private boolean allowBookConvert;
+
+	/**
+	 * Class constructor (no parameters)
+	 */
+	private ModManager() {
+	}
+
+	/**
+	 * get the instance that contains the modifier list (VERY IMPORTANT)
+	 *
+	 * @return the instance
+	 */
+	public static @NotNull ModManager getInstance() {
+		synchronized (ModManager.class) {
+			if (instance == null) {
+				instance = new ModManager();
+				Bukkit.getPluginManager().registerEvents(instance, MineTinker.getPlugin());
+			}
+		}
+
+		return instance;
+	}
+
+	public @Nullable Pair<@Nullable Material, @NotNull Integer> itemUpgrader(@NotNull Material tool, Material material) {
+		String name = tool.name().split("_")[0].toLowerCase();
+
+		if (name.equals("wooden") && material.name().contains("PLANKS")
+				|| name.equals("stone") && material == Material.COBBLESTONE
+				|| name.equals("iron") && material == Material.IRON_INGOT
+				|| name.equals("gold") && material == Material.GOLD_INGOT
+				|| name.equals("diamond") && material == Material.DIAMOND
+				|| name.equals("leather") && material == Material.LEATHER
+				|| name.equals("turtle") && material == Material.SCUTE
+				|| name.equals("chainmail") && material == Material.IRON_BARS) {
+			return null;
+		}
+
+		if (ToolType.SWORD.contains(tool)) {
+			return new Pair<>(getToolUpgrade(material, "SWORD"), 2);
+		} else if (ToolType.PICKAXE.contains(tool)) {
+			return new Pair<>(getToolUpgrade(material, "PICKAXE"), 3);
+		} else if (ToolType.AXE.contains(tool)) {
+			return new Pair<>(getToolUpgrade(material, "AXE"), 3);
+		} else if (ToolType.SHOVEL.contains(tool)) {
+			return new Pair<>(getToolUpgrade(material, "SHOVEL"), 1);
+		} else if (ToolType.HOE.contains(tool)) {
+			return new Pair<>(getToolUpgrade(material, "HOE"), 2);
+		} else if (ToolType.HELMET.contains(tool)) {
+			return new Pair<>(getArmorUpgrade(material, "HELMET"), 5);
+		} else if (ToolType.CHESTPLATE.contains(tool)) {
+			return new Pair<>(getArmorUpgrade(material, "CHESTPLATE"), 8);
+		} else if (ToolType.LEGGINGS.contains(tool)) {
+			return new Pair<>(getArmorUpgrade(material, "LEGGINGS"), 7);
+		} else if (ToolType.BOOTS.contains(tool)) {
+			return new Pair<>(getArmorUpgrade(material, "BOOTS"), 4);
+		}
+
+		return null;
+	}
+
+	private @Nullable Material getToolUpgrade(@NotNull Material material, String tool) {
+		switch (material) {
+			case ACACIA_PLANKS:
+			case BIRCH_PLANKS:
+			case DARK_OAK_PLANKS:
+			case JUNGLE_PLANKS:
+			case OAK_PLANKS:
+			case SPRUCE_PLANKS:
+				return Material.getMaterial("WOODEN_" + tool);
+			case COBBLESTONE:
+				return Material.getMaterial("STONE_" + tool);
+			case IRON_INGOT:
+				return Material.getMaterial("IRON_" + tool);
+			case GOLD_INGOT:
+				return Material.getMaterial("GOLDEN_" + tool);
+			case DIAMOND:
+				return Material.getMaterial("DIAMOND_" + tool);
+			default:
+				return null;
+		}
+	}
+
+	private @Nullable Material getArmorUpgrade(@NotNull Material material, String tool) {
+		switch (material) {
+			case LEATHER:
+				return Material.getMaterial("LEATHER_" + tool);
+			case IRON_INGOT:
+				return Material.getMaterial("IRON_" + tool);
+			case GOLD_INGOT:
+				return Material.getMaterial("GOLDEN_" + tool);
+			case DIAMOND:
+				return Material.getMaterial("DIAMOND_" + tool);
+			case IRON_BARS:
+				return Material.getMaterial("CHAINMAIL_" + tool);
+			default:
+				return null;
+		}
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL)
+	private void onReload(PluginReloadEvent event) {
 		config = MineTinker.getPlugin().getConfig();
 
-		layout = ConfigurationManager.getConfig("layout.yml");
+		layout = ConfigurationManager.getInstance().getConfig("layout.yml");
 		layout.options().copyDefaults(true);
 		layout.addDefault("UseRomans.Level", true);
 		layout.addDefault("UseRomans.Exp", false);
@@ -63,9 +181,9 @@ public class ModManager {
 
 		layout.addDefault("ModifierLayout", "%MODIFIER% %WHITE%%MODLEVEL%");
 
-		ConfigurationManager.saveConfig(layout);
+		ConfigurationManager.getInstance().saveConfig(layout);
 
-		FileConfiguration modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
+		FileConfiguration modifierconfig = ConfigurationManager.getInstance().getConfig("Modifiers.yml");
 		modifierconfig.options().copyDefaults(true);
 
 		List<String> incompatibilityList = new ArrayList<>();
@@ -128,139 +246,21 @@ public class ModManager {
 		modifierconfig.addDefault("CommandIgnoresMaxLevel", false);
 		modifierconfig.addDefault("IgnoreIncompatibilityIfModifierAlreadyApplied", true);
 		modifierconfig.addDefault("UseCustomModelData", false);
-		ConfigurationManager.saveConfig(modifierconfig);
-	}
+		ConfigurationManager.getInstance().saveConfig(modifierconfig);
 
-	//TODO: AUTO-DISCOVER RECIPES
-	public final ArrayList<NamespacedKey> recipe_Namespaces = new ArrayList<>();
-	private final HashMap<Modifier, Set<Modifier>> incompatibilities = new HashMap<>();
-	/**
-	 * stores the list of all MineTinker modifiers
-	 */
-	private final HashSet<Modifier> allMods = new HashSet<>();
-	/**
-	 * stores the list of allowed modifiers
-	 */
-	private final ArrayList<Modifier> mods = new ArrayList<>();
-	private String ToolIdentifier;
-	private String ArmorIdentifier;
-	private List<String> loreScheme;
-	private String modifierLayout;
-
-	private boolean allowBookConvert;
-
-	/**
-	 * Class constructor (no parameters)
-	 */
-	private ModManager() {
-	}
-
-	/**
-	 * get the instance that contains the modifier list (VERY IMPORTANT)
-	 *
-	 * @return the instance
-	 */
-	public static @NotNull ModManager instance() {
-		synchronized (ModManager.class) {
-			if (instance == null) {
-				instance = new ModManager();
-				instance.init();
-			}
-		}
-
-		return instance;
-	}
-
-	public static @Nullable Pair<@Nullable Material, @NotNull Integer> itemUpgrader(@NotNull Material tool, Material material) {
-		String name = tool.name().split("_")[0].toLowerCase();
-
-		if (name.equals("wooden") && material.name().contains("PLANKS")
-				|| name.equals("stone") && material == Material.COBBLESTONE
-				|| name.equals("iron") && material == Material.IRON_INGOT
-				|| name.equals("gold") && material == Material.GOLD_INGOT
-				|| name.equals("diamond") && material == Material.DIAMOND
-				|| name.equals("leather") && material == Material.LEATHER
-				|| name.equals("turtle") && material == Material.SCUTE
-				|| name.equals("chainmail") && material == Material.IRON_BARS) {
-			return null;
-		}
-
-		if (ToolType.SWORD.contains(tool)) {
-			return new Pair<>(getToolUpgrade(material, "SWORD"), 2);
-		} else if (ToolType.PICKAXE.contains(tool)) {
-			return new Pair<>(getToolUpgrade(material, "PICKAXE"), 3);
-		} else if (ToolType.AXE.contains(tool)) {
-			return new Pair<>(getToolUpgrade(material, "AXE"), 3);
-		} else if (ToolType.SHOVEL.contains(tool)) {
-			return new Pair<>(getToolUpgrade(material, "SHOVEL"), 1);
-		} else if (ToolType.HOE.contains(tool)) {
-			return new Pair<>(getToolUpgrade(material, "HOE"), 2);
-		} else if (ToolType.HELMET.contains(tool)) {
-			return new Pair<>(getArmorUpgrade(material, "HELMET"), 5);
-		} else if (ToolType.CHESTPLATE.contains(tool)) {
-			return new Pair<>(getArmorUpgrade(material, "CHESTPLATE"), 8);
-		} else if (ToolType.LEGGINGS.contains(tool)) {
-			return new Pair<>(getArmorUpgrade(material, "LEGGINGS"), 7);
-		} else if (ToolType.BOOTS.contains(tool)) {
-			return new Pair<>(getArmorUpgrade(material, "BOOTS"), 4);
-		}
-
-		return null;
-	}
-
-	private static @Nullable Material getToolUpgrade(@NotNull Material material, String tool) {
-		switch (material) {
-			case ACACIA_PLANKS:
-			case BIRCH_PLANKS:
-			case DARK_OAK_PLANKS:
-			case JUNGLE_PLANKS:
-			case OAK_PLANKS:
-			case SPRUCE_PLANKS:
-				return Material.getMaterial("WOODEN_" + tool);
-			case COBBLESTONE:
-				return Material.getMaterial("STONE_" + tool);
-			case IRON_INGOT:
-				return Material.getMaterial("IRON_" + tool);
-			case GOLD_INGOT:
-				return Material.getMaterial("GOLDEN_" + tool);
-			case DIAMOND:
-				return Material.getMaterial("DIAMOND_" + tool);
-			default:
-				return null;
-		}
-	}
-
-	private static @Nullable Material getArmorUpgrade(@NotNull Material material, String tool) {
-		switch (material) {
-			case LEATHER:
-				return Material.getMaterial("LEATHER_" + tool);
-			case IRON_INGOT:
-				return Material.getMaterial("IRON_" + tool);
-			case GOLD_INGOT:
-				return Material.getMaterial("GOLDEN_" + tool);
-			case DIAMOND:
-				return Material.getMaterial("DIAMOND_" + tool);
-			case IRON_BARS:
-				return Material.getMaterial("CHAINMAIL_" + tool);
-			default:
-				return null;
-		}
-	}
-
-	public void reload() {
 		config = MineTinker.getPlugin().getConfig();
-		layout = ConfigurationManager.getConfig("layout.yml");
+		layout = ConfigurationManager.getInstance().getConfig("layout.yml");
 
 		removeRecipes();
 		mods.clear();
 
 		for (Modifier m : allMods) {
-			m.reload();
-
 			if (m.isAllowed()) {
 				mods.add(m);
+				Bukkit.getPluginManager().registerEvents(m, m.getSource());
 			} else {
 				mods.remove(m);
+				HandlerList.unregisterAll(m);
 			}
 		}
 
@@ -270,9 +270,6 @@ public class ModManager {
 		this.ArmorIdentifier = config.getString("ArmorIdentifier");
 
 		removeRecipes();
-		for (Modifier m : this.mods) {
-			m.registerCraftingRecipe();
-		}
 
 		//get Modifier incompatibilities
 		reloadIncompatibilities();
@@ -285,14 +282,14 @@ public class ModManager {
 			}
 		} else {
 			this.loreScheme = new ArrayList<>();
-			this.loreScheme.add(LanguageManager.getString("Commands.ItemStatistics.Level")
+			this.loreScheme.add(LanguageManager.getInstance().getString("Commands.ItemStatistics.Level")
 					.replace("%level", "%LEVEL%"));
-			this.loreScheme.add(LanguageManager.getString("Commands.ItemStatistics.Exp")
+			this.loreScheme.add(LanguageManager.getInstance().getString("Commands.ItemStatistics.Exp")
 					.replace("%current", "%EXP%")
 					.replace("%nextlevel", "%NEXT_LEVEL_EXP%"));
-			this.loreScheme.add(LanguageManager.getString("Commands.ItemStatistics.FreeSlots")
+			this.loreScheme.add(LanguageManager.getInstance().getString("Commands.ItemStatistics.FreeSlots")
 					.replace("%slots", "%FREE_SLOTS%"));
-			this.loreScheme.add(LanguageManager.getString("Commands.ItemStatistics.Modifiers"));
+			this.loreScheme.add(LanguageManager.getInstance().getString("Commands.ItemStatistics.Modifiers"));
 			this.loreScheme.add("%MODIFIERS%");
 		}
 
@@ -302,7 +299,7 @@ public class ModManager {
 	}
 
 	private void reloadIncompatibilities() {
-		FileConfiguration modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
+		FileConfiguration modifierconfig = ConfigurationManager.getInstance().getConfig("Modifiers.yml");
 
 		List<String> possibleKeys = new ArrayList<>();
 		for (Modifier m : this.allMods) {
@@ -311,13 +308,13 @@ public class ModManager {
 		possibleKeys.sort(String::compareToIgnoreCase);
 		possibleKeys.add(0, "Do not edit this list; just for documentation of what Keys can be used under Incompatibilities");
 		modifierconfig.set("PossibleKeys", possibleKeys);
-		ConfigurationManager.saveConfig(modifierconfig);
-		ConfigurationManager.loadConfig("", "Modifiers.yml");
+		ConfigurationManager.getInstance().saveConfig(modifierconfig);
+		ConfigurationManager.getInstance().loadConfig("", "Modifiers.yml");
 		incompatibilities.clear();
 		for (Modifier m : this.allMods) {
 			incompatibilities.putIfAbsent(m, new HashSet<>());
 		}
-		modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
+		modifierconfig = ConfigurationManager.getInstance().getConfig("Modifiers.yml");
 		List<String> incompatibilityList = modifierconfig.getStringList("Incompatibilities");
 		for (String s : incompatibilityList) {
 			String[] splits = s.split(":");
@@ -346,13 +343,6 @@ public class ModManager {
 	}
 
 	/**
-	 * checks and loads all modifiers with configurations settings into memory
-	 */
-	private void init() {
-		reload();
-	}
-
-	/**
 	 * register a new modifier to the list
 	 *
 	 * @param mod the modifier instance
@@ -361,21 +351,14 @@ public class ModManager {
 	public boolean register(Modifier mod) {
 		if (mod == null) return false;
 		if (!allMods.contains(mod)) {
-			mod.reload();
 			allMods.add(mod);
 			if (mod.isAllowed()) {
 				mods.add(mod);
 				mods.sort(Comparator.comparing(Modifier::getName));
-				mod.registerCraftingRecipe();
 			}
-			if (mod instanceof Listener) { //Enable Events
-				Bukkit.getPluginManager().registerEvents((Listener) mod, MineTinker.getPlugin());
-			}
+			Bukkit.getPluginManager().registerEvents(mod, mod.getSource());
 			reloadIncompatibilities();
-			if (!mod.getSource().equals(MineTinker.getPlugin())) {
-				GUIs.reload();
-			}
-			ChatWriter.logColor(LanguageManager.getString("ModManager.RegisterModifier")
+			ChatWriter.logColor(LanguageManager.getInstance().getString("ModManager.RegisterModifier")
 					.replace("%mod", mod.getColor() + mod.getName())
 					.replace("%plugin", mod.getSource().getName()));
 			return true;
@@ -393,10 +376,8 @@ public class ModManager {
 		allMods.remove(mod);
 		mods.remove(mod);
 		incompatibilities.remove(mod);
-		if (mod instanceof Listener) { //Disable Events
-			HandlerList.unregisterAll((Listener) mod);
-		}
-		ChatWriter.logColor(LanguageManager.getString("ModManager.UnregisterModifier")
+		HandlerList.unregisterAll( mod);
+		ChatWriter.logColor(LanguageManager.getInstance().getString("ModManager.UnregisterModifier")
 				.replace("%mod", mod.getColor() + mod.getName())
 				.replace("%plugin", MineTinker.getPlugin().getName()));
 	}
@@ -1120,18 +1101,18 @@ public class ModManager {
 			ItemStack result = it.next().getResult();
 
 			//Modifieritems
-			if (ModManager.instance().isModifierItem(result)) {
+			if (ModManager.getInstance().isModifierItem(result)) {
 				it.remove();
 				continue;
 			}
 
 			//Builderswands
-			if (ModManager.instance().isWandViable(result)) {
+			if (ModManager.getInstance().isWandViable(result)) {
 				it.remove();
 			}
 
 		}
 
-		ModManager.instance().recipe_Namespaces.clear();
+		ModManager.getInstance().recipe_Namespaces.clear();
 	}
 }

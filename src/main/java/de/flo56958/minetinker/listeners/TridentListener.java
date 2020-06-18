@@ -27,11 +27,11 @@ public class TridentListener implements Listener {
 		Player player = (Player) event.getEntity().getShooter();
 		ItemStack trident = player.getInventory().getItemInMainHand().clone();
 
-		if (!ModManager.instance().isToolViable(trident)) {
+		if (!ModManager.getInstance().isToolViable(trident)) {
 			return;
 		}
 
-		ModManager.instance().addExp(player, trident, -20000);
+		ModManager.getInstance().addExp(player, trident, -20000);
 		//trident is a item clone and only for triggering modifier effects
 		//this makes sure that the item duplicate does not get any level ups
 		TridentToItemStack.put((Trident) event.getEntity(), trident);

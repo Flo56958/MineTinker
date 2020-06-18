@@ -1,7 +1,10 @@
 package de.flo56958.minetinker.api.gui;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,6 +15,7 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,6 +42,28 @@ public class GUI implements Listener {
 	public GUI(JavaPlugin plugin) {
 		this.plugin = plugin;
 		open();
+	}
+
+	public static void addNavigationButtons(Window currentPage) {
+		ItemStack forwardStack = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
+		ItemMeta forwardMeta = forwardStack.getItemMeta();
+		if (forwardMeta != null) {
+			forwardMeta.setDisplayName(ChatColor.GREEN + LanguageManager.getInstance().getString("GUIs.Forward"));
+			forwardStack.setItemMeta(forwardMeta);
+		}
+
+		ItemStack backStack = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+		ItemMeta backMeta = backStack.getItemMeta();
+		if (backMeta != null) {
+			backMeta.setDisplayName(ChatColor.RED + LanguageManager.getInstance().getString("GUIs.Back"));
+			backStack.setItemMeta(backMeta);
+		}
+
+		Window.Button back = currentPage.addButton(0, 5, backStack);
+		back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
+
+		Window.Button forward = currentPage.addButton(8, 5, forwardStack);
+		forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
 	}
 
 	/**
@@ -297,7 +323,7 @@ public class GUI implements Listener {
 			size *= 9;
 
 			this.inventory = Bukkit.createInventory(null, size, title);
-			this.buttonMap = new Button[54];
+			this.buttonMap = new Button[size];
 			this.gui = gui;
 		}
 
@@ -332,24 +358,6 @@ public class GUI implements Listener {
 		public Button addButton(final int x, final int y, @NotNull final ItemStack item) {
 			return addButton(getSlot(x, y, this), item);
 		}
-
-//        /**
-//         *
-//         * @param x
-//         * @param y
-//         * @return  null on failure
-//         */
-//        @Nullable
-//        public Button getButton(final int x, final int y) {
-//            //TODO: Parameter check
-//            return buttonMap[getSlot(x, y, this)];
-//        }
-//
-//        @Nullable
-//        public Button getButton(final int slot) {
-//            //TODO: Parameter check
-//            return buttonMap[slot];
-//        }
 
 		public Button addButton(final int slot, @NotNull final ItemStack item) {
 			Button b = new Button(item, this);

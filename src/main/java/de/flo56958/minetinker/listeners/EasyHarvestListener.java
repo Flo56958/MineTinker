@@ -22,7 +22,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class EasyHarvestListener implements Listener {
 
-	private static final ModManager modManager = ModManager.instance();
+	private static final ModManager modManager = ModManager.getInstance();
 
 	private static void harvestCrops(Player player, ItemStack tool, Block block) {
 		Ageable ageable = (Ageable) block.getBlockData();

@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class CraftItemListener implements Listener {
 
-	private static final ModManager modManager = ModManager.instance();
+	private static final ModManager modManager = ModManager.getInstance();
 
 	@EventHandler(ignoreCancelled = true)
 	public void onCraft(CraftItemEvent event) {

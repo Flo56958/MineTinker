@@ -64,11 +64,11 @@ public class ShadowDive extends Modifier implements Listener {
 				if (lightlevel > requiredLightLevel || p.hasPotionEffect(PotionEffectType.GLOWING)) {
 					showPlayer(p);
 					ChatWriter.sendActionBar(p, ChatColor.RED + ShadowDive.instance().getName() + ": "
-							+ LanguageManager.getString("Modifier.Shadow-Dive.LightToHigh", p));
+							+ LanguageManager.getInstance().getString("Modifier.Shadow-Dive.LightToHigh", p));
 				} else if (PlayerInfo.isCombatTagged(p)) {
 					showPlayer(p);
 					ChatWriter.sendActionBar(p, ChatColor.RED + ShadowDive.instance().getName() + ": "
-							+ LanguageManager.getString("Modifier.Shadow-Dive.InCombat", p));
+							+ LanguageManager.getInstance().getString("Modifier.Shadow-Dive.InCombat", p));
 				} else {
 					for(Player pl : Bukkit.getOnlinePlayers()) {
 						if (pl.equals(p)) continue;
@@ -122,8 +122,8 @@ public class ShadowDive extends Modifier implements Listener {
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
 
-		ConfigurationManager.saveConfig(config);
-		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.getInstance().saveConfig(config);
+		ConfigurationManager.getInstance().loadConfig("Modifiers" + File.separator, getFileName());
 
 		init(Material.DIAMOND);
 		this.requiredLightLevel = config.getInt("RequiredLightLevel", 6);
@@ -204,13 +204,13 @@ public class ShadowDive extends Modifier implements Listener {
 					String.format("InCombat(%b)", combatTagged));
 			if (lightlevel > this.requiredLightLevel || player.hasPotionEffect(PotionEffectType.GLOWING)) {
 				ChatWriter.sendActionBar(player, ChatColor.RED + this.getName() + ": "
-						+ LanguageManager.getString("Modifier.Shadow-Dive.LightToHigh", player));
+						+ LanguageManager.getInstance().getString("Modifier.Shadow-Dive.LightToHigh", player));
 				return;
 			}
 
 			if (combatTagged) {
 				ChatWriter.sendActionBar(player, ChatColor.RED + this.getName() + ": "
-						+ LanguageManager.getString("Modifier.Shadow-Dive.InCombat", player));
+						+ LanguageManager.getInstance().getString("Modifier.Shadow-Dive.InCombat", player));
 				return;
 			}
 

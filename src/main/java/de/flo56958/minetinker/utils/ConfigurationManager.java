@@ -1,10 +1,15 @@
 package de.flo56958.minetinker.utils;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.events.PluginReloadEvent;
 import de.flo56958.minetinker.modifiers.Modifier;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,21 +18,31 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
 
-public class ConfigurationManager {
+public class ConfigurationManager implements Listener {
 	/*
 	 * Stores all config-files with their name
 	 */
-	private static final HashMap<String, FileConfiguration> configs = new HashMap<>();
-	private static final HashMap<FileConfiguration, File> configsFolder = new HashMap<>();
+	private final HashMap<String, FileConfiguration> configs = new HashMap<>();
+	private final HashMap<FileConfiguration, File> configsFolder = new HashMap<>();
 	private ConfigurationManager() {} //So nobody can instantiate this class
 
+
+	private static ConfigurationManager instance;
+
+	public static synchronized ConfigurationManager getInstance() {
+		if (instance == null) {
+			instance = new ConfigurationManager();
+			Bukkit.getPluginManager().registerEvents(instance, MineTinker.getPlugin());
+		}
+		return instance;
+	}
 	/**
 	 * Gets the specified config file
 	 *
 	 * @param modifier The Name of the file (Enum modifiers_Config)
 	 * @return The FileConfiguration with the given name
 	 */
-	public static FileConfiguration getConfig(Modifier modifier) {
+	public FileConfiguration getConfig(Modifier modifier) {
 		return configs.get(modifier.getFileName());
 	}
 
@@ -37,11 +52,12 @@ public class ConfigurationManager {
 	 * @param file The Name of the file
 	 * @return The FileConfiguration with the given name
 	 */
-	public static FileConfiguration getConfig(String file) {
+	public FileConfiguration getConfig(String file) {
 		return configs.get(file);
 	}
 
-	public static void reload() {
+	@EventHandler(priority = EventPriority.LOWEST)
+	private void onReload(PluginReloadEvent event) {
 		loadConfig("", "layout.yml");
 
 		loadConfig("", "BuildersWand.yml");
@@ -61,7 +77,7 @@ public class ConfigurationManager {
 	 * @param folder The name of the folder
 	 * @param file   The name of the file
 	 */
-	public static void loadConfig(String folder, String file) {
+	public void loadConfig(String folder, String file) {
 		File customConfigFile = new File(MineTinker.getPlugin().getDataFolder(), folder + file);
 		FileConfiguration fileConfiguration = configs.getOrDefault(file, new YamlConfiguration());
 
@@ -77,7 +93,7 @@ public class ConfigurationManager {
 		}
 	}
 
-	public static void saveConfig(@NotNull FileConfiguration config) {
+	public void saveConfig(@NotNull FileConfiguration config) {
 		try {
 			config.save(configsFolder.get(config));
 		} catch (IOException e) {
@@ -86,7 +102,7 @@ public class ConfigurationManager {
 	}
 
 	@Contract(pure = true)
-	public static @NotNull Set<String> getAllConfigNames() {
+	public @NotNull Set<String> getAllConfigNames() {
 		return configs.keySet();
 	}
 }

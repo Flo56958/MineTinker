@@ -30,7 +30,7 @@ public class ModifierFailEvent extends Event {
 	public ModifierFailEvent(Player player, ItemStack tool, ModifierFailCause failCause, boolean isCommand) {
 		this.player = player;
 		this.tool = tool;
-		this.mod = ModManager.instance().getAllowedMods().get(0);
+		this.mod = ModManager.getInstance().getAllowedMods().get(0);
 		this.failCause = failCause;
 		this.isCommand = isCommand;
 	}

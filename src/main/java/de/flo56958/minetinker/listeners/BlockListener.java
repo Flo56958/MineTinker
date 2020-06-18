@@ -31,7 +31,7 @@ import java.util.List;
 
 public class BlockListener implements Listener {
 
-	private static final ModManager modManager = ModManager.instance();
+	private static final ModManager modManager = ModManager.getInstance();
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public static void onAxeUse(PlayerInteractEvent event) {

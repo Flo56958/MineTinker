@@ -38,7 +38,7 @@ import org.bukkit.plugin.Plugin;
  */
 public class MineTinkerAPI {
 
-	private static final ModManager modManager = ModManager.instance();
+	private static final ModManager modManager = ModManager.getInstance();
 	private static MineTinkerAPI api;
 
 	private MineTinkerAPI() {
@@ -68,9 +68,9 @@ public class MineTinkerAPI {
 	 * @return the configuration
 	 */
 	public FileConfiguration getConfig(String folder, String name) {
-		ConfigurationManager.loadConfig(folder, name);
+		ConfigurationManager.getInstance().loadConfig(folder, name);
 
-		return ConfigurationManager.getConfig(name);
+		return ConfigurationManager.getInstance().getConfig(name);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class MineTinkerAPI {
 	 * @param config the config you got through getConfig()
 	 */
 	public void saveConfig(FileConfiguration config) {
-		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.getInstance().saveConfig(config);
 	}
 
 	public Plugin getPlugin() {

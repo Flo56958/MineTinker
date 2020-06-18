@@ -82,8 +82,8 @@ public class Reinforced extends Modifier {
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
 
-		ConfigurationManager.saveConfig(config);
-		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.getInstance().saveConfig(config);
+		ConfigurationManager.getInstance().loadConfig("Modifiers" + File.separator, getFileName());
 
 		this.applyUnbreakableOnMaxLevel = config.getBoolean("ApplyUnbreakableOnMaxLevel", false);
 		this.hideUnbreakableFlag = config.getBoolean("HideUnbreakableFlag", true);

@@ -1,10 +1,10 @@
 package de.flo56958.minetinker.commands.subs;
 
+import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.utils.LanguageManager;
-import de.flo56958.minetinker.api.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
@@ -36,14 +36,14 @@ public class AddExpCommand implements SubCommand {
 				player = (Player) sender;
 			} else {
 				CommandManager.sendError(sender,
-						LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+						LanguageManager.getInstance().getString("Commands.Failure.Cause.InvalidArguments"));
 				return true;
 			}
 			try {
 				amount = Integer.parseInt(args[1]);
 			} catch (NumberFormatException e) {
 				CommandManager.sendError(sender,
-						LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+						LanguageManager.getInstance().getString("Commands.Failure.Cause.NumberFormatException"));
 				return true;
 			}
 		} else if (args.length > 2) {
@@ -52,27 +52,27 @@ public class AddExpCommand implements SubCommand {
 				amount = Integer.parseInt(args[2]);
 			} catch (NumberFormatException e) {
 				CommandManager.sendError(sender,
-						LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+						LanguageManager.getInstance().getString("Commands.Failure.Cause.NumberFormatException"));
 				return true;
 			}
 		} else {
 			CommandManager.sendError(sender,
-					LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+					LanguageManager.getInstance().getString("Commands.Failure.Cause.InvalidArguments"));
 			return true;
 		}
 		if (player == null) {
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound")
+			CommandManager.sendError(sender, LanguageManager.getInstance().getString("Commands.Failure.Cause.PlayerNotFound")
 					.replace("%p", args[1]));
 			return true;
 		}
 
 		ItemStack tool = player.getInventory().getItemInMainHand();
-		ModManager modManager = ModManager.instance();
+		ModManager modManager = ModManager.getInstance();
 
 		if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
 			modManager.addExp(player, tool, amount);
 		} else {
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidItem"));
+			CommandManager.sendError(sender, LanguageManager.getInstance().getString("Commands.Failure.Cause.InvalidItem"));
 		}
 
 		return true;

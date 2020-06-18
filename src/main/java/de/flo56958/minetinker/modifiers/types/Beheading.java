@@ -71,8 +71,8 @@ public class Beheading extends Modifier implements Listener {
 
 		config.addDefault("Recipe.Enabled", false);
 
-		ConfigurationManager.saveConfig(config);
-		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.getInstance().saveConfig(config);
+		ConfigurationManager.getInstance().loadConfig("Modifiers" + File.separator, getFileName());
 
 		init(Material.WITHER_SKELETON_SKULL);
 

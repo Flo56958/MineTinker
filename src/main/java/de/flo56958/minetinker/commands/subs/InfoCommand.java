@@ -1,10 +1,10 @@
 package de.flo56958.minetinker.commands.subs;
 
-import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.SubCommand;
+import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
-import de.flo56958.minetinker.api.SubCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -22,9 +22,9 @@ public class InfoCommand implements SubCommand {
 		Player player = null;
 		if(sender instanceof Player) player = (Player) sender;
 
-		ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Info.Line1", player)
+		ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getInstance().getString("Commands.Info.Line1", player)
 				.replaceFirst("%ver", MineTinker.getPlugin().getDescription().getVersion()));
-		ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Info.Line2", player));
+		ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getInstance().getString("Commands.Info.Line2", player));
 		return true;
 	}
 

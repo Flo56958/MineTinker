@@ -24,10 +24,8 @@ import java.util.logging.Level;
 public class ChatWriter {
 
 	private final static TreeMap<Integer, String> map = new TreeMap<>();
-	public static String CHAT_PREFIX;
 
 	static {
-		CHAT_PREFIX = MineTinker.getPlugin().getConfig().getString("chat-prefix");
 		map.put(1000000, "%BOLD%%UNDERLINE%M%RESET%");
 		map.put(500000, "%BOLD%%UNDERLINE%D%RESET%");
 		map.put(100000, "%BOLD%%UNDERLINE%C%RESET%");
@@ -49,10 +47,6 @@ public class ChatWriter {
 		map.put(1, "I");
 	}
 
-	public static void reload() {
-		CHAT_PREFIX = MineTinker.getPlugin().getConfig().getString("chat-prefix");
-	}
-
 	/**
 	 * Sends a chat message
 	 *
@@ -62,7 +56,7 @@ public class ChatWriter {
 	 */
 	public static void sendMessage(CommandSender receiver, ChatColor color, String message) {
 		if (MineTinker.getPlugin().getConfig().getBoolean("chat-messages")) {
-			receiver.sendMessage(CHAT_PREFIX + " " + color + message);
+			receiver.sendMessage(MineTinker.getPlugin().getConfig().getString("chat-prefix") + " " + color + message);
 		}
 	}
 
@@ -75,11 +69,11 @@ public class ChatWriter {
 	public static void log(boolean debug, String message) {
 		if (debug) {
 			if (MineTinker.getPlugin().getConfig().getBoolean("logging.debug")) {
-				Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + ChatColor.RED + message);
+				Bukkit.getConsoleSender().sendMessage(MineTinker.getPlugin().getConfig().getString("chat-prefix") + " " + ChatColor.RED + message);
 			}
 		} else {
 			if (MineTinker.getPlugin().getConfig().getBoolean("logging.standard")) {
-				Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + message);
+				Bukkit.getConsoleSender().sendMessage(MineTinker.getPlugin().getConfig().getString("chat-prefix") + " " + message);
 			}
 		}
 	}
@@ -90,7 +84,7 @@ public class ChatWriter {
 	 * @param message
 	 */
 	public static void logError(String message) {
-		Bukkit.getLogger().log(Level.SEVERE, CHAT_PREFIX + " " + message);
+		Bukkit.getLogger().log(Level.SEVERE, MineTinker.getPlugin().getConfig().getString("chat-prefix") + " " + message);
 	}
 
 	/**
@@ -99,7 +93,7 @@ public class ChatWriter {
 	 * @param message
 	 */
 	public static void logInfo(String message) {
-		Bukkit.getLogger().log(Level.INFO, CHAT_PREFIX + " " + message);
+		Bukkit.getLogger().log(Level.INFO, MineTinker.getPlugin().getConfig().getString("chat-prefix") + " " + message);
 	}
 
 	/**
@@ -108,7 +102,7 @@ public class ChatWriter {
 	 * @param message
 	 */
 	public static void logColor(String message) {
-		Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + message);
+		Bukkit.getConsoleSender().sendMessage(MineTinker.getPlugin().getConfig().getString("chat-prefix") + " " + message);
 	}
 
 	public static void logModifier(@NotNull Player p, @Nullable Event event, @NotNull Modifier mod, @NotNull ItemStack tool, String... args) {
@@ -136,7 +130,7 @@ public class ChatWriter {
 			sb.append("No event: ");
 		}
 		sb.append(p.getName()).append("/").append(mod.getKey()).append("(")
-				.append(ModManager.instance().getModLevel(tool, mod)).append(")").append(" - ").append(tool.getType());
+				.append(ModManager.getInstance().getModLevel(tool, mod)).append(")").append(" - ").append(tool.getType());
 		Arrays.sort(args);
 		for (String s : args) {
 			sb.append(" - ").append(s);

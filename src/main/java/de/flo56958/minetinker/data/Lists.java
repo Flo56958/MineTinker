@@ -27,7 +27,7 @@ public class Lists {
 
 	public static void reload() {
 		WORLDS = config.getStringList("BannedWorlds");
-		WORLDS_BUILDERSWANDS = ConfigurationManager.getConfig("BuildersWand.yml").getStringList("BannedWorlds");
+		WORLDS_BUILDERSWANDS = ConfigurationManager.getInstance().getInstance().getConfig("BuildersWand.yml").getStringList("BannedWorlds");
 		WORLDS_EASYHARVEST = config.getStringList("EasyHarvest.BannedWorlds");
 		NAME_COMMAND_BLACKLIST = config.getStringList("NameCommandBlacklist");
 	}

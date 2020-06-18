@@ -115,8 +115,8 @@ public class Speedy extends Modifier {
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
 
-		ConfigurationManager.saveConfig(config);
-		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.getInstance().saveConfig(config);
+		ConfigurationManager.getInstance().loadConfig("Modifiers" + File.separator, getFileName());
 
 		this.speedPerLevel = config.getDouble("SpeedPerLevel");
 

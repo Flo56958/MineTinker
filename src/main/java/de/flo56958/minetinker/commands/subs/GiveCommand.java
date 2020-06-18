@@ -41,7 +41,7 @@ public class GiveCommand implements SubCommand {
 				player = (Player) sender;
 			} else {
 				CommandManager.sendError(sender,
-						LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+						LanguageManager.getInstance().getString("Commands.Failure.Cause.InvalidArguments"));
 				return true;
 			}
 		} else if (args.length > 2) {
@@ -50,12 +50,12 @@ public class GiveCommand implements SubCommand {
 		}
 
 		if (player == null) {
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
+			CommandManager.sendError(sender, LanguageManager.getInstance().getString("Commands.Failure.Cause.PlayerMissing"));
 			return true;
 		}
 
 		if (material == null) {
-			if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("enabled")) {
+			if (ConfigurationManager.getInstance().getConfig("BuildersWand.yml").getBoolean("enabled")) {
 				String name = args[1].replaceAll("_", " ");
 				for (ItemStack stack : BuildersWandListener.getWands()) {
 					if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
@@ -66,12 +66,12 @@ public class GiveCommand implements SubCommand {
 					}
 				}
 			}
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+			CommandManager.sendError(sender, LanguageManager.getInstance().getString("Commands.Failure.Cause.InvalidArguments"));
 			return true;
 		}
 
 		ItemStack tool = new ItemStack(material, 1);
-		ModManager.instance().convertItemStack(tool, player);
+		ModManager.getInstance().convertItemStack(tool, player);
 
 		if (player.getInventory().addItem(tool).size() != 0) { //adds items to (full) inventory
 			player.getWorld().dropItem(player.getLocation(), tool);
@@ -103,7 +103,7 @@ public class GiveCommand implements SubCommand {
 						result.add(mat.toString());
 					}
 				}
-				if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("enabled")) {
+				if (ConfigurationManager.getInstance().getConfig("BuildersWand.yml").getBoolean("enabled")) {
 					for (ItemStack wand : BuildersWandListener.getWands()) {
 						result.add(wand.getItemMeta().getDisplayName().replaceAll(" ", "_"));
 					}

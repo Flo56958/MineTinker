@@ -1,11 +1,11 @@
 package de.flo56958.minetinker.commands.subs;
 
+import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.LanguageManager;
-import de.flo56958.minetinker.api.SubCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,12 +27,12 @@ public class AddModifierCommand implements SubCommand {
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
 		if (!(sender instanceof Player)) {
 			CommandManager.sendError(sender,
-					LanguageManager.getString("Commands.Failure.Cause.PlayerOnlyCommand"));
+					LanguageManager.getInstance().getString("Commands.Failure.Cause.PlayerOnlyCommand"));
 			return true;
 		}
 		Player player = (Player) sender;
 		if (args.length >= 2) {
-			ModManager modManager = ModManager.instance();
+			ModManager modManager = ModManager.getInstance();
 			for (Modifier m : modManager.getAllowedMods()) {
 				if (m.getName().equalsIgnoreCase(args[1].replaceAll("_", " "))) {
 					ItemStack tool = player.getInventory().getItemInMainHand();
@@ -44,7 +44,7 @@ public class AddModifierCommand implements SubCommand {
 								amount = Integer.parseInt(args[2]);
 							} catch (NumberFormatException e) {
 								CommandManager.sendError(sender,
-										LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+										LanguageManager.getInstance().getString("Commands.Failure.Cause.NumberFormatException"));
 							}
 						}
 						for (int i = 0; i < amount; i++) {
@@ -53,14 +53,14 @@ public class AddModifierCommand implements SubCommand {
 						}
 					} else {
 						CommandManager.sendError(sender,
-								LanguageManager.getString("Commands.Failure.Cause.InvalidItem"));
+								LanguageManager.getInstance().getString("Commands.Failure.Cause.InvalidItem"));
 					}
 					break;
 				}
 			}
 		} else {
 			CommandManager.sendError(sender,
-					LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+					LanguageManager.getInstance().getString("Commands.Failure.Cause.InvalidArguments"));
 		}
 		return true;
 	}
@@ -70,7 +70,7 @@ public class AddModifierCommand implements SubCommand {
 		List<String> result = new ArrayList<>();
 		if (sender instanceof Player) {
 			if (args.length == 2) {
-				for (Modifier mod : ModManager.instance().getAllowedMods()) {
+				for (Modifier mod : ModManager.getInstance().getAllowedMods()) {
 					result.add(mod.getName().replaceAll(" ", "_"));
 				}
 			} else if (args.length == 3) {

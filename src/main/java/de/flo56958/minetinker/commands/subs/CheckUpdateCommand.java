@@ -1,11 +1,11 @@
 package de.flo56958.minetinker.commands.subs;
 
-import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.SubCommand;
+import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.Updater;
-import de.flo56958.minetinker.api.SubCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -35,7 +35,7 @@ public class CheckUpdateCommand implements SubCommand {
 		}
 		if (MineTinker.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
 			ChatWriter.sendMessage(sender, ChatColor.WHITE,
-					LanguageManager.getString("Commands.CheckUpdate.Start", player));
+					LanguageManager.getInstance().getString("Commands.CheckUpdate.Start", player));
 
 			new BukkitRunnable() {
 				@Override
@@ -45,7 +45,7 @@ public class CheckUpdateCommand implements SubCommand {
 			}.runTaskLater(MineTinker.getPlugin(), 20);
 		} else {
 			ChatWriter.sendMessage(sender, ChatColor.RED,
-					LanguageManager.getString("Commands.CheckUpdate.Disabled", player));
+					LanguageManager.getInstance().getString("Commands.CheckUpdate.Disabled", player));
 		}
 		return true;
 	}

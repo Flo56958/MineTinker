@@ -86,8 +86,8 @@ public class Propelling extends Modifier implements Listener {
 
 		config.addDefault("Recipe.Enabled", false);
 
-		ConfigurationManager.saveConfig(config);
-		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.getInstance().saveConfig(config);
+		ConfigurationManager.getInstance().loadConfig("Modifiers" + File.separator, getFileName());
 
 		init(Material.FIREWORK_STAR);
 
@@ -152,7 +152,7 @@ public class Propelling extends Modifier implements Listener {
 			if (playerTime != null) {
 				if (time - playerTime < this.cooldownInSeconds * 1000) {
 					ChatWriter.logModifier(player, event, this, elytra, "Cooldown");
-					ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getString("Alert.OnCooldown", player));
+					ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getInstance().getString("Alert.OnCooldown", player));
 					return;
 				} else {
 					this.cooldownTracker.remove(player.getUniqueId().toString());

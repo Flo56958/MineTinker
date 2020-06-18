@@ -74,8 +74,8 @@ public class AntiArrowPlating extends Modifier {
 		config.addDefault("Recipe.Materials", recipeMaterials);
 
 		// Save Config
-		ConfigurationManager.saveConfig(config);
-		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.getInstance().saveConfig(config);
+		ConfigurationManager.getInstance().loadConfig("Modifiers" + File.separator, getFileName());
 
 		// Initialize modifier
 		init(Material.IRON_BLOCK);

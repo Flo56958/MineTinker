@@ -9,30 +9,27 @@ import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
-import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class GUIs {
 
 	private final static ItemStack forwardStack;
 	private final static ItemStack backStack;
 	private final static ItemStack backOtherMenuStack;
-	private static GUI modGUI;
 	private static GUI configurationsGUI;
 
 	static {
@@ -40,7 +37,7 @@ public class GUIs {
 		ItemMeta forwardMeta = forwardStack.getItemMeta();
 
 		if (forwardMeta != null) {
-			forwardMeta.setDisplayName(ChatColor.GREEN + LanguageManager.getString("GUIs.Forward"));
+			forwardMeta.setDisplayName(ChatColor.GREEN + LanguageManager.getInstance().getString("GUIs.Forward"));
 			forwardStack.setItemMeta(forwardMeta);
 		}
 
@@ -48,7 +45,7 @@ public class GUIs {
 		ItemMeta backMeta = backStack.getItemMeta();
 
 		if (backMeta != null) {
-			backMeta.setDisplayName(ChatColor.RED + LanguageManager.getString("GUIs.Back"));
+			backMeta.setDisplayName(ChatColor.RED + LanguageManager.getInstance().getString("GUIs.Back"));
 			backStack.setItemMeta(backMeta);
 		}
 
@@ -56,7 +53,7 @@ public class GUIs {
 		ItemMeta backOtherMenuMeta = backOtherMenuStack.getItemMeta();
 
 		if (backOtherMenuMeta != null) {
-			backOtherMenuMeta.setDisplayName(ChatColor.YELLOW + LanguageManager.getString("GUIs.BackOtherMenu"));
+			backOtherMenuMeta.setDisplayName(ChatColor.YELLOW + LanguageManager.getInstance().getString("GUIs.BackOtherMenu"));
 			backOtherMenuStack.setItemMeta(backOtherMenuMeta);
 		}
 
@@ -64,214 +61,20 @@ public class GUIs {
 	}
 
 	public static void reload() {
-		if (modGUI != null) modGUI.close();
 		if (configurationsGUI != null) configurationsGUI.close();
 
-		/*/mt mods GUIs*/
-		{
-			int pageNo = 0;
-			modGUI = new GUI(MineTinker.getPlugin());
-			GUI modRecipes = new GUI(MineTinker.getPlugin());
-			GUI.Window currentPage = modGUI.addWindow(6, LanguageManager.getString("GUIs.Modifiers.Title")
-					.replaceFirst("%pageNo", String.valueOf(++pageNo)));
-
-			int i = 0;
-
-			addNavigationButtons(currentPage);
-
-			for (Modifier m : ModManager.instance().getAllowedMods()) {
-				ItemStack item = m.getModItem().clone();
-				ItemMeta meta = item.getItemMeta();
-
-				if (meta != null) {
-					meta.setDisplayName(m.getColor() + "" + ChatColor.UNDERLINE + "" + ChatColor.BOLD + m.getName());
-					ArrayList<String> lore = new ArrayList<>();
-
-					String modifierItemName = Objects.requireNonNull(m.getModItem().getItemMeta()).getDisplayName();
-					if (!modifierItemName.equals("")) {
-						lore.add(ChatColor.WHITE + modifierItemName);
-						lore.add("");
-					}
-
-					List<String> descList = ChatWriter.splitString(m.getDescription(), 30);
-					for (String descPart : descList) {
-						lore.add(ChatColor.WHITE + descPart);
-					}
-
-					lore.add("");
-
-					// Max level
-					String maxLevel = ChatColor.WHITE + ChatWriter.toRomanNumerals(m.getMaxLvl()) + ChatColor.GOLD;
-					lore.add(ChatColor.GOLD + LanguageManager.getString("GUIs.Modifiers.MaxLevel")
-							.replaceFirst("%maxLevel", maxLevel));
-
-					// Enchant Cost
-					if (m.isEnchantable()) {
-						String cost = ChatColor.YELLOW + LanguageManager.getString("GUIs.Modifiers.EnchantCost");
-						lore.add(cost.replaceFirst("%enchantCost", ChatWriter.toRomanNumerals(m.getEnchantCost())));
-						lore.addAll(ChatWriter.splitString(LanguageManager.getString("GUIs.Modifiers.BlockToEnchant")
-								.replace("%block", ChatColor.ITALIC
-										+ MineTinker.getPlugin().getConfig().getString("BlockToEnchantModifiers", "")
-										+ ChatColor.RESET + "" + ChatColor.WHITE)
-								.replace("%mat", m.getModItem().getType().name()).replace("%key",
-										LanguageManager.getString("GUIs.RightClick")), 30));
-					} else if (m.hasRecipe()) {
-						lore.addAll(ChatWriter.splitString(LanguageManager.getString("GUIs.Modifiers.ClickToRecipe")
-								.replace("%key", LanguageManager.getString("GUIs.LeftClick")), 30));
-					}
-
-					//Slot cost
-					if (m.getSlotCost() > 0) {
-						lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.SlotCost")
-								.replaceFirst("%amount", String.valueOf(m.getSlotCost())));
-					}
-
-					lore.add("");
-
-					//Modifier incompatibilities
-					List<Modifier> incomp = new ArrayList<>(ModManager.instance().getIncompatibilities(m));
-					incomp.removeIf(mod -> !mod.isAllowed());
-					if (!incomp.isEmpty()) {
-						incomp.sort(Comparator.comparing(Modifier::getName));
-						StringBuilder incompatibilities = new StringBuilder();
-						for (Modifier in : incomp) {
-							incompatibilities.append(in.getName()).append(", ");
-						}
-
-						lore.add(ChatColor.DARK_RED + "" + ChatColor.BOLD
-								+ LanguageManager.getString("GUIs.Modifiers.IncompatibleWith"));
-
-						lore.addAll(ChatWriter.splitString(incompatibilities.toString()
-								.substring(0, incompatibilities.length() - 2), 30));
-					}
-
-					// Applied Enchantments
-					List<Enchantment> enchants = m.getAppliedEnchantments();
-					if (!enchants.isEmpty()) {
-						enchants.sort(Comparator.comparing(e -> LanguageManager.getString("Enchantment." + e.getKey().getKey())));
-						lore.add(ChatColor.BLUE + "" + ChatColor.BOLD + LanguageManager.getString("GUIs.Modifiers.CanApply"));
-
-						StringBuilder e = new StringBuilder();
-						for (Enchantment enchant : enchants) {
-							e.append(LanguageManager.getString("Enchantment." + enchant.getKey().getKey())).append(", ");
-						}
-
-						List<String> lines = ChatWriter.splitString(e.toString().substring(0, e.length() - 2),30);
-						lore.addAll(lines);
-					}
-
-					// Allowed Tools
-					lore.add(ChatColor.BLUE + "" + ChatColor.BOLD + LanguageManager.getString("GUIs.Modifiers.WorksOn"));
-
-					StringBuilder builder = new StringBuilder();
-
-					builder.append(ChatColor.WHITE);
-
-					List<ToolType> types = m.getAllowedTools();
-					types.sort(Comparator.comparing(t -> LanguageManager.getString("ToolType." + t.name())));
-
-					for (ToolType toolType : types) {
-						builder.append(LanguageManager.getString("ToolType." + toolType.name())).append(", ");
-					}
-
-					List<String> lines = ChatWriter.splitString(builder.toString().substring(0, builder.length() - 2),30);
-					lore.addAll(lines);
-
-					// Apply lore changes
-					meta.setLore(lore);
-					item.setItemMeta(meta);
-
-					// Setup click actions
-					GUI.Window.Button modButton = currentPage.addButton((i % 7) + 1, (i / 7) + 1, item);
-					//GiveModifierItem-Action
-					modButton.addAction(ClickType.SHIFT_LEFT, new ButtonAction.RUN_RUNNABLE_ON_PLAYER(modButton,
-							(player, input) -> {
-								if (player.hasPermission("minetinker.commands.givemodifieritem")) {
-									if (player.getInventory().addItem(m.getModItem()).size() != 0) { //adds items to (full) inventory
-										player.getWorld().dropItem(player.getLocation(), m.getModItem());
-									} // no else as it gets added in if-clause
-								}
-							}));
-
-					//Recipe Action
-					Recipe rec = null;
-
-					Iterator<Recipe> it = Bukkit.getServer().recipeIterator();
-
-					while (it.hasNext()) {
-						Recipe temp = it.next();
-						if (temp.getResult().equals(m.getModItem())) {
-							rec = temp;
-							break;
-						}
-					}
-
-					if (rec != null) {
-						GUI.Window modRecipe = modRecipes.addWindow(3, m.getColor() + m.getName());
-						if (rec instanceof ShapedRecipe) {
-							ShapedRecipe srec = (ShapedRecipe) rec;
-							ItemStack modItem = m.getModItem().clone();
-							DataHandler.setTag(modItem, "Showcase", (int) Math.round(Math.random() * 1000), PersistentDataType.INTEGER, false);
-							GUI.Window.Button result = modRecipe.addButton(6, 1, modItem);
-							result.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(result, currentPage));
-
-							int slot = -1;
-
-							for (String s : srec.getShape()) {
-								if (s.length() == 1 || s.length() == 2) {
-									slot++;
-								}
-
-								for (char c : s.toCharArray()) {
-									slot++;
-
-									if (c == ' ') {
-										continue;
-									}
-
-									try {
-										ItemStack resItem = srec.getIngredientMap().get(c).clone();
-										DataHandler.setTag(resItem, "MT-MODSRecipeItem",
-												Math.round(Math.random() * 42), PersistentDataType.LONG, false);
-										modRecipe.addButton((slot % 3) + 2, (slot / 3), resItem);
-									} catch (NullPointerException ignored) {
-									}
-								}
-
-								if (s.length() == 1) {
-									slot++;
-								}
-							}
-						}
-						modButton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(modButton, modRecipe));
-						GUI.Window.Button returnButton = modRecipe.addButton(8, 2, backOtherMenuStack.clone());
-						returnButton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(returnButton, currentPage));
-					}
-
-					i++;
-
-					if (i % 28 == 0) {
-						currentPage = modGUI.addWindow(6, LanguageManager.getString("GUIs.Modifiers.Title")
-								.replace("%pageNo", String.valueOf(++pageNo)));
-
-						addNavigationButtons(currentPage);
-						i = 0;
-					}
-				}
-			}
-		}
 		/* Main Configuration Manager*/
 		{
 			configurationsGUI = new GUI(MineTinker.getPlugin());
 			int pageNo = 1;
 			GUI.Window currentPage = configurationsGUI.addWindow(6,
-					LanguageManager.getString("GUIs.ConfigurationEditor.Title")
+					LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Title")
 					.replace("%pageNo", String.valueOf(pageNo++)));
-			addNavigationButtons(currentPage);
+			GUI.addNavigationButtons(currentPage);
 			ItemStack reload = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
 			ItemMeta meta = reload.getItemMeta();
 			if (meta != null) {
-				meta.setDisplayName(ChatColor.YELLOW + LanguageManager.getString("GUIs.ConfigurationEditor.ReloadPlugin"));
+				meta.setDisplayName(ChatColor.YELLOW + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.ReloadPlugin"));
 				reload.setItemMeta(meta);
 			}
 			GUI.Window.Button reloadButton = currentPage.addButton(4, 5, reload);
@@ -281,7 +84,7 @@ public class GUIs {
 			}));
 
 			int i = 0;
-			ArrayList<String> names = new ArrayList<>(ConfigurationManager.getAllConfigNames());
+			ArrayList<String> names = new ArrayList<>(ConfigurationManager.getInstance().getAllConfigNames());
 			names.sort(String::compareToIgnoreCase);
 			for (String name : names) {
 				ItemStack buttonStack = new ItemStack(Material.WHITE_WOOL, 1);
@@ -298,7 +101,7 @@ public class GUIs {
 						buttonStack.setType(Material.DIAMOND_SHOVEL);
 						break;
 					default:
-						for (Modifier mod : ModManager.instance().getAllMods()) {
+						for (Modifier mod : ModManager.getInstance().getAllMods()) {
 							if (mod.getKey().equals(name.replace(".yml", ""))) {
 								buttonStack = mod.getModItem().clone();
 								buttonMeta = buttonStack.getItemMeta();
@@ -317,10 +120,10 @@ public class GUIs {
 
 				i++;
 				if (i >= 45) {
-					currentPage = configurationsGUI.addWindow(6, LanguageManager.getString("GUIs.ConfigurationEditor.Title")
+					currentPage = configurationsGUI.addWindow(6, LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Title")
 							.replace("%pageNo", String.valueOf(pageNo++)));
 
-					addNavigationButtons(currentPage);
+					GUI.addNavigationButtons(currentPage);
 
 					reloadButton = currentPage.addButton(4, 5, reload);
 					int pagenumber = pageNo;
@@ -334,35 +137,15 @@ public class GUIs {
 		}
 	}
 
-	public static void addNavigationButtons(GUI.Window currentPage) {
-		ItemMeta forwardMeta = forwardStack.getItemMeta();
-		if (forwardMeta != null) {
-			forwardMeta.setDisplayName(ChatColor.GREEN + LanguageManager.getString("GUIs.Forward"));
-			forwardStack.setItemMeta(forwardMeta);
-		}
-
-		ItemMeta backMeta = backStack.getItemMeta();
-		if (backMeta != null) {
-			backMeta.setDisplayName(ChatColor.RED + LanguageManager.getString("GUIs.Back"));
-			backStack.setItemMeta(backMeta);
-		}
-
-		GUI.Window.Button back = currentPage.addButton(0, 5, backStack);
-		back.addAction(ClickType.LEFT, new ButtonAction.PAGE_DOWN(back));
-
-		GUI.Window.Button forward = currentPage.addButton(8, 5, forwardStack);
-		forward.addAction(ClickType.LEFT, new ButtonAction.PAGE_UP(forward));
-	}
-
 	@NotNull
 	private static GUI getGUIforConfig(String configName, GUI.Window backPage) {
-		FileConfiguration config = ConfigurationManager.getConfig(configName);
+		FileConfiguration config = ConfigurationManager.getInstance().getConfig(configName);
 		GUI configGUI = new GUI(MineTinker.getPlugin());
 		int pageNo = 1;
-		GUI.Window currentPage = configGUI.addWindow(6, LanguageManager.getString("GUIs.ConfigurationEditor.TitleConfigs")
+		GUI.Window currentPage = configGUI.addWindow(6, LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.TitleConfigs")
 				.replace("%pageNo", String.valueOf(pageNo++)).replace("%config", configName));
 		if (config != null) {
-			addNavigationButtons(currentPage);
+			GUI.addNavigationButtons(currentPage);
 
 			GUI.Window.Button backConfig = currentPage.addButton(4, 5, backOtherMenuStack.clone());
 			backConfig.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(backConfig, backPage));
@@ -388,13 +171,13 @@ public class GUIs {
 					final ItemStack buttonStackForRunnable = buttonStack;
 
 					if (value instanceof Boolean) {
-						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type")
-								.replace("%type", LanguageManager.getString("DataType.Boolean")));
-						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
+						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Type")
+								.replace("%type", LanguageManager.getInstance().getString("DataType.Boolean")));
+						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Value")
 								.replace("%value", String.valueOf(value)));
 						buttonStackLore.add("");
-						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.ToggleValue")
-								.replace("%key", LanguageManager.getString("GUIs.LeftClick")));
+						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.ToggleValue")
+								.replace("%key", LanguageManager.getInstance().getString("GUIs.LeftClick")));
 
 						if ((boolean) value) {
 							buttonStack.setType(Material.GREEN_WOOL);
@@ -416,7 +199,7 @@ public class GUIs {
 								buttonStackForRunnable.setType(Material.RED_WOOL);
 							}
 
-							ConfigurationManager.saveConfig(config);
+							ConfigurationManager.getInstance().saveConfig(config);
 
 							List<String> lore;
 							if (meta.hasLore()) {
@@ -425,7 +208,7 @@ public class GUIs {
 								lore = new LinkedList<>();
 							}
 
-							lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
+							lore.set(1, ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Value")
 									.replace("%value", String.valueOf(newValue)));
 							meta.setLore(lore);
 							buttonStackForRunnable.setItemMeta(meta);
@@ -434,19 +217,19 @@ public class GUIs {
 						};
 						currentButton.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, buttonRunnable));
 					} else if (value instanceof Integer) {
-						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type")
-								.replace("%type", LanguageManager.getString("DataType.Integer")));
-						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
+						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Type")
+								.replace("%type", LanguageManager.getInstance().getString("DataType.Integer")));
+						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Value")
 								.replace("%value", String.valueOf(value)));
 						buttonStackLore.add("");
-						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.IncrementValueClick")
-								.replace("%key", LanguageManager.getString("GUIs.LeftClick"))
+						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.IncrementValueClick")
+								.replace("%key", LanguageManager.getInstance().getString("GUIs.LeftClick"))
 								.replace("%amount", "1 (shift +10)"));
-						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.DecrementValueClick")
-								.replace("%key", LanguageManager.getString("GUIs.RightClick"))
+						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.DecrementValueClick")
+								.replace("%key", LanguageManager.getInstance().getString("GUIs.RightClick"))
 								.replace("%amount", "1 (shift -10)"));
-						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.InsertValue")
-								.replace("%key", LanguageManager.getString("GUIs.MiddleClick")));
+						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.InsertValue")
+								.replace("%key", LanguageManager.getInstance().getString("GUIs.MiddleClick")));
 						buttonStack.setType(Material.COBBLESTONE);
 
 						class intHelper {
@@ -461,7 +244,7 @@ public class GUIs {
 							}
 
 							private void saveInt(int newValue) {
-								ConfigurationManager.saveConfig(config);
+								ConfigurationManager.getInstance().saveConfig(config);
 								ItemMeta meta = buttonStackForRunnable.getItemMeta();
 								if (meta == null) return;
 
@@ -472,7 +255,7 @@ public class GUIs {
 									lore = new LinkedList<>();
 								}
 
-								lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
+								lore.set(1, ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Value")
 										.replace("%value", String.valueOf(newValue)));
 								meta.setLore(lore);
 								buttonStackForRunnable.setItemMeta(meta);
@@ -510,21 +293,21 @@ public class GUIs {
 
 								broadcastChange(configName + ":" + key, String.valueOf(oldValue), String.valueOf(in));
 							} catch (NumberFormatException e) {
-								ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUIs.ConfigurationEditor.WrongInput")
-										.replace("%type", LanguageManager.getString("DataType.Integer")).replace("%input", input));
+								ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.WrongInput")
+										.replace("%type", LanguageManager.getInstance().getString("DataType.Integer")).replace("%input", input));
 							}
 						};
 
 						currentButton.addAction(ClickType.MIDDLE,
 								new ButtonAction.REQUEST_INPUT(currentButton, pRun, ChatColor.WHITE + configName + ":" + key));
 					} else if (value instanceof Double) {
-						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type")
-								.replace("%type", LanguageManager.getString("DataType.Double")));
-						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
+						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Type")
+								.replace("%type", LanguageManager.getInstance().getString("DataType.Double")));
+						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Value")
 								.replace("%value", String.valueOf(value)));
 						buttonStackLore.add("");
-						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.InsertValue")
-								.replace("%key", LanguageManager.getString("GUIs.LeftClick")));
+						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.InsertValue")
+								.replace("%key", LanguageManager.getInstance().getString("GUIs.LeftClick")));
 
 						buttonStack.setType(Material.STONE);
 
@@ -537,7 +320,7 @@ public class GUIs {
 								double oldValue = config.getDouble(key);
 								config.set(key, in);
 
-								ConfigurationManager.saveConfig(config);
+								ConfigurationManager.getInstance().saveConfig(config);
 
 								List<String> lore;
 								if (meta.hasLore()) {
@@ -546,28 +329,28 @@ public class GUIs {
 									lore = new LinkedList<>();
 								}
 
-								lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
+								lore.set(1, ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Value")
 										.replace("%value", String.valueOf(in)));
 								meta.setLore(lore);
 								buttonStackForRunnable.setItemMeta(meta);
 
 								broadcastChange(configName + ":" + key, String.valueOf(oldValue), input);
 							} catch (NumberFormatException e) {
-								ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUIs.ConfigurationEditor.WrongInput")
-										.replace("%type", LanguageManager.getString("DataType.Double")).replace("%input", input));
+								ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.WrongInput")
+										.replace("%type", LanguageManager.getInstance().getString("DataType.Double")).replace("%input", input));
 							}
 						};
 
 						currentButton.addAction(ClickType.LEFT,
 								new ButtonAction.REQUEST_INPUT(currentButton, pRun, ChatColor.WHITE + configName + ":" + key));
 					} else if (value instanceof String) {
-						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type")
-								.replace("%type", LanguageManager.getString("DataType.String")));
-						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
+						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Type")
+								.replace("%type", LanguageManager.getInstance().getString("DataType.String")));
+						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Value")
 								.replace("%value", String.valueOf(value)));
 						buttonStackLore.add("");
-						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.InsertValue")
-								.replace("%key", LanguageManager.getString("GUIs.LeftClick")));
+						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.InsertValue")
+								.replace("%key", LanguageManager.getInstance().getString("GUIs.LeftClick")));
 
 						buttonStack.setType(Material.WHITE_WOOL);
 
@@ -580,7 +363,7 @@ public class GUIs {
 							//input = ChatWriter.addColors(input);
 							config.set(key, input);
 
-							ConfigurationManager.saveConfig(config);
+							ConfigurationManager.getInstance().saveConfig(config);
 
 							List<String> lore;
 							if (meta.hasLore()) {
@@ -588,7 +371,7 @@ public class GUIs {
 							} else {
 								lore = new LinkedList<>();
 							}
-							lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
+							lore.set(1, ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Value")
 									.replace("%value", String.valueOf(input)));
 							meta.setLore(lore);
 							buttonStackForRunnable.setItemMeta(meta);
@@ -599,11 +382,11 @@ public class GUIs {
 						currentButton.addAction(ClickType.LEFT, new ButtonAction.REQUEST_INPUT(currentButton, pRun,
 								ChatColor.WHITE + configName + ":" + key));
 					} else if (value instanceof List) {
-						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Type")
-								.replace("%type", LanguageManager.getString("DataType.List")));
-						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
+						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Type")
+								.replace("%type", LanguageManager.getInstance().getString("DataType.List")));
+						buttonStackLore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Value")
 								.replace("%value", String.valueOf(value)));
-						for (String line : ChatWriter.splitString(LanguageManager.getString("GUIs.ConfigurationEditor.UnsupportedType"), 30)) {
+						for (String line : ChatWriter.splitString(LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.UnsupportedType"), 30)) {
 							buttonStackLore.add(ChatColor.RED + line);
 						}
 
@@ -623,10 +406,10 @@ public class GUIs {
 
 				i++;
 				if (i >= 45) {
-					currentPage = configGUI.addWindow(6, LanguageManager.getString("GUIs.ConfigurationEditor.TitleConfigs")
+					currentPage = configGUI.addWindow(6, LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.TitleConfigs")
 							.replace("%pageNo", String.valueOf(pageNo++)).replace("%config", configName));
 
-					addNavigationButtons(currentPage);
+					GUI.addNavigationButtons(currentPage);
 
 					backConfig = currentPage.addButton(4, 5, backOtherMenuStack.clone());
 					backConfig.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(backConfig, backPage));
@@ -639,13 +422,13 @@ public class GUIs {
 	}
 
 	private static void broadcastChange(String configSetting, String oldValue, String newValue) {
-		ChatWriter.logInfo(LanguageManager.getString("GUIs.ConfigurationEditor.Change")
+		ChatWriter.logInfo(LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Change")
 				.replace("%key", configSetting).replace("%old", oldValue).replace("%new", newValue));
 
 		if (MineTinker.getPlugin().getConfig().getBoolean("BroadcastConfigChanges") || configSetting.equals("config.yml:BroadcastConfigChanges")) {
 			for (Player player : Bukkit.getServer().getOnlinePlayers()) {
 				if (player.hasPermission("minetinker.commands.editconfigbroadcast")) {
-					ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUIs.ConfigurationEditor.Change")
+					ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getInstance().getString("GUIs.ConfigurationEditor.Change")
 							.replace("%key", configSetting).replace("%old", oldValue).replace("%new", newValue));
 				}
 			}
@@ -657,17 +440,13 @@ public class GUIs {
 		String start = "GUIs.ConfigurationEditor." + config + ".";
 
 		for (String key : root.getKeys(true)) {
-			String explanation = LanguageManager.getString(start + key);
+			String explanation = LanguageManager.getInstance().getString(start + key);
 			if (!explanation.equals("")) {
 				explanations.put(key, explanation);
 			}
 		}
 
 		return explanations;
-	}
-
-	public static GUI getModGUI() {
-		return modGUI;
 	}
 
 	public static GUI getConfigurationsGUI() {

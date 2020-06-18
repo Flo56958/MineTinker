@@ -1,10 +1,10 @@
 package de.flo56958.minetinker.listeners;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.events.MTEntityDamageEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Bukkit;
@@ -28,7 +28,7 @@ import java.util.Random;
 
 public class ArmorListener implements Listener {
 
-	private static final ModManager modManager = ModManager.instance();
+	private static final ModManager modManager = ModManager.getInstance();
 	private static final ArrayList<EntityDamageEvent.DamageCause> blacklistedCauses = new ArrayList<>();
 
 	static {
@@ -146,7 +146,7 @@ public class ArmorListener implements Listener {
 		Random rand = new Random();
 		int chance = rand.nextInt(100);
 
-		if (chance < ConfigurationManager.getConfig("Elytra.yml").getInt("ExpChanceWhileFlying")) {
+		if (chance < ConfigurationManager.getInstance().getConfig("Elytra.yml").getInt("ExpChanceWhileFlying")) {
 			modManager.addExp(event.getPlayer(), event.getItem(), MineTinker.getPlugin().getConfig().getInt("ExpPerEntityHit"));
 		}
 	}

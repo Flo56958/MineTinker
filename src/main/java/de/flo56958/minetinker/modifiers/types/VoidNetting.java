@@ -89,8 +89,8 @@ public class VoidNetting extends Modifier implements Listener {
 		config.addDefault("Recipe.Materials", recipeMaterials);
 
 		// Save Config
-		ConfigurationManager.saveConfig(config);
-		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.getInstance().saveConfig(config);
+		ConfigurationManager.getInstance().loadConfig("Modifiers" + File.separator, getFileName());
 
 		// Initialize modifier
 		init(Material.COBWEB);
@@ -133,7 +133,7 @@ public class VoidNetting extends Modifier implements Listener {
 					cooldownTracker.remove(player.getUniqueId().toString());
 				} else {
 					ChatWriter.logModifier(player, event, this, armor, "Cooldown");
-					ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getString("Alert.OnCooldown", player));
+					ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getInstance().getString("Alert.OnCooldown", player));
 					return; //still on cooldown
 				}
 			}
@@ -163,7 +163,7 @@ public class VoidNetting extends Modifier implements Listener {
 			if (loc.equals(player.getLocation())) {
 				//No suitable place found
 				ChatWriter.logModifier(player, event, this, armor, "Could not find suitable Block to teleport!");
-				ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getString("Modifier.Void-Netting.CouldNotFindBlock", player));
+				ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getInstance().getString("Modifier.Void-Netting.CouldNotFindBlock", player));
 				return;
 			}
 			Location oldLoc = player.getLocation().clone();

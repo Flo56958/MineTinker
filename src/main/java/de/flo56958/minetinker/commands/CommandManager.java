@@ -1,11 +1,12 @@
 package de.flo56958.minetinker.commands;
 
+import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.subs.*;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
-import de.flo56958.minetinker.api.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -15,6 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,6 +44,10 @@ public class CommandManager implements TabExecutor {
 		commands.add(new ItemStatisticsCommand());
 
 		commands.forEach(this::registerSubcommand);
+		commands.forEach(c -> {
+			if (c instanceof Listener)
+				Bukkit.getPluginManager().registerEvents((Listener) c, MineTinker.getPlugin());
+		});
 
 		cmds.sort(String::compareToIgnoreCase);
 	}
@@ -59,12 +65,12 @@ public class CommandManager implements TabExecutor {
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s,
 							 @NotNull String[] args) {
 		if (!(sender.hasPermission("minetinker.commands.main"))) {
-			sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NoPermission"));
+			sendError(sender, LanguageManager.getInstance().getString("Commands.Failure.Cause.NoPermission"));
 			return true;
 		}
 
 		if (args.length <= 0) {
-			sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+			sendError(sender, LanguageManager.getInstance().getString("Commands.Failure.Cause.InvalidArguments"));
 			sendHelp(sender, null);
 			return true;
 		}
@@ -76,7 +82,7 @@ public class CommandManager implements TabExecutor {
 
 		SubCommand sub = map.get(args[0].toLowerCase());
 		if (sub == null) {
-			sendError(sender, LanguageManager.getString("Commands.Failure.Cause.UnknownCommand"));
+			sendError(sender, LanguageManager.getInstance().getString("Commands.Failure.Cause.UnknownCommand"));
 			sendHelp(sender, null);
 			return true;
 		}
@@ -126,7 +132,7 @@ public class CommandManager implements TabExecutor {
 		}
 
 		if (!sender.hasPermission(sub.getPermission())) {
-			sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NoPermission"));
+			sendError(sender, LanguageManager.getInstance().getString("Commands.Failure.Cause.NoPermission"));
 			return true;
 		}
 
@@ -238,7 +244,7 @@ public class CommandManager implements TabExecutor {
 								Player player = Bukkit.getPlayer(uuid);
 								if (player != null) args[i] = player.getName();
 								else {
-									sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound")
+									sendError(sender, LanguageManager.getInstance().getString("Commands.Failure.Cause.PlayerNotFound")
 											.replace("%p", args[i]));
 								}
 							} catch (IllegalArgumentException ignored) {
@@ -250,7 +256,7 @@ public class CommandManager implements TabExecutor {
 						String[] rules = args[i].split(",");
 						int index = new Random().nextInt(rules.length);
 						boolean isMod = false;
-						for (Modifier mod : ModManager.instance().getAllMods()) {
+						for (Modifier mod : ModManager.getInstance().getAllMods()) {
 							if (mod.getName().replace(" ", "_").equals(rules[index])) {
 								isMod = true;
 								break;
@@ -260,7 +266,7 @@ public class CommandManager implements TabExecutor {
 							String[] nums = rules[index].split("-");
 							if (nums.length != 2) {
 								sendError(sender,
-										LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+										LanguageManager.getInstance().getString("Commands.Failure.Cause.NumberFormatException"));
 								break;
 							}
 							try{
@@ -270,7 +276,7 @@ public class CommandManager implements TabExecutor {
 								args[i] = String.valueOf(rand);
 							} catch (NumberFormatException e) {
 								sendError(sender,
-										LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+										LanguageManager.getInstance().getString("Commands.Failure.Cause.NumberFormatException"));
 							}
 						} else {
 							args[i] = rules[index];
@@ -283,7 +289,7 @@ public class CommandManager implements TabExecutor {
 	}
 
 	public static void sendError(CommandSender sender, String cause) {
-		ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.Failure.Main")
+		ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getInstance().getString("Commands.Failure.Main")
 				.replaceAll("%cause", cause));
 	}
 

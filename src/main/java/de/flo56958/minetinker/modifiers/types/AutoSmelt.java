@@ -156,8 +156,8 @@ public class AutoSmelt extends Modifier implements Listener {
 		config.addDefault("Conversions", conversionsSTR);
 		conversions.clear();
 
-		ConfigurationManager.saveConfig(config);
-		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.getInstance().saveConfig(config);
+		ConfigurationManager.getInstance().loadConfig("Modifiers" + File.separator, getFileName());
 
 		init(Material.FURNACE);
 

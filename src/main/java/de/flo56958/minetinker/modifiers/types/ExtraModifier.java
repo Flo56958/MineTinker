@@ -71,8 +71,8 @@ public class ExtraModifier extends Modifier {
 		config.addDefault("OverrideLanguagesystem", false);
 
 
-		ConfigurationManager.saveConfig(config);
-		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.getInstance().saveConfig(config);
+		ConfigurationManager.getInstance().loadConfig("Modifiers" + File.separator, getFileName());
 
 		init(Material.NETHER_STAR);
 

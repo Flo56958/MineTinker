@@ -120,8 +120,8 @@ public class Tanky extends Modifier implements Listener {
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
 
-		ConfigurationManager.saveConfig(config);
-		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.getInstance().saveConfig(config);
+		ConfigurationManager.getInstance().loadConfig("Modifiers" + File.separator, getFileName());
 
 		this.healthPerLevel = config.getInt("HealthPerLevel", 3);
 

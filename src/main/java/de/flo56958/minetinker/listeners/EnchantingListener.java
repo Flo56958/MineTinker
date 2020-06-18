@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class EnchantingListener implements Listener {
 
-	private final ModManager modManager = ModManager.instance();
+	private final ModManager modManager = ModManager.getInstance();
 
 	private static final Enchantment fakeEnchant = new Enchantment(new NamespacedKey(MineTinker.getPlugin(), "fake_enchant")) {
 		@Override
@@ -67,7 +67,7 @@ public class EnchantingListener implements Listener {
 
 		@Override
 		public boolean canEnchantItem(@NotNull ItemStack item) {
-			return ModManager.instance().isArmorViable(item) || ModManager.instance().isToolViable(item);
+			return ModManager.getInstance().isArmorViable(item) || ModManager.getInstance().isToolViable(item);
 		}
 	};
 
@@ -153,7 +153,7 @@ public class EnchantingListener implements Listener {
 
 			if (oldEnchantLevel < entry.getValue()) {
 				int difference = entry.getValue() - oldEnchantLevel;
-				Modifier modifier = ModManager.instance().getModifierFromEnchantment(entry.getKey());
+				Modifier modifier = ModManager.getInstance().getModifierFromEnchantment(entry.getKey());
 
 				if (modifier != null && modifier.isAllowed()) {
 					for (int i = 0; i < difference; i++) {

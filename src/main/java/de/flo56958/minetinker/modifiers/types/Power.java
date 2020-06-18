@@ -115,8 +115,8 @@ public class Power extends Modifier implements Listener {
 		config.addDefault("Blacklist", blacklistTemp);
 		config.addDefault("TreatAsWhitelist", false);
 
-		ConfigurationManager.saveConfig(config);
-		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.getInstance().saveConfig(config);
+		ConfigurationManager.getInstance().loadConfig("Modifiers" + File.separator, getFileName());
 
 		init(Material.EMERALD);
 

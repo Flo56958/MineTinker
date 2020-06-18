@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 public class CreateToolListener implements Listener {
 
-	private static final ModManager modManager = ModManager.instance();
+	private static final ModManager modManager = ModManager.getInstance();
 
 	@EventHandler
 	public void PrepareCraft(PrepareItemCraftEvent event) {

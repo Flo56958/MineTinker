@@ -1,10 +1,14 @@
 package de.flo56958.minetinker.utils;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.events.PluginReloadEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,20 +20,27 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class LanguageManager {
+public class LanguageManager implements Listener {
 
-	private static YamlConfiguration langFile;
-	private static YamlConfiguration langBackup;
+	private YamlConfiguration langFile;
+	private YamlConfiguration langBackup;
 
-	private static boolean usingFallback = false;
-	private static long completenessPercent = 10_000;
+	private boolean usingFallback = false;
+	private long completenessPercent = 10_000;
 
-	private static boolean playerLocale;
+	private boolean playerLocale;
+
+	private static LanguageManager instance;
+
+	public static synchronized LanguageManager getInstance() {
+		if (instance == null) {
+			instance = new LanguageManager();
+			Bukkit.getPluginManager().registerEvents(instance, MineTinker.getPlugin());
+		}
+		return instance;
+	}
 
 	private LanguageManager() {
-	} //only to make it impossible to instantiate an object
-
-	static {
 		//Saving all languages to disk
 		try {
 			final File jarFile = new File(LanguageManager.class.getProtectionDomain().getCodeSource().getLocation().toURI());
@@ -48,7 +59,8 @@ public class LanguageManager {
 		}
 	}
 
-	public static void reload() {
+	@EventHandler(priority = EventPriority.LOWEST)
+	private void onReload(PluginReloadEvent event) {
 		String lang = MineTinker.getPlugin().getConfig().getString("Language", "en_US");
 
 		langFile = loadLanguage(lang);
@@ -80,18 +92,13 @@ public class LanguageManager {
 		}
 	}
 
-	public static void cleanup() {
-		langFile = null;
-		langBackup = null;
-	}
-
 	/**
 	 * @param path the Path to the Strings location
 	 * @return "" on failure (empty String)
 	 * the requested String on success
 	 */
 	@NotNull
-	public static String getString(@NotNull String path) {
+	public String getString(@NotNull String path) {
 		String ret = langFile.getString(path);
 		if (ret == null || ret.equals("")) {
 			ret = langBackup.getString(path, "");
@@ -107,7 +114,7 @@ public class LanguageManager {
 	 * the requested String on success
 	 */
 	@NotNull
-	public static String getString(@NotNull String path, @Nullable Player player) {
+	public String getString(@NotNull String path, @Nullable Player player) {
 		if (player == null) return getString(path);
 		if (playerLocale && !player.getLocale().equals(MineTinker.getPlugin().getConfig().getString("Language"))) {
 			YamlConfiguration langFile = loadLanguage(player.getLocale());
@@ -123,7 +130,7 @@ public class LanguageManager {
 
 	@SuppressWarnings("ResultOfMethodCallIgnored")
 	@Nullable
-	private static YamlConfiguration loadLanguage(@NotNull String lang) {
+	private YamlConfiguration loadLanguage(@NotNull String lang) {
 		//Load default language file from jar
 		InputStream stream = LanguageManager.class.getResourceAsStream("/lang/" + lang + ".yml");
 		if (stream == null) return null;
@@ -161,12 +168,12 @@ public class LanguageManager {
 	}
 
 	@Contract(pure = true)
-	public static boolean isUsingFallback() {
+	public boolean isUsingFallback() {
 		return usingFallback;
 	}
 
 	@Contract(pure = true)
-	public static boolean isComplete() {
+	public boolean isComplete() {
 		return completenessPercent == 10_000;
 	}
 
@@ -174,7 +181,7 @@ public class LanguageManager {
 	 * @return the completeness of the used language file in percent * 100. So range is [0, 10000]
 	 */
 	@Contract(pure = true)
-	public static Long getCompleteness() {
+	public long getCompleteness() {
 		return completenessPercent;
 	}
 }

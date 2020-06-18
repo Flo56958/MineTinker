@@ -80,13 +80,13 @@ public class Updater {
 		}
 
 		if (onlineVersion == null) {
-			ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Updater.Unable", player));
+			ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getInstance().getString("Updater.Unable", player));
 		} else if (hasUpdate()) {
-			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpdateAvailable", player));
-			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.YourVersion", player).replaceFirst("%ver", version));
-			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.OnlineVersion", player).replaceFirst("%ver", onlineVersion));
+			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getInstance().getString("Updater.UpdateAvailable", player));
+			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getInstance().getString("Updater.YourVersion", player).replaceFirst("%ver", version));
+			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getInstance().getString("Updater.OnlineVersion", player).replaceFirst("%ver", onlineVersion));
 		} else {
-			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Updater.UpToDate", player));
+			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getInstance().getString("Updater.UpToDate", player));
 		}
 	}
 

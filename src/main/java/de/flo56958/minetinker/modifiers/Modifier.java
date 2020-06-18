@@ -5,6 +5,7 @@ import de.flo56958.minetinker.data.ModifierFailCause;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.ModifierApplyEvent;
 import de.flo56958.minetinker.events.ModifierFailEvent;
+import de.flo56958.minetinker.events.PluginReloadEvent;
 import de.flo56958.minetinker.modifiers.types.ExtraModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -15,6 +16,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.ShapedRecipe;
@@ -27,8 +31,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public abstract class Modifier {
-	protected static final ModManager modManager = ModManager.instance();
+public abstract class Modifier implements Listener {
+	protected static final ModManager modManager = ModManager.getInstance();
 	protected static final PluginManager pluginManager = Bukkit.getPluginManager();
 	private final Plugin source;
 	private final String fileName;
@@ -48,7 +52,7 @@ public abstract class Modifier {
 	 */
 	protected Modifier(Plugin source) {
 		this.fileName = getKey().replace("'", "") + ".yml";
-		ConfigurationManager.loadConfig("Modifiers" + File.separator, this.fileName);
+		ConfigurationManager.getInstance().getInstance().loadConfig("Modifiers" + File.separator, this.fileName);
 		this.source = source;
 	}
 
@@ -65,7 +69,7 @@ public abstract class Modifier {
 			return false;
 		}
 
-		FileConfiguration modifiersconfig = ConfigurationManager.getConfig("Modifiers.yml");
+		FileConfiguration modifiersconfig = ConfigurationManager.getInstance().getInstance().getConfig("Modifiers.yml");
 		if (!(modifiersconfig.getBoolean("CommandIgnoresToolTypes") && isCommand && !fromRandom) && !this.isMaterialCompatible(tool.getType())) {
 			if (!silent)
 				pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
@@ -179,11 +183,11 @@ public abstract class Modifier {
 		if (source.equals(MineTinker.getPlugin())) { //normal Languagesystem-Integration
 			String langStart = "Modifier." + getKey();
 
-			this.name = LanguageManager.getString(langStart + ".Name");
-			this.description = LanguageManager.getString(langStart + ".Description");
+			this.name = LanguageManager.getInstance().getString(langStart + ".Name");
+			this.description = LanguageManager.getInstance().getString(langStart + ".Description");
 
-			this.modItem = modManager.createModifierItem(m, this.color + LanguageManager.getString(langStart + ".ModifierItemName"),
-					ChatColor.WHITE + LanguageManager.getString(langStart + ".DescriptionModifierItem"), this);
+			this.modItem = modManager.createModifierItem(m, this.color + LanguageManager.getInstance().getString(langStart + ".ModifierItemName"),
+					ChatColor.WHITE + LanguageManager.getInstance().getString(langStart + ".DescriptionModifierItem"), this);
 		} else { //use the config values instead
 			this.name = config.getString("Name", "");
 			this.description = ChatWriter.addColors(config.getString("Description", ""));
@@ -195,7 +199,7 @@ public abstract class Modifier {
 		ItemMeta itemMeta = this.modItem.getItemMeta();
 		if (itemMeta != null) itemMeta.setCustomModelData(this.customModelData);
 		this.modItem.setItemMeta(itemMeta);
-		if (ConfigurationManager.getConfig("Modifiers.yml").getBoolean("UseCustomModelData", false)) {
+		if (ConfigurationManager.getInstance().getInstance().getConfig("Modifiers.yml").getBoolean("UseCustomModelData", false)) {
 			this.modItem.setType(Material.STICK);
 		}
 	}
@@ -236,7 +240,13 @@ public abstract class Modifier {
 	/**
 	 * reloads the settings of the Modifier
 	 */
-	public abstract void reload();
+	protected abstract void reload();
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
+	private void onReload(PluginReloadEvent event) {
+		reload();
+		registerCraftingRecipe();
+	}
 
 	/**
 	 * @return is the modifier allowed
@@ -275,10 +285,10 @@ public abstract class Modifier {
 	}
 
 	protected FileConfiguration getConfig() {
-		return ConfigurationManager.getConfig(this.getFileName());
+		return ConfigurationManager.getInstance().getInstance().getConfig(this.getFileName());
 	}
 
-	protected void registerCraftingRecipe() {
+	private void registerCraftingRecipe() {
 		if (!hasRecipe()) {
 			return;
 		}
@@ -299,7 +309,7 @@ public abstract class Modifier {
 					String materialName = materials.getString(key);
 
 					if (materialName == null) {
-						ChatWriter.logInfo(LanguageManager.getString("Modifier.MaterialEntryNotFound"));
+						ChatWriter.logInfo(LanguageManager.getInstance().getString("Modifier.MaterialEntryNotFound"));
 						return;
 					}
 
@@ -321,7 +331,7 @@ public abstract class Modifier {
 
 			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 			ChatWriter.log(false, "Registered recipe for the " + this.name + "-Modifier!");
-			ModManager.instance().recipe_Namespaces.add(nkey);
+			ModManager.getInstance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
 			ChatWriter.logError("Could not register recipe for the " + this.name + "-Modifier!"); //executes if the recipe could not initialize
 		}
@@ -340,6 +350,8 @@ public abstract class Modifier {
 		if (!player.hasPermission("minetinker.modifiers." + getKey().replace("-", "").toLowerCase() + ".craft")) {
 			return;
 		}
+
+		if (!this.isEnchantable()) { return; }
 
 		if (getConfig().getBoolean("Recipe.Enabled")) {
 			return;
@@ -381,7 +393,7 @@ public abstract class Modifier {
 			ChatWriter.log(false, player.getDisplayName() + " created a " + getName() + "-Modifiers!");
 		} else {
 			ChatWriter.sendActionBar(player, ChatColor.RED
-					+ LanguageManager.getString("Modifier.Enchantable.LevelsRequired", player)
+					+ LanguageManager.getInstance().getString("Modifier.Enchantable.LevelsRequired", player)
 					.replace("%amount", String.valueOf(getEnchantCost())));
 			ChatWriter.log(false, player.getDisplayName() + " tried to create a "
 					+ getName() + "-Modifiers but had not enough levels!");

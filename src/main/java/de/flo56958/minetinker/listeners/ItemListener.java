@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 public class ItemListener implements Listener {
 
-	private final ModManager modManager = ModManager.instance();
+	private final ModManager modManager = ModManager.getInstance();
 
 	@EventHandler(ignoreCancelled = true)
 	public void onDespawn(ItemDespawnEvent event) {
@@ -152,7 +152,7 @@ public class ItemListener implements Listener {
 		}
 
 		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.AlertPlayerOnBreak", true)) {
-			player.sendMessage(LanguageManager.getString("Alert.OnItemBreak", player));
+			player.sendMessage(LanguageManager.getInstance().getString("Alert.OnItemBreak", player));
 		}
 
 		ItemMeta meta = item.getItemMeta();

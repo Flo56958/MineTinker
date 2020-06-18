@@ -32,7 +32,7 @@ public class ItemStatisticsCommand implements SubCommand {
 		Player player;
 		if (args.length < 2) {
 			if (!(sender instanceof Player)) {
-				CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
+				CommandManager.sendError(sender, LanguageManager.getInstance().getString("Commands.Failure.Cause.PlayerMissing"));
 				return true;
 			}
 			player = (Player) sender;
@@ -40,11 +40,11 @@ public class ItemStatisticsCommand implements SubCommand {
 			player = Bukkit.getPlayer(args[1]);
 		}
 		if (player == null) {
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound")
+			CommandManager.sendError(sender, LanguageManager.getInstance().getString("Commands.Failure.Cause.PlayerNotFound")
 					.replace("%p", args[1]));
 			return true;
 		}
-		ModManager modManager = ModManager.instance();
+		ModManager modManager = ModManager.getInstance();
 		List<ItemStack> items = new ArrayList<>();
 		for (ItemStack stack : player.getInventory().getContents()) {
 			if (!modManager.isToolViable(stack) && !modManager.isArmorViable(stack)) continue;
@@ -65,17 +65,17 @@ public class ItemStatisticsCommand implements SubCommand {
 			gui.show((Player) sender);
 		} else {
 			for (ItemStack stack : items) {
-				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Head")
+				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getInstance().getString("Commands.ItemStatistics.Head")
 						.replaceFirst("%toolname", ChatWriter.getDisplayName(stack) + ChatColor.WHITE
 								+ " (" + stack.getType().toString() + ")"));
-				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Level")
+				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getInstance().getString("Commands.ItemStatistics.Level")
 						.replaceFirst("%level", String.valueOf(modManager.getLevel(stack))));
-				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Exp")
+				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getInstance().getString("Commands.ItemStatistics.Exp")
 						.replaceFirst("%current", String.valueOf(modManager.getExp(stack)))
 						.replaceFirst("%nextlevel", String.valueOf(modManager.getNextLevelReq(modManager.getLevel(stack)))));
-				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.FreeSlots")
+				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getInstance().getString("Commands.ItemStatistics.FreeSlots")
 						.replaceFirst("%slots", String.valueOf(modManager.getFreeSlots(stack))));
-				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Modifiers"));
+				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getInstance().getString("Commands.ItemStatistics.Modifiers"));
 
 				for (Modifier mod : modManager.getAllowedMods()) {
 					if (DataHandler.hasTag(stack, mod.getKey(), PersistentDataType.INTEGER, false)) {

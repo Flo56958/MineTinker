@@ -1,11 +1,11 @@
 package de.flo56958.minetinker.listeners;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ModifierFailCause;
 import de.flo56958.minetinker.events.ModifierApplyEvent;
 import de.flo56958.minetinker.events.ModifierFailEvent;
 import de.flo56958.minetinker.events.ToolUpgradeEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.datatypes.Pair;
@@ -28,7 +28,7 @@ import java.util.Random;
 
 public class AnvilListener implements Listener {
 
-	private static final ModManager modManager = ModManager.instance();
+	private static final ModManager modManager = ModManager.getInstance();
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onInventoryClick(InventoryClickEvent event) {
@@ -185,7 +185,7 @@ public class AnvilListener implements Listener {
 				ItemStack item = inventory.getItem(1);
 
 				if (item != null) {
-					Pair<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(tool.getType(), item.getType());
+					Pair<Material, Integer> materialIntegerPair = ModManager.getInstance().itemUpgrader(tool.getType(), item.getType());
 					if (materialIntegerPair != null && materialIntegerPair.x != null) {
 						if (item.getAmount() == materialIntegerPair.y) {
 							newTool = tool.clone();

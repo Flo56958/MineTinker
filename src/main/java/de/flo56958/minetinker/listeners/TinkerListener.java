@@ -1,11 +1,11 @@
 package de.flo56958.minetinker.listeners;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.events.ModifierApplyEvent;
 import de.flo56958.minetinker.events.ModifierFailEvent;
 import de.flo56958.minetinker.events.ToolLevelUpEvent;
 import de.flo56958.minetinker.events.ToolUpgradeEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.modifiers.types.ExtraModifier;
@@ -30,7 +30,7 @@ import java.util.Random;
 
 public class TinkerListener implements Listener {
 
-	private static final ModManager modManager = ModManager.instance();
+	private static final ModManager modManager = ModManager.getInstance();
 
 	@EventHandler
 	public void onToolUpgrade(ToolUpgradeEvent event) {
@@ -45,7 +45,7 @@ public class TinkerListener implements Listener {
 			}
 
 			ChatWriter.sendActionBar(player,
-					LanguageManager.getString("TinkerListener.ToolUpgrade", player)
+					LanguageManager.getInstance().getString("TinkerListener.ToolUpgrade", player)
 							.replace("%tool", ChatWriter.getDisplayName(tool) + ChatColor.WHITE)
 							.replace("%type", tool.getType().toString().split("_")[0]));
 			ChatWriter.log(false, player.getDisplayName() + " upgraded " + ChatWriter.getDisplayName(tool)
@@ -54,7 +54,7 @@ public class TinkerListener implements Listener {
 			if (config.getBoolean("Sound.OnUpgrade")) {
 				player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
 			}
-			ChatWriter.sendActionBar(player, LanguageManager.getString("Alert.ToolUpgradeFailure", player));
+			ChatWriter.sendActionBar(player, LanguageManager.getInstance().getString("Alert.ToolUpgradeFailure", player));
 		}
 	}
 
@@ -69,7 +69,7 @@ public class TinkerListener implements Listener {
 		}
 
 		ChatWriter.sendActionBar(player,
-				LanguageManager.getString("TinkerListener.ModifierApply", player)
+				LanguageManager.getInstance().getString("TinkerListener.ModifierApply", player)
 						.replace("%tool", ChatWriter.getDisplayName(tool) + ChatColor.WHITE)
 						.replace("%mod", mod.getColor() + mod.getName() + ChatColor.WHITE)
 						.replace("%slots", String.valueOf(event.getSlotsRemaining())));
@@ -90,7 +90,7 @@ public class TinkerListener implements Listener {
 
 		if (!event.isCommand()) {
 			ChatWriter.sendActionBar(player,
-					LanguageManager.getString("TinkerListener.ModifierFail", player)
+					LanguageManager.getInstance().getString("TinkerListener.ModifierFail", player)
 							.replace("%mod", mod.getColor() + mod.getName() + ChatColor.WHITE)
 							.replace("%tool", ChatWriter.getDisplayName(tool) + ChatColor.WHITE)
 							.replace("%cause", event.getFailCause().toString(player)));
@@ -106,7 +106,7 @@ public class TinkerListener implements Listener {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		FileConfiguration config = ConfigurationManager.getConfig("config.yml");
+		FileConfiguration config = ConfigurationManager.getInstance().getConfig("config.yml");
 		boolean appliedRandomMod = false;
 
 		if (player != null) {
@@ -143,7 +143,7 @@ public class TinkerListener implements Listener {
 							} else if (max < min) { //if the user has configured the options wrongly
 								config.set("LevelUpEvents.DropLoot.maximumDrop", min);
 								config.set("LevelUpEvents.DropLoot.minimumDrop", max);
-								ConfigurationManager.saveConfig(config);
+								ConfigurationManager.getInstance().saveConfig(config);
 
 								int temp = min;
 								min = max;
@@ -221,7 +221,7 @@ public class TinkerListener implements Listener {
 			}
 
 			ChatWriter.sendActionBar(player,
-					LanguageManager.getString("TinkerListener.ToolLevelUp", player)
+					LanguageManager.getInstance().getString("TinkerListener.ToolLevelUp", player)
 							.replace("%tool", ChatWriter.getDisplayName(tool))
 							.replace("%level", String.valueOf(modManager.getLevel(tool))));
 			ChatWriter.log(false, player.getDisplayName() + " leveled up " + ChatWriter.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");

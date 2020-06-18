@@ -1,10 +1,10 @@
 package de.flo56958.minetinker.commands.subs;
 
+import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.utils.LanguageManager;
-import de.flo56958.minetinker.api.SubCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +20,7 @@ public class EditConfigurationCommand implements SubCommand {
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
 		if (!(sender instanceof Player)) {
 			CommandManager.sendError(sender,
-					LanguageManager.getString("Commands.Failure.Cause.PlayerOnlyCommand"));
+					LanguageManager.getInstance().getString("Commands.Failure.Cause.PlayerOnlyCommand"));
 			return true;
 		}
 		GUIs.getConfigurationsGUI().show((Player) sender);

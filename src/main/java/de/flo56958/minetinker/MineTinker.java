@@ -3,6 +3,7 @@ package de.flo56958.minetinker;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.data.Lists;
+import de.flo56958.minetinker.events.PluginReloadEvent;
 import de.flo56958.minetinker.listeners.*;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.types.*;
@@ -33,26 +34,21 @@ public class MineTinker extends JavaPlugin {
 		ChatWriter.log(false, "Setting up internals...");
 
 		loadConfig(); //load Main config
-		LanguageManager.reload(); //Load Language system
 
-		ConfigurationManager.reload();
-
-		ModManager.instance();
-		addCoreMods();
-
-		BuildersWandListener.init();
-
-		ChatWriter.reload();
-
-		if (getConfig().getBoolean("PluginIncompatibility.Check")) {
-			incompatibilityCheck();
-		}
+		LanguageManager.getInstance();
+		ModManager.getInstance();
 
 		TabExecutor cmd = new CommandManager();
 		this.getCommand("minetinker").setExecutor(cmd); // must be after internals as it would throw a NullPointerException
 		this.getCommand("minetinker").setTabCompleter(cmd);
 
-		ChatWriter.logInfo(LanguageManager.getString("StartUp.Commands"));
+		Bukkit.getPluginManager().callEvent(new PluginReloadEvent());
+		if (getConfig().getBoolean("PluginIncompatibility.Check")) {
+			incompatibilityCheck();
+		}
+		addCoreMods();
+
+		ChatWriter.logInfo(LanguageManager.getInstance().getString("StartUp.Commands"));
 
 		if (getConfig().getBoolean("AllowCrafting")) {
 			Bukkit.getPluginManager().registerEvents(new CreateToolListener(), this);
@@ -75,20 +71,20 @@ public class MineTinker extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new EnchantingListener(), this);
 		Bukkit.getPluginManager().registerEvents(new GrindstoneListener(), this);
 
-		FileConfiguration elytraConf = ConfigurationManager.getConfig("Elytra.yml");
+		FileConfiguration elytraConf = ConfigurationManager.getInstance().getConfig("Elytra.yml");
 		elytraConf.options().copyDefaults(true);
 		elytraConf.addDefault("ExpChanceWhileFlying", 10);
-		ConfigurationManager.saveConfig(elytraConf);
+		ConfigurationManager.getInstance().saveConfig(elytraConf);
 
-		if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("enabled")) {
+		if (ConfigurationManager.getInstance().getConfig("BuildersWand.yml").getBoolean("enabled")) {
 			Bukkit.getPluginManager().registerEvents(new BuildersWandListener(), this);
 			BuildersWandListener.reload();
-			ChatWriter.log(false, LanguageManager.getString("StartUp.BuildersWands"));
+			ChatWriter.log(false, LanguageManager.getInstance().getString("StartUp.BuildersWands"));
 		}
 
 		if (getConfig().getBoolean("EasyHarvest.enabled")) {
 			Bukkit.getPluginManager().registerEvents(new EasyHarvestListener(), this);
-			ChatWriter.log(false, LanguageManager.getString("StartUp.EasyHarvest"));
+			ChatWriter.log(false, LanguageManager.getInstance().getString("StartUp.EasyHarvest"));
 		}
 
 		if (getConfig().getBoolean("actionbar-on-exp-gain", false)) {
@@ -99,18 +95,18 @@ public class MineTinker extends JavaPlugin {
 			Bukkit.getPluginManager().registerEvents(new ItemStatisticsHandler(), this);
 		}
 
-		ChatWriter.log(false, LanguageManager.getString("StartUp.Events"));
+		ChatWriter.log(false, LanguageManager.getInstance().getString("StartUp.Events"));
 
 		if (getConfig().getBoolean("logging.metrics", true)) {
 			Metrics met = new Metrics(this, 	2833);
 			met.addCustomChart(new Metrics.SimplePie("used_language", () -> getConfig().getString("Language", "en_US")));
 		}
 
-		ChatWriter.log(false, LanguageManager.getString("StartUp.GUIs"));
+		ChatWriter.log(false, LanguageManager.getInstance().getString("StartUp.GUIs"));
 		GUIs.reload();
 
-		ChatWriter.log(false, LanguageManager.getString("StartUp.StdLogging"));
-		ChatWriter.log(true, LanguageManager.getString("StartUp.DebugLogging"));
+		ChatWriter.log(false, LanguageManager.getInstance().getString("StartUp.StdLogging"));
+		ChatWriter.log(true, LanguageManager.getInstance().getString("StartUp.DebugLogging"));
 
 		for (Player current : Bukkit.getServer().getOnlinePlayers()) {
 			Power.HAS_POWER.computeIfAbsent(current, player -> new AtomicBoolean(false));
@@ -121,10 +117,12 @@ public class MineTinker extends JavaPlugin {
 		if (getConfig().getBoolean("CheckForUpdates")) {
 			Bukkit.getScheduler().runTaskLaterAsynchronously(this, (@NotNull Runnable) Updater::checkForUpdate, 20);
 		}
+
+		Bukkit.getPluginManager().callEvent(new PluginReloadEvent());
 	}
 
 	private void addCoreMods() {
-		ModManager modManager = ModManager.instance();
+		ModManager modManager = ModManager.getInstance();
 		modManager.register(AntiArrowPlating.instance());
 		modManager.register(AntiBlastPlating.instance());
 		modManager.register(Aquaphilic.instance());
@@ -186,17 +184,17 @@ public class MineTinker extends JavaPlugin {
 	 * Method for searching for known incompatibilities with other Plugins and fixing them if possible automatically (e.g. disable Lore for certain plugins)
 	 */
 	private void incompatibilityCheck() {
-		ChatWriter.logInfo(LanguageManager.getString("StartUp.Incompatible.Start"));
+		ChatWriter.logInfo(LanguageManager.getInstance().getString("StartUp.Incompatible.Start"));
 		List<String> skipped = getConfig().getStringList("PluginIncompatibility.SkippedPlugins");
 
-		FileConfiguration layout = ConfigurationManager.getConfig("layout.yml");
+		FileConfiguration layout = ConfigurationManager.getInstance().getConfig("layout.yml");
 
 		Zenchantments:
 		{
 			String name = "Zenchantments";
 			if (skipped.contains(name)) break Zenchantments;
 			if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
-				ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
+				ChatWriter.logColor(ChatColor.RED + LanguageManager.getInstance().getString("StartUp.Incompatible.Found").replace("%plugin", name));
 				layout.set("UsePatternMatcher", true);
 				ChatWriter.logColor(ChatColor.WHITE + " - UsePatternMatcher -> true");
 			}
@@ -206,7 +204,7 @@ public class MineTinker extends JavaPlugin {
 			String name = "EliteMobs";
 			if (skipped.contains(name)) break EliteMobs;
 			if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
-				ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
+				ChatWriter.logColor(ChatColor.RED + LanguageManager.getInstance().getString("StartUp.Incompatible.Found").replace("%plugin", name));
 				layout.set("UsePatternMatcher", true);
 				ChatWriter.logColor(ChatColor.WHITE + " - UsePatternMatcher -> true");
 			}
@@ -216,7 +214,7 @@ public class MineTinker extends JavaPlugin {
 			String name = "mcMMO";
 			if (skipped.contains(name)) break mcMMO;
 			if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
-				ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
+				ChatWriter.logColor(ChatColor.RED + LanguageManager.getInstance().getString("StartUp.Incompatible.Found").replace("%plugin", name));
 				layout.set("UsePatternMatcher", true);
 				ChatWriter.logColor(ChatColor.WHITE + " - UsePatternMatcher -> true");
 			}
@@ -226,7 +224,7 @@ public class MineTinker extends JavaPlugin {
 			String name = "Multitool";
 			if (skipped.contains(name)) break Multitool;
 			if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
-				ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
+				ChatWriter.logColor(ChatColor.RED + LanguageManager.getInstance().getString("StartUp.Incompatible.Found").replace("%plugin", name));
 				layout.set("UsePatternMatcher", true);
 				ChatWriter.logColor(ChatColor.WHITE + " - UsePatternMatcher -> true");
 			}
@@ -236,7 +234,7 @@ public class MineTinker extends JavaPlugin {
 			String name = "DeadSouls";
 			if (skipped.contains(name)) break DeadSouls;
 			if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
-				ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
+				ChatWriter.logColor(ChatColor.RED + LanguageManager.getInstance().getString("StartUp.Incompatible.Found").replace("%plugin", name));
 				getConfig().set("ItemBehaviour.ApplyOnPlayerDeath", false);
 				ChatWriter.logColor(ChatColor.WHITE + " - ItemBehaviour.ApplyOnPlayerDeath -> false");
 			}
@@ -246,19 +244,18 @@ public class MineTinker extends JavaPlugin {
 			String name = "DeathBarrel";
 			if (skipped.contains(name)) break DeathBarrel;
 			if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
-				ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
+				ChatWriter.logColor(ChatColor.RED + LanguageManager.getInstance().getString("StartUp.Incompatible.Found").replace("%plugin", name));
 				getConfig().set("ItemBehaviour.ApplyOnPlayerDeath", false);
 				ChatWriter.logColor(ChatColor.WHITE + " - ItemBehaviour.ApplyOnPlayerDeath -> false");
 			}
 		}
 
-		ConfigurationManager.saveConfig(layout);
+		ConfigurationManager.getInstance().saveConfig(layout);
 		saveConfig();
 	}
 
 	public void onDisable() {
 		ChatWriter.logInfo("Shutting down!");
-		LanguageManager.cleanup(); //TODO: Replace with PluginDisableEvent
 	}
 
 	/**

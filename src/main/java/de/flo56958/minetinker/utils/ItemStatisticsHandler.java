@@ -3,7 +3,6 @@ package de.flo56958.minetinker.utils;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.gui.ButtonAction;
 import de.flo56958.minetinker.api.gui.GUI;
-import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.events.MTEntityDamageEvent;
@@ -36,7 +35,7 @@ public class ItemStatisticsHandler implements Listener {
 		GUI gui = new GUI(MineTinker.getPlugin());
 
 		GUI.Window window = gui.addWindow(1,
-				LanguageManager.getString("GUIs.Statistics.Title")
+				LanguageManager.getInstance().getString("GUIs.Statistics.Title")
 						.replaceAll("%tool", ChatWriter.getDisplayName(item)));
 
 		{
@@ -44,19 +43,19 @@ public class ItemStatisticsHandler implements Listener {
 			ItemMeta itemMeta = itemStack.getItemMeta();
 			if (itemMeta != null) {
 				ArrayList<String> lore = new ArrayList<>();
-				OfflinePlayer player = ModManager.instance().getCreator(item);
+				OfflinePlayer player = ModManager.getInstance().getCreator(item);
 				if (player != null) lore.add(ChatColor.WHITE
-						+ LanguageManager.getString("GUIs.Statistics.General.Creator")
+						+ LanguageManager.getInstance().getString("GUIs.Statistics.General.Creator")
 						.replace("%player", player.getName()));
 				Long date = DataHandler.getTag(item, "creation_date", PersistentDataType.LONG, false);
 				if (date != null) {
 					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
 					Date date_ = new Date(System.currentTimeMillis());
-					lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Statistics.General.Created")
+					lore.add(ChatColor.WHITE + LanguageManager.getInstance().getString("GUIs.Statistics.General.Created")
 							.replace("%date", formatter.format(date_)));
 				}
 				itemMeta.setLore(lore);
-				itemMeta.setDisplayName(ChatColor.GOLD + LanguageManager.getString("GUIs.Statistics.General.Title"));
+				itemMeta.setDisplayName(ChatColor.GOLD + LanguageManager.getInstance().getString("GUIs.Statistics.General.Title"));
 				itemStack.setItemMeta(itemMeta);
 			}
 			window.addButton(3, itemStack);
@@ -69,7 +68,7 @@ public class ItemStatisticsHandler implements Listener {
 				ItemStack itemStack = new ItemStack(Material.STONE);
 				ItemMeta itemMeta = itemStack.getItemMeta();
 				if (itemMeta != null) {
-					itemMeta.setDisplayName(ChatColor.GOLD + LanguageManager.getString("GUIs.Statistics.Blocks.Title"));
+					itemMeta.setDisplayName(ChatColor.GOLD + LanguageManager.getInstance().getString("GUIs.Statistics.Blocks.Title"));
 					itemStack.setItemMeta(itemMeta);
 				}
 
@@ -78,13 +77,13 @@ public class ItemStatisticsHandler implements Listener {
 				{
 					int pageNo = 0;
 					GUI.Window currentPage = blockStats.addWindow(6,
-							LanguageManager.getString("GUIs.Statistics.Blocks.TitlePage")
+							LanguageManager.getInstance().getString("GUIs.Statistics.Blocks.TitlePage")
 									.replace("%tool", ChatWriter.getDisplayName(item))
 							.replaceFirst("%pageNo", String.valueOf(++pageNo)));
 
 					int i = 0;
 
-					GUIs.addNavigationButtons(currentPage);
+					GUI.addNavigationButtons(currentPage);
 
 					ArrayList<Material> materials = new ArrayList<>(map.keySet());
 					materials.sort(Comparator.comparing(map::get));
@@ -95,7 +94,7 @@ public class ItemStatisticsHandler implements Listener {
 
 						if (meta != null) {
 							meta.setLore(Collections.singletonList(ChatColor.WHITE
-									+ LanguageManager.getString("GUIs.Statistics.Blocks.AmountBroken")
+									+ LanguageManager.getInstance().getString("GUIs.Statistics.Blocks.AmountBroken")
 									.replace("%amount", String.valueOf(map.get(m)))));
 							is.setItemMeta(meta);
 						}
@@ -105,11 +104,11 @@ public class ItemStatisticsHandler implements Listener {
 
 						if (i % 28 == 0) {
 							currentPage = blockStats.addWindow(6,
-									LanguageManager.getString("GUIs.Statistics.Blocks.TitlePage")
+									LanguageManager.getInstance().getString("GUIs.Statistics.Blocks.TitlePage")
 											.replace("%tool", ChatWriter.getDisplayName(item))
 									.replace("%pageNo", String.valueOf(++pageNo)));
 
-							GUIs.addNavigationButtons(currentPage);
+							GUI.addNavigationButtons(currentPage);
 							i = 0;
 						}
 					}
@@ -132,13 +131,13 @@ public class ItemStatisticsHandler implements Listener {
 			ItemStack itemStack = new ItemStack(Material.SKELETON_SKULL);
 			ItemMeta itemMeta = itemStack.getItemMeta();
 			if (itemMeta != null) {
-				itemMeta.setDisplayName(ChatColor.GOLD + LanguageManager.getString("GUIs.Statistics.Combat.Title"));
+				itemMeta.setDisplayName(ChatColor.GOLD + LanguageManager.getInstance().getString("GUIs.Statistics.Combat.Title"));
 				ArrayList<String> lore = new ArrayList<>();
 				if (damageDealt != null) lore.add(ChatColor.WHITE
-						+ LanguageManager.getString("GUIs.Statistics.Combat.DamageDealt")
+						+ LanguageManager.getInstance().getString("GUIs.Statistics.Combat.DamageDealt")
 						.replace("%amount", String.valueOf(Math.round(damageDealt))));
 				if (damageReceived != null) lore.add(ChatColor.WHITE
-						+ LanguageManager.getString("GUIs.Statistics.Combat.DamageReceived")
+						+ LanguageManager.getInstance().getString("GUIs.Statistics.Combat.DamageReceived")
 						.replace("%amount", String.valueOf(Math.round(damageReceived))));
 				itemMeta.setLore(lore);
 				itemStack.setItemMeta(itemMeta);
@@ -152,13 +151,13 @@ public class ItemStatisticsHandler implements Listener {
 				{
 					int pageNo = 0;
 					GUI.Window currentPage = combatStats.addWindow(6,
-							LanguageManager.getString("GUIs.Statistics.Combat.TitlePage")
+							LanguageManager.getInstance().getString("GUIs.Statistics.Combat.TitlePage")
 									.replace("%tool", ChatWriter.getDisplayName(item))
 							.replace("%pageNo", String.valueOf(++pageNo)));
 
 					int i = 0;
 
-					GUIs.addNavigationButtons(currentPage);
+					GUI.addNavigationButtons(currentPage);
 
 					ArrayList<EntityType> types = new ArrayList<>(map.keySet());
 					types.sort(Comparator.comparing(map::get));
@@ -171,7 +170,7 @@ public class ItemStatisticsHandler implements Listener {
 						if (meta != null) {
 							if (mat == null) meta.setDisplayName(ChatColor.WHITE + t.toString());
 							meta.setLore(Collections.singletonList(ChatColor.WHITE
-									+ LanguageManager.getString("GUIs.Statistics.Combat.AmountKilled")
+									+ LanguageManager.getInstance().getString("GUIs.Statistics.Combat.AmountKilled")
 									.replace("%amount", String.valueOf(map.get(t)))));
 							is.setItemMeta(meta);
 						}
@@ -181,11 +180,11 @@ public class ItemStatisticsHandler implements Listener {
 
 						if (i % 28 == 0) {
 							currentPage = combatStats.addWindow(6,
-									LanguageManager.getString("GUIs.Statistics.Combat.TitlePage")
+									LanguageManager.getInstance().getString("GUIs.Statistics.Combat.TitlePage")
 											.replace("%tool", ChatWriter.getDisplayName(item))
 									.replace("%pageNo", String.valueOf(++pageNo)));
 
-							GUIs.addNavigationButtons(currentPage);
+							GUI.addNavigationButtons(currentPage);
 							i = 0;
 						}
 					}
@@ -241,7 +240,7 @@ public class ItemStatisticsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onEntityDamage(MTEntityDamageEvent event) {
 		ItemStack armor = event.getTool();
-		if (ModManager.instance().isArmorViable(armor)) {
+		if (ModManager.getInstance().isArmorViable(armor)) {
 			double finalDamage = event.getEvent().getFinalDamage();
 			Double old = DataHandler.getTag(armor, keyStart + "damage_received",
 					PersistentDataType.DOUBLE, false);

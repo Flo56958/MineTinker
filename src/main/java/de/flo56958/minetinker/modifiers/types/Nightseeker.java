@@ -79,8 +79,8 @@ public class Nightseeker extends Modifier implements Listener {
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
 
-		ConfigurationManager.saveConfig(config);
-		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
+		ConfigurationManager.getInstance().saveConfig(config);
+		ConfigurationManager.getInstance().loadConfig("Modifiers" + File.separator, getFileName());
 
 		init(Material.DAYLIGHT_DETECTOR);
 		this.damageMultiplierPerLevel = config.getDouble("DamageMultiplierPerLevel", 0.1);

@@ -1,11 +1,11 @@
 package de.flo56958.minetinker.commands.subs;
 
+import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.utils.LanguageManager;
-import de.flo56958.minetinker.api.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
@@ -32,19 +32,19 @@ public class NameCommand implements SubCommand {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
 		if (args.length < 2) {
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+			CommandManager.sendError(sender, LanguageManager.getInstance().getString("Commands.Failure.Cause.InvalidArguments"));
 			return true;
 		}
 
 		Player player = Bukkit.getPlayer(args[1]);
 		if (sender instanceof Player && player == null) player = (Player) sender;
 		if (player == null) {
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
+			CommandManager.sendError(sender, LanguageManager.getInstance().getString("Commands.Failure.Cause.PlayerMissing"));
 			return true;
 		}
 		ItemStack tool = player.getInventory().getItemInMainHand();
 
-		if (ModManager.instance().isToolViable(tool) || ModManager.instance().isArmorViable(tool)) {
+		if (ModManager.getInstance().isToolViable(tool) || ModManager.getInstance().isArmorViable(tool)) {
 			StringBuilder name = new StringBuilder();
 
 			for (int i = 1; i < args.length; i++) {
@@ -58,7 +58,7 @@ public class NameCommand implements SubCommand {
 			for (String pattern : Lists.NAME_COMMAND_BLACKLIST) {
 				if (Pattern.compile(pattern).matcher(name_).find()) {
 					CommandManager.sendError(sender,
-							LanguageManager.getString("Commands.Failure.Cause.NameNotAllowed"));
+							LanguageManager.getInstance().getString("Commands.Failure.Cause.NameNotAllowed"));
 					return true;
 				}
 			}
@@ -70,7 +70,7 @@ public class NameCommand implements SubCommand {
 				tool.setItemMeta(meta);
 			}
 		} else {
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidItem"));
+			CommandManager.sendError(sender, LanguageManager.getInstance().getString("Commands.Failure.Cause.InvalidItem"));
 		}
 		return true;
 	}

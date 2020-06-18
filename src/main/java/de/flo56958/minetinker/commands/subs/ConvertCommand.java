@@ -35,7 +35,7 @@ public class ConvertCommand implements SubCommand {
 				player = (Player) sender;
 			} else {
 				CommandManager.sendError(sender,
-						LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+						LanguageManager.getInstance().getString("Commands.Failure.Cause.InvalidArguments"));
 				return true;
 			}
 		} else if (args.length > 2) {
@@ -44,7 +44,7 @@ public class ConvertCommand implements SubCommand {
 
 		ItemStack item = player.getInventory().getItemInMainHand();
 
-		ModManager.instance().convertItemStack(item, player);
+		ModManager.getInstance().convertItemStack(item, player);
 		return true;
 	}
 

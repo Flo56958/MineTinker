@@ -41,8 +41,8 @@ public class BuildersWandListener implements Listener {
 	private static FileConfiguration config;
 
 	static {
-		modManager = ModManager.instance();
-		config = ConfigurationManager.getConfig("BuildersWand.yml");
+		modManager = ModManager.getInstance();
+		config = ConfigurationManager.getInstance().getConfig("BuildersWand.yml");
 		config.options().copyDefaults(true);
 
 		config.addDefault("enabled", true);
@@ -95,14 +95,14 @@ public class BuildersWandListener implements Listener {
 		config.addDefault(recipe + ".Materials.D", "DIAMOND");
 		config.addDefault(recipe + ".Materials.S", "STICK");
 
-		ConfigurationManager.saveConfig(config);
+		ConfigurationManager.getInstance().saveConfig(config);
 	}
 
 	@SuppressWarnings("EmptyMethod")
 	public static void init() {/*class must be called once*/}
 
 	public static void reload() {
-		config = ConfigurationManager.getConfig("BuildersWand.yml");
+		config = ConfigurationManager.getInstance().getConfig("BuildersWand.yml");
 
 		wands.clear();
 		if (config.getBoolean("OverrideLanguagesystem")) {
@@ -112,11 +112,11 @@ public class BuildersWandListener implements Listener {
 			wands.add(buildersWandCreator(Material.GOLDEN_SHOVEL, config.getString("name_gold")));
 			wands.add(buildersWandCreator(Material.DIAMOND_SHOVEL, config.getString("name_diamond")));
 		} else {
-			wands.add(buildersWandCreator(Material.WOODEN_SHOVEL, LanguageManager.getString("Builderswand.NameWood")));
-			wands.add(buildersWandCreator(Material.STONE_SHOVEL, LanguageManager.getString("Builderswand.NameStone")));
-			wands.add(buildersWandCreator(Material.IRON_SHOVEL, LanguageManager.getString("Builderswand.NameIron")));
-			wands.add(buildersWandCreator(Material.GOLDEN_SHOVEL, LanguageManager.getString("Builderswand.NameGold")));
-			wands.add(buildersWandCreator(Material.DIAMOND_SHOVEL, LanguageManager.getString("Builderswand.NameDiamond")));
+			wands.add(buildersWandCreator(Material.WOODEN_SHOVEL, LanguageManager.getInstance().getString("Builderswand.NameWood")));
+			wands.add(buildersWandCreator(Material.STONE_SHOVEL, LanguageManager.getInstance().getString("Builderswand.NameStone")));
+			wands.add(buildersWandCreator(Material.IRON_SHOVEL, LanguageManager.getInstance().getString("Builderswand.NameIron")));
+			wands.add(buildersWandCreator(Material.GOLDEN_SHOVEL, LanguageManager.getInstance().getString("Builderswand.NameGold")));
+			wands.add(buildersWandCreator(Material.DIAMOND_SHOVEL, LanguageManager.getInstance().getString("Builderswand.NameDiamond")));
 		}
 
 		registerBuildersWands();
@@ -132,7 +132,7 @@ public class BuildersWandListener implements Listener {
 			if (config.getBoolean("OverrideLanguagesystem")) {
 				lore.add(ChatWriter.addColors(config.getString("Description")));
 			} else {
-				lore.add(LanguageManager.getString("Builderswand.Description"));
+				lore.add(LanguageManager.getInstance().getString("Builderswand.Description"));
 			}
 			meta.setLore(lore);
 
@@ -167,9 +167,9 @@ public class BuildersWandListener implements Listener {
 			}
 
 			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
-			ModManager.instance().recipe_Namespaces.add(nkey);
+			ModManager.getInstance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
-			ChatWriter.logError(LanguageManager.getString("Builderswand.Error.CraftWood")); //executes if the recipe could not initialize
+			ChatWriter.logError(LanguageManager.getInstance().getString("Builderswand.Error.CraftWood")); //executes if the recipe could not initialize
 			e.printStackTrace();
 		}
 		try {
@@ -188,9 +188,9 @@ public class BuildersWandListener implements Listener {
 			}
 
 			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
-			ModManager.instance().recipe_Namespaces.add(nkey);
+			ModManager.getInstance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
-			ChatWriter.logError(LanguageManager.getString("Builderswand.Error.CraftStone")); //executes if the recipe could not initialize
+			ChatWriter.logError(LanguageManager.getInstance().getString("Builderswand.Error.CraftStone")); //executes if the recipe could not initialize
 			e.printStackTrace();
 		}
 		try {
@@ -208,9 +208,9 @@ public class BuildersWandListener implements Listener {
 			}
 
 			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
-			ModManager.instance().recipe_Namespaces.add(nkey);
+			ModManager.getInstance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
-			ChatWriter.logError(LanguageManager.getString("Builderswand.Error.CraftIron")); //executes if the recipe could not initialize
+			ChatWriter.logError(LanguageManager.getInstance().getString("Builderswand.Error.CraftIron")); //executes if the recipe could not initialize
 			e.printStackTrace();
 		}
 		try {
@@ -229,9 +229,9 @@ public class BuildersWandListener implements Listener {
 			}
 
 			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
-			ModManager.instance().recipe_Namespaces.add(nkey);
+			ModManager.getInstance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
-			ChatWriter.logError(LanguageManager.getString("Builderswand.Error.CraftGold")); //executes if the recipe could not initialize
+			ChatWriter.logError(LanguageManager.getInstance().getString("Builderswand.Error.CraftGold")); //executes if the recipe could not initialize
 			e.printStackTrace();
 		}
 		try {
@@ -250,7 +250,7 @@ public class BuildersWandListener implements Listener {
 
 			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 		} catch (Exception e) {
-			ChatWriter.logError(LanguageManager.getString("Builderswand.Error.CraftDiamond")); //executes if the recipe could not initialize
+			ChatWriter.logError(LanguageManager.getInstance().getString("Builderswand.Error.CraftDiamond")); //executes if the recipe could not initialize
 		}
 	}
 

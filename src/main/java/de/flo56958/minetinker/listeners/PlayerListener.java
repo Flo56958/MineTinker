@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.listeners;
 
-import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.modifiers.types.Drilling;
@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PlayerListener implements Listener {
 
-	private static final ModManager modManager = ModManager.instance();
+	private static final ModManager modManager = ModManager.getInstance();
 
 	@EventHandler(ignoreCancelled = true)
 	public void onInventoryClick(InventoryClickEvent event) {
@@ -187,27 +187,27 @@ public class PlayerListener implements Listener {
 			if (player.hasPermission("minetinker.update.notify")) {
 				if (Updater.hasUpdate()) {
 					ChatWriter.sendMessage(player, ChatColor.GOLD,
-							LanguageManager.getString("Updater.UpdateAvailable", player));
+							LanguageManager.getInstance().getString("Updater.UpdateAvailable", player));
 					ChatWriter.sendMessage(player, ChatColor.WHITE,
-							LanguageManager.getString("Updater.YourVersion", player)
+							LanguageManager.getInstance().getString("Updater.YourVersion", player)
 							.replace("%ver", MineTinker.getPlugin().getDescription().getVersion()));
 					ChatWriter.sendMessage(player, ChatColor.WHITE,
-							LanguageManager.getString("Updater.OnlineVersion", player)
+							LanguageManager.getInstance().getString("Updater.OnlineVersion", player)
 							.replace("%ver", Updater.getOnlineVersion()));
 				}
 			}
 		}
 		if (player.isOp() || player.hasPermission("minetinker.commands.editconfigbroadcast")) {
-			if (LanguageManager.isUsingFallback()) {
+			if (LanguageManager.getInstance().isUsingFallback()) {
 				ChatWriter.sendMessage(player, ChatColor.RED,
 						"MineTinker is using the fallback language en_US as "
 								+ MineTinker.getPlugin().getConfig().getString("Language")
 								+ " is not currently supported. If you want MineTinker to support this language you "
 								+ "can help translating on Transifex!");
 			} else {
-				if (!LanguageManager.isComplete()
+				if (!LanguageManager.getInstance().isComplete()
 						&& MineTinker.getPlugin().getConfig().getBoolean("LanguageManagerNotifyOP", true)) {
-					Long langCompleteness = LanguageManager.getCompleteness();
+					Long langCompleteness = LanguageManager.getInstance().getCompleteness();
 					ChatWriter.sendMessage(player, ChatColor.RED, "The translation you are using is only "
 							+ langCompleteness / 100 + "." + langCompleteness % 100
 							+ "% complete. The missing strings will be loaded from the Language 'en_US'!");

@@ -26,7 +26,7 @@ import java.util.*;
 
 public class GrindstoneListener implements Listener {
 
-	private final ModManager modManager = ModManager.instance();
+	private final ModManager modManager = ModManager.getInstance();
 
 	private final HashMap<Player, GrindstoneSave> save = new HashMap<>();
 
@@ -78,8 +78,8 @@ public class GrindstoneListener implements Listener {
 				Random rand = new Random();
 				int amount = 0;
 				boolean hadMods = false;
-				for (Modifier mod : ModManager.instance().getAllMods()) {
-					int level = ModManager.instance().getModLevel(result, mod);
+				for (Modifier mod : ModManager.getInstance().getAllMods()) {
+					int level = ModManager.getInstance().getModLevel(result, mod);
 					amount += level * mod.getSlotCost();
 					for(int i = 0; i < level; i++) {
 						hadMods = true;
@@ -92,7 +92,7 @@ public class GrindstoneListener implements Listener {
 							gs.itemStacks.add(mod.getModItem());
 						}
 					}
-					ModManager.instance().removeMod(result, mod);
+					ModManager.getInstance().removeMod(result, mod);
 				}
 
 				//Remove remaining non-modifier enchants
@@ -118,7 +118,7 @@ public class GrindstoneListener implements Listener {
 					ItemMeta meta = result.getItemMeta();
 					List<String> lore = meta.getLore();
 					lore.add(0, ChatColor.WHITE +
-							LanguageManager.getString("GrindStone.PossibleSlotsAfterGrind")
+							LanguageManager.getInstance().getString("GrindStone.PossibleSlotsAfterGrind")
 							.replaceAll("%amount", String.valueOf(amount + modManager.getFreeSlots(result))));
 					meta.setLore(lore);
 					result.setItemMeta(meta);
@@ -139,7 +139,7 @@ public class GrindstoneListener implements Listener {
 				if (gs == null) {
 					event.setCancelled(true);
 					ChatWriter.sendActionBar(player,
-							LanguageManager.getString("Alert.InternalError", player));
+							LanguageManager.getInstance().getString("Alert.InternalError", player));
 					return;
 				}
 
@@ -180,7 +180,7 @@ public class GrindstoneListener implements Listener {
 			event.setResult(Event.Result.DENY);
 			event.setCancelled(true);
 
-			ChatWriter.sendActionBar(player, LanguageManager.getString("Alert.OnItemGrind", player));
+			ChatWriter.sendActionBar(player, LanguageManager.getInstance().getString("Alert.OnItemGrind", player));
 			if (config.getBoolean("Sound.OnFail")) {
 				player.playSound(player.getLocation(), Sound.BLOCK_CHEST_LOCKED, 1.0F, 2F);
 			}
