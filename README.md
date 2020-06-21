@@ -54,7 +54,7 @@ There are several options for contributing:
 
 ## How to configure MineTinker on a server:
 MineTinker has multiple config files, each containing other options and settings. 
-The [main config](https://github.com/Flo56958/MineTinker/blob/alpha/core/src/main/resources/config.yml) contains the core
+The [main config](https://github.com/Flo56958/MineTinker/blob/master/src/main/resources/config.yml) contains the core
 settings for the plugin. Each modifier has its own config file saved in the 'Modifiers'-folder. These settings are unique
 to the modifier. You can access the ingame-Configurations-Editor via the command ```/mt editconfig```.
 
