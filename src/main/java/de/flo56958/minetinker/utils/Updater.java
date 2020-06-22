@@ -47,7 +47,7 @@ public class Updater {
 	/**
 	 * tries to get the newest MineTinker-Version number from api.spigotmc.org
 	 */
-	private static void checkOnline() {
+	public static void checkOnline() {
 		if (hasUpdate()) {
 			return;
 		}
