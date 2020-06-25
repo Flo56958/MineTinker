@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MineTinker extends JavaPlugin {
 
 	private static JavaPlugin plugin;
+	public static boolean is16compatible;
 
 	public static JavaPlugin getPlugin() { // necessary to do getConfig() in other classes
 		return plugin;
@@ -30,6 +31,7 @@ public class MineTinker extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		plugin = this;
+		is16compatible = Bukkit.getVersion().split("MC: ")[1].startsWith("1.16");
 		ChatWriter.log(false, "Setting up internals...");
 
 		loadConfig(); //load Main config
@@ -168,6 +170,7 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(Shulking.instance());
 		modManager.register(SilkTouch.instance());
 		modManager.register(Smite.instance());
+		if (is16compatible) modManager.register(SoulSpeed.instance());
 		modManager.register(Soulbound.instance());
 		modManager.register(Speedy.instance());
 		modManager.register(SpidersBane.instance());

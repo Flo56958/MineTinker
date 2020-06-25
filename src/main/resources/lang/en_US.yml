@@ -361,6 +361,11 @@ Modifier:
     Description: "Your weapon does additional damage towards the undead!"
     ModifierItemName: "Holy Bone"
     DescriptionModifierItem: "Modifier-Item for the Smite-Modifier"
+  Soul-Speed:
+    Name: "Soul Speed"
+    Description: "Walk faster on soul sand!"
+    ModifierItemName: "Ancient Soul Sand"
+    DescriptionModifierItem: "Modifier-Item for the Soul-Speed-Modifier"
   Soulbound:
     Name: "Soulbound"
     Description: "Do not lose your items when dying."
@@ -482,6 +487,7 @@ Enchantment:
   thorns: "Thorns"
   vanishing_curse: "Curse of Vanishing"
   aqua_affinity: "Aqua Affinity"
+  soul_speed: "Soul Speed"
 
 Updater.Unable: "Unable to check for updates!"
 Updater.UpdateAvailable: "There is an update available on spigotmc.org!"

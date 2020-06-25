@@ -1,5 +1,6 @@
 package de.flo56958.minetinker.data;
 
+import de.flo56958.minetinker.MineTinker;
 import org.bukkit.Material;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -35,34 +36,46 @@ public enum ToolType {
 	private static final HashSet<Material> toolMaterials = new HashSet<>();
 
 	static {
-		tools.put(ToolType.AXE, Arrays.asList(Material.WOODEN_AXE, Material.STONE_AXE, Material.IRON_AXE,
-				Material.GOLDEN_AXE, Material.DIAMOND_AXE));
-		tools.put(ToolType.BOOTS, Arrays.asList(Material.LEATHER_BOOTS, Material.CHAINMAIL_BOOTS,
-				Material.IRON_BOOTS, Material.GOLDEN_BOOTS, Material.DIAMOND_BOOTS));
-		tools.put(ToolType.BOW, Collections.singletonList(Material.BOW));
-		tools.put(ToolType.CHESTPLATE, Arrays.asList(Material.LEATHER_CHESTPLATE, Material.CHAINMAIL_CHESTPLATE,
-				Material.IRON_CHESTPLATE, Material.GOLDEN_CHESTPLATE, Material.DIAMOND_CHESTPLATE));
-		tools.put(ToolType.CROSSBOW, Collections.singletonList(Material.CROSSBOW));
-		tools.put(ToolType.ELYTRA, Collections.singletonList(Material.ELYTRA));
-		tools.put(ToolType.HELMET, Arrays.asList(Material.LEATHER_HELMET, Material.CHAINMAIL_HELMET,
-				Material.IRON_HELMET, Material.GOLDEN_HELMET, Material.DIAMOND_HELMET, Material.TURTLE_HELMET));
-		tools.put(ToolType.HOE, Arrays.asList(Material.WOODEN_HOE, Material.STONE_HOE, Material.IRON_HOE,
-				Material.GOLDEN_HOE, Material.DIAMOND_HOE));
-		tools.put(ToolType.LEGGINGS, Arrays.asList(Material.LEATHER_LEGGINGS, Material.CHAINMAIL_LEGGINGS,
-				Material.IRON_LEGGINGS, Material.GOLDEN_LEGGINGS, Material.DIAMOND_LEGGINGS));
-		tools.put(ToolType.PICKAXE, Arrays.asList(Material.WOODEN_PICKAXE, Material.STONE_PICKAXE,
-				Material.IRON_PICKAXE, Material.GOLDEN_PICKAXE, Material.DIAMOND_PICKAXE));
-		tools.put(ToolType.FISHINGROD, Collections.singletonList(Material.FISHING_ROD));
-		tools.put(ToolType.SHIELD, Collections.singletonList(Material.SHIELD));
-		tools.put(ToolType.SHOVEL, Arrays.asList(Material.WOODEN_SHOVEL, Material.STONE_SHOVEL,
-				Material.IRON_SHOVEL, Material.GOLDEN_SHOVEL, Material.DIAMOND_SHOVEL));
-		tools.put(ToolType.SWORD, Arrays.asList(Material.WOODEN_SWORD, Material.STONE_SWORD, Material.IRON_SWORD,
-				Material.GOLDEN_SWORD, Material.DIAMOND_SWORD));
-		tools.put(ToolType.TRIDENT, Collections.singletonList(Material.TRIDENT));
-		tools.put(ToolType.OTHER, Arrays.asList(Material.FLINT_AND_STEEL, Material.CARROT_ON_A_STICK));
-		tools.put(ToolType.SHEARS, Collections.singletonList(Material.SHEARS));
+		tools.put(ToolType.AXE, new ArrayList<>(Arrays.asList(Material.WOODEN_AXE, Material.STONE_AXE, Material.IRON_AXE,
+				Material.GOLDEN_AXE, Material.DIAMOND_AXE)));
+		tools.put(ToolType.BOOTS, new ArrayList<>(Arrays.asList(Material.LEATHER_BOOTS, Material.CHAINMAIL_BOOTS,
+				Material.IRON_BOOTS, Material.GOLDEN_BOOTS, Material.DIAMOND_BOOTS)));
+		tools.put(ToolType.BOW, new ArrayList<>(Collections.singletonList(Material.BOW)));
+		tools.put(ToolType.CHESTPLATE, new ArrayList<>(Arrays.asList(Material.LEATHER_CHESTPLATE, Material.CHAINMAIL_CHESTPLATE,
+				Material.IRON_CHESTPLATE, Material.GOLDEN_CHESTPLATE, Material.DIAMOND_CHESTPLATE)));
+		tools.put(ToolType.CROSSBOW, new ArrayList<>(Collections.singletonList(Material.CROSSBOW)));
+		tools.put(ToolType.ELYTRA, new ArrayList<>(Collections.singletonList(Material.ELYTRA)));
+		tools.put(ToolType.HELMET, new ArrayList<>(Arrays.asList(Material.LEATHER_HELMET, Material.CHAINMAIL_HELMET,
+				Material.IRON_HELMET, Material.GOLDEN_HELMET, Material.DIAMOND_HELMET, Material.TURTLE_HELMET)));
+		tools.put(ToolType.HOE, new ArrayList<>(Arrays.asList(Material.WOODEN_HOE, Material.STONE_HOE, Material.IRON_HOE,
+				Material.GOLDEN_HOE, Material.DIAMOND_HOE)));
+		tools.put(ToolType.LEGGINGS, new ArrayList<>(Arrays.asList(Material.LEATHER_LEGGINGS, Material.CHAINMAIL_LEGGINGS,
+				Material.IRON_LEGGINGS, Material.GOLDEN_LEGGINGS, Material.DIAMOND_LEGGINGS)));
+		tools.put(ToolType.PICKAXE, new ArrayList<>(Arrays.asList(Material.WOODEN_PICKAXE, Material.STONE_PICKAXE,
+				Material.IRON_PICKAXE, Material.GOLDEN_PICKAXE, Material.DIAMOND_PICKAXE)));
+		tools.put(ToolType.FISHINGROD, new ArrayList<>(Collections.singletonList(Material.FISHING_ROD)));
+		tools.put(ToolType.SHIELD, new ArrayList<>(Collections.singletonList(Material.SHIELD)));
+		tools.put(ToolType.SHOVEL, new ArrayList<>(Arrays.asList(Material.WOODEN_SHOVEL, Material.STONE_SHOVEL,
+				Material.IRON_SHOVEL, Material.GOLDEN_SHOVEL, Material.DIAMOND_SHOVEL)));
+		tools.put(ToolType.SWORD, new ArrayList<>(Arrays.asList(Material.WOODEN_SWORD, Material.STONE_SWORD, Material.IRON_SWORD,
+				Material.GOLDEN_SWORD, Material.DIAMOND_SWORD)));
+		tools.put(ToolType.TRIDENT, new ArrayList<>(Collections.singletonList(Material.TRIDENT)));
+		tools.put(ToolType.OTHER, new ArrayList<>(Arrays.asList(Material.FLINT_AND_STEEL, Material.CARROT_ON_A_STICK)));
+		tools.put(ToolType.SHEARS, new ArrayList<>(Collections.singletonList(Material.SHEARS)));
 
 		tools.put(ToolType.INVALID, Collections.emptyList());
+
+		if (MineTinker.is16compatible) {
+			tools.get(ToolType.AXE).add(Material.NETHERITE_AXE);
+			tools.get(ToolType.BOOTS).add(Material.NETHERITE_BOOTS);
+			tools.get(ToolType.CHESTPLATE).add(Material.NETHERITE_CHESTPLATE);
+			tools.get(ToolType.HELMET).add(Material.NETHERITE_HELMET);
+			tools.get(ToolType.HOE).add(Material.NETHERITE_HOE);
+			tools.get(ToolType.LEGGINGS).add(Material.NETHERITE_LEGGINGS);
+			tools.get(ToolType.PICKAXE).add(Material.NETHERITE_PICKAXE);
+			tools.get(ToolType.SHOVEL).add(Material.NETHERITE_SHOVEL);
+			tools.get(ToolType.SWORD).add(Material.NETHERITE_SWORD);
+		}
 
 		ToolType.getTools().values().forEach(toolMaterials::addAll);
 

@@ -1,7 +1,7 @@
 package de.flo56958.minetinker.listeners;
 
-import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.modifiers.types.Drilling;
@@ -139,6 +139,10 @@ public class PlayerListener implements Listener {
 					eligible = true;
 				}
 				break;
+			case "netherite":
+				if (repair.getType() == Material.NETHERITE_INGOT) {
+					eligible = true;
+				}
 		}
 
 		if (eligible) {
@@ -148,6 +152,7 @@ public class PlayerListener implements Listener {
 				return;
 			}
 
+			//TODO: change fix amount
 			int dura = meta.getDamage();
 			short maxDura = tool.getType().getMaxDurability();
 			int amount = event.getWhoClicked().getItemOnCursor().getAmount();

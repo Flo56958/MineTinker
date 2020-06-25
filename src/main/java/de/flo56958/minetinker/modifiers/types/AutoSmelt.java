@@ -66,9 +66,9 @@ public class AutoSmelt extends Modifier implements Listener {
 
 		config.addDefault("Allowed", true);
 		config.addDefault("Color", "%YELLOW%");
-		config.addDefault("MaxLevel", 5);
+		config.addDefault("MaxLevel", 1);
 		config.addDefault("SlotCost", 1);
-		config.addDefault("PercentagePerLevel", 20);
+		config.addDefault("PercentagePerLevel", 100);
 		config.addDefault("Sound", true); //Auto-Smelt makes a sound
 		config.addDefault("Particles", true); //Auto-Smelt will create a particle effect when triggered
 		config.addDefault("WorksUnderWater", true);
@@ -149,6 +149,7 @@ public class AutoSmelt extends Modifier implements Listener {
 		conversions.put(Material.COAL_ORE, new Triplet(Material.AIR, 0));
 		conversions.put(Material.COAL_BLOCK, new Triplet(Material.AIR, 0));
 		conversions.put(Material.CLAY, new Triplet(Material.BRICK, 4, true));
+		if (MineTinker.is16compatible) conversions.put(Material.NETHER_GOLD_ORE, new Triplet(Material.GOLD_INGOT, 1, true));
 
 		//Saving Conversions as String
 		Map<String, String> conversionsSTR = new HashMap<>();

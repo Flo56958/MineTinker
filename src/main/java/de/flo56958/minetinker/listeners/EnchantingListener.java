@@ -47,7 +47,7 @@ public class EnchantingListener implements Listener {
 
 		@Override
 		public @NotNull EnchantmentTarget getItemTarget() {
-			return EnchantmentTarget.ALL;
+			return EnchantmentTarget.BREAKABLE;
 		}
 
 		@Override
