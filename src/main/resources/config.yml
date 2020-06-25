@@ -2,10 +2,6 @@
 chat-prefix: "[MineTinker]"
 CheckForUpdates: true                 #Checks for updates on startup
 Language: en_US                       #Changes the Plugins Language
-PluginIncompatibility:
-  Check: true                         #Enables the search for incompatible plugins and MineTinker tries to react accordingly (e.g. change config settings)
-  SkippedPlugins:                     #Disables searching for specified Plugins
-    - "MineTinker"
 
 #--LOGGING--
 logging:

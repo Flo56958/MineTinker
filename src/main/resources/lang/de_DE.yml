@@ -11,9 +11,6 @@ StartUp.Events: "Events registriert!"
 StartUp.GUIs: "Lade GUIs!"
 StartUp.StdLogging: "Standard Logging ist aktiviert. Sie können es in der Konfigurationsdatei unter Logging.Standard deaktivieren!"
 StartUp.DebugLogging: "Debug Logging ist aktiviert. Sie sollten es in der Konfigurationsdatei unter Logging.Debug deaktivieren!"
-StartUp.Incompatible:
-  Start: "Die Suche nach inkompatiblen Plugins wurde gestartet... Du kannst diese Funktion jederzeit in der Haupt-Konfiguration abschalten!"
-  Found: "%plugin wurde gefunden. MineTinker versucht die Konfigurationen für beste Kompatibilität anzupassen!"
 
 Builderswand.NameWood: "Hölzerner Baumeisterstab"
 Builderswand.NameStone: "Steinerner Baumeisterstab"
