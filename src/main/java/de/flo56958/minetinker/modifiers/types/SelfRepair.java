@@ -92,15 +92,16 @@ public class SelfRepair extends Modifier implements Listener {
 
 	@Override
 	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
-		if (useMending) {
-			ItemMeta meta = tool.getItemMeta();
+		ItemMeta meta = tool.getItemMeta();
 
-			if (meta != null) {
+		if (meta != null) {
+			if (useMending) {
 				meta.addEnchant(Enchantment.MENDING, modManager.getModLevel(tool, this), true);
-
-				tool.setItemMeta(meta);
+			} else {
+				meta.removeEnchant(Enchantment.MENDING);
 			}
 		}
+		tool.setItemMeta(meta);
 		return true;
 	}
 
