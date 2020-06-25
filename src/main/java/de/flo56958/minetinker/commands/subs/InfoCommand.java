@@ -73,6 +73,7 @@ public class InfoCommand implements SubCommand {
 				int i = 0;
 				ArrayList<Contributor> conlist = Contributor.getContributors();
 				conlist.sort(Comparator.comparing(Contributor::getCommits));
+				Collections.reverse(conlist);
 				for (Contributor c : conlist) {
 					contributors.addButton(i++, c.getPlayerHead());
 					if (i == 45) {
