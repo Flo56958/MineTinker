@@ -71,7 +71,9 @@ public class InfoCommand implements SubCommand {
 				int pageNo = 1;
 				GUI.Window contributors = contributorGUI.addWindow(6, "Contributors #" + pageNo);
 				int i = 0;
-				for (Contributor c : Contributor.getContributors()) {
+				ArrayList<Contributor> conlist = Contributor.getContributors();
+				conlist.sort(Comparator.comparing(Contributor::getCommits));
+				for (Contributor c : conlist) {
 					contributors.addButton(i++, c.getPlayerHead());
 					if (i == 45) {
 						i = 0;

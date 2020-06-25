@@ -50,7 +50,7 @@ public class Contributor {
 									(transifex.isJsonNull()) ? null : transifex.getAsString(),
 									o.getAsJsonArray("transifex_languages"),
 									(discord.isJsonNull()) ? null : discord.getAsString(),
-									o.getAsJsonArray("other")));
+									(other.isJsonNull()) ? null : other.getAsJsonArray()));
 				});
 			}
 			contributorList.removeIf(o -> o.get("login").getAsString().contains("[bot]")); //filter out bots

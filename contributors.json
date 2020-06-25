@@ -22,5 +22,14 @@
     "transifex": null,
     "transifex_languages": [],
     "other": []
+  },
+  {
+    "_comment": "flixi_07",
+    "github": null,
+    "discord": null,
+    "minecraft": "e230f964-3a2b-44ba-89ab-7656f3037323",
+    "transifex": null,
+    "transifex_languages": [],
+    "other": [ "Reliable Bug catcher" ]
   }
 ]
