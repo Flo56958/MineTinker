@@ -66,13 +66,13 @@ public class SelfRepair extends Modifier implements Listener {
 
 		config.addDefault("Allowed", true);
 		config.addDefault("Color", "%GREEN%");
-		config.addDefault("MaxLevel", 25);
+		config.addDefault("MaxLevel", 10);
 		config.addDefault("SlotCost", 1);
 		config.addDefault("PercentagePerLevel", 10); //100% at Level 10 (not necessary for unbreakable tool in most cases)
 		config.addDefault("HealthRepair", 3); //How much durability should be repaired per trigger
 		config.addDefault("UseMending", false); //Disables the plugins own system and instead uses the vanilla Mending enchantment
 
-		config.addDefault("EnchantCost", 10);
+		config.addDefault("EnchantCost", 25);
 		config.addDefault("Enchantable", true);
 
 		config.addDefault("Recipe.Enabled", false);
