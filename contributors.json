@@ -31,5 +31,13 @@
     "transifex": null,
     "transifex_languages": [],
     "other": [ "Reliable Bug catcher" ]
+  },
+  {
+    "github": null,
+    "discord": null,
+    "minecraft": "d38342fd-eebc-4a21-a6a7-2aaba2706f2f",
+    "transifex": "notBuiden",
+    "transifex_languages": [ "zh_CN" ],
+    "other": []
   }
 ]

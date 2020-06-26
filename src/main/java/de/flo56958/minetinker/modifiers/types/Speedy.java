@@ -8,7 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -82,9 +81,9 @@ public class Speedy extends Modifier {
 
 		meta.removeAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED);
 		meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED,
-				new AttributeModifier(UUID.randomUUID(), "generic.movementSpeed", speedOnItem + this.speedPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
+				new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.movement_speed" : "generic.movementSpeed", speedOnItem + this.speedPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
 		meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED,
-				new AttributeModifier(UUID.randomUUID(), "generic.movementSpeed", speedOnItem + this.speedPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
+				new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.movement_speed" : "generic.movementSpeed", speedOnItem + this.speedPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
 
 		tool.setItemMeta(meta);
 		return true;
@@ -123,10 +122,5 @@ public class Speedy extends Modifier {
 		init(Material.RABBIT_HIDE);
 
 		this.description = this.description.replace("%amount", String.valueOf(this.speedPerLevel * 100));
-	}
-
-	@Override
-	public List<Enchantment> getAppliedEnchantments() {
-		return new ArrayList<>();
 	}
 }

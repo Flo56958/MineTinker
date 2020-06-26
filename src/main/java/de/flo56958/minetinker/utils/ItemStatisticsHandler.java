@@ -11,6 +11,7 @@ import de.flo56958.minetinker.events.MTEntityDeathEvent;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
 import de.flo56958.minetinker.utils.data.EnumMapTagType;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -34,6 +35,7 @@ public class ItemStatisticsHandler implements Listener {
 	@NotNull
 	public static GUI getGUI(final ItemStack item) {
 		GUI gui = new GUI(MineTinker.getPlugin());
+		Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), gui::close, 5 * 60 * 20);
 
 		GUI.Window window = gui.addWindow(1,
 				LanguageManager.getString("GUIs.Statistics.Title")

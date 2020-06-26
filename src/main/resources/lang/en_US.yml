@@ -251,7 +251,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Knockback-Modifier"
   Lifesteal:
     Name: "Lifesteal"
-    Description: "Heals you %amount% of the dealt damage. %chance% to trigger."
+    Description: "Heals you %amount% per level of the dealt damage. %chance% to trigger."
     ModifierItemName: "Bloodinfused Netherrack"
     DescriptionModifierItem: "Modifier-Item for the Lifesteal-Modifier"
   Light-Weight:

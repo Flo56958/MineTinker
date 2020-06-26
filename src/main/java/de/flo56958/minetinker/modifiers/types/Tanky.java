@@ -87,8 +87,11 @@ public class Tanky extends Modifier implements Listener {
 		}
 		meta.removeAttributeModifier(Attribute.GENERIC_MAX_HEALTH);
 		modManager.addArmorAttributes(tool);
-		meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(), "generic.maxHealth", healthOnItem + this.healthPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
-		meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(), "generic.maxHealth", healthOnItem + this.healthPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
+		if (ToolType.CHESTPLATE.contains(tool.getType())) {
+			meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.max_health" : "generic.maxHealth", healthOnItem + this.healthPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
+		} else {
+			meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.max_health" : "generic.maxHealth", healthOnItem + this.healthPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
+		}
 
 		tool.setItemMeta(meta);
 		return true;

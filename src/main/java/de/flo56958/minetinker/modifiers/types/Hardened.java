@@ -121,16 +121,16 @@ public class Hardened extends Modifier implements Listener {
 				meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);
 				AttributeModifier toughnessAM = null;
 				if (ToolType.BOOTS.contains(armor.getType())) {
-					toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", amount,
+					toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", amount,
 							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
 				} else if (ToolType.CHESTPLATE.contains(armor.getType()) || ToolType.ELYTRA.contains(armor.getType())) {
-					toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", amount,
+					toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", amount,
 							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 				} else if (ToolType.HELMET.contains(armor.getType())) {
-					toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", amount,
+					toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", amount,
 							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
 				} else if (ToolType.LEGGINGS.contains(armor.getType())) {
-					toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", amount,
+					toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", amount,
 							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
 				}
 				meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);

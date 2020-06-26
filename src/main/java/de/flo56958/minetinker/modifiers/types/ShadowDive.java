@@ -61,7 +61,7 @@ public class ShadowDive extends Modifier implements Listener {
 				Player p = iterator.next();
 				Location loc = p.getLocation();
 				byte lightlevel = p.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()).getLightLevel();
-				if (lightlevel > requiredLightLevel || p.hasPotionEffect(PotionEffectType.GLOWING)) {
+				if (!p.isSneaking() || lightlevel > requiredLightLevel || p.hasPotionEffect(PotionEffectType.GLOWING)) {
 					showPlayer(p);
 					ChatWriter.sendActionBar(p, ChatColor.RED + ShadowDive.instance().getName() + ": "
 							+ LanguageManager.getString("Modifier.Shadow-Dive.LightToHigh", p));
@@ -195,7 +195,7 @@ public class ShadowDive extends Modifier implements Listener {
 		if (!modManager.isArmorViable(boots)) return;
 		if (!modManager.hasMod(boots, this)) return;
 
-		if (event.isSneaking()) { //enable
+		if (event.isSneaking() && !player.isGliding()) { //enable
 			Location loc = player.getLocation();
 			byte lightlevel = player.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()).getLightLevel();
 			boolean combatTagged = PlayerInfo.isCombatTagged(player);

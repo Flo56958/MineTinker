@@ -956,16 +956,16 @@ public class ModManager {
 
 			if (ToolType.BOOTS.contains(is.getType())) {
 				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
-				toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+				toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
 			} else if (ToolType.CHESTPLATE.contains(is.getType())) {
 				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
-				toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+				toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 			} else if (ToolType.HELMET.contains(is.getType())) {
 				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
-				toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+				toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
 			} else if (ToolType.LEGGINGS.contains(is.getType())) {
 				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
-				toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+				toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
 			} else if (ToolType.ELYTRA.contains(is.getType())) {
 				armorAM = null;
 				toughnessAM = null;

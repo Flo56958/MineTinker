@@ -149,7 +149,10 @@ public class AutoSmelt extends Modifier implements Listener {
 		conversions.put(Material.COAL_ORE, new Triplet(Material.AIR, 0));
 		conversions.put(Material.COAL_BLOCK, new Triplet(Material.AIR, 0));
 		conversions.put(Material.CLAY, new Triplet(Material.BRICK, 4, true));
-		if (MineTinker.is16compatible) conversions.put(Material.NETHER_GOLD_ORE, new Triplet(Material.GOLD_INGOT, 1, true));
+		if (MineTinker.is16compatible) {
+			conversions.put(Material.ANCIENT_DEBRIS, new Triplet(Material.NETHERITE_SCRAP, 2, true));
+			conversions.put(Material.NETHER_GOLD_ORE, new Triplet(Material.GOLD_INGOT, 1, true));
+		}
 
 		//Saving Conversions as String
 		Map<String, String> conversionsSTR = new HashMap<>();
@@ -173,7 +176,8 @@ public class AutoSmelt extends Modifier implements Listener {
 
 		Map<String, Object> conversionValues = conversionConfig.getValues(false);
 		conversionValues.forEach((k, v) -> {
-			if (v instanceof String) conversions.put(Objects.requireNonNull(Material.getMaterial(k)), Objects.requireNonNull(Triplet.fromString((String) v)));
+			Material material = Material.getMaterial(k);
+			if (material != null && v instanceof String) conversions.put(material, Objects.requireNonNull(Triplet.fromString((String) v)));
 		});
 
 		this.description = this.description.replace("%chance", String.valueOf(this.percentagePerLevel));
