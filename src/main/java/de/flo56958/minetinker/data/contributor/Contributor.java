@@ -83,7 +83,7 @@ public class Contributor {
 		return playerHead;
 	}
 
-	private UUID mcUUID;
+	private final UUID mcUUID;
 
 	private String githubUsername;
 	private String transifexUsername;

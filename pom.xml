@@ -12,8 +12,8 @@
 
     <groupId>de.flo56958</groupId>
     <artifactId>MineTinker</artifactId>
-    <description>A TinkersConstruct (and other mods) inspired server plugin</description>
-    <url>https://flo56958.github.io/MineTinker</url>
+    <description>A TinkersConstruct (and other mods) inspired spigot server plugin</description>
+    <url>https://github.com/Flo56958/MineTinker</url>
     <version>${revision}</version>
 
     <developers>

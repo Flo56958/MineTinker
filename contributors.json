@@ -16,6 +16,14 @@
     "other": []
   },
   {
+    "github": "Voknehzyr",
+    "discord": "Voknehzyr#9668",
+    "minecraft": "651a4d47-58d2-487c-859e-bc8b8dd6724a",
+    "transifex": "sdir01",
+    "transifex_languages": [ "ru_RU" ],
+    "other": []
+  },
+  {
     "github": "JJBlue",
     "discord": null,
     "minecraft": "3ec01a75-1d2f-4082-9d89-420733faa6e3",
@@ -39,5 +47,14 @@
     "transifex": "notBuiden",
     "transifex_languages": [ "zh_CN" ],
     "other": []
+  },
+  {
+    "_comment": "KagamineCyn",
+    "github": null,
+    "discord": null,
+    "minecraft": "45d0b795-8d3c-4558-9028-913d1c84ccb1",
+    "transifex": null,
+    "transifex_languages": [],
+    "other": [ "Modifier Inventor" ]
   }
 ]

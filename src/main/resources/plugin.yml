@@ -216,6 +216,7 @@ permissions:
       minetinker.modifiers.smite.*: true
       minetinker.modifiers.soulbound.*: true
       minetinker.modifiers.speedy.*: true
+      minetinker.modifiers.soulspeed.*: true
       minetinker.modifiers.spidersbane.*: true
       minetinker.modifiers.sunblazer.*: true
       minetinker.modifiers.sweeping.*: true
@@ -404,6 +405,13 @@ permissions:
       minetinker.modifiers.freezing.apply: true
   minetinker.modifiers.freezing.apply:
     description: Allows to apply Freezing to a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.soulspeed.*:
+    children:
+      minetinker.modifiers.soulspeed.apply: true
+  minetinker.modifiers.soulspeed.apply:
+    description: Allows to apply Soul-Speed to a MineTinker-Tool
     default: true
 
   minetinker.modifiers.glowing.*:
