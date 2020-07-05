@@ -56,5 +56,13 @@
     "transifex": null,
     "transifex_languages": [],
     "other": [ "Modifier Inventor" ]
+  },
+  {
+    "github": "kaekaes",
+    "discord": "AtheroX#8624",
+    "minecraft": "99be3c12-049b-4196-9cf9-8312f88e1728",
+    "transifex": "kaekaes",
+    "transifex_languages": [ "en_US", "es_ES", "ca_ES" ],
+    "other": []
   }
 ]
