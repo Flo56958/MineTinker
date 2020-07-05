@@ -953,7 +953,18 @@ public class ModManager {
 				toughness = 2.0d;
 				break;
 			case NETHERITE_HELMET:
+			case NETHERITE_BOOTS:
 				armor = 3.0d;
+				toughness = 3.0d;
+				knockback_res = 1.0d;
+				break;
+			case NETHERITE_CHESTPLATE:
+				armor = 8.0d;
+				toughness = 3.0d;
+				knockback_res = 1.0d;
+				break;
+			case NETHERITE_LEGGINGS:
+				armor = 6.0d;
 				toughness = 3.0d;
 				knockback_res = 1.0d;
 				break;
