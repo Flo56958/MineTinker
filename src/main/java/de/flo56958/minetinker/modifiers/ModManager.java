@@ -975,24 +975,24 @@ public class ModManager {
 		if (meta != null) {
 			AttributeModifier armorAM;
 			AttributeModifier toughnessAM;
-			AttributeModifier knockbackResAM;
+			AttributeModifier knockbackResAM = null;
 
 			if (ToolType.BOOTS.contains(is.getType())) {
 				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
 				toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
-				knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+				if (MineTinker.is16compatible) { knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);}
 			} else if (ToolType.CHESTPLATE.contains(is.getType())) {
 				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 				toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
-				knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+				if (MineTinker.is16compatible) { knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);}
 			} else if (ToolType.HELMET.contains(is.getType())) {
 				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
 				toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
-				knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+				if (MineTinker.is16compatible) { knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);}
 			} else if (ToolType.LEGGINGS.contains(is.getType())) {
 				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
 				toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
-				knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+				if (MineTinker.is16compatible) { knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);}
 			} else if (ToolType.ELYTRA.contains(is.getType())) {
 				armorAM = null;
 				toughnessAM = null;
@@ -1008,8 +1008,8 @@ public class ModManager {
 				meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);
 				meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
 			}
-
-			if (knockback_res > 0.0d) {
+			
+			if (knockback_res > 0.0d) { // The only way to be greater than 0 is being a netherite armor, so it doesn't needs is16compatible bool
 				meta.removeAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
 				meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResAM);
 			}
