@@ -63,15 +63,17 @@ public enum ToolType {
 		tools.put(ToolType.OTHER, new ArrayList<>(Arrays.asList(Material.FLINT_AND_STEEL, Material.CARROT_ON_A_STICK)));
 		tools.put(ToolType.SHEARS, new ArrayList<>(Collections.singletonList(Material.SHEARS)));
 
-		tools.get(ToolType.AXE).add(Material.NETHERITE_AXE);
-		tools.get(ToolType.BOOTS).add(Material.NETHERITE_BOOTS);
-		tools.get(ToolType.CHESTPLATE).add(Material.NETHERITE_CHESTPLATE);
-		tools.get(ToolType.HELMET).add(Material.NETHERITE_HELMET);
-		tools.get(ToolType.HOE).add(Material.NETHERITE_HOE);
-		tools.get(ToolType.LEGGINGS).add(Material.NETHERITE_LEGGINGS);
-		tools.get(ToolType.PICKAXE).add(Material.NETHERITE_PICKAXE);
-		tools.get(ToolType.SHOVEL).add(Material.NETHERITE_SHOVEL);
-		tools.get(ToolType.SWORD).add(Material.NETHERITE_SWORD);
+		if (MineTinker.is16compatible) {
+			tools.get(ToolType.AXE).add(Material.NETHERITE_AXE);
+			tools.get(ToolType.BOOTS).add(Material.NETHERITE_BOOTS);
+			tools.get(ToolType.CHESTPLATE).add(Material.NETHERITE_CHESTPLATE);
+			tools.get(ToolType.HELMET).add(Material.NETHERITE_HELMET);
+			tools.get(ToolType.HOE).add(Material.NETHERITE_HOE);
+			tools.get(ToolType.LEGGINGS).add(Material.NETHERITE_LEGGINGS);
+			tools.get(ToolType.PICKAXE).add(Material.NETHERITE_PICKAXE);
+			tools.get(ToolType.SHOVEL).add(Material.NETHERITE_SHOVEL);
+			tools.get(ToolType.SWORD).add(Material.NETHERITE_SWORD);
+		}
 		
 		tools.put(ToolType.INVALID, Collections.emptyList());
 
