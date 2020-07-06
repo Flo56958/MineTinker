@@ -181,8 +181,10 @@ public class ModManager {
 				|| name.equals("diamond") && material == Material.DIAMOND
 				|| name.equals("leather") && material == Material.LEATHER
 				|| name.equals("turtle") && material == Material.SCUTE
-				|| name.equals("netherite") && material == Material.NETHERITE_INGOT
 				|| name.equals("chainmail") && material == Material.IRON_BARS) {
+			return null;
+		}
+		if(MineTinker.is16compatible && (name.equals("netherite") && material == Material.NETHERITE_INGOT)) {
 			return null;
 		}
 
@@ -210,6 +212,9 @@ public class ModManager {
 	}
 
 	private static @Nullable Material getToolUpgrade(@NotNull Material material, String tool) {
+		if(MineTinker.is16compatible && material == Material.NETHERITE_INGOT) {
+			return Material.getMaterial("NETHERITE_" + tool);
+		}
 		switch (material) {
 			case ACACIA_PLANKS:
 			case BIRCH_PLANKS:
@@ -226,14 +231,16 @@ public class ModManager {
 				return Material.getMaterial("GOLDEN_" + tool);
 			case DIAMOND:
 				return Material.getMaterial("DIAMOND_" + tool);
-			case NETHERITE_INGOT:
-				return Material.getMaterial("NETHERITE_" + tool);
 			default:
 				return null;
 		}
+		
 	}
 
 	private static @Nullable Material getArmorUpgrade(@NotNull Material material, String tool) {
+		if(MineTinker.is16compatible && material == Material.NETHERITE_INGOT) {
+			return Material.getMaterial("NETHERITE_" + tool);
+		}
 		switch (material) {
 			case LEATHER:
 				return Material.getMaterial("LEATHER_" + tool);
@@ -243,8 +250,6 @@ public class ModManager {
 				return Material.getMaterial("GOLDEN_" + tool);
 			case DIAMOND:
 				return Material.getMaterial("DIAMOND_" + tool);
-			case NETHERITE_INGOT:
-				return Material.getMaterial("NETHERITE_" + tool);
 			case IRON_BARS:
 				return Material.getMaterial("CHAINMAIL_" + tool);
 			default:
@@ -952,22 +957,26 @@ public class ModManager {
 				armor = 6.0d;
 				toughness = 2.0d;
 				break;
-			case NETHERITE_HELMET:
-			case NETHERITE_BOOTS:
-				armor = 3.0d;
-				toughness = 3.0d;
-				knockback_res = 1.0d;
-				break;
-			case NETHERITE_CHESTPLATE:
-				armor = 8.0d;
-				toughness = 3.0d;
-				knockback_res = 1.0d;
-				break;
-			case NETHERITE_LEGGINGS:
-				armor = 6.0d;
-				toughness = 3.0d;
-				knockback_res = 1.0d;
-				break;
+		}
+		if(MineTinker.is16compatible) {
+			switch (is.getType()) {
+				case NETHERITE_HELMET:
+				case NETHERITE_BOOTS:
+					armor = 3.0d;
+					toughness = 3.0d;
+					knockback_res = 1.0d;
+					break;
+				case NETHERITE_CHESTPLATE:
+					armor = 8.0d;
+					toughness = 3.0d;
+					knockback_res = 1.0d;
+					break;
+				case NETHERITE_LEGGINGS:
+					armor = 6.0d;
+					toughness = 3.0d;
+					knockback_res = 1.0d;
+					break;
+			}
 		}
 
 		ItemMeta meta = is.getItemMeta();
