@@ -486,6 +486,7 @@ public class ModManager {
 	 */
 	public int getModLevel(ItemStack is, @NotNull Modifier mod) {
 		if (!mod.isAllowed()) return 0;
+		if (is == null) return 0;
 		Integer tag = DataHandler.getTag(is, mod.getKey(), PersistentDataType.INTEGER, false);
 		if (tag == null) return 0;
 		return tag;
@@ -511,6 +512,7 @@ public class ModManager {
 	 * @param is the item to get the information from
 	 */
 	public int getFreeSlots(ItemStack is) {
+		if (is == null) return -1;
 		Integer freeSlots = DataHandler.getTag(is, "FreeSlots", PersistentDataType.INTEGER, false);
 		if (freeSlots == null) return 0;
 		return freeSlots;
@@ -522,6 +524,7 @@ public class ModManager {
 	 * @param is the item to set the information to
 	 */
 	public void setFreeSlots(ItemStack is, int freeSlots) {
+		if (is == null) return;
 		DataHandler.setTag(is, "FreeSlots", freeSlots, PersistentDataType.INTEGER, false);
 		rewriteLore(is);
 	}
@@ -532,8 +535,9 @@ public class ModManager {
 	 * @param is the item to get the information from
 	 */
 	public int getLevel(ItemStack is) {
+		if (is == null) return -1;
 		Integer level = DataHandler.getTag(is, "Level", PersistentDataType.INTEGER, false);
-		if (level == null) return 0;
+		if (level == null) return -1;
 		return level;
 	}
 
@@ -543,6 +547,7 @@ public class ModManager {
 	 * @param is the item to get the information from
 	 */
 	private void setLevel(ItemStack is, int level) {
+		if (is == null) return;
 		DataHandler.setTag(is, "Level", level, PersistentDataType.INTEGER, false);
 	}
 
@@ -552,8 +557,9 @@ public class ModManager {
 	 * @param is the item to get the information from
 	 */
 	public long getExp(ItemStack is) {
+		if (is == null) return -1;
 		Long exp = DataHandler.getTag(is, "Exp", PersistentDataType.LONG, false);
-		if (exp == null) return 0;
+		if (exp == null) return -1;
 		return exp;
 	}
 
@@ -563,6 +569,7 @@ public class ModManager {
 	 * @param is the item to get the information from
 	 */
 	private void setExp(ItemStack is, long exp) {
+		if (is == null) return;
 		DataHandler.setTag(is, "Exp", exp, PersistentDataType.LONG, false);
 	}
 
@@ -571,7 +578,9 @@ public class ModManager {
 	 * @param mod  The modifier that is checked in tool
 	 * @return if the tool has the mod
 	 */
+	@Contract("null, _ -> false")
 	public boolean hasMod(ItemStack tool, @NotNull Modifier mod) {
+		if (tool == null) return false;
 		return mod.isAllowed() && DataHandler.hasTag(tool, mod.getKey(), PersistentDataType.INTEGER, false);
 	}
 

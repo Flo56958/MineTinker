@@ -1,11 +1,11 @@
 package de.flo56958.minetinker.commands.subs;
 
+import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.utils.LanguageManager;
-import de.flo56958.minetinker.api.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
@@ -48,7 +48,7 @@ public class NameCommand implements SubCommand {
 			StringBuilder name = new StringBuilder();
 
 			for (int i = 1; i < args.length; i++) {
-				name.append(" ").append(args[i].replace('&', ''));
+				name.append(" ").append(args[i].replace('&', '§'));
 			}
 
 			name = new StringBuilder(name.substring(1));
