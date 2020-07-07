@@ -63,8 +63,6 @@ public enum ToolType {
 		tools.put(ToolType.OTHER, new ArrayList<>(Arrays.asList(Material.FLINT_AND_STEEL, Material.CARROT_ON_A_STICK)));
 		tools.put(ToolType.SHEARS, new ArrayList<>(Collections.singletonList(Material.SHEARS)));
 
-		tools.put(ToolType.INVALID, Collections.emptyList());
-
 		if (MineTinker.is16compatible) {
 			tools.get(ToolType.AXE).add(Material.NETHERITE_AXE);
 			tools.get(ToolType.BOOTS).add(Material.NETHERITE_BOOTS);
@@ -76,6 +74,8 @@ public enum ToolType {
 			tools.get(ToolType.SHOVEL).add(Material.NETHERITE_SHOVEL);
 			tools.get(ToolType.SWORD).add(Material.NETHERITE_SWORD);
 		}
+		
+		tools.put(ToolType.INVALID, Collections.emptyList());
 
 		ToolType.getTools().values().forEach(toolMaterials::addAll);
 

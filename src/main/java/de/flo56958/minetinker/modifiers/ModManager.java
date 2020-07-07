@@ -184,6 +184,9 @@ public class ModManager {
 				|| name.equals("chainmail") && material == Material.IRON_BARS) {
 			return null;
 		}
+		if(MineTinker.is16compatible && (name.equals("netherite") && material == Material.NETHERITE_INGOT)) {
+			return null;
+		}
 
 		if (ToolType.SWORD.contains(tool)) {
 			return new Pair<>(getToolUpgrade(material, "SWORD"), 2);
@@ -209,6 +212,9 @@ public class ModManager {
 	}
 
 	private static @Nullable Material getToolUpgrade(@NotNull Material material, String tool) {
+		if(MineTinker.is16compatible && material == Material.NETHERITE_INGOT) {
+			return Material.getMaterial("NETHERITE_" + tool);
+		}
 		switch (material) {
 			case ACACIA_PLANKS:
 			case BIRCH_PLANKS:
@@ -228,9 +234,13 @@ public class ModManager {
 			default:
 				return null;
 		}
+		
 	}
 
 	private static @Nullable Material getArmorUpgrade(@NotNull Material material, String tool) {
+		if(MineTinker.is16compatible && material == Material.NETHERITE_INGOT) {
+			return Material.getMaterial("NETHERITE_" + tool);
+		}
 		switch (material) {
 			case LEATHER:
 				return Material.getMaterial("LEATHER_" + tool);
@@ -902,6 +912,7 @@ public class ModManager {
 	public void addArmorAttributes(@NotNull ItemStack is) {
 		double armor = 0.0d;
 		double toughness = 0.0d;
+		double knockback_res = 0.0d;
 
 		switch (is.getType()) {
 			case LEATHER_BOOTS:
@@ -947,28 +958,54 @@ public class ModManager {
 				toughness = 2.0d;
 				break;
 		}
+		if(MineTinker.is16compatible) {
+			switch (is.getType()) {
+				case NETHERITE_HELMET:
+				case NETHERITE_BOOTS:
+					armor = 3.0d;
+					toughness = 3.0d;
+					knockback_res = 1.0d;
+					break;
+				case NETHERITE_CHESTPLATE:
+					armor = 8.0d;
+					toughness = 3.0d;
+					knockback_res = 1.0d;
+					break;
+				case NETHERITE_LEGGINGS:
+					armor = 6.0d;
+					toughness = 3.0d;
+					knockback_res = 1.0d;
+					break;
+			}
+		}
 
 		ItemMeta meta = is.getItemMeta();
 
 		if (meta != null) {
 			AttributeModifier armorAM;
 			AttributeModifier toughnessAM;
+			AttributeModifier knockbackResAM = null;
 
 			if (ToolType.BOOTS.contains(is.getType())) {
 				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
 				toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+				if (MineTinker.is16compatible) { knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);}
 			} else if (ToolType.CHESTPLATE.contains(is.getType())) {
 				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 				toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+				if (MineTinker.is16compatible) { knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);}
 			} else if (ToolType.HELMET.contains(is.getType())) {
 				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
 				toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+				if (MineTinker.is16compatible) { knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);}
 			} else if (ToolType.LEGGINGS.contains(is.getType())) {
 				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
 				toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+				if (MineTinker.is16compatible) { knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);}
 			} else if (ToolType.ELYTRA.contains(is.getType())) {
 				armorAM = null;
 				toughnessAM = null;
+				knockbackResAM = null;
 			} else return;
 
 			if (armor > 0.0d) {
@@ -979,6 +1016,11 @@ public class ModManager {
 			if (toughness > 0.0d) {
 				meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);
 				meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
+			}
+			
+			if (knockback_res > 0.0d) { // The only way to be greater than 0 is being a netherite armor, so it doesn't needs is16compatible bool
+				meta.removeAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+				meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResAM);
 			}
 
 			if (MineTinker.getPlugin().getConfig().getBoolean("HideAttributes")) {

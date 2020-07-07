@@ -20,7 +20,7 @@ import org.bukkit.plugin.Plugin;
  * This API is in a very unfinished state.
  *
  * @author Flo56958
- * @version 2019/10/20
+ * @version 2020/07/05
  * @apiNote USE AT OWN RISK. MAY CHANGE WITH FUTURE UPDATES.
  * @see de.flo56958.minetinker.modifiers.Modifier
  * <p>

@@ -107,6 +107,11 @@ public class PlayerListener implements Listener {
 					eligible = true;
 				}
 				break;
+			case "netherite":
+				if (repair.getType() == Material.NETHERITE_INGOT) {
+					eligible = true;
+				}
+				break;
 			case "bow":
 			case "crossbow":
 			case "fishing":
@@ -139,10 +144,6 @@ public class PlayerListener implements Listener {
 					eligible = true;
 				}
 				break;
-			case "netherite":
-				if (repair.getType() == Material.NETHERITE_INGOT) {
-					eligible = true;
-				}
 		}
 
 		if (eligible) {
