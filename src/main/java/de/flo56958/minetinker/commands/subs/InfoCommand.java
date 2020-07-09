@@ -31,6 +31,7 @@ import java.util.*;
 public class InfoCommand implements SubCommand {
 
 	private GUI infoGUI;
+
 	public InfoCommand() {
 		infoGUI = new GUI(MineTinker.getPlugin());
 		Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> {
@@ -57,43 +58,46 @@ public class InfoCommand implements SubCommand {
 			meta.setLore(lore);
 			stack.setItemMeta(meta);
 			window.addButton(3, stack);
-			stack = new ItemStack(Material.PLAYER_HEAD);
-			meta = stack.getItemMeta();
-			if (meta instanceof SkullMeta) {
-				((SkullMeta) meta).setOwner("Flo56958");
-				meta.setDisplayName("Contributors");
-				meta.setLore(Collections.singletonList(ChatColor.WHITE + "Click here to see all contributors"));
-			}
-			stack.setItemMeta(meta);
+			if (Contributor.getContributors().size() != 0) {
+				stack = new ItemStack(Material.PLAYER_HEAD);
+				meta = stack.getItemMeta();
+				if (meta instanceof SkullMeta) {
+					((SkullMeta) meta).setOwner("Flo56958");
+					meta.setDisplayName("Contributors");
+					meta.setLore(Collections.singletonList(ChatColor.WHITE + "Click here to see all contributors"));
+				}
+				stack.setItemMeta(meta);
 
-			GUI contributorGUI = new GUI(MineTinker.getPlugin());
-			{
-				int pageNo = 1;
-				GUI.Window contributors = contributorGUI.addWindow(6, "Contributors #" + pageNo);
-				int i = 0;
-				ArrayList<Contributor> conlist = Contributor.getContributors();
-				conlist.sort(Comparator.comparing(Contributor::getCommits));
-				Collections.reverse(conlist);
-				for (Contributor c : conlist) {
-					contributors.addButton(i++, c.getPlayerHead());
-					if (i == 45) {
-						i = 0;
-						pageNo++;
-						GUIs.addNavigationButtons(contributors);
-						contributors = contributorGUI.addWindow(6, "Contributors #" + pageNo);
-						GUIs.addNavigationButtons(contributors);
+				GUI contributorGUI = new GUI(MineTinker.getPlugin());
+				{
+					int pageNo = 1;
+					GUI.Window contributors = contributorGUI.addWindow(6, "Contributors #" + pageNo);
+					int i = 0;
+					ArrayList<Contributor> conlist = Contributor.getContributors();
+					conlist.sort(Comparator.comparing(Contributor::getCommits));
+					Collections.reverse(conlist);
+					for (Contributor c : conlist) {
+						contributors.addButton(i++, c.getPlayerHead());
+						if (i == 45) {
+							i = 0;
+							pageNo++;
+							GUIs.addNavigationButtons(contributors);
+							contributors = contributorGUI.addWindow(6, "Contributors #" + pageNo);
+							GUIs.addNavigationButtons(contributors);
+						}
 					}
 				}
-			}
 
-			GUI.Window.Button button = window.addButton(5, stack);
-			button.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(button, contributorGUI.getWindow(0)));
+				GUI.Window.Button button = window.addButton(5, stack);
+				button.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(button, contributorGUI.getWindow(0)));
+			}
 		});
 	}
+
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
 		Player player = null;
-		if(sender instanceof Player) {
+		if (sender instanceof Player) {
 			player = (Player) sender;
 			infoGUI.show(player);
 		} else {

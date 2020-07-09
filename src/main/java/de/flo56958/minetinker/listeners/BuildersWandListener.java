@@ -270,15 +270,18 @@ public class BuildersWandListener implements Listener {
 			return;
 		}
 
-		event.setCancelled(true);
-
 		if (!event.getPlayer().hasPermission("minetinker.builderswands.use")) {
 			return;
 		}
 
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+			if (event.getAction() != Action.PHYSICAL) {
+				event.setCancelled(true);
+			}
 			return;
 		}
+
+		event.setCancelled(true);
 
 		int _u = 0;
 		int _w = 0;

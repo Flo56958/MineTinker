@@ -19,7 +19,7 @@ import java.util.UUID;
 
 public class Contributor {
 
-	private static ArrayList<Contributor> contributors = new ArrayList<>();
+	private static final ArrayList<Contributor> contributors = new ArrayList<>();
 
 	static {
 		try {
