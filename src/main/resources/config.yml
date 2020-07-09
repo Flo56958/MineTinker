@@ -6,6 +6,7 @@ PluginIncompatibility:
   Check: true                         #Enables the search for incompatible plugins and MineTinker tries to react accordingly (e.g. change config settings)
   SkippedPlugins:                     #Disables searching for specified Plugins
     - "MineTinker"
+LowSpecMode: false                    #Enabling this will have the Plugin break all the blocks other then the player, will break synergies
 
 #--LOGGING--
 logging:

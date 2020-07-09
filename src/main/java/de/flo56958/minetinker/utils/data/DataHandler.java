@@ -62,7 +62,25 @@ public class DataHandler {
     }
 
     public static boolean playerBreakBlock(@NotNull Player player, Block block, @NotNull ItemStack itemStack) {
+        //
+        //This skips all interactions and synergies with MT and other Plugins but is way less performance heavy
+        //
+        if (MineTinker.getPlugin().getConfig().getBoolean("LowSpecMode")) {
+            block.breakNaturally(itemStack);
+
+            //Spawn Experience Orb
+            int exp = calculateExp(block.getType());
+            if (exp > 0) {
+                ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
+                orb.setExperience(exp);
+            }
+            return true;
+        }
+
+        //
         //Trigger BlockBreakEvent
+        //For interactions with MT itself and other Plugins
+        //
         BlockBreakEvent breakEvent = new BlockBreakEvent(block, player);
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null && !meta.hasEnchant(Enchantment.SILK_TOUCH)) breakEvent.setExpToDrop(calculateExp(block.getType()));
