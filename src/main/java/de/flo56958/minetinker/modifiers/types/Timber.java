@@ -130,7 +130,11 @@ public class Timber extends Modifier implements Listener {
 				Material blockType = player.getWorld().getBlockAt(block.getX(), y, block.getZ()).getType();
 
 				if (blockType == Material.GRASS_BLOCK || blockType == Material.DIRT
-						|| blockType == Material.PODZOL || blockType == Material.COARSE_DIRT) {
+						|| blockType == Material.PODZOL || blockType == Material.COARSE_DIRT ||
+						(MineTinker.is16compatible &&
+								(blockType == Material.NETHERRACK
+										|| blockType == Material.CRIMSON_NYLIUM
+										|| blockType == Material.WARPED_NYLIUM))) {
 
 					isTreeBottom = true;
 				}

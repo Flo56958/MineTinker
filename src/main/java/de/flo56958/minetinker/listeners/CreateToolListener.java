@@ -26,7 +26,7 @@ public class CreateToolListener implements Listener {
 		for (ItemStack item : event.getInventory().getMatrix()) {
 			if (item == null) continue;
 			if (item.getType() == Material.AIR) continue;
-			if (!Lists.getLetherArmor().contains(item.getType())) continue; //not leather armor
+			if (!Lists.getLeatherArmor().contains(item.getType())) continue; //not leather armor
 			if (item.getType() != event.getInventory().getResult().getType()) break; //Not a dye process
 
 			ItemMeta gridMeta = item.getItemMeta();

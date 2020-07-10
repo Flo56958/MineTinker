@@ -32,7 +32,7 @@ public class Lists {
 		NAME_COMMAND_BLACKLIST = config.getStringList("NameCommandBlacklist");
 	}
 
-	public static ArrayList<Material> getLetherArmor() {
+	public static ArrayList<Material> getLeatherArmor() {
 		ArrayList<Material> mats = new ArrayList<>();
 
 		mats.add(Material.LEATHER_CHESTPLATE);
@@ -55,6 +55,11 @@ public class Lists {
 		mats.add(Material.JUNGLE_LEAVES);
 		mats.add(Material.OAK_LEAVES);
 		mats.add(Material.SPRUCE_LEAVES);
+
+		if (MineTinker.is16compatible) {
+			mats.add(Material.NETHER_WART_BLOCK);
+			mats.add(Material.WARPED_WART_BLOCK);
+		}
 
 		return mats;
 	}
@@ -84,6 +89,13 @@ public class Lists {
 		mats.add(Material.JUNGLE_LOG);
 		mats.add(Material.OAK_LOG);
 		mats.add(Material.SPRUCE_LOG);
+
+		if (MineTinker.is16compatible) {
+			mats.add(Material.CRIMSON_STEM);
+			mats.add(Material.CRIMSON_HYPHAE);
+			mats.add(Material.WARPED_STEM);
+			mats.add(Material.WARPED_HYPHAE);
+		}
 		return mats;
 	}
 
@@ -98,6 +110,11 @@ public class Lists {
 		mats.add(Material.STRIPPED_JUNGLE_LOG);
 		mats.add(Material.STRIPPED_OAK_LOG);
 		mats.add(Material.STRIPPED_SPRUCE_LOG);
+
+		if (MineTinker.is16compatible) {
+			mats.add(Material.STRIPPED_CRIMSON_STEM);
+			mats.add(Material.STRIPPED_WARPED_STEM);
+		}
 		return mats;
 	}
 
