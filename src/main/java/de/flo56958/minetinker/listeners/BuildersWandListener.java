@@ -329,10 +329,9 @@ public class BuildersWandListener implements Listener {
 					break;
 			}
 			if (MineTinker.is16compatible) {
-				switch (wand.getType()) {
-					case NETHERITE_SHOVEL:
-						_u = 3;
-						_w = 3;
+				if (wand.getType() == Material.NETHERITE_SHOVEL) {
+					_u = 3;
+					_w = 3;
 				}
 			}
 		}
@@ -486,7 +485,7 @@ public class BuildersWandListener implements Listener {
 		//triggers a pseudoevent to find out if the Player can build
 		Block block = b.getWorld().getBlockAt(loc);
 
-		BlockPlaceEvent placeEvent = new BlockPlaceEvent(block, block.getState(), b, item, player, true, EquipmentSlot.HAND);
+		BlockPlaceEvent placeEvent = new BlockPlaceEvent(block, b.getState(), b, item, player, true, EquipmentSlot.HAND);
 		Bukkit.getPluginManager().callEvent(placeEvent);
 
 		//check the pseudoevent
