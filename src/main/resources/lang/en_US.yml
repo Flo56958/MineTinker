@@ -3,6 +3,7 @@ Alert.OnItemGrind: "%RED%You can't use Grindstone for MineTinker's items."
 Alert.ToolUpgradeFailure: "%RED%You have failed upgrading!"
 Alert.InternalError: "%RED%An internal error occurred!"
 Alert.OnCooldown: "%RED%This ability is still on cooldown!"
+Alert.MinecraftAPI: "%RED%Unable to connect to Minecrafts API!"
 
 StartUp.Commands: "Registered commands!"
 StartUp.BuildersWands: "Enabled Builderswands!"

@@ -4,6 +4,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.utils.ChatWriter;
+import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -107,7 +110,11 @@ public class Contributor {
 					displayName += name + "/";
 					((SkullMeta) itemMeta).setOwner(name);
 				} catch (IOException e) {
-					e.printStackTrace();
+					ChatWriter.logError(LanguageManager.getString("Alert.MinecraftAPI"));
+					if (MineTinker.getPlugin().getConfig().getBoolean("logging.debug")) {
+						System.out.println("This error is not a bug or serious error. MT caught the error and just prints the information in the console!");
+						e.printStackTrace();
+					}
 				}
 			}
 		}
