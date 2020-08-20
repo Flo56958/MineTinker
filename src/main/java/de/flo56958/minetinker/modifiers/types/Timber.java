@@ -199,7 +199,9 @@ public class Timber extends Modifier implements Listener {
 					Block toBreak = player.getWorld().getBlockAt(loc);
 					if (allowed.contains(toBreak.getType())) {
 						breakTree(player, tool, toBreak, allowed, locs);
-						DataHandler.playerBreakBlock(player, toBreak, tool);
+						try {
+							DataHandler.playerBreakBlock(player, block, tool);
+						} catch (IllegalArgumentException ignored) {}
 					}
 				}
 			}

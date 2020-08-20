@@ -165,7 +165,11 @@ public class EasyHarvestListener implements Listener {
 	}
 
 	private static void breakBlock(Block block, Player player, ItemStack tool) {
-		DataHandler.playerBreakBlock(player, block, tool);
+		try {
+			DataHandler.playerBreakBlock(player, block, tool);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@EventHandler

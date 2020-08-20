@@ -360,6 +360,8 @@ public class Power extends Modifier implements Listener {
 			return; //So Obsidian can not be mined using Cobblestone and Power
 		}
 
-		DataHandler.playerBreakBlock(player, block, tool);
+		try {
+			DataHandler.playerBreakBlock(player, block, tool);
+		} catch (IllegalArgumentException ignored) {}
 	}
 }

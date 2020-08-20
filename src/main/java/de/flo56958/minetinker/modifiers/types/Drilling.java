@@ -184,6 +184,10 @@ public class Drilling extends Modifier implements Listener {
 			return false; //So Obsidian can not be mined using Cobblestone and Power
 		}
 
-		return DataHandler.playerBreakBlock(player, block, tool);
+		try {
+			return DataHandler.playerBreakBlock(player, block, tool);
+		} catch (IllegalArgumentException ignored) {
+			return false;
+		}
 	}
 }

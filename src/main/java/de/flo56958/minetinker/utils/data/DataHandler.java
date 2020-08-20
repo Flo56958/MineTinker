@@ -61,7 +61,7 @@ public class DataHandler {
         item.setItemMeta(meta);
     }
 
-    public static boolean playerBreakBlock(@NotNull Player player, Block block, @NotNull ItemStack itemStack) {
+    public static boolean playerBreakBlock(@NotNull Player player, Block block, @NotNull ItemStack itemStack) throws IllegalArgumentException {
         //
         //This skips all interactions and synergies with MT and other Plugins but is way less performance heavy
         //
