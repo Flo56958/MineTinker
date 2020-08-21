@@ -134,7 +134,7 @@ public class Contributor {
 				for(String s : this.languages) {
 					sb.append(s).append(", ");
 				}
-				lore.add(ChatColor.GOLD + "Translating Languages: " + ChatColor.WHITE + sb.toString().substring(0, sb.length() - 2));
+				lore.add(ChatColor.GOLD + "Translating Languages: " + ChatColor.WHITE + sb.substring(0, sb.length() - 2));
 			}
 		}
 		if (discord != null) {
@@ -148,7 +148,9 @@ public class Contributor {
 				}
 			});
 		}
-		itemMeta.setDisplayName(displayName.substring(0, displayName.length() - 1));
+		if (displayName.length() > 0) {
+			itemMeta.setDisplayName(displayName.substring(0, displayName.length() - 1));
+		}
 		itemMeta.setLore(lore);
 
 		playerHead.setItemMeta(itemMeta);
