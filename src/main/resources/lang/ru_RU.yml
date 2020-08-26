@@ -3,6 +3,7 @@ Alert.OnItemGrind: "%RED%Шлифовальный камень не исполь
 Alert.ToolUpgradeFailure: "%RED%Улучшение не состоялось!"
 Alert.InternalError: "%RED%Произошла внутренняя ошибка!"
 Alert.OnCooldown: "%RED%Способность ещё не готова!"
+Alert.MinecraftAPI: ""
 
 StartUp.Commands: "Команды зарегистрированы!"
 StartUp.BuildersWands: "Посохи Строителя включены!"
@@ -14,20 +15,15 @@ StartUp.DebugLogging: "Debug Logging включён. Лучше отключит
 StartUp.Incompatible:
   Start: "Начался поиск несовместимых плагинов... Вы можете отключить эту функцию в основном конфиге!"
   Found: "%plugin найден. Настраиваем MineTinker для лучшей совместимости!"
-StartUp.CoreProtect.Success: "Обнаружен CoreProtect и включена интеграция!"
-StartUp.CoreProtect.Failure: "Обнаружен CoreProtect, но API имеет неправильную версию!"
 
-Builderswand.NameWood: "Деревянный Посох Строителя"
-Builderswand.NameStone: "Каменный Посох Строителя"
-Builderswand.NameIron: "Железный Посох Строителя"
-Builderswand.NameGold: "Золотой Посох Строителя"
-Builderswand.NameDiamond: "Алмазный Посох Строителя"
+Builderswand.Name.Wood: "Деревянный Посох Строителя"
+Builderswand.Name.Stone: "Каменный Посох Строителя"
+Builderswand.Name.Iron: "Железный Посох Строителя"
+Builderswand.Name.Gold: "Золотой Посох Строителя"
+Builderswand.Name.Diamond: "Алмазный Посох Строителя"
+Builderswand.Name.Netherite: "Незеритовый Посох Строителя"
 Builderswand.Description: "%WHITE%MineTinker-Посох-Строителя"
-Builderswand.Error.CraftWood: "Не удалось обнаружить рецепт для Деревянный Посох Строителя!"
-Builderswand.Error.CraftStone: "Не удалось обнаружить рецепт для Каменный Посох Строителя"
-Builderswand.Error.CraftIron: "Не удалось обнаружить рецепт для ЖелезныйПосох Строителя"
-Builderswand.Error.CraftGold: "Не удалось обнаружить рецепт для Золотой Посох Строителя"
-Builderswand.Error.CraftDiamond: "Не удалось обнаружить рецепт для Алмазный Посох Строителя"
+Builderswand.Error: "Не удалось найти рецепт для %wand!"
 
 Commands.Info.Line1: "MineTinker (%ver) автор плагина Flo56958. Перевод на русский Timotei~."
 Commands.Info.Line2: "За основу плагина взяты различные моды (например, TinkersConstruct)"
@@ -89,6 +85,18 @@ GUIs.ConfigurationEditor.IncrementValueClick: "%key увеличить на %amo
 GUIs.ConfigurationEditor.DecrementValueClick: "%key уменьшить на %amount!"
 GUIs.ConfigurationEditor.InsertValue: "%key ввести новое значение!"
 GUIs.ConfigurationEditor.ToggleValue: "%key переключить значение!"
+GUIs.Statistics.Title: "Статистка предмета для %tool"
+GUIs.Statistics.General.Title: "Общая статистика"
+GUIs.Statistics.General.Creator: "Создатель: %player"
+GUIs.Statistics.General.Created: "Создано: %date"
+GUIs.Statistics.Blocks.Title: "Статистика блоков"
+GUIs.Statistics.Blocks.TitlePage: "Статистика блоков для %tool - %pageNo"
+GUIs.Statistics.Blocks.AmountBroken: "%amount было сломано"
+GUIs.Statistics.Combat.Title: "Боевая статистика"
+GUIs.Statistics.Combat.TitlePage: "Боевая статистика для %tool - %pageNo"
+GUIs.Statistics.Combat.AmountKilled: "%amount раз убит"
+GUIs.Statistics.Combat.DamageDealt: "%amount урона нанесено"
+GUIs.Statistics.Combat.DamageReceived: "%amount урона получено"
 
 GUIs.ConfigurationEditor.config.PluginIncompatibility.Check: "Включает поиск несовместимости плагинов. MineTinker пытается реагировать соответствующим образом (пример: меняет настройки конфига)"
 GUIs.ConfigurationEditor.config.PluginIncompatibility.SkippedPlugins: "Отключает поиск для Плагинов,  указанных в этом Списке"
@@ -241,7 +249,7 @@ Modifier:
     DescriptionModifierItem: "Модификатор Отбрасывания"
   Lifesteal:
     Name: "Вампиризм"
-    Description: "Восстанавливает %amount% от нанесённого урона. %chance% срабатывания."
+    Description: "Лечит вас на %amount% за каждый уровень нанесенного урона. Шанс %chance%."
     ModifierItemName: "Наполненный Кровью Незерит"
     DescriptionModifierItem: "Модификатор Вампиризма"
   Light-Weight:
@@ -351,6 +359,11 @@ Modifier:
     Description: "Ваше оружие наносит дополнительный урон по нежити!"
     ModifierItemName: "Святая Кость"
     DescriptionModifierItem: "Модификатор Небесной Кары"
+  Soul-Speed:
+    Name: "Скорость души"
+    Description: "Быстрее ходите на песке душ!"
+    ModifierItemName: "Древний песок душ"
+    DescriptionModifierItem: "Предмет-модификатор для Скорости души"
   Soulbound:
     Name: "Печать-души"
     Description: "Предметы нельзя потерять при смерти!"
@@ -472,6 +485,7 @@ Enchantment:
   thorns: "Шипы"
   vanishing_curse: "Проклятье утраты"
   aqua_affinity: "Родство с водой"
+  soul_speed: "Скорость души"
 
 Updater.Unable: "Невозможно проверить на наличие обновлений!"
 Updater.UpdateAvailable: "Доступно обновление на spigotmc.org!"
