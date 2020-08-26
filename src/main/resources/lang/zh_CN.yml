@@ -3,6 +3,7 @@ Alert.OnItemGrind: "%RED%砂轮不能用于MineTinker物品."
 Alert.ToolUpgradeFailure: "%RED%升级失败!"
 Alert.InternalError: "%RED%发生内部错误!"
 Alert.OnCooldown: "%RED%技能尚在冷却!"
+Alert.MinecraftAPI: ""
 
 StartUp.Commands: "指令已注册!"
 StartUp.BuildersWands: "已启用建造工具杖!"
@@ -15,17 +16,14 @@ StartUp.Incompatible:
   Start: "正在搜索%RED%不兼容%WHITE%插件... 你可以在配置文件中关闭这一功能!"
   Found: "%plugin插件已找到. 正在调整MineTinker以获得最佳兼容性!"
 
-Builderswand.NameWood: "木制建造杖"
-Builderswand.NameStone: "石制建造杖"
-Builderswand.NameIron: "铁制建造杖"
-Builderswand.NameGold: "金制建造杖"
-Builderswand.NameDiamond: "钻石建造杖"
+Builderswand.Name.Wood: "木制建造杖"
+Builderswand.Name.Stone: "石制建造杖"
+Builderswand.Name.Iron: "铁制建造杖"
+Builderswand.Name.Gold: "金制建造杖"
+Builderswand.Name.Diamond: "钻石建造杖"
+Builderswand.Name.Netherite: "胶制建筑杖"
 Builderswand.Description: "%WHITE%MineTinker-建造杖"
-Builderswand.Error.CraftWood: "无法注册木制建造杖的合成表!"
-Builderswand.Error.CraftStone: "无法注册石制建造杖的合成表!"
-Builderswand.Error.CraftIron: "无法注册铁制建造杖的合成表!"
-Builderswand.Error.CraftGold: "无法注册金制建造杖的合成表!"
-Builderswand.Error.CraftDiamond: "无法注册钻石建造杖的合成表!"
+Builderswand.Error: "无法为 %wand 注册合成表!"
 
 Commands.Info.Line1: "MineTinker (%ver) 是由 Flo56958 制作的插件!"
 Commands.Info.Line2: "本插件受到多个模组的启发! (如: TinkersConstruct 匠魂工艺)"
@@ -87,6 +85,18 @@ GUIs.ConfigurationEditor.IncrementValueClick: "%key以增加%amount!"
 GUIs.ConfigurationEditor.DecrementValueClick: "%key以减少%amount!"
 GUIs.ConfigurationEditor.InsertValue: "%key以手动键入新值!"
 GUIs.ConfigurationEditor.ToggleValue: "%key以调整开关!"
+GUIs.Statistics.Title: "这是%tool的物品数据:"
+GUIs.Statistics.General.Title: "整体状态"
+GUIs.Statistics.General.Creator: "创造者: %player"
+GUIs.Statistics.General.Created: "创造时间: %date"
+GUIs.Statistics.Blocks.Title: "方块状态"
+GUIs.Statistics.Blocks.TitlePage: "%tool的方块状态 - %pageNo"
+GUIs.Statistics.Blocks.AmountBroken: "损坏了 %amount 次"
+GUIs.Statistics.Combat.Title: "战斗状态"
+GUIs.Statistics.Combat.TitlePage: "%tool 的战斗统计 - %pageNo"
+GUIs.Statistics.Combat.AmountKilled: "杀了 %amount 次"
+GUIs.Statistics.Combat.DamageDealt: "造成了 %amount 伤害"
+GUIs.Statistics.Combat.DamageReceived: "受到了 %amount 伤害"
 
 GUIs.ConfigurationEditor.config.PluginIncompatibility.Check: "开启MineTinker搜索不兼容插件并尝试主动应对的功能 (如: 主动更改配置文件设定.)"
 GUIs.ConfigurationEditor.config.PluginIncompatibility.SkippedPlugins: "禁用对该列表内插件的搜索"
@@ -185,9 +195,12 @@ Modifier:
   Experienced:
     Name: "经验加成"
     Description: "使用工具时将有几率掉落更多经验."
+    ModifierItemName: "人生经验"
+    DescriptionModifierItem: "人生经验模块"
   Extra-Modifier:
     Name: "附加模块槽位"
     Description: "增加一个模块槽位."
+    ModifierItemName: "精制下界之星"
     DescriptionModifierItem: "升级模块"
   Fiery:
     Name: "炎上"
@@ -201,6 +214,7 @@ Modifier:
     DescriptionModifierItem: "霜冻模块"
   Glowing:
     Name: "发光"
+    Description: "让敌人获得%durationmin到%durationmax秒的发光效果! (取决于等级)"
     ModifierItemName: "末影荧石"
     DescriptionModifierItem: "发光模块"
   Hardened:
@@ -235,7 +249,7 @@ Modifier:
     DescriptionModifierItem: "击退模块"
   Lifesteal:
     Name: "生命汲取"
-    Description: "按照你造成伤害的%amount%对你进行治愈. 触发几率为%chance%."
+    Description: "按所造成伤害的每级恢复 %amount%, %chance%几率触发"
     ModifierItemName: "浸血地狱岩"
     DescriptionModifierItem: "生命汲取模块"
   Light-Weight:
@@ -263,6 +277,11 @@ Modifier:
     Description: "允许你一发射出更多箭矢, 每增加一级多射击一根."
     ModifierItemName: "集束箭矢"
     DescriptionModifierItem: "多重射击模块"
+  Nightseeker:
+    Name: "夜行者"
+    Description: "当月亮照耀时（取决于月相与等级），产生治疗或减免伤害效果（%amountmin% 到 %amountmax%）。这个效果在白天或在下界会反转，同时在末地可以得到最高能量。"
+    ModifierItemName: "暗黑日光探测器"
+    DescriptionModifierItem: "夜行者模块"
   Photosynthesis:
     Name: "光合作用"
     Description: "站定在阳光下以修复你的物品. 每%ticks游戏刻恢复%amount耐久. 站定越久回复越快(%multiplier%)."
@@ -298,14 +317,21 @@ Modifier:
     Description: "使用工具时有几率不损耗耐久!"
     ModifierItemName: "压缩黑曜石"
     DescriptionModifierItem: "强化模块"
+  Scotopic:
+    Name: "暗视"
+    Description: "在亮度低于%light的时候给予%amount秒/级的夜视效果！冷却事件: %cmax 到 %cmin 秒 (依等级而变)"
+    ModifierItemName: "夜视眼"
+    DescriptionModifierItem: "暗视模块"
   Shadow-Dive:
     Name: "夜行靴"
     Description: "在暗处潜行以完全隐身！（亮度 <= %level）"
     ModifierItemName: "隐身水晶"
     DescriptionModifierItem: "夜行靴模块"
     LightToHigh: "亮度太高了！"
+    InCombat: "你正处于战斗中！"
   Self-Repair:
     Name: "自我修复"
+    Description: "使用时有%chance%的几率/级会恢复工具/盔甲%amount点耐久!"
     ModifierItemName: "附魔苔石"
     DescriptionModifierItem: "自我修复模块"
   Sharpness:
@@ -333,6 +359,11 @@ Modifier:
     Description: "武器对亡灵生物有伤害加成!"
     ModifierItemName: "圣灵亡骨"
     DescriptionModifierItem: "亡灵杀手模块"
+  Soul-Speed:
+    Name: "灵魂疾行"
+    Description: "在灵魂沙/土上行走得更快!"
+    ModifierItemName: "远古灵魂沙"
+    DescriptionModifierItem: "灵魂疾行模块"
   Soulbound:
     Name: "灵魂绑定"
     Description: "死亡时不掉落物品."
@@ -454,6 +485,7 @@ Enchantment:
   thorns: "荆棘"
   vanishing_curse: "消失诅咒"
   aqua_affinity: "水下速掘"
+  soul_speed: "灵魂疾行"
 
 Updater.Unable: "检查更新出错!"
 Updater.UpdateAvailable: "spigotmc.org 上有可用更新!"

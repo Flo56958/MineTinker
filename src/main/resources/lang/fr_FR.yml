@@ -2,6 +2,8 @@ Alert.OnItemBreak: "%RED%Il semblerait que votre outil se soit cassé! Ré-assem
 Alert.OnItemGrind: "%RED%Tu ne peux pas utiliser le Grindstone avec les outils MineTinker !"
 Alert.ToolUpgradeFailure: "%RED%L'upgrade n'a pas fonctionné !"
 Alert.InternalError: "%RED%Erreur interne !"
+Alert.OnCooldown: "%RED%Cette capacité est toujours en recharge !"
+Alert.MinecraftAPI: ""
 
 StartUp.Commands: "Commandes enregistrées !"
 StartUp.BuildersWands: "Outil de construction Activé!"
@@ -14,17 +16,14 @@ StartUp.Incompatible:
   Start: "Démarrage de la recherche de plugins incompatibles... Vous pouvez désactiver cette fonctionnalité dans la configuration principale!"
   Found: "%plugin trouvé. Modifications de MineTinker pour une meilleure compatibilité!"
 
-Builderswand.NameWood: "Outil de construction en bois"
-Builderswand.NameStone: "Outil de construction en pierre"
-Builderswand.NameIron: "Outil de construction en fer"
-Builderswand.NameGold: "Outil de construction en or"
-Builderswand.NameDiamond: "Outil de construction en diamant"
+Builderswand.Name.Wood: "Outil de construction en bois"
+Builderswand.Name.Stone: "Outil de construction en pierre"
+Builderswand.Name.Iron: "Outil de construction en fer"
+Builderswand.Name.Gold: "Outil de construction en or"
+Builderswand.Name.Diamond: "Outil de construction en diamant"
+Builderswand.Name.Netherite: ""
 Builderswand.Description: "%WHITE%Outil de construction MineTinker"
-Builderswand.Error.CraftWood: "La recette pour l'outil de construction en bois n'a pas pu être enregistrée!"
-Builderswand.Error.CraftStone: "La recette pour l'outil de construction en pierre n'a pas pu être enregistrée!"
-Builderswand.Error.CraftIron: "La recette pour l'outil de construction en fer n'a pas pu être enregistrée!"
-Builderswand.Error.CraftGold: "La recette pour l'outil de construction en or n'a pas pu être enregistrée!"
-Builderswand.Error.CraftDiamond: "La recette pour l'outil de construction en diamant n'a pas pu être enregistrée!"
+Builderswand.Error: ""
 
 Commands.Info.Line1: "MineTinker (%ver)  est un Plugin fait par Flo56958"
 Commands.Info.Line2: "il est inspiré par différents mods (Ex: TinkersConstruct)"
@@ -46,7 +45,16 @@ Commands.ItemStatistics.Level: "Niveau: %level"
 Commands.ItemStatistics.Exp: "Expérience: %current / %nextlevel"
 Commands.ItemStatistics.FreeSlots: "Slots de Modification Libre: %slots"
 Commands.ItemStatistics.Modifiers: "Modificateurs:"
+Commands.Failure.Main: "La commande a échoué: %cause"
+Commands.Failure.Cause.PlayerNotFound: "Le joueur %p est introuvable !"
+Commands.Failure.Cause.PlayerMissing: "Informations sur le joueur manquantes !"
+Commands.Failure.Cause.InvalidArguments: "Arguments invalides !"
+Commands.Failure.Cause.NumberFormatException: "NumberFormatException!"
+Commands.Failure.Cause.PlayerOnlyCommand: "Commande joueur uniquement !"
+Commands.Failure.Cause.UnknownCommand: "Commande inconnue !"
 Commands.Failure.Cause.NoPermission: "Pas la permission!"
+Commands.Failure.Cause.InvalidItem: "Objet invalide !"
+Commands.Failure.Cause.NameNotAllowed: "Nom non autorisé !"
 
 GUI.ButtonAction.REQUEST_INPUT: "Votre entrée est requise pour %data. Le prochain message que vous allez envoyer sera enregistré par MineTinker et sera votre entrée."
 
@@ -64,6 +72,7 @@ GUIs.Modifiers.IncompatibleWith: "Incompatible avec:"
 GUIs.Modifiers.EnchantCost: "Coût de l'enchantement: %WHITE%%enchantCost"
 GUIs.Modifiers.ClickToRecipe: "%key pour voir la recette d'un craft."
 GUIs.Modifiers.BlockToEnchant: "%key avec %mat sur %block pour enchanter l’item."
+GUIs.Modifiers.SlotCost: "Emplacements gratuits nécessaires par niveau : %amount"
 GUIs.ConfigurationEditor.ReloadPlugin: "Recharge MineTinker"
 GUIs.ConfigurationEditor.Change: "Modification de %key de %old à %new !"
 GUIs.ConfigurationEditor.Type: "Type: %type"
@@ -76,6 +85,18 @@ GUIs.ConfigurationEditor.IncrementValueClick: "%key pour augmenter de %amount!"
 GUIs.ConfigurationEditor.DecrementValueClick: "%key pour diminuer de %amount!"
 GUIs.ConfigurationEditor.InsertValue: "%key pour insérer la nouvelle valeur !"
 GUIs.ConfigurationEditor.ToggleValue: "%key pour basculer la valeur !"
+GUIs.Statistics.Title: "Statistique-Objet pour %tool"
+GUIs.Statistics.General.Title: "Statistiques Générales"
+GUIs.Statistics.General.Creator: "Créateur : %player"
+GUIs.Statistics.General.Created: "Créé le : %date"
+GUIs.Statistics.Blocks.Title: "Statistiques de Bloc"
+GUIs.Statistics.Blocks.TitlePage: "Statistiques de Bloc pour %tool - %pageNo"
+GUIs.Statistics.Blocks.AmountBroken: "%amount fois cassé"
+GUIs.Statistics.Combat.Title: "Statistiques de Combat"
+GUIs.Statistics.Combat.TitlePage: "Statistiques de Combat pour %tool -%pageNo"
+GUIs.Statistics.Combat.AmountKilled: "%amount fois tué"
+GUIs.Statistics.Combat.DamageDealt: "%amount dégâts infligés"
+GUIs.Statistics.Combat.DamageReceived: "%amount dégâts reçus"
 
 GUIs.ConfigurationEditor.config.PluginIncompatibility.Check: "Active la recherche de plugins incompatibles et MineTinker tente de réagir en conséquence (par ex. modifier les paramètres de configuration)"
 GUIs.ConfigurationEditor.config.PluginIncompatibility.SkippedPlugins: "Désactive la recherche de Plugins spécifiés dans cette Liste"
@@ -90,6 +111,7 @@ GUIs.ConfigurationEditor.config.logging.metrics: "bStats-Métriques pour statist
 
 ModManager.RegisterModifier: "%GREEN%Enregistrement du %mod %GREEN%modificateur de %plugin."
 ModManager.UnregisterModifier: "%GREEN%Non enregistré le %mod %GREEN%modifier de %plugin."
+ModManager.IncompatibilityWrongSyntax: "Syntaxe de ligne incorrecte ou nom de modificateur incorrect trouvé dans la ligne '%line' d'incompatibilités des modificateurs."
 
 ModifierFailCause.IncompatibleModifiers: "Modifications Incompatibles !"
 ModifierFailCause.InvalidToolType: "Type d’outil invalide !"
@@ -97,6 +119,9 @@ ModifierFailCause.MaximumSlotsReached: "Quantité maximum d'emplacements atteint
 ModifierFailCause.ModMaxLevel: "Le modificateur est déjà au niveau maximum !"
 ModifierFailCause.NoFreeSlots: "Pas assez de slots de libre sur l'item !"
 ModifierFailCause.NoPermission: "Pas la permission !"
+ModifierFailCause.PlayerFailure: "Le joueur n'a pas réussi à appliquer la modification !"
+
+GrindStone.PossibleSlotsAfterGrind: "Emplacements libres possibles après le broyage : %amount"
 
 ActionBar.ExpGain: "%amount exp gagné"
 
@@ -161,7 +186,7 @@ Modifier:
     Description: "Vous téléporte tout en se faufilant à l’emplacement d’atterrissage des flèches!"
     ModifierItemName: "Oeil de l'end spécial"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Ender"
-    TeleportationProhibited: ""
+    TeleportationProhibited: "Vous ne pouvez pas échanger de place avec ce Joueur !"
   Evasive:
     Name: "Esquive"
     Description: "Vous donne une chance d'esquiver les attaques (%chance par level). %sneakX en sneak, %sprintX en courant, %pvpX en PvP"
@@ -170,9 +195,13 @@ Modifier:
   Experienced:
     Name: "Expérimenté"
     Description: "L’outil a %chance% chances par niveau de déposer %amount XP tout en l’utilisant!"
+    ModifierItemName: "Essence d'Experience"
+    DescriptionModifierItem: "Objet Modificateur pour la Modification Expérimentation"
   Extra-Modifier:
     Name: "Modificateur-Supplémentaire"
     Description: "Ajoute %amount Slots de Modification supplémentaires à l'outil !"
+    ModifierItemName: "Etoile du Nether Raffinée"
+    DescriptionModifierItem: "Objet Modificateur pour la Modification Extra"
   Fiery:
     Name: "Enflammé"
     Description: "Un modificateur pour tous les brûler !"
@@ -185,7 +214,7 @@ Modifier:
     DescriptionModifierItem: "Objet Modificateur pour la Modification Congélation"
   Glowing:
     Name: "Brillant"
-    Description: ""
+    Description: "Faites briller les ennemis pendant %durationmin à %durationmax secondes ! (en fonction du niveau)"
     ModifierItemName: "Pierre-End-Lumineux"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Brillant"
   Hardened:
@@ -220,7 +249,7 @@ Modifier:
     DescriptionModifierItem: "Objet Modificateur pour la Modification Repoussement"
   Lifesteal:
     Name: "Sangsue"
-    Description: "Vous guérit de %amount% des dommages infligés. %chance% de chance de se déclencher."
+    Description: "Vous rend %amount% de soin par niveau des dégâts infligés. %chance% de chance de ce déclencher."
     ModifierItemName: "Netherrack Infusé de sang"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Sangsue"
   Light-Weight:
@@ -248,6 +277,11 @@ Modifier:
     Description: "Tir une flèche de plus par niveau par coup!"
     ModifierItemName: "Flèche Multiple"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Tir-Multiple"
+  Nightseeker:
+    Name: "Chercheur de nuit"
+    Description: "Infligez plus ou recevez moins de dégâts (%amountmin% à %amountmax%) lorsque la lune brille (cela dépend du niveau et de la position de la lune). Cet effet est inversé pendant la journée et dans le Nether mais a toute sa force à la fin !"
+    ModifierItemName: "Détecteur de lumière du jour sombre"
+    DescriptionModifierItem: "Objet Modificateur pour la Modification Chercheur de nuit"
   Photosynthesis:
     Name: "Photosynthèse"
     Description: "Réparez votre item avec %amount durabilité par niveau chaque %ticks tiques en restant immobile alors que le soleil brille. Plus vous restez longtemps, plus les réparations sont rapides. (%multiplier%)"
@@ -283,9 +317,21 @@ Modifier:
     Description: "Chance de ne pas utiliser la durabilité lors de l’utilisation de l’outil / armure! Rend l’outil plus durable!"
     ModifierItemName: "Obsidienne Comprimée"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Renforcement"
+  Scotopic:
+    Name: "Scotopic"
+    Description: "Accorde %amount secondes de vision nocturne par niveau si le niveau de lumière descend en dessous de %light ! Temps de recharge: %cmax à %cmin secondes (selon le niveau)"
+    ModifierItemName: "Oeil de Nuit"
+    DescriptionModifierItem: "Objet Modificateur pour la Modification Oeil de Nuit"
+  Shadow-Dive:
+    Name: "Plongée de l'Ombre"
+    Description: "Vous élimine complètement de la vue lorsque vous vous faufilez dans des endroits sombres! (Niveau de lumière <= %level)"
+    ModifierItemName: "Cristal de Disparition"
+    DescriptionModifierItem: "Objet Modificateur pour la Modification Plongée de l'Ombre"
+    LightToHigh: "Le niveau de lumière est trop haut  !"
+    InCombat: "Vous êtes au combat !"
   Self-Repair:
     Name: "Auto-Réparation"
-    Description: ""
+    Description: "%chance% de chance par niveau de réparer l'outil / l'armure avec %amount points de durabilité tout en l'utilisant !"
     ModifierItemName: "Pierre Moussue Enchantée"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Réparation"
   Sharpness:
@@ -293,6 +339,11 @@ Modifier:
     Description: "L’arme fait des dégâts supplémentaires à tout le monde!"
     ModifierItemName: "Bloc de Quartz Compressé "
     DescriptionModifierItem: "Objet Modificateur pour la Modification Tranchant"
+  Shrouded:
+    Name: "Voilé d'un linceul"
+    Description: "Génère un nuage de particules qui aveugle pendant %durationmin à %durationmax secondes où les flèches atterrissent ! Synergie avec d'autres modificateurs d'effet de potion."
+    ModifierItemName: "Bouteille de fumée"
+    DescriptionModifierItem: "Objet Modificateur pour la Modification Voilé d'un Linceuil"
   Shulking:
     Name: "Shulking"
     Description: "Faire léviter et immobiliser les ennemis pour %duration ticks! L’effet devient plus fort à chaque niveau."
@@ -308,6 +359,11 @@ Modifier:
     Description: "Votre arme fait des dégâts supplémentaires vers les morts-vivants !"
     ModifierItemName: "Os Saint"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Châtiment"
+  Soul-Speed:
+    Name: "Vitesse de l'Âme"
+    Description: "Marchez plus vite sur le sable des âmes !"
+    ModifierItemName: "Sable des Âmes Antique"
+    DescriptionModifierItem: "Objet Modificateur pour la Modification Vitesse le l'Âme"
   Soulbound:
     Name: "Lié à l'Âme"
     Description: "Ne perdez pas vos items en mourant."
@@ -323,6 +379,11 @@ Modifier:
     Description: "L’arme fait des dégâts supplémentaires aux araignées !"
     ModifierItemName: "Oeil d'araignée nettoyée"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Fléau des Araignées"
+  Sunblazer:
+    Name: "Flamme du Soleil"
+    Description: "Infligez plus ou recevez moins de dégâts (%amountmin% à %amountmax%) lorsque le soleil brille (dépend du niveau et de la position du soleil). Cet effet est inversé la nuit et à la fin mais a toute sa force dans le Nether !"
+    ModifierItemName: "Détecteur de Lumière Dorée"
+    DescriptionModifierItem: "Objet Modificateur pour la Modification Flamme du Soleil"
   Sweeping:
     Name: "Balayage"
     Description: "Infligez plus de dégâts sur une plus grande zone!"
@@ -343,11 +404,22 @@ Modifier:
     Description: "Coupe les arbres en un instant !"
     ModifierItemName: "Emeraude en bois"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Charpente"
+  Void-Netting:
+    Name: "Filets du Néant"
+    Description: "Vous téléporte vers un endroit sûr dans un rayon de %radius blocs par niveau lorsque vous tombez dans le vide. Temps de recharge: %cmax à %cmin secondes (selon le niveau)"
+    ModifierItemName: "Filets dans le Vide"
+    DescriptionModifierItem: "Objet Modificateur pour la Modification Filets du Néant"
+    CouldNotFindBlock: "Impossible de trouver un endroit sûr pour se téléporter !"
   Webbed:
     Name: "Toile"
     Description: "Ralentissez les ennemis lorsque vous les frappez ou qu’ils vous frappent pour %duration ticks x %multiplier par niveau !"
     ModifierItemName: "Toile d'araignée compressée"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Toile"
+  Withered:
+    Name: "Flétrissure"
+    Description: "Flétrie la cible de %duration ticks * %multiplier par niveau!"
+    ModifierItemName: "Crâne de Wither Squelette Blanc"
+    DescriptionModifierItem: "Objet Modificateur pour la Modification Flétrissure"
 
 DataType.Boolean: "Booléen (vrai/faux)"
 DataType.String: "Ficelle"
@@ -413,6 +485,7 @@ Enchantment:
   thorns: "Épines"
   vanishing_curse: "Malédiction de disparition"
   aqua_affinity: "Affinité aquatique"
+  soul_speed: "Vitesse de l'âme"
 
 Updater.Unable: "Impossible de vérifier les mises à jour!"
 Updater.UpdateAvailable: "Il y a une mise à jour disponible sur spigotmc.org!"
