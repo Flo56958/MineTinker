@@ -3,7 +3,7 @@ Alert.OnItemGrind: "%RED%Шлифовальный камень не исполь
 Alert.ToolUpgradeFailure: "%RED%Улучшение не состоялось!"
 Alert.InternalError: "%RED%Произошла внутренняя ошибка!"
 Alert.OnCooldown: "%RED%Способность ещё не готова!"
-Alert.MinecraftAPI: ""
+Alert.MinecraftAPI: "%RED%Невозможно подключится к Minecraft API!"
 
 StartUp.Commands: "Команды зарегистрированы!"
 StartUp.BuildersWands: "Посохи Строителя включены!"
