@@ -56,7 +56,7 @@ public class ItemStatisticsCommand implements SubCommand {
 			int amount = items.size();
 			GUI gui = new GUI(MineTinker.getPlugin());
 			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), gui::close, 5 * 60 * 20);
-			GUI.Window window = gui.addWindow((int) Math.ceil(amount / 9.0), player.getDisplayName());
+			GUI.Window window = gui.addWindow(Math.min(Math.max((int) Math.ceil(amount / 9.0), 1), 6), player.getDisplayName());
 			for (int i = 0; i < amount; i++) {
 				GUI.Window.Button button = window.addButton(i, items.get(i));
 				GUI statisticGUI = ItemStatisticsHandler.getGUI(items.get(i));
