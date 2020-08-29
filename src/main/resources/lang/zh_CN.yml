@@ -391,7 +391,7 @@ Modifier:
     DescriptionModifierItem: "横扫模块"
   Tanky:
     Name: "肉盾"
-    Description: "每一级增加%amout心的血量上限!"
+    Description: "每一级增加%amount心的血量上限!"
     ModifierItemName: "浸血黑曜石"
     DescriptionModifierItem: "肉盾模块"
   Thorned:
