@@ -3,7 +3,7 @@ Alert.OnItemGrind: "%RED%砂轮不能用于MineTinker物品."
 Alert.ToolUpgradeFailure: "%RED%升级失败!"
 Alert.InternalError: "%RED%发生内部错误!"
 Alert.OnCooldown: "%RED%技能尚在冷却!"
-Alert.MinecraftAPI: ""
+Alert.MinecraftAPI: "%RED%无法连接至Minecraft API!"
 
 StartUp.Commands: "指令已注册!"
 StartUp.BuildersWands: "已启用建造工具杖!"
