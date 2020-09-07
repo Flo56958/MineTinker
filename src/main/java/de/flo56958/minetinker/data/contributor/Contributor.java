@@ -1,9 +1,6 @@
 package de.flo56958.minetinker.data.contributor;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
@@ -31,8 +28,12 @@ public class Contributor {
 			{
 				//Obtain Information over GitHub API
 				String cons = new Scanner(new URL("https://api.github.com/repos/Flo56958/MineTinker/contributors").openStream(), "UTF-8").useDelimiter("\\A").next();
-				JsonArray json = new JsonParser().parse(cons).getAsJsonArray();
-				json.forEach(e -> contributorList.add(e.getAsJsonObject()));
+				if (cons != null) {
+					try {
+						JsonArray json = new JsonParser().parse(cons).getAsJsonArray();
+						json.forEach(e -> contributorList.add(e.getAsJsonObject()));
+					} catch (JsonSyntaxException ignored) {}
+				}
 			}
 			{
 				JsonArray json = new JsonParser().parse(new Scanner(new URL("https://raw.githubusercontent.com/Flo56958/MineTinker/master/contributors.json").openStream(), "UTF-8").useDelimiter("\\A").next()).getAsJsonArray();
