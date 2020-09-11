@@ -33,7 +33,7 @@ public class Shrouded extends Modifier implements Listener {
 
 	private Shrouded() {
 		super(MineTinker.getPlugin());
-		customModelData = 10_054;
+		customModelData = 10_056;
 	}
 
 	public static Shrouded instance() {

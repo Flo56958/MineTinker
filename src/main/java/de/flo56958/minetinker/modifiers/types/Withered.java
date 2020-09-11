@@ -39,7 +39,7 @@ public class Withered extends Modifier implements Listener {
 
 	private Withered() {
 		super(MineTinker.getPlugin());
-		customModelData = 10_053;
+		customModelData = 10_055;
 	}
 
 	public static Withered instance() {
