@@ -139,8 +139,12 @@ public class Tanky extends Modifier implements Listener {
 		ItemStack chest = event.getPlayer().getInventory().getChestplate();
 		if (modManager.isArmorViable(chest) && modManager.hasMod(chest, this)) {
 			health = DataHandler.getTag(chest, "modifier_berserk_health_save", PersistentDataType.DOUBLE, false);
-			if (health != null) {
-				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> event.getPlayer().setHealth(health), 10L);
+			if (health != null && health > 0) {
+				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
+					try {
+						event.getPlayer().setHealth(health);
+					} catch(IllegalArgumentException ignored) {}
+				}, 10L);
 				DataHandler.removeTag(chest, "modifier_berserk_health_save", false);
 			} else {
 				return;
