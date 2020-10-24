@@ -1,11 +1,11 @@
 name: MineTinker
 authors: [Flo56958, Vicarious]
-version: ${project.version}
+version: @project.version@
 main: de.flo56958.minetinker.MineTinker
 prefix: MineTinker
 
-description: ${project.description}
-website: ${project.url}
+description: @project.description@
+website: @project.url@
 database: false
 api-version: "1.14"
 
