@@ -1,4 +1,4 @@
-name: Gradle CI
+name: Java CI with Gradle
 
 on:
   push:
@@ -28,8 +28,11 @@ jobs:
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
       run: sed -i "s/' \/\/VersionNumber/-${{ github.sha }}'/g" ./build.gradle
 
-    - name: Build with Maven # <- Executes the MineTinker Maven goal
-      run: gradlew clean build
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build with Gradle
+      run: ./gradlew build
       
     - name: Setting up Python for publishing
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
