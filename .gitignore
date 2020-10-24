@@ -26,6 +26,8 @@ hs_err_pid*
 *.iws
 /out/
 /bin/
+/.gradle/
+/build/
 
 # User-specific stuff
 .idea/**/workspace.xml

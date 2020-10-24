@@ -48,7 +48,7 @@ public class NameCommand implements SubCommand {
 			StringBuilder name = new StringBuilder();
 
 			for (int i = 1; i < args.length; i++) {
-				name.append(" ").append(args[i].replace('&', '§'));
+				name.append(" ").append(args[i].replace('&', '\u00a7')); // = §
 			}
 
 			name = new StringBuilder(name.substring(1));

@@ -1,14 +1,16 @@
-name: Maven CI
+name: Gradle CI
 
 on:
   push:
     paths:
     - '**.java' # <- Only build, test and publish MineTinker if any .java-files changed
-    - '**pom.xml'
+    - '**build.gradle'
+    - '**settings.gradle'
   pull_request:
     paths:
     - '**.java'
-    - '**pom.xml'
+    - '**build.gradle'
+    - '**settings.gradle'
 
 jobs:
   build:
@@ -22,12 +24,12 @@ jobs:
       with:
         java-version: 1.8
         
-    - name: Preparing pom.xml # <- Only necessary for publishing - changes the revision number dependent on the commit sha
+    - name: Preparing build.gradle # <- Only necessary for publishing - changes the version number dependent on the commit sha
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-      run: sed -i 's/<\/revision>/-${{ github.sha }}<\/revision>/g' ./pom.xml
+      run: sed -i "s/' \/\/VersionNumber/-${{ github.sha }}'/g" ./build.gradle
 
     - name: Build with Maven # <- Executes the MineTinker Maven goal
-      run: mvn -B package -e --file pom.xml
+      run: gradlew clean build
       
     - name: Setting up Python for publishing
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -35,4 +37,4 @@ jobs:
     
     - name: Publishing Build
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-      run: python3 .github/workflows/scripts/publish.py ./target/MineTinker.jar MineTinker ${{ secrets.DiscordWebHook }} ${{ github.sha }}
+      run: python3 .github/workflows/scripts/publish.py ./build/libs/MineTinker.jar MineTinker ${{ secrets.DiscordWebHook }} ${{ github.sha }}
