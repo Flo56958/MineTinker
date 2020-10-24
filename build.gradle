@@ -34,7 +34,6 @@ description = 'MineTinker'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 assemble.dependsOn(shadowJar)
-
 shadowJar {
     relocate('org.bstats.bukkit', 'de.flo56958.minetinker.bStats')
     archiveFileName = "MineTinker.jar"
