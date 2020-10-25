@@ -23,7 +23,7 @@ Builderswand.Name.Gold: "Goldener Baumeisterstab"
 Builderswand.Name.Diamond: "Diamantener Baumeisterstab"
 Builderswand.Name.Netherite: "Netherite Baumeisterstab"
 Builderswand.Description: "%WHITE%MineTinker - Baumeisterstab"
-Builderswand.Error: "Das Crafting Rezept für des %wand%es konnte nicht registriert werden! "
+Builderswand.Error: "Das Crafting Rezept für des %wandes konnte nicht registriert werden! "
 
 Commands.Info.Line1: "MineTinker (%ver) ist ein Plugin programmiert von Flo56958."
 Commands.Info.Line2: "Es ist inspiriert von verschiedenen Modifikationen (z.B. TinkersConstruct)"
