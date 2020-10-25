@@ -40,6 +40,10 @@ shadowJar {
     archiveFileName = "MineTinker.jar"
 }
 
+compileJava {
+	options.encoding = 'UTF-8'
+}
+
 processResources {
     filter ReplaceTokens, tokens: [
             "project.version"    : project.version,
