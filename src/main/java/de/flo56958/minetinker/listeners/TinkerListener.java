@@ -1,11 +1,11 @@
 package de.flo56958.minetinker.listeners;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.events.ModifierApplyEvent;
 import de.flo56958.minetinker.events.ModifierFailEvent;
 import de.flo56958.minetinker.events.ToolLevelUpEvent;
 import de.flo56958.minetinker.events.ToolUpgradeEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.modifiers.types.ExtraModifier;
@@ -164,44 +164,36 @@ public class TinkerListener implements Listener {
 				}
 
 				if (config.getBoolean("LevelUpEvents.RandomModifier.enabled")) {
-					int n = rand.nextInt(100);
+					if (rand.nextInt(100) <= config.getInt("LevelUpEvents.RandomModifier.percentage")) {
+						int max = rand.nextInt(config.getInt("LevelUpEvents.RandomModifier.MaximumAmountOfModifiers")) + 1;
+						for (int j = 0; j < max; j++) {
+							List<Modifier> mods = new ArrayList<>(modManager.getAllowedMods());
+							//necessary as the failed modifiers get removed from the list (so a copy is in order)
 
-					if (n <= config.getInt("LevelUpEvents.RandomModifier.percentage")) {
-						for (int i = 0; i < player.getInventory().getSize(); i++) { //getting the inventory slot of the tool
-							if (player.getInventory().getItem(i) != null && player.getInventory().getItem(i).equals(tool)) {  //Can be NULL!
-								for (int j = 0; j < new Random().nextInt(config.getInt("LevelUpEvents.RandomModifier.MaximumAmountOfModifiers") + 1); j++) {
-
-									List<Modifier> mods = new ArrayList<>(modManager.getAllowedMods());
-									//necessary as the failed modifiers get removed from the list (so a copy is in order)
-
-									if (!config.getBoolean("LevelUpEvents.RandomModifier.AllowExtraModifier")) {
-										mods.remove(ExtraModifier.instance());
-									}
-
-									int index;
-
-									do {
-										if (mods.isEmpty()) {
-											break;
-										} //Secures that the while will terminate after some time (if all modifiers were removed)
-
-										index = new Random().nextInt(mods.size());
-										Modifier mod = mods.get(index);
-										if (config.getBoolean("LevelUpEvents.RandomModifier.DropAsItem", false)) {
-											appliedRandomMod = true;
-											if (player.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
-												player.getWorld().dropItem(player.getLocation(), mod.getModItem()); //drops item when inventory is full
-											} // no else as it gets added in if
-										} else {
-											appliedRandomMod = modManager.addMod(player, tool, mod, true, true, false);
-										}
-										if (!appliedRandomMod) {
-											mods.remove(index); //Remove the failed modifier from the the list of the possibles
-										}
-									} while (!appliedRandomMod);
-								}
-								break;
+							if (!config.getBoolean("LevelUpEvents.RandomModifier.AllowExtraModifier")) {
+								mods.remove(ExtraModifier.instance());
 							}
+
+							int index;
+							do {
+								if (mods.isEmpty()) {
+									break;
+								} //Secures that the while will terminate after some time (if all modifiers were removed)
+
+								index = rand.nextInt(mods.size());
+								Modifier mod = mods.get(index);
+								if (config.getBoolean("LevelUpEvents.RandomModifier.DropAsItem", false)) {
+									appliedRandomMod = true;
+									if (player.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
+										player.getWorld().dropItem(player.getLocation(), mod.getModItem()); //drops item when inventory is full
+									} // no else as it gets added in if
+								} else {
+									appliedRandomMod = modManager.addMod(player, tool, mod, true, true, false);
+								}
+								if (!appliedRandomMod) {
+									mods.remove(index); //Remove the failed modifier from the the list of the possibles
+								}
+							} while (!appliedRandomMod);
 						}
 					}
 				}
