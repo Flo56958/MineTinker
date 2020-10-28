@@ -163,7 +163,7 @@ Modifier:
     DescriptionModifierItem: 'Item Modificado para o Modificador Revestimento Anti Explosão'
   Aquaphilic:
     Name: 'Aquafílico'
-    Description: 'Nade mais rápido, mergulhe mais e pare embaixo d'água de forma mais eficiente'
+    Description: "Nade mais rápido, mergulhe mais e pare embaixo d'água de forma mais eficiente"
     ModifierItemName: 'Pérola do oceano'
     DescriptionModifierItem: 'Item Modificado para o Modificador Aquafílico'
   Auto-Smelt:

@@ -176,6 +176,9 @@ public class Timber extends Modifier implements Listener {
 	}
 
 	private void breakTree(Player player, ItemStack tool, Block block, List<Material> allowed, List<Location> locs) { //TODO: Improve algorithm and performance -> async?
+		if (locs.size() >= maxBlocks) {
+			return;
+		}
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dy = -1; dy <= 1; dy++) {
 				for (int dz = -1; dz <= 1; dz++) {
@@ -183,15 +186,11 @@ public class Timber extends Modifier implements Listener {
 						continue;
 					}
 
-					Location loc = block.getLocation().clone();
+					Location loc = block.getLocation();
 					loc.add(dx, dy, dz);
 
 					if (locs.contains(loc)) {
 						continue;
-					}
-
-					if (locs.size() >= maxBlocks) {
-						return;
 					}
 
 					locs.add(loc);
@@ -200,8 +199,10 @@ public class Timber extends Modifier implements Listener {
 					if (allowed.contains(toBreak.getType())) {
 						breakTree(player, tool, toBreak, allowed, locs);
 						try {
-							DataHandler.playerBreakBlock(player, block, tool);
-						} catch (IllegalArgumentException ignored) {}
+							DataHandler.playerBreakBlock(player, toBreak, tool);
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			}
