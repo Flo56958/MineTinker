@@ -53,7 +53,7 @@ public class ItemStatisticsHandler implements Listener {
 				Long date = DataHandler.getTag(item, "creation_date", PersistentDataType.LONG, false);
 				if (date != null) {
 					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
-					Date date_ = new Date(System.currentTimeMillis());
+					Date date_ = new Date(date);
 					lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Statistics.General.Created")
 							.replace("%date", formatter.format(date_)));
 				}
