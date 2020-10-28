@@ -12,7 +12,9 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -74,6 +76,15 @@ public class DataHandler {
                 ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
                 orb.setExperience(exp);
             }
+
+            //Calculate Damage for itemStack
+            ItemMeta meta = itemStack.getItemMeta();
+            if (!meta.isUnbreakable()) {
+                if (meta instanceof Damageable) {
+                    ((Damageable) meta).setDamage(((Damageable) meta).getDamage() + 1);
+                    itemStack.setItemMeta(meta);
+                }
+            }
             return true;
         }
 
@@ -119,6 +130,20 @@ public class DataHandler {
                 //Spawn Experience Orb
                 ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
                 orb.setExperience(breakEvent.getExpToDrop());
+            }
+
+            //Calculate Damage for itemStack
+            meta = itemStack.getItemMeta();
+            if (!meta.isUnbreakable()) {
+                if (meta instanceof Damageable) {
+                    PlayerItemDamageEvent damageEvent = new PlayerItemDamageEvent(player, itemStack, 1);
+                    Bukkit.getPluginManager().callEvent(damageEvent);
+                    if (!damageEvent.isCancelled()) {
+                        meta = itemStack.getItemMeta();
+                        ((Damageable) meta).setDamage(((Damageable) meta).getDamage() + damageEvent.getDamage());
+                        itemStack.setItemMeta(meta);
+                    }
+                }
             }
 
             return true;
