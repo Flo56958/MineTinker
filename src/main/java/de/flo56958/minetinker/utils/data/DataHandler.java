@@ -81,8 +81,13 @@ public class DataHandler {
             ItemMeta meta = itemStack.getItemMeta();
             if (!meta.isUnbreakable()) {
                 if (meta instanceof Damageable) {
-                    ((Damageable) meta).setDamage(((Damageable) meta).getDamage() + 1);
-                    itemStack.setItemMeta(meta);
+                    //Consider Unbreaking enchant
+                    int lvl = meta.getEnchantLevel(Enchantment.DURABILITY);
+                    int r = new Random().nextInt(100);
+                    if (!(r > 100 / (lvl + 1))) {
+                        ((Damageable) meta).setDamage(((Damageable) meta).getDamage() + 1);
+                        itemStack.setItemMeta(meta);
+                    }
                 }
             }
             return true;
@@ -136,7 +141,14 @@ public class DataHandler {
             meta = itemStack.getItemMeta();
             if (!meta.isUnbreakable()) {
                 if (meta instanceof Damageable) {
-                    PlayerItemDamageEvent damageEvent = new PlayerItemDamageEvent(player, itemStack, 1);
+                    //Consider Unbreaking Enchant
+                    int lvl = meta.getEnchantLevel(Enchantment.DURABILITY);
+                    int damage = 1;
+                    int r = new Random().nextInt(100);
+                    if (r > 100 / (lvl + 1)) {
+                        damage = 0;
+                    }
+                    PlayerItemDamageEvent damageEvent = new PlayerItemDamageEvent(player, itemStack, damage);
                     Bukkit.getPluginManager().callEvent(damageEvent);
                     if (!damageEvent.isCancelled()) {
                         meta = itemStack.getItemMeta();
