@@ -8,6 +8,7 @@ import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,15 +16,19 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Timber extends Modifier implements Listener {
 
 	private static Timber instance;
 	private int maxBlocks;
+
+	private static final ConcurrentHashMap<Location, Integer> events = new ConcurrentHashMap<>();
 
 	private Timber() {
 		super(MineTinker.getPlugin());
@@ -89,12 +94,19 @@ public class Timber extends Modifier implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
+	public void effect(WorldSaveEvent e) {
+		if (Bukkit.getOnlinePlayers().isEmpty()) {
+			events.clear();
+		}
+	}
+
+	@EventHandler(ignoreCancelled = true)
 	public void effect(MTBlockBreakEvent event) {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 		Block block = event.getBlock();
 
-		if (Power.HAS_POWER.get(player).get() || player.isSneaking()) {
+		if (events.remove(event.getBlock().getLocation(), 0) || player.isSneaking()) {
 			return;
 		}
 
@@ -108,10 +120,9 @@ public class Timber extends Modifier implements Listener {
 
 		if (ToolType.SHEARS.contains(tool.getType())) {
 			if (Lists.getWoodLeaves().contains(block.getType())) {
-				Power.HAS_POWER.get(player).set(true);
 				ArrayList<Location> locs = new ArrayList<>();
 				locs.add(block.getLocation());
-				breakTree(player, tool, block, Collections.singletonList(block.getType()), locs);
+				Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> breakTree(player, tool, block, Collections.singletonList(block.getType()), locs));
 			}
 		} else {
 			ArrayList<Material> allowed = new ArrayList<>();
@@ -165,14 +176,12 @@ public class Timber extends Modifier implements Listener {
 				return; //TODO: Improve tree check
 			}
 
-			Power.HAS_POWER.get(player).set(true);
 			ArrayList<Location> locs = new ArrayList<>();
 			locs.add(block.getLocation());
-			breakTree(player, tool, block, allowed, locs);
+			Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> breakTree(player, tool, block, allowed, locs));
 		}
 		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType().toString() + ")");
 
-		Power.HAS_POWER.get(player).set(false);
 	}
 
 	private void breakTree(Player player, ItemStack tool, Block block, List<Material> allowed, List<Location> locs) { //TODO: Improve algorithm and performance -> async?
@@ -198,11 +207,14 @@ public class Timber extends Modifier implements Listener {
 					Block toBreak = player.getWorld().getBlockAt(loc);
 					if (allowed.contains(toBreak.getType())) {
 						breakTree(player, tool, toBreak, allowed, locs);
-						try {
-							DataHandler.playerBreakBlock(player, toBreak, tool);
-						} catch (IllegalArgumentException e) {
-							e.printStackTrace();
-						}
+						events.put(toBreak.getLocation(), 0);
+						Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
+							try {
+								DataHandler.playerBreakBlock(player, toBreak, tool);
+							} catch (IllegalArgumentException e) {
+								e.printStackTrace();
+							}
+						});
 					}
 				}
 			}

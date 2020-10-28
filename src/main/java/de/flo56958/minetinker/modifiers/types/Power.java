@@ -11,7 +11,7 @@ import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.PlayerInfo;
 import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -21,6 +21,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -35,6 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Power extends Modifier implements Listener {
 
 	public static final ConcurrentHashMap<Player, AtomicBoolean> HAS_POWER = new ConcurrentHashMap<>();
+	public static final ConcurrentHashMap<Location, Integer> events = new ConcurrentHashMap<>();
 	private static Power instance;
 	private ArrayList<Material> blacklist;
 	private boolean treatAsWhitelist;
@@ -163,6 +165,13 @@ public class Power extends Modifier implements Listener {
 		return modManager.hasMod(tool, this);
 	}
 
+	@EventHandler(ignoreCancelled = true)
+	public void effect(WorldSaveEvent e) {
+		if (Bukkit.getOnlinePlayers().isEmpty()) {
+			events.clear();
+		}
+	}
+
 	/**
 	 * The effect when a Block was brocken
 	 *
@@ -178,99 +187,96 @@ public class Power extends Modifier implements Listener {
 			return;
 		}
 
+		if (events.remove(block.getLocation(), 0)) {
+			return;
+		}
+
 		if (ToolType.HOE.contains(tool.getType())) {
 			return;
 		}
 
-		ChatWriter.log(false, player.getDisplayName() + " triggered Power on " + ChatWriter.getDisplayName(tool)
-				+ ChatColor.GRAY + " (" + tool.getType().toString() + ")!");
+		Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> {
+			int level = modManager.getModLevel(tool, this);
+			PlayerInfo.Direction direction = PlayerInfo.getFacingDirection(player);
 
-		HAS_POWER.get(player).set(true); // for the power-triggered BlockBreakEvents (prevents endless "recursion")
-
-		int level = modManager.getModLevel(tool, this);
-		PlayerInfo.Direction direction = PlayerInfo.getFacingDirection(player);
-
-		if (level == 1) {
-			if (lv1_vertical) {
-				if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
-					if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
-						Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
-						Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
+			if (level == 1) {
+				if (lv1_vertical) {
+					if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
+						if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
+							Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
+							Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
+							powerBlockBreak(b1, block, player, tool);
+							powerBlockBreak(b2, block, player, tool);
+						} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
+							Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
+							Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
+							powerBlockBreak(b1, block, player, tool);
+							powerBlockBreak(b2, block, player, tool);
+						}
+					} else {
+						Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
+						Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, -1, 0));
 						powerBlockBreak(b1, block, player, tool);
 						powerBlockBreak(b2, block, player, tool);
-					} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
+					}
+				} else if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
+					if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
 						Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
 						Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
 						powerBlockBreak(b1, block, player, tool);
 						powerBlockBreak(b2, block, player, tool);
+					} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
+						Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
+						Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
+						powerBlockBreak(b1, block, player, tool);
+						powerBlockBreak(b2, block, player, tool);
 					}
-				} else {
-					Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
-					Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, -1, 0));
-					powerBlockBreak(b1, block, player, tool);
-					powerBlockBreak(b2, block, player, tool);
-				}
-			} else if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
-				if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
+				} else if (Lists.BLOCKFACE.get(player).equals(BlockFace.NORTH)
+						|| Lists.BLOCKFACE.get(player).equals(BlockFace.SOUTH)) {
 					Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
 					Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
 					powerBlockBreak(b1, block, player, tool);
 					powerBlockBreak(b2, block, player, tool);
-				} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
+				} else if (Lists.BLOCKFACE.get(player).equals(BlockFace.WEST) || Lists.BLOCKFACE.get(player).equals(BlockFace.EAST)) {
 					Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
 					Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
 					powerBlockBreak(b1, block, player, tool);
 					powerBlockBreak(b2, block, player, tool);
 				}
-			} else if (Lists.BLOCKFACE.get(player).equals(BlockFace.NORTH)
-					|| Lists.BLOCKFACE.get(player).equals(BlockFace.SOUTH)) {
-				Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
-				Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
-				powerBlockBreak(b1, block, player, tool);
-				powerBlockBreak(b2, block, player, tool);
-			} else if (Lists.BLOCKFACE.get(player).equals(BlockFace.WEST) || Lists.BLOCKFACE.get(player).equals(BlockFace.EAST)) {
-				Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
-				Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
-				powerBlockBreak(b1, block, player, tool);
-				powerBlockBreak(b2, block, player, tool);
-			}
-		} else {
-			HAS_POWER.get(player).set(true);
-
-			if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
-				for (int x = -(level - 1); x <= (level - 1); x++) {
+			} else {
+				if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
+					for (int x = -(level - 1); x <= (level - 1); x++) {
+						for (int z = -(level - 1); z <= (level - 1); z++) {
+							if (!(x == 0 && z == 0)) {
+								Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
+								powerBlockBreak(b1, block, player, tool);
+							}
+						}
+					}
+				} else if (Lists.BLOCKFACE.get(player).equals(BlockFace.NORTH)
+						|| Lists.BLOCKFACE.get(player).equals(BlockFace.SOUTH)) {
+					for (int x = -(level - 1); x <= (level - 1); x++) {
+						for (int y = -(level - 1); y <= (level - 1); y++) {
+							if (!(x == 0 && y == 0)) {
+								Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, y, 0));
+								powerBlockBreak(b1, block, player, tool);
+							}
+						}
+					}
+				} else if (Lists.BLOCKFACE.get(player).equals(BlockFace.EAST) || Lists.BLOCKFACE.get(player).equals(BlockFace.WEST)) {
 					for (int z = -(level - 1); z <= (level - 1); z++) {
-						if (!(x == 0 && z == 0)) {
-							Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
-							powerBlockBreak(b1, block, player, tool);
-						}
-					}
-				}
-			} else if (Lists.BLOCKFACE.get(player).equals(BlockFace.NORTH)
-					|| Lists.BLOCKFACE.get(player).equals(BlockFace.SOUTH)) {
-				for (int x = -(level - 1); x <= (level - 1); x++) {
-					for (int y = -(level - 1); y <= (level - 1); y++) {
-						if (!(x == 0 && y == 0)) {
-							Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, y, 0));
-							powerBlockBreak(b1, block, player, tool);
-						}
-					}
-				}
-			} else if (Lists.BLOCKFACE.get(player).equals(BlockFace.EAST) || Lists.BLOCKFACE.get(player).equals(BlockFace.WEST)) {
-				for (int z = -(level - 1); z <= (level - 1); z++) {
-					for (int y = -(level - 1); y <= (level - 1); y++) {
-						if (!(z == 0 && y == 0)) {
-							Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, y, z));
-							powerBlockBreak(b1, block, player, tool);
+						for (int y = -(level - 1); y <= (level - 1); y++) {
+							if (!(z == 0 && y == 0)) {
+								Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, y, z));
+								powerBlockBreak(b1, block, player, tool);
+							}
 						}
 					}
 				}
 			}
-		}
+		});
 
 		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType().toString() + ")");
-
-		HAS_POWER.get(player).set(false); // so the effect of power is not disabled for the Player
 	}
 
 	/**
@@ -360,8 +366,11 @@ public class Power extends Modifier implements Listener {
 			return; //So Obsidian can not be mined using Cobblestone and Power
 		}
 
-		try {
-			DataHandler.playerBreakBlock(player, block, tool);
-		} catch (IllegalArgumentException ignored) {}
+		events.put(block.getLocation(), 0);
+		Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
+			try {
+				DataHandler.playerBreakBlock(player, block, tool);
+			} catch (IllegalArgumentException ignored) {}
+		});
 	}
 }

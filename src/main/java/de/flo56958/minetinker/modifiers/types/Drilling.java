@@ -4,10 +4,13 @@ import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTBlockBreakEvent;
+import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -15,16 +18,16 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Drilling extends Modifier implements Listener {
 
-	public static final ConcurrentHashMap<Player, AtomicBoolean> HAS_DRILLING = new ConcurrentHashMap<>();
+	public static final ConcurrentHashMap<Location, Integer> events = new ConcurrentHashMap<>();
 	private static Drilling instance;
 	private ArrayList<Material> blacklist;
 	private boolean treatAsWhitelist;
@@ -124,12 +127,12 @@ public class Drilling extends Modifier implements Listener {
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
-	public boolean canUseDrilling(Player player, ItemStack tool) {
+	public boolean canUseDrilling(Player player, ItemStack tool, Location loc) {
 		if (!player.hasPermission("minetinker.modifiers.drilling.use")) {
 			return false;
 		}
 
-		if (HAS_DRILLING.get(player).get()) {
+		if (events.remove(loc, 0)) {
 			return false;
 		}
 
@@ -140,6 +143,13 @@ public class Drilling extends Modifier implements Listener {
 		}
 
 		return modManager.hasMod(tool, this);
+	}
+
+	@EventHandler(ignoreCancelled = true)
+	public void effect(WorldSaveEvent e) {
+		if (Bukkit.getOnlinePlayers().isEmpty()) {
+			events.clear();
+		}
 	}
 
 	/**
@@ -153,22 +163,20 @@ public class Drilling extends Modifier implements Listener {
 		ItemStack tool = event.getTool();
 		Block block = event.getBlock();
 
-		if (!canUseDrilling(player, tool)) {
+		if (!canUseDrilling(player, tool, block.getLocation())) {
 			return;
 		}
 
 		int level = modManager.getModLevel(tool, this);
-
-		HAS_DRILLING.get(player).set(true); // for the drilling-triggered BlockBreakEvents (prevents endless "recursion")
-
 		BlockFace face = Lists.BLOCKFACE.get(player).getOppositeFace();
-		for (int i = 1; i <= level; i++) {
-			if (!drillingBlockBreak(block.getRelative(face, i), block, player, tool)) break;
-		}
+
+		Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
+			for (int i = 1; i <= level; i++) {
+				if (!drillingBlockBreak(block.getRelative(face, i), block, player, tool)) break;
+			}
+		});
 
 		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType() + ")", "Blockface(" + face.toString() + ")");
-
-		HAS_DRILLING.get(player).set(false); // so the effect of drilling is not disabled for the Player
 	}
 
 	private boolean drillingBlockBreak(Block block, Block centralBlock, Player player, ItemStack tool) {
@@ -185,6 +193,9 @@ public class Drilling extends Modifier implements Listener {
 		}
 
 		try {
+			events.put(block.getLocation(), 0);
+			if (ModManager.instance().hasMod(tool, Power.instance()))
+				Power.events.put(block.getLocation(), 0);
 			return DataHandler.playerBreakBlock(player, block, tool);
 		} catch (IllegalArgumentException ignored) {
 			return false;

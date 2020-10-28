@@ -116,7 +116,6 @@ public class MineTinker extends JavaPlugin {
 
 		for (Player current : Bukkit.getServer().getOnlinePlayers()) {
 			Power.HAS_POWER.computeIfAbsent(current, player -> new AtomicBoolean(false));
-			Drilling.HAS_DRILLING.computeIfAbsent(current, player -> new AtomicBoolean(false));
 			Lists.BLOCKFACE.put(current, null);
 		}
 
