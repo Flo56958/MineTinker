@@ -32,13 +32,22 @@
     "other": []
   },
   {
-    "_comment": "flixi_07",
+    "_comment": "flixxxi",
     "github": null,
     "discord": null,
-    "minecraft": "e230f964-3a2b-44ba-89ab-7656f3037323",
+    "minecraft": "a20a3908-cf7e-4d8b-aa6f-1f998af0698a",
     "transifex": null,
     "transifex_languages": [],
     "other": [ "Reliable Bug catcher" ]
+  },
+  {
+    "_comment": "ShinomiyaKojiro",
+    "github": null,
+    "discord": null,
+    "minecraft": "a42b5e26-a4b5-42d9-bf7c-e546ec19a399",
+    "transifex": null,
+    "transifex_languages": [],
+    "other": [ "Mini-Bug catcher" ]
   },
   {
     "github": null,
