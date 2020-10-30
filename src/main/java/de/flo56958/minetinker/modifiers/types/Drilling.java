@@ -167,19 +167,20 @@ public class Drilling extends Modifier implements Listener {
 			return;
 		}
 
-		int level = modManager.getModLevel(tool, this);
-		BlockFace face = Lists.BLOCKFACE.get(player).getOppositeFace();
+		final int level = modManager.getModLevel(tool, this);
+		final BlockFace face = Lists.BLOCKFACE.get(player).getOppositeFace();
+		final float hardness = block.getType().getHardness();
 
 		Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
 			for (int i = 1; i <= level; i++) {
-				if (!drillingBlockBreak(block.getRelative(face, i), block, player, tool)) break;
+				if (!drillingBlockBreak(block.getRelative(face, i), hardness, player, tool)) break;
 			}
 		});
 
 		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType() + ")", "Blockface(" + face.toString() + ")");
 	}
 
-	private boolean drillingBlockBreak(Block block, Block centralBlock, Player player, ItemStack tool) {
+	private boolean drillingBlockBreak(final Block block, final float centralBlockHardness, final Player player, final ItemStack tool) {
 		if (treatAsWhitelist ^ blacklist.contains(block.getType())) {
 			return false;
 		}
@@ -188,8 +189,8 @@ public class Drilling extends Modifier implements Listener {
 			return false;
 		}
 
-		if (block.getType().getHardness() > centralBlock.getType().getHardness() + 2) {
-			return false; //So Obsidian can not be mined using Cobblestone and Power
+		if (block.getType().getHardness() > centralBlockHardness + 2) {
+			return false; //So Obsidian can not be mined using Cobblestone and Drilling
 		}
 
 		try {
