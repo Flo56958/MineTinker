@@ -26,6 +26,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -34,8 +35,8 @@ public class BlockListener implements Listener {
 	private static final ModManager modManager = ModManager.instance();
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public static void onAxeUse(PlayerInteractEvent event) {
-		Player player = event.getPlayer();
+	public static void onAxeUse(@NotNull final PlayerInteractEvent event) {
+		final Player player = event.getPlayer();
 
 		if (Lists.WORLDS.contains(player.getWorld().getName())) {
 			return;
@@ -45,7 +46,7 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		ItemStack tool = player.getInventory().getItemInMainHand();
+		final ItemStack tool = player.getInventory().getItemInMainHand();
 
 		if (!ToolType.AXE.contains(tool.getType())) {
 			return;
@@ -74,26 +75,25 @@ public class BlockListener implements Listener {
 
 		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
 
-		MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
-		Bukkit.getPluginManager().callEvent(interactEvent);
+		Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, event));
 	}
 
 	//To cancel event if Tool would be broken so other plugins can react faster to MineTinker (e.g. PyroMining)
 	//onBlockBreak() has priority highest as it needs to wait on WorldGuard and other plugins to cancel event if necessary
 	//TODO: Replace if Issue #111 is implemented
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-	public void onBlockBreak_DurabilityCheck(BlockBreakEvent event) {
-		Player player = event.getPlayer();
-		ItemStack tool = player.getInventory().getItemInMainHand();
+	public void onBlockBreak_DurabilityCheck(@NotNull final BlockBreakEvent event) {
+		final Player player = event.getPlayer();
+		final ItemStack tool = player.getInventory().getItemInMainHand();
 		if (modManager.isToolViable(tool)) {
 			modManager.durabilityCheck(event, player, tool);
 		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onBlockBreak(BlockBreakEvent event) {
-		Player player = event.getPlayer();
-		ItemStack tool = player.getInventory().getItemInMainHand();
+	public void onBlockBreak(@NotNull final BlockBreakEvent event) {
+		final Player player = event.getPlayer();
+		final ItemStack tool = player.getInventory().getItemInMainHand();
 
 		if (Lists.WORLDS.contains(player.getWorld().getName())) {
 			return;
@@ -122,7 +122,7 @@ public class BlockListener implements Listener {
 
 					Object value = val.value();
 					if (value instanceof Long) {
-						long time = (long) value;
+						final long time = (long) value;
 						eligible = System.currentTimeMillis() - cooldown > time;
 						break;
 					}
@@ -145,18 +145,17 @@ public class BlockListener implements Listener {
 		if (Power.HAS_POWER.get(player).get() && !ToolType.PICKAXE.contains(tool.getType())
 				&& event.getBlock().getDrops(tool).isEmpty()
 				&& event.getBlock().getType() != Material.NETHER_WART) { //Necessary for EasyHarvest NetherWard-Break
-
 			event.setCancelled(true);
 			return;
 		}
 
-		MTBlockBreakEvent breakEvent = new MTBlockBreakEvent(tool, event);
-		Bukkit.getPluginManager().callEvent(breakEvent); //Event-Trigger for Modifiers
+		Bukkit.getPluginManager().callEvent(new MTBlockBreakEvent(tool, event));
+		//Event-Trigger for Modifiers
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-	public void onClick(PlayerInteractEvent event) {
-		Player player = event.getPlayer();
+	public void onClick(@NotNull final PlayerInteractEvent event) {
+		final Player player = event.getPlayer();
 
 		ItemStack norm = null;
 		if (event.getHand() == EquipmentSlot.HAND) {
@@ -172,20 +171,19 @@ public class BlockListener implements Listener {
 				event.setCancelled(true);
 			}
 		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			Block block = event.getClickedBlock();
+			final Block block = event.getClickedBlock();
 
 			if (block == null) {
 				return;
 			}
 			if (!player.isSneaking()) {
-				Material type = block.getType();
+				final Material type = block.getType();
 
 				if (type == Material.ANVIL || type == Material.CRAFTING_TABLE
 						|| type == Material.CHEST || type == Material.ENDER_CHEST
 						|| type == Material.DROPPER || type == Material.HOPPER
 						|| type == Material.DISPENSER || type == Material.TRAPPED_CHEST
 						|| type == Material.FURNACE || type == Material.ENCHANTING_TABLE) {
-
 					return;
 				}
 			}
@@ -196,7 +194,7 @@ public class BlockListener implements Listener {
 			}
 
 			if (block.getType() == Material.getMaterial(MineTinker.getPlugin().getConfig().getString("BlockToEnchantModifiers", Material.BOOKSHELF.name()))) {
-				ItemStack item = player.getInventory().getItemInMainHand();
+				final ItemStack item = player.getInventory().getItemInMainHand();
 
 				for (Modifier m : modManager.getAllMods()) {
 					if (m.getModItem().getType().equals(item.getType())) {
@@ -211,8 +209,8 @@ public class BlockListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onHoeUse(PlayerInteractEvent event) {
-		Player player = event.getPlayer();
+	public void onHoeUse(@NotNull final PlayerInteractEvent event) {
+		final Player player = event.getPlayer();
 
 		if (Lists.WORLDS.contains(player.getWorld().getName())) {
 			return;
@@ -222,7 +220,7 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		ItemStack tool = player.getInventory().getItemInMainHand();
+		final ItemStack tool = player.getInventory().getItemInMainHand();
 
 		if (!ToolType.HOE.contains(tool.getType())) {
 			return;
@@ -232,7 +230,7 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		Block block = event.getClickedBlock();
+		final Block block = event.getClickedBlock();
 
 		boolean apply = false;
 
@@ -241,7 +239,8 @@ public class BlockListener implements Listener {
 				apply = true;
 
 			Block b = player.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
-			if (b.getType() != Material.AIR && b.getType() != Material.CAVE_AIR) //Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
+			if (b.getType() != Material.AIR && b.getType() != Material.CAVE_AIR)
+				//Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
 				apply = false;
 		}
 
@@ -253,15 +252,14 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
-
-		MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
-		Bukkit.getPluginManager().callEvent(interactEvent);
+		modManager.addExp(player, tool,
+				MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
+		Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, event));
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onShovelUse(PlayerInteractEvent event) {
-		Player player = event.getPlayer();
+	public void onShovelUse(@NotNull final PlayerInteractEvent event) {
+		final Player player = event.getPlayer();
 
 		if (Lists.WORLDS.contains(player.getWorld().getName())) {
 			return;
@@ -271,7 +269,7 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		ItemStack tool = player.getInventory().getItemInMainHand();
+		final ItemStack tool = player.getInventory().getItemInMainHand();
 
 		if (!ToolType.SHOVEL.contains(tool.getType())) {
 			return;
@@ -301,15 +299,16 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
+		modManager.addExp(player, tool,
+				MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
 
-		MTPlayerInteractEvent interactEvent = new MTPlayerInteractEvent(tool, event);
-		Bukkit.getPluginManager().callEvent(interactEvent);
+		Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, event));
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-	public void onPlace(BlockPlaceEvent event) {
-		Block block = event.getBlock();
-		block.setMetadata("blockPlaced", new FixedMetadataValue(MineTinker.getPlugin(), System.currentTimeMillis()));
+	public void onPlace(@NotNull final BlockPlaceEvent event) {
+		event.getBlock()
+				.setMetadata("blockPlaced", new FixedMetadataValue(MineTinker.getPlugin(),
+								System.currentTimeMillis()));
 	}
 }

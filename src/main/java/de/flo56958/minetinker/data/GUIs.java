@@ -121,7 +121,7 @@ public class GUIs {
 					}
 
 					//Slot cost
-					if (m.getSlotCost() > 0) {
+					if (m.getSlotCost() >= 0) {
 						lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.SlotCost")
 								.replaceFirst("%amount", String.valueOf(m.getSlotCost())));
 					}

@@ -26,6 +26,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -35,7 +36,7 @@ public class PlayerListener implements Listener {
 	private static final ModManager modManager = ModManager.instance();
 
 	@EventHandler(ignoreCancelled = true)
-	public void onInventoryClick(InventoryClickEvent event) {
+	public void onInventoryClick(@NotNull final InventoryClickEvent event) {
 		if (Lists.WORLDS.contains(event.getWhoClicked().getWorld().getName())) {
 			return;
 
@@ -49,7 +50,7 @@ public class PlayerListener implements Listener {
 			return;
 		}
 
-		ItemStack tool = event.getClickedInventory().getItem(event.getSlot());
+		final ItemStack tool = event.getClickedInventory().getItem(event.getSlot());
 
 		if (tool == null) {
 			return;
@@ -64,19 +65,17 @@ public class PlayerListener implements Listener {
 			return;
 		}
 
-		ItemStack repair = event.getWhoClicked().getItemOnCursor();
+		final ItemStack repair = event.getWhoClicked().getItemOnCursor();
 		if (repair == null) return;
 
-		ItemMeta repairMeta = repair.getItemMeta();
+		final ItemMeta repairMeta = repair.getItemMeta();
 		if(repairMeta != null) {
 			if (repairMeta.hasDisplayName() || repairMeta.hasLore()) return;
 		}
 
-		String[] name = tool.getType().toString().split("_");
-
 		boolean eligible = false;
 
-		String beginning = name[0].toLowerCase();
+		final String beginning = tool.getType().toString().split("_")[0].toLowerCase();
 
 		switch (beginning) {
 			case "shield":
@@ -146,7 +145,7 @@ public class PlayerListener implements Listener {
 		}
 
 		if (eligible) {
-			Damageable meta = (Damageable) tool.getItemMeta();
+			final Damageable meta = (Damageable) tool.getItemMeta();
 
 			if (meta == null) {
 				return;
@@ -154,9 +153,9 @@ public class PlayerListener implements Listener {
 
 			//TODO: change fix amount
 			int dura = meta.getDamage();
-			short maxDura = tool.getType().getMaxDurability();
+			final short maxDura = tool.getType().getMaxDurability();
 			int amount = event.getWhoClicked().getItemOnCursor().getAmount();
-			float percent = (float) MineTinker.getPlugin().getConfig().getDouble("DurabilityPercentageRepair");
+			final float percent = (float) MineTinker.getPlugin().getConfig().getDouble("DurabilityPercentageRepair");
 
 			while (amount > 0 && dura > 0) {
 				dura = Math.round(dura - (maxDura * percent));
@@ -182,8 +181,8 @@ public class PlayerListener implements Listener {
 	 * @param event PlayerJoinEvent
 	 */
 	@EventHandler
-	public void onJoin(PlayerJoinEvent event) {
-		Player player = event.getPlayer();
+	public void onJoin(@NotNull final PlayerJoinEvent event) {
+		final Player player = event.getPlayer();
 		Lists.BLOCKFACE.put(player, null);
 		Power.HAS_POWER.computeIfAbsent(player, p -> new AtomicBoolean(false));
 
@@ -226,7 +225,7 @@ public class PlayerListener implements Listener {
 	 * @param event PlayerQuitEvent
 	 */
 	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
+	public void onQuit(@NotNull final PlayerQuitEvent event) {
 		Lists.BLOCKFACE.remove(event.getPlayer());
 		Power.HAS_POWER.remove(event.getPlayer());
 	}
@@ -237,7 +236,7 @@ public class PlayerListener implements Listener {
 	 * @param event PlayerInteractEvent
 	 */
 	@EventHandler(priority = EventPriority.LOW)
-	public void onInteract(PlayerInteractEvent event) {
+	public void onInteract(@NotNull final PlayerInteractEvent event) {
 		if (Lists.WORLDS.contains(event.getPlayer().getWorld().getName())) {
 			return;
 		}
@@ -262,16 +261,16 @@ public class PlayerListener implements Listener {
 			return;
 		}
 
-		EnchantmentStorageMeta meta = (EnchantmentStorageMeta) event.getItem().getItemMeta();
+		final EnchantmentStorageMeta meta = (EnchantmentStorageMeta) event.getItem().getItemMeta();
 
 		for (Map.Entry<Enchantment, Integer> entry : meta.getStoredEnchants().entrySet()) {
-			Modifier modifier = modManager.getModifierFromEnchantment(entry.getKey());
+			final Modifier modifier = modManager.getModifierFromEnchantment(entry.getKey());
 
 			if (modifier == null) {
 				continue;
 			}
 
-			ItemStack modDrop = modifier.getModItem();
+			final ItemStack modDrop = modifier.getModItem();
 			modDrop.setAmount(entry.getValue());
 
 			event.getClickedBlock().getWorld().dropItem(event.getClickedBlock().getLocation(), modDrop);

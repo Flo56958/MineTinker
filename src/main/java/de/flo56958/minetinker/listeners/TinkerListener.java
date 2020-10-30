@@ -23,6 +23,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +34,11 @@ public class TinkerListener implements Listener {
 	private static final ModManager modManager = ModManager.instance();
 
 	@EventHandler
-	public void onToolUpgrade(ToolUpgradeEvent event) {
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
+	public void onToolUpgrade(@NotNull final ToolUpgradeEvent event) {
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
 
-		FileConfiguration config = MineTinker.getPlugin().getConfig();
+		final FileConfiguration config = MineTinker.getPlugin().getConfig();
 
 		if (event.isSuccessful()) {
 			if (config.getBoolean("Sound.OnUpgrade")) {
@@ -59,10 +60,10 @@ public class TinkerListener implements Listener {
 	}
 
 	@EventHandler
-	public void onModifierApply(ModifierApplyEvent event) {
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
-		Modifier mod = event.getMod();
+	public void onModifierApply(@NotNull final ModifierApplyEvent event) {
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
+		final Modifier mod = event.getMod();
 
 		if (MineTinker.getPlugin().getConfig().getBoolean("Sound.OnModding")) {
 			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
@@ -79,10 +80,10 @@ public class TinkerListener implements Listener {
 	}
 
 	@EventHandler
-	public void onModifierFail(ModifierFailEvent event) {
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
-		Modifier mod = event.getMod();
+	public void onModifierFail(@NotNull final ModifierFailEvent event) {
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
+		final Modifier mod = event.getMod();
 
 		if (MineTinker.getPlugin().getConfig().getBoolean("Sound.OnFail")) {
 			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
@@ -102,22 +103,22 @@ public class TinkerListener implements Listener {
 	}
 
 	@EventHandler
-	public void onToolLevelUp(ToolLevelUpEvent event) {
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
+	public void onToolLevelUp(@NotNull final ToolLevelUpEvent event) {
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
 
-		FileConfiguration config = ConfigurationManager.getConfig("config.yml");
+		final FileConfiguration config = ConfigurationManager.getConfig("config.yml");
 		boolean appliedRandomMod = false;
 
 		if (player != null) {
 			if (config.getBoolean("LevelUpEvents.enabled")) {
-				Random rand = new Random();
+				final Random rand = new Random();
 
 				if (config.getBoolean("LevelUpEvents.DurabilityRepair.enabled")) {
-					int n = rand.nextInt(100);
+					final int n = rand.nextInt(100);
 
 					if (n <= config.getInt("LevelUpEvents.DurabilityRepair.percentage")) {
-						Damageable dam = (Damageable) tool.getItemMeta();
+						final Damageable dam = (Damageable) tool.getItemMeta();
 
 						if (dam != null) {
 							dam.setDamage(0);
@@ -127,11 +128,11 @@ public class TinkerListener implements Listener {
 				}
 
 				if (config.getBoolean("LevelUpEvents.DropLoot.enabled")) {
-					int n = rand.nextInt(100);
+					final int n = rand.nextInt(100);
 
 					if (n <= config.getInt("LevelUpEvents.DropLoot.percentage")) {
-						int index = rand.nextInt(Lists.DROPLOOT.size());
-						Material m = Material.getMaterial(Lists.DROPLOOT.get(index));
+						final int index = rand.nextInt(Lists.DROPLOOT.size());
+						final Material m = Material.getMaterial(Lists.DROPLOOT.get(index));
 
 						if (m != null) {
 							int max = config.getInt("LevelUpEvents.DropLoot.maximumDrop");
@@ -154,7 +155,7 @@ public class TinkerListener implements Listener {
 								amount = rand.nextInt(max - min) + min;
 							}
 
-							ItemStack drop = new ItemStack(m, amount);
+							final ItemStack drop = new ItemStack(m, amount);
 
 							if (player.getInventory().addItem(drop).size() != 0) { //adds items to (full) inventory
 								player.getWorld().dropItem(player.getLocation(), drop); //drops item when inventory is full
@@ -167,7 +168,7 @@ public class TinkerListener implements Listener {
 					if (rand.nextInt(100) <= config.getInt("LevelUpEvents.RandomModifier.percentage")) {
 						int max = rand.nextInt(config.getInt("LevelUpEvents.RandomModifier.MaximumAmountOfModifiers")) + 1;
 						for (int j = 0; j < max; j++) {
-							List<Modifier> mods = new ArrayList<>(modManager.getAllowedMods());
+							final List<Modifier> mods = new ArrayList<>(modManager.getAllowedMods());
 							//necessary as the failed modifiers get removed from the list (so a copy is in order)
 
 							if (!config.getBoolean("LevelUpEvents.RandomModifier.AllowExtraModifier")) {
@@ -181,7 +182,7 @@ public class TinkerListener implements Listener {
 								} //Secures that the while will terminate after some time (if all modifiers were removed)
 
 								index = rand.nextInt(mods.size());
-								Modifier mod = mods.get(index);
+								final Modifier mod = mods.get(index);
 								if (config.getBoolean("LevelUpEvents.RandomModifier.DropAsItem", false)) {
 									appliedRandomMod = true;
 									if (player.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
@@ -199,10 +200,10 @@ public class TinkerListener implements Listener {
 				}
 
 				if (config.getBoolean("LevelUpEvents.DropXP.enabled")) {
-					int n = rand.nextInt(100);
+					final int n = rand.nextInt(100);
 
 					if (n <= config.getInt("LevelUpEvents.DropXP.percentage")) {
-						ExperienceOrb orb = player.getWorld().spawn(player.getLocation(), ExperienceOrb.class);
+						final ExperienceOrb orb = player.getWorld().spawn(player.getLocation(), ExperienceOrb.class);
 						orb.setExperience(config.getInt("LevelUpEvents.DropXP.amount"));
 					}
 				}
@@ -219,7 +220,7 @@ public class TinkerListener implements Listener {
 			ChatWriter.log(false, player.getDisplayName() + " leveled up " + ChatWriter.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
 		}
 
-		int amount = config.getInt("AddModifierSlotsPerLevel");
+		final int amount = config.getInt("AddModifierSlotsPerLevel");
 
 		if (amount > 0 && !(config.getBoolean("LevelUpEvents.RandomModifier.DisableAddingNewSlots") && appliedRandomMod)) {
 			int slots = modManager.getFreeSlots(tool);

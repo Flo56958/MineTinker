@@ -19,8 +19,10 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.GrindstoneInventory;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -36,8 +38,8 @@ public class GrindstoneListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onGrind(InventoryClickEvent event) {
-		FileConfiguration config = MineTinker.getPlugin().getConfig();
+	public void onGrind(@NotNull final InventoryClickEvent event) {
+		final FileConfiguration config = MineTinker.getPlugin().getConfig();
 
 		if (!(event.getInventory() instanceof GrindstoneInventory)) {
 			return;
@@ -47,7 +49,7 @@ public class GrindstoneListener implements Listener {
 			return;
 		}
 
-		Player player = (Player) event.getWhoClicked();
+		final Player player = (Player) event.getWhoClicked();
 
 		if (config.getBoolean("Grindstone.Enabled")) {
 			if (event.getClick() != ClickType.LEFT && event.getClick() != ClickType.RIGHT) {
@@ -56,9 +58,9 @@ public class GrindstoneListener implements Listener {
 			}
 			if (event.getSlotType() == InventoryType.SlotType.CRAFTING) { //on Prepare
 				//Both slots should be null as the one item is on Cursor
-				ItemStack slot1 =  event.getClickedInventory().getItem(0);
-				ItemStack slot2 =  event.getClickedInventory().getItem(1);
-				ItemStack cursorItem = event.getCursor();
+				final ItemStack slot1 =  event.getClickedInventory().getItem(0);
+				final ItemStack slot2 =  event.getClickedInventory().getItem(1);
+				final ItemStack cursorItem = event.getCursor();
 				if (slot1 != null || slot2 != null || cursorItem == null) {
 					//Illegal state
 					if (modManager.isToolViable(cursorItem) || modManager.isArmorViable(cursorItem)) {
@@ -73,9 +75,9 @@ public class GrindstoneListener implements Listener {
 					return;
 				}
 
-				ItemStack result = cursorItem.clone();
-				GrindstoneSave gs = new GrindstoneSave();
-				Random rand = new Random();
+				final ItemStack result = cursorItem.clone();
+				final GrindstoneSave gs = new GrindstoneSave();
+				final Random rand = new Random();
 				int amount = 0;
 				boolean hadMods = false;
 				for (Modifier mod : ModManager.instance().getAllMods()) {
@@ -96,9 +98,9 @@ public class GrindstoneListener implements Listener {
 				}
 
 				//Remove remaining non-modifier enchants
-				ItemMeta resultMeta = result.getItemMeta();
+				final ItemMeta resultMeta = result.getItemMeta();
 				if (resultMeta != null) {
-					Map<Enchantment, Integer> enchants = resultMeta.getEnchants();
+					final Map<Enchantment, Integer> enchants = resultMeta.getEnchants();
 					if (!enchants.isEmpty()) {
 						hadMods = true;
 						for (Enchantment enchant : enchants.keySet()) {
@@ -115,13 +117,16 @@ public class GrindstoneListener implements Listener {
 				}
 
 				if (config.getInt("Grindstone.ChanceToGetSlotsBack") > 0) {
-					ItemMeta meta = result.getItemMeta();
-					List<String> lore = meta.getLore();
-					lore.add(0, ChatColor.WHITE +
-							LanguageManager.getString("GrindStone.PossibleSlotsAfterGrind")
-							.replaceAll("%amount", String.valueOf(amount + modManager.getFreeSlots(result))));
-					meta.setLore(lore);
-					result.setItemMeta(meta);
+					final ItemMeta meta = result.getItemMeta();
+					final List<String> lore = meta.getLore();
+					if (lore != null) {
+						lore.add(0, ChatColor.WHITE +
+								LanguageManager.getString("GrindStone.PossibleSlotsAfterGrind")
+										.replaceAll("%amount",
+												String.valueOf(amount + modManager.getFreeSlots(result))));
+						meta.setLore(lore);
+						result.setItemMeta(meta);
+					}
 				}
 
 				event.setResult(Event.Result.ALLOW);
@@ -130,12 +135,12 @@ public class GrindstoneListener implements Listener {
 						() -> event.getClickedInventory().setItem(2, result), 1);
 				save.put(player, gs);
 			} else if (event.getSlotType() == InventoryType.SlotType.RESULT) { //on Gridstone use
-				ItemStack result = event.getCurrentItem();
+				final ItemStack result = event.getCurrentItem();
 				if (!modManager.isArmorViable(result) && !modManager.isToolViable(result)) {
 					return;
 				}
 
-				GrindstoneSave gs = save.remove(player);
+				final GrindstoneSave gs = save.remove(player);
 				if (gs == null) {
 					event.setCancelled(true);
 					ChatWriter.sendActionBar(player,
@@ -144,8 +149,8 @@ public class GrindstoneListener implements Listener {
 				}
 
 				if (config.getInt("Grindstone.ChanceToGetSlotsBack") > 0) {
-					ItemMeta meta = result.getItemMeta();
-					List<String> lore = meta.getLore();
+					final ItemMeta meta = result.getItemMeta();
+					final List<String> lore = meta.getLore();
 					lore.remove(0);
 					meta.setLore(lore);
 					result.setItemMeta(meta);
@@ -165,24 +170,27 @@ public class GrindstoneListener implements Listener {
 				return;
 			}
 			// Works fine even if the getItem method returns null.
-			ItemStack slot1 =  event.getClickedInventory().getItem(0);
-			ItemStack slot2 =  event.getClickedInventory().getItem(1);
+			final Inventory inv = event.getClickedInventory();
+			if (inv != null) {
+				final ItemStack slot1 = inv.getItem(0);
+				final ItemStack slot2 = inv.getItem(1);
 
-			if (!(modManager.isToolViable(slot1) || modManager.isArmorViable(slot1) || modManager.isToolViable(slot2)
-					|| modManager.isArmorViable(slot2))) {
-				return;
-			}
+				if (!(modManager.isToolViable(slot1) || modManager.isArmorViable(slot1)
+						|| modManager.isToolViable(slot2) || modManager.isArmorViable(slot2))) {
+					return;
+				}
 
-			if (event.getSlotType() != InventoryType.SlotType.RESULT) {
-				return;
-			}
+				if (event.getSlotType() != InventoryType.SlotType.RESULT) {
+					return;
+				}
 
-			event.setResult(Event.Result.DENY);
-			event.setCancelled(true);
+				event.setResult(Event.Result.DENY);
+				event.setCancelled(true);
 
-			ChatWriter.sendActionBar(player, LanguageManager.getString("Alert.OnItemGrind", player));
-			if (config.getBoolean("Sound.OnFail")) {
-				player.playSound(player.getLocation(), Sound.BLOCK_CHEST_LOCKED, 1.0F, 2F);
+				ChatWriter.sendActionBar(player, LanguageManager.getString("Alert.OnItemGrind", player));
+				if (config.getBoolean("Sound.OnFail")) {
+					player.playSound(player.getLocation(), Sound.BLOCK_CHEST_LOCKED, 1.0F, 2F);
+				}
 			}
 		}
 	}

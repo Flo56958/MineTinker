@@ -31,6 +31,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,7 @@ public class BuildersWandListener implements Listener {
 		config.addDefault("Description", "%WHITE%MineTinker-Builderswand");
 		config.addDefault("useDurability", true);
 
-		List<String> list = new ArrayList<>();
+		final List<String> list = new ArrayList<>();
 		list.add("bannedExample1");
 		list.add("bannedExample2");
 		config.addDefault("BannedWorlds", list); //#Worlds where MineTinker-Builderswands can't be used
@@ -112,17 +113,19 @@ public class BuildersWandListener implements Listener {
 		wands.add(buildersWandCreator(Material.IRON_SHOVEL, LanguageManager.getString("Builderswand.Name.Iron")));
 		wands.add(buildersWandCreator(Material.GOLDEN_SHOVEL, LanguageManager.getString("Builderswand.Name.Gold")));
 		wands.add(buildersWandCreator(Material.DIAMOND_SHOVEL, LanguageManager.getString("Builderswand.Name.Diamond")));
-		if (MineTinker.is16compatible) wands.add(buildersWandCreator(Material.NETHERITE_SHOVEL, LanguageManager.getString("Builderswand.Name.Netherite")));
+		if (MineTinker.is16compatible)
+			wands.add(buildersWandCreator(Material.NETHERITE_SHOVEL, LanguageManager.getString("Builderswand.Name.Netherite")));
 
 		registerBuildersWands();
 	}
 
-	private static ItemStack buildersWandCreator(Material m, String name) { //TODO: Modify to implement Modifiers
-		ItemStack wand = new ItemStack(m, 1);
-		ItemMeta meta = wand.getItemMeta();
+	private static @NotNull ItemStack buildersWandCreator(@NotNull final Material m, @NotNull final String name) {
+		//TODO: Modify to implement Modifiers
+		final ItemStack wand = new ItemStack(m, 1);
+		final ItemMeta  meta = wand.getItemMeta();
 
 		if (meta != null) {
-			ArrayList<String> lore = new ArrayList<>();
+			final ArrayList<String> lore = new ArrayList<>();
 			lore.add(LanguageManager.getString("Builderswand.Description"));
 			meta.setLore(lore);
 
@@ -132,7 +135,8 @@ public class BuildersWandListener implements Listener {
 		}
 
 		//TODO: DataHandler.setStringList(wand, "CanDestroy", true, "minecraft:air");
-		DataHandler.setTag(wand, "identifier_builderswand", 0, PersistentDataType.INTEGER, false);
+		DataHandler.setTag(wand, "identifier_builderswand", 0,
+				PersistentDataType.INTEGER, false);
 
 		return wand;
 	}
@@ -142,12 +146,12 @@ public class BuildersWandListener implements Listener {
 	 */
 	private static void registerBuildersWands() {
 		try {
-			NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Wood");
-			ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(0)); //init recipe
-			String top = config.getString("Recipes.Wood.Top");
-			String middle = config.getString("Recipes.Wood.Middle");
-			String bottom = config.getString("Recipes.Wood.Bottom");
-			ConfigurationSection materials = config.getConfigurationSection("Recipes.Wood.Materials");
+			final NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Wood");
+			final ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(0)); //init recipe
+			final String top = config.getString("Recipes.Wood.Top");
+			final String middle = config.getString("Recipes.Wood.Middle");
+			final String bottom = config.getString("Recipes.Wood.Bottom");
+			final ConfigurationSection materials = config.getConfigurationSection("Recipes.Wood.Materials");
 
 			// TODO: Make safe
 			newRecipe.shape(top, middle, bottom); //makes recipe
@@ -163,12 +167,12 @@ public class BuildersWandListener implements Listener {
 			e.printStackTrace();
 		}
 		try {
-			NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Stone");
-			ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(1)); //init recipe
-			String top = config.getString("Recipes.Stone.Top");
-			String middle = config.getString("Recipes.Stone.Middle");
-			String bottom = config.getString("Recipes.Stone.Bottom");
-			ConfigurationSection materials = config.getConfigurationSection("Recipes.Stone.Materials");
+			final NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Stone");
+			final ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(1)); //init recipe
+			final String top = config.getString("Recipes.Stone.Top");
+			final String middle = config.getString("Recipes.Stone.Middle");
+			final String bottom = config.getString("Recipes.Stone.Bottom");
+			final ConfigurationSection materials = config.getConfigurationSection("Recipes.Stone.Materials");
 
 			// TODO: Make safe
 			newRecipe.shape(top, middle, bottom); //makes recipe
@@ -184,12 +188,12 @@ public class BuildersWandListener implements Listener {
 			e.printStackTrace();
 		}
 		try {
-			NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Iron");
-			ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(2)); //init recipe
-			String top = config.getString("Recipes.Iron.Top");
-			String middle = config.getString("Recipes.Iron.Middle");
-			String bottom = config.getString("Recipes.Iron.Bottom");
-			ConfigurationSection materials = config.getConfigurationSection("Recipes.Iron.Materials");
+			final NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Iron");
+			final ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(2)); //init recipe
+			final String top = config.getString("Recipes.Iron.Top");
+			final String middle = config.getString("Recipes.Iron.Middle");
+			final String bottom = config.getString("Recipes.Iron.Bottom");
+			final ConfigurationSection materials = config.getConfigurationSection("Recipes.Iron.Materials");
 
 			newRecipe.shape(top, middle, bottom); //makes recipe
 
@@ -204,12 +208,12 @@ public class BuildersWandListener implements Listener {
 			e.printStackTrace();
 		}
 		try {
-			NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Gold");
-			ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(3)); //init recipe
-			String top = config.getString("Recipes.Gold.Top");
-			String middle = config.getString("Recipes.Gold.Middle");
-			String bottom = config.getString("Recipes.Gold.Bottom");
-			ConfigurationSection materials = config.getConfigurationSection("Recipes.Gold.Materials");
+			final NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Gold");
+			final ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(3)); //init recipe
+			final String top = config.getString("Recipes.Gold.Top");
+			final String middle = config.getString("Recipes.Gold.Middle");
+			final String bottom = config.getString("Recipes.Gold.Bottom");
+			final ConfigurationSection materials = config.getConfigurationSection("Recipes.Gold.Materials");
 
 			// TODO: Make safe
 			newRecipe.shape(top, middle, bottom); //makes recipe
@@ -225,12 +229,12 @@ public class BuildersWandListener implements Listener {
 			e.printStackTrace();
 		}
 		try {
-			NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Diamond");
-			ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(4)); //init recipe
-			String top = config.getString("Recipes.Diamond.Top");
-			String middle = config.getString("Recipes.Diamond.Middle");
-			String bottom = config.getString("Recipes.Diamond.Bottom");
-			ConfigurationSection materials = config.getConfigurationSection("Recipes.Diamond.Materials");
+			final NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Diamond");
+			final ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(4)); //init recipe
+			final String top = config.getString("Recipes.Diamond.Top");
+			final String middle = config.getString("Recipes.Diamond.Middle");
+			final String bottom = config.getString("Recipes.Diamond.Bottom");
+			final ConfigurationSection materials = config.getConfigurationSection("Recipes.Diamond.Materials");
 
 			newRecipe.shape(top, middle, bottom); //makes recipe
 
@@ -245,12 +249,12 @@ public class BuildersWandListener implements Listener {
 		}
 		if (MineTinker.is16compatible) {
 			try {
-				NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Netherite");
-				ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(5)); //init recipe
-				String top = config.getString("Recipes.Netherite.Top");
-				String middle = config.getString("Recipes.Netherite.Middle");
-				String bottom = config.getString("Recipes.Netherite.Bottom");
-				ConfigurationSection materials = config.getConfigurationSection("Recipes.Netherite.Materials");
+				final NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Netherite");
+				final ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(5)); //init recipe
+				final String top = config.getString("Recipes.Netherite.Top");
+				final String middle = config.getString("Recipes.Netherite.Middle");
+				final String bottom = config.getString("Recipes.Netherite.Bottom");
+				final ConfigurationSection materials = config.getConfigurationSection("Recipes.Netherite.Materials");
 
 				newRecipe.shape(top, middle, bottom); //makes recipe
 
@@ -271,22 +275,22 @@ public class BuildersWandListener implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void onBreak(BlockBreakEvent event) {
+	public void onBreak(@NotNull final BlockBreakEvent event) {
 		if (Lists.WORLDS_BUILDERSWANDS.contains(event.getPlayer().getWorld().getName())) {
 			return;
 		}
 
-		ItemStack wand = event.getPlayer().getInventory().getItemInMainHand();
+		final ItemStack wand = event.getPlayer().getInventory().getItemInMainHand();
 		event.setCancelled(modManager.isWandViable(wand));
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void onClick(PlayerInteractEvent event) {
+	public void onClick(@NotNull final PlayerInteractEvent event) {
 		if (Lists.WORLDS_BUILDERSWANDS.contains(event.getPlayer().getWorld().getName())) {
 			return;
 		}
 
-		ItemStack wand = event.getPlayer().getInventory().getItemInMainHand();
+		final ItemStack wand = event.getPlayer().getInventory().getItemInMainHand();
 
 		if (!modManager.isWandViable(wand)) {
 			return;
@@ -308,7 +312,7 @@ public class BuildersWandListener implements Listener {
 		int _u = 0;
 		int _w = 0;
 
-		Player player = event.getPlayer();
+		final Player player = event.getPlayer();
 
 		if (!player.isSneaking()) {
 			switch (wand.getType()) {  //TODO: custom Builderswand sizes
@@ -336,9 +340,9 @@ public class BuildersWandListener implements Listener {
 			}
 		}
 
-		Block block = event.getClickedBlock();
-		BlockFace face = event.getBlockFace();
-		ItemStack[] inv = player.getInventory().getContents();
+		final Block block = event.getClickedBlock();
+		final BlockFace face = event.getBlockFace();
+		final ItemStack[] inv = player.getInventory().getContents();
 
 		Vector u = new Vector(0, 0, 0);
 		Vector v = new Vector(0, 0, 0);
@@ -402,15 +406,15 @@ public class BuildersWandListener implements Listener {
 				loop:
 				for (int i = -_w; i <= _w; i++) {
 					for (int j = -_u; j <= _u; j++) {
-						Location l = block.getLocation().clone();
+						final Location l = block.getLocation().clone();
 
 						l.subtract(w.clone().multiply(i));
 						l.subtract(u.clone().multiply(j));
 
-						Location loc = l.clone().subtract(v.clone().multiply(-1));
+						final Location loc = l.clone().subtract(v.clone().multiply(-1));
 
 						if (wand.getItemMeta() instanceof Damageable) {
-							Damageable damageable = (Damageable) wand.getItemMeta();
+							final Damageable damageable = (Damageable) wand.getItemMeta();
 
 							if (!wand.getItemMeta().isUnbreakable()) {
 								if (wand.getType().getMaxDurability() - damageable.getDamage() <= 1) {
@@ -423,7 +427,7 @@ public class BuildersWandListener implements Listener {
 							}
 
 							int amountPlaced = 1;
-							BlockData behindData = block.getWorld().getBlockAt(loc.subtract(v)).getBlockData();
+							final BlockData behindData = block.getWorld().getBlockAt(loc.subtract(v)).getBlockData();
 
 							if (behindData instanceof Slab && ((Slab) behindData).getType().equals(Slab.Type.DOUBLE)) {
 								amountPlaced = 2; //Special case for slabs as you place two slabs at once
@@ -454,12 +458,12 @@ public class BuildersWandListener implements Listener {
 		} else if (player.getGameMode() == GameMode.CREATIVE && block != null) {
 			for (int i = -_w; i <= _w; i++) {
 				for (int j = -_u; j <= _u; j++) {
-					Location l = block.getLocation().clone();
+					final Location l = block.getLocation().clone();
 
 					l.subtract(w.clone().multiply(i));
 					l.subtract(u.clone().multiply(j));
 
-					Location loc = l.clone().subtract(v.clone().multiply(-1));
+					final Location loc = l.clone().subtract(v.clone().multiply(-1));
 
 					placeBlock(block, player, l, loc, new ItemStack(block.getType(), 64), v);
 				}
@@ -467,12 +471,13 @@ public class BuildersWandListener implements Listener {
 		}
 	}
 
-	private boolean placeBlock(Block b, Player player, Location l, Location loc, ItemStack item, Vector vector) {
+	private boolean placeBlock(@NotNull final Block b, @NotNull final Player player, @NotNull final Location l,
+							   @NotNull final Location loc, @NotNull final ItemStack item, @NotNull final Vector vector) {
 		if (!b.getWorld().getBlockAt(l).getType().equals(b.getType())) {
 			return false;
 		}
 
-		Material type = b.getWorld().getBlockAt(loc).getType();
+		final Material type = b.getWorld().getBlockAt(loc).getType();
 
 		if (!(type == Material.AIR || type == Material.CAVE_AIR ||
 				type == Material.WATER || type == Material.BUBBLE_COLUMN ||
@@ -483,9 +488,11 @@ public class BuildersWandListener implements Listener {
 
 		//TODO: Transfer to DataHandler
 		//triggers a pseudoevent to find out if the Player can build
-		Block block = b.getWorld().getBlockAt(loc);
+		final Block block = b.getWorld().getBlockAt(loc);
 
-		BlockPlaceEvent placeEvent = new BlockPlaceEvent(block, b.getState(), b, item, player, true, EquipmentSlot.HAND);
+		final BlockPlaceEvent placeEvent =
+				new BlockPlaceEvent(block, b.getState(), b, item,
+						player, true, EquipmentSlot.HAND);
 		Bukkit.getPluginManager().callEvent(placeEvent);
 
 		//check the pseudoevent
@@ -493,8 +500,8 @@ public class BuildersWandListener implements Listener {
 			return false;
 		}
 
-		Block nb = b.getWorld().getBlockAt(loc);
-		Block behind = nb.getWorld().getBlockAt(loc.clone().subtract(vector));
+		final Block nb = b.getWorld().getBlockAt(loc);
+		final Block behind = nb.getWorld().getBlockAt(loc.clone().subtract(vector));
 		if (behind.getBlockData() instanceof Slab) {
 			if (((Slab) behind.getBlockData()).getType().equals(Slab.Type.DOUBLE)) {
 				if (item.getAmount() - 2 < 0) {
@@ -504,7 +511,7 @@ public class BuildersWandListener implements Listener {
 		}
 
 		nb.setType(item.getType());
-		BlockData bd = nb.getBlockData();
+		final BlockData bd = nb.getBlockData();
 
 		if (bd instanceof Directional) {
 			((Directional) bd).setFacing(((Directional) behind.getBlockData()).getFacing());

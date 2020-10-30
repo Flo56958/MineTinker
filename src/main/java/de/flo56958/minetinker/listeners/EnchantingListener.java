@@ -73,7 +73,7 @@ public class EnchantingListener implements Listener {
 	};
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-	public void onTableEnchant(EnchantItemEvent event) {
+	public void onTableEnchant(@NotNull final EnchantItemEvent event) {
 		if (!MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantmentsOnEnchant", true)) return;
 		if (!ToolType.ALL.contains(event.getItem().getType())) { //Something different (like a book)
 			return;
@@ -83,13 +83,13 @@ public class EnchantingListener implements Listener {
 			return;
 		}
 
-		boolean free = !MineTinker.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true);
+		final boolean free = !MineTinker.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true);
 
-		Map<Enchantment, Integer> enchants = event.getEnchantsToAdd();
-		HashSet<Enchantment> toremove = new HashSet<>();
+		final Map<Enchantment, Integer> enchants = event.getEnchantsToAdd();
+		final HashSet<Enchantment> toremove = new HashSet<>();
 
 		for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
-			Modifier modifier = modManager.getModifierFromEnchantment(entry.getKey());
+			final Modifier modifier = modManager.getModifierFromEnchantment(entry.getKey());
 
 			// The modifier may be disabled
 			if (modifier != null && modifier.isAllowed()) {
@@ -124,20 +124,20 @@ public class EnchantingListener implements Listener {
 	}
 
 	@EventHandler
-	public void onAnvilPrepare(InventoryClickEvent event) {
+	public void onAnvilPrepare(@NotNull final InventoryClickEvent event) {
 		if (!MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantmentsOnEnchant", true)) return;
-		HumanEntity entity = event.getWhoClicked();
+		final HumanEntity entity = event.getWhoClicked();
 
 		if (!(entity instanceof Player && event.getClickedInventory() instanceof AnvilInventory)) {
 			return;
 		}
 
-		AnvilInventory inv = (AnvilInventory) event.getClickedInventory();
-		Player player = (Player) entity;
+		final AnvilInventory inv = (AnvilInventory) event.getClickedInventory();
+		final Player player = (Player) entity;
 
-		ItemStack tool = inv.getItem(0);
-		ItemStack book = inv.getItem(1);
-		ItemStack newTool = inv.getItem(2);
+		final ItemStack tool = inv.getItem(0);
+		final ItemStack book = inv.getItem(1);
+		final ItemStack newTool = inv.getItem(2);
 
 		if (tool == null || book == null || newTool == null) {
 			return;
@@ -147,14 +147,14 @@ public class EnchantingListener implements Listener {
 			return;
 		}
 
-		boolean free = !MineTinker.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true);
+		final boolean free = !MineTinker.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true);
 
 		for (Map.Entry<Enchantment, Integer> entry : newTool.getEnchantments().entrySet()) {
-			int oldEnchantLevel = tool.getEnchantmentLevel(entry.getKey());
+			final int oldEnchantLevel = tool.getEnchantmentLevel(entry.getKey());
 
 			if (oldEnchantLevel < entry.getValue()) {
-				int difference = entry.getValue() - oldEnchantLevel;
-				Modifier modifier = ModManager.instance().getModifierFromEnchantment(entry.getKey());
+				final int difference = entry.getValue() - oldEnchantLevel;
+				final Modifier modifier = ModManager.instance().getModifierFromEnchantment(entry.getKey());
 
 				if (modifier != null && modifier.isAllowed()) {
 					for (int i = 0; i < difference; i++) {
@@ -184,12 +184,12 @@ public class EnchantingListener implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
-	public void onEnchant(PrepareItemEnchantEvent event) {
+	public void onEnchant(@NotNull final PrepareItemEnchantEvent event) {
 		if (Lists.WORLDS.contains(event.getEnchanter().getWorld().getName())) {
 			return;
 		}
 
-		ItemStack tool = event.getItem();
+		final ItemStack tool = event.getItem();
 
 		if (modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool)) {
 			if (MineTinker.getPlugin().getConfig().getBoolean("AllowEnchanting")) {

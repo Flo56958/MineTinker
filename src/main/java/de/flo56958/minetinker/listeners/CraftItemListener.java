@@ -13,19 +13,20 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class CraftItemListener implements Listener {
 
 	private static final ModManager modManager = ModManager.instance();
 
 	@EventHandler(ignoreCancelled = true)
-	public void onCraft(CraftItemEvent event) {
+	public void onCraft(@NotNull final CraftItemEvent event) {
 		if (!(event.getWhoClicked() instanceof Player)) {
 			return;
 		}
 
-		Player player = (Player) event.getWhoClicked();
-		FileConfiguration config = MineTinker.getPlugin().getConfig();
+		final Player player = (Player) event.getWhoClicked();
+		final FileConfiguration config = MineTinker.getPlugin().getConfig();
 
 		if (config.getBoolean("Sound.OnEveryCrafting")) {
 			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
@@ -33,7 +34,7 @@ public class CraftItemListener implements Listener {
 			return;
 		}
 
-		ItemStack tool = event.getInventory().getResult();
+		final ItemStack tool = event.getInventory().getResult();
 
 		if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool) || modManager.isWandViable(tool))) {
 			return;
@@ -43,16 +44,14 @@ public class CraftItemListener implements Listener {
 			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
 		}
 
-		if (tool != null) {
-			ChatWriter.log(false, player.getName() + " crafted " + ChatWriter.getDisplayName(tool)
+		ChatWriter.log(false, player.getName() + " crafted " + ChatWriter.getDisplayName(tool)
 					+ "! It is now a MineTinker-Item!");
-		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onPrepare(PrepareItemCraftEvent event) {
+	public void onPrepare(@NotNull final PrepareItemCraftEvent event) {
 		if (MineTinker.getPlugin().getConfig().getBoolean("ModifiersCanBeUsedForCrafting")) return;
-		CraftingInventory inv = event.getInventory();
+		final CraftingInventory inv = event.getInventory();
 		for (ItemStack is : inv.getMatrix()) {
 			if (is == null) continue;
 			if (modManager.isModifierItem(is)) {

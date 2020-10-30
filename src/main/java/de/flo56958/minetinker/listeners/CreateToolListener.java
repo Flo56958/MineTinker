@@ -11,13 +11,14 @@ import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.jetbrains.annotations.NotNull;
 
 public class CreateToolListener implements Listener {
 
 	private static final ModManager modManager = ModManager.instance();
 
 	@EventHandler
-	public void PrepareCraft(PrepareItemCraftEvent event) {
+	public void PrepareCraft(@NotNull final PrepareItemCraftEvent event) {
 		if (event.getRecipe() == null) {
 			return;
 		}
@@ -29,8 +30,8 @@ public class CreateToolListener implements Listener {
 			if (!Lists.getLeatherArmor().contains(item.getType())) continue; //not leather armor
 			if (item.getType() != event.getInventory().getResult().getType()) break; //Not a dye process
 
-			ItemMeta gridMeta = item.getItemMeta();
-			ItemMeta resultMeta = event.getInventory().getResult().getItemMeta();
+			final ItemMeta gridMeta = item.getItemMeta();
+			final ItemMeta resultMeta = event.getInventory().getResult().getItemMeta();
 			if (gridMeta instanceof LeatherArmorMeta && resultMeta instanceof LeatherArmorMeta) {
 				if (!((LeatherArmorMeta) gridMeta).getColor().equals(((LeatherArmorMeta) resultMeta).getColor()))
 					return; //dye process - abort converting
@@ -58,7 +59,7 @@ public class CreateToolListener implements Listener {
 			return;
 		}
 
-		ItemStack currentItem = event.getInventory().getResult();
+		final ItemStack currentItem = event.getInventory().getResult();
 
 		if (currentItem == null) {
 			return;
@@ -79,7 +80,7 @@ public class CreateToolListener implements Listener {
 			return;
 		}
 
-		ItemMeta m = currentItem.getItemMeta();
+		final ItemMeta m = currentItem.getItemMeta();
 
 		if (m != null) {
 			if (modManager.isWandViable(currentItem)) {

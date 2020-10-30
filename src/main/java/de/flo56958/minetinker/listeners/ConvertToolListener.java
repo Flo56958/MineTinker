@@ -11,14 +11,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class ConvertToolListener implements Listener {
 
 	private static final ModManager modManager = ModManager.instance();
 
 	@EventHandler
-	public void onCraft(PrepareItemCraftEvent event) {
-		CraftingInventory inv = event.getInventory();
+	public void onCraft(@NotNull final PrepareItemCraftEvent event) {
+		final CraftingInventory inv = event.getInventory();
 
 		boolean canConvert = false;
 		World world = null;

@@ -1,10 +1,10 @@
 package de.flo56958.minetinker.listeners;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.events.MTEntityDamageEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Bukkit;
@@ -21,6 +21,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,7 +40,7 @@ public class ArmorListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onPlayerDamage(EntityDamageEvent event) {
+	public void onPlayerDamage(@NotNull final EntityDamageEvent event) {
 		if (event.getDamage() <= 0) {
 			return;
 		}
@@ -56,7 +57,7 @@ public class ArmorListener implements Listener {
 			return;
 		}
 
-		Player player = (Player) event.getEntity();
+		final Player player = (Player) event.getEntity();
 
 		Entity entity = null;
 		EntityDamageByEntityEvent byEntityEvent = null;
@@ -66,8 +67,8 @@ public class ArmorListener implements Listener {
 			entity = byEntityEvent.getDamager();
 
 			if (entity instanceof Arrow) {
-				Arrow arrow = (Arrow) entity;
-				ProjectileSource source = arrow.getShooter();
+				final Arrow arrow = (Arrow) entity;
+				final ProjectileSource source = arrow.getShooter();
 
 				if (source instanceof Entity) {
 					entity = (Entity) source;
@@ -75,16 +76,15 @@ public class ArmorListener implements Listener {
 					return;
 				}
 			}
-
 		}
 
-		ArrayList<ItemStack> armor = new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents()));
+		final ArrayList<ItemStack> armor = new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents()));
 		if (ToolType.SHIELD.contains(player.getInventory().getItemInMainHand().getType()))
 			armor.add(player.getInventory().getItemInMainHand());
 		else if (ToolType.SHIELD.contains(player.getInventory().getItemInOffHand().getType()))
 			armor.add(player.getInventory().getItemInOffHand());
 
-		boolean isBlocking = player.isBlocking() && event.getFinalDamage() == 0.0d;
+		final boolean isBlocking = player.isBlocking() && event.getFinalDamage() == 0.0d;
 		for (ItemStack piece : armor) {
 			if (!modManager.isArmorViable(piece)) {
 				continue;
@@ -100,16 +100,16 @@ public class ArmorListener implements Listener {
 
 	//Handle exp calculation for both armor and weapons
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void expCalculation(MTEntityDamageEvent event) {
+	public void expCalculation(@NotNull final MTEntityDamageEvent event) {
 		expCalculation(event.isBlocking(), event.getTool(), event.getEvent(), event.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void expCalculation(MTEntityDamageByEntityEvent event) {
+	public void expCalculation(@NotNull final MTEntityDamageByEntityEvent event) {
 		expCalculation(event.isBlocking(), event.getTool(), event.getEvent(), event.getPlayer());
 	}
 
-	private void expCalculation(boolean isBlocking, ItemStack tool, EntityDamageEvent event, Player player) {
+	private void expCalculation(final boolean isBlocking, @NotNull final ItemStack tool, @NotNull final EntityDamageEvent event, @NotNull final Player player) {
 		//Armor should not get Exp when successfully blocking
 		if(isBlocking && !ToolType.SHIELD.contains(tool.getType()) && ToolType.ARMOR.contains(tool.getType())) return;
 		//Shield should not get Exp when not successfully blocking when getting attacked
@@ -130,7 +130,7 @@ public class ArmorListener implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void onElytraDamage(PlayerItemDamageEvent event) {
+	public void onElytraDamage(@NotNull final PlayerItemDamageEvent event) {
 		if (!event.getPlayer().isGliding()) {
 			return;
 		}
@@ -143,9 +143,7 @@ public class ArmorListener implements Listener {
 			return;
 		}
 
-		Random rand = new Random();
-		int chance = rand.nextInt(100);
-
+		final int chance = new Random().nextInt(100);
 		if (chance < ConfigurationManager.getConfig("Elytra.yml").getInt("ExpChanceWhileFlying")) {
 			modManager.addExp(event.getPlayer(), event.getItem(), MineTinker.getPlugin().getConfig().getInt("ExpPerEntityHit"));
 		}

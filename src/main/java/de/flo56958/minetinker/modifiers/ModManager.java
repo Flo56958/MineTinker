@@ -53,7 +53,7 @@ public class ModManager {
 		layout.addDefault("OverrideLanguagesystem", false);
 		layout.addDefault("UsePatternMatcher", false); //for plugin compatibility
 
-		ArrayList<String> loreLayout = new ArrayList<>();
+		final ArrayList<String> loreLayout = new ArrayList<>();
 		loreLayout.add("%GOLD%Level %WHITE%%LEVEL%");
 		loreLayout.add("%GOLD%Exp: %WHITE%%EXP% / %NEXT_LEVEL_EXP%");
 		loreLayout.add("%WHITE%Free Modifier Slots: %FREE_SLOTS%");
@@ -152,8 +152,7 @@ public class ModManager {
 	/**
 	 * Class constructor (no parameters)
 	 */
-	private ModManager() {
-	}
+	private ModManager() {}
 
 	/**
 	 * get the instance that contains the modifier list (VERY IMPORTANT)
@@ -171,7 +170,7 @@ public class ModManager {
 		return instance;
 	}
 
-	public static @Nullable Pair<@Nullable Material, @NotNull Integer> itemUpgrader(@NotNull Material tool, Material material) {
+	public static @Nullable Pair<@Nullable Material, @NotNull Integer> itemUpgrader(@NotNull final Material tool, @NotNull final Material material) {
 		String name = tool.name().split("_")[0].toLowerCase();
 
 		if (name.equals("wooden") && material.name().contains("PLANKS")
@@ -211,7 +210,7 @@ public class ModManager {
 		return null;
 	}
 
-	private static @Nullable Material getToolUpgrade(@NotNull Material material, String tool) {
+	private static @Nullable Material getToolUpgrade(@NotNull final Material material, @NotNull final String tool) {
 		if(MineTinker.is16compatible && material == Material.NETHERITE_INGOT) {
 			return Material.getMaterial("NETHERITE_" + tool);
 		}
@@ -237,7 +236,7 @@ public class ModManager {
 		
 	}
 
-	private static @Nullable Material getArmorUpgrade(@NotNull Material material, String tool) {
+	private static @Nullable Material getArmorUpgrade(@NotNull final Material material, @NotNull final String tool) {
 		if(MineTinker.is16compatible && material == Material.NETHERITE_INGOT) {
 			return Material.getMaterial("NETHERITE_" + tool);
 		}
@@ -285,7 +284,7 @@ public class ModManager {
 		}
 
 		//get Modifier incompatibilities
-		reloadIncompatibilities();
+		this.reloadIncompatibilities();
 
 		if (layout.getBoolean("OverrideLanguagesystem", false)) {
 			this.loreScheme = layout.getStringList("LoreLayout");
@@ -314,7 +313,7 @@ public class ModManager {
 	private void reloadIncompatibilities() {
 		FileConfiguration modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
 
-		List<String> possibleKeys = new ArrayList<>();
+		final List<String> possibleKeys = new ArrayList<>();
 		for (Modifier m : this.allMods) {
 			possibleKeys.add(m.getKey());
 		}
@@ -328,9 +327,9 @@ public class ModManager {
 			incompatibilities.putIfAbsent(m, new HashSet<>());
 		}
 		modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
-		List<String> incompatibilityList = modifierconfig.getStringList("Incompatibilities");
+		final List<String> incompatibilityList = modifierconfig.getStringList("Incompatibilities");
 		for (String s : incompatibilityList) {
-			String[] splits = s.split(":");
+			final String[] splits = s.split(":");
 			if (splits.length != 2) continue;
 			Modifier mod1 = null;
 			Modifier mod2 = null;
@@ -368,7 +367,7 @@ public class ModManager {
 	 * @param mod the modifier instance
 	 */
 	@Contract("null -> false")
-	public boolean register(Modifier mod) {
+	public boolean register(@Nullable final Modifier mod) {
 		if (mod == null) return false;
 		if (!allMods.contains(mod)) {
 			mod.reload();
@@ -398,8 +397,7 @@ public class ModManager {
 	 *
 	 * @param mod the modifier instance
 	 */
-	public void unregister(Modifier mod) {
-		if (mod == null) return;
+	public void unregister(@NotNull final Modifier mod) {
 		allMods.remove(mod);
 		mods.remove(mod);
 		incompatibilities.remove(mod);
@@ -440,12 +438,12 @@ public class ModManager {
 	 * @param is  the item to add the modifier to
 	 * @param mod the modifier to add
 	 */
-	void addMod(ItemStack is, @NotNull Modifier mod) {
+	void addMod(@NotNull final ItemStack is, @NotNull final Modifier mod) {
 		DataHandler.setTag(is, mod.getKey(), getModLevel(is, mod) + 1, PersistentDataType.INTEGER, false);
 		rewriteLore(is);
 	}
 
-	public boolean addMod(Player player, ItemStack item, @NotNull Modifier modifier, boolean fromCommand, boolean fromRandom, boolean silent) {
+	public boolean addMod(final Player player, final ItemStack item, @NotNull final Modifier modifier, final boolean fromCommand, final boolean fromRandom, final boolean silent) {
 		if (!modifier.getKey().equals(ExtraModifier.instance().getKey())) {
 			if (!modifier.checkAndAdd(player, item,
 					modifier.getKey().toLowerCase().replace("-", ""), fromCommand, fromRandom, silent)) {
@@ -484,9 +482,8 @@ public class ModManager {
 	 * @param is  the item
 	 * @param mod the modifier
 	 */
-	public int getModLevel(ItemStack is, @NotNull Modifier mod) {
+	public int getModLevel(@NotNull final ItemStack is, @NotNull final Modifier mod) {
 		if (!mod.isAllowed()) return 0;
-		if (is == null) return 0;
 		Integer tag = DataHandler.getTag(is, mod.getKey(), PersistentDataType.INTEGER, false);
 		if (tag == null) return 0;
 		return tag;
@@ -498,7 +495,7 @@ public class ModManager {
 	 * @param is  the item to remove the modifier from
 	 * @param mod the modifier to remove
 	 */
-	public void removeMod(ItemStack is, Modifier mod) {
+	public void removeMod(@NotNull final ItemStack is, @NotNull final Modifier mod) {
 		if (hasMod(is, mod)) {
 			DataHandler.removeTag(is, mod.getKey(), false);
 			mod.removeMod(is);
@@ -511,8 +508,7 @@ public class ModManager {
 	 *
 	 * @param is the item to get the information from
 	 */
-	public int getFreeSlots(ItemStack is) {
-		if (is == null) return -1;
+	public int getFreeSlots(@NotNull final ItemStack is) {
 		Integer freeSlots = DataHandler.getTag(is, "FreeSlots", PersistentDataType.INTEGER, false);
 		if (freeSlots == null) return 0;
 		return freeSlots;
@@ -523,8 +519,7 @@ public class ModManager {
 	 *
 	 * @param is the item to set the information to
 	 */
-	public void setFreeSlots(ItemStack is, int freeSlots) {
-		if (is == null) return;
+	public void setFreeSlots(@NotNull final ItemStack is, final int freeSlots) {
 		DataHandler.setTag(is, "FreeSlots", freeSlots, PersistentDataType.INTEGER, false);
 		rewriteLore(is);
 	}
@@ -534,8 +529,7 @@ public class ModManager {
 	 *
 	 * @param is the item to get the information from
 	 */
-	public int getLevel(ItemStack is) {
-		if (is == null) return -1;
+	public int getLevel(@NotNull final ItemStack is) {
 		Integer level = DataHandler.getTag(is, "Level", PersistentDataType.INTEGER, false);
 		if (level == null) return -1;
 		return level;
@@ -546,8 +540,7 @@ public class ModManager {
 	 *
 	 * @param is the item to get the information from
 	 */
-	private void setLevel(ItemStack is, int level) {
-		if (is == null) return;
+	private void setLevel(@NotNull final ItemStack is, final int level) {
 		DataHandler.setTag(is, "Level", level, PersistentDataType.INTEGER, false);
 	}
 
@@ -556,8 +549,7 @@ public class ModManager {
 	 *
 	 * @param is the item to get the information from
 	 */
-	public long getExp(ItemStack is) {
-		if (is == null) return -1;
+	public long getExp(@NotNull final ItemStack is) {
 		Long exp = DataHandler.getTag(is, "Exp", PersistentDataType.LONG, false);
 		if (exp == null) return -1;
 		return exp;
@@ -568,7 +560,7 @@ public class ModManager {
 	 *
 	 * @param is the item to get the information from
 	 */
-	private void setExp(ItemStack is, long exp) {
+	private void setExp(@Nullable final ItemStack is, final long exp) {
 		if (is == null) return;
 		DataHandler.setTag(is, "Exp", exp, PersistentDataType.LONG, false);
 	}
@@ -579,7 +571,7 @@ public class ModManager {
 	 * @return if the tool has the mod
 	 */
 	@Contract("null, _ -> false")
-	public boolean hasMod(ItemStack tool, @NotNull Modifier mod) {
+	public boolean hasMod(@Nullable final ItemStack tool, @NotNull final Modifier mod) {
 		if (tool == null) return false;
 		return mod.isAllowed() && DataHandler.hasTag(tool, mod.getKey(), PersistentDataType.INTEGER, false);
 	}
@@ -590,7 +582,7 @@ public class ModManager {
 	 * @param level
 	 * @return long value of the exp required
 	 */
-	public long getNextLevelReq(int level) {
+	public long getNextLevelReq(final int level) {
 		if (config.getBoolean("ProgressionIsLinear")) {
 			return Math.round(MineTinker.getPlugin().getConfig().getInt("LevelStep")
 					* MineTinker.getPlugin().getConfig().getDouble("LevelFactor") * level);
@@ -605,7 +597,7 @@ public class ModManager {
 	 * @param tool   tool that needs to get exp
 	 * @param amount how much exp should the tool get
 	 */
-	public void addExp(Player player, ItemStack tool, long amount) {
+	public void addExp(@Nullable final Player player, @NotNull final ItemStack tool, final long amount) {
 		if (amount == 0) {
 			return;
 		}
@@ -654,7 +646,7 @@ public class ModManager {
 	 * @return if the ItemStack is viable as MineTinker-Armor
 	 */
 	@Contract("null -> false")
-	public boolean isArmorViable(ItemStack armor) {
+	public boolean isArmorViable(@Nullable final ItemStack armor) {
 		return armor != null && DataHandler.hasTag(armor, this.ArmorIdentifier, PersistentDataType.INTEGER, false);
 	}
 
@@ -663,7 +655,7 @@ public class ModManager {
 	 * @return if the ItemStack is viable as MineTinker-Tool
 	 */
 	@Contract("null -> false")
-	public boolean isToolViable(ItemStack tool) {
+	public boolean isToolViable(@Nullable final ItemStack tool) {
 		return tool != null && DataHandler.hasTag(tool, this.ToolIdentifier, PersistentDataType.INTEGER, false);
 	}
 
@@ -672,7 +664,7 @@ public class ModManager {
 	 * @return if the ItemStack is viable as MineTinker-Builderswand
 	 */
 	@Contract("null -> false")
-	public boolean isWandViable(ItemStack wand) {
+	public boolean isWandViable(@Nullable final ItemStack wand) {
 		return wand != null && DataHandler.hasTag(wand, "identifier_builderswand", PersistentDataType.INTEGER, false);
 	}
 
@@ -681,22 +673,22 @@ public class ModManager {
 	 *
 	 * @param is The Itemstack to rewrite the Lore
 	 */
-	private void rewriteLore(ItemStack is) {
+	private void rewriteLore(@NotNull final ItemStack is) {
 		if (!MineTinker.getPlugin().getConfig().getBoolean("EnableLore")) {
 			return;
 		}
 
-		ArrayList<String> lore = new ArrayList<>(this.loreScheme);
+		final ArrayList<String> lore = new ArrayList<>(this.loreScheme);
 
-		long exp = getExp(is);
-		int level = getLevel(is);
-		long nextLevelReq = getNextLevelReq(level);
-		int freeSlots = getFreeSlots(is);
+		final long exp = getExp(is);
+		final int level = getLevel(is);
+		final long nextLevelReq = getNextLevelReq(level);
+		final int freeSlots = getFreeSlots(is);
 
-		String exp_ = layout.getBoolean("UseRomans.Exp") ? ChatWriter.toRomanNumerals((int) exp) : String.valueOf(exp);
-		String level_ = layout.getBoolean("UseRomans.Level") ? ChatWriter.toRomanNumerals(level) : String.valueOf(level);
-		String nextLevelReq_ = layout.getBoolean("UseRomans.Exp") ? ChatWriter.toRomanNumerals((int) nextLevelReq) : String.valueOf(nextLevelReq);
-		String freeSlots_ = layout.getBoolean("UseRomans.FreeSlots") ? ChatWriter.toRomanNumerals(freeSlots) : String.valueOf(freeSlots);
+		final String exp_ = layout.getBoolean("UseRomans.Exp") ? ChatWriter.toRomanNumerals((int) exp) : String.valueOf(exp);
+		final String level_ = layout.getBoolean("UseRomans.Level") ? ChatWriter.toRomanNumerals(level) : String.valueOf(level);
+		final String nextLevelReq_ = layout.getBoolean("UseRomans.Exp") ? ChatWriter.toRomanNumerals((int) nextLevelReq) : String.valueOf(nextLevelReq);
+		final String freeSlots_ = layout.getBoolean("UseRomans.FreeSlots") ? ChatWriter.toRomanNumerals(freeSlots) : String.valueOf(freeSlots);
 
 		for (int i = 0; i < lore.size(); i++) {
 			String s = lore.get(i);
@@ -711,7 +703,7 @@ public class ModManager {
 
 		int index = -1;
 		for (int i = 0; i < lore.size(); i++) {
-			String s = lore.get(i);
+			final String s = lore.get(i);
 
 			if (s.contains("%MODIFIERS%")) {
 				index = i;
@@ -727,8 +719,8 @@ public class ModManager {
 
 		for (Modifier m : this.mods) {
 			if (DataHandler.hasTag(is, m.getKey(), PersistentDataType.INTEGER, false)) {
-				int modLevel = getModLevel(is, m);
-				String modLevel_ = layout.getBoolean("UseRomans.ModifierLevels")
+				final int modLevel = getModLevel(is, m);
+				final String modLevel_ = layout.getBoolean("UseRomans.ModifierLevels")
 						? ChatWriter.toRomanNumerals(modLevel) : String.valueOf(modLevel);
 
 				String s = this.modifierLayout;
@@ -739,16 +731,16 @@ public class ModManager {
 			}
 		}
 
-		ItemMeta meta = is.getItemMeta();
+		final ItemMeta meta = is.getItemMeta();
 
 		if (meta != null) {
 			if (layout.getBoolean("UsePatternMatcher", false)) {
 
-				List<String> oldLore = meta.getLore();
+				final List<String> oldLore = meta.getLore();
 				if (oldLore != null) {
 					//clean up lore from old MineTinker-Lore
-					ArrayList<String> toRemove = new ArrayList<>();
-					String mod = "\\Q" + this.modifierLayout + "\\E";
+					final ArrayList<String> toRemove = new ArrayList<>();
+					final String mod = "\\Q" + this.modifierLayout + "\\E";
 					for (String s : oldLore) {
 						boolean removed = false;
 						for (String m : this.loreScheme) {
@@ -801,10 +793,10 @@ public class ModManager {
 	 * @return If the conversion was successful. Also returns false if the item is already MT compatible.
 	 */
 	@Contract("null, _ -> false")
-	public boolean convertItemStack(ItemStack is, @Nullable Entity entity) {
+	public boolean convertItemStack(final ItemStack is, @Nullable Entity entity) {
 		if (is == null) return false;
 
-		Material m = is.getType();
+		final Material m = is.getType();
 		int damage = 0;
 
 		// Don't convert already converted items
@@ -821,7 +813,7 @@ public class ModManager {
 		}
 
 		if (!MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantsAndAttributes")) {
-			ItemMeta meta = new ItemStack(is.getType(), is.getAmount()).getItemMeta();
+			final ItemMeta meta = new ItemStack(is.getType(), is.getAmount()).getItemMeta();
 
 			if (meta instanceof Damageable) {
 				((Damageable) meta).setDamage(damage);
@@ -866,13 +858,13 @@ public class ModManager {
 
 		addArmorAttributes(is);
 
-		ItemMeta meta = is.getItemMeta();
+		final ItemMeta meta = is.getItemMeta();
 
 		if (meta != null) {
 			if (MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantsAndAttributes")) {
 
 				for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
-					Modifier modifier = getModifierFromEnchantment(entry.getKey());
+					final Modifier modifier = getModifierFromEnchantment(entry.getKey());
 
 					if (modifier == null) {
 						continue;
@@ -891,7 +883,7 @@ public class ModManager {
 				}
 
 				for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : meta.getAttributeModifiers().asMap().entrySet()) {
-					Modifier modifier = getModifierFromAttribute(entry.getKey());
+					final Modifier modifier = getModifierFromAttribute(entry.getKey());
 
 					if (modifier == null || modifier == Hardened.instance()) {
 						continue;
@@ -906,19 +898,19 @@ public class ModManager {
 		return true;
 	}
 
-	private void setCreator(ItemStack is, Entity entity) {
+	private void setCreator(@Nullable final ItemStack is, @Nullable final Entity entity) {
 		if (is == null || entity == null) return;
 		DataHandler.setTag(is, "creator", entity.getUniqueId(), UUIDTagType.instance, false);
 	}
 
-	public OfflinePlayer getCreator(ItemStack is) {
+	public OfflinePlayer getCreator(@Nullable final ItemStack is) {
 		if (is == null) return null;
 		UUID creator = DataHandler.getTag(is, "creator", UUIDTagType.instance, false);
 		if (creator == null) return null;
 		return Bukkit.getOfflinePlayer(creator);
 	}
 
-	public void addArmorAttributes(@NotNull ItemStack is) {
+	public void addArmorAttributes(@NotNull final ItemStack is) {
 		double armor = 0.0d;
 		double toughness = 0.0d;
 		double knockback_res = 0.0d;
@@ -1044,14 +1036,19 @@ public class ModManager {
 		}
 	}
 
-	public @NotNull ItemStack createModifierItem(@NotNull Material m, @NotNull String name, @NotNull String description, @NotNull Modifier mod) {
-		ItemStack is = new ItemStack(m, 1);
-		ItemMeta meta = is.getItemMeta();
+	public @NotNull ItemStack createModifierItem(@NotNull final Material m, @NotNull final String name, @NotNull final String description, @NotNull final Modifier mod) {
+		final ItemStack is = new ItemStack(m, 1);
+		final ItemMeta meta = is.getItemMeta();
 
 		if (meta != null) {
 			meta.setDisplayName(name);
 
-			ArrayList<String> lore = new ArrayList<>(ChatWriter.splitString(description, 40));
+			final ArrayList<String> lore = new ArrayList<>(ChatWriter.splitString(description, 40));
+			//Slot cost
+			if (mod.getSlotCost() >= 0) {
+				lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.SlotCost")
+						.replaceFirst("%amount", String.valueOf(mod.getSlotCost())));
+			}
 			meta.setLore(lore);
 
 			meta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
@@ -1070,7 +1067,7 @@ public class ModManager {
 	 * @return if the ItemStack is viable as MineTinker-Modifier-Item
 	 */
 	@Contract("null -> false")
-	public boolean isModifierItem(ItemStack item) {
+	public boolean isModifierItem(@Nullable final ItemStack item) {
 		if (item == null) return false;
 		return DataHandler.hasTag(item, "modifier_item", PersistentDataType.STRING, false);
 	}
@@ -1080,7 +1077,7 @@ public class ModManager {
 	 * @return the Modifier of the Modifier-Item (NULL if not found)
 	 */
 	@Nullable
-	public Modifier getModifierFromItem(ItemStack item) {
+	public Modifier getModifierFromItem(@Nullable final ItemStack item) {
 		if (!isModifierItem(item)) {
 			return null;
 		}
@@ -1089,7 +1086,7 @@ public class ModManager {
 			return null;
 		}
 
-		String name = DataHandler.getTag(item, "modifier_item", PersistentDataType.STRING, false);
+		final String name = DataHandler.getTag(item, "modifier_item", PersistentDataType.STRING, false);
 
 		if (name == null) {
 			return null;
@@ -1111,7 +1108,7 @@ public class ModManager {
 	 * @return the Modifier or null
 	 */
 	@Nullable
-	public Modifier getModifierFromEnchantment(@NotNull Enchantment enchantment) {
+	public Modifier getModifierFromEnchantment(@NotNull final Enchantment enchantment) {
 		for (Modifier modifier : getAllMods()) {
 			if (modifier.getAppliedEnchantments().contains(enchantment)) {
 				return modifier;
@@ -1128,7 +1125,7 @@ public class ModManager {
 	 * @return the Modifier or null
 	 */
 	@Nullable
-	public Modifier getModifierFromAttribute(@NotNull Attribute attribute) {
+	public Modifier getModifierFromAttribute(@NotNull final Attribute attribute) {
 		for (Modifier modifier : getAllMods()) {
 			if (modifier.getAppliedAttributes().contains(attribute)) {
 				return modifier;
@@ -1146,8 +1143,8 @@ public class ModManager {
 	 * @param tool        the Tool
 	 * @return false: if broken; true: if enough durability
 	 */
-	public boolean durabilityCheck(@NotNull Cancellable cancellable, @NotNull Player player, @NotNull ItemStack tool) {
-		ItemMeta meta = tool.getItemMeta();
+	public boolean durabilityCheck(@NotNull final Cancellable cancellable, @NotNull final Player player, @NotNull final ItemStack tool) {
+		final ItemMeta meta = tool.getItemMeta();
 
 		if (meta instanceof Damageable) {
 			if (config.getBoolean("UnbreakableTools", true)
@@ -1168,7 +1165,7 @@ public class ModManager {
 		//TODO: Find a different way to remove recipes! Bukkit is bugged atm
 
 		while (it.hasNext()) {
-			ItemStack result = it.next().getResult();
+			final ItemStack result = it.next().getResult();
 
 			//Modifieritems
 			if (ModManager.instance().isModifierItem(result)) {

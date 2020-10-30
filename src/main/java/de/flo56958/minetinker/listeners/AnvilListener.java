@@ -1,11 +1,11 @@
 package de.flo56958.minetinker.listeners;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ModifierFailCause;
 import de.flo56958.minetinker.events.ModifierApplyEvent;
 import de.flo56958.minetinker.events.ModifierFailEvent;
 import de.flo56958.minetinker.events.ToolUpgradeEvent;
-import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.datatypes.Pair;
@@ -22,6 +22,7 @@ import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Random;
@@ -31,18 +32,18 @@ public class AnvilListener implements Listener {
 	private static final ModManager modManager = ModManager.instance();
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onInventoryClick(InventoryClickEvent event) {
-		HumanEntity he = event.getWhoClicked();
+	public void onInventoryClick(@NotNull final InventoryClickEvent event) {
+		final HumanEntity he = event.getWhoClicked();
 
 		if (!(he instanceof Player && event.getClickedInventory() instanceof AnvilInventory)) {
 			return;
 		}
 
-		AnvilInventory inv = (AnvilInventory) event.getClickedInventory();
-		Player player = (Player) he;
+		final AnvilInventory inv = (AnvilInventory) event.getClickedInventory();
+		final Player player = (Player) he;
 
-		ItemStack tool = inv.getItem(0);
-		ItemStack modifier = inv.getItem(1);
+		final ItemStack tool = inv.getItem(0);
+		final ItemStack modifier = inv.getItem(1);
 		ItemStack newTool = inv.getItem(2);
 
 		if (tool == null || modifier == null || newTool == null) {
@@ -90,7 +91,7 @@ public class AnvilListener implements Listener {
 			player.setItemOnCursor(newTool);
 			inv.clear();
 		} else { //is modifier
-			Modifier mod = modManager.getModifierFromItem(modifier);
+			final Modifier mod = modManager.getModifierFromItem(modifier);
 
 			if (mod == null) {
 				return;
@@ -125,10 +126,10 @@ public class AnvilListener implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void onAnvilPrepare(PrepareAnvilEvent event) {
-		AnvilInventory inventory = event.getInventory();
-		ItemStack tool = inventory.getItem(0);
-		ItemStack modifier = inventory.getItem(1);
+	public void onAnvilPrepare(@NotNull final PrepareAnvilEvent event) {
+		final AnvilInventory inventory = event.getInventory();
+		final ItemStack tool = inventory.getItem(0);
+		final ItemStack modifier = inventory.getItem(1);
 
 		if (tool == null || modifier == null) {
 			return;
@@ -137,7 +138,7 @@ public class AnvilListener implements Listener {
 		//-----
 		Player player = null;
 
-		List<HumanEntity> listHumans = event.getViewers();
+		final List<HumanEntity> listHumans = event.getViewers();
 
 		for (HumanEntity he : listHumans) {
 			if (he instanceof Player) {
@@ -170,7 +171,7 @@ public class AnvilListener implements Listener {
 			}
 		}
 
-		Modifier mod = modManager.getModifierFromItem(modifier);
+		final Modifier mod = modManager.getModifierFromItem(modifier);
 
 		ItemStack newTool = null;
 
@@ -182,16 +183,16 @@ public class AnvilListener implements Listener {
 		} else {
 			if (MineTinker.getPlugin().getConfig().getBoolean("Upgradeable")
 					&& player.hasPermission("minetinker.tool.upgrade")) {
-				ItemStack item = inventory.getItem(1);
+				final ItemStack item = inventory.getItem(1);
 
 				if (item != null) {
-					Pair<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(tool.getType(), item.getType());
+					final Pair<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(tool.getType(), item.getType());
 					if (materialIntegerPair != null && materialIntegerPair.x != null) {
-						if (item.getAmount() == materialIntegerPair.y) {
+						if (materialIntegerPair.y != null && item.getAmount() == materialIntegerPair.y) {
 							newTool = tool.clone();
 							newTool.setType(materialIntegerPair.x);
 							modManager.addArmorAttributes(newTool);
-							ItemMeta meta = newTool.getItemMeta();
+							final ItemMeta meta = newTool.getItemMeta();
 							if(meta instanceof Damageable) {
 								((Damageable) meta).setDamage(0);
 							}

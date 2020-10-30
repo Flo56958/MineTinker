@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -21,7 +22,7 @@ public class ActionBarListener implements Listener {
 		@Override
 		public void run() {
 			for (Player p : Bukkit.getOnlinePlayers()) {
-				int xpamount = xpbuffer.get(p.getUniqueId()).getAndSet(0);
+				final int xpamount = xpbuffer.get(p.getUniqueId()).getAndSet(0);
 				if (xpamount != 0) {
 					String a = String.valueOf(xpamount);
 					if (xpamount > 0) a = "+" + a;
@@ -44,7 +45,7 @@ public class ActionBarListener implements Listener {
 
 	public static void addXP(Player p, int amount) {
 		if (p == null) return;
-		AtomicInteger i = xpbuffer.get(p.getUniqueId());
+		final AtomicInteger i = xpbuffer.get(p.getUniqueId());
 		if (i != null) {
 			i.addAndGet(amount);
 		}
@@ -52,13 +53,13 @@ public class ActionBarListener implements Listener {
 
 
 	@EventHandler
-	private void onJoin(PlayerJoinEvent e) {
+	private void onJoin(@NotNull final PlayerJoinEvent e) {
 		xpbuffer.put(e.getPlayer().getUniqueId(), new AtomicInteger(0));
 	}
 
 
 	@EventHandler
-	private void onQuit(PlayerQuitEvent e) {
+	private void onQuit(@NotNull final PlayerQuitEvent e) {
 		xpbuffer.remove(e.getPlayer().getUniqueId());
 	}
 }

@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CrossbowMeta;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -29,9 +30,9 @@ public class ItemListener implements Listener {
 	private final ModManager modManager = ModManager.instance();
 
 	@EventHandler(ignoreCancelled = true)
-	public void onDespawn(ItemDespawnEvent event) {
-		Item item = event.getEntity();
-		ItemStack is = item.getItemStack();
+	public void onDespawn(@NotNull final ItemDespawnEvent event) {
+		final Item item = event.getEntity();
+		final ItemStack is = item.getItemStack();
 
 		if (!((modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))
 				|| (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")
@@ -46,13 +47,13 @@ public class ItemListener implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void onItemDrop(PlayerDropItemEvent event) {
+	public void onItemDrop(@NotNull final PlayerDropItemEvent event) {
 		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
 			return;
 		}
 
-		Item item = event.getItemDrop();
-		ItemStack is = item.getItemStack();
+		final Item item = event.getItemDrop();
+		final ItemStack is = item.getItemStack();
 
 		boolean isMineTinker = false;
 
@@ -82,15 +83,16 @@ public class ItemListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onPlayerDeath(PlayerDeathEvent event) {
+	public void onPlayerDeath(@NotNull final PlayerDeathEvent event) {
 		if (event.getKeepInventory()) {
 			return;
 		}
 
-		Player player = event.getEntity();
-		Inventory inventory = player.getInventory();
+		final Player player = event.getEntity();
+		final Inventory inventory = player.getInventory();
 
-		if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ApplyOnPlayerDeath", true)) { //For DeadSouls and other Grave-Plugins
+		if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ApplyOnPlayerDeath", true)) {
+			//For DeadSouls and other Grave-Plugins
 			// TODO: Try to find better handling of this Event or with these Plugins
 			return;
 		}
@@ -103,7 +105,7 @@ public class ItemListener implements Listener {
 			boolean isMineTinker = false;
 
 			if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) { //Modifieritems
-				ItemStack modifierTester = itemStack.clone();
+				final ItemStack modifierTester = itemStack.clone();
 				modifierTester.setAmount(1);
 
 				for (Modifier modifier : modManager.getAllowedMods()) {
@@ -114,7 +116,8 @@ public class ItemListener implements Listener {
 				}
 			}
 
-			if (modManager.isArmorViable(itemStack) || modManager.isToolViable(itemStack) || modManager.isWandViable(itemStack)) {
+			if (modManager.isArmorViable(itemStack) || modManager.isToolViable(itemStack)
+					|| modManager.isWandViable(itemStack)) {
 				isMineTinker = true;
 			}
 
@@ -123,17 +126,18 @@ public class ItemListener implements Listener {
 			}
 
 			if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
-				PlayerDropItemEvent dropItemEvent = new PlayerDropItemEvent(player, player.getWorld().dropItem(player.getLocation(), itemStack));
-				Bukkit.getPluginManager().callEvent(dropItemEvent); //To trigger item behaviour
+				Bukkit.getPluginManager().callEvent(
+						new PlayerDropItemEvent(player, player.getWorld().dropItem(
+								player.getLocation(), itemStack))); //To trigger item behaviour
 				itemStack.setAmount(0);
 			}
 		}
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void onItemBreak(PlayerItemBreakEvent event) {
-		Player player = event.getPlayer();
-		ItemStack item = event.getBrokenItem();
+	public void onItemBreak(@NotNull final PlayerItemBreakEvent event) {
+		final Player player = event.getPlayer();
+		final ItemStack item = event.getBrokenItem();
 
 		if (!MineTinker.getPlugin().getConfig().getBoolean("UnbreakableTools", true)) {
 			return;
@@ -155,7 +159,7 @@ public class ItemListener implements Listener {
 			player.sendMessage(LanguageManager.getString("Alert.OnItemBreak", player));
 		}
 
-		ItemMeta meta = item.getItemMeta();
+		final ItemMeta meta = item.getItemMeta();
 
 		if (meta instanceof Damageable) {
 			((Damageable) meta).setDamage(item.getType().getMaxDurability() - 1);
@@ -169,8 +173,9 @@ public class ItemListener implements Listener {
 
 		if (player.getInventory().addItem(item).size() != 0) { //adds items to (full) inventory
 			if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
-				PlayerDropItemEvent dropItemEvent = new PlayerDropItemEvent(player, player.getWorld().dropItem(player.getLocation(), item));
-				Bukkit.getPluginManager().callEvent(dropItemEvent); //To trigger item behaviour
+				Bukkit.getPluginManager().callEvent(
+						new PlayerDropItemEvent(player, player.getWorld().dropItem(
+								player.getLocation(), item))); //To trigger item behaviour
 			} else {
 				player.getWorld().dropItem(player.getLocation(), item);
 			}
@@ -178,8 +183,8 @@ public class ItemListener implements Listener {
 	}
 
 	@EventHandler
-	public void onItemUse(PlayerItemDamageEvent event) {
-		ItemStack item = event.getItem();
+	public void onItemUse(@NotNull final PlayerItemDamageEvent event) {
+		final ItemStack item = event.getItem();
 
 		if (modManager.isToolViable(item) && modManager.isArmorViable(item) && modManager.isWandViable(item)) {
 			return;

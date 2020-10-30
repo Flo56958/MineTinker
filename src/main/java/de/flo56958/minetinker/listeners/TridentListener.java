@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -15,7 +16,7 @@ public class TridentListener implements Listener {
 	static final HashMap<Trident, ItemStack> TridentToItemStack = new HashMap<>();
 
 	@EventHandler(ignoreCancelled = true)
-	public void onTridentLaunch(ProjectileLaunchEvent event) {
+	public void onTridentLaunch(@NotNull final ProjectileLaunchEvent event) {
 		if (!(event.getEntity().getShooter() instanceof Player)) {
 			return;
 		}
@@ -24,8 +25,8 @@ public class TridentListener implements Listener {
 			return;
 		}
 
-		Player player = (Player) event.getEntity().getShooter();
-		ItemStack trident = player.getInventory().getItemInMainHand().clone();
+		final Player player = (Player) event.getEntity().getShooter();
+		final ItemStack trident = player.getInventory().getItemInMainHand().clone();
 
 		if (!ModManager.instance().isToolViable(trident)) {
 			return;

@@ -19,13 +19,14 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class EasyHarvestListener implements Listener {
 
 	private static final ModManager modManager = ModManager.instance();
 
-	private static void harvestCrops(Player player, ItemStack tool, Block block) {
-		Ageable ageable = (Ageable) block.getBlockData();
+	private static void harvestCrops(@NotNull final Player player, @NotNull final ItemStack tool, @NotNull final Block block) {
+		final Ageable ageable = (Ageable) block.getBlockData();
 
 		if (ageable.getAge() == ageable.getMaximumAge()) {
 			breakCrops(player, tool, block);
@@ -33,19 +34,19 @@ public class EasyHarvestListener implements Listener {
 		}
 	}
 
-	private static void breakCrops(Player player, ItemStack tool, Block block) {
+	private static void breakCrops(@NotNull final Player player, @NotNull final ItemStack tool, @NotNull final Block block) {
 		if (!player.hasPermission("minetinker.easyharvest.use")) {
 			return;
 		}
 
 		Power.HAS_POWER.get(player).set(true);
-		Material type = block.getType();
+		final Material type = block.getType();
 
-		PlayerInfo.Direction direction = PlayerInfo.getFacingDirection(player);
-		Location location = block.getLocation();
-		World world = location.getWorld();
+		final PlayerInfo.Direction direction = PlayerInfo.getFacingDirection(player);
+		final Location location = block.getLocation();
+		final World world = location.getWorld();
 
-		FileConfiguration config = MineTinker.getPlugin().getConfig();
+		final FileConfiguration config = MineTinker.getPlugin().getConfig();
 
 		if (world == null) {
 			return;
@@ -53,7 +54,7 @@ public class EasyHarvestListener implements Listener {
 
 		if (!player.isSneaking() && modManager.hasMod(tool, Power.instance())
 				&& player.hasPermission("minetinker.modifiers.power.use")) {
-			int level = modManager.getModLevel(tool, Power.instance());
+			final int level = modManager.getModLevel(tool, Power.instance());
 
 			if (level == 1) {
 				Block b1;
@@ -79,7 +80,7 @@ public class EasyHarvestListener implements Listener {
 					return;
 				}
 				if (b1.getBlockData() instanceof Ageable) {
-					Ageable blockOneAgeable = (Ageable) b1.getBlockData();
+					final Ageable blockOneAgeable = (Ageable) b1.getBlockData();
 					if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
 						breakBlock(b1, player, tool);
 						replantCrops(player, b1, type);
@@ -87,7 +88,7 @@ public class EasyHarvestListener implements Listener {
 				}
 
 				if (b2.getBlockData() instanceof Ageable) {
-					Ageable blockTwoAgeable = (Ageable) b2.getBlockData();
+					final Ageable blockTwoAgeable = (Ageable) b2.getBlockData();
 					if (b2.getType().equals(block.getType()) && (blockTwoAgeable.getAge() == blockTwoAgeable.getMaximumAge())) {
 						breakBlock(b2, player, tool);
 						replantCrops(player, b2, type);
@@ -97,13 +98,13 @@ public class EasyHarvestListener implements Listener {
 				for (int x = -(level - 1); x <= (level - 1); x++) {
 					for (int z = -(level - 1); z <= (level - 1); z++) {
 						if (!(x == 0 && z == 0)) {
-							Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
+							final Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
 
 							if (!(b1.getBlockData() instanceof Ageable)) {
 								continue;
 							}
 
-							Ageable blockOneAgeable = (Ageable) b1.getBlockData();
+							final Ageable blockOneAgeable = (Ageable) b1.getBlockData();
 
 							if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
 								breakBlock(b1, player, tool);
@@ -121,7 +122,7 @@ public class EasyHarvestListener implements Listener {
 		Power.HAS_POWER.get(player).set(false);
 	}
 
-	private static void replantCrops(Player player, Block block, Material material) {
+	private static void replantCrops(@NotNull final Player player, @NotNull final Block block, @NotNull final Material material) {
 		if (MineTinker.getPlugin().getConfig().getBoolean("EasyHarvest.replant")) {
 			if (!player.hasPermission("minetinker.easyharvest.replant")) {
 				return;
@@ -158,13 +159,13 @@ public class EasyHarvestListener implements Listener {
 		}
 	}
 
-	private static void playSound(Block block) {
+	private static void playSound(@NotNull final Block block) {
 		if (MineTinker.getPlugin().getConfig().getBoolean("EasyHarvest.Sound")) {
 			block.getWorld().playSound(block.getLocation(), Sound.ITEM_HOE_TILL, 1.0F, 0.5F);
 		}
 	}
 
-	private static void breakBlock(Block block, Player player, ItemStack tool) {
+	private static void breakBlock(@NotNull final Block block, @NotNull final Player player, @NotNull final ItemStack tool) {
 		try {
 			DataHandler.playerBreakBlock(player, block, tool);
 		} catch (IllegalArgumentException e) {
@@ -173,12 +174,12 @@ public class EasyHarvestListener implements Listener {
 	}
 
 	@EventHandler
-	public void onHarvestTry(PlayerInteractEvent event) {
+	public void onHarvestTry(@NotNull final PlayerInteractEvent event) {
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
 			return;
 		}
 
-		Player player = event.getPlayer();
+		final Player player = event.getPlayer();
 
 		if (Lists.WORLDS_EASYHARVEST.contains(player.getWorld().getName())) {
 			return;
@@ -189,7 +190,7 @@ public class EasyHarvestListener implements Listener {
 			return;
 		}
 
-		ItemStack tool = player.getInventory().getItemInMainHand();
+		final ItemStack tool = player.getInventory().getItemInMainHand();
 
 		if (!ToolType.HOE.contains(tool.getType())) {
 			return;
@@ -207,15 +208,15 @@ public class EasyHarvestListener implements Listener {
 			return;
 		}
 
-		Block block = event.getClickedBlock();
+		final Block block = event.getClickedBlock();
 
 		if (!(block.getBlockData() instanceof Ageable)) {
 			return;
 		}
 
 		//triggers a pseudoevent to find out if the Player can build
-		BlockPlaceEvent placeEvent = new BlockPlaceEvent(block, block.getState(), block, event.getItem(), player,
-				true, EquipmentSlot.HAND);
+		final BlockPlaceEvent placeEvent = new BlockPlaceEvent(block, block.getState(),
+				block, event.getItem(), player, true, EquipmentSlot.HAND);
 		Bukkit.getPluginManager().callEvent(placeEvent);
 
 		//check the pseudoevent
