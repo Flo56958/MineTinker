@@ -903,7 +903,7 @@ public class ModManager {
 		DataHandler.setTag(is, "creator", entity.getUniqueId(), UUIDTagType.instance, false);
 	}
 
-	public OfflinePlayer getCreator(@Nullable final ItemStack is) {
+	public @Nullable OfflinePlayer getCreator(@Nullable final ItemStack is) {
 		if (is == null) return null;
 		UUID creator = DataHandler.getTag(is, "creator", UUIDTagType.instance, false);
 		if (creator == null) return null;

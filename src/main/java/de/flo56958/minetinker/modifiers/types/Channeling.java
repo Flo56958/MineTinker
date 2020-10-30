@@ -2,24 +2,30 @@ package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
+import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
+import de.flo56958.minetinker.events.MTProjectileHitEvent;
 import de.flo56958.minetinker.modifiers.Modifier;
+import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class Channeling extends Modifier {
+public class Channeling extends Modifier implements Listener {
 
 	private static Channeling instance;
+
+	private boolean worksOnlyInStorms;
 
 	private Channeling() {
 		super(MineTinker.getPlugin());
@@ -43,7 +49,7 @@ public class Channeling extends Modifier {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Collections.singletonList(ToolType.TRIDENT);
+		return Arrays.asList(ToolType.TRIDENT, ToolType.BOW, ToolType.AXE, ToolType.CROSSBOW, ToolType.SWORD);
 	}
 
 	@Override
@@ -69,6 +75,8 @@ public class Channeling extends Modifier {
 		config.addDefault("Recipe.Middle", "PCP");
 		config.addDefault("Recipe.Bottom", "SPS");
 
+		config.addDefault("WorksOnlyInStorms", true);
+
 		Map<String, String> recipeMaterials = new HashMap<>();
 		recipeMaterials.put("S", Material.SEA_LANTERN.name());
 		recipeMaterials.put("P", Material.PRISMARINE_SHARD.name());
@@ -80,10 +88,12 @@ public class Channeling extends Modifier {
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
 		init(Material.PRISMARINE_SHARD);
+
+		worksOnlyInStorms = config.getBoolean("WorksOnlyInStorms", true);
 	}
 
 	@Override
-	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
+	public boolean applyMod(Player player, @NotNull ItemStack tool, final boolean isCommand) {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
@@ -95,5 +105,32 @@ public class Channeling extends Modifier {
 		}
 
 		return true;
+	}
+
+	@EventHandler(ignoreCancelled = true)
+	private void onProjectileHit(@NotNull final MTProjectileHitEvent event) {
+		final ItemStack tool = event.getTool();
+		if (!event.getPlayer().hasPermission("minetinker.modifiers.channeling.use")) return;
+		if (event.getEvent().getHitEntity() != null) return;
+
+		if (modManager.hasMod(tool, this)) {
+			final Location loc = event.getEvent().getEntity().getLocation();
+			if (!loc.getWorld().hasStorm() && worksOnlyInStorms) return;
+			loc.getWorld().strikeLightning(loc);
+			ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Location: %d/%d/%d", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
+		}
+	}
+
+	@EventHandler(ignoreCancelled = true)
+	private void onEntityHit(@NotNull final MTEntityDamageByEntityEvent event) {
+		final ItemStack tool = event.getTool();
+		if (!event.getPlayer().hasPermission("minetinker.modifiers.channeling.use")) return;
+
+		if (modManager.hasMod(tool, this)) {
+			final Location loc = event.getEntity().getLocation();
+			if (!loc.getWorld().hasStorm() && worksOnlyInStorms) return;
+			loc.getWorld().strikeLightning(loc);
+			ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Location: %d/%d/%d", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
+		}
 	}
 }

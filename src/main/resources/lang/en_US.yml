@@ -168,7 +168,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Berserk-Modifier"
   Channeling:
     Name: "Channeling"
-    Description: "Summons lightning when the trident hits its foes!"
+    Description: "Summon lightning!"
     ModifierItemName: "Lightning Infused Shard"
     DescriptionModifierItem: "Modifier-Item for the Channeling-Modifier"
   Directing:

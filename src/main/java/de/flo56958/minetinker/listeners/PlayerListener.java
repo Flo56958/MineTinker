@@ -69,7 +69,7 @@ public class PlayerListener implements Listener {
 		if (repair == null) return;
 
 		final ItemMeta repairMeta = repair.getItemMeta();
-		if(repairMeta != null) {
+		if (repairMeta != null) {
 			if (repairMeta.hasDisplayName() || repairMeta.hasLore()) return;
 		}
 

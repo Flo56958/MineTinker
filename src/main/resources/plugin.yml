@@ -326,8 +326,12 @@ permissions:
   minetinker.modifiers.channeling.*:
     children:
       minetinker.modifiers.channeling.apply: true
+      minetinker.modifiers.channeling.use: true
   minetinker.modifiers.channeling.apply:
     description: Allows to apply Channeling to the MineTinker-Tool
+    default: true
+  minetinker.modifiers.channeling.use:
+    description: Allows to use Channeling on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.directing.*:
