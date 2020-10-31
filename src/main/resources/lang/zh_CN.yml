@@ -168,7 +168,7 @@ Modifier:
     DescriptionModifierItem: "狂暴模块"
   Channeling:
     Name: "引雷"
-    Description: "物品投掷到生物身上的时候将召唤雷电!"
+    Description: "召唤雷电!"
     ModifierItemName: "雷霆碎片"
     DescriptionModifierItem: "引雷模块"
   Directing:
