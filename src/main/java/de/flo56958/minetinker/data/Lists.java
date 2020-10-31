@@ -8,12 +8,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Lists {
 
-	public static final HashMap<Player, BlockFace> BLOCKFACE = new HashMap<>();
+	public static final ConcurrentHashMap<Player, BlockFace> BLOCKFACE = new ConcurrentHashMap<>();
 	private static final FileConfiguration config = MineTinker.getPlugin().getConfig();
 	public static final List<String> DROPLOOT = config.getStringList("LevelUpEvents.DropLoot.Items");
 	public static List<String> WORLDS;

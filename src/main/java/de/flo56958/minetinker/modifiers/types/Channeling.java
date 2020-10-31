@@ -65,9 +65,9 @@ public class Channeling extends Modifier implements Listener {
 		config.addDefault("Allowed", true);
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 1);
-		config.addDefault("SlotCost", 1);
+		config.addDefault("SlotCost", 3);
 
-		config.addDefault("EnchantCost", 10);
+		config.addDefault("EnchantCost", 50);
 		config.addDefault("Enchantable", false);
 
 		config.addDefault("Recipe.Enabled", true);
