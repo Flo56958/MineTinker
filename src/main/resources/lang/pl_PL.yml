@@ -168,7 +168,7 @@ Modifier:
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Berserk\""
   Channeling:
     Name: "Wyładowanie"
-    Description: "Przywołuje błyskawicę, gdy trójząb uderza we wrogów!"
+    Description: "Wezwij błyskawicę!"
     ModifierItemName: "Odłamek Błyskawicy"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Wyładowanie\""
   Directing:
