@@ -168,7 +168,7 @@ Modifier:
     DescriptionModifierItem: "Модификатор Берсерка"
   Channeling:
     Name: "Громовержец"
-    Description: "Призывает молнию при контакте с врагом"
+    Description: "Вызов молнии!"
     ModifierItemName: "Осколок молнии"
     DescriptionModifierItem: "Модификатор Громовержца"
   Directing:
