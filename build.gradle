@@ -45,6 +45,7 @@ compileJava {
 }
 
 processResources {
+    filteringCharset = 'UTF-8'
     filter ReplaceTokens, tokens: [
             "project.version"    : project.version,
             "project.url"        : "https://github.com/Flo56958/MineTinker",
