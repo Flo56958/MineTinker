@@ -184,7 +184,7 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onJoin(@NotNull final PlayerJoinEvent event) {
 		final Player player = event.getPlayer();
-		Lists.BLOCKFACE.put(player, null);
+		Lists.BLOCKFACE.put(player, BlockFace.SELF);
 		Power.HAS_POWER.computeIfAbsent(player, p -> new AtomicBoolean(false));
 
 		if (MineTinker.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
@@ -211,7 +211,7 @@ public class PlayerListener implements Listener {
 			} else {
 				if (!LanguageManager.isComplete()
 						&& MineTinker.getPlugin().getConfig().getBoolean("LanguageManagerNotifyOP", true)) {
-					Long langCompleteness = LanguageManager.getCompleteness();
+					final Long langCompleteness = LanguageManager.getCompleteness();
 					ChatWriter.sendMessage(player, ChatColor.RED, "The translation you are using is only "
 							+ langCompleteness / 100 + "." + langCompleteness % 100
 							+ "% complete. The missing strings will be loaded from the Language 'en_US'!");

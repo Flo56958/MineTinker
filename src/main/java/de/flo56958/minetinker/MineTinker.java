@@ -10,6 +10,7 @@ import de.flo56958.minetinker.utils.*;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -50,7 +51,7 @@ public class MineTinker extends JavaPlugin {
 			incompatibilityCheck();
 		}
 
-		TabExecutor cmd = new CommandManager();
+		final TabExecutor cmd = new CommandManager();
 		this.getCommand("minetinker").setExecutor(cmd); // must be after internals as it would throw a NullPointerException
 		this.getCommand("minetinker").setTabCompleter(cmd);
 
@@ -77,7 +78,7 @@ public class MineTinker extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new EnchantingListener(), this);
 		Bukkit.getPluginManager().registerEvents(new GrindstoneListener(), this);
 
-		FileConfiguration elytraConf = ConfigurationManager.getConfig("Elytra.yml");
+		final FileConfiguration elytraConf = ConfigurationManager.getConfig("Elytra.yml");
 		elytraConf.options().copyDefaults(true);
 		elytraConf.addDefault("ExpChanceWhileFlying", 10);
 		ConfigurationManager.saveConfig(elytraConf);
@@ -104,7 +105,7 @@ public class MineTinker extends JavaPlugin {
 		ChatWriter.log(false, LanguageManager.getString("StartUp.Events"));
 
 		if (getConfig().getBoolean("logging.metrics", true)) {
-			Metrics met = new Metrics(this, 	2833);
+			final Metrics met = new Metrics(this, 	2833);
 			met.addCustomChart(new Metrics.SimplePie("used_language", () -> getConfig().getString("Language", "en_US")));
 		}
 
@@ -116,7 +117,7 @@ public class MineTinker extends JavaPlugin {
 
 		for (Player current : Bukkit.getServer().getOnlinePlayers()) {
 			Power.HAS_POWER.computeIfAbsent(current, player -> new AtomicBoolean(false));
-			Lists.BLOCKFACE.put(current, null);
+			Lists.BLOCKFACE.put(current, BlockFace.SELF);
 		}
 
 		if (getConfig().getBoolean("CheckForUpdates")) {

@@ -22,10 +22,10 @@ public class Updater {
 	public static synchronized boolean hasUpdate() {
 		if (onlineVersion == null) return false;
 
-		if (version.contains("-pre")) return false;
+		if (version.contains("-")) return false;
 
-		String[] ver = version.split("\\.");
-		String[] onl = onlineVersion.split("\\.");
+		final String[] ver = version.split("\\.");
+		final String[] onl = onlineVersion.split("\\.");
 
 		try {
 			for (int i = 0; i < 3; i++) {
@@ -53,9 +53,9 @@ public class Updater {
 		}
 
 		try {
-			URL url = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + 58940);
-			URLConnection connection = url.openConnection();
-			Scanner scan = new Scanner(connection.getInputStream());
+			final URL url = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + 58940);
+			final URLConnection connection = url.openConnection();
+			final Scanner scan = new Scanner(connection.getInputStream());
 
 			if (scan.hasNextLine()) {
 				onlineVersion = scan.nextLine();

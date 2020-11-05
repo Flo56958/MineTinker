@@ -59,7 +59,7 @@ public class KineticPlating extends Modifier implements Listener {
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
-		config.addDefault("Amount", 20); //How much XP should be dropped when triggered
+		config.addDefault("Amount", 20);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -98,7 +98,7 @@ public class KineticPlating extends Modifier implements Listener {
 		if (!modManager.hasMod(elytra, this)) return;
 
 		int level = modManager.getModLevel(elytra, this);
-		double damageMod = 1.0 - (this.amount * level);
+		double damageMod = 1.0 - ((this.amount / 100.0) * level);
 		if (damageMod < 0.0) damageMod = 0.0;
 		double oldDamage = event.getDamage();
 		double newDamage = oldDamage * damageMod;
