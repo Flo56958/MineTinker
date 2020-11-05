@@ -126,14 +126,16 @@ public class LanguageManager {
 	private static YamlConfiguration loadLanguage(@NotNull String lang) {
 		//Load default language file from jar
 		InputStream stream = LanguageManager.class.getResourceAsStream("/lang/" + lang + ".yml");
-		if (stream == null) return null;
-		InputStreamReader ir = new InputStreamReader(stream, StandardCharsets.UTF_8);
-		YamlConfiguration def = YamlConfiguration.loadConfiguration(ir);
-		try {
-			ir.close();
-			stream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		YamlConfiguration def = null;
+		if (stream != null) {
+			InputStreamReader ir = new InputStreamReader(stream, StandardCharsets.UTF_8);
+			def = YamlConfiguration.loadConfiguration(ir);
+			try {
+				ir.close();
+				stream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		//Load language file from Folder
@@ -143,7 +145,7 @@ public class LanguageManager {
 			file.createNewFile();
 			InputStreamReader fileReader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
 			YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(fileReader);
-			langConfig.setDefaults(def);
+			if (def != null) langConfig.setDefaults(def);
 			langConfig.options().copyDefaults(true);
 
 			try {
@@ -154,9 +156,7 @@ public class LanguageManager {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			return null;
 		}
-
 		return null;
 	}
 
