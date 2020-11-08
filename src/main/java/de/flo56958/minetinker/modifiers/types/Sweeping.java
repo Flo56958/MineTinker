@@ -58,7 +58,7 @@ public class Sweeping extends Modifier {
 
 		config.addDefault("Allowed", true);
 		config.addDefault("Color", "%RED%");
-		config.addDefault("MaxLevel", 5);
+		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
 
 		config.addDefault("EnchantCost", 10);
