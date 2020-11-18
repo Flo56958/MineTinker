@@ -123,7 +123,7 @@ public class EnchantingListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onAnvilPrepare(@NotNull final InventoryClickEvent event) {
 		if (!MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantmentsOnEnchant", true)) return;
 		final HumanEntity entity = event.getWhoClicked();
@@ -139,7 +139,12 @@ public class EnchantingListener implements Listener {
 		final ItemStack book = inv.getItem(1);
 		final ItemStack newTool = inv.getItem(2);
 
-		if (tool == null || book == null || newTool == null) {
+		if (!(modManager.isToolViable(tool) || modManager.isWandViable(tool)
+				|| modManager.isArmorViable(tool))) { //not a MineTinker Tool
+			return;
+		}
+
+		if (book == null || newTool == null) {
 			return;
 		}
 
