@@ -31,7 +31,7 @@ import java.util.List;
 public class GUI implements Listener {
 
 	private final List<Window> windows = Collections.synchronizedList(new ArrayList<>());
-	private JavaPlugin plugin;
+	private final JavaPlugin plugin;
 
 	private volatile boolean isClosed = true;
 

@@ -30,7 +30,7 @@ import java.util.*;
 
 public class InfoCommand implements SubCommand {
 
-	private GUI infoGUI;
+	private final GUI infoGUI;
 
 	public InfoCommand() {
 		infoGUI = new GUI(MineTinker.getPlugin());

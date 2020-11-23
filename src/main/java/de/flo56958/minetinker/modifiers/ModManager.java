@@ -367,6 +367,7 @@ public class ModManager {
 	 *
 	 * @param mod the modifier instance
 	 */
+	@SuppressWarnings("UnusedReturnValue")
 	@Contract("null -> false")
 	public boolean register(@Nullable final Modifier mod) {
 		if (mod == null) return false;
@@ -794,7 +795,7 @@ public class ModManager {
 	 * @return If the conversion was successful. Also returns false if the item is already MT compatible.
 	 */
 	@Contract("null, _ -> false")
-	public boolean convertItemStack(final ItemStack is, @Nullable Entity entity) {
+	public boolean convertItemStack(final ItemStack is, @Nullable final Entity entity) {
 		if (is == null) return false;
 
 		final Material m = is.getType();

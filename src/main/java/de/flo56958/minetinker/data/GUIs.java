@@ -141,7 +141,7 @@ public class GUIs {
 						lore.add(ChatColor.DARK_RED + "" + ChatColor.BOLD
 								+ LanguageManager.getString("GUIs.Modifiers.IncompatibleWith"));
 
-						lore.addAll(ChatWriter.splitString(incompatibilities.toString()
+						lore.addAll(ChatWriter.splitString(incompatibilities
 								.substring(0, incompatibilities.length() - 2), 30));
 					}
 
@@ -156,7 +156,7 @@ public class GUIs {
 							e.append(LanguageManager.getString("Enchantment." + enchant.getKey().getKey())).append(", ");
 						}
 
-						List<String> lines = ChatWriter.splitString(e.toString().substring(0, e.length() - 2),30);
+						List<String> lines = ChatWriter.splitString(e.substring(0, e.length() - 2),30);
 						lore.addAll(lines);
 					}
 
@@ -174,7 +174,7 @@ public class GUIs {
 						builder.append(LanguageManager.getString("ToolType." + toolType.name())).append(", ");
 					}
 
-					List<String> lines = ChatWriter.splitString(builder.toString().substring(0, builder.length() - 2),30);
+					List<String> lines = ChatWriter.splitString(builder.substring(0, builder.length() - 2),30);
 					lore.addAll(lines);
 
 					// Apply lore changes

@@ -227,7 +227,7 @@ public class ChatWriter {
 				line.append(str[index - 1]);
 				line.append(" ");
 			} while (index < str.length && line.length() + str[index].length() < lineSize);
-			res.add(ChatColor.WHITE + line.toString().substring(0, line.length() - 1));
+			res.add(ChatColor.WHITE + line.substring(0, line.length() - 1));
 		}
 
 		return res;
