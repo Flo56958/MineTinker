@@ -60,7 +60,7 @@ public class ChatWriter {
 	 * @param color    The ChatColor after the CHAT_PREFIX
 	 * @param message
 	 */
-	public static void sendMessage(CommandSender receiver, ChatColor color, String message) {
+	public static void sendMessage(final CommandSender receiver, final ChatColor color, final String message) {
 		if (MineTinker.getPlugin().getConfig().getBoolean("chat-messages")) {
 			receiver.sendMessage(CHAT_PREFIX + " " + color + message);
 		}
@@ -72,13 +72,13 @@ public class ChatWriter {
 	 * @param debug   Is the information a (unnecessary) debug information?
 	 * @param message
 	 */
-	public static void log(boolean debug, String message) {
+	public static void log(final boolean debug, final String message) {
 		if (debug) {
 			if (MineTinker.getPlugin().getConfig().getBoolean("logging.debug")) {
 				Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + ChatColor.RED + message);
 			}
 		} else {
-			if (MineTinker.getPlugin().getConfig().getBoolean("logging.standard")) {
+			if (MineTinker.getPlugin().getConfig().getBoolean("logging.standard") || MineTinker.getPlugin().getConfig().getBoolean("logging.debug")) {
 				Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + message);
 			}
 		}
@@ -89,7 +89,7 @@ public class ChatWriter {
 	 *
 	 * @param message
 	 */
-	public static void logError(String message) {
+	public static void logError(final String message) {
 		Bukkit.getLogger().log(Level.SEVERE, CHAT_PREFIX + " " + message);
 	}
 
@@ -98,7 +98,7 @@ public class ChatWriter {
 	 *
 	 * @param message
 	 */
-	public static void logInfo(String message) {
+	public static void logInfo(final String message) {
 		Bukkit.getLogger().log(Level.INFO, CHAT_PREFIX + " " + message);
 	}
 
@@ -107,15 +107,15 @@ public class ChatWriter {
 	 *
 	 * @param message
 	 */
-	public static void logColor(String message) {
+	public static void logColor(final String message) {
 		Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + message);
 	}
 
-	public static void logModifier(@NotNull Player p, @Nullable Event event, @NotNull Modifier mod, @NotNull ItemStack tool, String... args) {
+	public static void logModifier(final @NotNull Player p, final @Nullable Event event, final @NotNull Modifier mod, final @NotNull ItemStack tool, String... args) {
 		if (!(MineTinker.getPlugin().getConfig().getBoolean("logging.modifiers"))) return;
 
 		//Example: 0x00FF: Flo56958/Melting - DIAMOND_CHESTPLATE - Damage(30 -> 20)
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		if (event != null) {
 			sb.append(event.getEventName()).append("(").append(String.format("%x", event.hashCode() % 0x100));
 			if (event instanceof MTBlockBreakEvent) {
@@ -138,7 +138,7 @@ public class ChatWriter {
 		sb.append(p.getName()).append("/").append(mod.getKey()).append("(")
 				.append(ModManager.instance().getModLevel(tool, mod)).append(")").append(" - ").append(tool.getType());
 		Arrays.sort(args);
-		for (String s : args) {
+		for (final String s : args) {
 			sb.append(" - ").append(s);
 		}
 
@@ -151,7 +151,7 @@ public class ChatWriter {
 	 * @param player
 	 * @param message
 	 */
-	public static void sendActionBar(Player player, String message) { //Extract from the source code of the Actionbar-API (altered)
+	public static void sendActionBar(final Player player, final String message) { //Extract from the source code of the Actionbar-API (altered)
 		if (!MineTinker.getPlugin().getConfig().getBoolean("actionbar-messages")) {
 			return;
 		}
@@ -163,38 +163,37 @@ public class ChatWriter {
 		player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
 	}
 
-	public static String addColors(@NotNull String input) {
-		input = input.replaceAll("%BLACK%", ChatColor.BLACK.toString());
-		input = input.replaceAll("%DARK_BLUE%", ChatColor.DARK_BLUE.toString());
-		input = input.replaceAll("%DARK_GREEN%", ChatColor.DARK_GREEN.toString());
-		input = input.replaceAll("%DARK_AQUA%", ChatColor.DARK_AQUA.toString());
-		input = input.replaceAll("%DARK_RED%", ChatColor.DARK_RED.toString());
-		input = input.replaceAll("%DARK_PURPLE%", ChatColor.DARK_PURPLE.toString());
-		input = input.replaceAll("%GOLD%", ChatColor.GOLD.toString());
-		input = input.replaceAll("%GRAY%", ChatColor.GRAY.toString());
-		input = input.replaceAll("%DARK_GRAY%", ChatColor.DARK_GRAY.toString());
-		input = input.replaceAll("%BLUE%", ChatColor.BLUE.toString());
-		input = input.replaceAll("%GREEN%", ChatColor.GREEN.toString());
-		input = input.replaceAll("%AQUA%", ChatColor.AQUA.toString());
-		input = input.replaceAll("%RED%", ChatColor.RED.toString());
-		input = input.replaceAll("%LIGHT_PURPLE%", ChatColor.LIGHT_PURPLE.toString());
-		input = input.replaceAll("%YELLOW%", ChatColor.YELLOW.toString());
-		input = input.replaceAll("%WHITE%", ChatColor.WHITE.toString());
-		input = input.replaceAll("%BOLD%", ChatColor.BOLD.toString());
-		input = input.replaceAll("%UNDERLINE%", ChatColor.UNDERLINE.toString());
-		input = input.replaceAll("%ITALIC%", ChatColor.ITALIC.toString());
-		input = input.replaceAll("%STRIKE%", ChatColor.STRIKETHROUGH.toString());
-		input = input.replaceAll("%MAGIC%", ChatColor.MAGIC.toString());
-		input = input.replaceAll("%RESET%", ChatColor.RESET.toString());
-
-		return input;
+	@NotNull
+	public static String addColors(final @NotNull String input) {
+		return input.replaceAll("%BLACK%", ChatColor.BLACK.toString())
+			.replaceAll("%DARK_BLUE%", ChatColor.DARK_BLUE.toString())
+			.replaceAll("%DARK_GREEN%", ChatColor.DARK_GREEN.toString())
+			.replaceAll("%DARK_AQUA%", ChatColor.DARK_AQUA.toString())
+			.replaceAll("%DARK_RED%", ChatColor.DARK_RED.toString())
+			.replaceAll("%DARK_PURPLE%", ChatColor.DARK_PURPLE.toString())
+			.replaceAll("%GOLD%", ChatColor.GOLD.toString())
+			.replaceAll("%GRAY%", ChatColor.GRAY.toString())
+			.replaceAll("%DARK_GRAY%", ChatColor.DARK_GRAY.toString())
+			.replaceAll("%BLUE%", ChatColor.BLUE.toString())
+			.replaceAll("%GREEN%", ChatColor.GREEN.toString())
+			.replaceAll("%AQUA%", ChatColor.AQUA.toString())
+			.replaceAll("%RED%", ChatColor.RED.toString())
+			.replaceAll("%LIGHT_PURPLE%", ChatColor.LIGHT_PURPLE.toString())
+			.replaceAll("%YELLOW%", ChatColor.YELLOW.toString())
+			.replaceAll("%WHITE%", ChatColor.WHITE.toString())
+			.replaceAll("%BOLD%", ChatColor.BOLD.toString())
+			.replaceAll("%UNDERLINE%", ChatColor.UNDERLINE.toString())
+			.replaceAll("%ITALIC%", ChatColor.ITALIC.toString())
+			.replaceAll("%STRIKE%", ChatColor.STRIKETHROUGH.toString())
+			.replaceAll("%MAGIC%", ChatColor.MAGIC.toString())
+			.replaceAll("%RESET%", ChatColor.RESET.toString());
 	}
 
-	public static ChatColor getColor(String input) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+	public static ChatColor getColor(final @NotNull String input) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
 		return ChatColor.valueOf(input.split("%")[1]);
 	}
 
-	public static String toRomanNumerals(int number) {
+	public static String toRomanNumerals(final int number) {
 		if (number == 1337) {
 			return "LEET";
 		}
@@ -214,14 +213,14 @@ public class ChatWriter {
 		return map.get(floorKey) + toRomanNumerals(number - floorKey);
 	}
 
-	public static List<String> splitString(String msg, int lineSize) {
+	public static List<String> splitString(final String msg, final int lineSize) {
 		if (msg == null) return new ArrayList<>();
-		List<String> res = new ArrayList<>();
+		final List<String> res = new ArrayList<>();
 
-		String[] str = msg.split(" ");
+		final String[] str = msg.split(" ");
 		int index = 0;
 		while (index < str.length) {
-			StringBuilder line = new StringBuilder();
+			final StringBuilder line = new StringBuilder();
 			do {
 				index++;
 				line.append(str[index - 1]);
@@ -233,15 +232,11 @@ public class ChatWriter {
 		return res;
 	}
 
-	public static String getDisplayName(ItemStack tool) {
-		String name;
-
+	public static String getDisplayName(final @NotNull ItemStack tool) {
 		if (tool.getItemMeta() == null || !tool.getItemMeta().hasDisplayName()) {
-			name = tool.getType().toString();
+			return tool.getType().toString();
 		} else {
-			name = tool.getItemMeta().getDisplayName();
+			return tool.getItemMeta().getDisplayName();
 		}
-
-		return name;
 	}
 }
