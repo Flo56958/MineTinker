@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
@@ -27,7 +28,8 @@ public class Soulbound extends Modifier implements Listener {
 
 	private static Soulbound instance;
 	//Must be UUID as if the Player reconnects the Player-Object gets recreated and is not the same anymore
- 	private final HashMap<UUID, ArrayList<ItemStack>> storedItemStacks = new HashMap<>(); //saves ItemStacks until reload (if the player does not respawn instantly)
+ 	private final HashMap<UUID, ArrayList<ItemStack>> storedItemStacks = new HashMap<>();		//saves ItemStacks until respawn
+	private final HashMap<UUID, ArrayList<Integer>> storedItemStacksLocation = new HashMap<>();	//saves ItemStack slot until respawn
 	private boolean toolDroppable;
 	private boolean decrementModLevelOnUse;
 	private int percentagePerLevel;
@@ -103,8 +105,8 @@ public class Soulbound extends Modifier implements Listener {
 
 		Player player = event.getEntity();
 		Inventory inventory = player.getInventory();
-
-		for (ItemStack itemStack : inventory.getContents()) {
+		for (int index = 0; index < inventory.getContents().length; index++) {
+			ItemStack itemStack = inventory.getItem(index);
 			if (itemStack == null) {
 				continue; // More consistent nullability in NotNull fields
 			}
@@ -127,8 +129,10 @@ public class Soulbound extends Modifier implements Listener {
 				}
 
 				storedItemStacks.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>()); // ?
+				storedItemStacksLocation.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>());
 
 				ArrayList<ItemStack> stored = storedItemStacks.get(player.getUniqueId());
+				ArrayList<Integer> storedLocation = storedItemStacksLocation.get(player.getUniqueId());
 
 				if (stored.contains(itemStack)) {
 					continue;
@@ -145,6 +149,7 @@ public class Soulbound extends Modifier implements Listener {
 				}
 
 				stored.add(itemStack.clone());
+				storedLocation.add(index);
 				itemStack.setAmount(0);
 			}
 		}
@@ -156,25 +161,26 @@ public class Soulbound extends Modifier implements Listener {
 	@EventHandler
 	public void effect(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
+		PlayerInventory inventory = player.getInventory();
 
 		if (!player.hasPermission("minetinker.modifiers.soulbound.use")) {
 			return;
 		}
 
-		if (!storedItemStacks.containsKey(player.getUniqueId())) {
+		if (!storedItemStacks.containsKey(player.getUniqueId()) || !storedItemStacksLocation.containsKey(player.getUniqueId())) {
 			return;
 		}
 
 		ArrayList<ItemStack> stored = storedItemStacks.get(player.getUniqueId());
+		ArrayList<Integer> storedLocation = storedItemStacksLocation.get(player.getUniqueId());
 
-		for (ItemStack is : stored) {
-			if (player.getInventory().addItem(is).size() != 0) { //adds items to (full) inventory
-				player.getWorld().dropItem(player.getLocation(), is);
-			} // no else as it gets added in if
-			ChatWriter.logModifier(player, event, this, is);
+		for (int i = 0; i < stored.size(); i++) {
+			inventory.setItem(storedLocation.get(i), stored.get(i));
+			ChatWriter.logModifier(player, event, this, stored.get(i));
 		}
 
 		storedItemStacks.remove(player.getUniqueId());
+		storedItemStacksLocation.remove(player.getUniqueId());
 	}
 
 	/**

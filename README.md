@@ -3,9 +3,9 @@
 # MineTinker
 <p align="center">
     <a href="https://github.com/Flo56958/MineTinker" alt="Stars">
-        <img src="http://githubbadges.com/star.svg?user=Flo56958&repo=MineTinker&style=flat" /></a>
+        <img src="https://img.shields.io/github/stars/Flo56958/MineTinker?color=0088ff" /></a>
     <a href="https://github.com/Flo56958/MineTinker/fork" alt="fork">
-        <img src="http://githubbadges.com/fork.svg?user=Flo56958&repo=MineTinker&style=flat" /></a>
+        <img src="https://img.shields.io/github/forks/Flo56958/MineTinker?color=0088ff" /></a>
     <a href="https://github.com/Flo56958/MineTinker/graphs/contributors" alt="Contributors">
         <img src="https://img.shields.io/github/contributors/Flo56958/MineTinker" /></a>
     <a href="https://github.com/Flo56958/MineTinker/pulse" alt="Activity">
@@ -33,7 +33,7 @@ necessary time and motivation implement new features and fix bugs. The release s
 features and bugfixes planned for the next release which can vary greatly with further development. If you cannot wait on
 a feature you want to add to MineTinker you are more than welcome to add the feature yourself and send us a pull request.
 I you need support on a code topic, we are glad to assist! (But please do not anoy us with questions on release schedules
-and how long untill a feature is implemented.)
+and how long until a feature is implemented.)
 
 ## How to contribute to this repository:
 MineTinker is in active development and we are constantly fixing bugs and adding new features. 
