@@ -9,7 +9,6 @@ import de.flo56958.minetinker.modifiers.types.*;
 import de.flo56958.minetinker.utils.*;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MineTinker extends JavaPlugin {
@@ -46,10 +44,6 @@ public class MineTinker extends JavaPlugin {
 		BuildersWandListener.init();
 
 		ChatWriter.reload();
-
-		if (getConfig().getBoolean("PluginIncompatibility.Check")) {
-			incompatibilityCheck();
-		}
 
 		final TabExecutor cmd = new CommandManager();
 		this.getCommand("minetinker").setExecutor(cmd); // must be after internals as it would throw a NullPointerException
@@ -183,80 +177,6 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(Webbed.instance());
 		modManager.register(Withered.instance());
 		modManager.register(Piercing.instance());
-	}
-
-	/**
-	 * Method for searching for known incompatibilities with other Plugins and fixing them if possible automatically (e.g. disable Lore for certain plugins)
-	 */
-	private void incompatibilityCheck() {
-		ChatWriter.logInfo(LanguageManager.getString("StartUp.Incompatible.Start"));
-		List<String> skipped = getConfig().getStringList("PluginIncompatibility.SkippedPlugins");
-
-		FileConfiguration layout = ConfigurationManager.getConfig("layout.yml");
-
-		Zenchantments:
-		{
-			String name = "Zenchantments";
-			if (skipped.contains(name)) break Zenchantments;
-			if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
-				ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
-				layout.set("UsePatternMatcher", true);
-				ChatWriter.logColor(ChatColor.WHITE + " - UsePatternMatcher -> true");
-			}
-		}
-		EliteMobs:
-		{
-			String name = "EliteMobs";
-			if (skipped.contains(name)) break EliteMobs;
-			if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
-				ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
-				layout.set("UsePatternMatcher", true);
-				ChatWriter.logColor(ChatColor.WHITE + " - UsePatternMatcher -> true");
-			}
-		}
-		mcMMO:
-		{
-			String name = "mcMMO";
-			if (skipped.contains(name)) break mcMMO;
-			if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
-				ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
-				layout.set("UsePatternMatcher", true);
-				ChatWriter.logColor(ChatColor.WHITE + " - UsePatternMatcher -> true");
-			}
-		}
-		Multitool:
-		{
-			String name = "Multitool";
-			if (skipped.contains(name)) break Multitool;
-			if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
-				ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
-				layout.set("UsePatternMatcher", true);
-				ChatWriter.logColor(ChatColor.WHITE + " - UsePatternMatcher -> true");
-			}
-		}
-		DeadSouls:
-		{
-			String name = "DeadSouls";
-			if (skipped.contains(name)) break DeadSouls;
-			if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
-				ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
-				getConfig().set("ItemBehaviour.ApplyOnPlayerDeath", false);
-				ChatWriter.logColor(ChatColor.WHITE + " - ItemBehaviour.ApplyOnPlayerDeath -> false");
-			}
-		}
-		DeathBarrel:
-		{
-			String name = "DeathBarrel";
-			if (skipped.contains(name)) break DeathBarrel;
-			if (Bukkit.getServer().getPluginManager().isPluginEnabled(name) || Bukkit.getPluginManager().getPlugin(name) != null) {
-				ChatWriter.logColor(ChatColor.RED + LanguageManager.getString("StartUp.Incompatible.Found").replace("%plugin", name));
-				getConfig().set("ItemBehaviour.ApplyOnPlayerDeath", false);
-				ChatWriter.logColor(ChatColor.WHITE + " - ItemBehaviour.ApplyOnPlayerDeath -> false");
-			}
-		}
-
-		ConfigurationManager.saveConfig(layout);
-		saveConfig();
 	}
 
 	public void onDisable() {

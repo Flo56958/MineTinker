@@ -125,7 +125,7 @@ public class Evasive extends Modifier implements Listener {
 		if (this.cooldownInSeconds > 0) {
 			Long cd = cooldownTracker.get(player.getUniqueId().toString());
 			if (cd != null) { //was on cooldown
-				if (time - cd > this.cooldownInSeconds * 1000 || player.getGameMode() == GameMode.CREATIVE) {
+				if (time - cd > this.cooldownInSeconds * 1000L || player.getGameMode() == GameMode.CREATIVE) {
 					cooldownTracker.remove(player.getUniqueId().toString());
 				} else {
 					ChatWriter.logModifier(player, event, this, tool, "Cooldown");

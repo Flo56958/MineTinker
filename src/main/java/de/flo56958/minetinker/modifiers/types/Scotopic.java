@@ -137,7 +137,7 @@ public class Scotopic extends Modifier implements Listener {
 
 		//cooldown checker
 		Long time = System.currentTimeMillis();
-		long cooldownTime = (long) (this.cooldownInSeconds * 1000 * Math.pow(1.0 - this.cooldownReductionPerLevel, level - 1));
+		long cooldownTime = Math.round(this.cooldownInSeconds * 1000 * Math.pow(1.0D - this.cooldownReductionPerLevel, level - 1));
 		if (this.cooldownInSeconds > 0) {
 			Long cd = cooldownTracker.get(player.getUniqueId().toString());
 			if (cd != null) { //was on cooldown
@@ -150,6 +150,7 @@ public class Scotopic extends Modifier implements Listener {
 		}
 
 		Location loc = event.getTo();
+		if (loc == null) return;
 		byte lightlevel = player.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()).getLightLevel();
 
 		if (lightlevel <= this.requiredLightLevel) {

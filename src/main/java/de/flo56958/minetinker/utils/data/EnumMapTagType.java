@@ -39,7 +39,7 @@ public class EnumMapTagType<K extends Enum<K>, V> implements PersistentDataType<
     }
 
     @Override
-    public @NotNull EnumMap<K, V> fromPrimitive(@NotNull byte @NotNull [] bytes, @NotNull PersistentDataAdapterContext itemTagAdapterContext) {
+    public @NotNull EnumMap<K, V> fromPrimitive(byte @NotNull [] bytes, @NotNull PersistentDataAdapterContext itemTagAdapterContext) {
         ByteArrayInputStream byteIn = new ByteArrayInputStream(bytes);
         try {
             ObjectInputStream in = new ObjectInputStream(byteIn);

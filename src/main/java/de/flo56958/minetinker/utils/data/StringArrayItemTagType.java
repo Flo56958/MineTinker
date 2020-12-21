@@ -46,7 +46,7 @@ public class StringArrayItemTagType implements PersistentDataType<byte[], String
     }
 
     @Override
-    public String @NotNull [] fromPrimitive(@NotNull byte @NotNull [] bytes, @NotNull PersistentDataAdapterContext itemTagAdapterContext) {
+    public String @NotNull [] fromPrimitive(byte @NotNull [] bytes, @NotNull PersistentDataAdapterContext itemTagAdapterContext) {
         ByteBuffer buffer = ByteBuffer.wrap(bytes);
         ArrayList<String> list = new ArrayList<>();
 

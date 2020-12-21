@@ -103,6 +103,7 @@ public class Hardened extends Modifier implements Listener {
 					armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", amount,
 							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
 				}
+				assert armorAM != null;
 				meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
 			}
 		}
@@ -133,6 +134,7 @@ public class Hardened extends Modifier implements Listener {
 					toughnessAM = new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.armor_toughness" : "generic.armorToughness", amount,
 							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
 				}
+				assert toughnessAM != null;
 				meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
 			}
 		}

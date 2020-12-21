@@ -25,6 +25,7 @@ import org.bukkit.plugin.PluginManager;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public abstract class Modifier {
@@ -91,7 +92,7 @@ public abstract class Modifier {
 					if (modifiersconfig.getBoolean("IncompatibilitiesConsiderEnchants")) {
 						for (Enchantment e : m.getAppliedEnchantments()) {
 							if (!tool.hasItemMeta()) return false;
-							if (tool.getItemMeta().hasEnchant(e)) {
+							if (Objects.requireNonNull(tool.getItemMeta(), "Tool has no ItemMeta").hasEnchant(e)) {
 								if (!silent)
 									pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
 								return false;
@@ -167,7 +168,7 @@ public abstract class Modifier {
 		FileConfiguration config = getConfig();
 
 		try {
-			this.color = ChatWriter.getColor(config.getString("Color", "%WHITE%"));
+			this.color = ChatWriter.getColor(Objects.requireNonNull(config.getString("Color", "%WHITE%"), "Config has no Color-Value!"));
 		} catch (IllegalArgumentException | ArrayIndexOutOfBoundsException ignored) {
 			this.color = ChatColor.WHITE;
 			ChatWriter.logError("Illegal Color detected for Modifier " + this.getKey());
@@ -186,10 +187,10 @@ public abstract class Modifier {
 					ChatColor.WHITE + LanguageManager.getString(langStart + ".DescriptionModifierItem"), this);
 		} else { //use the config values instead
 			this.name = config.getString("Name", "");
-			this.description = ChatWriter.addColors(config.getString("Description", ""));
+			this.description = ChatWriter.addColors(Objects.requireNonNull(config.getString("Description", ""), "Config has no Description-Value!"));
 
 			this.modItem = modManager.createModifierItem(m, this.color + config.getString("ModifierItemName", ""),
-					ChatWriter.addColors(config.getString("DescriptionModifierItem", "")), this);
+					ChatWriter.addColors(Objects.requireNonNull(config.getString("DescriptionModifierItem", ""), "Config has no DescriptionModifierItem-Value!")), this);
 		}
 
 		ItemMeta itemMeta = this.modItem.getItemMeta();
@@ -275,7 +276,7 @@ public abstract class Modifier {
 	}
 
 	protected FileConfiguration getConfig() {
-		return ConfigurationManager.getConfig(this.getFileName());
+		return ConfigurationManager.getConfig(this);
 	}
 
 	protected void registerCraftingRecipe() {

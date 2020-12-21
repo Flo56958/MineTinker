@@ -204,9 +204,11 @@ public class Power extends Modifier implements Listener {
 		Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> {
 			int level = modManager.getModLevel(tool, this);
 
+			boolean down_up = face.equals(BlockFace.DOWN) || face.equals(BlockFace.UP);
+			boolean north_south = face.equals(BlockFace.NORTH) || face.equals(BlockFace.SOUTH);
 			if (level == 1) {
 				if (lv1_vertical) {
-					if (face.equals(BlockFace.DOWN) || face.equals(BlockFace.UP)) {
+					if (down_up) {
 						if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
 							Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
 							Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
@@ -224,7 +226,7 @@ public class Power extends Modifier implements Listener {
 						powerBlockBreak(b1, hardness, player, tool);
 						powerBlockBreak(b2, hardness, player, tool);
 					}
-				} else if (face.equals(BlockFace.DOWN) || face.equals(BlockFace.UP)) {
+				} else if (down_up) {
 					if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
 						Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
 						Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
@@ -236,8 +238,7 @@ public class Power extends Modifier implements Listener {
 						powerBlockBreak(b1, hardness, player, tool);
 						powerBlockBreak(b2, hardness, player, tool);
 					}
-				} else if (face.equals(BlockFace.NORTH)
-						|| face.equals(BlockFace.SOUTH)) {
+				} else if (north_south) {
 					Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
 					Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
 					powerBlockBreak(b1, hardness, player, tool);
@@ -249,7 +250,7 @@ public class Power extends Modifier implements Listener {
 					powerBlockBreak(b2, hardness, player, tool);
 				}
 			} else {
-				if (face.equals(BlockFace.DOWN) || face.equals(BlockFace.UP)) {
+				if (down_up) {
 					for (int x = -(level - 1); x <= (level - 1); x++) {
 						for (int z = -(level - 1); z <= (level - 1); z++) {
 							if (!(x == 0 && z == 0)) {
@@ -258,8 +259,7 @@ public class Power extends Modifier implements Listener {
 							}
 						}
 					}
-				} else if (face.equals(BlockFace.NORTH)
-						|| face.equals(BlockFace.SOUTH)) {
+				} else if (north_south) {
 					for (int x = -(level - 1); x <= (level - 1); x++) {
 						for (int y = -(level - 1); y <= (level - 1); y++) {
 							if (!(x == 0 && y == 0)) {

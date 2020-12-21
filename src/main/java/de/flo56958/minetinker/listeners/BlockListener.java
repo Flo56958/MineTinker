@@ -29,6 +29,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 public class BlockListener implements Listener {
 
@@ -193,7 +194,7 @@ public class BlockListener implements Listener {
 				return;
 			}
 
-			if (block.getType() == Material.getMaterial(MineTinker.getPlugin().getConfig().getString("BlockToEnchantModifiers", Material.BOOKSHELF.name()))) {
+			if (block.getType() == Material.getMaterial(Objects.requireNonNull(MineTinker.getPlugin().getConfig().getString("BlockToEnchantModifiers", Material.BOOKSHELF.name()), "BlockToEnchantModifiers is null!"))) {
 				final ItemStack item = player.getInventory().getItemInMainHand();
 
 				for (Modifier m : modManager.getAllMods()) {

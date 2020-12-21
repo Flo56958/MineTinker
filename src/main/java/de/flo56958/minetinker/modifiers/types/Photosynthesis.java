@@ -70,7 +70,7 @@ public class Photosynthesis extends Modifier implements Listener {
 					daytimeMultiplier = 1.0 - (6 - difference) / 6.0; //value range: 0.0 - 1.0
 				}
 
-				long timeDif = System.currentTimeMillis() - tupel.time - (tickTime * 50); //to make effect faster with time (first tick period does not count)
+				long timeDif = System.currentTimeMillis() - tupel.time - (tickTime * 50L); //to make effect faster with time (first tick period does not count)
 				if (!tupel.isAboveGround) continue;
 
 				PlayerInventory inv = player.getInventory();

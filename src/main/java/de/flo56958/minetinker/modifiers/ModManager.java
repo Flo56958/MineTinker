@@ -306,7 +306,7 @@ public class ModManager {
 			this.loreScheme.add("%MODIFIERS%");
 		}
 
-		this.modifierLayout = ChatWriter.addColors(layout.getString("ModifierLayout"));
+		this.modifierLayout = ChatWriter.addColors(Objects.requireNonNull(layout.getString("ModifierLayout"), "ModifierLayout is null!"));
 		this.allowBookConvert = config.getBoolean("ConvertBookToModifier");
 		GUIs.reload();
 	}
@@ -1012,6 +1012,7 @@ public class ModManager {
 			} else return;
 
 			if (armor > 0.0d) {
+				assert armorAM != null;
 				meta.removeAttributeModifier(Attribute.GENERIC_ARMOR);
 				meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
 			}
@@ -1022,6 +1023,7 @@ public class ModManager {
 			}
 			
 			if (knockback_res > 0.0d) { // The only way to be greater than 0 is being a netherite armor, so it doesn't needs is16compatible bool
+				assert knockbackResAM != null;
 				meta.removeAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
 				meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResAM);
 			}
