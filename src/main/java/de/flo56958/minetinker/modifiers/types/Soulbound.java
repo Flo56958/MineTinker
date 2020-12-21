@@ -174,9 +174,9 @@ public class Soulbound extends Modifier implements Listener {
 		ArrayList<ItemStack> stored = storedItemStacks.get(player.getUniqueId());
 		ArrayList<Integer> storedLocation = storedItemStacksLocation.get(player.getUniqueId());
 
-		for (int i = 0; i < stored.size(); i++) {
-			inventory.setItem(storedLocation.get(i), stored.get(i));
-			ChatWriter.logModifier(player, event, this, stored.get(i));
+		for (int index = 0; index < stored.size(); index++) {
+			inventory.setItem(storedLocation.get(index), stored.get(index));
+			ChatWriter.logModifier(player, event, this, stored.get(index));
 		}
 
 		storedItemStacks.remove(player.getUniqueId());
