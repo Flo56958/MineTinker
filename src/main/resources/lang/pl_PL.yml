@@ -12,9 +12,6 @@ StartUp.Events: "Zarejestrowano wydarzenia!"
 StartUp.GUIs: "Ładowanie GUI!"
 StartUp.StdLogging: "Standardowe rejestrowanie jest włączone. Możesz to wyłączyć w konfiguracji pod Logging.Standard!"
 StartUp.DebugLogging: "Rejestrowanie debugowania jest włączone. Powinieneś wyłączyć to w konfiguracji w Logging.Debug!"
-StartUp.Incompatible:
-  Start: "Rozpoczęcie wyszukiwania niezgodnych pluginów... Możesz wyłączyć tę funkcję w głównej konfiguracji!"
-  Found: "Znaleziono %plugin. Ulepszenie MineTinker dla najlepszej kompatybilności!"
 
 Builderswand.Name.Wood: "Różdżka Budowniczego z drewna"
 Builderswand.Name.Stone: "Różdżka Budowniczego z kamienia"
