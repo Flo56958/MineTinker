@@ -12,9 +12,6 @@ StartUp.Events: "События зарегистрированы!"
 StartUp.GUIs: "Загрузка GUIs!"
 StartUp.StdLogging: "Standard Logging включён. Вы можете выключить его в конфиге под  Logging.Standard!"
 StartUp.DebugLogging: "Debug Logging включён. Лучше отключить его в конфиге под  Logging.Debug!"
-StartUp.Incompatible:
-  Start: "Начался поиск несовместимых плагинов... Вы можете отключить эту функцию в основном конфиге!"
-  Found: "%plugin найден. Настраиваем MineTinker для лучшей совместимости!"
 
 Builderswand.Name.Wood: "Деревянный Посох Строителя"
 Builderswand.Name.Stone: "Каменный Посох Строителя"
