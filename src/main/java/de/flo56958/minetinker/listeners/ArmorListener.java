@@ -118,7 +118,7 @@ public class ArmorListener implements Listener {
 		int amount = config.getInt("ExpPerEntityHit");
 
 		if (config.getBoolean("EnableDamageExp")) {
-			amount = (int) Math.round(event.getDamage());
+			amount = (int) Math.round(event.getFinalDamage());
 		}
 
 		if (config.getBoolean("DisableExpFromFalldamage", false)
