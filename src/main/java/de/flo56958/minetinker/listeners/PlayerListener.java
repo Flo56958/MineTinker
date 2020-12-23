@@ -10,6 +10,7 @@ import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.Updater;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
@@ -51,7 +52,7 @@ public class PlayerListener implements Listener {
 			return;
 		}
 
-		final ItemStack tool = event.getClickedInventory().getItem(event.getSlot());
+		final ItemStack tool = event.getCurrentItem();
 
 		if (tool == null) {
 			return;
@@ -61,13 +62,48 @@ public class PlayerListener implements Listener {
 			return;
 		}
 
+		if (!(event.getWhoClicked() instanceof Player)) {
+			return;
+		}
+
+		//There is a duplication bug in creative, the event does not get executed correctly somehow
+		//TODO: Remove if paper/spigot/minecraft bug is resolved
+		//The feature is therefore disabled for creative, should be very low priority to fix as if you are in creative
+		//you should be able to execute a few commands as well
+		if (event.getWhoClicked().getGameMode() == GameMode.CREATIVE) {
+			return;
+		}
+
+		final ItemStack repair = event.getCursor();
+		if (repair == null) return;
+
+		//Check if the player wants to modify the tool
+		if (modManager.isModifierItem(repair)
+				&& MineTinker.getPlugin().getConfig().getBoolean("ModifiableInInventory")) {
+			Modifier mod = modManager.getModifierFromItem(repair);
+			if (mod != null) { //shouldn't be necessary
+				while(repair.getAmount() > 0) {
+					if (modManager.addMod((Player) event.getWhoClicked(), tool, mod,
+							false, false, false)) {
+						//Mod was successful
+						//Decrement item count
+						repair.setAmount(repair.getAmount() - 1);
+					} else {
+						//Mod was unsuccessful
+						break;
+					}
+				}
+
+				event.setCancelled(true);
+				return;
+			}
+		}
+
+		//Check if the player can repair
 		if (!(MineTinker.getPlugin().getConfig().getBoolean("Repairable")
 				&& event.getWhoClicked().hasPermission("minetinker.tool.repair"))) {
 			return;
 		}
-
-		final ItemStack repair = event.getWhoClicked().getItemOnCursor();
-		if (repair == null) return;
 
 		final ItemMeta repairMeta = repair.getItemMeta();
 		if (repairMeta != null) {
@@ -78,6 +114,7 @@ public class PlayerListener implements Listener {
 
 		final String beginning = tool.getType().toString().split("_")[0].toLowerCase();
 
+		//check if correct material is used
 		switch (beginning) {
 			case "shield":
 			case "wooden":
@@ -170,7 +207,7 @@ public class PlayerListener implements Listener {
 			meta.setDamage(dura);
 			tool.setItemMeta((ItemMeta) meta);
 
-			event.getWhoClicked().getItemOnCursor().setAmount(amount);
+			repair.setAmount(amount);
 			event.setCancelled(true);
 		}
 	}
