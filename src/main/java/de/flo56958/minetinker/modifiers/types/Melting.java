@@ -123,7 +123,7 @@ public class Melting extends Modifier implements Listener {
 
 				int level = modManager.getModLevel(tool, this);
 
-				if (entity.getFireTicks() == 0) {
+				if (entity.getFireTicks() <= 0) {
 					return;
 				}
 
