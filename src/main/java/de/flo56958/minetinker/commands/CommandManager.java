@@ -1,11 +1,11 @@
 package de.flo56958.minetinker.commands;
 
+import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.subs.*;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
-import de.flo56958.minetinker.api.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -238,7 +238,8 @@ public class CommandManager implements TabExecutor {
 								Player player = Bukkit.getPlayer(uuid);
 								if (player != null) args[i] = player.getName();
 								else {
-									sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound")
+									sendError(sender,
+											LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound")
 											.replace("%p", args[i]));
 								}
 							} catch (IllegalArgumentException ignored) {
@@ -283,7 +284,8 @@ public class CommandManager implements TabExecutor {
 	}
 
 	public static void sendError(CommandSender sender, String cause) {
-		ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Commands.Failure.Main")
+		ChatWriter.sendMessage(sender, ChatColor.RED,
+				LanguageManager.getString("Commands.Failure.Main")
 				.replaceAll("%cause", cause));
 	}
 
