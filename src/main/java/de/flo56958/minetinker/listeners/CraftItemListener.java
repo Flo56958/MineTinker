@@ -48,7 +48,7 @@ public class CraftItemListener implements Listener {
 					+ "! It is now a MineTinker-Item!");
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onPrepare(@NotNull final PrepareItemCraftEvent event) {
 		if (MineTinker.getPlugin().getConfig().getBoolean("ModifiersCanBeUsedForCrafting")) return;
 		final CraftingInventory inv = event.getInventory();

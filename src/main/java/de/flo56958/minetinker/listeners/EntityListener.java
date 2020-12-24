@@ -31,7 +31,7 @@ public class EntityListener implements Listener {
 
 	private static final ModManager modManager = ModManager.instance();
 
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onDamage(@NotNull final EntityDamageByEntityEvent event) {
 		if (Lists.WORLDS.contains(event.getDamager().getWorld().getName())) {
 			return;

@@ -35,7 +35,7 @@ public class BlockListener implements Listener {
 
 	private static final ModManager modManager = ModManager.instance();
 
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public static void onAxeUse(@NotNull final PlayerInteractEvent event) {
 		final Player player = event.getPlayer();
 
@@ -91,7 +91,7 @@ public class BlockListener implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onBlockBreak(@NotNull final BlockBreakEvent event) {
 		final Player player = event.getPlayer();
 		final ItemStack tool = player.getInventory().getItemInMainHand();
@@ -209,7 +209,7 @@ public class BlockListener implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onHoeUse(@NotNull final PlayerInteractEvent event) {
 		final Player player = event.getPlayer();
 
@@ -258,7 +258,7 @@ public class BlockListener implements Listener {
 		Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, event));
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onShovelUse(@NotNull final PlayerInteractEvent event) {
 		final Player player = event.getPlayer();
 

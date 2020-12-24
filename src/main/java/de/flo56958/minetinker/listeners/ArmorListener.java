@@ -39,7 +39,7 @@ public class ArmorListener implements Listener {
 		blacklistedCauses.add(EntityDamageEvent.DamageCause.CUSTOM); //Essentials Suicide
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onPlayerDamage(@NotNull final EntityDamageEvent event) {
 		if (event.getDamage() <= 0) {
 			return;

@@ -94,7 +94,7 @@ public class Berserk extends Modifier implements Listener {
 				.replace("%percent", String.valueOf(trigger));
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onHit(EntityDamageEvent event) {
 		if (!(event.getEntity() instanceof Player)) {
 			return;

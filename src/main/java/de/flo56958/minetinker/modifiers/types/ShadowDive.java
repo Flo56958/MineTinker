@@ -186,7 +186,7 @@ public class ShadowDive extends Modifier implements Listener {
 		}
 	}
 
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onSneak(PlayerToggleSneakEvent event) {
 		Player player = event.getPlayer();
 		if (!player.hasPermission("minetinker.modifiers.shadowdive.use")) return;

@@ -82,7 +82,7 @@ public class ItemListener implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onPlayerDeath(@NotNull final PlayerDeathEvent event) {
 		if (event.getKeepInventory()) {
 			return;

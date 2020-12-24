@@ -72,7 +72,7 @@ public class EnchantingListener implements Listener {
 		}
 	};
 
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onTableEnchant(@NotNull final EnchantItemEvent event) {
 		if (!MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantmentsOnEnchant", true)) return;
 		if (!ToolType.ALL.contains(event.getItem().getType())) { //Something different (like a book)
