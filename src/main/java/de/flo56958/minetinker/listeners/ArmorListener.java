@@ -115,10 +115,11 @@ public class ArmorListener implements Listener {
 		//Shield should not get Exp when not successfully blocking when getting attacked
 		if(!isBlocking && player.equals(event.getEntity()) && ToolType.SHIELD.contains(tool.getType())) return;
 		FileConfiguration config = MineTinker.getPlugin().getConfig();
-		int amount = config.getInt("ExpPerEntityHit");
+		int amount = config.getInt("ExpPerEntityHit", 1);
 
-		if (config.getBoolean("EnableDamageExp")) {
-			amount = (int) Math.round(event.getFinalDamage());
+		if (config.getBoolean("EnableDamageExp", true)) {
+			amount = Math.min(amount, (int) Math.round(event.getFinalDamage()));
+			//Min because the lowest exp amount you should get is ExpPerEntityHit
 		}
 
 		if (config.getBoolean("DisableExpFromFalldamage", false)
