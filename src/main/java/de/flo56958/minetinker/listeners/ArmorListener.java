@@ -118,8 +118,8 @@ public class ArmorListener implements Listener {
 		int amount = config.getInt("ExpPerEntityHit", 1);
 
 		if (config.getBoolean("EnableDamageExp", true)) {
-			amount = Math.min(amount, (int) Math.round(event.getFinalDamage()));
-			//Min because the lowest exp amount you should get is ExpPerEntityHit
+			amount = Math.max(amount, (int) Math.round(event.getFinalDamage()));
+			//Max because the lowest exp amount you should get is ExpPerEntityHit
 		}
 
 		if (config.getBoolean("DisableExpFromFalldamage", false)
