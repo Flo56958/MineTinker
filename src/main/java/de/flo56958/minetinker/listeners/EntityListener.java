@@ -129,6 +129,8 @@ public class EntityListener implements Listener {
 				Random rand = new Random();
 				if (rand.nextInt(100) < config.getInt("ConvertMobDrops.Chance", 100)) {
 					if (!modManager.convertItemStack(item, null)) continue;
+					//Item is now MT
+					//continue if already was MT or not right material
 
 					if (config.getBoolean("ConvertMobDrops.ApplyExp", true)) {
 						final int exp = rand.nextInt(config.getInt("ConvertMobDrops.MaximumNumberOfExp", 650));
@@ -142,7 +144,8 @@ public class EntityListener implements Listener {
 
 					if (config.getBoolean("ConvertMobDrops.ApplyModifiers", true)) {
 						List<Modifier> mods = modManager.getAllowedMods();
-						for (int i = 0; i < rand.nextInt(config.getInt("ConvertMobDrops.MaximumNumberOfModifiers", 4) + 1); i++) {
+						for (int i = 0; i < rand.nextInt(
+								config.getInt("ConvertMobDrops.MaximumNumberOfModifiers", 4) + 1); i++) {
 							if (config.getBoolean("ConvertMobDrops.AppliedModifiersConsiderSlots", true)
 									&& modManager.getFreeSlots(item) == 0) {
 								break;
@@ -183,8 +186,8 @@ public class EntityListener implements Listener {
 
 		Bukkit.getPluginManager().callEvent(new MTEntityDeathEvent(player, tool, event));
 
-		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExtraExpPerEntityDeath."
-				+ event.getEntity().getType().toString(), 0));
+		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig()
+				.getInt("ExtraExpPerEntityDeath." + event.getEntity().getType().toString(), 0));
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -260,7 +263,7 @@ public class EntityListener implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void onBowShoot(EntityShootBowEvent event) {
+	public void onBowShoot(@NotNull final EntityShootBowEvent event) {
 		if (!(event.getEntity() instanceof Player)) {
 			return;
 		}
@@ -269,31 +272,30 @@ public class EntityListener implements Listener {
 		final ItemStack offHand = player.getInventory().getItemInOffHand();
 
 		if (offHand.getType() == Material.ARROW) {
-			final Modifier mod = modManager.getModifierFromItem(offHand);
-
-			if (mod != null && mod.getModItem().getType() == Material.ARROW) {
-				event.setCancelled(true);
-
-				player.updateInventory();
-				player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
-
-				return;
-			}
+			if (playSound(event, player, offHand)) return;
 		}
 
 		for (ItemStack item : player.getInventory().getContents()) {
 			if (item == null) continue; // Extremely consistently null
 
 			if (item.getType() == Material.ARROW) {
-				final Modifier mod = modManager.getModifierFromItem(item);
-				if (mod != null && mod.getModItem().getType() == Material.ARROW) {
-					event.setCancelled(true);
-					player.updateInventory();
-					player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
-					return;
-				}
+				if (playSound(event, player, item)) return;
 				return;
 			}
 		}
+	}
+
+	private boolean playSound(final EntityShootBowEvent event, final Player player, final ItemStack offHand) {
+		final Modifier mod = modManager.getModifierFromItem(offHand);
+
+		if (mod != null && mod.getModItem().getType() == Material.ARROW) {
+			event.setCancelled(true);
+
+			player.updateInventory();
+			player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
+
+			return true;
+		}
+		return false;
 	}
 }

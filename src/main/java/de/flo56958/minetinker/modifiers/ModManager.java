@@ -264,7 +264,7 @@ public class ModManager {
 		removeRecipes();
 		mods.clear();
 
-		for (Modifier m : allMods) {
+		for (final Modifier m : allMods) {
 			m.reload();
 
 			if (m.isAllowed()) {
@@ -280,7 +280,7 @@ public class ModManager {
 		this.ArmorIdentifier = config.getString("ArmorIdentifier");
 
 		removeRecipes();
-		for (Modifier m : this.mods) {
+		for (final Modifier m : this.mods) {
 			m.registerCraftingRecipe();
 		}
 
@@ -315,7 +315,7 @@ public class ModManager {
 		FileConfiguration modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
 
 		final List<String> possibleKeys = new ArrayList<>();
-		for (Modifier m : this.allMods) {
+		for (final Modifier m : this.allMods) {
 			possibleKeys.add(m.getKey());
 		}
 		possibleKeys.sort(String::compareToIgnoreCase);
@@ -324,17 +324,17 @@ public class ModManager {
 		ConfigurationManager.saveConfig(modifierconfig);
 		ConfigurationManager.loadConfig("", "Modifiers.yml");
 		incompatibilities.clear();
-		for (Modifier m : this.allMods) {
+		for (final Modifier m : this.allMods) {
 			incompatibilities.putIfAbsent(m, new HashSet<>());
 		}
 		modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
 		final List<String> incompatibilityList = modifierconfig.getStringList("Incompatibilities");
-		for (String s : incompatibilityList) {
+		for (final String s : incompatibilityList) {
 			final String[] splits = s.split(":");
 			if (splits.length != 2) continue;
 			Modifier mod1 = null;
 			Modifier mod2 = null;
-			for (Modifier m : this.allMods) {
+			for (final Modifier m : this.allMods) {
 				if (m.getKey().equals(splits[0])) {
 					mod1 = m;
 				}
@@ -344,15 +344,24 @@ public class ModManager {
 			}
 
 			if (mod1 == null || mod2 == null) continue;
-			if (mod1.equals(mod2)) continue; //Modifier can not be incompatible with its self
+			if (mod1.equals(mod2)) continue; //Modifier can not be incompatible with itself
 
+			//Cross-link incompatibilities
 			incompatibilities.get(mod1).add(mod2);
 			incompatibilities.get(mod2).add(mod1);
 		}
+
+		//Make the incompatibilities unmodifiable
+		incompatibilities.replaceAll((m, set) -> Collections.unmodifiableSet(set));
 	}
 
-	public @NotNull HashSet<Modifier> getIncompatibilities(Modifier m) {
-		return new HashSet<>(incompatibilities.get(m));
+	/**
+	 * This Method returns the original Set.
+	 * @param m The modifier to get the Incompatibilities for
+	 * @return The incompatibilities
+	 */
+	public @Nullable Set<Modifier> getIncompatibilities(final Modifier m) {
+		return incompatibilities.get(m);
 	}
 
 	/**
@@ -426,11 +435,11 @@ public class ModManager {
 	 *
 	 * @return the modifier list
 	 */
-	public List<Modifier> getAllowedMods() {
+	public @NotNull List<Modifier> getAllowedMods() {
 		return new ArrayList<>(this.mods);
 	}
 
-	public HashSet<Modifier> getAllMods() {
+	public @NotNull HashSet<Modifier> getAllMods() {
 		return new HashSet<>(this.allMods);
 	}
 
@@ -445,7 +454,7 @@ public class ModManager {
 		rewriteLore(is);
 	}
 
-	public boolean addMod(final Player player, final ItemStack item, @NotNull final Modifier modifier, final boolean fromCommand, final boolean fromRandom, final boolean silent) {
+	public boolean addMod(final Player player, @NotNull final ItemStack item, @NotNull final Modifier modifier, final boolean fromCommand, final boolean fromRandom, final boolean silent) {
 		if (!modifier.getKey().equals(ExtraModifier.instance().getKey())) {
 			if (!modifier.checkAndAdd(player, item,
 					modifier.getKey().toLowerCase().replace("-", ""), fromCommand, fromRandom, silent)) {
@@ -453,7 +462,7 @@ public class ModManager {
 			}
 		}
 
-		boolean success = modifier.applyMod(player, item, fromCommand);
+		final boolean success = modifier.applyMod(player, item, fromCommand);
 
 		if (success) {
 			ItemMeta meta = item.getItemMeta();
@@ -479,7 +488,7 @@ public class ModManager {
 	}
 
 	/**
-	 * get the level of a specified modifier on a tool
+	 * get the level of a specified modifier on a tool. 0 on failure
 	 *
 	 * @param is  the item
 	 * @param mod the modifier

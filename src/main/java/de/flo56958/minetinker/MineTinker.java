@@ -109,7 +109,7 @@ public class MineTinker extends JavaPlugin {
 		ChatWriter.log(false, LanguageManager.getString("StartUp.StdLogging"));
 		ChatWriter.log(true, LanguageManager.getString("StartUp.DebugLogging"));
 
-		for (Player current : Bukkit.getServer().getOnlinePlayers()) {
+		for (final Player current : Bukkit.getServer().getOnlinePlayers()) {
 			Power.HAS_POWER.computeIfAbsent(current, player -> new AtomicBoolean(false));
 			Lists.BLOCKFACE.put(current, BlockFace.SELF);
 		}
