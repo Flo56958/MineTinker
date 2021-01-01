@@ -701,15 +701,16 @@ public class ModManager {
 		final String nextLevelReq_ = layout.getBoolean("UseRomans.Exp") ? ChatWriter.toRomanNumerals((int) nextLevelReq) : String.valueOf(nextLevelReq);
 		final String freeSlots_ = layout.getBoolean("UseRomans.FreeSlots") ? ChatWriter.toRomanNumerals(freeSlots) : String.valueOf(freeSlots);
 
-		for (int i = 0; i < lore.size(); i++) {
-			String s = lore.get(i);
-			s = s.replaceAll("%EXP%", String.valueOf(exp_));
-			s = s.replaceAll("%LEVEL%", String.valueOf(level_));
-			s = s.replaceAll("%NEXT_LEVEL_EXP%", String.valueOf(nextLevelReq_));
-			s = s.replaceAll("%FREE_SLOTS%", String.valueOf(freeSlots_));
+		final OfflinePlayer creator = getCreator(is);
+		final String creator_ = (creator != null) ? creator.getName() : "null";
 
-			s = ChatColor.WHITE + s;
-			lore.set(i, s);
+		for (int i = 0; i < lore.size(); i++) {
+			lore.set(i, ChatColor.WHITE + lore.get(i)
+												.replaceAll("%EXP%", exp_)
+												.replaceAll("%LEVEL%", level_)
+												.replaceAll("%NEXT_LEVEL_EXP%", nextLevelReq_)
+												.replaceAll("%FREE_SLOTS%", freeSlots_)
+												.replaceAll("%CREATOR%", creator_ != null ? creator_ : "null"));
 		}
 
 		int index = -1;
@@ -728,7 +729,7 @@ public class ModManager {
 
 		lore.remove(index);
 
-		for (Modifier m : this.mods) {
+		for (final Modifier m : this.mods) {
 			if (DataHandler.hasTag(is, m.getKey(), PersistentDataType.INTEGER, false)) {
 				final int modLevel = getModLevel(is, m);
 				final String modLevel_ = layout.getBoolean("UseRomans.ModifierLevels")
@@ -760,7 +761,8 @@ public class ModManager {
 									m.replace("%LEVEL%", "\\E[a-zA-Z0-9&§]+?\\Q")
 											.replace("%EXP%", "\\E[a-zA-Z0-9&§]+?\\Q")
 											.replace("%FREE_SLOTS%", "\\E[a-zA-Z0-9&§]+?\\Q")
-											.replace("%NEXT_LEVEL_EXP%", "\\E[a-zA-Z0-9&§]+?\\Q"))) {
+											.replace("%NEXT_LEVEL_EXP%", "\\E[a-zA-Z0-9&§]+?\\Q")
+											.replace("%CREATOR%", "\\E[a-zA-Z0-9&§]+?\\Q"))) {
 								toRemove.add(s);
 								removed = true;
 								break;
