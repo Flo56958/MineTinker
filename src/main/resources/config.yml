@@ -78,7 +78,7 @@ ItemBehaviour:
   ConvertItemsOnUse: true             #Converts items on use, only works if item supported by a plugin.
   TrackStatistics: true               #Should MT track statistics for a item
   ShowName: true                      #Shows the name of the ItemStack (if has one) when on the ground
-  SetGlowing: true                    #Item glowes on the ground
+  SetGlowing: false                   #Item glowes on the ground
   SetInvulnerable: true               #Item can not be damaged or destroyed
   SetPersistent: false                #Item will not despawn
   ForModItems: true                   #Settings apply also for Modifier-Items
@@ -117,12 +117,12 @@ LevelUpEvents:                        #Events that happen when a MT-Item gets a 
   RandomModifier:                     #Applies a random modifier
     enabled: true
     percentage: 10
-    MaximumAmountOfModifiers: 1       #How many (different) Modifiers should be applied in this event
+    MaximumAmountOfModifiers: 0       #How many (different) Modifiers should be applied in this event
     DisableAddingNewSlots: false      #Should the Event replace the normal free Slots on Level up
     AllowExtraModifier: true          #Should the Extra Modifier be part of the random roll
     DropAsItem: false
   DropLoot:                           #Drops specific loot
-    enabled: true
+    enabled: false
     percentage: 25
     minimumDrop: 1
     maximumDrop: 5
