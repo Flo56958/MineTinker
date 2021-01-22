@@ -3,7 +3,7 @@ Alert.OnItemGrind: "%RED%Tu ne peux pas utiliser le Grindstone avec les outils M
 Alert.ToolUpgradeFailure: "%RED%L'upgrade n'a pas fonctionné !"
 Alert.InternalError: "%RED%Erreur interne !"
 Alert.OnCooldown: "%RED%Cette capacité est toujours en recharge !"
-Alert.MinecraftAPI: ""
+Alert.MinecraftAPI: "%RED%Impossible de se connecter aux API Minecraft !"
 
 StartUp.Commands: "Commandes enregistrées !"
 StartUp.BuildersWands: "Outil de construction Activé!"
@@ -12,18 +12,15 @@ StartUp.Events: "Événements enregistrés !"
 StartUp.GUIs: "Chargement du GUI !"
 StartUp.StdLogging: "La journalisation standard est activée. Vous pouvez le désactiver dans la configuration sous Logging.Standard!"
 StartUp.DebugLogging: "Le mode Debug est activée Vous devriez le désactiver dans la configuration sous Logging.Debug!"
-StartUp.Incompatible:
-  Start: "Démarrage de la recherche de plugins incompatibles... Vous pouvez désactiver cette fonctionnalité dans la configuration principale!"
-  Found: "%plugin trouvé. Modifications de MineTinker pour une meilleure compatibilité!"
 
 Builderswand.Name.Wood: "Outil de construction en bois"
 Builderswand.Name.Stone: "Outil de construction en pierre"
 Builderswand.Name.Iron: "Outil de construction en fer"
 Builderswand.Name.Gold: "Outil de construction en or"
 Builderswand.Name.Diamond: "Outil de construction en diamant"
-Builderswand.Name.Netherite: ""
+Builderswand.Name.Netherite: "Outil de construction en netherite"
 Builderswand.Description: "%WHITE%Outil de construction MineTinker"
-Builderswand.Error: ""
+Builderswand.Error: "Impossible d'enregistrer la recette pour %wand !"
 
 Commands.Info.Line1: "MineTinker (%ver)  est un Plugin fait par Flo56958"
 Commands.Info.Line2: "il est inspiré par différents mods (Ex: TinkersConstruct)"
@@ -168,7 +165,7 @@ Modifier:
     DescriptionModifierItem: "Objet Modificateur pour la Modification Berserk"
   Channeling:
     Name: "Canalisation"
-    Description: "Invoque la foudre quand le trident frappe ses ennemis !"
+    Description: "Crée un éclair !"
     ModifierItemName: "Éclat infusé par la foudre"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Canalisation"
   Directing:
@@ -239,7 +236,7 @@ Modifier:
     DescriptionModifierItem: "Objet Modificateur pour la Modification Isolant"
   KineticPlating:
     Name: "Plaque Cinétique"
-    Description: "Réduit les dommages subis en tombant avec unu paire d'Elytre de %amount% par niveau."
+    Description: "Réduit les dommages subis en tombant avec une paire d'Elytre de %amount% par niveau."
     ModifierItemName: "Plaque Cinétique"
     DescriptionModifierItem: "Objet Modificateur pour la Modification Plaque Cinétique"
   Knockback:
