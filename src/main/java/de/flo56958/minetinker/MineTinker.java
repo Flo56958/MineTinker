@@ -8,6 +8,7 @@ import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.types.*;
 import de.flo56958.minetinker.utils.*;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.TabExecutor;
@@ -100,7 +101,7 @@ public class MineTinker extends JavaPlugin {
 
 		if (getConfig().getBoolean("logging.metrics", true)) {
 			final Metrics met = new Metrics(this, 	2833);
-			met.addCustomChart(new Metrics.SimplePie("used_language", () -> getConfig().getString("Language", "en_US")));
+			met.addCustomChart(new SimplePie("used_language", () -> getConfig().getString("Language", "en_US")));
 		}
 
 		ChatWriter.log(false, LanguageManager.getString("StartUp.GUIs"));
