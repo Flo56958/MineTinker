@@ -8,7 +8,6 @@ import de.flo56958.minetinker.modifiers.types.Power;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.Updater;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -280,7 +279,8 @@ public class PlayerListener implements Listener {
 		}
 
 		if (!event.getBlockFace().equals(BlockFace.SELF)) {
-			Bukkit.getScheduler().runTaskLaterAsynchronously(MineTinker.getPlugin(), () -> Lists.BLOCKFACE.replace(event.getPlayer(), event.getBlockFace()), 2);
+			if (!Power.HAS_POWER.getOrDefault(event.getPlayer(), new AtomicBoolean(false)).get())
+				Lists.BLOCKFACE.replace(event.getPlayer(), event.getBlockFace());
 		}
 
 		if (!modManager.allowBookToModifier()) {

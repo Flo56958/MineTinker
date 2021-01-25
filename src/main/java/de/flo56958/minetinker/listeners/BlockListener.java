@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BlockListener implements Listener {
 
@@ -143,7 +144,8 @@ public class BlockListener implements Listener {
 		}
 
 		//-------------------------------------------POWERCHECK---------------------------------------------
-		if (Power.HAS_POWER.get(player).get() && !ToolType.PICKAXE.contains(tool.getType())
+		if (Power.HAS_POWER.getOrDefault(player, new AtomicBoolean(false)).get()
+				&& !ToolType.PICKAXE.contains(tool.getType())
 				&& event.getBlock().getDrops(tool).isEmpty()
 				&& event.getBlock().getType() != Material.NETHER_WART) { //Necessary for EasyHarvest NetherWard-Break
 			event.setCancelled(true);
