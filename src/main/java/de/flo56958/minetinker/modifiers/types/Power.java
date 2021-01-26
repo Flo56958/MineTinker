@@ -38,6 +38,7 @@ public class Power extends Modifier implements Listener {
 
 	public static final ConcurrentHashMap<Player, AtomicBoolean> HAS_POWER = new ConcurrentHashMap<>();
 	public static final ConcurrentHashMap<Location, Integer> events = new ConcurrentHashMap<>();
+	public static final ConcurrentHashMap<Location, BlockFace> drillingCommunication = new ConcurrentHashMap<>();
 	private static Power instance;
 	private ArrayList<Material> blacklist;
 	private boolean treatAsWhitelist;
@@ -170,6 +171,7 @@ public class Power extends Modifier implements Listener {
 	public void effect(WorldSaveEvent e) {
 		if (Bukkit.getOnlinePlayers().isEmpty()) {
 			events.clear();
+			drillingCommunication.clear();
 		}
 	}
 
@@ -212,42 +214,42 @@ public class Power extends Modifier implements Listener {
 						if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
 							Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
 							Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
-							powerBlockBreak(b1, hardness, player, tool);
-							powerBlockBreak(b2, hardness, player, tool);
+							powerBlockBreak(b1, hardness, player, tool, face);
+							powerBlockBreak(b2, hardness, player, tool, face);
 						} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
 							Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
 							Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
-							powerBlockBreak(b1, hardness, player, tool);
-							powerBlockBreak(b2, hardness, player, tool);
+							powerBlockBreak(b1, hardness, player, tool, face);
+							powerBlockBreak(b2, hardness, player, tool, face);
 						}
 					} else {
 						Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
 						Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, -1, 0));
-						powerBlockBreak(b1, hardness, player, tool);
-						powerBlockBreak(b2, hardness, player, tool);
+						powerBlockBreak(b1, hardness, player, tool, face);
+						powerBlockBreak(b2, hardness, player, tool, face);
 					}
 				} else if (down_up) {
 					if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
 						Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
 						Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
-						powerBlockBreak(b1, hardness, player, tool);
-						powerBlockBreak(b2, hardness, player, tool);
+						powerBlockBreak(b1, hardness, player, tool, face);
+						powerBlockBreak(b2, hardness, player, tool, face);
 					} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
 						Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
 						Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
-						powerBlockBreak(b1, hardness, player, tool);
-						powerBlockBreak(b2, hardness, player, tool);
+						powerBlockBreak(b1, hardness, player, tool, face);
+						powerBlockBreak(b2, hardness, player, tool, face);
 					}
 				} else if (north_south) {
 					Block b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
 					Block b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
-					powerBlockBreak(b1, hardness, player, tool);
-					powerBlockBreak(b2, hardness, player, tool);
+					powerBlockBreak(b1, hardness, player, tool, face);
+					powerBlockBreak(b2, hardness, player, tool, face);
 				} else if (face.equals(BlockFace.WEST) || face.equals(BlockFace.EAST)) {
 					Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
 					Block b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
-					powerBlockBreak(b1, hardness, player, tool);
-					powerBlockBreak(b2, hardness, player, tool);
+					powerBlockBreak(b1, hardness, player, tool, face);
+					powerBlockBreak(b2, hardness, player, tool, face);
 				}
 			} else {
 				if (down_up) {
@@ -255,7 +257,7 @@ public class Power extends Modifier implements Listener {
 						for (int z = -(level - 1); z <= (level - 1); z++) {
 							if (!(x == 0 && z == 0)) {
 								Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
-								powerBlockBreak(b1, hardness, player, tool);
+								powerBlockBreak(b1, hardness, player, tool, face);
 							}
 						}
 					}
@@ -264,7 +266,7 @@ public class Power extends Modifier implements Listener {
 						for (int y = -(level - 1); y <= (level - 1); y++) {
 							if (!(x == 0 && y == 0)) {
 								Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, y, 0));
-								powerBlockBreak(b1, hardness, player, tool);
+								powerBlockBreak(b1, hardness, player, tool, face);
 							}
 						}
 					}
@@ -273,7 +275,7 @@ public class Power extends Modifier implements Listener {
 						for (int y = -(level - 1); y <= (level - 1); y++) {
 							if (!(z == 0 && y == 0)) {
 								Block b1 = block.getWorld().getBlockAt(block.getLocation().add(0, y, z));
-								powerBlockBreak(b1, hardness, player, tool);
+								powerBlockBreak(b1, hardness, player, tool, face);
 							}
 						}
 					}
@@ -358,7 +360,7 @@ public class Power extends Modifier implements Listener {
 		HAS_POWER.get(player).set(false);
 	}
 
-	private void powerBlockBreak(@NotNull final Block block, final float centralBlockHardness, final Player player, final ItemStack tool) {
+	private void powerBlockBreak(@NotNull final Block block, final float centralBlockHardness, final Player player, final ItemStack tool, final BlockFace face) {
 		if (treatAsWhitelist ^ blacklist.contains(block.getType())) {
 			return;
 		}
@@ -372,6 +374,11 @@ public class Power extends Modifier implements Listener {
 		}
 
 		events.put(block.getLocation(), 0);
+
+		// Save BlockFace so Drilling can use the 'old' information
+		if (modManager.hasMod(tool, Drilling.instance()))
+			drillingCommunication.put(block.getLocation(), face);
+
 		Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
 			try {
 				DataHandler.playerBreakBlock(player, block, tool);

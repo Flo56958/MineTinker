@@ -4,7 +4,6 @@ import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTBlockBreakEvent;
-import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -168,16 +167,28 @@ public class Drilling extends Modifier implements Listener {
 		}
 
 		final int level = modManager.getModLevel(tool, this);
-		final BlockFace face = Lists.BLOCKFACE.get(player).getOppositeFace();
+
+		// Check if power save the old correct blockface
+		BlockFace face = Power.drillingCommunication.remove(block.getLocation());
+		boolean usedPowerCommunication = true;
+		if (!(modManager.hasMod(tool, Power.instance()) && face != null)) {
+			face = Lists.BLOCKFACE.get(player);
+			usedPowerCommunication = false;
+		}
+
 		final float hardness = block.getType().getHardness();
 
+		BlockFace finalFace = face.getOppositeFace();
 		Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
 			for (int i = 1; i <= level; i++) {
-				if (!drillingBlockBreak(block.getRelative(face, i), hardness, player, tool)) break;
+				if (!drillingBlockBreak(block.getRelative(finalFace, i),
+						hardness, player, tool)) break;
 			}
 		});
 
-		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType() + ")", "Blockface(" + face.toString() + ")");
+		ChatWriter.logModifier(player, event, this, tool,
+				"Block(" + block.getType() + ")",
+				"Blockface(" + face.toString() + (usedPowerCommunication ? "[Power]" : "") + ")");
 	}
 
 	private boolean drillingBlockBreak(final Block block, final float centralBlockHardness, final Player player, final ItemStack tool) {
@@ -195,7 +206,7 @@ public class Drilling extends Modifier implements Listener {
 
 		try {
 			events.put(block.getLocation(), 0);
-			if (ModManager.instance().hasMod(tool, Power.instance()))
+			if (modManager.hasMod(tool, Power.instance()))
 				Power.events.put(block.getLocation(), 0);
 			return DataHandler.playerBreakBlock(player, block, tool);
 		} catch (IllegalArgumentException ignored) {
