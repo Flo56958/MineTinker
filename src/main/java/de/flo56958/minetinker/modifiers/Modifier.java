@@ -344,10 +344,6 @@ public abstract class Modifier {
 			return;
 		}
 
-		if (getConfig().getBoolean("Recipe.Enabled")) {
-			return;
-		}
-
 		Location location = player.getLocation();
 		World world = location.getWorld();
 		PlayerInventory inventory = player.getInventory();

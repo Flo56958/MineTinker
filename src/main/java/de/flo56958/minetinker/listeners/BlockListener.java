@@ -200,8 +200,8 @@ public class BlockListener implements Listener {
 				final ItemStack item = player.getInventory().getItemInMainHand();
 
 				for (Modifier m : modManager.getAllMods()) {
+					if (!m.isEnchantable()) continue;
 					if (m.getModItem().getType().equals(item.getType())) {
-						if (!m.isEnchantable()) continue;
 						m.enchantItem(player);
 						event.setCancelled(true);
 						break;

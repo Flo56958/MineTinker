@@ -60,7 +60,7 @@ public class Protecting extends Modifier {
 		config.addDefault("SlotCost", 1);
 
 		config.addDefault("EnchantCost", 10);
-		config.addDefault("Enchantable", true);
+		config.addDefault("Enchantable", false);
 
 		config.addDefault("Recipe.Enabled", true);
 		config.addDefault("Recipe.Top", "DID");

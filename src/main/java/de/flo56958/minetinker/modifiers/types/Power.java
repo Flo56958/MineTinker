@@ -38,6 +38,8 @@ public class Power extends Modifier implements Listener {
 
 	public static final ConcurrentHashMap<Player, AtomicBoolean> HAS_POWER = new ConcurrentHashMap<>();
 	public static final ConcurrentHashMap<Location, Integer> events = new ConcurrentHashMap<>();
+
+	//Communicates the used BlockFace to the Drilling Modifier
 	public static final ConcurrentHashMap<Location, BlockFace> drillingCommunication = new ConcurrentHashMap<>();
 	private static Power instance;
 	private ArrayList<Material> blacklist;
@@ -154,10 +156,6 @@ public class Power extends Modifier implements Listener {
 			return false;
 		}
 
-		if (HAS_POWER.get(player).get()) {
-			return false;
-		}
-
 		if (toggleable) {
 			if (player.isSneaking()) {
 				return false;
@@ -190,6 +188,7 @@ public class Power extends Modifier implements Listener {
 			return;
 		}
 
+		//Was the block broken by Power or Drilling, blocks unwanted recursion
 		if (events.remove(block.getLocation(), 0)) {
 			return;
 		}
