@@ -1,6 +1,8 @@
 package de.flo56958.minetinker.listeners;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.gui.ButtonAction;
+import de.flo56958.minetinker.api.gui.GUI;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTBlockBreakEvent;
@@ -9,7 +11,10 @@ import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.modifiers.types.Power;
 import de.flo56958.minetinker.modifiers.types.SilkTouch;
+import de.flo56958.minetinker.utils.ChatWriter;
+import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,13 +26,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -196,17 +205,64 @@ public class BlockListener implements Listener {
 				return;
 			}
 
-			if (block.getType() == Material.getMaterial(Objects.requireNonNull(MineTinker.getPlugin().getConfig().getString("BlockToEnchantModifiers", Material.BOOKSHELF.name()), "BlockToEnchantModifiers is null!"))) {
-				final ItemStack item = player.getInventory().getItemInMainHand();
+			if (block.getType() == Material.getMaterial(
+					Objects.requireNonNull(MineTinker.getPlugin().getConfig()
+							.getString("BlockToEnchantModifiers", Material.BOOKSHELF.name()),
+							"BlockToEnchantModifiers is null!"))) {
+				final ArrayList<Modifier> modifiers = new ArrayList<>();
 
 				for (Modifier m : modManager.getAllMods()) {
 					if (!m.isEnchantable()) continue;
-					if (m.getModItem().getType().equals(item.getType())) {
-						m.enchantItem(player);
-						event.setCancelled(true);
-						break;
+					if (m.getModItem().getType().equals(norm.getType())) {
+						modifiers.add(m);
 					}
 				}
+
+				if (modifiers.isEmpty()) return;
+				else if (modifiers.size() == 1) {
+					Modifier m = modifiers.remove(0);
+					m.enchantItem(player);
+				} else {
+					// Create GUI for easy choosing of Modifier to enchant
+					final GUI gui = new GUI(MineTinker.getPlugin());
+					Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), gui::close, 5 * 60 * 20);
+
+					final int size = Math.min(modifiers.size() / 9 + 1, 6);
+					final GUI.Window window = gui.addWindow(size, LanguageManager.getString("GUIs.Enchantable.Title", player));
+					modifiers.sort(Comparator.comparing(Modifier::getName));
+
+					int slot = 0;
+					for (final Modifier mod : modifiers) {
+						final GUI.Window.Button button = window.addButton(slot++, mod.getModItem());
+						final ItemStack itemStack = button.getItemStack();
+
+						final ItemMeta meta = itemStack.getItemMeta();
+						assert meta != null;
+						final List<String> lore = meta.getLore();
+						assert lore != null;
+
+						String s = LanguageManager.getString("GUIs.Modifiers.EnchantCost", player)
+								.replaceFirst("%enchantCost", (mod.getEnchantCost() <= player.getLevel()
+												? ChatColor.WHITE
+												: ChatColor.RED)
+												+ ChatWriter.toRomanNumerals(mod.getEnchantCost()));
+						if (mod.getEnchantCost() <= player.getLevel()) {
+							lore.add(ChatColor.WHITE + s);
+							button.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE_ON_PLAYER(button,
+									(p, input) -> {
+										mod.enchantItem(p);
+										gui.close();
+									}));
+						} else {
+							lore.add(ChatColor.RED + s);
+						}
+						meta.setLore(lore);
+						itemStack.setItemMeta(meta);
+					}
+
+					gui.show(player);
+				}
+				event.setCancelled(true);
 			}
 		}
 	}

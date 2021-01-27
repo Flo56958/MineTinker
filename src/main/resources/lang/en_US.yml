@@ -94,6 +94,7 @@ GUIs.Statistics.Combat.TitlePage: "Combat Statistics for %tool - %pageNo"
 GUIs.Statistics.Combat.AmountKilled: "%amount times killed"
 GUIs.Statistics.Combat.DamageDealt: "%amount damage dealt"
 GUIs.Statistics.Combat.DamageReceived: "%amount damage received"
+GUIs.Enchantable.Title: "Choose the Modifier to enchant:"
 
 GUIs.ConfigurationEditor.config.PluginIncompatibility.Check: "Enables the search for incompatible plugins and MineTinker tries to react accordingly (e.g. change config settings)"
 GUIs.ConfigurationEditor.config.PluginIncompatibility.SkippedPlugins: "Disables searching for specified Plugins in this List"

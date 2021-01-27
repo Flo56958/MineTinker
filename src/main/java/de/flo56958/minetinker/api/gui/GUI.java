@@ -291,7 +291,7 @@ public class GUI implements Listener {
 			if (size <= 0) {
 				throw new IllegalArgumentException("Size of Inventory needs to be at least ONE!");
 			} else if (size > 6) {
-				throw new IllegalArgumentException("Size of Inventory needs to be at least SIX!");
+				throw new IllegalArgumentException("Size of Inventory needs to be at most SIX!");
 			}
 
 			size *= 9;
