@@ -211,7 +211,7 @@ public class BlockListener implements Listener {
 							"BlockToEnchantModifiers is null!"))) {
 				final ArrayList<Modifier> modifiers = new ArrayList<>();
 
-				for (Modifier m : modManager.getAllMods()) {
+				for (final Modifier m : modManager.getAllowedMods()) {
 					if (!m.isEnchantable()) continue;
 					if (m.getModItem().getType().equals(norm.getType())) {
 						modifiers.add(m);
@@ -220,7 +220,7 @@ public class BlockListener implements Listener {
 
 				if (modifiers.isEmpty()) return;
 				else if (modifiers.size() == 1) {
-					Modifier m = modifiers.remove(0);
+					final Modifier m = modifiers.remove(0);
 					m.enchantItem(player);
 				} else {
 					// Create GUI for easy choosing of Modifier to enchant
@@ -241,7 +241,7 @@ public class BlockListener implements Listener {
 						final List<String> lore = meta.getLore();
 						assert lore != null;
 
-						String s = LanguageManager.getString("GUIs.Modifiers.EnchantCost", player)
+						final String s = LanguageManager.getString("GUIs.Modifiers.EnchantCost", player)
 								.replaceFirst("%enchantCost", (mod.getEnchantCost() <= player.getLevel()
 												? ChatColor.WHITE
 												: ChatColor.RED)
