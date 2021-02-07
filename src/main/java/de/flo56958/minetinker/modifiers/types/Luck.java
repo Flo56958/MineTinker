@@ -25,6 +25,7 @@ public class Luck extends Modifier {
 		applicableEnchants.put(ToolType.BOW, Collections.singletonList(Enchantment.LOOT_BONUS_MOBS));
 		applicableEnchants.put(ToolType.CROSSBOW, Collections.singletonList(Enchantment.LOOT_BONUS_MOBS));
 		applicableEnchants.put(ToolType.HOE, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
+		applicableEnchants.put(ToolType.TRIDENT, Collections.singletonList(Enchantment.LOOT_BONUS_MOBS));
 		applicableEnchants.put(ToolType.PICKAXE, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
 		applicableEnchants.put(ToolType.SHOVEL, Collections.singletonList(Enchantment.LOOT_BONUS_BLOCKS));
 		applicableEnchants.put(ToolType.SWORD, Collections.singletonList(Enchantment.LOOT_BONUS_MOBS));
