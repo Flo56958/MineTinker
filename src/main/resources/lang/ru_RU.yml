@@ -94,6 +94,7 @@ GUIs.Statistics.Combat.TitlePage: "Боевая статистика для %too
 GUIs.Statistics.Combat.AmountKilled: "%amount раз убит"
 GUIs.Statistics.Combat.DamageDealt: "%amount урона нанесено"
 GUIs.Statistics.Combat.DamageReceived: "%amount урона получено"
+GUIs.Enchantable.Title: "Выберите Модификатор для зачарования:"
 
 GUIs.ConfigurationEditor.config.PluginIncompatibility.Check: "Включает поиск несовместимости плагинов. MineTinker пытается реагировать соответствующим образом (пример: меняет настройки конфига)"
 GUIs.ConfigurationEditor.config.PluginIncompatibility.SkippedPlugins: "Отключает поиск для Плагинов,  указанных в этом Списке"
