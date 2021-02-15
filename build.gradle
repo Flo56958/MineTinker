@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.bstats:bstats-bukkit:2.1.0'
+    implementation 'org.bstats:bstats-bukkit:2.2.1'
     compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
     compileOnly 'org.jetbrains:annotations:20.1.0'
 }
