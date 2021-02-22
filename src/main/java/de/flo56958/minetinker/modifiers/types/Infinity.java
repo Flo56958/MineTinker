@@ -17,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Arrays;
@@ -52,7 +53,7 @@ public class Infinity extends Modifier implements Listener {
 	}
 
 	@Override
-	public List<Enchantment> getAppliedEnchantments() {
+	public @NotNull List<Enchantment> getAppliedEnchantments() {
 		return Arrays.asList(Enchantment.ARROW_INFINITE, Enchantment.LOYALTY);
 	}
 
@@ -68,6 +69,7 @@ public class Infinity extends Modifier implements Listener {
 
 		config.addDefault("EnchantCost", 15);
 		config.addDefault("Enchantable", true);
+		config.addDefault("MinimumToolLevelRequirement", 1);
 
 		config.addDefault("Recipe.Enabled", false);
 

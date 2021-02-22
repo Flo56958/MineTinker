@@ -10,6 +10,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Arrays;
@@ -47,7 +48,7 @@ public class Sharpness extends Modifier {
 	}
 
 	@Override
-	public List<Enchantment> getAppliedEnchantments() {
+	public @NotNull List<Enchantment> getAppliedEnchantments() {
 		return Arrays.asList(Enchantment.DAMAGE_ALL, Enchantment.ARROW_DAMAGE, Enchantment.IMPALING);
 	}
 
@@ -63,6 +64,7 @@ public class Sharpness extends Modifier {
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
+		config.addDefault("MinimumToolLevelRequirement", 1);
 
 		config.addDefault("Recipe.Enabled", true);
 		config.addDefault("Recipe.Top", "QQQ");

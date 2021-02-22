@@ -64,6 +64,7 @@ public class Melting extends Modifier implements Listener {
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", true);
+		config.addDefault("MinimumToolLevelRequirement", 1);
 
 		config.addDefault("Recipe.Enabled", false);
 

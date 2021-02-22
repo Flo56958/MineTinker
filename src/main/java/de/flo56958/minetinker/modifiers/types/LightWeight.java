@@ -10,6 +10,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Collections;
@@ -45,7 +46,7 @@ public class LightWeight extends Modifier {
 	}
 
 	@Override
-	public List<Enchantment> getAppliedEnchantments() {
+	public @NotNull List<Enchantment> getAppliedEnchantments() {
 		return Collections.singletonList(Enchantment.PROTECTION_FALL);
 	}
 
@@ -61,6 +62,7 @@ public class LightWeight extends Modifier {
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", true);
+		config.addDefault("MinimumToolLevelRequirement", 1);
 
 		config.addDefault("Recipe.Enabled", false);
 

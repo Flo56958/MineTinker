@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.*;
@@ -60,7 +61,7 @@ public class Propelling extends Modifier implements Listener {
 	}
 
 	@Override
-	public List<Enchantment> getAppliedEnchantments() {
+	public @NotNull List<Enchantment> getAppliedEnchantments() {
 		return Collections.singletonList(Enchantment.RIPTIDE);
 	}
 
@@ -83,6 +84,7 @@ public class Propelling extends Modifier implements Listener {
 
 		config.addDefault("EnchantCost", 25);
 		config.addDefault("Enchantable", true);
+		config.addDefault("MinimumToolLevelRequirement", 1);
 
 		config.addDefault("Recipe.Enabled", false);
 

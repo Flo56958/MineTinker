@@ -12,7 +12,8 @@ public enum ModifierFailCause {
 	MAXIMUM_SLOTS_REACHED,
 	MOD_MAXLEVEL,
 	NO_PERMISSION,
-	NO_FREE_SLOTS;
+	NO_FREE_SLOTS,
+	TOOL_LEVEL_TO_LOW;
 
 	@Override
 	public String toString() {
@@ -36,6 +37,8 @@ public enum ModifierFailCause {
 				return LanguageManager.getString("ModifierFailCause.NoFreeSlots", player);
 			case NO_PERMISSION:
 				return LanguageManager.getString("ModifierFailCause.NoPermission", player);
+			case TOOL_LEVEL_TO_LOW:
+				return LanguageManager.getString("ModifierFailCause.ToolLevelToLow", player);
 		}
 		return "";
 	}

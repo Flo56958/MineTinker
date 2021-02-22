@@ -1059,6 +1059,11 @@ public class ModManager {
 			meta.setDisplayName(name);
 
 			final ArrayList<String> lore = new ArrayList<>(ChatWriter.splitString(description, 40));
+			//Tool Level Requirement
+			if (mod.getMinimumLevelRequirement() >= 1) {
+				lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.MinimumToolLevel")
+						.replaceFirst("%level", ChatWriter.toRomanNumerals(mod.getMinimumLevelRequirement())));
+			}
 			//Slot cost
 			if (mod.getSlotCost() >= 0) {
 				lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.SlotCost")

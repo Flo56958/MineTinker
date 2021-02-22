@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.*;
@@ -48,7 +49,7 @@ public class Speedy extends Modifier {
 	}
 
 	@Override
-	public List<Attribute> getAppliedAttributes() {
+	public @NotNull List<Attribute> getAppliedAttributes() {
 		return Collections.singletonList(Attribute.GENERIC_MOVEMENT_SPEED);
 	}
 
@@ -102,6 +103,7 @@ public class Speedy extends Modifier {
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
+		config.addDefault("MinimumToolLevelRequirement", 1);
 
 		config.addDefault("Recipe.Enabled", true);
 		config.addDefault("Recipe.Top", "R R");

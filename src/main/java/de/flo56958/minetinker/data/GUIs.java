@@ -105,6 +105,12 @@ public class GUIs {
 					lore.add(ChatColor.GOLD + LanguageManager.getString("GUIs.Modifiers.MaxLevel")
 							.replaceFirst("%maxLevel", maxLevel));
 
+					//Minimum Tool Level
+					if (m.getMinimumLevelRequirement() >= 1) {
+						lore.add(ChatColor.GOLD + LanguageManager.getString("GUIs.Modifiers.MinimumToolLevel")
+								.replaceFirst("%level", ChatWriter.toRomanNumerals(m.getMinimumLevelRequirement())));
+					}
+
 					// Enchant Cost
 					if (m.isEnchantable()) {
 						String cost = ChatColor.YELLOW + LanguageManager.getString("GUIs.Modifiers.EnchantCost");

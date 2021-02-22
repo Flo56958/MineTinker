@@ -103,6 +103,7 @@ public class Power extends Modifier implements Listener {
 
 		config.addDefault("EnchantCost", 15);
 		config.addDefault("Enchantable", true);
+		config.addDefault("MinimumToolLevelRequirement", 1);
 
 		config.addDefault("Recipe.Enabled", false);
 

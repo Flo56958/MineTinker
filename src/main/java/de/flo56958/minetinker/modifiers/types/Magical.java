@@ -72,8 +72,9 @@ public class Magical extends Modifier implements Listener {
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
+		config.addDefault("MinimumToolLevelRequirement", 1);
 
-		config.addDefault("Recipe.Enabled", true); //TODO: Change
+		config.addDefault("Recipe.Enabled", true);
 		config.addDefault("Recipe.Top", "BPB");
 		config.addDefault("Recipe.Middle", "PAP");
 		config.addDefault("Recipe.Bottom", "BPB");

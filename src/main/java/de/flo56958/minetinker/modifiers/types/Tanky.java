@@ -20,6 +20,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.*;
@@ -56,7 +57,7 @@ public class Tanky extends Modifier implements Listener {
 	}
 
 	@Override
-	public List<Attribute> getAppliedAttributes() {
+	public @NotNull List<Attribute> getAppliedAttributes() {
 		return Collections.singletonList(Attribute.GENERIC_MAX_HEALTH);
 	}
 
@@ -110,6 +111,7 @@ public class Tanky extends Modifier implements Listener {
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
+		config.addDefault("MinimumToolLevelRequirement", 1);
 
 		config.addDefault("Recipe.Enabled", true);
 		config.addDefault("Recipe.Top", "RBR");

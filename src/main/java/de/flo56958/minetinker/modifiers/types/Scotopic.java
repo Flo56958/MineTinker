@@ -77,6 +77,7 @@ public class Scotopic extends Modifier implements Listener {
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
+		config.addDefault("MinimumToolLevelRequirement", 1);
 
 		config.addDefault("Recipe.Enabled", true);
 		config.addDefault("Recipe.Top", "S S");

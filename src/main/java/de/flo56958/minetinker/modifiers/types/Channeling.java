@@ -53,7 +53,7 @@ public class Channeling extends Modifier implements Listener {
 	}
 
 	@Override
-	public List<Enchantment> getAppliedEnchantments() {
+	public @NotNull List<Enchantment> getAppliedEnchantments() {
 		return Collections.singletonList(Enchantment.CHANNELING);
 	}
 
@@ -69,6 +69,7 @@ public class Channeling extends Modifier implements Listener {
 
 		config.addDefault("EnchantCost", 50);
 		config.addDefault("Enchantable", false);
+		config.addDefault("MinimumToolLevelRequirement", 1);
 
 		config.addDefault("Recipe.Enabled", true);
 		config.addDefault("Recipe.Top", "SPS");

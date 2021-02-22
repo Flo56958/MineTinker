@@ -21,6 +21,9 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.Collections;
@@ -42,6 +45,8 @@ public abstract class Modifier {
 
 	protected int customModelData = -1;
 
+	private int minimumLevelRequirement = 1;
+
 	/**
 	 * Class constructor
 	 *
@@ -54,18 +59,21 @@ public abstract class Modifier {
 	}
 
 	boolean checkAndAdd(Player player, ItemStack tool, String permission, boolean isCommand, boolean fromRandom, boolean silent) {
+		//Check for free Slots
 		if ((modManager.getFreeSlots(tool) < this.getSlotCost() && !this.equals(ExtraModifier.instance())) && !isCommand) {
 			if (!silent)
 				pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.NO_FREE_SLOTS, false));
 			return false;
 		}
 
+		//Check for Permission
 		if (!player.hasPermission("minetinker.modifiers." + permission + ".apply")) {
 			if (!silent)
 				pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.NO_PERMISSION, isCommand));
 			return false;
 		}
 
+		//Check for ToolType
 		FileConfiguration modifiersconfig = ConfigurationManager.getConfig("Modifiers.yml");
 		if (!(modifiersconfig.getBoolean("CommandIgnoresToolTypes") && isCommand && !fromRandom) && !this.isMaterialCompatible(tool.getType())) {
 			if (!silent)
@@ -73,12 +81,21 @@ public abstract class Modifier {
 			return false;
 		}
 
+		//Check for Tool Level
+		if(modManager.getLevel(tool) < this.minimumLevelRequirement) {
+			if (!silent)
+				pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.TOOL_LEVEL_TO_LOW, isCommand));
+			return false;
+		}
+
+		//Check for Max Level
 		if (!(modifiersconfig.getBoolean("CommandIgnoresMaxLevel") && isCommand && !fromRandom) && modManager.getModLevel(tool, this) >= this.getMaxLvl()) {
 			if (!silent)
 				pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.MOD_MAXLEVEL, isCommand));
 			return false;
 		}
 
+		//Check for Incompatibilities
 		if (!(modManager.hasMod(tool, this) && modifiersconfig.getBoolean("IgnoreIncompatibilityIfModifierAlreadyApplied"))) {
 			if (fromRandom || !(modifiersconfig.getBoolean("CommandIgnoresIncompatibilities") && isCommand)) {
 				final Set<Modifier> incompatibility = modManager.getIncompatibilities(this);
@@ -107,13 +124,14 @@ public abstract class Modifier {
 
 		modManager.addMod(tool, this);
 
+		//Reduce Slotamount
 		if (!isCommand) {
 			modManager.setFreeSlots(tool, modManager.getFreeSlots(tool) - this.getSlotCost());
-		} else {
-			if (!silent) {
-				ModifierApplyEvent event = new ModifierApplyEvent(player, tool, this, modManager.getFreeSlots(tool), true);
-				Bukkit.getPluginManager().callEvent(event);
-			}
+		}
+
+		if (!silent) {
+			ModifierApplyEvent event = new ModifierApplyEvent(player, tool, this, modManager.getFreeSlots(tool), true);
+			Bukkit.getPluginManager().callEvent(event);
 		}
 
 		return true;
@@ -143,6 +161,10 @@ public abstract class Modifier {
 		return modItem;
 	}
 
+	public int getMinimumLevelRequirement() {
+		return minimumLevelRequirement;
+	}
+
 	public boolean hasRecipe() {
 		return getConfig().getBoolean("Recipe.Enabled", false);
 	}
@@ -166,7 +188,7 @@ public abstract class Modifier {
 	/**
 	 * changes the core settings of the Modifier (like a secondary constructor)
 	 */
-	protected void init(Material m) {
+	protected void init(@NotNull Material m) {
 		FileConfiguration config = getConfig();
 
 		try {
@@ -178,6 +200,7 @@ public abstract class Modifier {
 
 		this.maxLvl = config.getInt("MaxLevel");
 		this.slotCost = config.getInt("SlotCost", 1);
+		this.minimumLevelRequirement = config.getInt("MinimumToolLevelRequirement", 1);
 
 		if (source.equals(MineTinker.getPlugin())) { //normal Languagesystem-Integration
 			String langStart = "Modifier." + getKey();
@@ -195,7 +218,7 @@ public abstract class Modifier {
 					ChatWriter.addColors(Objects.requireNonNull(config.getString("DescriptionModifierItem", ""), "Config has no DescriptionModifierItem-Value!")), this);
 		}
 
-		ItemMeta itemMeta = this.modItem.getItemMeta();
+		final ItemMeta itemMeta = this.modItem.getItemMeta();
 		if (itemMeta != null) itemMeta.setCustomModelData(this.customModelData);
 		this.modItem.setItemMeta(itemMeta);
 		if (ConfigurationManager.getConfig("Modifiers.yml").getBoolean("UseCustomModelData", false)) {
@@ -255,20 +278,20 @@ public abstract class Modifier {
 	/**
 	 * @return a list of enchantments that may be applied when the modifier is applied
 	 */
-	public List<Enchantment> getAppliedEnchantments() {
+	public @NotNull List<Enchantment> getAppliedEnchantments() {
 		return Collections.emptyList();
 	}
 
 	/**
 	 * @return a list of attributes that may be applied when the modifier is applied
 	 */
-	public List<Attribute> getAppliedAttributes() {
+	public @NotNull List<Attribute> getAppliedAttributes() {
 		return Collections.emptyList();
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
-	protected boolean isMaterialCompatible(Material material) {
-		for (ToolType toolType : getAllowedTools()) {
+	protected boolean isMaterialCompatible(@NotNull Material material) {
+		for (final ToolType toolType : getAllowedTools()) {
 			if (toolType.contains(material)) {
 				return true;
 			}
@@ -286,27 +309,27 @@ public abstract class Modifier {
 			return;
 		}
 
-		FileConfiguration config = getConfig();
+		final FileConfiguration config = getConfig();
 		try {
-			NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Modifier_" + getKey());
-			ShapedRecipe newRecipe = new ShapedRecipe(nkey, this.getModItem()); //reload recipe
-			String top = config.getString("Recipe.Top");
-			String middle = config.getString("Recipe.Middle");
-			String bottom = config.getString("Recipe.Bottom");
-			ConfigurationSection materials = config.getConfigurationSection("Recipe.Materials");
+			final NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Modifier_" + getKey());
+			final ShapedRecipe newRecipe = new ShapedRecipe(nkey, this.getModItem()); //reload recipe
+			final String top = config.getString("Recipe.Top");
+			final String middle = config.getString("Recipe.Middle");
+			final String bottom = config.getString("Recipe.Bottom");
+			final ConfigurationSection materials = config.getConfigurationSection("Recipe.Materials");
 
 			newRecipe.shape(top, middle, bottom); //makes recipe
 
 			if (materials != null) {
-				for (String key : materials.getKeys(false)) {
-					String materialName = materials.getString(key);
+				for (final String key : materials.getKeys(false)) {
+					final String materialName = materials.getString(key);
 
 					if (materialName == null) {
 						ChatWriter.logInfo(LanguageManager.getString("Modifier.MaterialEntryNotFound"));
 						return;
 					}
 
-					Material material = Material.getMaterial(materialName);
+					final Material material = Material.getMaterial(materialName);
 
 					if (material == null) {
 						ChatWriter.log(false, "Material [" + materialName + "] is null for mod [" + this.name + "]");
@@ -330,7 +353,8 @@ public abstract class Modifier {
 		}
 	}
 
-	public boolean equals(Object o) {
+	@Contract(value = "null -> false", pure = true)
+	public boolean equals(@Nullable Object o) {
 		if (o instanceof Modifier) {
 			return ((Modifier) o).getKey().equals(this.getKey());
 		}
@@ -339,7 +363,7 @@ public abstract class Modifier {
 
 	// ---------------------- Enchantable Stuff ----------------------
 
-	public void enchantItem(Player player) {
+	public void enchantItem(@NotNull Player player) {
 		if (!player.hasPermission("minetinker.modifiers." + getKey().replace("-", "").toLowerCase() + ".craft")) {
 			return;
 		}

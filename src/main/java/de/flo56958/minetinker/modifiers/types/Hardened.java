@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.*;
@@ -50,7 +51,7 @@ public class Hardened extends Modifier implements Listener {
 	}
 
 	@Override
-	public List<Attribute> getAppliedAttributes() {
+	public @NotNull List<Attribute> getAppliedAttributes() {
 		return Arrays.asList(Attribute.GENERIC_ARMOR, Attribute.GENERIC_ARMOR_TOUGHNESS);
 	}
 
@@ -155,6 +156,7 @@ public class Hardened extends Modifier implements Listener {
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
+		config.addDefault("MinimumToolLevelRequirement", 1);
 
 		config.addDefault("Recipe.Enabled", true);
 		config.addDefault("Recipe.Top", "D D");

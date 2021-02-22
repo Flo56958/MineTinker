@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Collections;
@@ -54,7 +55,7 @@ public class SelfRepair extends Modifier implements Listener {
 	}
 
 	@Override
-	public List<Enchantment> getAppliedEnchantments() {
+	public @NotNull List<Enchantment> getAppliedEnchantments() {
 		// This may be an issue if (like by default) Self-Repair doesn't apply mending
 		return Collections.singletonList(Enchantment.MENDING);
 	}
@@ -74,6 +75,7 @@ public class SelfRepair extends Modifier implements Listener {
 
 		config.addDefault("EnchantCost", 25);
 		config.addDefault("Enchantable", true);
+		config.addDefault("MinimumToolLevelRequirement", 1);
 
 		config.addDefault("Recipe.Enabled", false);
 
