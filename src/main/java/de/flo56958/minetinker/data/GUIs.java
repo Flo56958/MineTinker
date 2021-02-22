@@ -101,20 +101,29 @@ public class GUIs {
 					lore.add("");
 
 					// Max level
-					String maxLevel = ChatColor.WHITE + ChatWriter.toRomanNumerals(m.getMaxLvl()) + ChatColor.GOLD;
+					final String maxLevel = ChatColor.WHITE
+							+ (ModManager.layout.getBoolean("UseRomans.Level")
+							? ChatWriter.toRomanNumerals(m.getMaxLvl())
+							: String.valueOf(m.getMaxLvl())) + ChatColor.GOLD;
 					lore.add(ChatColor.GOLD + LanguageManager.getString("GUIs.Modifiers.MaxLevel")
 							.replaceFirst("%maxLevel", maxLevel));
 
 					//Minimum Tool Level
 					if (m.getMinimumLevelRequirement() >= 1) {
 						lore.add(ChatColor.GOLD + LanguageManager.getString("GUIs.Modifiers.MinimumToolLevel")
-								.replaceFirst("%level", ChatWriter.toRomanNumerals(m.getMinimumLevelRequirement())));
+								.replaceFirst("%level",
+										ModManager.layout.getBoolean("UseRomans.Level")
+												? ChatWriter.toRomanNumerals(m.getMinimumLevelRequirement())
+												: String.valueOf(m.getMinimumLevelRequirement())));
 					}
 
 					// Enchant Cost
 					if (m.isEnchantable()) {
-						String cost = ChatColor.YELLOW + LanguageManager.getString("GUIs.Modifiers.EnchantCost");
-						lore.add(cost.replaceFirst("%enchantCost", ChatWriter.toRomanNumerals(m.getEnchantCost())));
+						final String cost = ChatColor.YELLOW + LanguageManager.getString("GUIs.Modifiers.EnchantCost");
+						lore.add(cost.replaceFirst("%enchantCost",
+								ModManager.layout.getBoolean("UseRomans.Level")
+										? ChatWriter.toRomanNumerals(m.getEnchantCost())
+										: String.valueOf(m.getEnchantCost())));
 						lore.addAll(ChatWriter.splitString(LanguageManager.getString("GUIs.Modifiers.BlockToEnchant")
 								.replace("%block", ChatColor.ITALIC
 										+ MineTinker.getPlugin().getConfig().getString("BlockToEnchantModifiers", "")
@@ -130,10 +139,11 @@ public class GUIs {
 					}
 
 					//Slot cost
-					if (m.getSlotCost() >= 0) {
-						lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.SlotCost")
-								.replaceFirst("%amount", String.valueOf(m.getSlotCost())));
-					}
+					lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.SlotCost")
+							.replaceFirst("%amount",
+										ModManager.layout.getBoolean("UseRomans.FreeSlots")
+												? ChatWriter.toRomanNumerals(m.getSlotCost())
+												: String.valueOf(m.getSlotCost())));
 
 					lore.add("");
 
@@ -142,8 +152,8 @@ public class GUIs {
 					incomp.removeIf(mod -> !mod.isAllowed());
 					if (!incomp.isEmpty()) {
 						incomp.sort(Comparator.comparing(Modifier::getName));
-						StringBuilder incompatibilities = new StringBuilder();
-						for (Modifier in : incomp) {
+						final StringBuilder incompatibilities = new StringBuilder();
+						for (final Modifier in : incomp) {
 							incompatibilities.append(in.getName()).append(", ");
 						}
 
@@ -155,35 +165,35 @@ public class GUIs {
 					}
 
 					// Applied Enchantments
-					List<Enchantment> enchants = m.getAppliedEnchantments();
+					final List<Enchantment> enchants = m.getAppliedEnchantments();
 					if (!enchants.isEmpty()) {
 						enchants.sort(Comparator.comparing(e -> LanguageManager.getString("Enchantment." + e.getKey().getKey())));
 						lore.add(ChatColor.BLUE + "" + ChatColor.BOLD + LanguageManager.getString("GUIs.Modifiers.CanApply"));
 
-						StringBuilder e = new StringBuilder();
-						for (Enchantment enchant : enchants) {
+						final StringBuilder e = new StringBuilder();
+						for (final Enchantment enchant : enchants) {
 							e.append(LanguageManager.getString("Enchantment." + enchant.getKey().getKey())).append(", ");
 						}
 
-						List<String> lines = ChatWriter.splitString(e.substring(0, e.length() - 2),30);
+						final List<String> lines = ChatWriter.splitString(e.substring(0, e.length() - 2),30);
 						lore.addAll(lines);
 					}
 
 					// Allowed Tools
 					lore.add(ChatColor.BLUE + "" + ChatColor.BOLD + LanguageManager.getString("GUIs.Modifiers.WorksOn"));
 
-					StringBuilder builder = new StringBuilder();
+					final StringBuilder builder = new StringBuilder();
 
 					builder.append(ChatColor.WHITE);
 
-					List<ToolType> types = m.getAllowedTools();
+					final List<ToolType> types = m.getAllowedTools();
 					types.sort(Comparator.comparing(t -> LanguageManager.getString("ToolType." + t.name())));
 
-					for (ToolType toolType : types) {
+					for (final ToolType toolType : types) {
 						builder.append(LanguageManager.getString("ToolType." + toolType.name())).append(", ");
 					}
 
-					List<String> lines = ChatWriter.splitString(builder.substring(0, builder.length() - 2),30);
+					final List<String> lines = ChatWriter.splitString(builder.substring(0, builder.length() - 2),30);
 					lore.addAll(lines);
 
 					// Apply lore changes
@@ -231,7 +241,7 @@ public class GUIs {
 									slot++;
 								}
 
-								for (char c : s.toCharArray()) {
+								for (final char c : s.toCharArray()) {
 									slot++;
 
 									if (c == ' ') {

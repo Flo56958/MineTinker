@@ -38,7 +38,7 @@ import java.util.*;
 public class ModManager {
 
 	private static FileConfiguration config;
-	private static FileConfiguration layout;
+	public static FileConfiguration layout;
 	private static ModManager instance;
 
 	static {
@@ -360,8 +360,9 @@ public class ModManager {
 	 * @param m The modifier to get the Incompatibilities for
 	 * @return The incompatibilities
 	 */
-	public @Nullable Set<Modifier> getIncompatibilities(final Modifier m) {
-		return incompatibilities.get(m);
+	public @NotNull Set<Modifier> getIncompatibilities(final Modifier m) {
+		final Set<Modifier> set = incompatibilities.get(m);
+		return set != null ? set : new HashSet<>();
 	}
 
 	/**
@@ -1051,7 +1052,8 @@ public class ModManager {
 		}
 	}
 
-	public @NotNull ItemStack createModifierItem(@NotNull final Material m, @NotNull final String name, @NotNull final String description, @NotNull final Modifier mod) {
+	public @NotNull ItemStack createModifierItem(@NotNull final Material m, @NotNull final String name,
+												 @NotNull final String description, @NotNull final Modifier mod) {
 		final ItemStack is = new ItemStack(m, 1);
 		final ItemMeta meta = is.getItemMeta();
 
@@ -1062,12 +1064,18 @@ public class ModManager {
 			//Tool Level Requirement
 			if (mod.getMinimumLevelRequirement() >= 1) {
 				lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.MinimumToolLevel")
-						.replaceFirst("%level", ChatWriter.toRomanNumerals(mod.getMinimumLevelRequirement())));
+						.replaceFirst("%level",
+								layout.getBoolean("UseRomans.Level")
+										? ChatWriter.toRomanNumerals(mod.getMinimumLevelRequirement())
+										: String.valueOf(mod.getMinimumLevelRequirement())));
 			}
 			//Slot cost
 			if (mod.getSlotCost() >= 0) {
 				lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.SlotCost")
-						.replaceFirst("%amount", String.valueOf(mod.getSlotCost())));
+						.replaceFirst("%amount",
+								layout.getBoolean("UseRomans.FreeSlots")
+										? ChatWriter.toRomanNumerals(mod.getSlotCost())
+										: String.valueOf(mod.getSlotCost())));
 			}
 			meta.setLore(lore);
 
