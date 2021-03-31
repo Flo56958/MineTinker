@@ -32,8 +32,10 @@ public class GrindstoneListener implements Listener {
 
 	private final HashMap<Player, GrindstoneSave> save = new HashMap<>();
 
-	private static class GrindstoneSave {
+	private static final class GrindstoneSave {
 		final ArrayList<ItemStack> itemStacks = new ArrayList<>();
+
+		ItemStack tool;
 		int slots;
 	}
 
@@ -80,6 +82,7 @@ public class GrindstoneListener implements Listener {
 				final Random rand = new Random();
 				int amount = 0;
 				boolean hadMods = false;
+				gs.tool = result;
 				for (Modifier mod : ModManager.instance().getAllMods()) {
 					int level = ModManager.instance().getModLevel(result, mod);
 					amount += level * mod.getSlotCost();
@@ -112,7 +115,7 @@ public class GrindstoneListener implements Listener {
 
 				if (!hadMods) {
 					Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
-							() -> event.getClickedInventory().setItem(2, null), 1);
+							() -> event.getClickedInventory().setItem(2, null), 2);
 					return;
 				}
 
@@ -141,10 +144,14 @@ public class GrindstoneListener implements Listener {
 				}
 
 				final GrindstoneSave gs = save.remove(player);
-				if (gs == null) {
+				//Check for bugged state
+				if (gs == null || !gs.tool.equals(result)) {
 					event.setCancelled(true);
 					ChatWriter.sendActionBar(player,
 							LanguageManager.getString("Alert.InternalError", player));
+					if (config.getBoolean("Sound.OnFail")) {
+						player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 2F);
+					}
 					return;
 				}
 
