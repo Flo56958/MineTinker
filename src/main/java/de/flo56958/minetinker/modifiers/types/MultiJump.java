@@ -3,6 +3,7 @@ package de.flo56958.minetinker.modifiers.types;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
+import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -23,17 +24,14 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/*
-	The idea of allowing the Player to fly and then cancel the ToggleFlightEvent comes from the Plugin
-		"Double Jump Advanced" by HotShot - https://www.spigotmc.org/resources/9441/
-	But the used algorithm is greatly changed to fit MT. The On-Ground-Check was created from the ground up.
- */
 public class MultiJump extends Modifier implements Listener {
 
 	private static MultiJump instance;
 
 	//The Integer tells the Plugin how much Level of MultiJump have been used up by the Player
 	private final ConcurrentHashMap<Player, AtomicInteger> jumpcharge = new ConcurrentHashMap<>();
+
+	private final HashSet<Player> allowFlight = new HashSet<>();
 
 	private MultiJump() {
 		super(MineTinker.getPlugin());
@@ -65,7 +63,7 @@ public class MultiJump extends Modifier implements Listener {
 		FileConfiguration config = getConfig();
 		config.options().copyDefaults(true);
 
-		config.addDefault("Allowed", true);
+		config.addDefault("Allowed", true); //Disabled by default because incompatible with fly plugins
 		config.addDefault("Color", "%DARK_GREEN%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 3);
@@ -91,22 +89,50 @@ public class MultiJump extends Modifier implements Listener {
 
 		init(Material.RABBIT_FOOT);
 
+		//Reset the used Datastructures
+		//This can enable the player to jump more often than they are eligible to but reload() should not be called
+		//often
 		jumpcharge.clear();
+		for (Player p : allowFlight) {
+			p.setAllowFlight(false);
+		}
+		allowFlight.clear();
+	}
+
+	//These two methods should improve compatibility with flight plugins as with them MT will only disallow flight
+	//if MT previously enabled it for that player.
+	//With them the player should use flight plugins without problems unless he has Multijump boots equipped.
+	private void enableFlight(@NotNull Player p) {
+		synchronized (allowFlight) {
+			allowFlight.add(p);
+			p.setAllowFlight(true);
+		}
+	}
+
+	private void disableFlight(@NotNull Player p) {
+		synchronized (allowFlight) {
+			if (allowFlight.remove(p)) {
+				p.setAllowFlight(false);
+			}
+		}
 	}
 
 	@EventHandler
 	public void onQuit(@NotNull final PlayerQuitEvent e) {
 		jumpcharge.remove(e.getPlayer());
+		disableFlight(e.getPlayer());
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onMove(@NotNull final PlayerMoveEvent e) {
 		final Player p = e.getPlayer();
-		if (p.getGameMode() == GameMode.CREATIVE) {
+
+		ChatWriter.sendActionBar(p, "AllowFlight: " + p.getAllowFlight());
+		if (p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR) {
 			return;
 		}
 
-		if (p.isFlying() || p.isSwimming() || p.isSleeping() || p.isGliding() || p.isDead()) {
+		if (p.isFlying()) {
 			return;
 		}
 
@@ -119,7 +145,14 @@ public class MultiJump extends Modifier implements Listener {
 			return;
 		}
 
-		if (p.hasPermission("minetinker.modifiers.doublejump.use")) {
+		//Do not check for p.isGliding() here as you should be able to jump mid-glide and not have the AllowFlight(true)
+		//exploitable
+		if (p.isSwimming() || p.isSleeping() /*|| p.isGliding()*/ || p.isDead()) {
+			disableFlight(p);
+			return;
+		}
+
+		if (p.hasPermission("minetinker.modifiers.multijump.use")) {
 			AtomicInteger jumpcharge = this.jumpcharge.get(e.getPlayer());
 			if (jumpcharge == null) {
 				jumpcharge = new AtomicInteger(0);
@@ -138,6 +171,7 @@ public class MultiJump extends Modifier implements Listener {
 					//Only decrement one at a time to have at least a little cooldown
 					jumpcharge.decrementAndGet();
 				}
+				disableFlight(p);
 			}
 
 			//"Enable" multijump as a ToggleFlight hack
@@ -146,19 +180,33 @@ public class MultiJump extends Modifier implements Listener {
 			else if (below.getType() == Material.CAVE_AIR || below.getType() == Material.AIR
 					|| below.getType() == Material.VOID_AIR) {
 				//This can and will remove flight if the player uses a fly command
-				p.setAllowFlight(jumpcharge.get() < level);
+				if(jumpcharge.get() < level) {
+					enableFlight(p);
+				} else {
+					disableFlight(p);
+				}
+			}
+
+			//Disable when swimming
+			else if (below.getType() == Material.WATER || below.getType() == Material.BUBBLE_COLUMN
+					|| below.getType() == Material.LAVA) {
+				disableFlight(p);
 			}
 		}
 	}
 
-	@EventHandler(priority = EventPriority.LOW)
+	//This event only triggers when the Player has AllowFlight set to true.
+	//This method of jumping is not really clean.
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onFly(@NotNull final PlayerToggleFlightEvent e) {
 		final Player p = e.getPlayer();
-		if (p.getGameMode() == GameMode.CREATIVE) {
+		if (p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR) {
 			return;
 		}
 
-		if (p.isFlying() || p.isSwimming() || p.isSleeping() || p.isGliding() || p.isDead()) {
+		//Do not check for p.isGliding() here as you should be able to jump mid-glide and not have the AllowFlight(true)
+		//exploitable while flying with elytra.
+		if (p.isFlying() || p.isSwimming() || p.isSleeping() /*|| p.isGliding()*/ || p.isDead()) {
 			return;
 		}
 
@@ -171,7 +219,7 @@ public class MultiJump extends Modifier implements Listener {
 			return;
 		}
 
-		if (p.hasPermission("minetinker.modifiers.doublejump.use")) {
+		if (p.hasPermission("minetinker.modifiers.multijump.use")) {
 			AtomicInteger jumpcharge = this.jumpcharge.get(e.getPlayer());
 			if (jumpcharge == null) {
 				jumpcharge = new AtomicInteger(0);
@@ -187,7 +235,7 @@ public class MultiJump extends Modifier implements Listener {
 			}
 
 			//This will remove flight if the player uses a fly command
-			p.setAllowFlight(false);
+			disableFlight(p);
 		}
 	}
 }
