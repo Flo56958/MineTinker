@@ -76,8 +76,7 @@ public class NameCommand implements SubCommand {
 
 	@Override
 	public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String[] args) {
-		ArrayList<String> result = new ArrayList<>();
-		return result;
+		return new ArrayList<>();
 	}
 
 
@@ -101,8 +100,7 @@ public class NameCommand implements SubCommand {
 
 	@Override @NotNull
 	public Map<Integer, List<ArgumentType>> getArgumentsToParse() {
-		Map<Integer, List<ArgumentType>> argumentsToParse = new HashMap<>();
-		return argumentsToParse;
+		return new HashMap<>();
 	}
 
 	@Override

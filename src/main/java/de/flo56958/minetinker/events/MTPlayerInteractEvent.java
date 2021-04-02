@@ -1,7 +1,6 @@
 package de.flo56958.minetinker.events;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -13,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * it's only purpose is it to activate the Listeners if a PlayerInteractEvent matches
  * the criteria (right Tool, ...)
  */
-public class MTPlayerInteractEvent extends Event implements Cancellable {
+public class MTPlayerInteractEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 
 	private final Player player;
@@ -58,13 +57,4 @@ public class MTPlayerInteractEvent extends Event implements Cancellable {
 		return handlers;
 	}
 
-	@Override
-	public boolean isCancelled() {
-		return event.isCancelled();
-	}
-
-	@Override
-	public void setCancelled(boolean b) {
-		event.setCancelled(b);
-	}
 }

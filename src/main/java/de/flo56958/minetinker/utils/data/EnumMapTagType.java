@@ -2,15 +2,18 @@ package de.flo56958.minetinker.utils.data;
 
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.EnumMap;
 
+@SuppressWarnings("unchecked")
 public class EnumMapTagType<K extends Enum<K>, V> implements PersistentDataType<byte[], EnumMap<K, V>> {
 
     private final EnumMap<K, V> reference;
 
+    @Contract(pure = true)
     public EnumMapTagType(EnumMap<K, V> ref) {
         this.reference = ref;
     }
