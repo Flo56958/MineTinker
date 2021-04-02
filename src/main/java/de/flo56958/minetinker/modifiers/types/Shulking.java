@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -101,17 +101,21 @@ public class Shulking extends Modifier implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void onMove(PlayerMoveEvent event) {
+	public void onMove(@NotNull final EntityPotionEffectEvent event) {
 		if (!this.givesImmunity) return;
 
-		Player player = event.getPlayer();
+		if (!(event.getEntity() instanceof Player)) {
+			return;
+		}
+
+		final Player player = (Player) event.getEntity();
 		if (!player.hasPermission("minetinker.modifiers.shulking.use")) {
 			return;
 		}
 
 		boolean hasShulking = false;
 		ItemStack armor = null;
-		for (ItemStack stack : player.getInventory().getArmorContents()) {
+		for (final ItemStack stack : player.getInventory().getArmorContents()) {
 			if (stack == null) continue;
 			if (modManager.hasMod(stack, this)) {
 				hasShulking = true;
@@ -121,20 +125,22 @@ public class Shulking extends Modifier implements Listener {
 		}
 
 		if (!hasShulking) return;
-		if (player.hasPotionEffect(PotionEffectType.LEVITATION)) {
+
+		if (event.getNewEffect() != null && event.getNewEffect().getType().equals(PotionEffectType.LEVITATION)) {
 			player.removePotionEffect(PotionEffectType.LEVITATION);
+			event.setCancelled(true);
 			ChatWriter.logModifier(player, event, this, armor, "RemoveEffect");
 		}
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void effect(MTEntityDamageByEntityEvent event) {
+	public void effect(@NotNull final MTEntityDamageByEntityEvent event) {
 		if (!(event.getEntity() instanceof LivingEntity)) {
 			return;
 		}
 
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
 
 		if (!player.hasPermission("minetinker.modifiers.shulking.use")) {
 			return;
@@ -151,9 +157,9 @@ public class Shulking extends Modifier implements Listener {
 		((LivingEntity) event.getEntity()).addPotionEffect(getPotionEffect(event, event.getEntity(), player, tool));
 	}
 
-	public PotionEffect getPotionEffect(@Nullable Event event, @Nullable Entity entity, @NotNull Player player, @NotNull ItemStack tool) {
-		int level = modManager.getModLevel(tool, this);
-		int amplifier = this.effectAmplifier * (level - 1);
+	public PotionEffect getPotionEffect(@Nullable final Event event, @Nullable final Entity entity, @NotNull final Player player, @NotNull final ItemStack tool) {
+		final int level = modManager.getModLevel(tool, this);
+		final int amplifier = this.effectAmplifier * (level - 1);
 		if (entity == null) {
 			ChatWriter.logModifier(player, event, this, tool,
 					"Duration(" + duration + ")",

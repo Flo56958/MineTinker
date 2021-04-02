@@ -20,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Collections;
@@ -40,25 +41,25 @@ public class Photosynthesis extends Modifier implements Listener {
 	private boolean allowOffhand;
 
 	private final Runnable runnable = () -> {
-		for (UUID id : data.keySet()) {
-			Player player = Bukkit.getPlayer(id);
+		for (final UUID id : data.keySet()) {
+			final Player player = Bukkit.getPlayer(id);
 			if (player == null || !player.isOnline()) {
 				data.remove(id);
 				continue;
 			}
 
-			if (player.isDead()) continue;
+			if (player.isDead() || player.isFlying() || player.isGliding() || player.isSleeping() || player.isSwimming()) continue;
 			if (!player.hasPermission("minetinker.modifiers.photosynthesis.use")) continue;
 
-			Tupel tupel = data.get(id);
-			Location pLoc = player.getLocation();
+			final Tupel tupel = data.get(id);
+			final Location pLoc = player.getLocation();
 			if (pLoc.getWorld().equals(tupel.loc.getWorld()) && pLoc.getX() == tupel.loc.getX() && pLoc.getY() == tupel.loc.getY() && pLoc.getZ() == tupel.loc.getZ()) {
 				if (tupel.loc.getWorld().hasStorm()) {
 					tupel.time = System.currentTimeMillis(); //reset time
 					continue; //does not work while raining
 				}
 
-				long worldTime = tupel.loc.getWorld().getTime() / 1000; //to get hours; 0 -> 6am
+				final long worldTime = tupel.loc.getWorld().getTime() / 1000; //to get hours; 0 -> 6am
 				if (worldTime > 12) { //after 6pm
 					tupel.time = System.currentTimeMillis(); //reset time
 					continue; //does not work while night
@@ -66,40 +67,40 @@ public class Photosynthesis extends Modifier implements Listener {
 
 				double daytimeMultiplier = 1.0;
 				if (fullEffectAtNoon) {
-					long difference = Math.abs(6 - worldTime);
+					final long difference = Math.abs(6 - worldTime);
 					daytimeMultiplier = 1.0 - (6 - difference) / 6.0; //value range: 0.0 - 1.0
 				}
 
 				long timeDif = System.currentTimeMillis() - tupel.time - (tickTime * 50L); //to make effect faster with time (first tick period does not count)
 				if (!tupel.isAboveGround) continue;
 
-				PlayerInventory inv = player.getInventory();
-				ItemStack[] items = new ItemStack[6];
+				final PlayerInventory inv = player.getInventory();
+				final ItemStack[] items = new ItemStack[6];
 
 				int i = 0;
-				for (ItemStack item : inv.getArmorContents()) {
+				for (final ItemStack item : inv.getArmorContents()) {
 					items[i++] = item;
 				}
 
 				items[4] = inv.getItemInMainHand();
 				if (allowOffhand) items[5] = inv.getItemInOffHand();
 
-				double timeAdvantage = multiplierPerTick * ((timeDif / 50.0) / tickTime);
+				final double timeAdvantage = multiplierPerTick * ((timeDif / 50.0) / tickTime);
 
-				for (ItemStack item : items) {
+				for (final ItemStack item : items) {
 					if (item == null) continue;
 					if (!(modManager.isToolViable(item) || modManager.isArmorViable(item))) continue;
 					//is MineTinker at this point
 
-					int level = modManager.getModLevel(item, this);
+					final int level = modManager.getModLevel(item, this);
 					if (level <= 0) continue; //does not have the mod
 
-					ItemMeta meta = item.getItemMeta();
+					final ItemMeta meta = item.getItemMeta();
 					if (meta instanceof Damageable) {
-						int oldDamage = ((Damageable) meta).getDamage();
+						final int oldDamage = ((Damageable) meta).getDamage();
 						if (oldDamage == 0) continue; //no repair needed
 
-						int repair = (int) Math.round(healthRepair * timeAdvantage * level * daytimeMultiplier);
+						final int repair = (int) Math.round(healthRepair * timeAdvantage * level * daytimeMultiplier);
 						int newDamage = oldDamage - repair;
 
 						if (newDamage < 0) newDamage = 0;
@@ -214,7 +215,7 @@ public class Photosynthesis extends Modifier implements Listener {
 		if (isAllowed()) {
 			data.clear();
 
-			for (Player player : Bukkit.getOnlinePlayers()) {
+			for (final Player player : Bukkit.getOnlinePlayers()) {
 				data.putIfAbsent(player.getUniqueId(), new Tupel(player.getLocation(), System.currentTimeMillis(), false));
 			}
 			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MineTinker.getPlugin(), this.runnable, 5 * 20L, this.tickTime);
@@ -226,20 +227,19 @@ public class Photosynthesis extends Modifier implements Listener {
 	//------------------------------------------------------
 
 	@EventHandler
-	public void onJoin(PlayerJoinEvent event) {
+	public void onJoin(@NotNull final PlayerJoinEvent event) {
 		data.putIfAbsent(event.getPlayer().getUniqueId(), new Tupel(event.getPlayer().getLocation(), System.currentTimeMillis(), false));
 	}
 
 	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
+	public void onQuit(@NotNull final PlayerQuitEvent event) {
 		data.remove(event.getPlayer().getUniqueId());
 	}
 
 	private static class Tupel {
 		private Location loc;
 		private long time; //in ms
-		private boolean isAboveGround;
-												//isAboveGround is not always false
+		private boolean isAboveGround; //isAboveGround is not always false
 		private Tupel(Location loc, long time, @SuppressWarnings("SameParameterValue") boolean isAboveGround) {
 			this.loc = loc;
 			this.time = time;
