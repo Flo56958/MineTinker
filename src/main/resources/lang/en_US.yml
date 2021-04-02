@@ -277,6 +277,11 @@ Modifier:
     Description: "Shoot one more Arrow per Level per shot!"
     ModifierItemName: "Multi-Arrow"
     DescriptionModifierItem: "Modifier-Item for the Multishot-Modifier"
+  Multijump:
+    Name: "Multijump"
+    Description: "Jump one extra time per Level!"
+    ModifierItemName: "Magic Rabbit Foot"
+    DescriptionModifierItem: "Modifier-Item for the Multijump-Modifier"
   Nightseeker:
     Name: "Nightseeker"
     Description: "Deal more or receive less damage (%amountmin% to %amountmax%) when the moon is shining (depends on level and moon position). This effect gets inverted at daytime and in the Nether but has the full strength in the End!"

@@ -133,9 +133,16 @@ public class GrindstoneListener implements Listener {
 				}
 
 				event.setResult(Event.Result.ALLOW);
-				//so the item gets not overwritten by vanilla
+
+				//So the wanted result item does not get overwritten by vanilla
+				//This is a workaround as you can not set the output in the event directly
+				//It has its problems and causes bugged states and result items but those states can be
+				//identified by checking the known "normal" item saved in GrindstoneSave when the item gets clicked
+				//by the player.
+				//This has mayor drawback e.g. it is highly incompatible with other grindstone plugins
+				//FIXME: Find a better workaround to set the output of the Grindstone
 				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
-						() -> event.getClickedInventory().setItem(2, result), 1);
+						() -> event.getClickedInventory().setItem( /*Resultslot*/ 2, result), 1);
 				save.put(player, gs);
 			} else if (event.getSlotType() == InventoryType.SlotType.RESULT) { //on Gridstone use
 				final ItemStack result = event.getCurrentItem();
