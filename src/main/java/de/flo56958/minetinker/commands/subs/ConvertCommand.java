@@ -35,11 +35,24 @@ public class ConvertCommand implements SubCommand {
 				player = (Player) sender;
 			} else {
 				CommandManager.sendError(sender,
-						LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+						LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 				return true;
 			}
 		} else if (args.length > 2) {
 			player = Bukkit.getPlayer(args[1]);
+
+			if (player == null) {
+				CommandManager.sendError(sender,
+						LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound")
+								.replaceAll("%p", args[1]));
+				return true;
+			}
+		}
+
+		if (player == null) {
+			CommandManager.sendError(sender,
+					LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
+			return true;
 		}
 
 		ItemStack item = player.getInventory().getItemInMainHand();

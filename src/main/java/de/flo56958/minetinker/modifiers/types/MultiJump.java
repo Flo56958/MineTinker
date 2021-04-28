@@ -62,7 +62,7 @@ public class MultiJump extends Modifier implements Listener {
 		FileConfiguration config = getConfig();
 		config.options().copyDefaults(true);
 
-		config.addDefault("Allowed", true); //Disabled by default because incompatible with fly plugins
+		config.addDefault("Allowed", true); //incompatible with fly plugins
 		config.addDefault("Color", "%DARK_GREEN%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 3);
@@ -73,12 +73,12 @@ public class MultiJump extends Modifier implements Listener {
 
 		config.addDefault("Recipe.Enabled", true);
 		config.addDefault("Recipe.Top", "RFR");
-		config.addDefault("Recipe.Middle", "FDF");
+		config.addDefault("Recipe.Middle", "FPF");
 		config.addDefault("Recipe.Bottom", "RFR");
 
 		Map<String, String> recipeMaterials = new HashMap<>();
 		recipeMaterials.put("R", Material.RABBIT_FOOT.name());
-		recipeMaterials.put("D", Material.DIAMOND_BLOCK.name());
+		recipeMaterials.put("P", Material.PISTON.name());
 		recipeMaterials.put("F", Material.FEATHER.name());
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
