@@ -1,11 +1,11 @@
 package de.flo56958.minetinker.commands.subs;
 
+import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.LanguageManager;
-import de.flo56958.minetinker.api.SubCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -31,8 +31,8 @@ public class RemoveModifierCommand implements SubCommand {
 		}
 		Player player = (Player) sender;
 		if (args.length >= 2) {
-			ModManager modManager = ModManager.instance();
-			for (Modifier m : modManager.getAllowedMods()) {
+			final ModManager modManager = ModManager.instance();
+			for (final Modifier m : modManager.getAllowedMods()) {
 				if (m.getName().equalsIgnoreCase(args[1].replaceAll("_", " "))) {
 					ItemStack tool = player.getInventory().getItemInMainHand();
 
@@ -40,7 +40,7 @@ public class RemoveModifierCommand implements SubCommand {
 						int toAdd = 0;
 						if (args.length >= 3) {
 							try {
-								int a = Integer.parseInt(args[2]);
+								final int a = Integer.parseInt(args[2]);
 								toAdd = modManager.getModLevel(tool, m) - a;
 							} catch (NumberFormatException ignored) {
 								CommandManager.sendError(sender,

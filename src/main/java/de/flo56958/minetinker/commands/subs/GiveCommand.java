@@ -57,7 +57,7 @@ public class GiveCommand implements SubCommand {
 		if (material == null) {
 			if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("enabled")) {
 				String name = args[1].replaceAll("_", " ");
-				for (ItemStack stack : BuildersWandListener.getWands()) {
+				for (final ItemStack stack : BuildersWandListener.getWands()) {
 					if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
 						if (player.getInventory().addItem(stack.clone()).size() != 0) { //adds items to (full) inventory
 							player.getWorld().dropItem(player.getLocation(), stack.clone());
@@ -66,11 +66,11 @@ public class GiveCommand implements SubCommand {
 					}
 				}
 			}
-			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments", player));
 			return true;
 		}
 
-		ItemStack tool = new ItemStack(material, 1);
+		final ItemStack tool = new ItemStack(material, 1);
 		ModManager.instance().convertItemStack(tool, player);
 
 		if (player.getInventory().addItem(tool).size() != 0) { //adds items to (full) inventory
@@ -98,13 +98,13 @@ public class GiveCommand implements SubCommand {
 				}
 				break;
 			case 3:
-				for (ToolType type : ToolType.values()) {
-					for (Material mat : type.getToolMaterials()) {
+				for (final ToolType type : ToolType.values()) {
+					for (final Material mat : type.getToolMaterials()) {
 						result.add(mat.toString());
 					}
 				}
 				if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("enabled")) {
-					for (ItemStack wand : BuildersWandListener.getWands()) {
+					for (final ItemStack wand : BuildersWandListener.getWands()) {
 						result.add(wand.getItemMeta().getDisplayName().replaceAll(" ", "_"));
 					}
 				}
@@ -121,7 +121,7 @@ public class GiveCommand implements SubCommand {
 
 	@Override @NotNull
 	public List<String> getAliases(boolean withName) {
-		ArrayList<String> aliases = new ArrayList<>();
+		final ArrayList<String> aliases = new ArrayList<>();
 		if (withName) aliases.add(getName());
 		aliases.add("g");
 		return aliases;
@@ -134,7 +134,7 @@ public class GiveCommand implements SubCommand {
 
 	@Override @NotNull
 	public Map<Integer, List<ArgumentType>> getArgumentsToParse() {
-		Map<Integer, List<ArgumentType>> argumentsToParse = new HashMap<>();
+		final Map<Integer, List<ArgumentType>> argumentsToParse = new HashMap<>();
 		argumentsToParse.put(1, Collections.singletonList(ArgumentType.PLAYER));
 		return argumentsToParse;
 	}
