@@ -1,5 +1,6 @@
 package de.flo56958.minetinker.utils;
 
+import com.google.common.base.CaseFormat;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.events.*;
 import de.flo56958.minetinker.modifiers.ModManager;
@@ -234,7 +235,17 @@ public class ChatWriter {
 
 	public static String getDisplayName(final @NotNull ItemStack tool) {
 		if (tool.getItemMeta() == null || !tool.getItemMeta().hasDisplayName()) {
-			return tool.getType().toString();
+			String type = tool.getType().toString();
+			type = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, type);
+			// https://stackoverflow.com/a/2560017
+			type = type.replaceAll(String.format("%s|%s|%s",
+					"(?<=[A-Z])(?=[A-Z][a-z])",
+					"(?<=[^A-Z])(?=[A-Z])",
+					"(?<=[A-Za-z])(?=[^A-Za-z])"
+					),
+					" ");
+
+			return type;
 		} else {
 			return tool.getItemMeta().getDisplayName();
 		}
