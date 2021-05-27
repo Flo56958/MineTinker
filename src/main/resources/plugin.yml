@@ -198,6 +198,7 @@ permissions:
       minetinker.modifiers.luck.*: true
       minetinker.modifiers.magical.*: true
       minetinker.modifiers.melting.*: true
+      minetinker.modifiers.multijump.*: true
       minetinker.modifiers.multishot.*: true
       minetinker.modifiers.nightseeker.*: true
       minetinker.modifiers.photosynthesis.*: true
@@ -380,6 +381,17 @@ permissions:
     default: true
   minetinker.modifiers.evasive.use:
     description: Allows to use Evasive on a MineTinker-Armor
+    default: true
+
+  minetinker.modifiers.multijump.*:
+    children:
+      minetinker.modifiers.multijump.apply: true
+      minetinker.modifiers.multijump.use: true
+  minetinker.modifiers.multijump.apply:
+    description: Allows to apply Multijump to a MineTinker-Armor
+    default: true
+  minetinker.modifiers.multijump.use:
+    description: Allows to use Multijump on a MineTinker-Armor
     default: true
 
   minetinker.modifiers.extramodifier.*:
