@@ -3,12 +3,14 @@ name: Java CI with Gradle
 on:
   push:
     paths:
-    - '**.java' # <- Only build, test and publish MineTinker if any .java-files changed
+    - '**.java' # <- Only build, test and publish MineTinker if any .java-files or .yml-files have changed
+    - '**.yml'
     - '**build.gradle'
     - '**settings.gradle'
   pull_request:
     paths:
     - '**.java'
+    - '**.yml'
     - '**build.gradle'
     - '**settings.gradle'
 
