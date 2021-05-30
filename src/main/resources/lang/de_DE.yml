@@ -12,9 +12,6 @@ StartUp.Events: "Events registriert!"
 StartUp.GUIs: "Lade GUIs!"
 StartUp.StdLogging: "Standard Logging ist aktiviert. Sie können es in der Konfigurationsdatei unter Logging.Standard deaktivieren!"
 StartUp.DebugLogging: "Debug Logging ist aktiviert. Sie sollten es in der Konfigurationsdatei unter Logging.Debug deaktivieren!"
-StartUp.Incompatible:
-  Start: "Die Suche nach inkompatiblen Plugins wurde gestartet... Du kannst diese Funktion jederzeit in der Haupt-Konfiguration abschalten!"
-  Found: "%plugin wurde gefunden. MineTinker versucht die Konfigurationen für beste Kompatibilität anzupassen!"
 
 Builderswand.Name.Wood: "Hölzerner Baumeisterstab"
 Builderswand.Name.Stone: "Steinerner Baumeisterstab"
@@ -72,7 +69,8 @@ GUIs.Modifiers.IncompatibleWith: "Inkompatibel mit:"
 GUIs.Modifiers.EnchantCost: "Verzauberungskosten: %WHITE%%enchantCost"
 GUIs.Modifiers.ClickToRecipe: "Drücke %key, um das Craftingrezept anzuzeigen."
 GUIs.Modifiers.BlockToEnchant: "Drücke %key mit %mat auf %block, um den Modifier zu verzaubern."
-GUIs.Modifiers.SlotCost: "Benötigt Plätze pro Level: %amount"
+GUIs.Modifiers.SlotCost: "Benötigt Plätze pro Level: %WHITE%%amount"
+GUIs.Modifiers.MinimumToolLevel: "Minimal benötigtes Werkzeuglevel: %WHITE%%level"
 GUIs.ConfigurationEditor.ReloadPlugin: "MineTinker neuladen"
 GUIs.ConfigurationEditor.Change: "%key wurde von %old zu %new geändert!"
 GUIs.ConfigurationEditor.Type: "Typ: %type"
@@ -97,6 +95,7 @@ GUIs.Statistics.Combat.TitlePage: "Kampf Statistiken für %tool - %pageNo"
 GUIs.Statistics.Combat.AmountKilled: "%amount mal getötet"
 GUIs.Statistics.Combat.DamageDealt: "%amount Schaden ausgeteilt"
 GUIs.Statistics.Combat.DamageReceived: "%amount Schaden eingesteckt"
+GUIs.Enchantable.Title: "Wähle die zu verzaubernde Modifikation "
 
 GUIs.ConfigurationEditor.config.PluginIncompatibility.Check: "Aktiviert die Suche nach inkompatiblen Plugins and MineTinker versucht angemessen die Konfigurationseinstellungen anzupassen"
 GUIs.ConfigurationEditor.config.PluginIncompatibility.SkippedPlugins: "Deaktiviert die Suche für die Plugins in der Liste"
@@ -120,6 +119,7 @@ ModifierFailCause.ModMaxLevel: "Die Modifikation ist bereits auf dem höchsten L
 ModifierFailCause.NoFreeSlots: "Nicht genug freie Modifikationsplätze auf dem Item!"
 ModifierFailCause.NoPermission: "Keine Berechtigung!"
 ModifierFailCause.PlayerFailure: "Spieler hat versagt beim Modifizieren!"
+ModifierFailCause.ToolLevelToLow: "Werkzeug ist nicht hoch genug gelevelt!"
 
 GrindStone.PossibleSlotsAfterGrind: "Mögliche freie Modifizierungsplätze nach dem Schleifen: %amount"
 
@@ -277,6 +277,11 @@ Modifier:
     Description: "Schieße ein Pfeil pro Level mehr pro Schuss!"
     ModifierItemName: "Multi-Pfeil"
     DescriptionModifierItem: "Modifizierungs-Item für die Multischuss-Modifikation"
+  Multijump:
+    Name: "Mehrfachsprung"
+    Description: "Springe pro Level ein zusätzliches Mal in der Luft!"
+    ModifierItemName: "Magischer Hasenfuss"
+    DescriptionModifierItem: "Modifizierungs-Item für die Mehrfachsprung-Modifikation"
   Nightseeker:
     Name: "Nachtsucher"
     Description: "Mache mehr oder bekomme weniger Schaden (%amountmin% - %amountmax%) wenn der Mond scheint (abhängig vom Level und der Mondposition). Dieser Effekt ist invertiert am Tag und im Nether hat aber volle Stärke im Ende!"
