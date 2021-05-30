@@ -14,8 +14,6 @@
         <img src="https://img.shields.io/github/issues/Flo56958/MineTinker" /></a>
     <a href="https://www.codefactor.io/repository/github/flo56958/minetinker" alt="CodeFactor">
         <img src="https://www.codefactor.io/repository/github/flo56958/minetinker/badge" /></a>
-    <a href="https://travis-ci.org/Flo56958/MineTinker" alt="Build Status">
-        <img src="https://travis-ci.org/Flo56958/MineTinker.svg?branch=alpha" /></a>
     <a href="https://discord.gg/ZEVNKhN">
         <img src="https://img.shields.io/discord/493806232784732181?logo=discord"
             alt="chat on Discord"></a>
@@ -25,6 +23,8 @@ A Tinker's Construct inspired Spigot plugin. It currently has over 40 modifiers 
 Almost everything is configurable: recipes, level caps, which modifiers are enabled, etc.
 ***
 
+**This plugin is 'balanced' with PvE in Mind. If you want to use it for PvP you need to balance it yourself through the various configurations.**
+***
 ## Development
 This repository is maintained by Flo56958 and mainly contributed by [Draycia](https://github.com/Draycia) and Flo56958. 
 Everything is made in our free time and we are getting no money for making this plugin. It is mostly because we enjoy 
@@ -32,11 +32,11 @@ coding and having fun making this Plugin. The development of MineTinker is there
 necessary time and motivation implement new features and fix bugs. The release schedule is not fixed and depends on the 
 features and bugfixes planned for the next release which can vary greatly with further development. If you cannot wait on
 a feature you want to add to MineTinker you are more than welcome to add the feature yourself and send us a pull request.
-I you need support on a code topic, we are glad to assist! (But please do not anoy us with questions on release schedules
-and how long until a feature is implemented.)
+If you need support on a code topic, we are glad to assist! (But please do not annoy us with questions on release schedules and how long until a feature is implemented.)
+***
 
 ## How to contribute to this repository:
-MineTinker is in active development and we are constantly fixing bugs and adding new features. 
+MineTinker is in development and we are constantly fixing bugs and adding new features. 
 **Everyone is welcome to contribute to this plugin.**
 
 There are several options for contributing:
@@ -46,8 +46,7 @@ There are several options for contributing:
 - Reporting bugs via [Issues](https://github.com/Flo56958/MineTinker/issues) on GitHub (or less preferably on Discord)
 - Forking this repository and adding your own features and bug fixes (Feel free to send a pull request or get in touch 
   with us if you have any questions or problems)</br>
-  **Note:** _Every pull request and code change will be carefully examined and may not be accepted without further code
-  change from our side or requests to the creator of the pull request_
+  **Note:** _Every pull request and code change will be carefully examined and may not be accepted without further code changes from our side or requests to the creator of the pull request_
 - If you can speak a language other than english you can help us translate MineTinker to different languages. For easy
   translation overview go to: [Transifex](https://www.transifex.com/flo56958/minetinker/dashboard/)
 ***
@@ -67,14 +66,11 @@ this is in the reload()-method)
 MineTinker may and will be incompatible to certain plugins.</br> 
 Incompatibilities may most likely occur with plugins:
 
-- that rely on Item-Lore (as MineTinker will overwrite Lore on some Items like Tools and Armor) </br>
-  [Setting ```EnableLore``` to false in ```config.yml``` can improve compatibility]
+- that rely on **Item-Lore** (as MineTinker will overwrite Lore on some Items like Tools and Armor) </br>
+  [Setting ```EnableLore``` to false in ```config.yml``` can improve compatibility as well as using the PatternMatcher in ```layout.yml```]
+- that add own **custom enchants**
 
-MineTinker will check on startup for known incompatible Plugins and will warn in the console if something was found. 
-Some incompatibilities can be negated by tweaking MineTinkers configuration files. If known plugins were found and 
-MineTinker knows how to react to them, it will try to tweak itself automaticly.
+Some incompatibilities can be negated by tweaking MineTinkers configuration files.
 
 If you found incompatible Plugins that are not known to MineTinker, please consider creating an 
-[Issue](https://github.com/Flo56958/MineTinker/issues) or contact us on [Discord](https://discord.gg/ZEVNKhN). 
-
-***
+[Issue](https://github.com/Flo56958/MineTinker/issues) or contact us on [Discord](https://discord.gg/ZEVNKhN).
