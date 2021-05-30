@@ -2,6 +2,7 @@ package de.flo56958.minetinker.listeners;
 
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
+import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.modifiers.types.Power;
@@ -69,7 +70,7 @@ public class PlayerListener implements Listener {
 		//TODO: Remove if paper/spigot/minecraft bug is resolved
 		//The feature is therefore disabled for creative, should be very low priority to fix as if you are in creative
 		//you should be able to execute a few commands as well
-		if (event.getWhoClicked().getGameMode() == GameMode.CREATIVE) {
+		if (event.getWhoClicked().getGameMode() == GameMode.CREATIVE || event.getWhoClicked().getGameMode() == GameMode.SPECTATOR) {
 			return;
 		}
 
@@ -77,8 +78,10 @@ public class PlayerListener implements Listener {
 		if (repair == null) return;
 
 		//Check if the player wants to modify the tool
-		if (modManager.isModifierItem(repair)
-				&& MineTinker.getPlugin().getConfig().getBoolean("ModifiableInInventory")) {
+		if (modManager.isModifierItem(repair)) {
+			if (!MineTinker.getPlugin().getConfig().getBoolean("ModifiableInInventory"))
+				return;
+
 			Modifier mod = modManager.getModifierFromItem(repair);
 			if (mod != null) { //shouldn't be necessary
 				while(repair.getAmount() > 0) {
@@ -188,19 +191,55 @@ public class PlayerListener implements Listener {
 				return;
 			}
 
-			//TODO: change fix amount
 			int dura = meta.getDamage();
 			final short maxDura = tool.getType().getMaxDurability();
 			int amount = event.getWhoClicked().getItemOnCursor().getAmount();
-			final float percent = (float) MineTinker.getPlugin().getConfig().getDouble("DurabilityPercentageRepair");
 
-			while (amount > 0 && dura > 0) {
-				dura = Math.round(dura - (maxDura * percent));
-				amount--;
+			//Calculate the maximum required Materials to restore to full
+			int requiredMaterial;
+			switch (ToolType.get(tool.getType())) {
+				case AXE:
+				case PICKAXE:
+				case FISHINGROD:
+				case CROSSBOW:
+				case BOW:
+					requiredMaterial = 3;
+					break;
+				case BOOTS:
+					requiredMaterial = 4;
+					break;
+				case CHESTPLATE:
+				case ELYTRA:
+					requiredMaterial = 8;
+					break;
+				case HELMET:
+					requiredMaterial = 5;
+					break;
+				case HOE:
+				case TRIDENT:
+				case SWORD:
+				case SHEARS:
+				case OTHER:
+					requiredMaterial = 2;
+					break;
+				case LEGGINGS:
+					requiredMaterial = 7;
+					break;
+				case SHIELD:
+					requiredMaterial = 6;
+					break;
+				case SHOVEL:
+					requiredMaterial = 1;
+					break;
+				default:
+					return;
 			}
 
-			if (dura < 0) {
-				dura = 0;
+			final float percent = 1.0f / requiredMaterial;
+
+			while (amount > 0 && dura > 0) {
+				dura = Math.max(Math.round(dura - (maxDura * percent)), 0);
+				amount--;
 			}
 
 			meta.setDamage(dura);

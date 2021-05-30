@@ -2,7 +2,6 @@ package de.flo56958.minetinker.data;
 
 import de.flo56958.minetinker.MineTinker;
 import org.bukkit.Material;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -130,11 +129,10 @@ public enum ToolType {
 	 * @param material the material to check
 	 * @return material's tooltype, null if invalid
 	 */
-	@Contract("null -> null")
-	public static @Nullable ToolType get(@Nullable Material material) {
-		if (material == null) return null;
+	public static @NotNull ToolType get(@Nullable Material material) {
+		if (material == null) return ToolType.INVALID;
 		for (ToolType type : values()) {
-			if (type == ToolType.ALL || type == ToolType.TOOLS || type == ToolType.ARMOR) {
+			if (type == ToolType.ALL || type == ToolType.TOOLS || type == ToolType.ARMOR || type == ToolType.INVALID) {
 				continue;
 			}
 
@@ -143,7 +141,7 @@ public enum ToolType {
 			}
 		}
 
-		return null;
+		return ToolType.INVALID;
 	}
 
 	public List<Material> getToolMaterials() {
