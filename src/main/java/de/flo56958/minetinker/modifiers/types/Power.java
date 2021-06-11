@@ -70,7 +70,8 @@ public class Power extends Modifier implements Listener {
 					tool.setItemMeta((ItemMeta) damageable);
 				}
 
-				PlayerInteractEvent event = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, tool, block, BlockFace.UP);
+				PlayerInteractEvent event = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK,
+						tool, block, BlockFace.UP);
 				Bukkit.getPluginManager().callEvent(event);
 
 				block.setType(Material.FARMLAND); // Event only does Plugin event (no vanilla conversion to Farmland and

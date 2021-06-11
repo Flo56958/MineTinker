@@ -15,6 +15,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -23,7 +24,9 @@ public class MineTinker extends JavaPlugin {
 
 	private static JavaPlugin plugin;
 	public static boolean is16compatible;
+	public static boolean is17compatible;
 
+	@Contract(pure = true)
 	public static JavaPlugin getPlugin() { // necessary to do getConfig() in other classes
 		return plugin;
 	}
@@ -31,7 +34,16 @@ public class MineTinker extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		plugin = this;
-		is16compatible = Bukkit.getVersion().split("MC: ")[1].startsWith("1.16");
+		final String version = Bukkit.getVersion().split("MC: ")[1];
+		is16compatible = version.startsWith("1.16")
+				|| version.startsWith("1.17");
+		is17compatible = version.startsWith("1.17");
+		if (is16compatible) {
+			ChatWriter.log(false, "1.16 enhanced features activated!");
+		}
+		if (is17compatible) {
+			ChatWriter.log(false, "1.17 enhanced features activated!");
+		}
 		ChatWriter.log(false, "Setting up internals...");
 
 		loadConfig(); //load Main config
