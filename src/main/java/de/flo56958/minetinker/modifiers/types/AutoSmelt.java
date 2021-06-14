@@ -17,6 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -150,9 +151,27 @@ public class AutoSmelt extends Modifier implements Listener {
 		conversions.put(Material.COAL_ORE, new Triplet(Material.AIR, 0));
 		conversions.put(Material.COAL_BLOCK, new Triplet(Material.AIR, 0));
 		conversions.put(Material.CLAY, new Triplet(Material.BRICK, 4, true));
+
 		if (MineTinker.is16compatible) {
 			conversions.put(Material.ANCIENT_DEBRIS, new Triplet(Material.NETHERITE_SCRAP, 2, true));
 			conversions.put(Material.NETHER_GOLD_ORE, new Triplet(Material.GOLD_INGOT, 1, true));
+			conversions.put(Material.CRIMSON_HYPHAE, new Triplet(Material.CHARCOAL, 1));
+			conversions.put(Material.CRIMSON_STEM, new Triplet(Material.CHARCOAL, 1));
+			conversions.put(Material.WARPED_HYPHAE, new Triplet(Material.CHARCOAL, 1));
+			conversions.put(Material.WARPED_STEM, new Triplet(Material.CHARCOAL, 1));
+			conversions.put(Material.STRIPPED_CRIMSON_HYPHAE, new Triplet(Material.CHARCOAL, 1));
+			conversions.put(Material.STRIPPED_CRIMSON_STEM, new Triplet(Material.CHARCOAL, 1));
+			conversions.put(Material.STRIPPED_WARPED_HYPHAE, new Triplet(Material.CHARCOAL, 1));
+			conversions.put(Material.STRIPPED_WARPED_STEM, new Triplet(Material.CHARCOAL, 1));
+		}
+
+		if (MineTinker.is17compatible) {
+			conversions.put(Material.AZALEA_LEAVES, new Triplet(Material.STICK, 1));
+
+			conversions.put(Material.RAW_COPPER_BLOCK, new Triplet(Material.COPPER_INGOT, 9));
+			conversions.put(Material.RAW_GOLD_BLOCK, new Triplet(Material.GOLD_INGOT, 9));
+			conversions.put(Material.RAW_IRON_BLOCK, new Triplet(Material.IRON_INGOT, 9));
+			conversions.put(Material.COPPER_ORE, new Triplet(Material.COPPER_INGOT, 1, true));
 		}
 
 		//Saving Conversions as String
@@ -190,7 +209,7 @@ public class AutoSmelt extends Modifier implements Listener {
 	 * @param event the Event
 	 */
 	@EventHandler(ignoreCancelled = true)
-	public void effect(MTBlockBreakEvent event) {
+	public void effect(@NotNull MTBlockBreakEvent event) {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 		Block block = event.getBlock();
@@ -257,20 +276,24 @@ public class AutoSmelt extends Modifier implements Listener {
 
 		final int amount;
 		final Material material;
-		boolean luckable = false;
+		final boolean luckable;
 
+		@Contract(pure = true)
 		private Triplet(Material m, int amount) {
 			this.amount = amount;
 			this.material = m;
+			this.luckable = false;
 		}
 
+		@Contract(pure = true)
 		private Triplet(Material m, int amount, boolean luckable) {
-			this(m, amount);
+			this.amount = amount;
+			this.material = m;
 			this.luckable = luckable;
 		}
 
 		@Nullable
-		static Triplet fromString(String input) {
+		static Triplet fromString(@NotNull String input) {
 			String[] tok = input.split(regex);
 			try {
 				if (tok.length == 2) {
@@ -286,6 +309,7 @@ public class AutoSmelt extends Modifier implements Listener {
 			}
 		}
 
+		@NotNull
 		public String toString() {
 			return material.toString() + regex + amount + regex + luckable;
 		}

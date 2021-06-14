@@ -62,6 +62,10 @@ public class Lists {
 			mats.add(Material.WARPED_WART_BLOCK);
 		}
 
+		if (MineTinker.is17compatible) {
+			mats.add(Material.AZALEA_LEAVES);
+		}
+
 		return mats;
 	}
 
@@ -76,6 +80,11 @@ public class Lists {
 		mats.add(Material.JUNGLE_PLANKS);
 		mats.add(Material.OAK_PLANKS);
 		mats.add(Material.SPRUCE_PLANKS);
+
+		if (MineTinker.is16compatible) {
+			mats.add(Material.CRIMSON_PLANKS);
+			mats.add(Material.WARPED_PLANKS);
+		}
 		return mats;
 	}
 
@@ -93,9 +102,7 @@ public class Lists {
 
 		if (MineTinker.is16compatible) {
 			mats.add(Material.CRIMSON_STEM);
-			mats.add(Material.CRIMSON_HYPHAE);
 			mats.add(Material.WARPED_STEM);
-			mats.add(Material.WARPED_HYPHAE);
 		}
 		return mats;
 	}
@@ -130,6 +137,11 @@ public class Lists {
 		mats.add(Material.JUNGLE_WOOD);
 		mats.add(Material.OAK_WOOD);
 		mats.add(Material.SPRUCE_WOOD);
+
+		if (MineTinker.is16compatible) {
+			mats.add(Material.CRIMSON_HYPHAE);
+			mats.add(Material.WARPED_HYPHAE);
+		}
 		return mats;
 	}
 
@@ -144,6 +156,11 @@ public class Lists {
 		mats.add(Material.STRIPPED_JUNGLE_WOOD);
 		mats.add(Material.STRIPPED_OAK_WOOD);
 		mats.add(Material.STRIPPED_SPRUCE_WOOD);
+
+		if (MineTinker.is16compatible) {
+			mats.add(Material.STRIPPED_CRIMSON_HYPHAE);
+			mats.add(Material.STRIPPED_WARPED_HYPHAE);
+		}
 		return mats;
 	}
 

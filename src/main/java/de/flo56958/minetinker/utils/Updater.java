@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Contract;
 
 import java.net.URL;
 import java.net.URLConnection;
@@ -15,6 +16,7 @@ public class Updater {
 	private static final String version = MineTinker.getPlugin().getDescription().getVersion();
 	private static String onlineVersion;
 
+	@Contract(pure = true)
 	public static String getOnlineVersion() {
 		return onlineVersion;
 	}
