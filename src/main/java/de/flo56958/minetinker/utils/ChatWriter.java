@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -152,7 +153,8 @@ public class ChatWriter {
 	 * @param player
 	 * @param message
 	 */
-	public static void sendActionBar(final Player player, final String message) { //Extract from the source code of the Actionbar-API (altered)
+	public static void sendActionBar(final Player player, final String message) {
+		//Extract from the source code of the Actionbar-API (altered)
 		if (!MineTinker.getPlugin().getConfig().getBoolean("actionbar-messages")) {
 			return;
 		}
@@ -161,7 +163,13 @@ public class ChatWriter {
 			return; // Player may have logged out, unlikely but possible?
 		}
 
-		player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
+		try {
+			player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
+					TextComponent.fromLegacyText(message));
+		} catch (NoSuchMethodError e) {
+			ChatWriter.logError("You have Spigot features enabled but don't use Spigot." +
+					"Please turn off actionbar-messages in the main config.");
+		}
 	}
 
 	@NotNull
@@ -190,7 +198,8 @@ public class ChatWriter {
 			.replaceAll("%RESET%", ChatColor.RESET.toString());
 	}
 
-	public static ChatColor getColor(final @NotNull String input) throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+	public static ChatColor getColor(final @NotNull String input)
+			throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
 		return ChatColor.valueOf(input.split("%")[1]);
 	}
 
@@ -214,7 +223,9 @@ public class ChatWriter {
 		return map.get(floorKey) + toRomanNumerals(number - floorKey);
 	}
 
-	public static List<String> splitString(final String msg, final int lineSize) {
+	@NotNull
+	@Contract("null, _ -> new")
+	public static List<String> splitString(@Nullable final String msg, final int lineSize) {
 		if (msg == null) return new ArrayList<>();
 		final List<String> res = new ArrayList<>();
 
@@ -244,7 +255,6 @@ public class ChatWriter {
 					"(?<=[A-Za-z])(?=[^A-Za-z])"
 					),
 					" ");
-
 			return type;
 		} else {
 			return tool.getItemMeta().getDisplayName();
