@@ -31,10 +31,12 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BuildersWandListener implements Listener {
 
@@ -156,14 +158,18 @@ public class BuildersWandListener implements Listener {
 			// TODO: Make safe
 			newRecipe.shape(top, middle, bottom); //makes recipe
 
-			for (String key : materials.getKeys(false)) {
-				newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
+			for (final String key : Objects.requireNonNull(materials, "Builderswand Materials are Null").getKeys(false)) {
+				newRecipe.setIngredient(key.charAt(0), Objects.requireNonNull(Material.getMaterial(
+						Objects.requireNonNull(materials.getString(key), "Builderswand Materials are Null")),
+						"Builderswand Materials are Null"));
 			}
 
 			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 			ModManager.instance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
-			ChatWriter.logError(LanguageManager.getString("Builderswand.Error").replaceAll("%wand", wands.get(0).getItemMeta().getDisplayName())); //executes if the recipe could not initialize
+			ChatWriter.logError(LanguageManager.getString("Builderswand.Error")
+					.replaceAll("%wand", wands.get(0).getItemMeta().getDisplayName()));
+			//executes if the recipe could not initialize
 			e.printStackTrace();
 		}
 		try {
@@ -184,7 +190,9 @@ public class BuildersWandListener implements Listener {
 			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 			ModManager.instance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
-			ChatWriter.logError(LanguageManager.getString("Builderswand.Error").replaceAll("%wand", wands.get(1).getItemMeta().getDisplayName())); //executes if the recipe could not initialize
+			ChatWriter.logError(LanguageManager.getString("Builderswand.Error")
+					.replaceAll("%wand", wands.get(1).getItemMeta().getDisplayName()));
+			//executes if the recipe could not initialize
 			e.printStackTrace();
 		}
 		try {
@@ -204,7 +212,9 @@ public class BuildersWandListener implements Listener {
 			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 			ModManager.instance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
-			ChatWriter.logError(LanguageManager.getString("Builderswand.Error").replaceAll("%wand", wands.get(2).getItemMeta().getDisplayName())); //executes if the recipe could not initialize
+			ChatWriter.logError(LanguageManager.getString("Builderswand.Error")
+					.replaceAll("%wand", wands.get(2).getItemMeta().getDisplayName()));
+			//executes if the recipe could not initialize
 			e.printStackTrace();
 		}
 		try {
@@ -225,7 +235,9 @@ public class BuildersWandListener implements Listener {
 			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 			ModManager.instance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
-			ChatWriter.logError(LanguageManager.getString("Builderswand.Error").replaceAll("%wand", wands.get(3).getItemMeta().getDisplayName())); //executes if the recipe could not initialize
+			ChatWriter.logError(LanguageManager.getString("Builderswand.Error")
+					.replaceAll("%wand", wands.get(3).getItemMeta().getDisplayName()));
+			//executes if the recipe could not initialize
 			e.printStackTrace();
 		}
 		try {
@@ -244,7 +256,9 @@ public class BuildersWandListener implements Listener {
 
 			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 		} catch (Exception e) {
-			ChatWriter.logError(LanguageManager.getString("Builderswand.Error").replaceAll("%wand", wands.get(4).getItemMeta().getDisplayName())); //executes if the recipe could not initialize
+			ChatWriter.logError(LanguageManager.getString("Builderswand.Error")
+					.replaceAll("%wand", wands.get(4).getItemMeta().getDisplayName()));
+			//executes if the recipe could not initialize
 			e.printStackTrace();
 		}
 		if (MineTinker.is16compatible) {
@@ -264,12 +278,15 @@ public class BuildersWandListener implements Listener {
 
 				MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 			} catch (Exception e) {
-				ChatWriter.logError(LanguageManager.getString("Builderswand.Error").replaceAll("%wand", wands.get(5).getItemMeta().getDisplayName())); //executes if the recipe could not initialize
+				ChatWriter.logError(LanguageManager.getString("Builderswand.Error")
+						.replaceAll("%wand", wands.get(5).getItemMeta().getDisplayName()));
+				//executes if the recipe could not initialize
 				e.printStackTrace();
 			}
 		}
 	}
 
+	@Contract(pure = true)
 	public static ArrayList<ItemStack> getWands() {
 		return wands;
 	}
@@ -316,21 +333,19 @@ public class BuildersWandListener implements Listener {
 
 		if (!player.isSneaking()) {
 			switch (wand.getType()) {  //TODO: custom Builderswand sizes
-				case STONE_SHOVEL:
-					_w = 1;
-					break;
-				case IRON_SHOVEL:
+				case STONE_SHOVEL -> _w = 1;
+				case IRON_SHOVEL -> {
 					_u = 1;
 					_w = 1;
-					break;
-				case GOLDEN_SHOVEL:
+				}
+				case GOLDEN_SHOVEL -> {
 					_u = 1;
 					_w = 2;
-					break;
-				case DIAMOND_SHOVEL:
+				}
+				case DIAMOND_SHOVEL -> {
 					_u = 2;
 					_w = 2;
-					break;
+				}
 			}
 			if (MineTinker.is16compatible) {
 				if (wand.getType() == Material.NETHERITE_SHOVEL) {
@@ -355,21 +370,12 @@ public class BuildersWandListener implements Listener {
 				v = new Vector(0, -1, 0);
 			}
 
-			switch (PlayerInfo.getFacingDirection(player)) {
-				case NORTH:
-					w = new Vector(-1, 0, 0);
-					break;
-				case EAST:
-					w = new Vector(0, 0, -1);
-					break;
-				case SOUTH:
-					w = new Vector(1, 0, 0);
-					break;
-				case WEST:
-				default:
-					w = new Vector(0, 0, 1);
-					break;
-			}
+			w = switch (PlayerInfo.getFacingDirection(player)) {
+				case NORTH -> new Vector(-1, 0, 0);
+				case EAST -> new Vector(0, 0, -1);
+				case SOUTH -> new Vector(1, 0, 0);
+				default -> new Vector(0, 0, 1);
+			};
 
 			u = v.getCrossProduct(w);
 		} else if (face.equals(BlockFace.NORTH)) {
@@ -413,8 +419,7 @@ public class BuildersWandListener implements Listener {
 
 						final Location loc = l.clone().subtract(v.clone().multiply(-1));
 
-						if (wand.getItemMeta() instanceof Damageable) {
-							final Damageable damageable = (Damageable) wand.getItemMeta();
+						if (wand.getItemMeta() instanceof final Damageable damageable) {
 
 							if (!wand.getItemMeta().isUnbreakable()) {
 								if (wand.getType().getMaxDurability() - damageable.getDamage() <= 1) {

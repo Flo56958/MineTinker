@@ -64,8 +64,7 @@ public class Power extends Modifier implements Listener {
 	private void powerCreateFarmland(Player player, ItemStack tool, Block block) {
 		if (block.getType().equals(Material.GRASS_BLOCK) || block.getType().equals(Material.DIRT)) {
 			if (block.getWorld().getBlockAt(block.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
-				if (tool.getItemMeta() instanceof Damageable) {
-					Damageable damageable = (Damageable) tool.getItemMeta();
+				if (tool.getItemMeta() instanceof Damageable damageable) {
 					damageable.setDamage(damageable.getDamage() + 1);
 					tool.setItemMeta((ItemMeta) damageable);
 				}

@@ -47,11 +47,9 @@ public class GrindstoneListener implements Listener {
 			return;
 		}
 
-		if (!(event.getWhoClicked() instanceof Player)) {
+		if (!(event.getWhoClicked() instanceof final Player player)) {
 			return;
 		}
-
-		final Player player = (Player) event.getWhoClicked();
 
 		if (config.getBoolean("Grindstone.Enabled")) {
 			if (event.getClick() != ClickType.LEFT && event.getClick() != ClickType.RIGHT) {

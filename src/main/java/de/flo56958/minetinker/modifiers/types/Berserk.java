@@ -17,6 +17,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Collections;
@@ -96,18 +97,16 @@ public class Berserk extends Modifier implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
-	public void onHit(EntityDamageEvent event) {
-		if (!(event.getEntity() instanceof Player)) {
+	public void onHit(@NotNull EntityDamageEvent event) {
+		if (!(event.getEntity() instanceof Player player)) {
 			return;
 		}
-
-		Player player = (Player) event.getEntity();
 
 		if (!player.hasPermission("minetinker.modifiers.berserk.use")) {
 			return;
 		}
 
-		ItemStack chest = player.getInventory().getChestplate();
+		final ItemStack chest = player.getInventory().getChestplate();
 
 		if (!modManager.isArmorViable(chest)) {
 			return;
@@ -119,7 +118,7 @@ public class Berserk extends Modifier implements Listener {
 			return;
 		}
 
-		double lifeAfterDamage = player.getHealth() - event.getFinalDamage();
+		final double lifeAfterDamage = player.getHealth() - event.getFinalDamage();
 		AttributeInstance healthAttr = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
 
 		double maxHealth = 20;
@@ -129,7 +128,8 @@ public class Berserk extends Modifier implements Listener {
 		}
 
 		if (player.getHealth() / maxHealth > trigger / 100.0 && lifeAfterDamage / maxHealth <= trigger / 100.0) {
-			player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, boostTime, modifierLevel - 1));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, boostTime,
+					modifierLevel - 1));
 			ChatWriter.logModifier(player, event, this, chest,
 					"Time(" + boostTime + ")", "Amplifier(" + (modifierLevel - 1) + ")");
 		}

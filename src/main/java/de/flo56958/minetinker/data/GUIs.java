@@ -227,8 +227,7 @@ public class GUIs {
 
 					if (rec != null) {
 						GUI.Window modRecipe = modRecipes.addWindow(3, m.getColor() + m.getName());
-						if (rec instanceof ShapedRecipe) {
-							ShapedRecipe srec = (ShapedRecipe) rec;
+						if (rec instanceof ShapedRecipe srec) {
 							ItemStack modItem = m.getModItem().clone();
 							DataHandler.setTag(modItem, "Showcase", (int) Math.round(Math.random() * 1000), PersistentDataType.INTEGER, false);
 							GUI.Window.Button result = modRecipe.addButton(6, 1, modItem);

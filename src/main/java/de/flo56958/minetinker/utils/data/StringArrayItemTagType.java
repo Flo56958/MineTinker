@@ -8,21 +8,17 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
-public class StringArrayItemTagType implements PersistentDataType<byte[], String[]> {
-
-    private final Charset charset;
-
-    public StringArrayItemTagType(Charset charset) {
-        this.charset = charset;
-    }
+public record StringArrayItemTagType(Charset charset) implements PersistentDataType<byte[], String[]> {
 
     @Override
-    public @NotNull Class<byte[]> getPrimitiveType() {
+    public @NotNull
+    Class<byte[]> getPrimitiveType() {
         return byte[].class;
     }
 
     @Override
-    public @NotNull Class<String[]> getComplexType() {
+    public @NotNull
+    Class<String[]> getComplexType() {
         return String[].class;
     }
 

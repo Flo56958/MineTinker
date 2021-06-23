@@ -134,8 +134,7 @@ public class SelfRepair extends Modifier implements Listener {
 		int c = this.percentagePerLevel * level;
 
 		if (n <= c) {
-			if (tool.getItemMeta() instanceof Damageable) {
-				Damageable damageable = (Damageable) tool.getItemMeta();
+			if (tool.getItemMeta() instanceof Damageable damageable) {
 				int dura = damageable.getDamage();
 				int newDura = dura - this.healthRepair;
 

@@ -126,11 +126,9 @@ public class MultiShot extends Modifier implements Listener {
 			return;
 		}
 
-		if (!(arrow.getShooter() instanceof Player)) {
+		if (!(arrow.getShooter() instanceof Player player)) {
 			return;
 		}
-
-		Player player = (Player) arrow.getShooter();
 
 		if (!player.hasPermission("minetinker.modifiers.multishot.use")) {
 			return;

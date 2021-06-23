@@ -334,11 +334,9 @@ public class PlayerListener implements Listener {
 			return;
 		}
 
-		if (event.getItem().getItemMeta() == null || !(event.getItem().getItemMeta() instanceof EnchantmentStorageMeta)) {
+		if (event.getItem().getItemMeta() == null || !(event.getItem().getItemMeta() instanceof final EnchantmentStorageMeta meta)) {
 			return;
 		}
-
-		final EnchantmentStorageMeta meta = (EnchantmentStorageMeta) event.getItem().getItemMeta();
 
 		for (Map.Entry<Enchantment, Integer> entry : meta.getStoredEnchants().entrySet()) {
 			final Modifier modifier = modManager.getModifierFromEnchantment(entry.getKey());

@@ -128,10 +128,9 @@ public class Poisonous extends Modifier implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onDamage(EntityDamageEvent event) {
 		if (event.getCause() != EntityDamageEvent.DamageCause.POISON) return;
-		if (!(event.getEntity() instanceof Player)) return;
+		if (!(event.getEntity() instanceof Player player)) return;
 		if (!this.effectHealsPlayer) return;
 
-		Player player = (Player) event.getEntity();
 		if (!player.hasPermission("minetinker.modifiers.poisonous.use")) {
 			return;
 		}
@@ -229,20 +228,10 @@ public class Poisonous extends Modifier implements Listener {
 		if (numberOfPotatoes > 0) event.getDrops().add(new ItemStack(Material.POISONOUS_POTATO, numberOfPotatoes));
 	}
 
-	private boolean isMeat(ItemStack item) {
-		switch (item.getType()) {
-			case BEEF:
-			case PORKCHOP:
-			case COD:
-			case SALMON:
-			case TROPICAL_FISH:
-			case PUFFERFISH:
-			case CHICKEN:
-			case RABBIT:
-			case MUTTON:
-				return true;
-			default:
-				return false;
-		}
+	private boolean isMeat(@NotNull ItemStack item) {
+		return switch (item.getType()) {
+			case BEEF, PORKCHOP, COD, SALMON, TROPICAL_FISH, PUFFERFISH, CHICKEN, RABBIT, MUTTON -> true;
+			default -> false;
+		};
 	}
 }

@@ -98,13 +98,12 @@ public class Glowing extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageByEntityEvent event) {
-		if (!(event.getEntity() instanceof LivingEntity)) {
+		if (!(event.getEntity() instanceof LivingEntity entity)) {
 			return;
 		}
 
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
-		LivingEntity entity = (LivingEntity) event.getEntity();
 
 		if (!player.hasPermission("minetinker.modifiers.glowing.use")) {
 			return;

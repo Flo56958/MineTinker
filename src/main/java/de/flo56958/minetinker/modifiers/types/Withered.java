@@ -133,10 +133,9 @@ public class Withered extends Modifier implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onDamage(EntityDamageEvent event) {
 		if (event.getCause() != EntityDamageEvent.DamageCause.WITHER) return;
-		if (!(event.getEntity() instanceof Player)) return;
+		if (!(event.getEntity() instanceof Player player)) return;
 		if (!this.effectHealsPlayer) return;
 
-		Player player = (Player) event.getEntity();
 		if (!player.hasPermission("minetinker.modifiers.withered.use")) {
 			return;
 		}

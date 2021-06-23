@@ -84,20 +84,19 @@ public class GiveCommand implements SubCommand {
 	public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String[] args) {
 		List<String> result = new ArrayList<>();
 		switch (args.length) {
-			case 2:
-				for (Player player : Bukkit.getOnlinePlayers()) {
+			case 2 -> {
+				for (final Player player : Bukkit.getOnlinePlayers()) {
 					result.add(player.getName());
 				}
 				result.add("@a");
 				result.add("@r");
-
 				if (sender instanceof Entity || sender instanceof BlockState) {
 					result.add("@aw");
 					result.add("@p");
 					result.add("@rw");
 				}
-				break;
-			case 3:
+			}
+			case 3 -> {
 				for (final ToolType type : ToolType.values()) {
 					for (final Material mat : type.getToolMaterials()) {
 						result.add(mat.toString());
@@ -108,7 +107,7 @@ public class GiveCommand implements SubCommand {
 						result.add(wand.getItemMeta().getDisplayName().replaceAll(" ", "_"));
 					}
 				}
-				break;
+			}
 		}
 		return result;
 	}

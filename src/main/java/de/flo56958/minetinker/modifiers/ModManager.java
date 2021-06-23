@@ -212,49 +212,32 @@ public class ModManager {
 	}
 
 	private static @Nullable Material getToolUpgrade(@NotNull final Material material, @NotNull final String tool) {
-		if(MineTinker.is16compatible && material == Material.NETHERITE_INGOT) {
+		if (MineTinker.is16compatible && material == Material.NETHERITE_INGOT) {
 			return Material.getMaterial("NETHERITE_" + tool);
 		}
-		switch (material) {
-			case ACACIA_PLANKS:
-			case BIRCH_PLANKS:
-			case DARK_OAK_PLANKS:
-			case JUNGLE_PLANKS:
-			case OAK_PLANKS:
-			case SPRUCE_PLANKS:
-				return Material.getMaterial("WOODEN_" + tool);
-			case COBBLESTONE:
-				return Material.getMaterial("STONE_" + tool);
-			case IRON_INGOT:
-				return Material.getMaterial("IRON_" + tool);
-			case GOLD_INGOT:
-				return Material.getMaterial("GOLDEN_" + tool);
-			case DIAMOND:
-				return Material.getMaterial("DIAMOND_" + tool);
-			default:
-				return null;
-		}
-		
+		return switch (material) {
+			case ACACIA_PLANKS, BIRCH_PLANKS, DARK_OAK_PLANKS, JUNGLE_PLANKS, OAK_PLANKS, SPRUCE_PLANKS
+					-> Material.getMaterial("WOODEN_" + tool);
+			case COBBLESTONE -> Material.getMaterial("STONE_" + tool);
+			case IRON_INGOT -> Material.getMaterial("IRON_" + tool);
+			case GOLD_INGOT -> Material.getMaterial("GOLDEN_" + tool);
+			case DIAMOND -> Material.getMaterial("DIAMOND_" + tool);
+			default -> null;
+		};
 	}
 
 	private static @Nullable Material getArmorUpgrade(@NotNull final Material material, @NotNull final String tool) {
 		if(MineTinker.is16compatible && material == Material.NETHERITE_INGOT) {
 			return Material.getMaterial("NETHERITE_" + tool);
 		}
-		switch (material) {
-			case LEATHER:
-				return Material.getMaterial("LEATHER_" + tool);
-			case IRON_INGOT:
-				return Material.getMaterial("IRON_" + tool);
-			case GOLD_INGOT:
-				return Material.getMaterial("GOLDEN_" + tool);
-			case DIAMOND:
-				return Material.getMaterial("DIAMOND_" + tool);
-			case IRON_BARS:
-				return Material.getMaterial("CHAINMAIL_" + tool);
-			default:
-				return null;
-		}
+		return switch (material) {
+			case LEATHER -> Material.getMaterial("LEATHER_" + tool);
+			case IRON_INGOT -> Material.getMaterial("IRON_" + tool);
+			case GOLD_INGOT -> Material.getMaterial("GOLDEN_" + tool);
+			case DIAMOND -> Material.getMaterial("DIAMOND_" + tool);
+			case IRON_BARS -> Material.getMaterial("CHAINMAIL_" + tool);
+			default -> null;
+		};
 	}
 
 	public void reload() {
@@ -930,67 +913,42 @@ public class ModManager {
 		double knockback_res = 0.0d;
 
 		switch (is.getType()) {
-			case LEATHER_BOOTS:
-			case CHAINMAIL_BOOTS:
-			case GOLDEN_BOOTS:
-			case LEATHER_HELMET:
-				armor = 1.0d;
-				break;
-			case IRON_BOOTS:
-			case CHAINMAIL_HELMET:
-			case IRON_HELMET:
-			case GOLDEN_HELMET:
-			case TURTLE_HELMET:
-			case LEATHER_LEGGINGS:
-				armor = 2.0d;
-				break;
-			case DIAMOND_BOOTS:
-			case DIAMOND_HELMET:
+			case LEATHER_BOOTS, CHAINMAIL_BOOTS, GOLDEN_BOOTS, LEATHER_HELMET -> armor = 1.0d;
+			case IRON_BOOTS, CHAINMAIL_HELMET, IRON_HELMET, GOLDEN_HELMET, TURTLE_HELMET, LEATHER_LEGGINGS -> armor = 2.0d;
+			case DIAMOND_BOOTS, DIAMOND_HELMET -> {
 				armor = 3.0d;
 				toughness = 2.0d;
-				break;
-			case LEATHER_CHESTPLATE:
-			case GOLDEN_LEGGINGS:
-				armor = 3.0d;
-				break;
-			case CHAINMAIL_CHESTPLATE:
-			case GOLDEN_CHESTPLATE:
-			case IRON_LEGGINGS:
-				armor = 5.0d;
-				break;
-			case IRON_CHESTPLATE:
-				armor = 6.0d;
-				break;
-			case DIAMOND_CHESTPLATE:
+			}
+			case LEATHER_CHESTPLATE, GOLDEN_LEGGINGS -> armor = 3.0d;
+			case CHAINMAIL_CHESTPLATE, GOLDEN_CHESTPLATE, IRON_LEGGINGS -> armor = 5.0d;
+			case IRON_CHESTPLATE -> armor = 6.0d;
+			case DIAMOND_CHESTPLATE -> {
 				armor = 8.0d;
 				toughness = 2.0d;
-				break;
-			case CHAINMAIL_LEGGINGS:
-				armor = 4.0d;
-				break;
-			case DIAMOND_LEGGINGS:
+			}
+			case CHAINMAIL_LEGGINGS -> armor = 4.0d;
+			case DIAMOND_LEGGINGS -> {
 				armor = 6.0d;
 				toughness = 2.0d;
-				break;
+			}
 		}
 		if(MineTinker.is16compatible) {
 			switch (is.getType()) {
-				case NETHERITE_HELMET:
-				case NETHERITE_BOOTS:
+				case NETHERITE_HELMET, NETHERITE_BOOTS -> {
 					armor = 3.0d;
 					toughness = 3.0d;
 					knockback_res = 1.0d;
-					break;
-				case NETHERITE_CHESTPLATE:
+				}
+				case NETHERITE_CHESTPLATE -> {
 					armor = 8.0d;
 					toughness = 3.0d;
 					knockback_res = 1.0d;
-					break;
-				case NETHERITE_LEGGINGS:
+				}
+				case NETHERITE_LEGGINGS -> {
 					armor = 6.0d;
 					toughness = 3.0d;
 					knockback_res = 1.0d;
-					break;
+				}
 			}
 		}
 

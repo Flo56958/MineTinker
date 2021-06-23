@@ -44,8 +44,7 @@ public class EntityListener implements Listener {
 
 		Player player;
 
-		if (event.getDamager() instanceof Arrow && !(event.getDamager() instanceof Trident)) {
-			final Arrow arrow = (Arrow) event.getDamager();
+		if (event.getDamager() instanceof final Arrow arrow && !(event.getDamager() instanceof Trident)) {
 			final ProjectileSource source = arrow.getShooter();
 
 			if (source instanceof Player) {
@@ -54,8 +53,7 @@ public class EntityListener implements Listener {
 				return;
 			}
 
-		} else if (event.getDamager() instanceof Trident) {
-			final Trident trident = (Trident) event.getDamager();
+		} else if (event.getDamager() instanceof final Trident trident) {
 			final ProjectileSource source = trident.getShooter();
 
 			if (source instanceof Player) {
@@ -79,8 +77,7 @@ public class EntityListener implements Listener {
 
 		ItemStack tool = player.getInventory().getItemInMainHand();
 
-		if (event.getDamager() instanceof Trident) {
-			final Trident trident = (Trident) event.getDamager();
+		if (event.getDamager() instanceof final Trident trident) {
 			tool = TridentListener.TridentToItemStack.remove(trident);
 
 			if (tool == null) {
@@ -192,19 +189,17 @@ public class EntityListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onArrowHit(@NotNull final ProjectileHitEvent event) {
-		if (!(event.getEntity().getShooter() instanceof Player)) {
+		if (!(event.getEntity().getShooter() instanceof final Player player)) {
 			return;
 		}
 
-		final Player player = (Player) event.getEntity().getShooter();
 		ItemStack tool = player.getInventory().getItemInMainHand();
 
 		if (event.getHitBlock() == null && !ToolType.FISHINGROD.contains(tool.getType())) {
 			return;
 		}
 
-		if (event.getEntity() instanceof Trident) {
-			final Trident trident = (Trident) event.getEntity();
+		if (event.getEntity() instanceof final Trident trident) {
 			// Intellij gets confused if this isn't assigned to a variable
 
 			tool = TridentListener.TridentToItemStack.get(trident);
@@ -224,11 +219,10 @@ public class EntityListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onProjectileLaunch(@NotNull final ProjectileLaunchEvent event) {
-		if (!(event.getEntity().getShooter() instanceof Player)) {
+		if (!(event.getEntity().getShooter() instanceof final Player player)) {
 			return;
 		}
 
-		final Player player = (Player) event.getEntity().getShooter();
 		final ItemStack tool = player.getInventory().getItemInMainHand();
 
 		// This isn't the best detection, if the player has a non modifier in one hand and
@@ -264,11 +258,10 @@ public class EntityListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onBowShoot(@NotNull final EntityShootBowEvent event) {
-		if (!(event.getEntity() instanceof Player)) {
+		if (!(event.getEntity() instanceof final Player player)) {
 			return;
 		}
 
-		final Player player = (Player) event.getEntity();
 		final ItemStack offHand = player.getInventory().getItemInOffHand();
 
 		if (offHand.getType() == Material.ARROW) {

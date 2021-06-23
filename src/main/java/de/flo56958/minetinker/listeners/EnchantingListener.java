@@ -128,12 +128,9 @@ public class EnchantingListener implements Listener {
 		if (!MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantmentsOnEnchant", true)) return;
 		final HumanEntity entity = event.getWhoClicked();
 
-		if (!(entity instanceof Player && event.getClickedInventory() instanceof AnvilInventory)) {
+		if (!(entity instanceof final Player player && event.getClickedInventory() instanceof final AnvilInventory inv)) {
 			return;
 		}
-
-		final AnvilInventory inv = (AnvilInventory) event.getClickedInventory();
-		final Player player = (Player) entity;
 
 		final ItemStack tool = inv.getItem(0);
 		final ItemStack book = inv.getItem(1);

@@ -166,21 +166,18 @@ public class DataHandler {
 
     private static int calculateExp(Material type) {
         //TODO: Find better method then hardcoded values
-        switch(type) {
-            case COAL_ORE: //0-2
-                return new Random().nextInt(3);
-            case DIAMOND_ORE: //3-7
-            case EMERALD_ORE:
-                return new Random().nextInt(5) + 3;
-            case NETHER_QUARTZ_ORE: //2-5
-            case LAPIS_ORE:
-                return new Random().nextInt(4) + 2;
-            case REDSTONE_ORE: //1-5
-                return new Random().nextInt(4) + 1;
-            case SPAWNER: //15-43
-                return new Random().nextInt(29) + 15;
-            default:
-                return 0;
-        }
+        return switch (type) {
+            //0-2
+            case COAL_ORE -> new Random().nextInt(3);
+            //3-7
+            case DIAMOND_ORE, EMERALD_ORE -> new Random().nextInt(5) + 3;
+            //2-5
+            case NETHER_QUARTZ_ORE, LAPIS_ORE -> new Random().nextInt(4) + 2;
+            //1-5
+            case REDSTONE_ORE -> new Random().nextInt(4) + 1;
+            //15-43
+            case SPAWNER -> new Random().nextInt(29) + 15;
+            default -> 0;
+        };
     }
 }

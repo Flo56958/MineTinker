@@ -111,9 +111,7 @@ public class VoidNetting extends Modifier implements Listener {
 	public void onDamage(EntityDamageEvent event) {
 		if (!this.isAllowed()) return;
 		if (event.getCause() != EntityDamageEvent.DamageCause.VOID) return;
-		if (!(event.getEntity() instanceof Player)) return;
-
-		Player player = (Player) event.getEntity();
+		if (!(event.getEntity() instanceof Player player)) return;
 
 		if (!player.hasPermission("minetinker.voidnetting.use")) return;
 

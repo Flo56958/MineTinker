@@ -1,11 +1,11 @@
 package de.flo56958.minetinker.commands.subs;
 
+import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.LanguageManager;
-import de.flo56958.minetinker.api.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
@@ -36,8 +36,8 @@ public class GiveModifierItemCommand implements SubCommand {
 		Player player = null;
 		int amount = 1;
 		switch (args.length) {
-			case 2:
-				for (Modifier m : ModManager.instance().getAllowedMods()) {
+			case 2 -> {
+				for (final Modifier m : ModManager.instance().getAllowedMods()) {
 					if (m.getName().replaceAll(" ", "_").equalsIgnoreCase(args[1])) {
 						mod = m;
 						if (sender instanceof Player) {
@@ -50,13 +50,13 @@ public class GiveModifierItemCommand implements SubCommand {
 						break;
 					}
 				}
-				if(mod == null) {
+				if (mod == null) {
 					CommandManager.sendError(sender,
 							LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 					return true;
 				}
-				break;
-			case 3:
+			}
+			case 3 -> {
 				player = Bukkit.getPlayer(args[1]);
 				if (player == null) {
 					try {
@@ -64,16 +64,14 @@ public class GiveModifierItemCommand implements SubCommand {
 					} catch (IllegalArgumentException ignored) {
 					}
 				}
-
 				if (player == null) modifierIndex = 1;
 				else modifierIndex = 2;
-
 				for (Modifier m : ModManager.instance().getAllowedMods()) {
 					if (m.getName().replaceAll(" ", "_").equalsIgnoreCase(args[modifierIndex])) {
 						mod = m;
 						if (sender instanceof Player) {
 							player = (Player) sender;
-						} else if (modifierIndex == 1){
+						} else if (modifierIndex == 1) {
 							CommandManager.sendError(sender,
 									LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 							return true;
@@ -86,7 +84,6 @@ public class GiveModifierItemCommand implements SubCommand {
 							LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 					return true;
 				}
-
 				if (modifierIndex == 1) {
 					amountIndex = 2;
 					try {
@@ -97,8 +94,8 @@ public class GiveModifierItemCommand implements SubCommand {
 						return true;
 					}
 				}
-				break;
-			case 4:
+			}
+			case 4 -> {
 				playerIndex = 1;
 				modifierIndex = 2;
 				amountIndex = 3;
@@ -114,7 +111,7 @@ public class GiveModifierItemCommand implements SubCommand {
 							LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 					return true;
 				}
-				for (Modifier m : ModManager.instance().getAllowedMods()) {
+				for (final Modifier m : ModManager.instance().getAllowedMods()) {
 					if (m.getName().replaceAll(" ", "_").equalsIgnoreCase(args[modifierIndex])) {
 						mod = m;
 						break;
@@ -125,7 +122,6 @@ public class GiveModifierItemCommand implements SubCommand {
 							LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 					return true;
 				}
-
 				try {
 					amount = Integer.parseInt(args[amountIndex]);
 				} catch (NumberFormatException ignored) {
@@ -133,13 +129,14 @@ public class GiveModifierItemCommand implements SubCommand {
 							LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 					return true;
 				}
-				break;
-			default:
+			}
+			default -> {
 				CommandManager.sendError(sender,
 						LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 				return true;
+			}
 		}
-		ItemStack item = mod.getModItem().clone();
+		final ItemStack item = mod.getModItem().clone();
 		item.setAmount(amount);
 		if (player.getInventory().addItem(item).size() != 0) { //adds items to (full) inventory
 			player.getWorld().dropItem(player.getLocation(), item);

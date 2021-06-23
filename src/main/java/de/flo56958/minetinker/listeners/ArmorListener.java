@@ -49,15 +49,13 @@ public class ArmorListener implements Listener {
 			return;
 		}
 
-		if (!(event.getEntity() instanceof Player)) {
+		if (!(event.getEntity() instanceof final Player player)) {
 			return;
 		}
 
 		if (blacklistedCauses.contains(event.getCause())) {
 			return;
 		}
-
-		final Player player = (Player) event.getEntity();
 
 		Entity entity = null;
 		EntityDamageByEntityEvent byEntityEvent = null;
@@ -66,8 +64,7 @@ public class ArmorListener implements Listener {
 			byEntityEvent = (EntityDamageByEntityEvent)event;
 			entity = byEntityEvent.getDamager();
 
-			if (entity instanceof Arrow) {
-				final Arrow arrow = (Arrow) entity;
+			if (entity instanceof final Arrow arrow) {
 				final ProjectileSource source = arrow.getShooter();
 
 				if (source instanceof Entity) {

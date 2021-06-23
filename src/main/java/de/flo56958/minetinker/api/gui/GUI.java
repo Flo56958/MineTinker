@@ -208,14 +208,14 @@ public class GUI implements Listener {
 	//<------------------------------------Events------------------------------------------->
 
 	@EventHandler(ignoreCancelled = true)
-	public void onDisable(PluginDisableEvent event) {
+	public void onDisable(@NotNull PluginDisableEvent event) {
 		if (event.getPlugin().equals(this.plugin)) {
 			this.close();
 		}
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-	public void onClick(InventoryClickEvent event) {
+	public void onClick(@NotNull InventoryClickEvent event) {
 		Window w1 = getWindowFromInventory(event.getClickedInventory());
 		Window w2 = getWindowFromInventory(event.getWhoClicked().getOpenInventory().getTopInventory());
 
@@ -235,7 +235,7 @@ public class GUI implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-	public void onDrag(InventoryDragEvent event) {
+	public void onDrag(@NotNull InventoryDragEvent event) {
 		Window w = getWindowFromInventory(event.getInventory());
 
 		if (w == null) {
@@ -246,7 +246,7 @@ public class GUI implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-	public void onMove(InventoryMoveItemEvent event) {
+	public void onMove(@NotNull InventoryMoveItemEvent event) {
 		Window w1 = getWindowFromInventory(event.getDestination());
 
 		Window w2 = getWindowFromInventory(event.getInitiator());
@@ -259,7 +259,7 @@ public class GUI implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-	public void onEvent(InventoryInteractEvent event) {
+	public void onEvent(@NotNull InventoryInteractEvent event) {
 		Window w = getWindowFromInventory(event.getInventory());
 
 		if (w == null) {

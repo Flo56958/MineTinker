@@ -25,11 +25,10 @@ import java.util.*;
 public class RemoveModifierCommand implements SubCommand {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
-		if (!(sender instanceof Player)) {
+		if (!(sender instanceof Player player)) {
 			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerOnlyCommand"));
 			return true;
 		}
-		Player player = (Player) sender;
 		if (args.length >= 2) {
 			final ModManager modManager = ModManager.instance();
 			for (final Modifier m : modManager.getAllowedMods()) {

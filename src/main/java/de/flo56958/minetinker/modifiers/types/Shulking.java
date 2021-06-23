@@ -104,11 +104,10 @@ public class Shulking extends Modifier implements Listener {
 	public void onMove(@NotNull final EntityPotionEffectEvent event) {
 		if (!this.givesImmunity) return;
 
-		if (!(event.getEntity() instanceof Player)) {
+		if (!(event.getEntity() instanceof final Player player)) {
 			return;
 		}
 
-		final Player player = (Player) event.getEntity();
 		if (!player.hasPermission("minetinker.modifiers.shulking.use")) {
 			return;
 		}

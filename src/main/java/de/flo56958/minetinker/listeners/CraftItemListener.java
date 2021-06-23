@@ -21,11 +21,10 @@ public class CraftItemListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onCraft(@NotNull final CraftItemEvent event) {
-		if (!(event.getWhoClicked() instanceof Player)) {
+		if (!(event.getWhoClicked() instanceof final Player player)) {
 			return;
 		}
 
-		final Player player = (Player) event.getWhoClicked();
 		final FileConfiguration config = MineTinker.getPlugin().getConfig();
 
 		if (config.getBoolean("Sound.OnEveryCrafting")) {

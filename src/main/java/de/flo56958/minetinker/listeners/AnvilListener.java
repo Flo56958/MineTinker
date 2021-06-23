@@ -35,12 +35,9 @@ public class AnvilListener implements Listener {
 	public void onInventoryClick(@NotNull final InventoryClickEvent event) {
 		final HumanEntity he = event.getWhoClicked();
 
-		if (!(he instanceof Player && event.getClickedInventory() instanceof AnvilInventory)) {
+		if (!(he instanceof final Player player && event.getClickedInventory() instanceof final AnvilInventory inv)) {
 			return;
 		}
-
-		final AnvilInventory inv = (AnvilInventory) event.getClickedInventory();
-		final Player player = (Player) he;
 
 		final ItemStack tool = inv.getItem(0);
 		final ItemStack modifier = inv.getItem(1);
@@ -187,10 +184,10 @@ public class AnvilListener implements Listener {
 
 				if (item != null) {
 					final Pair<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(tool.getType(), item.getType());
-					if (materialIntegerPair != null && materialIntegerPair.x != null) {
-						if (materialIntegerPair.y != null && item.getAmount() == materialIntegerPair.y) {
+					if (materialIntegerPair != null && materialIntegerPair.x() != null) {
+						if (materialIntegerPair.y() != null && item.getAmount() == materialIntegerPair.y()) {
 							newTool = tool.clone();
-							newTool.setType(materialIntegerPair.x);
+							newTool.setType(materialIntegerPair.x());
 							modManager.addArmorAttributes(newTool);
 							final ItemMeta meta = newTool.getItemMeta();
 							if(meta instanceof Damageable) {

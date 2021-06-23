@@ -79,16 +79,14 @@ public class EasyHarvestListener implements Listener {
 				} else {
 					return;
 				}
-				if (b1.getBlockData() instanceof Ageable) {
-					final Ageable blockOneAgeable = (Ageable) b1.getBlockData();
+				if (b1.getBlockData() instanceof final Ageable blockOneAgeable) {
 					if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
 						breakBlock(b1, player, tool);
 						replantCrops(player, b1, type);
 					}
 				}
 
-				if (b2.getBlockData() instanceof Ageable) {
-					final Ageable blockTwoAgeable = (Ageable) b2.getBlockData();
+				if (b2.getBlockData() instanceof final Ageable blockTwoAgeable) {
 					if (b2.getType().equals(block.getType()) && (blockTwoAgeable.getAge() == blockTwoAgeable.getMaximumAge())) {
 						breakBlock(b2, player, tool);
 						replantCrops(player, b2, type);
@@ -100,11 +98,9 @@ public class EasyHarvestListener implements Listener {
 						if (!(x == 0 && z == 0)) {
 							final Block b1 = block.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
 
-							if (!(b1.getBlockData() instanceof Ageable)) {
+							if (!(b1.getBlockData() instanceof final Ageable blockOneAgeable)) {
 								continue;
 							}
-
-							final Ageable blockOneAgeable = (Ageable) b1.getBlockData();
 
 							if (b1.getType().equals(block.getType()) && (blockOneAgeable.getAge() == blockOneAgeable.getMaximumAge())) {
 								breakBlock(b1, player, tool);

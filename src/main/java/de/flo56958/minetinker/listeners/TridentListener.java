@@ -17,7 +17,7 @@ public class TridentListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onTridentLaunch(@NotNull final ProjectileLaunchEvent event) {
-		if (!(event.getEntity().getShooter() instanceof Player)) {
+		if (!(event.getEntity().getShooter() instanceof final Player player)) {
 			return;
 		}
 
@@ -25,7 +25,6 @@ public class TridentListener implements Listener {
 			return;
 		}
 
-		final Player player = (Player) event.getEntity().getShooter();
 		final ItemStack trident = player.getInventory().getItemInMainHand().clone();
 
 		if (!ModManager.instance().isToolViable(trident)) {

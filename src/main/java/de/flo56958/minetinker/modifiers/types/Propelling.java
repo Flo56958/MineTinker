@@ -165,9 +165,8 @@ public class Propelling extends Modifier implements Listener {
 		int maxDamage = elytra.getType().getMaxDurability();
 		ItemMeta meta = elytra.getItemMeta();
 
-		if (meta instanceof Damageable && !meta.isUnbreakable()
+		if (meta instanceof Damageable dam && !meta.isUnbreakable()
 				&& (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
-			Damageable dam = (Damageable) meta;
 
 			int loss = durabilityLoss;
 

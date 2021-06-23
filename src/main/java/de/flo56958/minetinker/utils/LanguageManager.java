@@ -57,16 +57,19 @@ public class LanguageManager {
 		if (langFile == null && langBackup == null) {
 			ChatWriter.logError("Can not load any language! Shutting down...");
 			Bukkit.getPluginManager().disablePlugin(MineTinker.getPlugin());
+			return;
 		}
 		playerLocale = MineTinker.getPlugin().getConfig().getBoolean("EnablePlayerLocale", false);
 
 		if (langFile == null) {
 			langFile = langBackup;
 			usingFallback = true;
-			ChatWriter.logError(lang + " is currently not supported. If you want MineTinker to support this language you can help translating on Transifex!");
+			ChatWriter.logError(lang + " is currently not supported. If you want MineTinker to support this language you" +
+					" can help translating on Transifex!");
 		} else {
 			if (!lang.equals("en_US") && !lang.equals("de_DE")) {
-				ChatWriter.logInfo("You are using a community translation. Therefore the translation is not 100% reviewed and checked! Use with caution!");
+				ChatWriter.logInfo("You are using a community translation. Therefore the translation is not 100% reviewed" +
+						" and checked! Use with caution!");
 			}
 
 			double percentage = langFile.getKeys(true).size() / (double) langBackup.getKeys(true).size();

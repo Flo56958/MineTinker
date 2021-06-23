@@ -109,9 +109,8 @@ public class Magical extends Modifier implements Listener {
 		Projectile arrow = event.getEntity();
 		if (!(arrow instanceof Arrow)) return;
 
-		if (!(arrow.getShooter() instanceof Player)) return;
+		if (!(arrow.getShooter() instanceof Player player)) return;
 
-		Player player = (Player) arrow.getShooter();
 		if (!player.hasPermission("minetinker.modifiers.magical.use")) return;
 
 		ItemStack tool = player.getInventory().getItemInMainHand();
@@ -176,9 +175,8 @@ public class Magical extends Modifier implements Listener {
 		Projectile arrow = event.getEntity();
 		if (!(arrow instanceof Arrow)) return;
 
-		if (!(arrow.getShooter() instanceof Player)) return;
+		if (!(arrow.getShooter() instanceof Player player)) return;
 
-		Player player = (Player) arrow.getShooter();
 		if(!player.hasPermission("minetinker.modifiers.magical.use")) return;
 
 		String customName = arrow.getCustomName();
@@ -204,9 +202,8 @@ public class Magical extends Modifier implements Listener {
 	public void onEntityHit(MTEntityDamageByEntityEvent event) {
 		if (!this.isAllowed()) return;
 
-		if (!(event.getEvent().getDamager() instanceof Arrow)) return;
+		if (!(event.getEvent().getDamager() instanceof Arrow arrow)) return;
 
-		Arrow arrow = (Arrow) event.getEvent().getDamager();
 		String customName = arrow.getCustomName();
 		if (customName == null) return;
 
