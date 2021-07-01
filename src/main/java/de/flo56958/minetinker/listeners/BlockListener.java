@@ -178,10 +178,12 @@ public class BlockListener implements Listener {
 
 		if (norm == null) return;
 
+		if (modManager.isModifierItem(norm)) {
+			event.setCancelled(true);
+		}
+
 		if (event.getAction() == Action.RIGHT_CLICK_AIR) {
-			if (modManager.isModifierItem(norm)) {
-				event.setCancelled(true);
-			}
+
 		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			final Block block = event.getClickedBlock();
 
@@ -200,11 +202,6 @@ public class BlockListener implements Listener {
 				}
 			}
 
-			if (modManager.isModifierItem(norm)) {
-				event.setCancelled(true);
-				return;
-			}
-
 			if (block.getType() == Material.getMaterial(
 					Objects.requireNonNull(MineTinker.getPlugin().getConfig()
 							.getString("BlockToEnchantModifiers", Material.BOOKSHELF.name()),
@@ -221,7 +218,7 @@ public class BlockListener implements Listener {
 				if (modifiers.isEmpty()) return;
 				else if (modifiers.size() == 1) {
 					final Modifier m = modifiers.remove(0);
-					m.enchantItem(player);
+					m.enchantItem(player, norm);
 				} else {
 					// Create GUI for easy choosing of Modifier to enchant
 					final GUI gui = new GUI(MineTinker.getPlugin());
@@ -248,9 +245,10 @@ public class BlockListener implements Listener {
 												+ ChatWriter.toRomanNumerals(mod.getEnchantCost()));
 						if (mod.getEnchantCost() <= player.getLevel()) {
 							lore.add(ChatColor.WHITE + s);
+							ItemStack finalNorm = norm;
 							button.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE_ON_PLAYER(button,
 									(p, input) -> {
-										mod.enchantItem(p);
+										mod.enchantItem(p, finalNorm);
 										gui.close();
 									}));
 						} else {

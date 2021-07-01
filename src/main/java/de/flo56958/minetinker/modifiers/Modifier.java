@@ -363,14 +363,18 @@ public abstract class Modifier {
 
 	// ---------------------- Enchantable Stuff ----------------------
 
-	public void enchantItem(@NotNull Player player) {
+	/**
+	 * @param player The player that enchants
+	 * @param item The item that will be enchanted
+	 */
+	public void enchantItem(@NotNull Player player, @NotNull ItemStack item) {
 		if (!player.hasPermission("minetinker.modifiers." + getKey().replace("-", "").toLowerCase() + ".craft")) {
 			return;
 		}
 
-		Location location = player.getLocation();
-		World world = location.getWorld();
-		PlayerInventory inventory = player.getInventory();
+		final Location location = player.getLocation();
+		final World world = location.getWorld();
+		final PlayerInventory inventory = player.getInventory();
 
 		if (world == null) {
 			return;
@@ -387,11 +391,11 @@ public abstract class Modifier {
 
 			ChatWriter.log(false, player.getDisplayName() + " created a " + getName() + "-Modifiers in Creative!");
 		} else if (player.getLevel() >= getEnchantCost()) {
-			int amount = inventory.getItemInMainHand().getAmount();
+			int amount = item.getAmount();
 			int newLevel = player.getLevel() - getEnchantCost();
 
 			player.setLevel(newLevel);
-			inventory.getItemInMainHand().setAmount(amount - 1);
+			item.setAmount(amount - 1);
 
 			if (inventory.addItem(getModItem()).size() != 0) { //adds items to (full) inventory
 				world.dropItem(location, getModItem());
