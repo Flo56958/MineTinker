@@ -98,11 +98,27 @@ public class ArmorListener implements Listener {
 	//Handle exp calculation for both armor and weapons
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void expCalculation(@NotNull final MTEntityDamageEvent event) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("DisableNonPvPDamageExpArmor", false)
+				&& ToolType.ARMOR.contains(event.getTool().getType()))
+			return;
+		if (MineTinker.getPlugin().getConfig().getBoolean("DisableNonPvPDamageExpWeapon", false)
+				&& !ToolType.TOOLS.contains(event.getTool().getType()))
+			return;
+
 		expCalculation(event.isBlocking(), event.getTool(), event.getEvent(), event.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void expCalculation(@NotNull final MTEntityDamageByEntityEvent event) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("DisableNonPvPDamageExpArmor", false)
+				&& ToolType.ARMOR.contains(event.getTool().getType())
+				&& !(event.getEntity() instanceof Player))
+			return;
+		if (MineTinker.getPlugin().getConfig().getBoolean("DisableNonPvPDamageExpWeapon", false)
+				&& ToolType.TOOLS.contains(event.getTool().getType())
+				&& !(event.getEntity() instanceof Player))
+			return;
+
 		expCalculation(event.isBlocking(), event.getTool(), event.getEvent(), event.getPlayer());
 	}
 
