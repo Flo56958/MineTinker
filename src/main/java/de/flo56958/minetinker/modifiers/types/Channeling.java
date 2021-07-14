@@ -26,6 +26,7 @@ public class Channeling extends Modifier implements Listener {
 	private static Channeling instance;
 
 	private boolean worksOnlyInStorms;
+	private int chancePerLevel;
 
 	private Channeling() {
 		super(MineTinker.getPlugin());
@@ -70,6 +71,7 @@ public class Channeling extends Modifier implements Listener {
 		config.addDefault("EnchantCost", 50);
 		config.addDefault("Enchantable", false);
 		config.addDefault("MinimumToolLevelRequirement", 1);
+		config.addDefault("ChancePerLevel", 100);
 
 		config.addDefault("Recipe.Enabled", true);
 		config.addDefault("Recipe.Top", "SPS");
@@ -91,6 +93,9 @@ public class Channeling extends Modifier implements Listener {
 		init(Material.PRISMARINE_SHARD);
 
 		worksOnlyInStorms = config.getBoolean("WorksOnlyInStorms", true);
+		chancePerLevel = config.getInt("ChancePerLevel", 100);
+
+		this.description = this.description.replaceAll("%amount", this.chancePerLevel + "%");
 	}
 
 	@Override
@@ -115,10 +120,12 @@ public class Channeling extends Modifier implements Listener {
 		if (event.getEvent().getHitEntity() != null) return;
 
 		if (modManager.hasMod(tool, this)) {
-			final Location loc = event.getEvent().getEntity().getLocation();
-			if (!loc.getWorld().hasStorm() && worksOnlyInStorms) return;
-			loc.getWorld().strikeLightning(loc);
-			ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Location: %d/%d/%d", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
+			if (new Random().nextInt(100) < modManager.getModLevel(tool, this) * chancePerLevel) {
+				final Location loc = event.getEvent().getEntity().getLocation();
+				if (!loc.getWorld().hasStorm() && worksOnlyInStorms) return;
+				loc.getWorld().strikeLightning(loc);
+				ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Location: %d/%d/%d", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
+			}
 		}
 	}
 
@@ -128,10 +135,12 @@ public class Channeling extends Modifier implements Listener {
 		if (!event.getPlayer().hasPermission("minetinker.modifiers.channeling.use")) return;
 
 		if (modManager.hasMod(tool, this)) {
-			final Location loc = event.getEntity().getLocation();
-			if (!loc.getWorld().hasStorm() && worksOnlyInStorms) return;
-			loc.getWorld().strikeLightning(loc);
-			ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Location: %d/%d/%d", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
+			if (new Random().nextInt(100) < modManager.getModLevel(tool, this) * chancePerLevel) {
+				final Location loc = event.getEntity().getLocation();
+				if (!loc.getWorld().hasStorm() && worksOnlyInStorms) return;
+				loc.getWorld().strikeLightning(loc);
+				ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Location: %d/%d/%d", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
+			}
 		}
 	}
 }

@@ -168,7 +168,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Berserk-Modifier"
   Channeling:
     Name: "Channeling"
-    Description: "Summon lightning!"
+    Description: "Summon lightning with a chance of %amount per level!"
     ModifierItemName: "Lightning Infused Shard"
     DescriptionModifierItem: "Modifier-Item for the Channeling-Modifier"
   Directing:
