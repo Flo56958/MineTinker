@@ -69,7 +69,8 @@ GUIs.Modifiers.IncompatibleWith: "Несовместимо с:"
 GUIs.Modifiers.EnchantCost: "Стоимость зачарования: %WHITE%%enchantCost"
 GUIs.Modifiers.ClickToRecipe: "%key показать рецепты крафта."
 GUIs.Modifiers.BlockToEnchant: "%key с %mat на %block, чтобы зачаровать."
-GUIs.Modifiers.SlotCost: "Нужно свободных слотов за уровень: %amount"
+GUIs.Modifiers.SlotCost: "Требуется свободных слотов за уровень: %WHITE%%amount"
+GUIs.Modifiers.MinimumToolLevel: "Минимальный уровень предмета: %WHITE%%level"
 GUIs.ConfigurationEditor.ReloadPlugin: "Перезагрузка MineTinker"
 GUIs.ConfigurationEditor.Change: "Изменено %key с %old на %new!"
 GUIs.ConfigurationEditor.Type: "Тип: %type"
@@ -118,6 +119,7 @@ ModifierFailCause.ModMaxLevel: "Достигнут максимальный ур
 ModifierFailCause.NoFreeSlots: "В предмете недостаточно свободных слотов!"
 ModifierFailCause.NoPermission: "Недостаточно прав!"
 ModifierFailCause.PlayerFailure: "Игроку не удалось наложить модификацию!"
+ModifierFailCause.ToolLevelToLow: "Инструмент получил недостаточно уровней!"
 
 GrindStone.PossibleSlotsAfterGrind: "Возможных свободных слотов: %amount"
 
@@ -166,7 +168,7 @@ Modifier:
     DescriptionModifierItem: "Модификатор Берсерка"
   Channeling:
     Name: "Громовержец"
-    Description: "Вызов молнии!"
+    Description: "Призыв молнии с шансом %amount за уровень!"
     ModifierItemName: "Осколок молнии"
     DescriptionModifierItem: "Модификатор Громовержца"
   Directing:
@@ -275,6 +277,11 @@ Modifier:
     Description: "За каждый уровень стреляет дополнительной стрелой!"
     ModifierItemName: "Мультистрела"
     DescriptionModifierItem: "Модификатор Мультивыстрела"
+  Multijump:
+    Name: "Мультипрыжок"
+    Description: "С каждым уровнем открывается доп. прыжок!"
+    ModifierItemName: "Лапка Магического Кролика"
+    DescriptionModifierItem: "Модификатор Мультипрыжка"
   Nightseeker:
     Name: "Ночной охотник"
     Description: "Наносит больше или получает меньше урона (от %amountmin% до %amountmax%) когда луна сияет (в зависимости от позиции луны и уровня). Этот эффект инвертируется в дневное время и в Аду, но имеет максимальную силу в Крае!"
