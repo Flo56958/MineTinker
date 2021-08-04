@@ -105,7 +105,10 @@ public class MultiShot extends Modifier implements Listener {
 
 		if (meta != null) {
 			if (ToolType.CROSSBOW.contains(tool.getType())) {
-				if (getConfig().getBoolean("UseEnchantOnCrossbow")) meta.addEnchant(Enchantment.MULTISHOT, modManager.getModLevel(tool, this), true);
+				if (getConfig().getBoolean("UseEnchantOnCrossbow"))
+					meta.addEnchant(Enchantment.MULTISHOT, modManager.getModLevel(tool, this), true);
+				else
+					meta.removeEnchant(Enchantment.MULTISHOT);
 			}
 
 			tool.setItemMeta(meta);
