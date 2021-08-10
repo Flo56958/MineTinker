@@ -69,6 +69,8 @@ public class Power extends Modifier implements Listener {
 					tool.setItemMeta((ItemMeta) damageable);
 				}
 
+				events.put(block.getLocation(), 0);
+
 				PlayerInteractEvent event = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK,
 						tool, block, BlockFace.UP);
 				Bukkit.getPluginManager().callEvent(event);
@@ -180,7 +182,7 @@ public class Power extends Modifier implements Listener {
 	 * @param event The Event
 	 */
 	@EventHandler(ignoreCancelled = true)
-	public void effect(MTBlockBreakEvent event) {
+	public void effect(@NotNull MTBlockBreakEvent event) {
 		final Player player = event.getPlayer();
 		final ItemStack tool = event.getTool();
 		final Block block = event.getBlock();
@@ -290,7 +292,7 @@ public class Power extends Modifier implements Listener {
 	 * Effect for the PlayerInteractEvent for the Hoe
 	 */
 	@EventHandler(ignoreCancelled = true)
-	public void effect(MTPlayerInteractEvent event) {
+	public void effect(@NotNull MTPlayerInteractEvent event) {
 		final Player player = event.getPlayer();
 		final ItemStack tool = event.getTool();
 
@@ -306,12 +308,14 @@ public class Power extends Modifier implements Listener {
 
 		ChatWriter.logModifier(player, event, this, tool);
 
-		HAS_POWER.get(player).set(true);
-
 		final int level = modManager.getModLevel(tool, this);
 		final Block block = interactEvent.getClickedBlock();
 
 		if (block == null) {
+			return;
+		}
+
+		if (events.remove(block.getLocation(), 0)) {
 			return;
 		}
 
@@ -356,8 +360,6 @@ public class Power extends Modifier implements Listener {
 				}
 			}
 		}
-
-		HAS_POWER.get(player).set(false);
 	}
 
 	private void powerBlockBreak(@NotNull final Block block, final float centralBlockHardness, final Player player, final ItemStack tool, final BlockFace face) {
