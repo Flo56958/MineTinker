@@ -24,7 +24,7 @@ repositories {
 dependencies {
     implementation 'org.bstats:bstats-bukkit:2.2.1'
     compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
-    compileOnly 'org.jetbrains:annotations:21.0.1'
+    compileOnly 'org.jetbrains:annotations:22.0.0'
 }
 
 group = 'de.flo56958'
