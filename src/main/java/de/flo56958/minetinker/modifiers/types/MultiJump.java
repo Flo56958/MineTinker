@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
@@ -174,7 +176,7 @@ public class MultiJump extends Modifier implements Listener {
 
 			//"Enable" multijump as a ToggleFlight hack
 			//This will surely get flagged by anti cheat plugins
-			//FIXME: Find a better solution for MultiJump so it does not trigger AntiCheat
+			//FIXME: Find a better solution for MultiJump so it does not trigger AntiCheat or can easily exploited
 			else if (below.getType() == Material.CAVE_AIR || below.getType() == Material.AIR
 					|| below.getType() == Material.VOID_AIR) {
 				//This can and will remove flight if the player uses a fly command
@@ -234,6 +236,21 @@ public class MultiJump extends Modifier implements Listener {
 
 			//This will remove flight if the player uses a fly command
 			disableFlight(p);
+		}
+	}
+
+	//To avoid that you can have flight without the boots
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+	public void onArmorWear(@NotNull InventoryClickEvent e) {
+		if (e.getSlotType().equals(InventoryType.SlotType.ARMOR)) {
+			ItemStack item = e.getCurrentItem();
+			if (modManager.isArmorViable(item)) {
+				if (modManager.hasMod(item, this)) {
+					if (e.getWhoClicked() instanceof Player p) {
+						disableFlight(p);
+					}
+				}
+			}
 		}
 	}
 }
