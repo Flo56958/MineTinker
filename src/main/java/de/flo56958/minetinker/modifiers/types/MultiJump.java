@@ -247,7 +247,9 @@ public class MultiJump extends Modifier implements Listener {
 			if (modManager.isArmorViable(item)) {
 				if (modManager.hasMod(item, this)) {
 					if (e.getWhoClicked() instanceof Player p) {
-						disableFlight(p);
+						if (p.getGameMode() == GameMode.ADVENTURE || p.getGameMode() == GameMode.SURVIVAL) {
+							disableFlight(p);
+						}
 					}
 				}
 			}
