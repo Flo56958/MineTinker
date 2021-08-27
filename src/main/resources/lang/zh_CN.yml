@@ -12,9 +12,6 @@ StartUp.Events: "事件已注册!"
 StartUp.GUIs: "正在加载用户界面!"
 StartUp.StdLogging: "标准信息日志已启用. 你可以在配置文件中的Logging.Standard一栏禁用!"
 StartUp.DebugLogging: "调试信息日志已启用. 你应该在在配置文件中的Logging.Debug一栏禁用!"
-StartUp.Incompatible:
-  Start: "正在搜索%RED%不兼容%WHITE%插件... 你可以在配置文件中关闭这一功能!"
-  Found: "%plugin插件已找到. 正在调整MineTinker以获得最佳兼容性!"
 
 Builderswand.Name.Wood: "木制建造杖"
 Builderswand.Name.Stone: "石制建造杖"
@@ -72,7 +69,8 @@ GUIs.Modifiers.IncompatibleWith: "不兼容模块:"
 GUIs.Modifiers.EnchantCost: "附魔花费: %WHITE%%enchantCost"
 GUIs.Modifiers.ClickToRecipe: "%key以展示合成配方."
 GUIs.Modifiers.BlockToEnchant: "使用%mat对%block%key以附魔物品."
-GUIs.Modifiers.SlotCost: "每级所需空余槽位: %amount"
+GUIs.Modifiers.SlotCost: "每级所需空余槽位: %WHITE%%amount"
+GUIs.Modifiers.MinimumToolLevel: "最小工具等级: %WHITE%%level"
 GUIs.ConfigurationEditor.ReloadPlugin: "重载MineTinker"
 GUIs.ConfigurationEditor.Change: "已将%key从%old更改为%new!"
 GUIs.ConfigurationEditor.Type: "种类: %type"
@@ -97,6 +95,7 @@ GUIs.Statistics.Combat.TitlePage: "%tool 的战斗统计 - %pageNo"
 GUIs.Statistics.Combat.AmountKilled: "杀了 %amount 次"
 GUIs.Statistics.Combat.DamageDealt: "造成了 %amount 伤害"
 GUIs.Statistics.Combat.DamageReceived: "受到了 %amount 伤害"
+GUIs.Enchantable.Title: "选择模块添加到工具:"
 
 GUIs.ConfigurationEditor.config.PluginIncompatibility.Check: "开启MineTinker搜索不兼容插件并尝试主动应对的功能 (如: 主动更改配置文件设定.)"
 GUIs.ConfigurationEditor.config.PluginIncompatibility.SkippedPlugins: "禁用对该列表内插件的搜索"
@@ -120,6 +119,7 @@ ModifierFailCause.ModMaxLevel: "模块等级已满!"
 ModifierFailCause.NoFreeSlots: "物品上没有足够的槽位!"
 ModifierFailCause.NoPermission: "没有权限!"
 ModifierFailCause.PlayerFailure: "模块安装失败!"
+ModifierFailCause.ToolLevelToLow: "工具没有足够的等级!"
 
 GrindStone.PossibleSlotsAfterGrind: "砂磨后可能的空余槽位: %amount"
 
@@ -168,7 +168,7 @@ Modifier:
     DescriptionModifierItem: "狂暴模块"
   Channeling:
     Name: "引雷"
-    Description: "召唤雷电!"
+    Description: "召唤闪电的机率每级增加 %amount!"
     ModifierItemName: "雷霆碎片"
     DescriptionModifierItem: "引雷模块"
   Directing:
@@ -277,6 +277,11 @@ Modifier:
     Description: "允许你一发射出更多箭矢, 每增加一级多射击一根."
     ModifierItemName: "集束箭矢"
     DescriptionModifierItem: "多重射击模块"
+  Multijump:
+    Name: "多重跳跃"
+    Description: "每一级可以额外跳跃一次!"
+    ModifierItemName: "魔法兔子脚"
+    DescriptionModifierItem: "多重跳跃模块"
   Nightseeker:
     Name: "夜行者"
     Description: "当月亮照耀时（取决于月相与等级），产生治疗或减免伤害效果（%amountmin% 到 %amountmax%）。这个效果在白天或在下界会反转，同时在末地可以得到最高能量。"
