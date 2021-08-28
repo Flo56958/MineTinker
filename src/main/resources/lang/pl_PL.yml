@@ -168,7 +168,7 @@ Modifier:
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Berserk\""
   Channeling:
     Name: "Wyładowanie"
-    Description: "Wezwij błyskawicę!"
+    Description: "Masz %amount szans na poziom by przywołać błyskawicę!"
     ModifierItemName: "Odłamek Błyskawicy"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Wyładowanie\""
   Directing:
