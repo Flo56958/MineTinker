@@ -367,11 +367,11 @@ public class Power extends Modifier implements Listener {
 			return;
 		}
 
-		if (block.getDrops(player.getInventory().getItemInMainHand()).isEmpty()) {
+		if (block.getDrops(tool).isEmpty()) {
 			return;
 		}
 
-		if (block.getType().getHardness() > centralBlockHardness + 2) {
+		if (block.getType().getHardness() > centralBlockHardness + 2) { // + 2 so you can mine ore as well
 			return; //So Obsidian can not be mined using Cobblestone and Power
 		}
 
