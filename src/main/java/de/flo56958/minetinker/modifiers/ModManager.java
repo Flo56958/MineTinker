@@ -937,17 +937,17 @@ public class ModManager {
 				case NETHERITE_HELMET, NETHERITE_BOOTS -> {
 					armor = 3.0d;
 					toughness = 3.0d;
-					knockback_res = 1.0d;
+					knockback_res = 0.1d; //Knockback Resistance of 1.0d would be Resistance 10
 				}
 				case NETHERITE_CHESTPLATE -> {
 					armor = 8.0d;
 					toughness = 3.0d;
-					knockback_res = 1.0d;
+					knockback_res = 0.1d; //Knockback Resistance of 1.0d would be Resistance 10
 				}
 				case NETHERITE_LEGGINGS -> {
 					armor = 6.0d;
 					toughness = 3.0d;
-					knockback_res = 1.0d;
+					knockback_res = 0.1d; //Knockback Resistance of 1.0d would be Resistance 10
 				}
 			}
 		}
@@ -978,7 +978,6 @@ public class ModManager {
 			} else if (ToolType.ELYTRA.contains(is.getType())) {
 				armorAM = null;
 				toughnessAM = null;
-				knockbackResAM = null;
 			} else return;
 
 			if (armor > 0.0d) {

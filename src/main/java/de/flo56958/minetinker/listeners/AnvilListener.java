@@ -188,7 +188,7 @@ public class AnvilListener implements Listener {
 						if (materialIntegerPair.y() != null && item.getAmount() == materialIntegerPair.y()) {
 							newTool = tool.clone();
 							newTool.setType(materialIntegerPair.x());
-							modManager.addArmorAttributes(newTool);
+							modManager.addArmorAttributes(newTool); //The Attributes need to be reapplied
 							final ItemMeta meta = newTool.getItemMeta();
 							if(meta instanceof Damageable) {
 								((Damageable) meta).setDamage(0);

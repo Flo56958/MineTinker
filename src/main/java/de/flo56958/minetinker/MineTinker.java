@@ -84,6 +84,7 @@ public class MineTinker extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new PlayerInfo(), this);
 		Bukkit.getPluginManager().registerEvents(new EnchantingListener(), this);
 		Bukkit.getPluginManager().registerEvents(new GrindstoneListener(), this);
+		if (is16compatible) Bukkit.getPluginManager().registerEvents(new SmithingTableListener(), this);
 
 		final FileConfiguration elytraConf = ConfigurationManager.getConfig("Elytra.yml");
 		elytraConf.options().copyDefaults(true);
