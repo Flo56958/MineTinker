@@ -23,10 +23,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Photosynthesis extends Modifier implements Listener {
@@ -39,6 +36,8 @@ public class Photosynthesis extends Modifier implements Listener {
 	private double multiplierPerTick;
 	private boolean fullEffectAtNoon;
 	private boolean allowOffhand;
+
+	private List<Material> allowedMaterials = new ArrayList<>();
 
 	private final Runnable runnable = () -> {
 		for (final UUID id : data.keySet()) {
@@ -119,10 +118,10 @@ public class Photosynthesis extends Modifier implements Listener {
 
 				boolean isAboveGround = false;
 				if (tupel.loc.getWorld().getEnvironment() == World.Environment.NORMAL) { //check for overworld
-					for (int i = tupel.loc.getBlockY() + 1; i <= 256; i++) {
+					final int maxHeight = (MineTinker.is17compatible) ? 320 : 256;
+					for (int i = tupel.loc.getBlockY() + 1; i <= maxHeight; i++) {
 						Block b = tupel.loc.getWorld().getBlockAt(tupel.loc.getBlockX(), i, tupel.loc.getBlockZ());
-						if (!(b.getType() == Material.AIR || b.getType() == Material.CAVE_AIR || b.getType() == Material.VOID_AIR
-								|| b.getType() == Material.GLASS || b.getType() == Material.BARRIER)) {
+						if (!(allowedMaterials.contains(b.getType()))) {
 							isAboveGround = false;
 							break;
 						}
@@ -211,6 +210,16 @@ public class Photosynthesis extends Modifier implements Listener {
 				.replace("%amount", String.valueOf(healthRepair))
 				.replace("%ticks", String.valueOf(tickTime))
 				.replace("%multiplier", String.valueOf(Math.round((multiplierPerTick - 1.0) * 100)));
+
+		allowedMaterials.clear();
+		allowedMaterials.add(Material.AIR);
+		allowedMaterials.add(Material.CAVE_AIR);
+		allowedMaterials.add(Material.VOID_AIR);
+		allowedMaterials.add(Material.GLASS);
+		allowedMaterials.add(Material.BARRIER);
+		if (MineTinker.is17compatible) {
+			allowedMaterials.add(Material.LIGHT);
+		}
 
 		if (isAllowed()) {
 			data.clear();
