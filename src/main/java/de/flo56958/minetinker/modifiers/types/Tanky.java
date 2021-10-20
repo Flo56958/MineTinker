@@ -30,6 +30,7 @@ public class Tanky extends Modifier implements Listener {
 	private static Tanky instance;
 
 	private int healthPerLevel;
+	private boolean allowElytra;
 
 	private Tanky() {
 		super(MineTinker.getPlugin());
@@ -53,6 +54,9 @@ public class Tanky extends Modifier implements Listener {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
+		if (allowElytra) {
+			return Arrays.asList(ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.ELYTRA);
+		}
 		return Arrays.asList(ToolType.CHESTPLATE, ToolType.LEGGINGS);
 	}
 
@@ -112,6 +116,7 @@ public class Tanky extends Modifier implements Listener {
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
 		config.addDefault("MinimumToolLevelRequirement", 1);
+		config.addDefault("AllowElytra", false);
 
 		config.addDefault("Recipe.Enabled", true);
 		config.addDefault("Recipe.Top", "RBR");
@@ -129,6 +134,7 @@ public class Tanky extends Modifier implements Listener {
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
 		this.healthPerLevel = config.getInt("HealthPerLevel", 3);
+		this.allowElytra = config.getBoolean("AllowElytra", false);
 
 		init(Material.OBSIDIAN);
 
