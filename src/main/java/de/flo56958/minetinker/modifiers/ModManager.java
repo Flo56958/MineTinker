@@ -240,6 +240,16 @@ public class ModManager {
 		};
 	}
 
+	public List<Modifier> getToolMods(ItemStack tool) {
+		ArrayList<Modifier> mods = new ArrayList<>();
+		for (Modifier mod : getAllMods()) {
+			if (hasMod(tool, mod)) {
+				mods.add(mod);
+			}
+		}
+		return mods;
+	}
+
 	public void reload() {
 		config = MineTinker.getPlugin().getConfig();
 		layout = ConfigurationManager.getConfig("layout.yml");
@@ -482,6 +492,17 @@ public class ModManager {
 		Integer tag = DataHandler.getTag(is, mod.getKey(), PersistentDataType.INTEGER, false);
 		if (tag == null) return 0;
 		return tag;
+	}
+
+	/**
+	 * Set the modifier level
+	 * @param is the item
+	 * @param mod the modifier
+	 */
+	public void setModLevel(@Nullable final ItemStack is, @NotNull final Modifier mod, final int level) {
+		if (is == null) return;
+		DataHandler.setTag(is, mod.getKey(), level, PersistentDataType.INTEGER, false);
+		rewriteLore(is);
 	}
 
 	/**

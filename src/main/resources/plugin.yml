@@ -30,11 +30,16 @@ permissions:
   minetinker.tool.*:
     children:
       minetinker.tool.create: true
+      minetinker.tool.combine: true
       minetinker.tool.upgrade: true
       minetinker.tool.repair: true
 
   minetinker.tool.create:
     description: Allows to create / craft a MineTinker-Tool
+    default: true
+
+  minetinker.tool.combine:
+    description: Allows to combine MineTinker-Tools
     default: true
 
   minetinker.tool.upgrade:

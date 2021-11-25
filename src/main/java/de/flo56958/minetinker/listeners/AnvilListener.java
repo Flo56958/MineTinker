@@ -125,10 +125,10 @@ public class AnvilListener implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	public void onAnvilPrepare(@NotNull final PrepareAnvilEvent event) {
 		final AnvilInventory inventory = event.getInventory();
-		final ItemStack tool = inventory.getItem(0);
-		final ItemStack modifier = inventory.getItem(1);
+		final ItemStack item1 = inventory.getItem(0);
+		final ItemStack item2 = inventory.getItem(1);
 
-		if (tool == null || modifier == null) {
+		if (item1 == null || item2 == null) {
 			return;
 		}
 
@@ -153,29 +153,55 @@ public class AnvilListener implements Listener {
 			return;
 		}
 
-		if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) {
+		if (!(modManager.isToolViable(item1) || modManager.isArmorViable(item1))) {
 			return;
 		}
 
-		if (modifier.getType().equals(Material.ENCHANTED_BOOK)) { //So no Tools can be enchanted via books, if enchanting is disabled
-			if (MineTinker.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
-				// If enchanting is allowed, don't do anything
-				return;
-			} else {
-				// Otherwise, set the resulting item to AIR to negate the enchant
+		if (item2.getType().equals(Material.ENCHANTED_BOOK)) { //So no Tools can be enchanted via books, if enchanting is disabled
+			if (!MineTinker.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
+				//Set the resulting item to AIR to negate the enchant
 				event.setResult(new ItemStack(Material.AIR, 0)); //sets ghostitem by client
-				return;
 			}
+			return;
 		}
 
-		final Modifier mod = modManager.getModifierFromItem(modifier);
+		final Modifier mod = modManager.getModifierFromItem(item2);
 
 		ItemStack newTool = null;
 
 		if (mod != null) {
-			newTool = tool.clone();
+			newTool = item1.clone();
 			if (!modManager.addMod(player, newTool, mod, false, false, false)) {
 				return;
+			}
+		} else if (item1.getType() == item2.getType()) { //Whether we're combining the tools
+			if (MineTinker.getPlugin().getConfig().getBoolean("Combinable")
+					&& player.hasPermission("minetinker.tool.combine")) {
+				newTool = item1.clone();
+
+				List<Modifier> tool1Mods = modManager.getToolMods(item1);
+
+				for (Modifier tool2Mod : modManager.getToolMods(item2)) {
+					Modifier tool1Mod = tool1Mods //Get the same modifier from the first tool
+							.stream()
+							.filter(modifier -> modifier.getName().equals(tool2Mod.getName()))
+							.findFirst()
+							.orElse(null);
+
+					//If the first tool contains the same modifier
+					if (tool1Mod != null) {
+						int tool1ModLevel = modManager.getModLevel(item1, tool1Mod);
+						int tool2ModLevel = modManager.getModLevel(item2, tool2Mod);
+
+						int newModLevel = Math.max(1, Math.min(tool1Mod.getMaxLvl(), tool1ModLevel + tool2ModLevel)); //Java has no built-in clamping
+
+						modManager.setModLevel(newTool, tool1Mod, newModLevel);
+					} else {
+						if (!modManager.addMod(player, newTool, tool2Mod, false, false, false)) {
+							return;
+						}
+					}
+				}
 			}
 		} else {
 			if (MineTinker.getPlugin().getConfig().getBoolean("Upgradeable")
@@ -183,20 +209,20 @@ public class AnvilListener implements Listener {
 				final ItemStack item = inventory.getItem(1);
 
 				if (item != null) {
-					final Pair<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(tool.getType(), item.getType());
+					final Pair<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(item1.getType(), item.getType());
 					if (materialIntegerPair != null && materialIntegerPair.x() != null) {
 						if (materialIntegerPair.y() != null && item.getAmount() == materialIntegerPair.y()) {
-							newTool = tool.clone();
+							newTool = item1.clone();
 							newTool.setType(materialIntegerPair.x());
 							modManager.addArmorAttributes(newTool); //The Attributes need to be reapplied
 							final ItemMeta meta = newTool.getItemMeta();
-							if(meta instanceof Damageable) {
+							if (meta instanceof Damageable) {
 								((Damageable) meta).setDamage(0);
 							}
 							newTool.setItemMeta(meta);
 						}
 					} else {
-						Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, tool, false));
+						Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, item1, false));
 					}
 				}
 			}
