@@ -186,7 +186,9 @@ public class AnvilListener implements Listener {
 				for (Modifier tool2Mod : modManager.getToolMods(item2)) {
 					int modLevel = modManager.getModLevel(item2, tool2Mod);
 					for (int i = 0; i < modLevel; i++) {
-						modManager.addMod(player, newTool, tool2Mod, false, false, true, false);
+						if (!modManager.addMod(player, newTool, tool2Mod, false, false, true, false)) {
+							return;
+						}
 					}
 				}
 
