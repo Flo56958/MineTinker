@@ -47,7 +47,7 @@ public class AddModifierCommand implements SubCommand {
 							}
 						}
 						for (int i = 0; i < amount; i++) {
-							if (!modManager.addMod(player, tool, m, true, false, true))
+							if (!modManager.addMod(player, tool, m, true, false, true, false))
 								break;
 						}
 					} else {

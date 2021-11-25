@@ -189,7 +189,7 @@ public class TinkerListener implements Listener {
 										player.getWorld().dropItem(player.getLocation(), mod.getModItem()); //drops item when inventory is full
 									} // no else as it gets added in if
 								} else {
-									appliedRandomMod = modManager.addMod(player, tool, mod, true, true, false);
+									appliedRandomMod = modManager.addMod(player, tool, mod, true, true, false, true);
 								}
 								if (!appliedRandomMod) {
 									mods.remove(index); //Remove the failed modifier from the the list of the possibles

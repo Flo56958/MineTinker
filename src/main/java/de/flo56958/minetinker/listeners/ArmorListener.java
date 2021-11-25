@@ -140,7 +140,7 @@ public class ArmorListener implements Listener {
 			return;
 		}
 
-		modManager.addExp(player, tool, amount);
+		modManager.addExp(player, tool, amount, true);
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -159,7 +159,7 @@ public class ArmorListener implements Listener {
 
 		final int chance = new Random().nextInt(100);
 		if (chance < ConfigurationManager.getConfig("Elytra.yml").getInt("ExpChanceWhileFlying")) {
-			modManager.addExp(event.getPlayer(), event.getItem(), MineTinker.getPlugin().getConfig().getInt("ExpPerEntityHit"));
+			modManager.addExp(event.getPlayer(), event.getItem(), MineTinker.getPlugin().getConfig().getInt("ExpPerEntityHit"), true);
 		}
 	}
 }

@@ -39,11 +39,11 @@ public class AnvilListener implements Listener {
 			return;
 		}
 
-		final ItemStack tool = inv.getItem(0);
-		final ItemStack modifier = inv.getItem(1);
+		final ItemStack item1 = inv.getItem(0);
+		final ItemStack item2 = inv.getItem(1);
 		ItemStack newTool = inv.getItem(2);
 
-		if (tool == null || modifier == null || newTool == null) {
+		if (item1 == null || item2 == null || newTool == null) {
 			return;
 		}
 
@@ -55,7 +55,7 @@ public class AnvilListener implements Listener {
 			return;
 		}
 
-		if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) {
+		if (!(modManager.isToolViable(item1) || modManager.isArmorViable(item1))) {
 			return;
 		}
 
@@ -64,11 +64,15 @@ public class AnvilListener implements Listener {
 			return;
 		}
 
-		if (!modManager.isModifierItem(modifier)) { //upgrade
-			if (tool.getType().equals(newTool.getType())) return; //Not an upgrade
+		if (!modManager.isModifierItem(item2)) { //Upgrade or combining
+			if (item1.getType().equals(newTool.getType())) { //Combining
+				player.setItemOnCursor(newTool);
+				inv.clear();
+				return;
+			}
 
 			if (new Random().nextInt(100) < MineTinker.getPlugin().getConfig().getInt("ChanceToFailToolUpgrade")) {
-				newTool = tool;
+				newTool = item1;
 				Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, false));
 			} else {
 				Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, true));
@@ -88,19 +92,19 @@ public class AnvilListener implements Listener {
 			player.setItemOnCursor(newTool);
 			inv.clear();
 		} else { //is modifier
-			final Modifier mod = modManager.getModifierFromItem(modifier);
+			final Modifier mod = modManager.getModifierFromItem(item2);
 
 			if (mod == null) {
 				return;
 			}
 
-			modifier.setAmount(modifier.getAmount() - 1);
+			item2.setAmount(item2.getAmount() - 1);
 
 			if (new Random().nextInt(100) < MineTinker.getPlugin().getConfig().getInt("ChanceToFailModifierApply")) {
-				newTool = tool;
-				Bukkit.getPluginManager().callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.PLAYER_FAILURE, false));
+				newTool = item1;
+				Bukkit.getPluginManager().callEvent(new ModifierFailEvent(player, item1, mod, ModifierFailCause.PLAYER_FAILURE, false));
 			} else {
-				Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
+				Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, item1, mod, modManager.getFreeSlots(newTool), false));
 			}
 
 			if (event.isShiftClick()) {
@@ -110,7 +114,7 @@ public class AnvilListener implements Listener {
 				} // no else as it gets added in if-clause
 
 				inv.clear();
-				inv.setItem(1, modifier);
+				inv.setItem(1, item2);
 
 				return;
 			}
@@ -118,7 +122,7 @@ public class AnvilListener implements Listener {
 			player.setItemOnCursor(newTool);
 
 			inv.clear();
-			inv.setItem(1, modifier);
+			inv.setItem(1, item2);
 		}
 	}
 
@@ -171,7 +175,7 @@ public class AnvilListener implements Listener {
 
 		if (mod != null) {
 			newTool = item1.clone();
-			if (!modManager.addMod(player, newTool, mod, false, false, false)) {
+			if (!modManager.addMod(player, newTool, mod, false, false, false, true)) {
 				return;
 			}
 		} else if (item1.getType() == item2.getType()) { //Whether we're combining the tools
@@ -179,29 +183,14 @@ public class AnvilListener implements Listener {
 					&& player.hasPermission("minetinker.tool.combine")) {
 				newTool = item1.clone();
 
-				List<Modifier> tool1Mods = modManager.getToolMods(item1);
-
 				for (Modifier tool2Mod : modManager.getToolMods(item2)) {
-					Modifier tool1Mod = tool1Mods //Get the same modifier from the first tool
-							.stream()
-							.filter(modifier -> modifier.getName().equals(tool2Mod.getName()))
-							.findFirst()
-							.orElse(null);
-
-					//If the first tool contains the same modifier
-					if (tool1Mod != null) {
-						int tool1ModLevel = modManager.getModLevel(item1, tool1Mod);
-						int tool2ModLevel = modManager.getModLevel(item2, tool2Mod);
-
-						int newModLevel = Math.max(1, Math.min(tool1Mod.getMaxLvl(), tool1ModLevel + tool2ModLevel)); //Java has no built-in clamping
-
-						modManager.setModLevel(newTool, tool1Mod, newModLevel);
-					} else {
-						if (!modManager.addMod(player, newTool, tool2Mod, false, false, false)) {
-							return;
-						}
+					int modLevel = modManager.getModLevel(item2, tool2Mod);
+					for (int i = 0; i < modLevel; i++) {
+						modManager.addMod(player, newTool, tool2Mod, false, false, true, false);
 					}
 				}
+
+				modManager.addExp(player, newTool, modManager.getExp(item2), false);
 			}
 		} else {
 			if (MineTinker.getPlugin().getConfig().getBoolean("Upgradeable")

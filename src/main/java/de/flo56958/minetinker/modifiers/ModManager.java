@@ -448,10 +448,10 @@ public class ModManager {
 		rewriteLore(is);
 	}
 
-	public boolean addMod(final Player player, @NotNull final ItemStack item, @NotNull final Modifier modifier, final boolean fromCommand, final boolean fromRandom, final boolean silent) {
+	public boolean addMod(final Player player, @NotNull final ItemStack item, @NotNull final Modifier modifier, final boolean fromCommand, final boolean fromRandom, final boolean silent, final boolean modifySlotCount) {
 		if (!modifier.getKey().equals(ExtraModifier.instance().getKey())) {
 			if (!modifier.checkAndAdd(player, item,
-					modifier.getKey().toLowerCase().replace("-", ""), fromCommand, fromRandom, silent)) {
+					modifier.getKey().toLowerCase().replace("-", ""), fromCommand, fromRandom, silent, modifySlotCount)) {
 				return false;
 			}
 		}
@@ -492,17 +492,6 @@ public class ModManager {
 		Integer tag = DataHandler.getTag(is, mod.getKey(), PersistentDataType.INTEGER, false);
 		if (tag == null) return 0;
 		return tag;
-	}
-
-	/**
-	 * Set the modifier level
-	 * @param is the item
-	 * @param mod the modifier
-	 */
-	public void setModLevel(@Nullable final ItemStack is, @NotNull final Modifier mod, final int level) {
-		if (is == null) return;
-		DataHandler.setTag(is, mod.getKey(), level, PersistentDataType.INTEGER, false);
-		rewriteLore(is);
 	}
 
 	/**
@@ -613,7 +602,7 @@ public class ModManager {
 	 * @param tool   tool that needs to get exp
 	 * @param amount how much exp should the tool get
 	 */
-	public void addExp(@Nullable final Player player, @NotNull final ItemStack tool, final long amount) {
+	public void addExp(@Nullable final Player player, @NotNull final ItemStack tool, final long amount, final boolean callLevelUpEvent) {
 		if (amount == 0) {
 			return;
 		}
@@ -652,7 +641,7 @@ public class ModManager {
 		setExp(tool, exp);
 		rewriteLore(tool);
 
-		if (LevelUp) {
+		if (LevelUp && callLevelUpEvent) {
 			Bukkit.getPluginManager().callEvent(new ToolLevelUpEvent(player, tool));
 		}
 	}
