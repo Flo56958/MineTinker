@@ -97,7 +97,7 @@ public class EntityListener implements Listener {
 
 		modManager.addExp(player, tool,
 				MineTinker.getPlugin().getConfig().getInt("ExtraExpPerEntityHit."
-						+ event.getEntity().getType().toString(), 0));
+						+ event.getEntity().getType().toString(), 0), true);
 	}
 
 	@EventHandler
@@ -133,10 +133,10 @@ public class EntityListener implements Listener {
 						final int exp = rand.nextInt(config.getInt("ConvertMobDrops.MaximumNumberOfExp", 650));
 						final int divider = config.getInt("LevelStep", 100);
 						for (int i = 0; i < (exp - 17) / divider; i++) { //to get possible LevelUps
-							modManager.addExp(null, item, divider);
+							modManager.addExp(null, item, divider, true);
 						}
 						final long difference = exp - modManager.getExp(item);
-						modManager.addExp(null, item, difference);
+						modManager.addExp(null, item, difference, true);
 					}
 
 					if (config.getBoolean("ConvertMobDrops.ApplyModifiers", true)) {
@@ -150,7 +150,7 @@ public class EntityListener implements Listener {
 							for (int j = 0; j < 2; j++) { //to give an extra chance
 								final int index = rand.nextInt(mods.size());
 								final Modifier mod = mods.get(index);
-								if (modManager.addMod(player, item, mod, true, true, true)) {
+								if (modManager.addMod(player, item, mod, true, true, true, true)) {
 									if (config.getBoolean("ConvertMobDrops.AppliedModifiersConsiderSlots", true)) {
 										modManager.setFreeSlots(item, modManager.getFreeSlots(item) - 1);
 									}
@@ -184,7 +184,7 @@ public class EntityListener implements Listener {
 		Bukkit.getPluginManager().callEvent(new MTEntityDeathEvent(player, tool, event));
 
 		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig()
-				.getInt("ExtraExpPerEntityDeath." + event.getEntity().getType().toString(), 0));
+				.getInt("ExtraExpPerEntityDeath." + event.getEntity().getType().toString(), 0), true);
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -249,7 +249,7 @@ public class EntityListener implements Listener {
 			return;
 		}
 
-		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerArrowShot"));
+		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerArrowShot"), true);
 
         /*
         Self-Repair and Experienced will no longer trigger on bowfire

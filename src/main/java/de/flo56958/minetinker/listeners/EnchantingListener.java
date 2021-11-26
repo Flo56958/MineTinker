@@ -98,7 +98,7 @@ public class EnchantingListener implements Listener {
 					if (free)
 						modManager.setFreeSlots(event.getItem(), modManager.getFreeSlots(event.getItem()) + modifier.getSlotCost());
 					if (!modManager.addMod(event.getEnchanter(), event.getItem(), modifier,
-							false, false, true)) {
+							false, false, true, true)) {
 						//Remove slots as they were not needed
 						if (free)
 							modManager.setFreeSlots(event.getItem(), modManager.getFreeSlots(event.getItem()) - modifier.getSlotCost());
@@ -164,7 +164,7 @@ public class EnchantingListener implements Listener {
 						if (free)
 							modManager.setFreeSlots(newTool, modManager.getFreeSlots(newTool) + modifier.getSlotCost());
 						if (!modManager.addMod(player, newTool, modifier,
-								false,false, true)) {
+								false,false, true, true)) {
 							//Remove slots as they were not needed
 							if (free)
 								modManager.setFreeSlots(newTool, modManager.getFreeSlots(newTool) - modifier.getSlotCost());

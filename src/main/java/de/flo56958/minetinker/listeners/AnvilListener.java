@@ -39,11 +39,11 @@ public class AnvilListener implements Listener {
 			return;
 		}
 
-		final ItemStack tool = inv.getItem(0);
-		final ItemStack modifier = inv.getItem(1);
+		final ItemStack item1 = inv.getItem(0);
+		final ItemStack item2 = inv.getItem(1);
 		ItemStack newTool = inv.getItem(2);
 
-		if (tool == null || modifier == null || newTool == null) {
+		if (item1 == null || item2 == null || newTool == null) {
 			return;
 		}
 
@@ -55,7 +55,7 @@ public class AnvilListener implements Listener {
 			return;
 		}
 
-		if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) {
+		if (!(modManager.isToolViable(item1) || modManager.isArmorViable(item1))) {
 			return;
 		}
 
@@ -64,43 +64,42 @@ public class AnvilListener implements Listener {
 			return;
 		}
 
-		if (!modManager.isModifierItem(modifier)) { //upgrade
-			if (tool.getType().equals(newTool.getType())) return; //Not an upgrade
-
-			if (new Random().nextInt(100) < MineTinker.getPlugin().getConfig().getInt("ChanceToFailToolUpgrade")) {
-				newTool = tool;
-				Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, false));
-			} else {
-				Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, true));
+		if (!modManager.isModifierItem(item2)) { //Upgrade or combining
+			if (!(item1.getType().equals(newTool.getType())
+					&& item1.getType().equals(item2.getType())
+					&& (modManager.isToolViable(item2) || modManager.isArmorViable(item2)))) { //Not Combining
+				if (new Random().nextInt(100) < MineTinker.getPlugin().getConfig().getInt("ChanceToFailToolUpgrade")) {
+					newTool = item1;
+					Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, false));
+				} else {
+					Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, true));
+				}
 			}
 
-			// ------ upgrade
 			if (event.isShiftClick()) {
 				if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
 					event.setCancelled(true); //cancels the event if the player has a full inventory
 					return;
 				} // no else as it gets added in if-clause
-
 				inv.clear();
 				return;
 			}
-
 			player.setItemOnCursor(newTool);
 			inv.clear();
 		} else { //is modifier
-			final Modifier mod = modManager.getModifierFromItem(modifier);
+			final Modifier mod = modManager.getModifierFromItem(item2);
 
 			if (mod == null) {
 				return;
 			}
 
-			modifier.setAmount(modifier.getAmount() - 1);
+			item2.setAmount(item2.getAmount() - 1);
 
 			if (new Random().nextInt(100) < MineTinker.getPlugin().getConfig().getInt("ChanceToFailModifierApply")) {
-				newTool = tool;
-				Bukkit.getPluginManager().callEvent(new ModifierFailEvent(player, tool, mod, ModifierFailCause.PLAYER_FAILURE, false));
+				newTool = item1;
+				Bukkit.getPluginManager().callEvent(new ModifierFailEvent(player, item1, mod, ModifierFailCause.PLAYER_FAILURE, false));
 			} else {
-				Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, tool, mod, modManager.getFreeSlots(newTool), false));
+				Bukkit.getPluginManager().callEvent(new ModifierApplyEvent(player, item1, mod, modManager.getFreeSlots(newTool), false));
 			}
 
 			if (event.isShiftClick()) {
@@ -110,7 +109,7 @@ public class AnvilListener implements Listener {
 				} // no else as it gets added in if-clause
 
 				inv.clear();
-				inv.setItem(1, modifier);
+				inv.setItem(1, item2);
 
 				return;
 			}
@@ -118,17 +117,17 @@ public class AnvilListener implements Listener {
 			player.setItemOnCursor(newTool);
 
 			inv.clear();
-			inv.setItem(1, modifier);
+			inv.setItem(1, item2);
 		}
 	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void onAnvilPrepare(@NotNull final PrepareAnvilEvent event) {
 		final AnvilInventory inventory = event.getInventory();
-		final ItemStack tool = inventory.getItem(0);
-		final ItemStack modifier = inventory.getItem(1);
+		final ItemStack item1 = inventory.getItem(0);
+		final ItemStack item2 = inventory.getItem(1);
 
-		if (tool == null || modifier == null) {
+		if (item1 == null || item2 == null) {
 			return;
 		}
 
@@ -153,29 +152,41 @@ public class AnvilListener implements Listener {
 			return;
 		}
 
-		if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool))) {
+		if (!(modManager.isToolViable(item1) || modManager.isArmorViable(item1))) {
 			return;
 		}
 
-		if (modifier.getType().equals(Material.ENCHANTED_BOOK)) { //So no Tools can be enchanted via books, if enchanting is disabled
-			if (MineTinker.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
-				// If enchanting is allowed, don't do anything
-				return;
-			} else {
-				// Otherwise, set the resulting item to AIR to negate the enchant
+		if (item2.getType().equals(Material.ENCHANTED_BOOK)) { //So no Tools can be enchanted via books, if enchanting is disabled
+			if (!MineTinker.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
+				//Set the resulting item to AIR to negate the enchant
 				event.setResult(new ItemStack(Material.AIR, 0)); //sets ghostitem by client
-				return;
 			}
+			return;
 		}
 
-		final Modifier mod = modManager.getModifierFromItem(modifier);
+		final Modifier mod = modManager.getModifierFromItem(item2);
 
 		ItemStack newTool = null;
 
 		if (mod != null) {
-			newTool = tool.clone();
-			if (!modManager.addMod(player, newTool, mod, false, false, false)) {
+			newTool = item1.clone();
+			if (!modManager.addMod(player, newTool, mod, false, false, false, true)) {
 				return;
+			}
+		} else if (item1.getType().equals(item2.getType())) { //Whether we're combining the tools
+			if ((modManager.isToolViable(item2) || modManager.isArmorViable(item2))
+					&& MineTinker.getPlugin().getConfig().getBoolean("Combinable")
+					&& player.hasPermission("minetinker.tool.combine")) {
+				newTool = item1.clone();
+
+				for (Modifier tool2Mod : modManager.getToolMods(item2)) {
+					int modLevel = modManager.getModLevel(item2, tool2Mod);
+					for (int i = 0; i < modLevel; i++) {
+						modManager.addMod(player, newTool, tool2Mod, false, false, true, false);
+					}
+				}
+
+				modManager.addExp(player, newTool, modManager.getExp(item2), false);
 			}
 		} else {
 			if (MineTinker.getPlugin().getConfig().getBoolean("Upgradeable")
@@ -183,20 +194,20 @@ public class AnvilListener implements Listener {
 				final ItemStack item = inventory.getItem(1);
 
 				if (item != null) {
-					final Pair<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(tool.getType(), item.getType());
+					final Pair<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(item1.getType(), item.getType());
 					if (materialIntegerPair != null && materialIntegerPair.x() != null) {
 						if (materialIntegerPair.y() != null && item.getAmount() == materialIntegerPair.y()) {
-							newTool = tool.clone();
+							newTool = item1.clone();
 							newTool.setType(materialIntegerPair.x());
 							modManager.addArmorAttributes(newTool); //The Attributes need to be reapplied
 							final ItemMeta meta = newTool.getItemMeta();
-							if(meta instanceof Damageable) {
+							if (meta instanceof Damageable) {
 								((Damageable) meta).setDamage(0);
 							}
 							newTool.setItemMeta(meta);
 						}
 					} else {
-						Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, tool, false));
+						Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, item1, false));
 					}
 				}
 			}

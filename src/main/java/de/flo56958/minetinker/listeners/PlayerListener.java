@@ -86,7 +86,7 @@ public class PlayerListener implements Listener {
 			if (mod != null) { //shouldn't be necessary
 				while(repair.getAmount() > 0) {
 					if (modManager.addMod((Player) event.getWhoClicked(), tool, mod,
-							false, false, false)) {
+							false, false, false, true)) {
 						//Mod was successful
 						//Decrement item count
 						repair.setAmount(repair.getAmount() - 1);

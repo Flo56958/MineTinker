@@ -84,7 +84,7 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
+		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
 
 		Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, event));
 	}
@@ -148,7 +148,7 @@ public class BlockListener implements Listener {
 					//adds 0 if not in found in config (negative values are also fine)
 				}
 
-				modManager.addExp(player, tool, expAmount);
+				modManager.addExp(player, tool, expAmount, true);
 			}
 		}
 
@@ -310,7 +310,7 @@ public class BlockListener implements Listener {
 		}
 
 		modManager.addExp(player, tool,
-				MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
+				MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
 		Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, event));
 	}
 
@@ -357,7 +357,7 @@ public class BlockListener implements Listener {
 		}
 
 		modManager.addExp(player, tool,
-				MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"));
+				MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
 
 		Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, event));
 	}

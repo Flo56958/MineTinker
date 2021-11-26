@@ -1,10 +1,10 @@
 package de.flo56958.minetinker.commands.subs;
 
+import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.utils.LanguageManager;
-import de.flo56958.minetinker.api.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
@@ -70,7 +70,7 @@ public class AddExpCommand implements SubCommand {
 		ModManager modManager = ModManager.instance();
 
 		if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
-			modManager.addExp(player, tool, amount);
+			modManager.addExp(player, tool, amount, true);
 		} else {
 			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidItem"));
 		}

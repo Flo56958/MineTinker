@@ -58,12 +58,14 @@ public abstract class Modifier {
 		this.source = source;
 	}
 
-	boolean checkAndAdd(Player player, ItemStack tool, String permission, boolean isCommand, boolean fromRandom, boolean silent) {
-		//Check for free Slots
-		if ((modManager.getFreeSlots(tool) < this.getSlotCost() && !this.equals(ExtraModifier.instance())) && !isCommand) {
-			if (!silent)
-				pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.NO_FREE_SLOTS, false));
-			return false;
+	boolean checkAndAdd(Player player, ItemStack tool, String permission, boolean isCommand, boolean fromRandom, boolean silent, boolean modifySlotCount) {
+		if (modifySlotCount) {
+			//Check for free Slots
+			if ((modManager.getFreeSlots(tool) < this.getSlotCost() && !this.equals(ExtraModifier.instance())) && !isCommand) {
+				if (!silent)
+					pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.NO_FREE_SLOTS, false));
+				return false;
+			}
 		}
 
 		//Check for Permission
@@ -124,8 +126,8 @@ public abstract class Modifier {
 
 		modManager.addMod(tool, this);
 
-		//Reduce Slotamount
-		if (!isCommand) {
+		if (modifySlotCount) {
+			//Reduce Slotamount
 			modManager.setFreeSlots(tool, modManager.getFreeSlots(tool) - this.getSlotCost());
 		}
 
