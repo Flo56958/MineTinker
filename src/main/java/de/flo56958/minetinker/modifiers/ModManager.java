@@ -607,8 +607,6 @@ public class ModManager {
 			return;
 		}
 
-		boolean LevelUp = false;
-
 		int level = this.getLevel(tool);
 		long exp = this.getExp(tool);
 
@@ -621,17 +619,18 @@ public class ModManager {
 				level = 1;
 				setLevel(tool, level);
 				exp = 0;
-				LevelUp = true;
 			} else {
 				return;
 			}
 		}
 
 		exp = exp + amount;
-		if (exp >= getNextLevelReq(level)) { //tests for a level up
+		while (exp >= getNextLevelReq(level)) { //tests for a level up
 			level++;
 			setLevel(tool, level);
-			LevelUp = true;
+			if (callLevelUpEvent) {
+				Bukkit.getPluginManager().callEvent(new ToolLevelUpEvent(player, tool));
+			}
 		}
 
 		if (config.getBoolean("actionbar-on-exp-gain")) {
@@ -640,10 +639,6 @@ public class ModManager {
 
 		setExp(tool, exp);
 		rewriteLore(tool);
-
-		if (LevelUp && callLevelUpEvent) {
-			Bukkit.getPluginManager().callEvent(new ToolLevelUpEvent(player, tool));
-		}
 	}
 
 	/**

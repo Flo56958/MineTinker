@@ -131,12 +131,7 @@ public class EntityListener implements Listener {
 
 					if (config.getBoolean("ConvertMobDrops.ApplyExp", true)) {
 						final int exp = rand.nextInt(config.getInt("ConvertMobDrops.MaximumNumberOfExp", 650));
-						final int divider = config.getInt("LevelStep", 100);
-						for (int i = 0; i < (exp - 17) / divider; i++) { //to get possible LevelUps
-							modManager.addExp(null, item, divider, true);
-						}
-						final long difference = exp - modManager.getExp(item);
-						modManager.addExp(null, item, difference, true);
+						modManager.addExp(null, item, exp, false);
 					}
 
 					if (config.getBoolean("ConvertMobDrops.ApplyModifiers", true)) {
