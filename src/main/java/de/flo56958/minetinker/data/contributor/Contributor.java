@@ -12,10 +12,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
 
 public class Contributor {
 
@@ -110,7 +107,7 @@ public class Contributor {
 					String name = mcLookup.get("name").getAsString();
 					displayName += name + "/";
 					((SkullMeta) itemMeta).setOwner(name);
-				} catch (IOException e) {
+				} catch (IOException | NoSuchElementException e) {
 					ChatWriter.logError(LanguageManager.getString("Alert.MinecraftAPI"));
 					if (MineTinker.getPlugin().getConfig().getBoolean("logging.debug")) {
 						System.out.println("This error is not a bug or serious error. MT caught the error and just prints the information in the console!");
