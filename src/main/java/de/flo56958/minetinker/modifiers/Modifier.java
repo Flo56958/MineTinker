@@ -69,10 +69,12 @@ public abstract class Modifier {
 		}
 
 		//Check for Permission
-		if (!player.hasPermission("minetinker.modifiers." + permission + ".apply")) {
-			if (!silent)
-				pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.NO_PERMISSION, isCommand));
-			return false;
+		if (player != null) {
+			if (!player.hasPermission("minetinker.modifiers." + permission + ".apply")) {
+				if (!silent)
+					pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.NO_PERMISSION, isCommand));
+				return false;
+			}
 		}
 
 		//Check for ToolType

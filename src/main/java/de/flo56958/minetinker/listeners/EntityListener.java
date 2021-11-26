@@ -121,40 +121,9 @@ public class EntityListener implements Listener {
 
 		final FileConfiguration config = MineTinker.getPlugin().getConfig();
 
-		if (config.getBoolean("ConvertMobDrops.Enabled", true)) {
+		if (config.getBoolean("ConvertLoot.MobDrops", true)) {
 			for (ItemStack item : event.getDrops()) {
-				Random rand = new Random();
-				if (rand.nextInt(100) < config.getInt("ConvertMobDrops.Chance", 100)) {
-					if (!modManager.convertItemStack(item, null)) continue;
-					//Item is now MT
-					//continue if already was MT or not right material
-
-					if (config.getBoolean("ConvertMobDrops.ApplyExp", true)) {
-						final int exp = rand.nextInt(config.getInt("ConvertMobDrops.MaximumNumberOfExp", 650));
-						modManager.addExp(null, item, exp, false);
-					}
-
-					if (config.getBoolean("ConvertMobDrops.ApplyModifiers", true)) {
-						List<Modifier> mods = modManager.getAllowedMods();
-						for (int i = 0; i < rand.nextInt(
-								config.getInt("ConvertMobDrops.MaximumNumberOfModifiers", 4) + 1); i++) {
-							if (config.getBoolean("ConvertMobDrops.AppliedModifiersConsiderSlots", true)
-									&& modManager.getFreeSlots(item) == 0) {
-								break;
-							}
-							for (int j = 0; j < 2; j++) { //to give an extra chance
-								final int index = rand.nextInt(mods.size());
-								final Modifier mod = mods.get(index);
-								if (modManager.addMod(player, item, mod, true, true, true, true)) {
-									if (config.getBoolean("ConvertMobDrops.AppliedModifiersConsiderSlots", true)) {
-										modManager.setFreeSlots(item, modManager.getFreeSlots(item) - 1);
-									}
-									break;
-								}
-							}
-						}
-					}
-				}
+				modManager.convertLoot(item, player);
 			}
 		}
 

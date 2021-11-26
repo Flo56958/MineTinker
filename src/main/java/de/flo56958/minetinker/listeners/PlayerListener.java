@@ -22,6 +22,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.world.LootGenerateEvent;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -247,6 +248,15 @@ public class PlayerListener implements Listener {
 
 			repair.setAmount(amount);
 			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+	public void onLootGenerate(@NotNull LootGenerateEvent event) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("ConvertLoot.ChestLoot", true)) {
+			for (ItemStack stack : event.getLoot()) {
+				modManager.convertLoot(stack, null);
+			}
 		}
 	}
 

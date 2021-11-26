@@ -176,11 +176,7 @@ public class TinkerListener implements Listener {
 							}
 
 							int index;
-							do {
-								if (mods.isEmpty()) {
-									break;
-								} //Secures that the while will terminate after some time (if all modifiers were removed)
-
+							while (!appliedRandomMod && !mods.isEmpty()) {
 								index = rand.nextInt(mods.size());
 								final Modifier mod = mods.get(index);
 								if (config.getBoolean("LevelUpEvents.RandomModifier.DropAsItem", false)) {
@@ -189,12 +185,14 @@ public class TinkerListener implements Listener {
 										player.getWorld().dropItem(player.getLocation(), mod.getModItem()); //drops item when inventory is full
 									} // no else as it gets added in if
 								} else {
-									appliedRandomMod = modManager.addMod(player, tool, mod, true, true, false, true);
+									appliedRandomMod = modManager.addMod(player, tool, mod,
+											false, true, false,
+											config.getBoolean("LevelUpEvents.AppliedModifiersConsiderSlots"));
 								}
 								if (!appliedRandomMod) {
 									mods.remove(index); //Remove the failed modifier from the the list of the possibles
 								}
-							} while (!appliedRandomMod);
+							}
 						}
 					}
 				}

@@ -1125,6 +1125,44 @@ public class ModManager {
 		return null;
 	}
 
+	public void convertLoot(@Nullable ItemStack item, @Nullable Player player) {
+		Random rand = new Random();
+		if (rand.nextInt(100) < config.getInt("ConvertLoot.Chance", 100)) {
+			if (!convertItemStack(item, null)) return;
+			//Item is now MT
+			//continue if already was MT or not right material
+
+			if (config.getBoolean("ConvertLoot.ApplyExp", true)) {
+				final int exp = rand.nextInt(config.getInt("ConvertLoot.MaximumNumberOfExp", 650));
+				addExp(null, item, exp, false);
+				int level = getLevel(item);
+				setFreeSlots(item, getFreeSlots(item) + level * config.getInt("AddModifierSlotsPerLevel"));
+			}
+
+			if (config.getBoolean("ConvertLoot.ApplyModifiers", true)) {
+				//Remove all enchants if modifiers will get added
+				for (Modifier mod : allMods) {
+					removeMod(item, mod);
+				}
+				List<Modifier> mods = getAllowedMods();
+				mods.remove(ExtraModifier.instance());
+				int amount = rand.nextInt(config.getInt("ConvertLoot.MaximumNumberOfModifiers") + 1);
+				for (int i = 0; i < amount; i++) {
+					while (mods.size() > 0) {
+						final int index = rand.nextInt(mods.size());
+						final Modifier mod = mods.get(index);
+						if (addMod(player, item, mod, false, true, true,
+								config.getBoolean("ConvertLoot.AppliedModifiersConsiderSlots", true))) {
+							break;
+						} else {
+							mods.remove(mod);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	/**
 	 * Checks the durability of the Tool
 	 *
