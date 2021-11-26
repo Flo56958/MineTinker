@@ -242,7 +242,7 @@ public class ModManager {
 
 	public List<Modifier> getToolMods(ItemStack tool) {
 		ArrayList<Modifier> mods = new ArrayList<>();
-		for (Modifier mod : getAllMods()) {
+		for (Modifier mod : getAllowedMods()) {
 			if (hasMod(tool, mod)) {
 				mods.add(mod);
 			}

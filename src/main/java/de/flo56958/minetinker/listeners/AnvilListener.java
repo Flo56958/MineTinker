@@ -65,6 +65,16 @@ public class AnvilListener implements Listener {
 		}
 
 		if (!modManager.isModifierItem(item2)) { //Upgrade or combining
+			if (event.isShiftClick()) {
+				if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
+					event.setCancelled(true); //cancels the event if the player has a full inventory
+					return;
+				} // no else as it gets added in if-clause
+
+				inv.clear();
+				return;
+			}
+
 			if (item1.getType().equals(newTool.getType())) { //Combining
 				player.setItemOnCursor(newTool);
 				inv.clear();
@@ -76,17 +86,6 @@ public class AnvilListener implements Listener {
 				Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, false));
 			} else {
 				Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, true));
-			}
-
-			// ------ upgrade
-			if (event.isShiftClick()) {
-				if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
-					event.setCancelled(true); //cancels the event if the player has a full inventory
-					return;
-				} // no else as it gets added in if-clause
-
-				inv.clear();
-				return;
 			}
 
 			player.setItemOnCursor(newTool);
@@ -178,17 +177,16 @@ public class AnvilListener implements Listener {
 			if (!modManager.addMod(player, newTool, mod, false, false, false, true)) {
 				return;
 			}
-		} else if (item1.getType() == item2.getType()) { //Whether we're combining the tools
-			if (MineTinker.getPlugin().getConfig().getBoolean("Combinable")
+		} else if (item1.getType().equals(item2.getType())) { //Whether we're combining the tools
+			if ((modManager.isToolViable(item2) || modManager.isArmorViable(item2))
+					&& MineTinker.getPlugin().getConfig().getBoolean("Combinable")
 					&& player.hasPermission("minetinker.tool.combine")) {
 				newTool = item1.clone();
 
 				for (Modifier tool2Mod : modManager.getToolMods(item2)) {
 					int modLevel = modManager.getModLevel(item2, tool2Mod);
 					for (int i = 0; i < modLevel; i++) {
-						if (!modManager.addMod(player, newTool, tool2Mod, false, false, true, false)) {
-							return;
-						}
+						modManager.addMod(player, newTool, tool2Mod, false, false, true, false);
 					}
 				}
 
