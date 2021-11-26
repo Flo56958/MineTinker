@@ -65,29 +65,25 @@ public class AnvilListener implements Listener {
 		}
 
 		if (!modManager.isModifierItem(item2)) { //Upgrade or combining
+			if (!(item1.getType().equals(newTool.getType())
+					&& item1.getType().equals(item2.getType())
+					&& (modManager.isToolViable(item2) || modManager.isArmorViable(item2)))) { //Not Combining
+				if (new Random().nextInt(100) < MineTinker.getPlugin().getConfig().getInt("ChanceToFailToolUpgrade")) {
+					newTool = item1;
+					Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, false));
+				} else {
+					Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, true));
+				}
+			}
+
 			if (event.isShiftClick()) {
 				if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
 					event.setCancelled(true); //cancels the event if the player has a full inventory
 					return;
 				} // no else as it gets added in if-clause
-
 				inv.clear();
 				return;
 			}
-
-			if (item1.getType().equals(newTool.getType())) { //Combining
-				player.setItemOnCursor(newTool);
-				inv.clear();
-				return;
-			}
-
-			if (new Random().nextInt(100) < MineTinker.getPlugin().getConfig().getInt("ChanceToFailToolUpgrade")) {
-				newTool = item1;
-				Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, false));
-			} else {
-				Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, true));
-			}
-
 			player.setItemOnCursor(newTool);
 			inv.clear();
 		} else { //is modifier
