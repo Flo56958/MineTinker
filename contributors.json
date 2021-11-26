@@ -73,5 +73,13 @@
     "transifex": "kaekaes",
     "transifex_languages": [ "es_ES" ],
     "other": []
+  },
+  {
+    "github": "X1nto",
+    "discord": "Xinto#9360",
+    "minecraft": "0fc426c8-146d-389c-b3c4-56ff58f54190",
+    "transifex": null,
+    "transifex_languages": [],
+    "other": []
   }
 ]
