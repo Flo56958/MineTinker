@@ -36,8 +36,8 @@ public class MineTinker extends JavaPlugin {
 		plugin = this;
 		final String version = Bukkit.getVersion().split("MC: ")[1];
 		is16compatible = version.startsWith("1.16")
-				|| version.startsWith("1.17");
-		is17compatible = version.startsWith("1.17");
+				|| version.startsWith("1.17") || version.startsWith("1.18");
+		is17compatible = version.startsWith("1.17") || version.startsWith("1.18");
 		if (is16compatible) {
 			ChatWriter.log(false, "1.16 enhanced features activated!");
 		}

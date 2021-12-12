@@ -135,16 +135,11 @@ public class Power extends Modifier implements Listener {
 
 		blacklist = new ArrayList<>();
 
-		List<String> blacklistConfig = config.getStringList("Blacklist");
+		final List<String> blacklistConfig = config.getStringList("Blacklist");
 
-		for (String mat : blacklistConfig) {
+		for (final String mat : blacklistConfig) {
 			try {
 				Material material = Material.valueOf(mat);
-
-				if (blacklist == null) {
-					continue;
-				}
-
 				blacklist.add(material);
 			} catch (IllegalArgumentException e) {
 				MineTinker.getPlugin().getLogger()
@@ -177,7 +172,7 @@ public class Power extends Modifier implements Listener {
 	}
 
 	/**
-	 * The effect when a Block was brocken
+	 * The effect when a Block was broken
 	 *
 	 * @param event The Event
 	 */
