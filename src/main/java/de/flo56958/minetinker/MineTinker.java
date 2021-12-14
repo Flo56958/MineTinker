@@ -31,22 +31,41 @@ public class MineTinker extends JavaPlugin {
 		return plugin;
 	}
 
-	@Override
-	public void onEnable() {
-		plugin = this;
-		final String version = Bukkit.getVersion().split("MC: ")[1];
-		is16compatible = version.startsWith("1.16")
-				|| version.startsWith("1.17") || version.startsWith("1.18");
-		is17compatible = version.startsWith("1.17") || version.startsWith("1.18");
+	private void parseMCVersion() {
+		try {
+			final String version = Bukkit.getVersion().split("MC: ")[1].replaceAll("\\)","");
+			final String[] ver = version.split("\\.");
+
+			int mayor = Integer.parseInt(ver[0]);
+			ChatWriter.log(true, "Minecraft Mayor Version: " + mayor);
+
+			int minor = Integer.parseInt(ver[1]);
+			ChatWriter.log(true, "Minecraft Minor Version: " + minor);
+
+			is16compatible = mayor >= 1 && minor >= 16;
+			is17compatible = mayor >= 1 && minor >= 17;
+		} catch (Exception e) {
+			e.printStackTrace();
+			ChatWriter.logError("Could not parse the Minecraft Version! Running 1.14 feature set. " +
+					"If you are running a higher Version, please report this as an error.");
+			return;
+		}
 		if (is16compatible) {
 			ChatWriter.log(false, "1.16 enhanced features activated!");
 		}
 		if (is17compatible) {
 			ChatWriter.log(false, "1.17 enhanced features activated!");
 		}
-		ChatWriter.log(false, "Setting up internals...");
+	}
 
+	@Override
+	public void onEnable() {
+		plugin = this;
+
+		ChatWriter.log(false, "Setting up internals...");
 		loadConfig(); //load Main config
+
+		parseMCVersion();
 		LanguageManager.reload(); //Load Language system
 
 		ConfigurationManager.reload();
