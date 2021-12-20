@@ -289,9 +289,10 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Nightseeker-Modifier"
   Photosynthesis:
     Name: "Photosynthesis"
-    Description: "Repair your item with %amount durability per level every %ticks Ticks when standing still while the sun shines. The longer you stand still the faster it repairs. (%multiplier%)"
+    Description: "Repair your item with %amount durability per level every %ticks Ticks while the sun shines. The longer the faster it repairs. (%multiplier%)"
     ModifierItemName: "Extracted Chlorophyll"
     DescriptionModifierItem: "Modifier-Item for the Photosynthesis-Modifier"
+    NotifyWhenActive: "Photosynthesis active..."
   Piercing:
     Name: "Piercing"
     Description: "Arrows pass through multiple enemies!"

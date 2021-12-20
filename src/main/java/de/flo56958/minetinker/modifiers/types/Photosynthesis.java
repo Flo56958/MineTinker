@@ -5,6 +5,7 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -36,6 +37,8 @@ public class Photosynthesis extends Modifier implements Listener {
 	private double multiplierPerTick;
 	private boolean fullEffectAtNoon;
 	private boolean allowOffhand;
+	private boolean mustStandStill;
+	private boolean notifyWhenActive;
 
 	private List<Material> allowedMaterials = new ArrayList<>();
 
@@ -52,7 +55,32 @@ public class Photosynthesis extends Modifier implements Listener {
 
 			final Tupel tupel = data.get(id);
 			final Location pLoc = player.getLocation();
-			if (pLoc.getWorld().equals(tupel.loc.getWorld()) && pLoc.getX() == tupel.loc.getX() && pLoc.getY() == tupel.loc.getY() && pLoc.getZ() == tupel.loc.getZ()) {
+
+			boolean isAboveGround = false;
+			if (pLoc.getWorld().getEnvironment() == World.Environment.NORMAL) { //check for overworld
+				final int maxHeight = (MineTinker.is17compatible) ? 320 : 256;
+				for (int i = pLoc.getBlockY() + 1; i <= maxHeight; i++) {
+					Block b = pLoc.getWorld().getBlockAt(pLoc.getBlockX(), i, pLoc.getBlockZ());
+					if (!(allowedMaterials.contains(b.getType()))) {
+						isAboveGround = false;
+						break;
+					}
+					isAboveGround = true;
+				}
+			}
+			tupel.isAboveGround = isAboveGround;
+
+			if (tupel.loc == null) {
+				tupel.loc = pLoc;
+			}
+
+			if (isAboveGround) {
+				if (mustStandStill && !(player.getWorld().equals(tupel.loc.getWorld()) && pLoc.getX() == tupel.loc.getX()
+						&& pLoc.getY() == tupel.loc.getY() && pLoc.getZ() == tupel.loc.getZ())) {
+					tupel.time = System.currentTimeMillis(); //reset time
+					tupel.loc = pLoc; //update Position
+					continue; //does not work while raining
+				}
 				if (tupel.loc.getWorld().hasStorm()) {
 					tupel.time = System.currentTimeMillis(); //reset time
 					continue; //does not work while raining
@@ -67,7 +95,7 @@ public class Photosynthesis extends Modifier implements Listener {
 				double daytimeMultiplier = 1.0;
 				if (fullEffectAtNoon) {
 					final long difference = Math.abs(6 - worldTime);
-					daytimeMultiplier = 1.0 - (6 - difference) / 6.0; //value range: 0.0 - 1.0
+					daytimeMultiplier = (6 - difference) / 6.0; //value range: 0.0 - 1.0
 				}
 
 				long timeDif = System.currentTimeMillis() - tupel.time - (tickTime * 50L); //to make effect faster with time (first tick period does not count)
@@ -103,33 +131,23 @@ public class Photosynthesis extends Modifier implements Listener {
 						int newDamage = oldDamage - repair;
 
 						if (newDamage < 0) newDamage = 0;
+						if (notifyWhenActive)
+							ChatWriter.sendActionBar(player,
+									this.getColor()
+											+ LanguageManager.getString("Modifier.Photosynthesis.NotifyWhenActive", player));
 						ChatWriter.logModifier(player, null, this, item,
 								String.format("ItemDamage(%d -> %d [%d])", oldDamage, newDamage, repair),
 								"DaytimeMultiplier(" + daytimeMultiplier + ")",
-								String.format("TimeAdvantage(%.2f * (%d / %d) = %.2f)", multiplierPerTick, timeDif / 50, tickTime, timeAdvantage));
+								String.format("TimeAdvantage(%.2f * (%d / %d) = %.2f)", multiplierPerTick, timeDif / 50,
+										tickTime, timeAdvantage));
 
 						((Damageable) meta).setDamage(newDamage);
 						item.setItemMeta(meta);
 					}
 				}
 			} else {
-				tupel.loc = player.getLocation(); //update location
 				tupel.time = System.currentTimeMillis();
-
-				boolean isAboveGround = false;
-				if (tupel.loc.getWorld().getEnvironment() == World.Environment.NORMAL) { //check for overworld
-					final int maxHeight = (MineTinker.is17compatible) ? 320 : 256;
-					for (int i = tupel.loc.getBlockY() + 1; i <= maxHeight; i++) {
-						Block b = tupel.loc.getWorld().getBlockAt(tupel.loc.getBlockX(), i, tupel.loc.getBlockZ());
-						if (!(allowedMaterials.contains(b.getType()))) {
-							isAboveGround = false;
-							break;
-						}
-						isAboveGround = true;
-					}
-				}
-
-				tupel.isAboveGround = isAboveGround;
+				tupel.loc = pLoc;
 			}
 		}
 	};
@@ -174,11 +192,13 @@ public class Photosynthesis extends Modifier implements Listener {
 		config.addDefault("Color", "%GREEN%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
-		config.addDefault("HealthRepairPerLevel", 2); //per Tick
+		config.addDefault("HealthRepairPerLevel", 1); //per Tick
 		config.addDefault("MultiplierPerTick", 1.05);
 		config.addDefault("TickTime", 100); //TickTime in Minecraft ticks
 		config.addDefault("FullEffectAtNoon", true); //if false: full effect always in daylight
 		config.addDefault("AllowOffHand", true); //if false: only main hand
+		config.addDefault("MustStandStill", false); //if true: Players need to stand still
+		config.addDefault("NotifyWhenActive", false); //Notifies the Player via Actionbar
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -205,6 +225,8 @@ public class Photosynthesis extends Modifier implements Listener {
 		this.multiplierPerTick = config.getDouble("MultiplierPerTick", 1.05);
 		this.fullEffectAtNoon = config.getBoolean("FullEffectAtNoon", true);
 		this.allowOffhand = config.getBoolean("AllowOffHand", true);
+		this.mustStandStill = config.getBoolean("MustStandStill", false);
+		this.notifyWhenActive = config.getBoolean("NotifyWhenActive", false);
 
 		this.description = this.description
 				.replace("%amount", String.valueOf(healthRepair))
@@ -217,6 +239,7 @@ public class Photosynthesis extends Modifier implements Listener {
 		allowedMaterials.add(Material.VOID_AIR);
 		allowedMaterials.add(Material.GLASS);
 		allowedMaterials.add(Material.BARRIER);
+		allowedMaterials.add(Material.TALL_GRASS);
 		if (MineTinker.is17compatible) {
 			allowedMaterials.add(Material.LIGHT);
 		}
