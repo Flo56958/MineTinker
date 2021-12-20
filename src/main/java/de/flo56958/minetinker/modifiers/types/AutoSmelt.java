@@ -153,7 +153,7 @@ public class AutoSmelt extends Modifier implements Listener {
 		conversions.put(Material.CLAY, new Triplet(Material.BRICK, 4, true));
 
 		if (MineTinker.is16compatible) {
-			conversions.put(Material.ANCIENT_DEBRIS, new Triplet(Material.NETHERITE_SCRAP, 2, true));
+			conversions.put(Material.ANCIENT_DEBRIS, new Triplet(Material.NETHERITE_SCRAP, 1, true));
 			conversions.put(Material.NETHER_GOLD_ORE, new Triplet(Material.GOLD_INGOT, 1, true));
 			conversions.put(Material.CRIMSON_HYPHAE, new Triplet(Material.CHARCOAL, 1));
 			conversions.put(Material.CRIMSON_STEM, new Triplet(Material.CHARCOAL, 1));
