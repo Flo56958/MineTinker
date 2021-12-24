@@ -6,6 +6,9 @@ import de.flo56958.minetinker.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.LanguageManager;
+import de.flo56958.minetinker.utils.data.DataHandler;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -17,6 +20,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -93,6 +97,8 @@ public class AutoSmelt extends Modifier implements Listener {
 		conversions.put(Material.STONE, new Triplet(Material.STONE, 1));
 		conversions.put(Material.COBBLESTONE, new Triplet(Material.STONE, 1));
 		conversions.put(Material.SAND, new Triplet(Material.GLASS, 1));
+		conversions.put(Material.SANDSTONE, new Triplet(Material.SMOOTH_SANDSTONE, 1));
+		conversions.put(Material.RED_SANDSTONE, new Triplet(Material.SMOOTH_RED_SANDSTONE, 1));
 		conversions.put(Material.SNOW, new Triplet(Material.AIR, 0));
 		conversions.put(Material.SNOW_BLOCK, new Triplet(Material.AIR, 0));
 		conversions.put(Material.RED_SAND, new Triplet(Material.RED_STAINED_GLASS, 1));
@@ -167,6 +173,8 @@ public class AutoSmelt extends Modifier implements Listener {
 
 		if (MineTinker.is17compatible) {
 			conversions.put(Material.AZALEA_LEAVES, new Triplet(Material.STICK, 1));
+
+			conversions.put(Material.DEEPSLATE, new Triplet(Material.DEEPSLATE, 1));
 
 			conversions.put(Material.DEEPSLATE_COAL_ORE, new Triplet(Material.AIR, 0));
 			conversions.put(Material.DEEPSLATE_COPPER_ORE, new Triplet(Material.COPPER_INGOT, 1, true));
@@ -250,7 +258,14 @@ public class AutoSmelt extends Modifier implements Listener {
 		if (conv.luckable) {
 			int level = modManager.getModLevel(tool, Luck.instance());
 
-			if (level > 0) amount = amount + new Random().nextInt(level + 1) * amount;
+			int extra = 0;
+			if (level > 0) extra = new Random().nextInt(level + 1) * amount;
+			amount += amount + extra;
+
+			int luckstat = (DataHandler.hasTag(tool, getKey() + "_stat_luck", PersistentDataType.INTEGER, false))
+					? DataHandler.getTag(tool, getKey() + "_stat_luck", PersistentDataType.INTEGER, false)
+					: 0;
+			DataHandler.setTag(tool, getKey() + "_stat_luck", luckstat + extra, PersistentDataType.INTEGER, false);
 			//Times amount is for clay as it drops 4 per block
 		}
 
@@ -273,7 +288,32 @@ public class AutoSmelt extends Modifier implements Listener {
 		if (this.hasSound) block.getLocation().getWorld().playSound(block.getLocation(),
 				Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
 
-		ChatWriter.logModifier(player, event, this, tool, "Block(" + breakEvent.getBlock().getType().toString() + ")");
+		//Track stats
+		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
+				? DataHandler.getTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false)
+				: 0;
+		DataHandler.setTag(tool, getKey() + "_stat_used", stat + 1, PersistentDataType.INTEGER, false);
+
+		ChatWriter.logModifier(player, event, this, tool, "Block(" + breakEvent.getBlock().getType() + ")");
+	}
+
+	@Override
+	public List<String> getStatistics(ItemStack item) {
+		List<String> lore = new ArrayList<>();
+		int stat = (DataHandler.hasTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
+				? DataHandler.getTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER, false)
+				: 0;
+		int luckstat = (DataHandler.hasTag(item, getKey() + "_stat_luck", PersistentDataType.INTEGER, false))
+				? DataHandler.getTag(item, getKey() + "_stat_luck", PersistentDataType.INTEGER, false)
+				: 0;
+		lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Auto-Smelt.Statistic_Used")
+				.replaceAll("%amount", String.valueOf(stat)));
+		if (Luck.instance().isAllowed()) {
+			lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Auto-Smelt.Statistic_Luck")
+					.replaceAll("%amount", String.valueOf(luckstat))
+					.replaceAll("%modifier", Luck.instance().getColor() + Luck.instance().getName() + ChatColor.WHITE));
+		}
+		return lore;
 	}
 
 	private static class Triplet {

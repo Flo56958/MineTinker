@@ -9,6 +9,7 @@ import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.events.MTEntityDamageEvent;
 import de.flo56958.minetinker.events.MTEntityDeathEvent;
 import de.flo56958.minetinker.modifiers.ModManager;
+import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.data.DataHandler;
 import de.flo56958.minetinker.utils.data.EnumMapTagType;
 import org.bukkit.Bukkit;
@@ -36,6 +37,8 @@ public class ItemStatisticsHandler implements Listener {
 	public static GUI getGUI(final ItemStack item) {
 		GUI gui = new GUI(MineTinker.getPlugin());
 		Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), gui::close, 5 * 60 * 20);
+		List<Modifier> mods = ModManager.instance().getAllowedMods();
+		mods.sort(Comparator.comparing(Modifier::getName));
 
 		GUI.Window window = gui.addWindow(1,
 				LanguageManager.getString("GUIs.Statistics.Title")
@@ -61,7 +64,49 @@ public class ItemStatisticsHandler implements Listener {
 				itemMeta.setDisplayName(ChatColor.GOLD + LanguageManager.getString("GUIs.Statistics.General.Title"));
 				itemStack.setItemMeta(itemMeta);
 			}
-			window.addButton(3, itemStack);
+
+			//Setting up ModifierStats GUI
+			GUI modifierStats = new GUI(MineTinker.getPlugin());
+			{
+				int pageNo = 0;
+				GUI.Window currentPage = modifierStats.addWindow(6,
+						LanguageManager.getString("GUIs.Statistics.Modifiers.TitlePage")
+								.replace("%tool", ChatWriter.getDisplayName(item))
+								.replaceFirst("%pageNo", String.valueOf(++pageNo)));
+
+				int i = 0;
+
+				GUIs.addNavigationButtons(currentPage);
+
+				for (Modifier m : mods) {
+					if (!ModManager.instance().hasMod(item, m)) continue;
+					ItemStack is = m.getModItem().clone();
+					ItemMeta meta = is.getItemMeta();
+
+					if (meta != null) {
+						meta.setDisplayName(m.getColor() + m.getName());
+						meta.setLore(m.getStatistics(item));
+						is.setItemMeta(meta);
+					}
+
+					currentPage.addButton((i % 7) + 1, (i / 7) + 1, is);
+					i++;
+
+					if (i % 28 == 0) {
+						currentPage = modifierStats.addWindow(6,
+								LanguageManager.getString("GUIs.Statistics.Modifiers.TitlePage")
+										.replace("%tool", ChatWriter.getDisplayName(item))
+										.replaceFirst("%pageNo", String.valueOf(++pageNo)));
+
+						GUIs.addNavigationButtons(currentPage);
+						i = 0;
+					}
+				}
+			}
+
+			GUI.Window.Button button = window.addButton(3, itemStack);
+			button.addAction(ClickType.LEFT,
+					new ButtonAction.PAGE_GOTO(button, modifierStats.getWindow(0)));
 		}
 
 		{
@@ -70,10 +115,7 @@ public class ItemStatisticsHandler implements Listener {
 			if (map != null) {
 				ItemStack itemStack = new ItemStack(Material.STONE);
 				ItemMeta itemMeta = itemStack.getItemMeta();
-				if (itemMeta != null) {
-					itemMeta.setDisplayName(ChatColor.GOLD + LanguageManager.getString("GUIs.Statistics.Blocks.Title"));
-					itemStack.setItemMeta(itemMeta);
-				}
+				long totalBlocks = 0;
 
 				//Setting up BlockStats GUI
 				GUI blockStats = new GUI(MineTinker.getPlugin());
@@ -95,10 +137,13 @@ public class ItemStatisticsHandler implements Listener {
 						ItemStack is = new ItemStack(m);
 						ItemMeta meta = is.getItemMeta();
 
+						long amount = map.get(m);
+						totalBlocks += amount;
+
 						if (meta != null) {
 							meta.setLore(Collections.singletonList(ChatColor.WHITE
 									+ LanguageManager.getString("GUIs.Statistics.Blocks.AmountBroken")
-									.replace("%amount", String.valueOf(map.get(m)))));
+									.replace("%amount", String.valueOf(amount))));
 							is.setItemMeta(meta);
 						}
 
@@ -116,6 +161,14 @@ public class ItemStatisticsHandler implements Listener {
 						}
 					}
 				}
+
+				if (itemMeta != null) {
+					itemMeta.setDisplayName(ChatColor.GOLD + LanguageManager.getString("GUIs.Statistics.Blocks.Title"));
+					itemMeta.setLore(Collections.singletonList(ChatColor.WHITE + LanguageManager.getString("GUIs.Statistics.Blocks.TotalAmount")
+							.replaceAll("%amount", String.valueOf(totalBlocks))));
+					itemStack.setItemMeta(itemMeta);
+				}
+
 				GUI.Window.Button button = window.addButton(4, itemStack);
 				button.addAction(ClickType.LEFT,
 						new ButtonAction.PAGE_GOTO(button, blockStats.getWindow(0)));

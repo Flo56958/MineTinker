@@ -51,7 +51,7 @@ AddModifierSlotsPerLevel: 1           #Amount of new free Modifier-Slots for eac
 StartingModifierSlots: 1
 Upgradeable: true                     #Can you upgrade your tools with an anvil
 Repairable: true                      #Can you repair your tools in your inventory (instead of an anvil) just by dragging the ressource on the tool
-Combinable: true                      #Can you combine tools with an anvil to upgrade modifier levels
+Combinable: false                      #Can you combine tools with an anvil to upgrade modifier levels
 ModifiableInInventory: false          #Can you modify tools in the inventory
 UnbreakableTools: true                #Makes sure that tools can not break while using them (will make the tools not useable untill repaired)
 Grindstone:

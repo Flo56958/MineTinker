@@ -64,9 +64,9 @@ public class Channeling extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Color", "%GRAY%");
+		config.addDefault("Color", "%DARK_AQUA%");
 		config.addDefault("MaxLevel", 1);
-		config.addDefault("SlotCost", 3);
+		config.addDefault("SlotCost", 1);
 
 		config.addDefault("EnchantCost", 50);
 		config.addDefault("Enchantable", false);

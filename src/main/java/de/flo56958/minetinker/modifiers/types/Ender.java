@@ -8,25 +8,21 @@ import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import de.flo56958.minetinker.utils.data.DataHandler;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Ender extends Modifier implements Listener {
 
@@ -138,6 +134,18 @@ public class Ender extends Modifier implements Listener {
 			player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F);
 		}
 
+		//Track stats
+		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
+				? DataHandler.getTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false)
+				: 0;
+		DataHandler.setTag(tool, getKey() + "_stat_used", stat + 1, PersistentDataType.INTEGER, false);
+
+		double distance = (DataHandler.hasTag(tool, getKey() + "_stat_distance", PersistentDataType.DOUBLE, false))
+				? DataHandler.getTag(tool, getKey() + "_stat_distance", PersistentDataType.DOUBLE, false)
+				: 0;
+		distance += oldLoc.distance(loc);
+		DataHandler.setTag(tool, getKey() + "_stat_distance", distance, PersistentDataType.DOUBLE, false);
+
 		spawnParticles(player, oldLoc);
 
 		if (this.giveNauseaOnUse) {
@@ -209,6 +217,23 @@ public class Ender extends Modifier implements Listener {
 
 		player.teleport(loc);
 
+		//Track stats
+		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
+				? DataHandler.getTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false)
+				: 0;
+		DataHandler.setTag(tool, getKey() + "_stat_used", stat + 1, PersistentDataType.INTEGER, false);
+
+		double distance = (DataHandler.hasTag(tool, getKey() + "_stat_distance", PersistentDataType.DOUBLE, false))
+				? DataHandler.getTag(tool, getKey() + "_stat_distance", PersistentDataType.DOUBLE, false)
+				: 0;
+		distance += oldLoc.distance(loc);
+		DataHandler.setTag(tool, getKey() + "_stat_distance", distance, PersistentDataType.DOUBLE, false);
+
+		int swapped = (DataHandler.hasTag(tool, getKey() + "_stat_swapped", PersistentDataType.INTEGER, false))
+				? DataHandler.getTag(tool, getKey() + "_stat_swapped", PersistentDataType.INTEGER, false)
+				: 0;
+		DataHandler.setTag(tool, getKey() + "_stat_swapped", swapped + 1, PersistentDataType.INTEGER, false);
+
 		if (this.hasSound) {
 			player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F); //Sound at Players position
 			player.getWorld().playSound(event.getEvent().getEntity().getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F); //Sound at Entity's position
@@ -239,6 +264,27 @@ public class Ender extends Modifier implements Listener {
 						loc.getWorld().getName(),
 						oldLoc.getBlockX(), oldLoc.getBlockY(), oldLoc.getBlockZ(),
 						loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
+	}
+
+	@Override
+	public List<String> getStatistics(ItemStack item) {
+		List<String> lore = new ArrayList<>();
+		int stat = (DataHandler.hasTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
+				? DataHandler.getTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER, false)
+				: 0;
+		double distance = (DataHandler.hasTag(item, getKey() + "_stat_distance", PersistentDataType.DOUBLE, false))
+				? DataHandler.getTag(item, getKey() + "_stat_distance", PersistentDataType.DOUBLE, false)
+				: 0;
+		int swapped = (DataHandler.hasTag(item, getKey() + "_stat_swapped", PersistentDataType.INTEGER, false))
+				? DataHandler.getTag(item, getKey() + "_stat_swapped", PersistentDataType.INTEGER, false)
+				: 0;
+		lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Ender.Statistic_Used")
+				.replaceAll("%amount", String.valueOf(stat)));
+		lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Ender.Statistic_Distance")
+				.replaceAll("%amount", String.format("%,.2f", distance)));
+		lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Ender.Statistic_Swapped")
+				.replaceAll("%amount", String.valueOf(swapped)));
+		return lore;
 	}
 
 	private void spawnParticles(Player player, Location oldLoc) {

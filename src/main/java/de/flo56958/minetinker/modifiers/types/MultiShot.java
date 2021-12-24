@@ -20,6 +20,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -117,13 +118,15 @@ public class MultiShot extends Modifier implements Listener {
 		return true;
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onShoot(ProjectileLaunchEvent event) {
 		if (!this.isAllowed()) {
 			return;
 		}
 
 		Projectile arrow = event.getEntity();
+
+		if (arrow.hasMetadata(this.getKey())) return;
 
 		if (!(arrow instanceof Arrow)) {
 			return;
@@ -194,6 +197,9 @@ public class MultiShot extends Modifier implements Listener {
 
 				arr.setCritical(((Arrow) arrow).isCritical());
 				arr.setDamage(((Arrow) arrow).getDamage());
+				arr.setMetadata(this.getKey(), new FixedMetadataValue(this.getSource(), null));
+
+				Bukkit.getPluginManager().callEvent(new ProjectileLaunchEvent(arr));
 			}, i);
 		}
 	}

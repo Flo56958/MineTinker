@@ -6,10 +6,8 @@ import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import de.flo56958.minetinker.utils.data.DataHandler;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -21,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -135,6 +134,7 @@ public class Photosynthesis extends Modifier implements Listener {
 							ChatWriter.sendActionBar(player,
 									this.getColor()
 											+ LanguageManager.getString("Modifier.Photosynthesis.NotifyWhenActive", player));
+
 						ChatWriter.logModifier(player, null, this, item,
 								String.format("ItemDamage(%d -> %d [%d])", oldDamage, newDamage, repair),
 								"DaytimeMultiplier(" + daytimeMultiplier + ")",
@@ -143,6 +143,13 @@ public class Photosynthesis extends Modifier implements Listener {
 
 						((Damageable) meta).setDamage(newDamage);
 						item.setItemMeta(meta);
+
+						// Track statistic
+						int stat = (DataHandler.hasTag(item, getKey() + "_stat_healed", PersistentDataType.INTEGER, false))
+								? DataHandler.getTag(item, getKey() + "_stat_healed", PersistentDataType.INTEGER, false)
+								: 0;
+						stat += oldDamage - newDamage;
+						DataHandler.setTag(item, getKey() + "_stat_healed", stat,PersistentDataType.INTEGER, false);
 					}
 				}
 			} else {
@@ -152,7 +159,16 @@ public class Photosynthesis extends Modifier implements Listener {
 		}
 	};
 
-	//location, time since started
+	@Override
+	public List<String> getStatistics(ItemStack item) {
+		int stat = (DataHandler.hasTag(item, getKey() + "_stat_healed", PersistentDataType.INTEGER, false))
+				? DataHandler.getTag(item, getKey() + "_stat_healed", PersistentDataType.INTEGER, false)
+				: 0;
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Photosynthesis.Statistic_Healed")
+				.replaceAll("%amount", String.valueOf(stat)));
+		return lore;
+	}
 
 	private Photosynthesis() {
 		super(MineTinker.getPlugin());

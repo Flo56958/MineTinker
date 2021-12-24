@@ -194,6 +194,7 @@ permissions:
       minetinker.modifiers.glowing.*: true
       minetinker.modifiers.haste.*: true
       minetinker.modifiers.hardened.*: true
+      minetinker.modifiers.homing.*: true
       minetinker.modifiers.infinity.*: true
       minetinker.modifiers.insulating.*: true
       minetinker.modifiers.knockback.*: true
@@ -444,6 +445,17 @@ permissions:
     default: true
   minetinker.modifiers.glowing.use:
     description: Allows to use Glowing on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.homing.*:
+    children:
+      minetinker.modifiers.homing.apply: true
+      minetinker.modifiers.homing.use: true
+  minetinker.modifiers.homing.apply:
+    description: Allows to apply Homing to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.homing.use:
+    description: Allows to use Homing on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.haste.*:

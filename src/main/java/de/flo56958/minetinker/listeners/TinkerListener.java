@@ -25,7 +25,6 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -168,7 +167,7 @@ public class TinkerListener implements Listener {
 					if (rand.nextInt(100) <= config.getInt("LevelUpEvents.RandomModifier.percentage")) {
 						int max = rand.nextInt(config.getInt("LevelUpEvents.RandomModifier.MaximumAmountOfModifiers")) + 1;
 						for (int j = 0; j < max; j++) {
-							final List<Modifier> mods = new ArrayList<>(modManager.getAllowedMods());
+							final List<Modifier> mods = modManager.getAllowedMods();
 							//necessary as the failed modifiers get removed from the list (so a copy is in order)
 
 							if (!config.getBoolean("LevelUpEvents.RandomModifier.AllowExtraModifier")) {

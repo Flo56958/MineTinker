@@ -173,7 +173,7 @@ public abstract class Modifier {
 		return getConfig().getBoolean("Recipe.Enabled", false);
 	}
 
-	Plugin getSource() {
+	public Plugin getSource() {
 		return source;
 	} //for other Plugins/Addons that register Modifiers
 
@@ -417,5 +417,9 @@ public abstract class Modifier {
 			ChatWriter.log(false, player.getDisplayName() + " tried to create a "
 					+ getName() + "-Modifiers but had not enough levels!");
 		}
+	}
+
+	public List<String> getStatistics(ItemStack item) {
+		return null;
 	}
 }

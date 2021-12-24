@@ -5,6 +5,9 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.LanguageManager;
+import de.flo56958.minetinker.utils.data.DataHandler;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -15,15 +18,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Berserk extends Modifier implements Listener {
 
@@ -132,6 +133,23 @@ public class Berserk extends Modifier implements Listener {
 					modifierLevel - 1));
 			ChatWriter.logModifier(player, event, this, chest,
 					"Time(" + boostTime + ")", "Amplifier(" + (modifierLevel - 1) + ")");
+
+			//Track stats
+			int stat = (DataHandler.hasTag(chest, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
+					? DataHandler.getTag(chest, getKey() + "_stat_used", PersistentDataType.INTEGER, false)
+					: 0;
+			DataHandler.setTag(chest, getKey() + "_stat_used", stat + 1, PersistentDataType.INTEGER, false);
 		}
+	}
+	@Override
+	public List<String> getStatistics(ItemStack item) {
+		//Track stats
+		int stat = (DataHandler.hasTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
+				? DataHandler.getTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER, false)
+				: 0;
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Berserk.Statistic_Used")
+				.replaceAll("%amount", String.valueOf(stat)));
+		return lore;
 	}
 }

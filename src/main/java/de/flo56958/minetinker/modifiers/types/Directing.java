@@ -6,6 +6,10 @@ import de.flo56958.minetinker.events.MTEntityDeathEvent;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.LanguageManager;
+import de.flo56958.minetinker.utils.data.DataHandler;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.util.*;
@@ -100,14 +105,25 @@ public class Directing extends Modifier implements Listener {
 			return;
 		}
 
+		if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
+			return;
+		}
+
 		if (!modManager.isToolViable(tool) || !modManager.hasMod(tool, this)) {
 			return;
 		}
 
 		Iterator<Item> itemIterator = event.getItems().iterator();
 
+		//Track stats
+		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
+				? DataHandler.getTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false)
+				: 0;
+
 		while (itemIterator.hasNext()) {
 			Item item = itemIterator.next();
+
+			stat += item.getItemStack().getAmount();
 
 			HashMap<Integer, ItemStack> refusedItems = player.getInventory().addItem(item.getItemStack());
 
@@ -119,6 +135,9 @@ public class Directing extends Modifier implements Listener {
 
 			itemIterator.remove();
 		}
+
+		DataHandler.setTag(tool, getKey() + "_stat_used", stat, PersistentDataType.INTEGER, false);
+
 		Location loc = event.getBlock().getLocation();
 		ChatWriter.logModifier(player, event, this, tool,
 				String.format("Block(%d/%d/%d)", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
@@ -147,16 +166,25 @@ public class Directing extends Modifier implements Listener {
 		List<ItemStack> drops = event.getEvent().getDrops();
 		List<ItemStack> toremove = new ArrayList<>();
 
+		//Track stats
+		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
+				? DataHandler.getTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false)
+				: 0;
+
 		for (ItemStack current : drops) {
 			if (modManager.hasMod(current, Soulbound.instance())) {
 				continue;
 			}
+
+			stat += current.getAmount();
 
 			if (player.getInventory().addItem(current).size() != 0) { //adds items to (full) inventory
 				player.getWorld().dropItem(player.getLocation(), current);
 			} // no else as it gets added in if-clause
 			toremove.add(current);
 		}
+
+		DataHandler.setTag(tool, getKey() + "_stat_used", stat, PersistentDataType.INTEGER, false);
 
 		drops.removeAll(toremove);
 
@@ -167,5 +195,17 @@ public class Directing extends Modifier implements Listener {
 
 		ChatWriter.logModifier(player, event, this, tool,
 				"Entity(" + event.getEvent().getEntity().getType().toString() + ")");
+	}
+
+	@Override
+	public List<String> getStatistics(ItemStack item) {
+		//Track stats
+		int stat = (DataHandler.hasTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
+				? DataHandler.getTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER, false)
+				: 0;
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Directing.Statistic_Used")
+				.replaceAll("%amount", String.valueOf(stat)));
+		return lore;
 	}
 }

@@ -211,6 +211,7 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(Webbed.instance());
 		modManager.register(Withered.instance());
 		modManager.register(Piercing.instance());
+		modManager.register(Homing.instance());
 	}
 
 	public void onDisable() {
