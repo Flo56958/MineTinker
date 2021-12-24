@@ -125,6 +125,8 @@ public class Fiery extends Modifier implements Listener {
 		ItemStack tool = event.getTool();
 		if (!ToolType.CROSSBOW.contains(tool.getType()) && !ToolType.BOW.contains(tool.getType())) return; //The enchantment is working for other tools
 
+		if (!modManager.hasMod(tool, this)) return;
+
 		if(event.getEvent().getDamager().equals(event.getPlayer())) return; //Melee interaction
 
 		if(!event.getPlayer().hasPermission("minetinker.modifiers.fiery.use")) return;
