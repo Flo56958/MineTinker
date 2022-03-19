@@ -5,6 +5,7 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -156,12 +157,23 @@ public class Scotopic extends Modifier implements Listener {
 
 		if (lightlevel <= this.requiredLightLevel) {
 			int duration = this.durationPerLevel * level;
-			player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, duration, level, false, false, false));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,
+					duration + 10 * 20, // To disable the flickering below 10 seconds
+					level - 1, false, false, false));
 			cooldownTracker.put(player.getUniqueId().toString(), time);
 			ChatWriter.logModifier(player, event, this, helmet,
 					String.format("Cooldown(%ds)", cooldownTime / 1000),
 					String.format("LightLevel(%d/%d)", lightlevel, this.requiredLightLevel),
 					String.format("Duration(%d)", duration));
+
+			Bukkit.getServer().getScheduler().runTaskLater(this.getSource(), () -> {
+				PotionEffect effect = player.getPotionEffect(PotionEffectType.NIGHT_VISION);
+				if (effect == null) return;
+				if (Math.abs(effect.getDuration() - duration) <= 1) {
+					//Effect was most likely applied by MineTinker, so remove it
+					player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+				}
+			}, duration);
 		}
 	}
 }

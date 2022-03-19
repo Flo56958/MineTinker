@@ -133,6 +133,7 @@ public class Homing extends Modifier implements Listener {
 			public void run() {
 				if (System.currentTimeMillis() - start > Homing.this.homingSeconds * 1000L) return;
 				if (((Arrow) arrow).isInBlock()) return;
+				if (arrow.isDead()) return;
 				if (arrow.getVelocity().length() <= 0.1) return;
 				if (arrow.getLastDamageCause() != null) return;
 
@@ -147,9 +148,8 @@ public class Homing extends Modifier implements Listener {
 					if (e instanceof Boat) continue;
 					if (e instanceof Painting) continue;
 					if (e instanceof Player && !Homing.this.worksOnPlayers) continue;
-
 					//1.18 Draft API
-					//if (!player.canSee(e)) continue;
+					if (MineTinker.is18compatible && !arrow.canSee(e)) continue;
 
 					double velocity = arrow.getVelocity().length();
 					Vector vel = arrow.getVelocity().normalize();

@@ -256,6 +256,7 @@ public class Photosynthesis extends Modifier implements Listener {
 		allowedMaterials.add(Material.GLASS);
 		allowedMaterials.add(Material.BARRIER);
 		allowedMaterials.add(Material.TALL_GRASS);
+		allowedMaterials.add(Material.DEAD_BUSH);
 		if (MineTinker.is17compatible) {
 			allowedMaterials.add(Material.LIGHT);
 		}

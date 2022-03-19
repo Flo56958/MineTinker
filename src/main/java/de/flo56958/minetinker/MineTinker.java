@@ -25,6 +25,7 @@ public class MineTinker extends JavaPlugin {
 	private static JavaPlugin plugin;
 	public static boolean is16compatible;
 	public static boolean is17compatible;
+	public static boolean is18compatible;
 
 	@Contract(pure = true)
 	public static JavaPlugin getPlugin() { // necessary to do getConfig() in other classes
@@ -44,6 +45,7 @@ public class MineTinker extends JavaPlugin {
 
 			is16compatible = mayor >= 1 && minor >= 16;
 			is17compatible = mayor >= 1 && minor >= 17;
+			is18compatible = mayor >= 1 && minor >= 18;
 		} catch (Exception e) {
 			e.printStackTrace();
 			ChatWriter.logError("Could not parse the Minecraft Version! Running 1.14 feature set. " +
@@ -55,6 +57,9 @@ public class MineTinker extends JavaPlugin {
 		}
 		if (is17compatible) {
 			ChatWriter.log(false, "1.17 enhanced features activated!");
+		}
+		if (is18compatible) {
+			ChatWriter.log(false, "1.18 enhanced features activated!");
 		}
 	}
 

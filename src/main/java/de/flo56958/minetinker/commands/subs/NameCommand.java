@@ -5,6 +5,7 @@ import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.modifiers.ModManager;
+import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -50,10 +51,8 @@ public class NameCommand implements SubCommand {
 				name.append(" ").append(args[i].replace('&', '\u00a7')); // = §
 			}
 
-			name = new StringBuilder(name.substring(1));
-
 			//Test given Name with Blacklist
-			String name_ = name.toString();
+			String name_ = ChatWriter.addColors(name.substring(1));
 			for (String pattern : Lists.NAME_COMMAND_BLACKLIST) {
 				if (Pattern.compile(pattern).matcher(name_).find()) {
 					CommandManager.sendError(sender,

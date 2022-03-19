@@ -120,6 +120,7 @@ public class ModManager {
 		incompatibilityList.add(Shrouded.instance().getKey() + ":" + Ender.instance().getKey());
 		incompatibilityList.add(Shrouded.instance().getKey() + ":" + MultiShot.instance().getKey());
 		incompatibilityList.add(Homing.instance().getKey() + ":" + Ender.instance().getKey());
+		incompatibilityList.add(Homing.instance().getKey() + ":" + MultiShot.instance().getKey());
 
 		incompatibilityList.sort(String::compareToIgnoreCase);
 

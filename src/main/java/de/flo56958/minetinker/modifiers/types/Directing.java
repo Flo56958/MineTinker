@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDropItemEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -150,6 +151,13 @@ public class Directing extends Modifier implements Listener {
 		}
 		if (!this.workInPVP && event.getEvent().getEntity() instanceof Player) {
 			return;
+		}
+
+		// Disable Directing when KeepInventory is on
+		if (event.getEvent() instanceof PlayerDeathEvent devent) {
+			if (devent.getKeepInventory()) {
+				return;
+			}
 		}
 
 		Player player = event.getPlayer();
