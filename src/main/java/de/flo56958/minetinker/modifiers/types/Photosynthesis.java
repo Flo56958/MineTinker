@@ -57,8 +57,7 @@ public class Photosynthesis extends Modifier implements Listener {
 
 			boolean isAboveGround = false;
 			if (pLoc.getWorld().getEnvironment() == World.Environment.NORMAL) { //check for overworld
-				final int maxHeight = (MineTinker.is17compatible) ? 320 : 256;
-				for (int i = pLoc.getBlockY() + 1; i <= maxHeight; i++) {
+				for (int i = pLoc.getBlockY() + 1; i < pLoc.getWorld().getMaxHeight(); i++) {
 					Block b = pLoc.getWorld().getBlockAt(pLoc.getBlockX(), i, pLoc.getBlockZ());
 					if (!(allowedMaterials.contains(b.getType()))) {
 						isAboveGround = false;

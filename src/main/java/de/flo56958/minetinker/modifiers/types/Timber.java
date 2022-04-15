@@ -18,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.*;
@@ -102,7 +103,7 @@ public class Timber extends Modifier implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void effect(MTBlockBreakEvent event) {
+	public void effect(@NotNull MTBlockBreakEvent event) {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 		Block block = event.getBlock();
@@ -149,6 +150,7 @@ public class Timber extends Modifier implements Listener {
 										|| blockType == Material.WARPED_NYLIUM))) {
 
 					isTreeBottom = true;
+					break;
 				}
 
 				if (!player.getWorld().getBlockAt(block.getX(), y, block.getZ()).getType().equals(block.getType())) {
@@ -156,12 +158,13 @@ public class Timber extends Modifier implements Listener {
 				}
 			}
 
-			for (int dy = block.getY() + 1, airgap = 0; dy < 256 && airgap < 6; dy++) {
+			//airgap is for trees like acacia
+			for (int dy = block.getY() + 1, airgap = 0; dy < block.getWorld().getMaxHeight() && airgap < 6; dy++) {
 				if (!allowed.contains(player.getWorld().getBlockAt(block.getX(), dy, block.getZ()).getType())) {
-					Location loc = block.getLocation().clone();
+					final Location loc = block.getLocation().clone();
 					loc.setY(dy);
 
-					Material mat = player.getWorld().getBlockAt(loc).getType();
+					final Material mat = player.getWorld().getBlockAt(loc).getType();
 
 					if (Lists.getWoodLeaves().contains(mat)) {
 						isTreeTop = true;
@@ -177,15 +180,15 @@ public class Timber extends Modifier implements Listener {
 				return; //TODO: Improve tree check
 			}
 
-			ArrayList<Location> locs = new ArrayList<>();
+			final ArrayList<Location> locs = new ArrayList<>();
 			locs.add(block.getLocation());
 			Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> breakTree(player, tool, block, allowed, locs));
 		}
-		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType().toString() + ")");
+		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType() + ")");
 
 	}
 
-	private void breakTree(Player player, ItemStack tool, Block block, List<Material> allowed, List<Location> locs) { //TODO: Improve algorithm and performance -> async?
+	private void breakTree(@NotNull Player player, @NotNull ItemStack tool, Block block, List<Material> allowed, @NotNull List<Location> locs) { //TODO: Improve algorithm and performance
 		if (locs.size() >= maxBlocks) {
 			return;
 		}
@@ -196,7 +199,7 @@ public class Timber extends Modifier implements Listener {
 						continue;
 					}
 
-					Location loc = block.getLocation();
+					final Location loc = block.getLocation();
 					loc.add(dx, dy, dz);
 
 					if (locs.contains(loc)) {
@@ -205,7 +208,7 @@ public class Timber extends Modifier implements Listener {
 
 					locs.add(loc);
 
-					Block toBreak = player.getWorld().getBlockAt(loc);
+					final Block toBreak = player.getWorld().getBlockAt(loc);
 					if (allowed.contains(toBreak.getType())) {
 						breakTree(player, tool, toBreak, allowed, locs);
 						events.put(toBreak.getLocation(), 0);
