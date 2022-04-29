@@ -180,6 +180,7 @@ public class BlockListener implements Listener {
 
 		if (modManager.isModifierItem(norm)) {
 			event.setCancelled(true);
+			return;
 		}
 
 		if (event.getAction() == Action.RIGHT_CLICK_AIR) {

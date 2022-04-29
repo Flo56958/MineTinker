@@ -1,11 +1,11 @@
 package de.flo56958.minetinker.commands.subs;
 
-import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.SubCommand;
+import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.Updater;
-import de.flo56958.minetinker.api.SubCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

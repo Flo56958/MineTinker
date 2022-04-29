@@ -181,8 +181,6 @@ public class EnchantingListener implements Listener {
 				}
 			}
 		}
-
-		// TODO: Refund enchantment levels lost due to removeEnchantment and addMod
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)

@@ -364,7 +364,16 @@ public class PlayerListener implements Listener {
 		}
 
 		if (meta.getStoredEnchants().isEmpty()) {
-			event.getPlayer().getInventory().removeItem(event.getItem());
+			// This seems not to work when the item is in the offhand, and can lead to bugs when nbt data is involved
+			//event.getPlayer().getInventory().removeItem(event.getItem());
+
+			if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+				if (event.getPlayer().getInventory().getItemInMainHand().equals(event.getItem())) {
+					event.getPlayer().getInventory().setItemInMainHand(null);
+				} else {
+					event.getPlayer().getInventory().setItemInOffHand(null);
+				}
+			}
 		} else {
 			event.getItem().setItemMeta(meta);
 		}
