@@ -139,7 +139,7 @@ public class Timber extends Modifier implements Listener {
 			boolean isTreeTop = false; //checks for Leaves above Log
 
 
-			for (int y = block.getY() - 1; y > 0; y--) {
+			for (int y = block.getY() - 1; y >= block.getWorld().getMinHeight(); y--) {
 				Material blockType = player.getWorld().getBlockAt(block.getX(), y, block.getZ()).getType();
 
 				if (blockType == Material.GRASS_BLOCK || blockType == Material.DIRT
@@ -147,7 +147,8 @@ public class Timber extends Modifier implements Listener {
 						(MineTinker.is16compatible &&
 								(blockType == Material.NETHERRACK
 										|| blockType == Material.CRIMSON_NYLIUM
-										|| blockType == Material.WARPED_NYLIUM))) {
+										|| blockType == Material.WARPED_NYLIUM)) ||
+						(MineTinker.is19compatible && blockType == Material.MUD)) {
 
 					isTreeBottom = true;
 					break;
