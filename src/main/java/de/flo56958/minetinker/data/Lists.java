@@ -66,6 +66,10 @@ public class Lists {
 			mats.add(Material.AZALEA_LEAVES);
 		}
 
+		if (MineTinker.is19compatible) {
+			mats.add(Material.MANGROVE_LEAVES);
+		}
+
 		return mats;
 	}
 
@@ -84,6 +88,10 @@ public class Lists {
 		if (MineTinker.is16compatible) {
 			mats.add(Material.CRIMSON_PLANKS);
 			mats.add(Material.WARPED_PLANKS);
+		}
+
+		if (MineTinker.is19compatible) {
+			mats.add(Material.MANGROVE_PLANKS);
 		}
 		return mats;
 	}
@@ -104,6 +112,13 @@ public class Lists {
 			mats.add(Material.CRIMSON_STEM);
 			mats.add(Material.WARPED_STEM);
 		}
+		if (MineTinker.is19compatible) {
+			mats.add(Material.MANGROVE_LOG);
+
+			// Roots are considered part of the tree
+			mats.add(Material.MANGROVE_ROOTS);
+			mats.add(Material.MUDDY_MANGROVE_ROOTS);
+		}
 		return mats;
 	}
 
@@ -122,6 +137,10 @@ public class Lists {
 		if (MineTinker.is16compatible) {
 			mats.add(Material.STRIPPED_CRIMSON_STEM);
 			mats.add(Material.STRIPPED_WARPED_STEM);
+		}
+
+		if (MineTinker.is19compatible) {
+			mats.add(Material.STRIPPED_MANGROVE_LOG);
 		}
 		return mats;
 	}
@@ -142,6 +161,10 @@ public class Lists {
 			mats.add(Material.CRIMSON_HYPHAE);
 			mats.add(Material.WARPED_HYPHAE);
 		}
+
+		if (MineTinker.is19compatible) {
+			mats.add(Material.MANGROVE_WOOD);
+		}
 		return mats;
 	}
 
@@ -160,6 +183,10 @@ public class Lists {
 		if (MineTinker.is16compatible) {
 			mats.add(Material.STRIPPED_CRIMSON_HYPHAE);
 			mats.add(Material.STRIPPED_WARPED_HYPHAE);
+		}
+
+		if (MineTinker.is19compatible) {
+			mats.add(Material.STRIPPED_MANGROVE_WOOD);
 		}
 		return mats;
 	}

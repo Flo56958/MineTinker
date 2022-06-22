@@ -187,6 +187,18 @@ public class AutoSmelt extends Modifier implements Listener {
 			conversions.put(Material.COPPER_ORE, new Triplet(Material.COPPER_INGOT, 1, true));
 		}
 
+		if (MineTinker.is19compatible) {
+			conversions.put(Material.MANGROVE_LEAVES, new Triplet(Material.STICK, 1));
+			// No muddy roots
+			conversions.put(Material.MANGROVE_ROOTS, new Triplet(Material.CHARCOAL, 1));
+			conversions.put(Material.MANGROVE_LOG, new Triplet(Material.CHARCOAL, 1));
+			conversions.put(Material.STRIPPED_MANGROVE_LOG, new Triplet(Material.CHARCOAL, 1));
+			conversions.put(Material.MANGROVE_WOOD, new Triplet(Material.CHARCOAL, 1));
+			conversions.put(Material.STRIPPED_MANGROVE_WOOD, new Triplet(Material.CHARCOAL, 1));
+
+			conversions.put(Material.MUD, new Triplet(Material.CLAY, 1));
+		}
+
 		//Saving Conversions as String
 		Map<String, String> conversionsSTR = new HashMap<>();
 		conversions.forEach((k, v) -> conversionsSTR.put(k.toString(), v.toString()));
