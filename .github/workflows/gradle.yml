@@ -44,3 +44,10 @@ jobs:
     - name: Publishing Build
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
       run: python3 .github/workflows/scripts/publish.py ./build/libs/MineTinker.jar MineTinker ${{ secrets.DiscordWebHook }} ${{ github.sha }}
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: MineTinker-${{ github.sha }}.jar
+        path: ./build/libs/MineTinker.jar
+        if-no-files-found: error
