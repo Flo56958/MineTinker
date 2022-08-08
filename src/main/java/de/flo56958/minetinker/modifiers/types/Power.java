@@ -358,25 +358,25 @@ public class Power extends Modifier implements Listener {
 	}
 
 	private void powerBlockBreak(@NotNull final Block block, final float centralBlockHardness, final Player player, final ItemStack tool, final BlockFace face) {
-		if (treatAsWhitelist ^ blacklist.contains(block.getType())) {
-			return;
-		}
-
-		if (block.getDrops(tool).isEmpty()) {
-			return;
-		}
-
-		if (block.getType().getHardness() > centralBlockHardness + 2) { // + 2 so you can mine ore as well
-			return; //So Obsidian can not be mined using Cobblestone and Power
-		}
-
-		events.put(block.getLocation(), 0);
-
-		// Save BlockFace so Drilling can use the 'old' information
-		if (modManager.hasMod(tool, Drilling.instance()))
-			drillingCommunication.put(block.getLocation(), face);
-
 		Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
+			if (treatAsWhitelist ^ blacklist.contains(block.getType())) {
+				return;
+			}
+
+			if (block.getDrops(tool).isEmpty()) {
+				return;
+			}
+
+			if (block.getType().getHardness() > centralBlockHardness + 2) { // + 2 so you can mine ore as well
+				return; //So Obsidian can not be mined using Cobblestone and Power
+			}
+
+			events.put(block.getLocation(), 0);
+
+			// Save BlockFace so Drilling can use the 'old' information
+			if (modManager.hasMod(tool, Drilling.instance()))
+				drillingCommunication.put(block.getLocation(), face);
+
 			try {
 				DataHandler.playerBreakBlock(player, block, tool);
 			} catch (IllegalArgumentException ignored) {}
