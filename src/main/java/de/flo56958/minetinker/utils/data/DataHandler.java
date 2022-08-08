@@ -2,6 +2,7 @@ package de.flo56958.minetinker.utils.data;
 
 import de.flo56958.minetinker.MineTinker;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
@@ -79,23 +80,26 @@ public class DataHandler {
 
 			block.breakNaturally(itemStack);
 
-			//Spawn Experience Orb
+			//Spawn Experience Orb, if Player is not in Survival
 			int exp = calculateExp(block.getType());
-			if (exp > 0) {
+			if (exp > 0 && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
 				ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
 				orb.setExperience(exp);
 			}
 
 			//Calculate Damage for itemStack
-			ItemMeta meta = itemStack.getItemMeta();
-			if (!meta.isUnbreakable()) {
-				if (meta instanceof Damageable) {
-					//Consider Unbreaking enchant
-					int lvl = meta.getEnchantLevel(Enchantment.DURABILITY);
-					int r = new Random().nextInt(100);
-					if (!(r > 100 / (lvl + 1))) {
-						((Damageable) meta).setDamage(((Damageable) meta).getDamage() + 1);
-						itemStack.setItemMeta(meta);
+			//No Damage for Creative Players
+			if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
+				ItemMeta meta = itemStack.getItemMeta();
+				if (!meta.isUnbreakable()) {
+					if (meta instanceof Damageable) {
+						//Consider Unbreaking enchant
+						int lvl = meta.getEnchantLevel(Enchantment.DURABILITY);
+						int r = new Random().nextInt(100);
+						if (!(r > 100 / (lvl + 1))) {
+							((Damageable) meta).setDamage(((Damageable) meta).getDamage() + 1);
+							itemStack.setItemMeta(meta);
+						}
 					}
 				}
 			}
@@ -107,6 +111,8 @@ public class DataHandler {
 		//For interactions with MT itself and other Plugins
 		//
 		BlockBreakEvent breakEvent = new BlockBreakEvent(block, player);
+		//No itemdrops for creative players, but can be changed by other plugins in the event
+		breakEvent.setDropItems(player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR);
 		ItemMeta meta = itemStack.getItemMeta();
 		if (meta != null && !meta.hasEnchant(Enchantment.SILK_TOUCH)) breakEvent.setExpToDrop(calculateExp(block.getType()));
 		Bukkit.getPluginManager().callEvent(breakEvent);
@@ -126,7 +132,7 @@ public class DataHandler {
 			
 			//Set Block to Material.AIR (effectively breaks the Block)
 			block.setType(Material.AIR);
-			//TODO: Play Sound?
+			//TODO: Play Sound? - Not needed
 			
 			//Check if items need to be dropped
 			if (breakEvent.isDropItems()) {
@@ -146,8 +152,8 @@ public class DataHandler {
 				itemEntities.forEach(Item::remove);
 			}
 			
-			//Check if Exp needs to be dropped
-			if (breakEvent.getExpToDrop() > 0) {
+			//Check if Exp needs to be dropped, Player should be in survival
+			if (breakEvent.getExpToDrop() > 0 && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
 				//Spawn Experience Orb
 				ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
 				orb.setExperience(breakEvent.getExpToDrop());
@@ -155,27 +161,29 @@ public class DataHandler {
 			
 			//Calculate Damage for itemStack
 			meta = itemStack.getItemMeta();
-			if (!meta.isUnbreakable()) {
-				if (meta instanceof Damageable) {
-					//Consider Unbreaking Enchant
-					int lvl = meta.getEnchantLevel(Enchantment.DURABILITY);
-					int damage = 1;
-					int r = new Random().nextInt(100);
-					if (r > 100 / (lvl + 1)) {
-						damage = 0;
-					}
+			//No Damage for creative players
+			if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
+				if (!meta.isUnbreakable()) {
+					if (meta instanceof Damageable) {
+						//Consider Unbreaking Enchant
+						int lvl = meta.getEnchantLevel(Enchantment.DURABILITY);
+						int damage = 1;
+						int r = new Random().nextInt(100);
+						if (r > 100 / (lvl + 1)) {
+							damage = 0;
+						}
 
-					//Call damage event
-					PlayerItemDamageEvent damageEvent = new PlayerItemDamageEvent(player, itemStack, damage);
-					Bukkit.getPluginManager().callEvent(damageEvent);
-					if (!damageEvent.isCancelled()) {
-						meta = itemStack.getItemMeta();
-						((Damageable) meta).setDamage(((Damageable) meta).getDamage() + damageEvent.getDamage());
-						itemStack.setItemMeta(meta);
+						//Call damage event
+						PlayerItemDamageEvent damageEvent = new PlayerItemDamageEvent(player, itemStack, damage);
+						Bukkit.getPluginManager().callEvent(damageEvent);
+						if (!damageEvent.isCancelled()) {
+							meta = itemStack.getItemMeta();
+							((Damageable) meta).setDamage(((Damageable) meta).getDamage() + damageEvent.getDamage());
+							itemStack.setItemMeta(meta);
+						}
 					}
 				}
 			}
-			
 			return true;
 		}
 		
