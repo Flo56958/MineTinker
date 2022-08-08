@@ -189,13 +189,11 @@ public class AnvilListener implements Listener {
 					final int newToolModLevel = modManager.getModLevel(newTool, shared);
 					final int item2ModLevel = modManager.getModLevel(item2, shared);
 
-					int iterations = 0;
 					if (item2ModLevel > newToolModLevel) { //If the 2nd tool's modifier has a higher level, clamp the level to the 2nd tool's level.
-						iterations = item2ModLevel - newToolModLevel;
+						for (int i = 0; i < item2ModLevel - newToolModLevel; i++) {
+							modManager.addMod(player, newTool, shared, false, false, true, false);
+						}
 					} else if (item2ModLevel == newToolModLevel) {
-						iterations = 1;
-					}
-					for (int i = 0; i < iterations; i++) {
 						modManager.addMod(player, newTool, shared, false, false, true, false);
 					}
 				}
