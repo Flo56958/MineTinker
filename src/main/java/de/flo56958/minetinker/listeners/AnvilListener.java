@@ -182,10 +182,11 @@ public class AnvilListener implements Listener {
 
 				final List<Modifier> newToolMods = modManager.getToolMods(newTool);
 				final List<Modifier> item2Mods = modManager.getToolMods(item2);
+
 				final List<Modifier> sharedModifiers = item2Mods.stream().filter(newToolMods::contains).toList();
 				final List<Modifier> uniqueModifiers = item2Mods.stream().filter(Predicate.not(newToolMods::contains)).toList();
 
-				for (var shared : sharedModifiers) {
+				for (Modifier shared : sharedModifiers) {
 					final int newToolModLevel = modManager.getModLevel(newTool, shared);
 					final int item2ModLevel = modManager.getModLevel(item2, shared);
 
