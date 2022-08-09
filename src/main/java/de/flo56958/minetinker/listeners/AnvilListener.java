@@ -26,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
 public class AnvilListener implements Listener {
 
@@ -179,10 +180,29 @@ public class AnvilListener implements Listener {
 					&& player.hasPermission("minetinker.tool.combine")) {
 				newTool = item1.clone();
 
-				for (Modifier tool2Mod : modManager.getToolMods(item2)) {
-					int modLevel = modManager.getModLevel(item2, tool2Mod);
+				final List<Modifier> newToolMods = modManager.getToolMods(newTool);
+				final List<Modifier> item2Mods = modManager.getToolMods(item2);
+
+				final List<Modifier> sharedModifiers = item2Mods.stream().filter(newToolMods::contains).toList();
+				final List<Modifier> uniqueModifiers = item2Mods.stream().filter(Predicate.not(newToolMods::contains)).toList();
+
+				for (Modifier shared : sharedModifiers) {
+					final int newToolModLevel = modManager.getModLevel(newTool, shared);
+					final int item2ModLevel = modManager.getModLevel(item2, shared);
+
+					if (item2ModLevel > newToolModLevel) { //If the 2nd tool's modifier has a higher level, clamp the level to the 2nd tool's level.
+						for (int i = 0; i < item2ModLevel - newToolModLevel; i++) {
+							modManager.addMod(player, newTool, shared, false, false, true, false);
+						}
+					} else if (item2ModLevel == newToolModLevel) {
+						modManager.addMod(player, newTool, shared, false, false, true, false);
+					}
+				}
+
+				for (Modifier unique : uniqueModifiers) {
+					final int modLevel = modManager.getModLevel(item2, unique);
 					for (int i = 0; i < modLevel; i++) {
-						modManager.addMod(player, newTool, tool2Mod, false, false, true, false);
+						modManager.addMod(player, newTool, unique, false, false, true, false);
 					}
 				}
 
