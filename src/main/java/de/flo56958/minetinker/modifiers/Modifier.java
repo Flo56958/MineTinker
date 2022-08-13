@@ -196,7 +196,8 @@ public abstract class Modifier {
 		FileConfiguration config = getConfig();
 
 		try {
-			this.color = ChatWriter.getColor(Objects.requireNonNull(config.getString("Color", "%WHITE%"), "Config has no Color-Value!"));
+			this.color = ChatWriter.getColor(Objects.requireNonNull(config.getString("Color", "%WHITE%"),
+					"Config has no Color-Value!"));
 		} catch (IllegalArgumentException | ArrayIndexOutOfBoundsException ignored) {
 			this.color = ChatColor.WHITE;
 			ChatWriter.logError("Illegal Color detected for Modifier " + this.getKey());
@@ -216,18 +217,20 @@ public abstract class Modifier {
 					ChatColor.WHITE + LanguageManager.getString(langStart + ".DescriptionModifierItem"), this);
 		} else { //use the config values instead
 			this.name = config.getString("Name", "");
-			this.description = ChatWriter.addColors(Objects.requireNonNull(config.getString("Description", ""), "Config has no Description-Value!"));
+			this.description = ChatWriter.addColors(Objects.requireNonNull(config.getString("Description", ""),
+					"Config has no Description-Value!"));
 
 			this.modItem = modManager.createModifierItem(m, this.color + config.getString("ModifierItemName", ""),
-					ChatWriter.addColors(Objects.requireNonNull(config.getString("DescriptionModifierItem", ""), "Config has no DescriptionModifierItem-Value!")), this);
+					ChatWriter.addColors(Objects.requireNonNull(config.getString("DescriptionModifierItem", ""),
+							"Config has no DescriptionModifierItem-Value!")), this);
 		}
 
 		final ItemMeta itemMeta = this.modItem.getItemMeta();
-		if (itemMeta != null) itemMeta.setCustomModelData(this.customModelData);
-		this.modItem.setItemMeta(itemMeta);
 		if (ConfigurationManager.getConfig("Modifiers.yml").getBoolean("UseCustomModelData", false)) {
-			this.modItem.setType(Material.STICK);
+			if (itemMeta != null) itemMeta.setCustomModelData(this.customModelData);
+			// this.modItem.setType(Material.STICK); // turning items into sticks is not required anymore for the texture pack
 		}
+		this.modItem.setItemMeta(itemMeta);
 	}
 
 	/**
