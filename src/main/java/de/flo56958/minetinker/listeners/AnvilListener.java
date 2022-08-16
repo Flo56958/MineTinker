@@ -19,7 +19,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.AnvilInventory;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.SmithingInventory;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -36,10 +38,13 @@ public class AnvilListener implements Listener {
 	public void onInventoryClick(@NotNull final InventoryClickEvent event) {
 		final HumanEntity he = event.getWhoClicked();
 
-		if (!(he instanceof final Player player && event.getClickedInventory() instanceof final AnvilInventory inv)) {
+		if (!(he instanceof final Player player &&
+				((!MineTinker.getPlugin().getConfig().getBoolean("UseSmithingTable", false) && event.getClickedInventory() instanceof AnvilInventory)
+						|| (MineTinker.getPlugin().getConfig().getBoolean("UseSmithingTable", false) && event.getClickedInventory() instanceof SmithingInventory)))) {
 			return;
 		}
 
+		final Inventory inv = event.getInventory();
 		final ItemStack item1 = inv.getItem(0);
 		final ItemStack item2 = inv.getItem(1);
 		ItemStack newTool = inv.getItem(2);
@@ -122,20 +127,16 @@ public class AnvilListener implements Listener {
 		}
 	}
 
-	@EventHandler(ignoreCancelled = true)
-	public void onAnvilPrepare(@NotNull final PrepareAnvilEvent event) {
-		final AnvilInventory inventory = event.getInventory();
+	public static ItemStack onPrepare(@NotNull Inventory inventory, List<HumanEntity> listHumans) {
 		final ItemStack item1 = inventory.getItem(0);
 		final ItemStack item2 = inventory.getItem(1);
 
 		if (item1 == null || item2 == null) {
-			return;
+			return null;
 		}
 
 		//-----
 		Player player = null;
-
-		final List<HumanEntity> listHumans = event.getViewers();
 
 		for (HumanEntity he : listHumans) {
 			if (he instanceof Player) {
@@ -145,24 +146,24 @@ public class AnvilListener implements Listener {
 		}
 
 		if (player == null) {
-			return;
+			return null;
 		}
 
 		//-----
 		if (Lists.WORLDS.contains(player.getWorld().getName())) {
-			return;
+			return null;
 		}
 
 		if (!(modManager.isToolViable(item1) || modManager.isArmorViable(item1))) {
-			return;
+			return null;
 		}
 
 		if (item2.getType().equals(Material.ENCHANTED_BOOK)) { //So no Tools can be enchanted via books, if enchanting is disabled
 			if (!MineTinker.getPlugin().getConfig().getBoolean("AllowEnchanting")) {
 				//Set the resulting item to AIR to negate the enchant
-				event.setResult(new ItemStack(Material.AIR, 0)); //sets ghostitem by client
+				return new ItemStack(Material.AIR, 0); //sets ghostitem by client
 			}
-			return;
+			return null;
 		}
 
 		final Modifier mod = modManager.getModifierFromItem(item2);
@@ -170,11 +171,14 @@ public class AnvilListener implements Listener {
 		ItemStack newTool = null;
 
 		if (mod != null) {
-			newTool = item1.clone();
-			if (!modManager.addMod(player, newTool, mod, false, false, true, true)) {
-				return;
+			if (!MineTinker.getPlugin().getConfig().getBoolean("UseSmithingTable", false) && inventory instanceof AnvilInventory
+					|| MineTinker.getPlugin().getConfig().getBoolean("UseSmithingTable", false) && inventory instanceof SmithingInventory) {
+				newTool = item1.clone();
+				if (!modManager.addMod(player, newTool, mod, false, false, true, true)) {
+					return null;
+				}
 			}
-		} else if (item1.getType().equals(item2.getType())) { //Whether we're combining the tools
+		} else if (item1.getType().equals(item2.getType()) && inventory instanceof AnvilInventory) { //Whether we're combining the tools
 			if ((modManager.isToolViable(item2) || modManager.isArmorViable(item2))
 					&& MineTinker.getPlugin().getConfig().getBoolean("Combinable")
 					&& player.hasPermission("minetinker.tool.combine")) {
@@ -211,31 +215,39 @@ public class AnvilListener implements Listener {
 		} else {
 			if (MineTinker.getPlugin().getConfig().getBoolean("Upgradeable")
 					&& player.hasPermission("minetinker.tool.upgrade")) {
-				final ItemStack item = inventory.getItem(1);
+				if (!MineTinker.getPlugin().getConfig().getBoolean("UseSmithingTable", false) && inventory instanceof AnvilInventory
+						|| MineTinker.getPlugin().getConfig().getBoolean("UseSmithingTable", false) && inventory instanceof SmithingInventory) {
+					final ItemStack item = inventory.getItem(1);
 
-				if (item != null) {
-					final Pair<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(item1.getType(), item.getType());
-					if (materialIntegerPair != null && materialIntegerPair.x() != null) {
-						if (materialIntegerPair.y() != null && item.getAmount() == materialIntegerPair.y()) {
-							newTool = item1.clone();
-							newTool.setType(materialIntegerPair.x());
-							modManager.addArmorAttributes(newTool); //The Attributes need to be reapplied
-							final ItemMeta meta = newTool.getItemMeta();
-							if (meta instanceof Damageable) {
-								((Damageable) meta).setDamage(0);
+					if (item != null) {
+						final Pair<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(item1.getType(), item.getType());
+						if (materialIntegerPair != null && materialIntegerPair.x() != null) {
+							if (materialIntegerPair.y() != null && item.getAmount() == materialIntegerPair.y()) {
+								newTool = item1.clone();
+								newTool.setType(materialIntegerPair.x());
+								modManager.addArmorAttributes(newTool); //The Attributes need to be reapplied
+								final ItemMeta meta = newTool.getItemMeta();
+								if (meta instanceof Damageable) {
+									((Damageable) meta).setDamage(0);
+								}
+								newTool.setItemMeta(meta);
 							}
-							newTool.setItemMeta(meta);
+						} else {
+							Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, item1, false));
 						}
-					} else {
-						Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, item1, false));
 					}
 				}
 			}
 		}
+		return newTool;
+	}
 
+	@EventHandler(ignoreCancelled = true)
+	public void onAnvilPrepare(@NotNull final PrepareAnvilEvent event) {
+		ItemStack newTool = onPrepare(event.getInventory(), event.getViewers());
 		if (newTool != null) {
 			event.setResult(newTool);
-			inventory.setRepairCost(0);
+			event.getInventory().setRepairCost(0);
 		}
 	}
 }
