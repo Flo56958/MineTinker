@@ -71,7 +71,14 @@ public abstract class ButtonAction {
 		public void run(Player player) {
 			GUI gui = this.button.getWindow().getGUI();
 			int pageNo = gui.getWindowNumber(this.button.getWindow());
-			gui.show(player, Math.abs(--pageNo) % gui.getWindowAmount());
+
+			--pageNo;
+
+			if (pageNo == -1) {
+				pageNo = gui.getWindowAmount() - 1;
+			}
+
+			gui.show(player, pageNo);
 		}
 	}
 
