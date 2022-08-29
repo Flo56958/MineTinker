@@ -74,24 +74,36 @@ public class AnvilListener implements Listener {
 			if (!(item1.getType().equals(newTool.getType())
 					&& item1.getType().equals(item2.getType())
 					&& (modManager.isToolViable(item2) || modManager.isArmorViable(item2)))) { //Not Combining
+				if (item1.getType() == newTool.getType()) { // Vanilla repair
+					return;
+				}
 				if (new Random().nextInt(100) < MineTinker.getPlugin().getConfig().getInt("ChanceToFailToolUpgrade")) {
 					newTool = item1;
 					Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, false));
 				} else {
 					Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, true));
 				}
+				final Pair<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(item1.getType(), item2.getType());
+				if (materialIntegerPair != null && materialIntegerPair.x() != null) {
+					if (newTool.getType() == materialIntegerPair.x() && materialIntegerPair.y() != null) {
+						item2.setAmount(item2.getAmount() - materialIntegerPair.y());
+					}
+				}
+			} else {
+				inv.clear(1);
 			}
+
+			inv.clear(0);
+			inv.clear(2);
 
 			if (event.isShiftClick()) {
 				if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
 					event.setCancelled(true); //cancels the event if the player has a full inventory
 					return;
 				} // no else as it gets added in if-clause
-				inv.clear();
-				return;
+			} else {
+				player.setItemOnCursor(newTool);
 			}
-			player.setItemOnCursor(newTool);
-			inv.clear();
 		} else { //is modifier
 			final Modifier mod = modManager.getModifierFromItem(item2);
 
@@ -222,7 +234,7 @@ public class AnvilListener implements Listener {
 					if (item != null) {
 						final Pair<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(item1.getType(), item.getType());
 						if (materialIntegerPair != null && materialIntegerPair.x() != null) {
-							if (materialIntegerPair.y() != null && item.getAmount() == materialIntegerPair.y()) {
+							if (materialIntegerPair.y() != null && item.getAmount() >= materialIntegerPair.y()) {
 								newTool = item1.clone();
 								newTool.setType(materialIntegerPair.x());
 								modManager.addArmorAttributes(newTool); //The Attributes need to be reapplied
@@ -232,9 +244,7 @@ public class AnvilListener implements Listener {
 								}
 								newTool.setItemMeta(meta);
 							}
-						} else {
-							Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, item1, false));
-						}
+						} // Do not trigger a unsuccessful upgrade event as it could still be a vanilla repair
 					}
 				}
 			}
