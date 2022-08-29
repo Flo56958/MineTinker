@@ -186,28 +186,32 @@ public class ModManager {
 				|| name.equals("chainmail") && material == Material.IRON_BARS) {
 			return null;
 		}
+
 		if(MineTinker.is16compatible && (name.equals("netherite") && material == Material.NETHERITE_INGOT)) {
 			return null;
 		}
 
+		// upgrading from diamond to netherrite should only require one material
+		final boolean reduceToOne = MineTinker.is16compatible && name.equals("diamond") && material == Material.NETHERITE_INGOT;
+
 		if (ToolType.SWORD.contains(tool)) {
-			return new Pair<>(getToolUpgrade(material, "SWORD"), 2);
+			return new Pair<>(getToolUpgrade(material, "SWORD"), reduceToOne ? 1 : 2);
 		} else if (ToolType.PICKAXE.contains(tool)) {
-			return new Pair<>(getToolUpgrade(material, "PICKAXE"), 3);
+			return new Pair<>(getToolUpgrade(material, "PICKAXE"), reduceToOne ? 1 : 3);
 		} else if (ToolType.AXE.contains(tool)) {
-			return new Pair<>(getToolUpgrade(material, "AXE"), 3);
+			return new Pair<>(getToolUpgrade(material, "AXE"), reduceToOne ? 1 : 3);
 		} else if (ToolType.SHOVEL.contains(tool)) {
 			return new Pair<>(getToolUpgrade(material, "SHOVEL"), 1);
 		} else if (ToolType.HOE.contains(tool)) {
-			return new Pair<>(getToolUpgrade(material, "HOE"), 2);
+			return new Pair<>(getToolUpgrade(material, "HOE"), reduceToOne ? 1 : 2);
 		} else if (ToolType.HELMET.contains(tool)) {
-			return new Pair<>(getArmorUpgrade(material, "HELMET"), 5);
+			return new Pair<>(getArmorUpgrade(material, "HELMET"), reduceToOne ? 1 : 5);
 		} else if (ToolType.CHESTPLATE.contains(tool)) {
-			return new Pair<>(getArmorUpgrade(material, "CHESTPLATE"), 8);
+			return new Pair<>(getArmorUpgrade(material, "CHESTPLATE"), reduceToOne ? 1 : 8);
 		} else if (ToolType.LEGGINGS.contains(tool)) {
-			return new Pair<>(getArmorUpgrade(material, "LEGGINGS"), 7);
+			return new Pair<>(getArmorUpgrade(material, "LEGGINGS"), reduceToOne ? 1 : 7);
 		} else if (ToolType.BOOTS.contains(tool)) {
-			return new Pair<>(getArmorUpgrade(material, "BOOTS"), 4);
+			return new Pair<>(getArmorUpgrade(material, "BOOTS"), reduceToOne ? 1 : 4);
 		}
 
 		return null;
