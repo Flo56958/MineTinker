@@ -159,35 +159,50 @@ public class MultiShot extends Modifier implements Listener {
 		Vector vel = arrow.getVelocity().clone();
 		Location loc = arrow.getLocation().clone();
 
-		boolean hasInfinity = modManager.hasMod(tool, Infinity.instance());
+		final boolean hasInfinity = modManager.hasMod(tool, Infinity.instance());
 
-		boolean hasFiery = modManager.hasMod(tool, Fiery.instance()) && player.hasPermission("minetinker.modifiers.fiery.use");
+		final boolean hasFiery = modManager.hasMod(tool, Fiery.instance()) && player.hasPermission("minetinker.modifiers.fiery.use");
 		ChatWriter.logModifier(player, event, this, tool,
 				Fiery.instance().getKey() + "(" + hasFiery + ")",
 				Infinity.instance().getKey() + "(" + hasInfinity + ")");
 
 		for (int i = 1; i <= modLevel; i++) {
 			if (!player.getGameMode().equals(GameMode.CREATIVE)) {
+				boolean hasArrow = true;
 				if (!hasInfinity && needsArrows) {
-					if (!player.getInventory().contains(Material.ARROW)) {
+					hasArrow = false;
+
+					ItemStack offhand = player.getInventory().getItemInOffHand();
+
+					if (!player.getInventory().contains(Material.ARROW) && offhand != null && offhand.getType() != Material.ARROW) {
 						break;
 					}
 
-					for (ItemStack item : player.getInventory().getContents()) {
-						if (item == null) {
-							continue;
-						}
+					if (offhand.getType() == Material.ARROW && offhand.getAmount() >= 2) { // 2 as the main arrow is detracted later
+						offhand.setAmount(offhand.getAmount() - 1);
+						hasArrow = true;
+					} else {
+						for (ItemStack item : player.getInventory().getContents()) {
+							if (item == null) {
+								continue;
+							}
 
-						if (item.getType() == Material.ARROW) {
-							item.setAmount(item.getAmount() - 1);
-							break;
+							if (item.getType() == Material.ARROW && item.getAmount() >= 2) {
+								item.setAmount(item.getAmount() - 1);
+								hasArrow = true;
+								break;
+							}
 						}
 					}
+				}
+
+				if (!hasArrow) {
+					break;
 				}
 			}
 
 			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
-				Arrow arr = loc.getWorld().spawnArrow(loc, vel, (float) vel.length(), (float) spread);
+				final Arrow arr = loc.getWorld().spawnArrow(loc, vel, (float) vel.length(), (float) spread);
 				if(hasFiery) arr.setFireTicks(2000);
 				arr.setShooter(player);
 
@@ -200,7 +215,7 @@ public class MultiShot extends Modifier implements Listener {
 				arr.setMetadata(this.getKey(), new FixedMetadataValue(this.getSource(), null));
 
 				Bukkit.getPluginManager().callEvent(new ProjectileLaunchEvent(arr));
-			}, i);
+			}, 0);
 		}
 	}
 }
