@@ -207,6 +207,7 @@ Modifier:
     Description: "Tool has the %chance% chance per level to drop %amount XP while using it!"
     ModifierItemName: "Essence of Experience"
     DescriptionModifierItem: "Modifier-Item for the Experienced-Modifier"
+    Statistic_Amount: "Exp-Amount dropped: %amount"
   Extra-Modifier:
     Name: "Extra-Modifier"
     Description: "Adds %amount additional Modifier-Slots to the tool!"

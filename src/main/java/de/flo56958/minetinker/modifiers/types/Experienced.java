@@ -9,6 +9,9 @@ import de.flo56958.minetinker.events.MTPlayerInteractEvent;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.LanguageManager;
+import de.flo56958.minetinker.utils.data.DataHandler;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -16,6 +19,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.util.*;
@@ -141,7 +145,25 @@ public class Experienced extends Modifier implements Listener {
 
 		if (n <= c) {
 			player.giveExp(this.amount);
+
+			//Track stats
+			int stat = (DataHandler.hasTag(tool, getKey() + "_stat_amount", PersistentDataType.INTEGER, false))
+					? DataHandler.getTag(tool, getKey() + "_stat_amount", PersistentDataType.INTEGER, false)
+					: 0;
+			DataHandler.setTag(tool, getKey() + "_stat_amount", stat + this.amount, PersistentDataType.INTEGER, false);
 		}
 		ChatWriter.logModifier(player, event, this, tool, String.format("Chance(%d/%d)", n, c));
+	}
+
+	@Override
+	public List<String> getStatistics(ItemStack item) {
+		//Track stats
+		int stat = (DataHandler.hasTag(item, getKey() + "_stat_amount", PersistentDataType.INTEGER, false))
+				? DataHandler.getTag(item, getKey() + "_stat_amount", PersistentDataType.INTEGER, false)
+				: 0;
+		List<String> lore = new ArrayList<>();
+		lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Experienced.Statistic_Amount")
+				.replaceAll("%amount", String.valueOf(stat)));
+		return lore;
 	}
 }
