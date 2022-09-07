@@ -122,12 +122,12 @@ public class Timber extends Modifier implements Listener {
 
 		if (ToolType.SHEARS.contains(tool.getType())) {
 			if (Lists.getWoodLeaves().contains(block.getType())) {
-				ArrayList<Location> locs = new ArrayList<>();
+				HashSet<Location> locs = new HashSet<>();
 				locs.add(block.getLocation());
-				Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> breakTree(player, tool, block, Collections.singletonList(block.getType()), locs));
+				Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> breakTree(player, tool, block, new HashSet<>(Collections.singletonList(block.getType())), locs));
 			}
 		} else {
-			ArrayList<Material> allowed = new ArrayList<>();
+			HashSet<Material> allowed = new HashSet<>();
 			allowed.addAll(Lists.getWoodLogs());
 			allowed.addAll(Lists.getWoodWood());
 
@@ -138,9 +138,8 @@ public class Timber extends Modifier implements Listener {
 			boolean isTreeBottom = false; //checks for Grass or Dirt under Log
 			boolean isTreeTop = false; //checks for Leaves above Log
 
-
-			for (int y = block.getY() - 1; y >= block.getWorld().getMinHeight(); y--) {
-				Material blockType = player.getWorld().getBlockAt(block.getX(), y, block.getZ()).getType();
+			for (int y = block.getY() - 1, airgap = 0; y >= block.getWorld().getMinHeight() && airgap < 10; y--) {
+				final Material blockType = player.getWorld().getBlockAt(block.getX(), y, block.getZ()).getType();
 
 				if (blockType == Material.GRASS_BLOCK || blockType == Material.DIRT
 						|| blockType == Material.PODZOL || blockType == Material.COARSE_DIRT ||
@@ -154,13 +153,25 @@ public class Timber extends Modifier implements Listener {
 					break;
 				}
 
-				if (!player.getWorld().getBlockAt(block.getX(), y, block.getZ()).getType().equals(block.getType())) {
+				if (!allowed.contains(blockType)) {
+					// If it is a mangrove tree there can be air below the
+					if (MineTinker.is19compatible
+							&& (block.getType().equals(Material.MANGROVE_LOG)
+							|| block.getType().equals(Material.MANGROVE_ROOTS)
+							|| block.getType().equals(Material.MUDDY_MANGROVE_ROOTS))) {
+						if (blockType.isAir()
+								|| !blockType.isSolid()
+								|| blockType.equals(Material.WATER)) {
+							airgap++;
+							continue;
+						}
+					}
 					break;
 				}
 			}
 
 			//airgap is for trees like acacia
-			for (int dy = block.getY() + 1, airgap = 0; dy < block.getWorld().getMaxHeight() && airgap < 6; dy++) {
+			for (int dy = block.getY() + 1, airgap = 0; dy < block.getWorld().getMaxHeight() && airgap < 10; dy++) {
 				if (!allowed.contains(player.getWorld().getBlockAt(block.getX(), dy, block.getZ()).getType())) {
 					final Location loc = block.getLocation().clone();
 					loc.setY(dy);
@@ -169,7 +180,9 @@ public class Timber extends Modifier implements Listener {
 
 					if (Lists.getWoodLeaves().contains(mat)) {
 						isTreeTop = true;
-					} else if (mat == Material.AIR || mat == Material.CAVE_AIR) {
+					} else if (mat.isAir() || !mat.isSolid()
+							// For mangrove trees
+							|| (MineTinker.is19compatible && (mat.equals(Material.MOSS_CARPET) || mat.equals(Material.MANGROVE_PROPAGULE)))) {
 						airgap++;
 						continue;
 					}
@@ -181,7 +194,7 @@ public class Timber extends Modifier implements Listener {
 				return; //TODO: Improve tree check
 			}
 
-			final ArrayList<Location> locs = new ArrayList<>();
+			final HashSet<Location> locs = new HashSet<>();
 			locs.add(block.getLocation());
 			Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> breakTree(player, tool, block, allowed, locs));
 		}
@@ -189,7 +202,7 @@ public class Timber extends Modifier implements Listener {
 
 	}
 
-	private void breakTree(@NotNull Player player, @NotNull ItemStack tool, Block block, List<Material> allowed, @NotNull List<Location> locs) { //TODO: Improve algorithm and performance
+	private void breakTree(@NotNull Player player, @NotNull ItemStack tool, Block block, HashSet<Material> allowed, @NotNull HashSet<Location> locs) { //TODO: Improve algorithm and performance
 		if (locs.size() >= maxBlocks) {
 			return;
 		}
