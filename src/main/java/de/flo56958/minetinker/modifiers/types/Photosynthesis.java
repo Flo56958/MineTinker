@@ -249,15 +249,10 @@ public class Photosynthesis extends Modifier implements Listener {
 				.replace("%multiplier", String.valueOf(Math.round((multiplierPerTick - 1.0) * 100)));
 
 		allowedMaterials.clear();
-		allowedMaterials.add(Material.AIR);
-		allowedMaterials.add(Material.CAVE_AIR);
-		allowedMaterials.add(Material.VOID_AIR);
-		allowedMaterials.add(Material.GLASS);
-		allowedMaterials.add(Material.BARRIER);
-		allowedMaterials.add(Material.TALL_GRASS);
-		allowedMaterials.add(Material.DEAD_BUSH);
-		if (MineTinker.is17compatible) {
-			allowedMaterials.add(Material.LIGHT);
+		for (final Material mat : Material.values()) {
+			if (mat.isAir() || !mat.isOccluding() || !mat.isSolid() ) {
+				allowedMaterials.add(mat);
+			}
 		}
 
 		if (isAllowed()) {
