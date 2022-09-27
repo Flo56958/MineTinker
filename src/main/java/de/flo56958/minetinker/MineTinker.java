@@ -182,6 +182,7 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(Glowing.instance());
 		modManager.register(Hardened.instance());
 		modManager.register(Haste.instance());
+		modManager.register(Homing.instance());
 		modManager.register(Infinity.instance());
 		modManager.register(Insulating.instance());
 		modManager.register(KineticPlating.instance());
@@ -195,6 +196,7 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(MultiShot.instance());
 		modManager.register(Nightseeker.instance());
 		modManager.register(Photosynthesis.instance());
+		modManager.register(Piercing.instance());
 		modManager.register(Poisonous.instance());
 		modManager.register(Power.instance());
 		modManager.register(Propelling.instance());
@@ -214,14 +216,13 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(SpidersBane.instance());
 		modManager.register(Sunblazer.instance());
 		modManager.register(Sweeping.instance());
+		if (is19compatible) modManager.register(SwiftSneaking.instance());
 		modManager.register(Tanky.instance());
 		modManager.register(Thorned.instance());
 		modManager.register(Timber.instance());
 		modManager.register(VoidNetting.instance());
 		modManager.register(Webbed.instance());
 		modManager.register(Withered.instance());
-		modManager.register(Piercing.instance());
-		modManager.register(Homing.instance());
 	}
 
 	public void onDisable() {

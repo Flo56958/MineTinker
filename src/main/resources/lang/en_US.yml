@@ -412,6 +412,11 @@ Modifier:
     Description: "Deal more damage over a greater area!"
     ModifierItemName: "Enchanted Iron Ingot"
     DescriptionModifierItem: "Modifier-Item for the Sweeping-Modifier"
+  Swift-Sneaking:
+    Name: "Swift Sneaking"
+    Description: "Move faster while sneaking!"
+    ModifierItemName: "Feather of Swiftness"
+    DescriptionModifierItem: "Modifier-Item for the Swift-Sneaking-Modifier"
   Tanky:
     Name: "Tanky"
     Description: "Make yourself extra tanky with %amount extra hearts per level!"
@@ -509,6 +514,7 @@ Enchantment:
   vanishing_curse: "Curse of Vanishing"
   aqua_affinity: "Aqua Affinity"
   soul_speed: "Soul Speed"
+  swift_sneak: "Swift Sneak"
 
 Updater.Unable: "Unable to check for updates!"
 Updater.UpdateAvailable: "There is an update available on spigotmc.org!"

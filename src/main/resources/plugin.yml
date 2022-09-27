@@ -227,6 +227,7 @@ permissions:
       minetinker.modifiers.spidersbane.*: true
       minetinker.modifiers.sunblazer.*: true
       minetinker.modifiers.sweeping.*: true
+      minetinker.modifiers.swiftsneaking.*: true
       minetinker.modifiers.tanky.*: true
       minetinker.modifiers.thorned.*: true
       minetinker.modifiers.timber.*: true
@@ -584,6 +585,13 @@ permissions:
       minetinker.modifiers.spidersbane.apply: true
   minetinker.modifiers.spidersbane.apply:
     description: Allows to apply Spider's Bane to the MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.swiftsneaking.*:
+    children:
+      minetinker.modifiers.swiftsneaking.apply: true
+  minetinker.modifiers.swiftsneaking.apply:
+    description: Allows to apply Swift Sneaking to MineTinker Armor
     default: true
 
   minetinker.modifiers.sunblazer.*:
