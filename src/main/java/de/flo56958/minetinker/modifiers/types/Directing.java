@@ -2,6 +2,7 @@ package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
+import de.flo56958.minetinker.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.events.MTEntityDeathEvent;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
@@ -13,6 +14,8 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -97,7 +100,33 @@ public class Directing extends Modifier implements Listener {
 		this.minimumLevelForXP = config.getInt("MinimumLevelToGetXP", 1);
 	}
 
-	@EventHandler
+	//used for exp teleportation
+	@EventHandler(ignoreCancelled = true)
+	public void effect(MTBlockBreakEvent event) {
+		Player player = event.getPlayer();
+		ItemStack tool = event.getTool();
+
+		if (!player.hasPermission("minetinker.modifiers.directing.use")) {
+			return;
+		}
+
+		if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
+			return;
+		}
+
+		if (!modManager.isToolViable(tool) || !modManager.hasMod(tool, this)) {
+			return;
+		}
+
+		if (this.workOnXP && modManager.getModLevel(tool, this) >= this.minimumLevelForXP) {
+			//Spawn Experience Orb as adding it directly to the player would prevent Mending from working
+			ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(player.getLocation(), EntityType.EXPERIENCE_ORB);
+			orb.setExperience(event.getEvent().getExpToDrop());
+			event.getEvent().setExpToDrop(0);
+		}
+	}
+
+	@EventHandler(ignoreCancelled = true)
 	public void effect(BlockDropItemEvent event) {
 		Player player = event.getPlayer();
 		ItemStack tool = player.getInventory().getItemInMainHand();
@@ -171,8 +200,8 @@ public class Directing extends Modifier implements Listener {
 			return;
 		}
 
-		List<ItemStack> drops = event.getEvent().getDrops();
-		List<ItemStack> toremove = new ArrayList<>();
+		final List<ItemStack> drops = event.getEvent().getDrops();
+		final List<ItemStack> toremove = new ArrayList<>();
 
 		//Track stats
 		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
@@ -197,7 +226,9 @@ public class Directing extends Modifier implements Listener {
 		drops.removeAll(toremove);
 
 		if (this.workOnXP && modManager.getModLevel(tool, this) >= this.minimumLevelForXP) {
-			player.giveExp(event.getEvent().getDroppedExp());
+			//Spawn Experience Orb as adding it directly to the player would prevent Mending from working
+			ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(player.getLocation(), EntityType.EXPERIENCE_ORB);
+			orb.setExperience(event.getEvent().getDroppedExp());
 			event.getEvent().setDroppedExp(0);
 		}
 
