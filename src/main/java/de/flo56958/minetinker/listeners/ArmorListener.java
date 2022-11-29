@@ -119,6 +119,10 @@ public class ArmorListener implements Listener {
 				&& !(event.getEntity() instanceof Player))
 			return;
 
+		if (MineTinker.getPlugin().getConfig().getStringList("DisableExpFromEntity")
+				.contains(event.getEntity().getType().toString()))
+			return;
+
 		expCalculation(event.isBlocking(), event.getTool(), event.getEvent(), event.getPlayer());
 	}
 

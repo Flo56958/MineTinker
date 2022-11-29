@@ -43,6 +43,37 @@ ExtraExpPerEntityHit:                 #Extra Exp for entity hit
 ExtraExpPerEntityDeath:               #Extra Exp for entity death
   ENDER_DRAGON: 500
   WITHER: 250
+DisableExpFromEntity:                 #Certain Entities do not give Exp on hit
+  - AREA_EFFECT_CLOUD
+  - ARMOR_STAND
+  - ARROW
+  - BOAT
+  - CHEST_BOAT
+  - DROPPED_ITEM
+  - ENDER_SIGNAL
+  - EXPERIENCE_ORB
+  - FALLING_BLOCK
+  - FIREWORK
+  - FISHING_HOOK
+  - GLOW_ITEM_FRAME
+  - ITEM_FRAME
+  - LEASH_HITCH
+  - LIGHTNING
+  - MARKER
+  - MINECART
+  - MINECART_CHEST
+  - MINECART_COMMAND
+  - MINECART_FURNACE
+  - MINECART_HOPPER
+  - MINECART_MOB_SPAWNER
+  - MINECART_TNT
+  - PAINTING
+  - PRIMED_TNT
+  - SPECTRAL_ARROW
+  - SPLASH_POTION
+  - THROWN_EXP_BOTTLE
+  - TRIDENT
+  - UNKNOWN
 EnableDamageExp: true                 #When true: Sword/Bow will gain XP equal to the damage dealt
 BlockExpCooldownInSeconds: 60         #How much cooldown should the placed block have until it gives Exp again
 
@@ -51,7 +82,7 @@ AddModifierSlotsPerLevel: 1           #Amount of new free Modifier-Slots for eac
 StartingModifierSlots: 1
 Upgradeable: true                     #Can you upgrade your tools with an anvil
 Repairable: true                      #Can you repair your tools in your inventory (instead of an anvil) just by dragging the ressource on the tool
-Combinable: false                      #Can you combine tools with an anvil to upgrade modifier levels
+Combinable: false                     #Can you combine tools with an anvil to upgrade modifier levels
 ModifiableInInventory: false          #Can you modify tools in the inventory
 UnbreakableTools: true                #Makes sure that tools can not break while using them (will make the tools not useable untill repaired)
 Grindstone:
