@@ -124,7 +124,8 @@ public class Timber extends Modifier implements Listener {
 			if (Lists.getWoodLeaves().contains(block.getType())) {
 				HashSet<Location> locs = new HashSet<>();
 				locs.add(block.getLocation());
-				Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> breakTree(player, tool, block, new HashSet<>(Collections.singletonList(block.getType())), locs));
+				Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(),
+						() -> breakTree(player, tool, block, new HashSet<>(Collections.singletonList(block.getType())), locs));
 			}
 		} else {
 			HashSet<Material> allowed = new HashSet<>();
@@ -142,12 +143,10 @@ public class Timber extends Modifier implements Listener {
 				final Material blockType = player.getWorld().getBlockAt(block.getX(), y, block.getZ()).getType();
 
 				if (blockType == Material.GRASS_BLOCK || blockType == Material.DIRT
-						|| blockType == Material.PODZOL || blockType == Material.COARSE_DIRT ||
-						(MineTinker.is16compatible &&
-								(blockType == Material.NETHERRACK
-										|| blockType == Material.CRIMSON_NYLIUM
-										|| blockType == Material.WARPED_NYLIUM)) ||
-						(MineTinker.is19compatible && blockType == Material.MUD)) {
+						|| blockType == Material.PODZOL || blockType == Material.COARSE_DIRT
+						|| blockType == Material.NETHERRACK || blockType == Material.CRIMSON_NYLIUM
+						|| blockType == Material.WARPED_NYLIUM
+						|| (MineTinker.is19compatible && blockType == Material.MUD)) {
 
 					isTreeBottom = true;
 					break;
@@ -202,7 +201,8 @@ public class Timber extends Modifier implements Listener {
 
 	}
 
-	private void breakTree(@NotNull Player player, @NotNull ItemStack tool, Block block, HashSet<Material> allowed, @NotNull HashSet<Location> locs) { //TODO: Improve algorithm and performance
+	private void breakTree(@NotNull Player player, @NotNull ItemStack tool, Block block, HashSet<Material> allowed, @NotNull HashSet<Location> locs) {
+		//TODO: Improve algorithm and performance
 		if (locs.size() >= maxBlocks) {
 			return;
 		}

@@ -82,9 +82,13 @@ public class Speedy extends Modifier {
 
 		meta.removeAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED);
 		meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED,
-				new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.movement_speed" : "generic.movementSpeed", speedOnItem + this.speedPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
+				new AttributeModifier(UUID.randomUUID(), "generic.movement_speed",
+						speedOnItem + this.speedPerLevel,
+						AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
 		meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED,
-				new AttributeModifier(UUID.randomUUID(), (MineTinker.is16compatible) ? "generic.movement_speed" : "generic.movementSpeed", speedOnItem + this.speedPerLevel, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
+				new AttributeModifier(UUID.randomUUID(), "generic.movement_speed",
+						speedOnItem + this.speedPerLevel,
+						AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
 
 		tool.setItemMeta(meta);
 		return true;

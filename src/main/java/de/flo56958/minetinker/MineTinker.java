@@ -23,8 +23,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MineTinker extends JavaPlugin {
 
 	private static JavaPlugin plugin;
-	public static boolean is16compatible;
-	public static boolean is17compatible;
 	public static boolean is18compatible;
 	public static boolean is19compatible;
 
@@ -44,21 +42,13 @@ public class MineTinker extends JavaPlugin {
 			int minor = Integer.parseInt(ver[1]);
 			ChatWriter.log(true, "Minecraft Minor Version: " + minor);
 
-			is16compatible = mayor >= 1 && minor >= 16;
-			is17compatible = mayor >= 1 && minor >= 17;
 			is18compatible = mayor >= 1 && minor >= 18;
 			is19compatible = mayor >= 1 && minor >= 19;
 		} catch (Exception e) {
 			e.printStackTrace();
-			ChatWriter.logError("Could not parse the Minecraft Version! Running 1.14 feature set. " +
+			ChatWriter.logError("Could not parse the Minecraft Version! Running 1.17 feature set. " +
 					"If you are running a higher Version, please report this as an error.");
 			return;
-		}
-		if (is16compatible) {
-			ChatWriter.log(false, "1.16 enhanced features activated!");
-		}
-		if (is17compatible) {
-			ChatWriter.log(false, "1.17 enhanced features activated!");
 		}
 		if (is18compatible) {
 			ChatWriter.log(false, "1.18 enhanced features activated!");
@@ -113,7 +103,7 @@ public class MineTinker extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new PlayerInfo(), this);
 		Bukkit.getPluginManager().registerEvents(new EnchantingListener(), this);
 		Bukkit.getPluginManager().registerEvents(new GrindstoneListener(), this);
-		if (is16compatible) Bukkit.getPluginManager().registerEvents(new SmithingTableListener(), this);
+		Bukkit.getPluginManager().registerEvents(new SmithingTableListener(), this);
 
 		final FileConfiguration elytraConf = ConfigurationManager.getConfig("Elytra.yml");
 		elytraConf.options().copyDefaults(true);
@@ -210,7 +200,7 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(Shulking.instance());
 		modManager.register(SilkTouch.instance());
 		modManager.register(Smite.instance());
-		if (is16compatible) modManager.register(SoulSpeed.instance());
+		modManager.register(SoulSpeed.instance());
 		modManager.register(Soulbound.instance());
 		modManager.register(Speedy.instance());
 		modManager.register(SpidersBane.instance());

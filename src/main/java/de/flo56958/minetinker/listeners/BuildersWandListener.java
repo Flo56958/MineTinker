@@ -115,8 +115,7 @@ public class BuildersWandListener implements Listener {
 		wands.add(buildersWandCreator(Material.IRON_SHOVEL, LanguageManager.getString("Builderswand.Name.Iron")));
 		wands.add(buildersWandCreator(Material.GOLDEN_SHOVEL, LanguageManager.getString("Builderswand.Name.Gold")));
 		wands.add(buildersWandCreator(Material.DIAMOND_SHOVEL, LanguageManager.getString("Builderswand.Name.Diamond")));
-		if (MineTinker.is16compatible)
-			wands.add(buildersWandCreator(Material.NETHERITE_SHOVEL, LanguageManager.getString("Builderswand.Name.Netherite")));
+		wands.add(buildersWandCreator(Material.NETHERITE_SHOVEL, LanguageManager.getString("Builderswand.Name.Netherite")));
 
 		registerBuildersWands();
 	}
@@ -261,28 +260,26 @@ public class BuildersWandListener implements Listener {
 			//executes if the recipe could not initialize
 			e.printStackTrace();
 		}
-		if (MineTinker.is16compatible) {
-			try {
-				final NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Netherite");
-				final ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(5)); //init recipe
-				final String top = config.getString("Recipes.Netherite.Top");
-				final String middle = config.getString("Recipes.Netherite.Middle");
-				final String bottom = config.getString("Recipes.Netherite.Bottom");
-				final ConfigurationSection materials = config.getConfigurationSection("Recipes.Netherite.Materials");
+		try {
+			final NamespacedKey nkey = new NamespacedKey(MineTinker.getPlugin(), "Builderswand_Netherite");
+			final ShapedRecipe newRecipe = new ShapedRecipe(nkey, wands.get(5)); //init recipe
+			final String top = config.getString("Recipes.Netherite.Top");
+			final String middle = config.getString("Recipes.Netherite.Middle");
+			final String bottom = config.getString("Recipes.Netherite.Bottom");
+			final ConfigurationSection materials = config.getConfigurationSection("Recipes.Netherite.Materials");
 
-				newRecipe.shape(top, middle, bottom); //makes recipe
+			newRecipe.shape(top, middle, bottom); //makes recipe
 
-				for (String key : materials.getKeys(false)) {
-					newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
-				}
-
-				MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
-			} catch (Exception e) {
-				ChatWriter.logError(LanguageManager.getString("Builderswand.Error")
-						.replaceAll("%wand", wands.get(5).getItemMeta().getDisplayName()));
-				//executes if the recipe could not initialize
-				e.printStackTrace();
+			for (String key : materials.getKeys(false)) {
+				newRecipe.setIngredient(key.charAt(0), Material.getMaterial(materials.getString(key)));
 			}
+
+			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+		} catch (Exception e) {
+			ChatWriter.logError(LanguageManager.getString("Builderswand.Error")
+					.replaceAll("%wand", wands.get(5).getItemMeta().getDisplayName()));
+			//executes if the recipe could not initialize
+			e.printStackTrace();
 		}
 	}
 
@@ -346,9 +343,7 @@ public class BuildersWandListener implements Listener {
 					_u = 2;
 					_w = 2;
 				}
-			}
-			if (MineTinker.is16compatible) {
-				if (wand.getType() == Material.NETHERITE_SHOVEL) {
+				case NETHERITE_SHOVEL -> {
 					_u = 3;
 					_w = 3;
 				}
