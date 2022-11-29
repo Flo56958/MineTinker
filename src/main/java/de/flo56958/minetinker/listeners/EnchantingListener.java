@@ -168,7 +168,8 @@ public class EnchantingListener implements Listener {
 							//Remove slots as they were not needed
 							if (free)
 								modManager.setFreeSlots(newTool, modManager.getFreeSlots(newTool) - modifier.getSlotCost());
-							if (MineTinker.getPlugin().getConfig().getBoolean("RefundLostEnchantmentsAsItems", true) && event.getSlotType() == InventoryType.SlotType.RESULT) {
+							if (MineTinker.getPlugin().getConfig().getBoolean("RefundLostEnchantmentsAsItems", true)
+									&& event.getSlotType() == InventoryType.SlotType.RESULT) {
 								for (; i < difference; i++) { //Drop lost enchantments due to some error in addMod
 									if (player.getInventory().addItem(modifier.getModItem()).size() != 0) { //adds items to (full) inventory
 										player.getWorld().dropItem(player.getLocation(), modifier.getModItem());

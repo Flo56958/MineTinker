@@ -42,6 +42,7 @@ shadowJar {
 
 compileJava {
 	options.encoding = 'UTF-8'
+    options.compilerArgs << '-Xlint:deprecation'
 }
 
 processResources {

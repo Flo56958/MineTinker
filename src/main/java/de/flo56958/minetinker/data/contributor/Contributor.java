@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Contributor {
@@ -24,16 +25,18 @@ public class Contributor {
 			ArrayList<JsonObject> contributorList = new ArrayList<>();
 			{
 				//Obtain Information over GitHub API
-				String cons = new Scanner(new URL("https://api.github.com/repos/Flo56958/MineTinker/contributors").openStream(), "UTF-8").useDelimiter("\\A").next();
+				String cons = new Scanner(new URL("https://api.github.com/repos/Flo56958/MineTinker/contributors").openStream(),
+						StandardCharsets.UTF_8).useDelimiter("\\A").next();
 				if (cons != null) {
 					try {
-						JsonArray json = new JsonParser().parse(cons).getAsJsonArray();
+						JsonArray json = JsonParser.parseString(cons).getAsJsonArray();
 						json.forEach(e -> contributorList.add(e.getAsJsonObject()));
 					} catch (JsonSyntaxException ignored) {}
 				}
 			}
 			{
-				JsonArray json = new JsonParser().parse(new Scanner(new URL("https://raw.githubusercontent.com/Flo56958/MineTinker/master/contributors.json").openStream(), "UTF-8").useDelimiter("\\A").next()).getAsJsonArray();
+				JsonArray json = JsonParser.parseString(new Scanner(new URL("https://raw.githubusercontent.com/Flo56958/MineTinker/master/contributors.json").openStream(),
+						StandardCharsets.UTF_8).useDelimiter("\\A").next()).getAsJsonArray();
 				json.forEach(e -> {
 					JsonObject o = e.getAsJsonObject();
 					String github = null;
@@ -103,7 +106,8 @@ public class Contributor {
 		if (mcUUID != null) {
 			if (itemMeta instanceof SkullMeta) {
 				try {
-					JsonObject mcLookup = new JsonParser().parse(new Scanner(new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + mcUUID.toString()).openStream(), "UTF-8").useDelimiter("\\A").next()).getAsJsonObject();
+					JsonObject mcLookup = JsonParser.parseString(new Scanner(new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + mcUUID).openStream(),
+							StandardCharsets.UTF_8).useDelimiter("\\A").next()).getAsJsonObject();
 					String name = mcLookup.get("name").getAsString();
 					displayName += name + "/";
 					((SkullMeta) itemMeta).setOwner(name);

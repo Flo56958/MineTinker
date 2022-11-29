@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class InfoCommand implements SubCommand {
@@ -44,8 +45,9 @@ public class InfoCommand implements SubCommand {
 			lore.add(ChatColor.GOLD + "Latest Version: " + ((Updater.hasUpdate()) ? ChatColor.RED : ChatColor.WHITE) + Updater.getOnlineVersion());
 			//Obtain Information over GitHub API
 			try {
-				String cons = new Scanner(new URL("https://api.github.com/repos/Flo56958/MineTinker").openStream(), "UTF-8").useDelimiter("\\A").next();
-				JsonObject json = new JsonParser().parse(cons).getAsJsonObject();
+				String cons = new Scanner(new URL("https://api.github.com/repos/Flo56958/MineTinker").openStream(),
+						StandardCharsets.UTF_8).useDelimiter("\\A").next();
+				JsonObject json = JsonParser.parseString(cons).getAsJsonObject();
 				lore.add(ChatColor.GOLD + "Repository Owner: " + ChatColor.WHITE + json.get("owner").getAsJsonObject().get("login").getAsString());
 				lore.add(ChatColor.GOLD + "Forks: " + ChatColor.WHITE + json.get("forks_count").getAsInt());
 				lore.add(ChatColor.GOLD + "Stars: " + ChatColor.WHITE + json.get("stargazers_count").getAsInt());
