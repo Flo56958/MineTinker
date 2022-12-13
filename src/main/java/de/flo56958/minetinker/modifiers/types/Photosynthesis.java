@@ -49,7 +49,8 @@ public class Photosynthesis extends Modifier implements Listener {
 				continue;
 			}
 
-			if (player.isDead() || player.isFlying() || player.isGliding() || player.isSleeping() || player.isSwimming()) continue;
+			if (player.isDead() || player.isSleeping()
+					|| (mustStandStill && (player.isFlying() || player.isGliding() || player.isSwimming()))) continue;
 			if (!player.hasPermission("minetinker.modifiers.photosynthesis.use")) continue;
 
 			final Tupel tupel = data.get(id);
