@@ -71,14 +71,9 @@ public class DataHandler {
 		//This skips all interactions and synergies with MT and other Plugins but is way less performance heavy
 		//
 		if (MineTinker.getPlugin().getConfig().getBoolean("LowSpecMode")) {
-			//If the Block is a Container it needs to drop the items inside as well
-			if (block.getState() instanceof Container container && !(block.getState() instanceof ShulkerBox)) {
-				for (ItemStack stack : container.getInventory().getContents()) {
-					if (stack != null) player.getWorld().dropItemNaturally(block.getLocation(), stack); //Null items can not be dropped
-				}
-			}
+			//Container handling is done by .breakNaturally()
 
-			block.breakNaturally(itemStack);
+			if (!block.breakNaturally(itemStack)) return false;
 
 			//Spawn Experience Orb, if Player is not in Survival
 			int exp = calculateExp(block.getType());
