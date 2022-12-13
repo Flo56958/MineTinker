@@ -148,8 +148,10 @@ public class Homing extends Modifier implements Listener {
 					if (e instanceof Boat) continue;
 					if (e instanceof Painting) continue;
 					if (e instanceof Player && !Homing.this.worksOnPlayers) continue;
-					//1.18 Draft API (was removed)
-					//if (MineTinker.is18compatible && !arrow.canSee(e)) continue;
+
+					if (e instanceof LivingEntity liv) {
+						if (!liv.hasLineOfSight(arrow)) continue;
+					}
 
 					double velocity = arrow.getVelocity().length();
 					Vector vel = arrow.getVelocity().normalize();
