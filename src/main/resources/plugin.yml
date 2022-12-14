@@ -187,6 +187,7 @@ permissions:
       minetinker.modifiers.channeling.*: true
       minetinker.modifiers.directing.*: true
       minetinker.modifiers.drilling.*: true
+      minetinker.modifiers.echoing.*: true
       minetinker.modifiers.ender.*: true
       minetinker.modifiers.evasive.*: true
       minetinker.modifiers.experienced.*: true
@@ -301,6 +302,17 @@ permissions:
     default: true
   minetinker.modifiers.scotopic.use:
     description: Allows to use Scotopic on a MineTinker-Elytra
+    default: true
+
+  minetinker.modifiers.echoing.*:
+    children:
+      minetinker.modifiers.echoing.apply: true
+      minetinker.modifiers.echoing.use: true
+  minetinker.modifiers.echoing.apply:
+    description: Allows to apply Echoing to a MineTinker-Helmet
+    default: true
+  minetinker.modifiers.echoing.use:
+    description: Allows to use Echoing on a MineTinker-Helmet
     default: true
 
   minetinker.modifiers.beheading.*:
