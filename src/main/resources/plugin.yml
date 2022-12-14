@@ -9,6 +9,8 @@ website: @project.url@
 database: false
 api-version: "1.14"
 
+softdepend: [ProtocolLib]
+
 ####################################################
 commands:
   minetinker:

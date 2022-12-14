@@ -14,6 +14,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -136,6 +137,8 @@ public class MineTinker extends JavaPlugin {
 			met.addCustomChart(new SimplePie("used_language", () -> getConfig().getString("Language", "en_US")));
 		}
 
+		AddSoftdependMods();
+
 		ChatWriter.log(false, LanguageManager.getString("StartUp.GUIs"));
 		GUIs.reload();
 
@@ -213,6 +216,16 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(VoidNetting.instance());
 		modManager.register(Webbed.instance());
 		modManager.register(Withered.instance());
+	}
+
+	public void AddSoftdependMods() {
+		ModManager modManager = ModManager.instance();
+		Plugin plugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
+		if (plugin != null && plugin.isEnabled()) {
+			modManager.register(Echoing.instance());
+		}
+
+		GUIs.reload();
 	}
 
 	public void onDisable() {

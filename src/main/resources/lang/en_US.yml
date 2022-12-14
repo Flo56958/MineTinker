@@ -188,6 +188,11 @@ Modifier:
     Description: "Drill one block deeper into the earth per level!"
     ModifierItemName: "Reinforced Drill"
     DescriptionModifierItem: "Modifier-Item for the Drilling-Modifier"
+  Echoing:
+    Name: "Echoing"
+    Description: "See nearby entities with a range of %amount blocks per level!"
+    ModifierItemName: "All-seeing Eye"
+    DescriptionModifierItem: "Modifier-Item for the Echoing-Modifier"
   Ender:
     Name: "Ender"
     Description: "Teleports you while sneaking to the arrows landing location!"
