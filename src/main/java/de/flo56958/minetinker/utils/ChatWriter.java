@@ -247,17 +247,22 @@ public class ChatWriter {
 	public static String getDisplayName(final @NotNull ItemStack tool) {
 		if (tool.getItemMeta() == null || !tool.getItemMeta().hasDisplayName()) {
 			String type = tool.getType().toString();
-			type = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, type);
-			// https://stackoverflow.com/a/2560017
-			type = type.replaceAll(String.format("%s|%s|%s",
-					"(?<=[A-Z])(?=[A-Z][a-z])",
-					"(?<=[^A-Z])(?=[A-Z])",
-					"(?<=[A-Za-z])(?=[^A-Za-z])"
-					),
-					" ");
-			return type;
+
+			return toCamel(type);
 		} else {
 			return tool.getItemMeta().getDisplayName();
 		}
+	}
+
+	public static String toCamel(final @NotNull String input) {
+		String output = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, input);
+		// https://stackoverflow.com/a/2560017
+		output = output.replaceAll(String.format("%s|%s|%s",
+						"(?<=[A-Z])(?=[A-Z][a-z])",
+						"(?<=[^A-Z])(?=[A-Z])",
+						"(?<=[A-Za-z])(?=[^A-Za-z])"
+				),
+				" ");
+		return output;
 	}
 }

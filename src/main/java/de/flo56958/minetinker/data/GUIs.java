@@ -126,9 +126,9 @@ public class GUIs {
 										: String.valueOf(m.getEnchantCost())));
 						lore.addAll(ChatWriter.splitString(LanguageManager.getString("GUIs.Modifiers.BlockToEnchant")
 								.replace("%block", ChatColor.ITALIC
-										+ MineTinker.getPlugin().getConfig().getString("BlockToEnchantModifiers", "")
+										+ ChatWriter.toCamel(MineTinker.getPlugin().getConfig().getString("BlockToEnchantModifiers", ""))
 										+ ChatColor.RESET + "" + ChatColor.WHITE)
-								.replace("%mat", m.getModItem().getType().name()).replace("%key",
+								.replace("%mat", ChatWriter.toCamel(m.getModItem().getType().name())).replace("%key",
 										LanguageManager.getString("GUIs.RightClick")), 30));
 					}
 
