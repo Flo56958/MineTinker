@@ -308,11 +308,30 @@ permissions:
     children:
       minetinker.modifiers.echoing.apply: true
       minetinker.modifiers.echoing.use: true
+      minetinker.modifiers.echoing.craft: true
+  minetinker.modifiers.echoing.craft:
+    description: Allows to craft the Echoing-Modifier
+    default: true
   minetinker.modifiers.echoing.apply:
     description: Allows to apply Echoing to a MineTinker-Helmet
     default: true
   minetinker.modifiers.echoing.use:
     description: Allows to use Echoing on a MineTinker-Helmet
+    default: true
+
+  minetinker.modifiers.undead.*:
+    children:
+      minetinker.modifiers.undead.apply: true
+      minetinker.modifiers.undead.use: true
+      minetinker.modifiers.undead.craft: true
+  minetinker.modifiers.undead.craft:
+    description: Allows to craft the Undead-Modifier
+    default: true
+  minetinker.modifiers.undead.apply:
+    description: Allows to apply Undead to a MineTinker-Helmet
+    default: true
+  minetinker.modifiers.undead.use:
+    description: Allows to use Undead on a MineTinker-Helmet
     default: true
 
   minetinker.modifiers.beheading.*:

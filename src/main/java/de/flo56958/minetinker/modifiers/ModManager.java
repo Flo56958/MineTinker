@@ -121,6 +121,12 @@ public class ModManager {
 		incompatibilityList.add(Shrouded.instance().getKey() + ":" + MultiShot.instance().getKey());
 		incompatibilityList.add(Homing.instance().getKey() + ":" + Ender.instance().getKey());
 		incompatibilityList.add(Homing.instance().getKey() + ":" + MultiShot.instance().getKey());
+		incompatibilityList.add(Echoing.instance().getKey() + ":" + Undead.instance().getKey());
+		incompatibilityList.add(Shulking.instance().getKey() + ":" + Undead.instance().getKey());
+		incompatibilityList.add(Poisonous.instance().getKey() + ":" + Undead.instance().getKey());
+		incompatibilityList.add(Thorned.instance().getKey() + ":" + Undead.instance().getKey());
+		incompatibilityList.add(Webbed.instance().getKey() + ":" + Undead.instance().getKey());
+		incompatibilityList.add(Withered.instance().getKey() + ":" + Undead.instance().getKey());
 
 		incompatibilityList.sort(String::compareToIgnoreCase);
 
@@ -344,6 +350,7 @@ public class ModManager {
 
 			if (mod1 == null || mod2 == null) continue;
 			if (mod1.equals(mod2)) continue; //Modifier can not be incompatible with itself
+			if (!mod1.isAllowed() || !mod2.isAllowed()) continue; //not enabled Modifiers should not be listed
 
 			//Cross-link incompatibilities
 			incompatibilities.get(mod1).add(mod2);

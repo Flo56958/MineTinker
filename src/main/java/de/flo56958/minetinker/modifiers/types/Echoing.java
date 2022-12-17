@@ -14,7 +14,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
@@ -23,7 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class Echoing extends Modifier implements Listener {
+public class Echoing extends Modifier {
 
 	private static Echoing instance;
 
