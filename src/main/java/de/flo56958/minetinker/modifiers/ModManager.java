@@ -387,9 +387,9 @@ public class ModManager {
 				mods.add(mod);
 				mods.sort(Comparator.comparing(Modifier::getName));
 				mod.registerCraftingRecipe();
-			}
-			if (mod instanceof Listener) { //Enable Events
-				Bukkit.getPluginManager().registerEvents((Listener) mod, MineTinker.getPlugin());
+				if (mod instanceof Listener listener) { //Enable Events
+					Bukkit.getPluginManager().registerEvents(listener, MineTinker.getPlugin());
+				}
 			}
 			reloadIncompatibilities();
 			if (!mod.getSource().equals(MineTinker.getPlugin())) {
@@ -412,8 +412,8 @@ public class ModManager {
 		allMods.remove(mod);
 		mods.remove(mod);
 		incompatibilities.remove(mod);
-		if (mod instanceof Listener) { //Disable Events
-			HandlerList.unregisterAll((Listener) mod);
+		if (mod instanceof Listener listener) { //Disable Events
+			HandlerList.unregisterAll(listener);
 		}
 		ChatWriter.logColor(LanguageManager.getString("ModManager.UnregisterModifier")
 				.replace("%mod", mod.getColor() + mod.getName())
