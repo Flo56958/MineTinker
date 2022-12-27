@@ -442,6 +442,11 @@ Modifier:
     Description: "Monster will not target you anymore but you also can not attack anyone!"
     ModifierItemName: "Zombie Serum"
     DescriptionModifierItem: "Modifier-Item for the Undead-Modifier"
+  Vigilant:
+    Name: "Vigilant"
+    Description: "Gain a temporary shield equal to %amount damage received. This shield lasts for %duration seconds per level."
+    ModifierItemName: "Forbidden Apple"
+    DescriptionModifierItem: "Modifier-Item for the Vigilant-Modifier"
   Void-Netting:
     Name: "Void Netting"
     Description: "Teleports you to a safe place in a radius of %radius blocks per level when you fall into the void. Cooldown: %cmax to %cmin seconds (depends on level)"

@@ -214,6 +214,7 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(Thorned.instance());
 		modManager.register(Timber.instance());
 		modManager.register(Undead.instance());
+		modManager.register(Vigilant.instance());
 		modManager.register(VoidNetting.instance());
 		modManager.register(Webbed.instance());
 		modManager.register(Withered.instance());

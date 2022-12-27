@@ -226,10 +226,7 @@ public abstract class Modifier {
 		}
 
 		final ItemMeta itemMeta = this.modItem.getItemMeta();
-		if (ConfigurationManager.getConfig("Modifiers.yml").getBoolean("UseCustomModelData", false)) {
-			if (itemMeta != null) itemMeta.setCustomModelData(this.customModelData);
-			// this.modItem.setType(Material.STICK); // turning items into sticks is not required anymore for the texture pack
-		}
+		if (itemMeta != null) itemMeta.setCustomModelData(this.customModelData);
 		this.modItem.setItemMeta(itemMeta);
 	}
 

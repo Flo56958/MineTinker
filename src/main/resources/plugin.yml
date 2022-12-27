@@ -334,6 +334,21 @@ permissions:
     description: Allows to use Undead on a MineTinker-Helmet
     default: true
 
+  minetinker.modifiers.vigilant.*:
+    children:
+      minetinker.modifiers.vigilant.apply: true
+      minetinker.modifiers.vigilant.use: true
+      minetinker.modifiers.vigilant.craft: true
+  minetinker.modifiers.vigilant.craft:
+    description: Allows to craft the Vigilant-Modifier
+    default: true
+  minetinker.modifiers.vigilant.apply:
+    description: Allows to apply Vigilant to a MineTinker-Chestplate
+    default: true
+  minetinker.modifiers.vigilant.use:
+    description: Allows to use Vigilant on a MineTinker-Chestplate
+    default: true
+
   minetinker.modifiers.beheading.*:
     children:
       minetinker.modifiers.beheading.apply: true
