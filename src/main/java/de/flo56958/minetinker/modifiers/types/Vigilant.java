@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -94,17 +95,17 @@ public class Vigilant extends Modifier implements Listener {
 
 		final double absorption = damage * this.percentile;
 		//Add absorption
-		final double prior = player.getAbsorptionAmount();
-		player.setAbsorptionAmount(prior + absorption);
+		player.setAbsorptionAmount(player.getAbsorptionAmount() + absorption);
 
 		//Remove absorption again
 		Bukkit.getServer().getScheduler().runTaskLater(MineTinker.getPlugin(),
-				() -> player.setAbsorptionAmount(Math.max(0.0d, Math.max(prior - damage, player.getAbsorptionAmount() - absorption))),
+				() -> player.setAbsorptionAmount(Math.max(0.0d, player.getAbsorptionAmount() - absorption)),
 				(long) durationPerLevel * level);
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onDamage(@NotNull MTEntityDamageEvent event) {
+		if (event.getEvent().getCause() == EntityDamageEvent.DamageCause.DROWNING) return;
 		effect(event.getPlayer(), event.getEvent().getFinalDamage());
 	}
 
