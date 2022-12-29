@@ -3,7 +3,6 @@ package de.flo56958.minetinker.modifiers.types;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
-import de.flo56958.minetinker.events.MTEntityDamageEvent;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Bukkit;
@@ -11,9 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -101,12 +98,6 @@ public class Vigilant extends Modifier implements Listener {
 		Bukkit.getServer().getScheduler().runTaskLater(MineTinker.getPlugin(),
 				() -> player.setAbsorptionAmount(Math.max(0.0d, player.getAbsorptionAmount() - absorption)),
 				(long) durationPerLevel * level);
-	}
-
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-	public void onDamage(@NotNull MTEntityDamageEvent event) {
-		if (event.getEvent().getCause() == EntityDamageEvent.DamageCause.DROWNING) return;
-		effect(event.getPlayer(), event.getEvent().getFinalDamage());
 	}
 
 	@EventHandler(ignoreCancelled = true)
