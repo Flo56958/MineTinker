@@ -59,7 +59,7 @@ public class Vigilant extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("Color", "%GREY%");
+		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
 
