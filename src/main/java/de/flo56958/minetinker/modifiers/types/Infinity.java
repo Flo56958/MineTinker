@@ -101,6 +101,7 @@ public class Infinity extends Modifier implements Listener {
 
 		Projectile arrow = event.getEntity();
 		if (!(arrow instanceof Arrow)) return;
+		if (arrow.hasMetadata(MultiShot.instance().getKey())) return;
 
 		if (!(arrow.getShooter() instanceof Player player)) return;
 

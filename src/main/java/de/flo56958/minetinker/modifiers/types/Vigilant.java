@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
@@ -100,11 +101,11 @@ public class Vigilant extends Modifier implements Listener {
 				(long) durationPerLevel * level);
 	}
 
-	@EventHandler(ignoreCancelled = true)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onDamage(@NotNull MTEntityDamageByEntityEvent event) {
 		// Player was damaged
 		if (event.getPlayer().equals(event.getEvent().getEntity())) {
-			effect(event.getPlayer(), event.getEvent().getFinalDamage());
+			effect(event.getPlayer(), Math.max(0.0d, event.getEvent().getFinalDamage() - event.getPlayer().getAbsorptionAmount()));
 		}
 	}
 
