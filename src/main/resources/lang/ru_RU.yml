@@ -188,6 +188,11 @@ Modifier:
     Description: "Копает на один блок глубже за уровень!"
     ModifierItemName: "Усиленная дрель"
     DescriptionModifierItem: "Модификатор Дрели"
+  Echoing:
+    Name: "Эхо"
+    Description: "Возможность видеть существ в радиусе %amount блоков за уровень!"
+    ModifierItemName: "Всевидящее Око"
+    DescriptionModifierItem: "Модификатор Эха"
   Ender:
     Name: "Телепортация"
     Description: "Телепортирует на место упавшей стрелы, работает только вприсядку"
@@ -207,6 +212,7 @@ Modifier:
     Description: "Инструмент имеет %chance% шанс выронить %amount опыта при использовании"
     ModifierItemName: " Эссенция Опыта"
     DescriptionModifierItem: "Модификатор Эссенции Опыта"
+    Statistic_Amount: "Опыта выпадает: %amount"
   Extra-Modifier:
     Name: "Дополнительный-Модификатор"
     Description: "Добавляет %amount инструменту дополнительные слоты для модификаторов!"
@@ -411,6 +417,11 @@ Modifier:
     Description: "Наносит урон всем врагам вокруг основной цели!"
     ModifierItemName: "Зачарованный Железный Слиток"
     DescriptionModifierItem: "Модификатор Разящего Клинка"
+  Swift-Sneaking:
+    Name: "Быстрый шифт"
+    Description: "Быстрое передвижение в приседании!"
+    ModifierItemName: "Перо Быстроты"
+    DescriptionModifierItem: "Модификатор быстрого шифта"
   Tanky:
     Name: "Здоровье"
     Description: "За каждый уровень даёт по %amount дополнительного здоровья!"
@@ -426,6 +437,16 @@ Modifier:
     Description: "Мгновенно рубит деревья!"
     ModifierItemName: "Деревянный изумруд"
     DescriptionModifierItem: "Модификатор Дровосека"
+  Undead:
+    Name: "Нежить"
+    Description: "Монстры более не будут нападать на Вас, однако и игрок не сможет атаковать!"
+    ModifierItemName: "Сыворотка зомби"
+    DescriptionModifierItem: "Модификатор Нежити"
+  Vigilant:
+    Name: "Бдительность"
+    Description: "Получение временного щита, равного %amount от полученного урона. Щит длится %duration секунд за уровень!"
+    ModifierItemName: "Запретный плод"
+    DescriptionModifierItem: "Модификатор бдительности"
   Void-Netting:
     Name: "Пустотная сеть"
     Description: "Телепортирует вас в безопасное место в радиусе %radius блоков за уровень, когда вы падаете в пустоту. Перезарядка: от %cmax до %cmin секунд (в зависимости от уровня)"
@@ -508,6 +529,7 @@ Enchantment:
   vanishing_curse: "Проклятье утраты"
   aqua_affinity: "Родство с водой"
   soul_speed: "Скорость души"
+  swift_sneak: "Быстрый шифт"
 
 Updater.Unable: "Невозможно проверить на наличие обновлений!"
 Updater.UpdateAvailable: "Доступно обновление на spigotmc.org!"
