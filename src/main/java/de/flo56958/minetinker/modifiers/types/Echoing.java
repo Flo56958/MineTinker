@@ -17,7 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -59,7 +58,7 @@ public class Echoing extends Modifier {
 				packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
 				try {
 					protocolManager.sendServerPacket(player, packet);
-				} catch (InvocationTargetException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -74,7 +73,7 @@ public class Echoing extends Modifier {
 				packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
 				try {
 					protocolManager.sendServerPacket(player, packet);
-				} catch (InvocationTargetException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
