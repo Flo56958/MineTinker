@@ -29,6 +29,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -121,12 +122,16 @@ public class ModManager {
 		incompatibilityList.add(Shrouded.instance().getKey() + ":" + MultiShot.instance().getKey());
 		incompatibilityList.add(Homing.instance().getKey() + ":" + Ender.instance().getKey());
 		incompatibilityList.add(Homing.instance().getKey() + ":" + MultiShot.instance().getKey());
-		incompatibilityList.add(Echoing.instance().getKey() + ":" + Undead.instance().getKey());
 		incompatibilityList.add(Shulking.instance().getKey() + ":" + Undead.instance().getKey());
 		incompatibilityList.add(Poisonous.instance().getKey() + ":" + Undead.instance().getKey());
 		incompatibilityList.add(Thorned.instance().getKey() + ":" + Undead.instance().getKey());
 		incompatibilityList.add(Webbed.instance().getKey() + ":" + Undead.instance().getKey());
 		incompatibilityList.add(Withered.instance().getKey() + ":" + Undead.instance().getKey());
+
+		Plugin plugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
+		if (plugin != null && plugin.isEnabled()) {
+			incompatibilityList.add(Echoing.instance().getKey() + ":" + Undead.instance().getKey());
+		}
 
 		incompatibilityList.sort(String::compareToIgnoreCase);
 
