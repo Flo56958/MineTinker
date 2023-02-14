@@ -15,7 +15,6 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
@@ -104,10 +103,10 @@ public class Ender extends Modifier implements Listener {
 		this.blindnessDuration = config.getInt("BlindnessDuration", 3) * 20;
 	}
 
-	@EventHandler
-	public void effect(ProjectileLaunchEvent event) {
+	//@EventHandler
+	//public void effect(ProjectileLaunchEvent event) {
 		// TODO: Add Metadata to arrow
-	}
+	//}
 
 	/**
 	 * The Effect for the ProjectileHitEvent
@@ -265,7 +264,7 @@ public class Ender extends Modifier implements Listener {
 			}
 		}
 
-		ChatWriter.logModifier(player, event, this, tool, "Entity(" + entity.getType().toString() + ")",
+		ChatWriter.logModifier(player, event, this, tool, "Entity(" + entity.getType() + ")",
 				String.format("Location: (%s: %d/%d/%d <-> %d/%d/%d)",
 						loc.getWorld().getName(),
 						oldLoc.getBlockX(), oldLoc.getBlockY(), oldLoc.getBlockZ(),

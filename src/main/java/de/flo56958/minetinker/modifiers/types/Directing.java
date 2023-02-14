@@ -233,7 +233,7 @@ public class Directing extends Modifier implements Listener {
 		}
 
 		ChatWriter.logModifier(player, event, this, tool,
-				"Entity(" + event.getEvent().getEntity().getType().toString() + ")");
+				"Entity(" + event.getEvent().getEntity().getType() + ")");
 	}
 
 	@Override

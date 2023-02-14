@@ -295,8 +295,8 @@ public class CommandManager implements TabExecutor {
 			for (String cmd : cmds) {
 				SubCommand sub = map.get(cmd);
 				if (sender.hasPermission(sub.getPermission()))
-				ChatWriter.sendMessage(sender, ChatColor.WHITE, index++ + ". " + cmd + " "
-						+ sub.getAliases(false).toString() + ": " + sub.syntax());
+					ChatWriter.sendMessage(sender, ChatColor.WHITE, index++ + ". " + cmd + " "
+						+ sub.getAliases(false) + ": " + sub.syntax());
 			}
 			return;
 		}

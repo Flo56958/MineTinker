@@ -98,14 +98,13 @@ public class InfoCommand implements SubCommand {
 
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
-		Player player = null;
-		if (sender instanceof Player) {
+		if (sender instanceof Player player) {
 			player = (Player) sender;
 			infoGUI.show(player);
 		} else {
-			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Info.Line1", player)
+			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Info.Line1", null)
 					.replaceFirst("%ver", MineTinker.getPlugin().getDescription().getVersion()));
-			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Info.Line2", player));
+			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Info.Line2", null));
 		}
 		return true;
 	}

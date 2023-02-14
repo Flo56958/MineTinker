@@ -300,9 +300,7 @@ public class ModManager {
 		if (layout.getBoolean("OverrideLanguagesystem", false)) {
 			this.loreScheme = layout.getStringList("LoreLayout");
 
-			for (int i = 0; i < loreScheme.size(); i++) {
-				loreScheme.set(i, ChatWriter.addColors(loreScheme.get(i)));
-			}
+			loreScheme.replaceAll(ChatWriter::addColors);
 		} else {
 			this.loreScheme = new ArrayList<>();
 			this.loreScheme.add(LanguageManager.getString("Commands.ItemStatistics.Level")
@@ -435,7 +433,7 @@ public class ModManager {
 	/**
 	 * should we let the player convert enchanted books to modifier items
 	 *
-	 * @return
+	 * @return the value
 	 */
 	@Contract(pure = true)
 	public boolean allowBookToModifier() {
@@ -602,7 +600,7 @@ public class ModManager {
 	/**
 	 * calculates the required exp for the given level
 	 *
-	 * @param level
+	 * @param level the level to get
 	 * @return long value of the exp required
 	 */
 	public long getNextLevelReq(final int level) {
@@ -711,14 +709,12 @@ public class ModManager {
 		final OfflinePlayer creator = getCreator(is);
 		final String creator_ = (creator != null) ? creator.getName() : "null";
 
-		for (int i = 0; i < lore.size(); i++) {
-			lore.set(i, ChatColor.WHITE + lore.get(i)
-												.replaceAll("%EXP%", exp_)
-												.replaceAll("%LEVEL%", level_)
-												.replaceAll("%NEXT_LEVEL_EXP%", nextLevelReq_)
-												.replaceAll("%FREE_SLOTS%", freeSlots_)
-												.replaceAll("%CREATOR%", creator_ != null ? creator_ : "null"));
-		}
+		lore.replaceAll(s -> ChatColor.WHITE + s
+				.replaceAll("%EXP%", exp_)
+				.replaceAll("%LEVEL%", level_)
+				.replaceAll("%NEXT_LEVEL_EXP%", nextLevelReq_)
+				.replaceAll("%FREE_SLOTS%", freeSlots_)
+				.replaceAll("%CREATOR%", creator_ != null ? creator_ : "null"));
 
 		int index = -1;
 		for (int i = 0; i < lore.size(); i++) {
@@ -1011,7 +1007,6 @@ public class ModManager {
 			}
 			
 			if (knockback_res > 0.0d) { // The only way to be greater than 0 is being a netherite armor, so it doesn't needs is16compatible bool
-				assert knockbackResAM != null;
 				meta.removeAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
 				meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResAM);
 			}
@@ -1125,7 +1120,7 @@ public class ModManager {
 	/**
 	 * Gets the first found modifier that applies the supplied attribute.
 	 *
-	 * @param attribute
+	 * @param attribute the attribute
 	 * @return the Modifier or null
 	 */
 	@Nullable

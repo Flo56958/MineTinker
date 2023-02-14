@@ -174,7 +174,7 @@ public class Withered extends Modifier implements Listener {
 			ChatWriter.logModifier(player, event, this, tool,
 					"Duration(" + duration + ")",
 					"Amplifier(" + amplifier + ")",
-					"Entity(" + entity.getType().toString() + ")");
+					"Entity(" + entity.getType() + ")");
 		}
 
 		return new PotionEffect(PotionEffectType.WITHER, duration, amplifier, false, false);

@@ -90,8 +90,6 @@ public class Contributor {
 	private final UUID mcUUID;
 
 	private String githubUsername;
-	private String transifexUsername;
-	private String discordUsername;
 	private final ArrayList<String> languages = new ArrayList<>();
 	private int commits;
 
@@ -127,8 +125,7 @@ public class Contributor {
 			lore.add(ChatColor.GOLD + "GitHub-Contributions: " + ChatColor.WHITE + this.commits);
 		}
 		if (transifex != null) {
-			this.transifexUsername = transifex;
-			displayName += this.transifexUsername + "/";
+			displayName += transifex + "/";
 			if (languages != null) {
 				languages.forEach(o -> this.languages.add(o.getAsString()));
 				this.languages.sort(String::compareToIgnoreCase);
@@ -140,8 +137,7 @@ public class Contributor {
 			}
 		}
 		if (discord != null) {
-			this.discordUsername = discord;
-			lore.add(ChatColor.GOLD + "Discord-Username: " + ChatColor.WHITE + this.discordUsername);
+			lore.add(ChatColor.GOLD + "Discord-Username: " + ChatColor.WHITE + discord);
 		}
 		if (other != null) {
 			other.forEach(e -> {

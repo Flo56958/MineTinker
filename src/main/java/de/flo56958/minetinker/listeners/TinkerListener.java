@@ -22,7 +22,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -49,7 +48,7 @@ public class TinkerListener implements Listener {
 							.replace("%tool", ChatWriter.getDisplayName(tool) + ChatColor.WHITE)
 							.replace("%type", tool.getType().toString().split("_")[0]));
 			ChatWriter.log(false, player.getDisplayName() + " upgraded " + ChatWriter.getDisplayName(tool)
-					+ ChatColor.WHITE + " (" + tool.getType().toString() + ") to " + tool.getType().toString() + "!");
+					+ ChatColor.WHITE + " (" + tool.getType() + ") to " + tool.getType() + "!");
 		} else {
 			if (config.getBoolean("Sound.OnUpgrade")) {
 				player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
@@ -74,7 +73,7 @@ public class TinkerListener implements Listener {
 						.replace("%mod", mod.getColor() + mod.getName() + ChatColor.WHITE)
 						.replace("%slots", String.valueOf(event.getSlotsRemaining())));
 		ChatWriter.log(false, player.getDisplayName() + " modded " + ChatWriter.getDisplayName(tool)
-				+ ChatColor.GRAY + " (" + tool.getType().toString() + ") with " + mod.getColor() + mod.getName()
+				+ ChatColor.GRAY + " (" + tool.getType() + ") with " + mod.getColor() + mod.getName()
 				+ ChatColor.GRAY + " " + modManager.getModLevel(tool, mod) + "!");
 	}
 
@@ -96,7 +95,7 @@ public class TinkerListener implements Listener {
 							.replace("%cause", event.getFailCause().toString(player)));
 			ChatWriter.log(false, player.getDisplayName() + " failed to apply " + mod.getColor()
 					+ mod.getName() + ChatColor.GRAY + " " + (modManager.getModLevel(tool, mod) + 1) + " on "
-					+ ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType().toString() + ") ("
+					+ ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType() + ") ("
 					+ event.getFailCause().toString() + ")");
 		}
 	}
@@ -121,7 +120,7 @@ public class TinkerListener implements Listener {
 
 						if (dam != null) {
 							dam.setDamage(0);
-							tool.setItemMeta((ItemMeta) dam);
+							tool.setItemMeta(dam);
 						}
 					}
 				}
@@ -214,7 +213,7 @@ public class TinkerListener implements Listener {
 					LanguageManager.getString("TinkerListener.ToolLevelUp", player)
 							.replace("%tool", ChatWriter.getDisplayName(tool))
 							.replace("%level", String.valueOf(modManager.getLevel(tool))));
-			ChatWriter.log(false, player.getDisplayName() + " leveled up " + ChatWriter.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType().toString() + ")!");
+			ChatWriter.log(false, player.getDisplayName() + " leveled up " + ChatWriter.getDisplayName(tool) + ChatColor.WHITE + " (" + tool.getType() + ")!");
 		}
 
 		final int amount = config.getInt("AddModifierSlotsPerLevel");

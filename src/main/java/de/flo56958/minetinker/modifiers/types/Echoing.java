@@ -25,13 +25,11 @@ public class Echoing extends Modifier {
 
 	private static Echoing instance;
 
-	private ProtocolManager protocolManager;
+	private static final ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
 
 	private int taskID = -1;
 
 	private int radiusPerLevel;
-
-	private int tickTime;
 
 	private final Runnable runnable = () -> {
 		for (Player player : Bukkit.getOnlinePlayers()) {
@@ -83,7 +81,6 @@ public class Echoing extends Modifier {
 	private Echoing() {
 		super(MineTinker.getPlugin());
 		customModelData = 10_059;
-		protocolManager = ProtocolLibrary.getProtocolManager();
 	}
 
 	public static Echoing instance() {
@@ -133,11 +130,11 @@ public class Echoing extends Modifier {
 
 		init(Material.ENDER_EYE);
 
-		this.tickTime = config.getInt("TickTime", 20);
+		int tickTime = config.getInt("TickTime", 20);
 		this.radiusPerLevel = config.getInt("RadiusPerLevel", 10);
 
 		if (isAllowed()) {
-			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MineTinker.getPlugin(), this.runnable, 5 * 20L, this.tickTime);
+			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MineTinker.getPlugin(), this.runnable, 5 * 20L, tickTime);
 		} else {
 			this.taskID = -1;
 		}

@@ -26,7 +26,7 @@ jobs:
       with:
         java-version: '16'
         distribution: 'adopt'
-        
+
     - name: Preparing build.gradle # <- Only necessary for publishing - changes the version number dependent on the commit sha
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
       run: sed -i -E "/^version/ s/'($|[^a-zA-Z_0-9])/-${{ github.sha }}'/g" ./build.gradle
@@ -36,11 +36,11 @@ jobs:
 
     - name: Build with Gradle
       run: ./gradlew build
-      
+
     - name: Setting up Python for publishing
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
       run: pip3 install requests # Request is needed for publishing over web hook
-    
+
     - name: Publishing Build
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
       run: python3 .github/workflows/scripts/publish.py ./build/libs/MineTinker.jar MineTinker ${{ secrets.DiscordWebHook }} ${{ github.sha }}

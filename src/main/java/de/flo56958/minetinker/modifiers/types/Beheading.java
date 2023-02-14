@@ -111,7 +111,7 @@ public class Beheading extends Modifier implements Listener {
 							}
 					}
 					ChatWriter.logModifier(player, event, this, tool,
-							String.format("DropEggChance(%d/%d)", n, i), "Entity(" + mob.getType().toString() + ")");
+							String.format("DropEggChance(%d/%d)", n, i), "Entity(" + mob.getType() + ")");
 				}
 				int n = rand.nextInt(100);
 				int i = this.percentagePerLevel * modManager.getModLevel(tool, this);

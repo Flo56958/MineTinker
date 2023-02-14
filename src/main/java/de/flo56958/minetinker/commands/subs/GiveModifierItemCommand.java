@@ -148,29 +148,28 @@ public class GiveModifierItemCommand implements SubCommand {
 	public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String[] args) {
 		ArrayList<String> result = new ArrayList<>();
 		switch (args.length) {
-			case 2:
+			case 2 -> {
 				for (Player player : Bukkit.getOnlinePlayers()) {
 					result.add(player.getName());
 				}
 				result.add("@a");
 				result.add("@r");
-
 				if (sender instanceof Entity || sender instanceof BlockState) {
 					result.add("@aw");
 					result.add("@p");
 					result.add("@rw");
 				}
-				break;
-			case 3:
+			}
+			case 3 -> {
 				for (Modifier m : ModManager.instance().getAllowedMods()) {
 					result.add(m.getName().replaceAll(" ", "_"));
 				}
-				break;
-			case 4:
+			}
+			case 4 -> {
 				for (int i = 0; i < 10; i++) {
 					result.add(String.valueOf(i));
 				}
-				break;
+			}
 		}
 		return result;
 	}

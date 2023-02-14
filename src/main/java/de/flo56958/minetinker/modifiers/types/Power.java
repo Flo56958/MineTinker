@@ -24,7 +24,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -66,7 +65,7 @@ public class Power extends Modifier implements Listener {
 			if (block.getWorld().getBlockAt(block.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
 				if (tool.getItemMeta() instanceof Damageable damageable) {
 					damageable.setDamage(damageable.getDamage() + 1);
-					tool.setItemMeta((ItemMeta) damageable);
+					tool.setItemMeta(damageable);
 				}
 
 				events.put(block.getLocation(), 0);
@@ -280,7 +279,7 @@ public class Power extends Modifier implements Listener {
 			}
 		});
 
-		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType().toString() + ")");
+		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType() + ")");
 	}
 
 	/**

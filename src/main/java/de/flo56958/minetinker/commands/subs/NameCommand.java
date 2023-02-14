@@ -37,18 +37,18 @@ public class NameCommand implements SubCommand {
 			return true;
 		}
 
-		Player player = (Player) sender;
-		if (player == null) {
+		if (!(sender instanceof Player player)) {
 			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 			return true;
 		}
+
 		ItemStack tool = player.getInventory().getItemInMainHand();
 
 		if (ModManager.instance().isToolViable(tool) || ModManager.instance().isArmorViable(tool)) {
 			StringBuilder name = new StringBuilder();
 
 			for (int i = 1; i < args.length; i++) {
-				name.append(" ").append(args[i].replace('&', '\u00a7')); // = §
+				name.append(" ").append(args[i].replace('&', '§'));
 			}
 
 			//Test given Name with Blacklist

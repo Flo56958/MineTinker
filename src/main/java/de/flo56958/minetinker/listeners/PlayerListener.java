@@ -119,70 +119,66 @@ public class PlayerListener implements Listener {
 
 		//check if correct material is used
 		switch (beginning) {
-			case "shield":
-			case "wooden":
+			case "shield", "wooden" -> {
 				if (Lists.getWoodPlanks().contains(repair.getType())) {
 					eligible = true;
 				}
-				break;
-			case "stone":
+			}
+			case "stone" -> {
 				if (repair.getType() == Material.COBBLESTONE || repair.getType() == Material.STONE) {
 					eligible = true;
 				}
-				break;
-			case "shears":
-			case "iron":
+			}
+			case "shears", "iron" -> {
 				if (repair.getType() == Material.IRON_INGOT) {
 					eligible = true;
 				}
-				break;
-			case "golden":
+			}
+			case "golden" -> {
 				if (repair.getType() == Material.GOLD_INGOT) {
 					eligible = true;
 				}
-				break;
-			case "diamond":
+			}
+			case "diamond" -> {
 				if (repair.getType() == Material.DIAMOND) {
 					eligible = true;
 				}
-				break;
-			case "netherite":
+			}
+			case "netherite" -> {
 				if (repair.getType() == Material.NETHERITE_INGOT) {
 					eligible = true;
 				}
-				break;
-			case "bow":
-			case "crossbow":
-			case "fishing":
+			}
+			case "bow", "crossbow", "fishing" -> {
 				if (repair.getType() == Material.STICK || repair.getType() == Material.STRING) {
 					eligible = true;
 				}
-				break;
-			case "leather":
+			}
+			case "leather" -> {
 				if (repair.getType() == Material.LEATHER) {
 					eligible = true;
 				}
-				break;
-			case "chainmail":
+			}
+			case "chainmail" -> {
 				if (repair.getType() == Material.IRON_BARS) {
 					eligible = true;
 				}
-				break;
-			case "elytra":
+			}
+			case "elytra" -> {
 				if (repair.getType() == Material.PHANTOM_MEMBRANE) {
 					eligible = true;
 				}
-				break;
-			case "trident":
+			}
+			case "trident" -> {
 				if (repair.getType() == Material.PRISMARINE_SHARD) {
 					eligible = true;
 				}
-				break;
-			case "turtle":
+			}
+			case "turtle" -> {
 				if (repair.getType() == Material.SCUTE) {
 					eligible = true;
 				}
-				break;
+			}
 		}
 
 		if (eligible) {
@@ -199,41 +195,17 @@ public class PlayerListener implements Listener {
 			//Calculate the maximum required Materials to restore to full
 			int requiredMaterial;
 			switch (ToolType.get(tool.getType())) {
-				case AXE:
-				case PICKAXE:
-				case FISHINGROD:
-				case CROSSBOW:
-				case BOW:
-					requiredMaterial = 3;
-					break;
-				case BOOTS:
-					requiredMaterial = 4;
-					break;
-				case CHESTPLATE:
-				case ELYTRA:
-					requiredMaterial = 8;
-					break;
-				case HELMET:
-					requiredMaterial = 5;
-					break;
-				case HOE:
-				case TRIDENT:
-				case SWORD:
-				case SHEARS:
-				case OTHER:
-					requiredMaterial = 2;
-					break;
-				case LEGGINGS:
-					requiredMaterial = 7;
-					break;
-				case SHIELD:
-					requiredMaterial = 6;
-					break;
-				case SHOVEL:
-					requiredMaterial = 1;
-					break;
-				default:
+				case AXE, PICKAXE, FISHINGROD, CROSSBOW, BOW -> requiredMaterial = 3;
+				case BOOTS -> requiredMaterial = 4;
+				case CHESTPLATE, ELYTRA -> requiredMaterial = 8;
+				case HELMET -> requiredMaterial = 5;
+				case HOE, TRIDENT, SWORD, SHEARS, OTHER -> requiredMaterial = 2;
+				case LEGGINGS -> requiredMaterial = 7;
+				case SHIELD -> requiredMaterial = 6;
+				case SHOVEL -> requiredMaterial = 1;
+				default -> {
 					return;
+				}
 			}
 
 			final float percent = 1.0f / requiredMaterial;
@@ -244,7 +216,7 @@ public class PlayerListener implements Listener {
 			}
 
 			meta.setDamage(dura);
-			tool.setItemMeta((ItemMeta) meta);
+			tool.setItemMeta(meta);
 
 			repair.setAmount(amount);
 			event.setCancelled(true);

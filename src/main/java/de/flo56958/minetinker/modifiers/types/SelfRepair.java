@@ -144,7 +144,7 @@ public class SelfRepair extends Modifier implements Listener {
 
 				damageable.setDamage(newDura);
 
-				tool.setItemMeta((ItemMeta) damageable);
+				tool.setItemMeta(damageable);
 				ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Chance(%d/%d)", n, c),
 						String.format("Repair(%d -> %d)", dura, newDura));
 				return;

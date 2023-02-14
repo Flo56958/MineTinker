@@ -104,21 +104,19 @@ public abstract class Modifier {
 			if (fromRandom || !(modifiersconfig.getBoolean("CommandIgnoresIncompatibilities") && isCommand)) {
 				final Set<Modifier> incompatibility = modManager.getIncompatibilities(this);
 
-				if (incompatibility != null) {
-					for (final Modifier m : incompatibility) {
-						if (modManager.hasMod(tool, m)) {
-							if (!silent)
-								pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-							return false;
-						}
-						if (modifiersconfig.getBoolean("IncompatibilitiesConsiderEnchants")) {
-							for (final Enchantment e : m.getAppliedEnchantments()) {
-								if (!tool.hasItemMeta()) return false;
-								if (Objects.requireNonNull(tool.getItemMeta(), "Tool has no ItemMeta").hasEnchant(e)) {
-									if (!silent)
-										pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-									return false;
-								}
+				for (final Modifier m : incompatibility) {
+					if (modManager.hasMod(tool, m)) {
+						if (!silent)
+							pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+						return false;
+					}
+					if (modifiersconfig.getBoolean("IncompatibilitiesConsiderEnchants")) {
+						for (final Enchantment e : m.getAppliedEnchantments()) {
+							if (!tool.hasItemMeta()) return false;
+							if (Objects.requireNonNull(tool.getItemMeta(), "Tool has no ItemMeta").hasEnchant(e)) {
+								if (!silent)
+									pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
+								return false;
 							}
 						}
 					}

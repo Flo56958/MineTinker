@@ -189,7 +189,7 @@ public class Drilling extends Modifier implements Listener {
 
 		ChatWriter.logModifier(player, event, this, tool,
 				"Block(" + block.getType() + ")",
-				"Blockface(" + face.toString() + (usedPowerCommunication ? "[Power]" : "") + ")");
+				"Blockface(" + face + (usedPowerCommunication ? "[Power]" : "") + ")");
 	}
 
 	private boolean drillingBlockBreak(final Block block, final float centralBlockHardness, final Player player, final ItemStack tool) {

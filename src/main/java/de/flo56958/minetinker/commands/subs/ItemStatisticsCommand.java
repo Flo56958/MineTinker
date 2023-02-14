@@ -68,7 +68,7 @@ public class ItemStatisticsCommand implements SubCommand {
 			for (ItemStack stack : items) {
 				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Head")
 						.replaceFirst("%toolname", ChatWriter.getDisplayName(stack) + ChatColor.WHITE
-								+ " (" + stack.getType().toString() + ")"));
+								+ " (" + stack.getType() + ")"));
 				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Level")
 						.replaceFirst("%level", String.valueOf(modManager.getLevel(stack))));
 				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Exp")

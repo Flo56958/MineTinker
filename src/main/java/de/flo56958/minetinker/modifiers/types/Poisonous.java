@@ -169,7 +169,7 @@ public class Poisonous extends Modifier implements Listener {
 			ChatWriter.logModifier(player, event, this, tool,
 					"Duration(" + duration + ")",
 					"Amplifier(" + amplifier + ")",
-					"Entity(" + entity.getType().toString() + ")");
+					"Entity(" + entity.getType() + ")");
 		}
 
 		return new PotionEffect(PotionEffectType.POISON, duration, amplifier, false, false);
@@ -222,7 +222,7 @@ public class Poisonous extends Modifier implements Listener {
 		}
 
 		ChatWriter.logModifier(player, event, this, player.getInventory().getItemInMainHand(),
-				"Entity(" + event.getEntity().getType().toString() + ")");
+				"Entity(" + event.getEntity().getType() + ")");
 
 		if (numberOfMeat > 0) event.getDrops().add(new ItemStack(Material.ROTTEN_FLESH, numberOfMeat));
 		if (numberOfPotatoes > 0) event.getDrops().add(new ItemStack(Material.POISONOUS_POTATO, numberOfPotatoes));

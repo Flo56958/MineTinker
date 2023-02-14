@@ -186,7 +186,7 @@ public class Webbed extends Modifier implements Listener {
 			ChatWriter.logModifier(player, event, this, tool,
 					"Duration(" + duration + ")",
 					"Amplifier(" + amplifier + ")",
-					"Entity(" + entity.getType().toString() + ")");
+					"Entity(" + entity.getType() + ")");
 		}
 
 		return new PotionEffect(PotionEffectType.SLOW, duration, amplifier, false, false);

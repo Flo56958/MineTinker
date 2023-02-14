@@ -39,7 +39,7 @@ public class Photosynthesis extends Modifier implements Listener {
 	private boolean mustStandStill;
 	private boolean notifyWhenActive;
 
-	private List<Material> allowedMaterials = new ArrayList<>();
+	private final List<Material> allowedMaterials = new ArrayList<>();
 
 	private final Runnable runnable = () -> {
 		for (final UUID id : data.keySet()) {

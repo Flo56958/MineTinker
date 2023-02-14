@@ -99,7 +99,6 @@ public class AnvilListener implements Listener {
 			if (event.isShiftClick()) {
 				if (player.getInventory().addItem(newTool).size() != 0) { //adds items to (full) inventory and then case if inventory is full
 					event.setCancelled(true); //cancels the event if the player has a full inventory
-					return;
 				} // no else as it gets added in if-clause
 			} else {
 				player.setItemOnCursor(newTool);

@@ -128,7 +128,7 @@ public class Glowing extends Modifier implements Listener {
 		} else {
 			ChatWriter.logModifier(player, event, this, tool,
 					"Duration(" + duration + ")",
-					"Entity(" + entity.getType().toString() + ")");
+					"Entity(" + entity.getType() + ")");
 		}
 
 		return new PotionEffect(PotionEffectType.GLOWING, duration, 0, false, false);

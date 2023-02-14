@@ -306,23 +306,17 @@ public class GUIs {
 				ItemMeta buttonMeta = buttonStack.getItemMeta();
 
 				switch (name) {
-					case "config.yml":
-						buttonStack.setType(Material.DIAMOND_PICKAXE);
-						break;
-					case "Elytra.yml":
-						buttonStack.setType(Material.ELYTRA);
-						break;
-					case "BuildersWand.yml":
-						buttonStack.setType(Material.DIAMOND_SHOVEL);
-						break;
-					default:
+					case "config.yml" -> buttonStack.setType(Material.DIAMOND_PICKAXE);
+					case "Elytra.yml" -> buttonStack.setType(Material.ELYTRA);
+					case "BuildersWand.yml" -> buttonStack.setType(Material.DIAMOND_SHOVEL);
+					default -> {
 						for (Modifier mod : ModManager.instance().getAllMods()) {
 							if (mod.getKey().equals(name.replace(".yml", ""))) {
 								buttonStack = mod.getModItem().clone();
 								buttonMeta = buttonStack.getItemMeta();
 							}
 						}
-						break;
+					}
 				}
 
 				if (buttonMeta == null) continue;

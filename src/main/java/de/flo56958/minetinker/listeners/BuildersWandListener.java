@@ -442,7 +442,7 @@ public class BuildersWandListener implements Listener {
 								}
 							}
 
-							wand.setItemMeta((ItemMeta) damageable);
+							wand.setItemMeta(damageable);
 
 							if (current.getAmount() == 0) {
 								//TODO: Add Exp gain for Builderswands

@@ -157,6 +157,6 @@ public class Shrouded extends Modifier implements Listener {
 		ChatWriter.logModifier(player, event, this, tool,
 				String.format("Radius(%.2f)", radius),
 				"Duration(" + duration + ")",
-				"Extras(" + ex.toString() + ")");
+				"Extras(" + ex + ")");
 	}
 }

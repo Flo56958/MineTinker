@@ -144,7 +144,7 @@ public class BlockListener implements Listener {
 				int expAmount = config.getInt("ExpPerBlockBreak");
 				if (!(!config.getBoolean("ExtraExpPerBlock.ApplicableToSilkTouch")
 						&& modManager.hasMod(tool, SilkTouch.instance()))) {
-					expAmount += config.getInt("ExtraExpPerBlock." + event.getBlock().getType().toString());
+					expAmount += config.getInt("ExtraExpPerBlock." + event.getBlock().getType());
 					//adds 0 if not in found in config (negative values are also fine)
 				}
 
@@ -183,9 +183,7 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-		if (event.getAction() == Action.RIGHT_CLICK_AIR) {
-
-		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			final Block block = event.getClickedBlock();
 
 			if (block == null) {

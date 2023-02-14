@@ -97,7 +97,7 @@ public class EntityListener implements Listener {
 
 		modManager.addExp(player, tool,
 				MineTinker.getPlugin().getConfig().getInt("ExtraExpPerEntityHit."
-						+ event.getEntity().getType().toString(), 0), true);
+						+ event.getEntity().getType(), 0), true);
 	}
 
 	@EventHandler
@@ -148,7 +148,7 @@ public class EntityListener implements Listener {
 		Bukkit.getPluginManager().callEvent(new MTEntityDeathEvent(player, tool, event));
 
 		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig()
-				.getInt("ExtraExpPerEntityDeath." + event.getEntity().getType().toString(), 0), true);
+				.getInt("ExtraExpPerEntityDeath." + event.getEntity().getType(), 0), true);
 	}
 
 	@EventHandler(ignoreCancelled = true)
