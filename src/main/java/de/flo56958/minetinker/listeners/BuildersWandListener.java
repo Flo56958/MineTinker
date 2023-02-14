@@ -513,23 +513,15 @@ public class BuildersWandListener implements Listener {
 		nb.setType(item.getType(), true); //incl. physics update
 		final BlockData bd = nb.getBlockData();
 
-		if (bd instanceof Directional) {
-			((Directional) bd).setFacing(((Directional) behind.getBlockData()).getFacing());
+		if (bd instanceof Directional dir) {
+			dir.setFacing(((Directional) behind.getBlockData()).getFacing());
 		}
 
-		if (bd instanceof Slab) {
-			((Slab) bd).setType(((Slab) behind.getBlockData()).getType());
+		if (bd instanceof Slab slab) {
+			slab.setType(((Slab) behind.getBlockData()).getType());
 		}
 
-		nb.setBlockData(bd, true); //incl. physics update
-
-		//Update the block behind (for Physics Calculation of the current block)
-		//to counteract bugged blockstates (e.g. flying torches)
-		behind.setType(item.getType(), true);
-		behind.setBlockData(behind.getBlockData(), true);
-
-		//TODO: some bugged blockstates still get through
-
+		nb.setBlockData(bd, true); //incl. physics update but does not work on torches
 		return true;
 	}
 }
