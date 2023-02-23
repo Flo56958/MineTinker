@@ -220,7 +220,14 @@ public class AutoSmelt extends Modifier implements Listener {
 		Map<String, Object> conversionValues = conversionConfig.getValues(false);
 		conversionValues.forEach((k, v) -> {
 			Material material = Material.getMaterial(k);
-			if (material != null && v instanceof String) conversions.put(material, Objects.requireNonNull(Triplet.fromString((String) v)));
+			boolean error = false;
+			if (material != null && v instanceof String s) {
+				Triplet t = Triplet.fromString(s);
+				if (t != null) {
+					conversions.put(material, t);
+				} else error = true;
+			} else error = true;
+			if (error) ChatWriter.logError(this.getKey() +  ".yml: Error in conversion value for " + k);
 		});
 
 		this.description = this.description.replace("%chance", String.valueOf(this.percentagePerLevel));
