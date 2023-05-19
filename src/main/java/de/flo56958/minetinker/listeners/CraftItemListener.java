@@ -29,7 +29,6 @@ public class CraftItemListener implements Listener {
 
 		if (config.getBoolean("Sound.OnEveryCrafting")) {
 			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
-
 			return;
 		}
 
@@ -38,6 +37,9 @@ public class CraftItemListener implements Listener {
 		if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool) || modManager.isWandViable(tool))) {
 			return;
 		}
+
+		//If the tools are stacked because of a different plugin we do not want to interfere with that plugin
+		//tool.setAmount(1);
 
 		if (config.getBoolean("Sound.OnCrafting")) {
 			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);

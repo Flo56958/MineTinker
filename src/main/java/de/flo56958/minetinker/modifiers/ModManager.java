@@ -876,41 +876,37 @@ public class ModManager {
 
 		final ItemMeta meta = is.getItemMeta();
 
-		if (meta != null) {
-			if (MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantsAndAttributes")) {
+		if (meta == null) return true;
+		if (!MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantsAndAttributes"))  return true;
 
-				for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
-					final Modifier modifier = getModifierFromEnchantment(entry.getKey());
+		for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
+			final Modifier modifier = getModifierFromEnchantment(entry.getKey());
 
-					if (modifier == null) {
-						continue;
-					}
+			if (modifier == null) {
+				continue;
+			}
 
-					meta.removeEnchant(entry.getKey());
+			meta.removeEnchant(entry.getKey());
 
-					for (int i = 0; i < entry.getValue(); i++) { //possible to go over MaxLevel of the mod
-						addMod(is, modifier);
-						modifier.applyMod(null, is, true); //Player is only required with Extra-Modifier (not possible here)
-					}
-				}
-
-				if (meta.getAttributeModifiers() == null) {
-					return true;
-				}
-
-				for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : meta.getAttributeModifiers().asMap().entrySet()) {
-					final Modifier modifier = getModifierFromAttribute(entry.getKey());
-
-					if (modifier == null || modifier == Hardened.instance()) {
-						continue;
-					}
-
-					meta.removeAttributeModifier(entry.getKey());
-
-					addMod(is, modifier);
-				}
+			for (int i = 0; i < entry.getValue(); i++) { //possible to go over MaxLevel of the mod
+				addMod(is, modifier);
+				modifier.applyMod(null, is, true); //Player is only required with Extra-Modifier (not possible here)
 			}
 		}
+
+		if (meta.getAttributeModifiers() == null) return true;
+
+		for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : meta.getAttributeModifiers().asMap().entrySet()) {
+			final Modifier modifier = getModifierFromAttribute(entry.getKey());
+
+			if (modifier == null || modifier == Hardened.instance()) {
+				continue;
+			}
+
+			meta.removeAttributeModifier(entry.getKey());
+			addMod(is, modifier);
+		}
+
 		return true;
 	}
 

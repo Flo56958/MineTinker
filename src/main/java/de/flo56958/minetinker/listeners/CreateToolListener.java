@@ -41,9 +41,10 @@ public class CreateToolListener implements Listener {
 
 		Player player = null;
 
-		for (HumanEntity humans : event.getViewers()) {
-			if (humans instanceof Player) {
-				player = (Player) humans;
+		for (HumanEntity human : event.getViewers()) {
+			if (human instanceof Player) {
+				player = (Player) human;
+				break;
 			}
 		}
 
@@ -88,8 +89,14 @@ public class CreateToolListener implements Listener {
 			}
 		}
 
+		// Check for converting as we do not do this here
 		if (totalItems == 1 && lastItem.getType() == currentItem.getType()) {
-			currentItem.setAmount(1);
+			return;
+		}
+
+		// Check for vanilla repairing in crafting grid, do not convert tool to MineTinker
+		if (totalItems == 2 && lastItem.getType() == currentItem.getType()) {
+			return;
 		}
 
 		modManager.convertItemStack(event.getInventory().getResult(), player);
