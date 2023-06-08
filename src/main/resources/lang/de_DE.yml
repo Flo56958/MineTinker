@@ -1,4 +1,4 @@
-Alert.OnItemBreak: "%RED%Scheint so, als ob dein Werkzeug zerstört wurde! Es wurde dir mit einer Haltbarkeit zurückgegeben."
+Alert.OnItemBreak: "%RED%Es scheint so, als ob dein Werkzeug zerstört wurde! Es wurde dir mit einer Haltbarkeit zurückgegeben."
 Alert.OnItemGrind: "%RED%Du kannst keinen Schleifstein für MineTinker-Items benutzen!"
 Alert.ToolUpgradeFailure: "%RED%Verbesserung ist fehlgeschlagen!"
 Alert.InternalError: "%RED%Ein interner Fehler ist aufgetreten!"
@@ -88,8 +88,10 @@ GUIs.Statistics.General.Title: "Allgemeine Statistiken"
 GUIs.Statistics.General.Creator: "Ersteller: %player"
 GUIs.Statistics.General.Created: "Erstellt: %date"
 GUIs.Statistics.Blocks.Title: "Block Statistiken"
+GUIs.Statistics.Blocks.TotalAmount: "Anzahl Blöcke zerstört: %amount"
 GUIs.Statistics.Blocks.TitlePage: "Block Statistiken für %tool - %pageNo"
 GUIs.Statistics.Blocks.AmountBroken: "%amount male Gebrochen"
+GUIs.Statistics.Modifiers.TitlePage: "Modifizierungsstatistiken für %tool - %pageNo"
 GUIs.Statistics.Combat.Title: "Kampf Statistiken"
 GUIs.Statistics.Combat.TitlePage: "Kampf Statistiken für %tool - %pageNo"
 GUIs.Statistics.Combat.AmountKilled: "%amount mal getötet"
@@ -156,16 +158,20 @@ Modifier:
     Description: "Schmelzt Erze und andere Blöcke während des Abbauens! %chance% Wahrscheinlichkeit pro Level."
     ModifierItemName: "Verbesserter Schmelzofen"
     DescriptionModifierItem: "Modifizierungs-Item für die Auto-Ofen-Modifikation"
+    Statistic_Used: "Anzahl der Benutzungen: %amount"
+    Statistic_Luck: "Extra Ressourcen durch %modifier bekommen: %amount"
   Beheading:
     Name: "Enthauptend"
     Description: "%chance% Wahrscheinlichkeit pro Level den Kopf eines getöteten Gegners fallen zu lassen."
     ModifierItemName: "Verzauberter Wither-Schädel"
     DescriptionModifierItem: "Modifizierungs-Item für die Enthauptend-Modifizierung"
+    Statistic_Used: "Erfolgreiche Enthauptungen: %amount"
   Berserk:
     Name: "Berserker"
     Description: "Verfalle in Rage, welche dich stärker macht, für %duration Sekunden wenn dein Leben unter %percent% fällt!"
     ModifierItemName: "Blutiges Redstone"
     DescriptionModifierItem: "Modifizierungs-Item für die Berserker-Modifikation"
+    Statistic_Used: "Anzahl Aktivierungen: %amount"
   Channeling:
     Name: "Kanalisierend "
     Description: "Werde zum Gott des Donners und beschwöre Blitze mit jedem Angriff! (%amount Wahrscheinlichkeit pro Level)"
@@ -176,17 +182,26 @@ Modifier:
     Description: "Drops von getöteten Mobs oder zerstörten Blöcken wird automatisch dem Inventar hinzugefügt."
     ModifierItemName: "Verbesserter Kompass"
     DescriptionModifierItem: "Modifizierungs-Item für die Direkt-Modifikation"
+    Statistic_Used: "Anzahl Items herangezogen: %amount"
   Drilling:
     Name: "Tiefenbohrung"
     Description: "Zerstöre mehr Blöcke tiefer in der Welt pro Level!"
     ModifierItemName: "Verstärkter Bohraufsatz"
     DescriptionModifierItem: "Modifizierungs-Item für die Tiefenbohrung-Modifikation"
+  Echoing:
+    Name: "Echo"
+    Description: "Nahe Gegner werden auch durch Wände mit einer Entfernung von maximal %amount Blöcken per Level angezeigt!"
+    ModifierItemName: "Allsehendes Auge"
+    DescriptionModifierItem: "Modifizierungs-Item für die Echo-Modifizierung"
   Ender:
     Name: "Ender"
     Description: "Teleportiert dich, wenn du schleichst, zum Einschlagsort des Pfeils!"
     ModifierItemName: "Besonderes Enderauge"
     DescriptionModifierItem: "Modifizierungs-Item für die Ender-Modifizierung"
     TeleportationProhibited: "Du kannst keine Plätze mit diesem Spieler tauschen!"
+    Statistic_Used: "Anzahl Enderman verkörpert: %amount"
+    Statistic_Distance: "Distanz überwunden: %amount Blöcke"
+    Statistic_Swapped: "Anzahl Mobs teleportiert: %amount"
   Evasive:
     Name: "Ausweichend"
     Description: "%chance Wahrscheinlichkeit pro Level Angriffen auszuweichen (Modifikatoren: %sneakX wenn schleichend, %sprintX wenn sprintend, %pvpX wenn in PvP)"
@@ -197,6 +212,7 @@ Modifier:
     Description: "Das Werkzeug hat die %chance% Wahrscheinlichkeit pro Level, um bei Benutzung %amount XP fallen zu lassen!"
     ModifierItemName: "Essenz der Erfahrung"
     DescriptionModifierItem: "Modifizierungs-Item für die Erfahrend-Modifizierung"
+    Statistic_Amount: "Anzahl XP generiert: %amount"
   Extra-Modifier:
     Name: "Zusätzlicher Modifizierungsplatz"
     Description: "Fügt %amount zusätzliche Modifizierungsplätze hinzu!"
@@ -227,6 +243,11 @@ Modifier:
     Description: "Zerstöre Blöcke und schieße Armbrüste schneller!"
     ModifierItemName: "Komprimierter Redstoneblock"
     DescriptionModifierItem: "Modifizierungs-Item für die Eile-Modifizierung"
+  Homing:
+    Name: "Zielsuchend"
+    Description: "Pfeile erkennen Ziele im Radius von %radius Blöcken und visieren diese an! Höhere Level erhöhen die Genauigkeit."
+    ModifierItemName: "Ballistik-Prozessor"
+    DescriptionModifierItem: "Modifizierungs-Item für die Zielsuchend-Modifizierung"
   Infinity:
     Name: "Unendlich"
     Description: "Du benötigst nur einen Pfeil zum Bogenschießen und der Dreizack kommt zurück!"
@@ -289,9 +310,11 @@ Modifier:
     DescriptionModifierItem: "Modifizierungs-Item für die Nachtsucher-Modifizierung"
   Photosynthesis:
     Name: "Photosynthese"
-    Description: "Repariere dein Item während du still im Sonnenlicht stehst mit %amount Haltbarkeit pro Level jede %ticks Ticks. Je länger du still stehst desto schneller wird das Item repariert. (%multiplier%)"
+    Description: "Repariere dein Item im Sonnenlicht mit %amount Haltbarkeit pro Level jede %ticks Ticks. Je länger du in der Sonne bleibst desto schneller wird das Item repariert. (%multiplier%)"
     ModifierItemName: "Extrahiertes Chlorophyll"
     DescriptionModifierItem: "Modifizierungs-Item für die Photosynthese-Modifikation"
+    NotifyWhenActive: "Photosynthese aktiv..."
+    Statistic_Healed: "Haltbarkeit zurückgewonnen: %amount"
   Piercing:
     Name: "Durchbohrend"
     Description: "Pfeile durchbohren mehrere Gegner!"
@@ -394,6 +417,11 @@ Modifier:
     Description: "Mache mehr Schaden über eine größere Fläche!"
     ModifierItemName: "Verzauberter Eisenbarren"
     DescriptionModifierItem: "Modifizierungs-Item für die Schwungkraft-Modifizierung"
+  Swift-Sneaking:
+    Name: "Huschen"
+    Description: "Bewege dich schneller, wenn du schleichst!"
+    ModifierItemName: "Feder der Schnelligkeit"
+    DescriptionModifierItem: "Modifizierungs-Item für die Huschen-Modifikation"
   Tanky:
     Name: "Panzer"
     Description: "%amount extra Herzen pro Level!"
@@ -409,6 +437,16 @@ Modifier:
     Description: "Fälle Bäume durch nur einen abgebauten Block!"
     ModifierItemName: "Hölzerner Smaragd"
     DescriptionModifierItem: "Modifizierungs-Item für die Holzfäller-Modifizierung"
+  Undead:
+    Name: "Untot"
+    Description: "Monster werden dich nicht mehr angreifen, aber du kannst auch keinen angreifen!"
+    ModifierItemName: "Zombie Serum"
+    DescriptionModifierItem: "Modifizierungs-Item für die Untot-Modifizierung"
+  Vigilant:
+    Name: "Wachsam"
+    Description: "Bekomme ein temporäres Schild mit der Größe %amount des erhaltenen Schadens. Diese Schild hält für %duration Sekunden pro Level."
+    ModifierItemName: "Verbotener Apfel"
+    DescriptionModifierItem: "Modifizierungs-Item für die Wachsam-Modifikation"
   Void-Netting:
     Name: "Leerensicherung"
     Description: "Teleportiert dich zu einem sicheren Platz in einem Radius von %radius Blöcken pro Level wenn du in die Leere fällst. Abklinkzeit: %cmax - %cmin Sekunden (abhängig vom Level)"
@@ -491,6 +529,7 @@ Enchantment:
   vanishing_curse: "Fluch des Verschwindens"
   aqua_affinity: "Wasseraffinität"
   soul_speed: "Seelengeschwindigkeit"
+  swift_sneak: "Huschen"
 
 Updater.Unable: "Suche nach Updates fehlgeschlagen!"
 Updater.UpdateAvailable: "Es ist ein Update verfügbar auf spigotmc.org!"
