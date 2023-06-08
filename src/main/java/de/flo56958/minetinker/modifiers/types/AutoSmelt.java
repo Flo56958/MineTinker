@@ -197,6 +197,24 @@ public class AutoSmelt extends Modifier implements Listener {
 			conversions.put(Material.MUD, new Triplet(Material.CLAY, 1));
 		}
 
+		if (MineTinker.is20compatible) {
+			conversions.put(Material.CHERRY_LEAVES, new Triplet(Material.STICK, 1));
+			conversions.put(Material.CHERRY_LOG, new Triplet(Material.CHARCOAL, 1));
+			conversions.put(Material.STRIPPED_CHERRY_LOG, new Triplet(Material.CHARCOAL, 1));
+			conversions.put(Material.CHERRY_WOOD, new Triplet(Material.CHARCOAL, 1));
+			conversions.put(Material.STRIPPED_CHERRY_WOOD, new Triplet(Material.CHARCOAL, 1));
+
+			conversions.put(Material.BAMBOO_BLOCK, new Triplet(Material.CHARCOAL, 1));
+
+			conversions.put(Material.SUSPICIOUS_SAND, new Triplet(Material.GLASS, 1));
+		}
+
+		for (Material m : Material.values()) {
+			if (m.isBurnable()) {
+				conversions.putIfAbsent(m, new Triplet(Material.AIR, 1));
+			}
+		}
+
 		//Saving Conversions as String
 		Map<String, String> conversionsSTR = new HashMap<>();
 		conversions.forEach((k, v) -> conversionsSTR.put(k.toString(), v.toString()));

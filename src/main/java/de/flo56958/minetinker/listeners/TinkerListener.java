@@ -188,7 +188,7 @@ public class TinkerListener implements Listener {
 											config.getBoolean("LevelUpEvents.AppliedModifiersConsiderSlots"));
 								}
 								if (!appliedRandomMod) {
-									mods.remove(index); //Remove the failed modifier from the the list of the possibles
+									mods.remove(index); //Remove the failed modifier from the list of the possibles
 								}
 							}
 						}

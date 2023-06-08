@@ -137,6 +137,8 @@ public class Beheading extends Modifier implements Listener {
 						}
 
 						loot = head;
+					} else if (MineTinker.is20compatible && mob.getType() == EntityType.PIGLIN) {
+						loot = new ItemStack(Material.PIGLIN_HEAD, 1);
 					}
 
 					if (loot.getType() != Material.AIR) {
