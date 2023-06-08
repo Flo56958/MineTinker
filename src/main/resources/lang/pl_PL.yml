@@ -188,6 +188,11 @@ Modifier:
     Description: "Wywierć jeden blok głębiej w ziemi na poziom!"
     ModifierItemName: "Wzmocnione Wiertło"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Wiercenie\""
+  Echoing:
+    Name: "Echo"
+    Description: "Zobacz pobliskie byty w zasięgu %amount bloków na poziom!"
+    ModifierItemName: "Wszystko Widzące Oko"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Echo\""
   Ender:
     Name: "Ender"
     Description: "Teleportuje cię podczas skradania się do miejsca lądowania strzał!"
@@ -207,6 +212,7 @@ Modifier:
     Description: "Narzędzie ma %chance% szans na poziom, aby wydropić %amount XP podczas używania!"
     ModifierItemName: "Esencja Doświadczenia"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Doświadczenie\""
+    Statistic_Amount: "Wyrzucona ilość doświadczenia: %amount"
   Extra-Modifier:
     Name: "Extra-Modyfikator"
     Description: "Dodaje %amount dodatkowe sloty modyfikatora do narzędzia!"
@@ -411,6 +417,11 @@ Modifier:
     Description: "Zadawaj więcej obrażeń na większym obszarze!"
     ModifierItemName: "Zaklęte Żelazo"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Siła Odśrodkowa\""
+  Swift-Sneaking:
+    Name: "Rychłe Skradanie"
+    Description: "Poruszaj się szybciej podczas skradania się!"
+    ModifierItemName: "Pióro Prędkości"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Rychłe Skradanie\""
   Tanky:
     Name: "Pancerz"
     Description: "Zrób sobie dodatkowy pasek z %amount dodatkowymi sercami na poziom!"
@@ -426,6 +437,16 @@ Modifier:
     Description: "Ścinaj drzewa w mgnieniu oka!"
     ModifierItemName: "Drewniany Szmaragd"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Rębacz\""
+  Undead:
+    Name: "Nieumarły"
+    Description: "Potwór nie będzie cię już atakował, ale ty nie możesz też nikogo atakować!"
+    ModifierItemName: "Serum Z Zombie"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Nieumarły\""
+  Vigilant:
+    Name: "Strażnik"
+    Description: "Zyskujesz tymczasową tarczę równą %amount otrzymanych obrażeń. Tarcza utrzymuje się przez %duration sekund na poziom."
+    ModifierItemName: "Zapomniane Jabłko"
+    DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Strażnik\""
   Void-Netting:
     Name: "Siatka Pustki"
     Description: "Teleportuje cię w bezpieczne miejsce w promieniu %radius bloków na poziom, gdy wpadniesz w próżnię. Czas odnowienia: od %cmax do %cmin sekund (w zależności od poziomu)"
@@ -508,6 +529,7 @@ Enchantment:
   vanishing_curse: "Klątwa znikania"
   aqua_affinity: "Wydajność pod wodą"
   soul_speed: "Szybkość dusz"
+  swift_sneak: "Szybkie Skradanie"
 
 Updater.Unable: "Nie można sprawdzić aktualizacji!"
 Updater.UpdateAvailable: "Na spigotmc.org dostępna jest aktualizacja!"
