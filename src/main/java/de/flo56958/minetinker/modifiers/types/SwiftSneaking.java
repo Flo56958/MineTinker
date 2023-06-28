@@ -24,7 +24,7 @@ public class SwiftSneaking extends Modifier {
 
 	private SwiftSneaking() {
 		super(MineTinker.getPlugin());
-		customModelData = 10_058;
+		customModelData = 10_062;
 	}
 
 	public static SwiftSneaking instance() {
