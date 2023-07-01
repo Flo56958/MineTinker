@@ -63,6 +63,9 @@ public class Lists {
 		if (MineTinker.is19compatible) {
 			mats.add(Material.MANGROVE_LEAVES);
 		}
+		if (MineTinker.is20compatible) {
+			mats.add(Material.CHERRY_LEAVES);
+		}
 
 		return mats;
 	}
@@ -83,6 +86,9 @@ public class Lists {
 
 		if (MineTinker.is19compatible) {
 			mats.add(Material.MANGROVE_PLANKS);
+		}
+		if (MineTinker.is20compatible) {
+			mats.add(Material.CHERRY_PLANKS);
 		}
 		return mats;
 	}
@@ -108,6 +114,9 @@ public class Lists {
 			mats.add(Material.MANGROVE_ROOTS);
 			mats.add(Material.MUDDY_MANGROVE_ROOTS);
 		}
+		if (MineTinker.is20compatible) {
+			mats.add(Material.CHERRY_LOG);
+		}
 		return mats;
 	}
 
@@ -127,6 +136,9 @@ public class Lists {
 
 		if (MineTinker.is19compatible) {
 			mats.add(Material.STRIPPED_MANGROVE_LOG);
+		}
+		if (MineTinker.is20compatible) {
+			mats.add(Material.STRIPPED_CHERRY_LOG);
 		}
 		return mats;
 	}
@@ -148,6 +160,9 @@ public class Lists {
 		if (MineTinker.is19compatible) {
 			mats.add(Material.MANGROVE_WOOD);
 		}
+		if (MineTinker.is20compatible) {
+			mats.add(Material.CHERRY_WOOD);
+		}
 		return mats;
 	}
 
@@ -167,6 +182,9 @@ public class Lists {
 
 		if (MineTinker.is19compatible) {
 			mats.add(Material.STRIPPED_MANGROVE_WOOD);
+		}
+		if (MineTinker.is20compatible) {
+			mats.add(Material.STRIPPED_CHERRY_WOOD);
 		}
 		return mats;
 	}
