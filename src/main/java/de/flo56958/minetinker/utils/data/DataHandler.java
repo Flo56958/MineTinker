@@ -191,9 +191,22 @@ public class DataHandler {
 	
 	private static int calculateExp(Material type) {
 		//TODO: Find better method then hardcoded values
+		if (MineTinker.is19compatible) {
+			int amount = switch (type) {
+				//1
+				case SCULK -> 1;
+				//5
+				case SCULK_CATALYST, SCULK_SENSOR, SCULK_SHRIEKER -> 5;
+				default -> 0;
+			};
+			if (amount != 0) return amount;
+		}
+
 		return switch (type) {
 			//0-2
 			case COAL_ORE -> new Random().nextInt(3);
+			//0-1
+			case NETHER_GOLD_ORE -> new Random().nextInt(2);
 			//3-7
 			case DIAMOND_ORE, EMERALD_ORE -> new Random().nextInt(5) + 3;
 			//2-5
