@@ -6,6 +6,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.block.Container;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.enchantments.Enchantment;
@@ -120,7 +121,10 @@ public class DataHandler {
 			
 			//If the Block is a Container it needs to drop the items inside as well
 			if (block.getState() instanceof Container container && !(block.getState() instanceof ShulkerBox)) {
-				for (ItemStack stack : container.getInventory().getContents()) {
+				// Check for chests as chest inventories can be spread out over 2 blocks (Chest::getBlockInventory())
+				for (ItemStack stack :
+						container instanceof Chest c
+							? c.getBlockInventory().getContents() : container.getInventory().getContents()) {
 					if (stack != null) items.add(stack); //Null items can not be dropped
 				}
 			}
