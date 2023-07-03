@@ -39,7 +39,7 @@ public class Photosynthesis extends Modifier implements Listener {
 	private boolean mustStandStill;
 	private boolean notifyWhenActive;
 
-	private final List<Material> allowedMaterials = new ArrayList<>();
+	private final Set<Material> allowedMaterials = new HashSet<>();
 
 	private final Runnable runnable = () -> {
 		for (final UUID id : data.keySet()) {
@@ -60,7 +60,7 @@ public class Photosynthesis extends Modifier implements Listener {
 			if (pLoc.getWorld().getEnvironment() == World.Environment.NORMAL) { //check for overworld
 				for (int i = pLoc.getBlockY() + 1; i < pLoc.getWorld().getMaxHeight(); i++) {
 					Block b = pLoc.getWorld().getBlockAt(pLoc.getBlockX(), i, pLoc.getBlockZ());
-					if (!(allowedMaterials.contains(b.getType()))) {
+					if (!(allowedMaterials.contains(b.getType()) || b.isPassable())) {
 						isAboveGround = false;
 						break;
 					}
