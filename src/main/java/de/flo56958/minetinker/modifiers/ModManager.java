@@ -1087,7 +1087,7 @@ public class ModManager {
 			return null;
 		}
 
-		for (Modifier m : mods) {
+		for (Modifier m : getAllowedMods()) {
 			if (m.getKey().equals(name)) {
 				return m;
 			}
@@ -1104,7 +1104,7 @@ public class ModManager {
 	 */
 	@Nullable
 	public Modifier getModifierFromEnchantment(@NotNull final Enchantment enchantment) {
-		for (Modifier modifier : getAllMods()) {
+		for (Modifier modifier : getAllowedMods()) {
 			if (modifier.getAppliedEnchantments().contains(enchantment)) {
 				return modifier;
 			}
@@ -1121,7 +1121,7 @@ public class ModManager {
 	 */
 	@Nullable
 	public Modifier getModifierFromAttribute(@NotNull final Attribute attribute) {
-		for (Modifier modifier : getAllMods()) {
+		for (Modifier modifier : getAllowedMods()) {
 			if (modifier.getAppliedAttributes().contains(attribute)) {
 				return modifier;
 			}
