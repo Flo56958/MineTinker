@@ -46,7 +46,7 @@ jobs:
       run: python3 .github/workflows/scripts/publish.py ./build/libs/MineTinker.jar MineTinker ${{ secrets.DiscordWebHook }} ${{ github.sha }}
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3.1.2
+      uses: actions/upload-artifact@v3.1.3
       with:
         name: MineTinker-${{ github.sha }}.jar
         path: ./build/libs/MineTinker.jar
