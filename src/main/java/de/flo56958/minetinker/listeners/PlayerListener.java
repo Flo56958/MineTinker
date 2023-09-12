@@ -299,6 +299,8 @@ public class PlayerListener implements Listener {
 			return;
 		}
 
+		Player player = event.getPlayer();
+
 		if (!event.getBlockFace().equals(BlockFace.SELF)) {
 			if (!Power.HAS_POWER.getOrDefault(event.getPlayer(), new AtomicBoolean(false)).get())
 				Lists.BLOCKFACE.replace(event.getPlayer(), event.getBlockFace());
@@ -330,7 +332,9 @@ public class PlayerListener implements Listener {
 			final ItemStack modDrop = modifier.getModItem();
 			modDrop.setAmount(entry.getValue());
 
-			event.getClickedBlock().getWorld().dropItem(event.getClickedBlock().getLocation(), modDrop);
+			if (!player.getInventory().addItem(modDrop).isEmpty()) { //adds items to (full) inventory
+				player.getWorld().dropItem(player.getLocation(), modDrop);
+			} // no else as it gets added in if-clause
 
 			meta.removeStoredEnchant(entry.getKey());
 		}

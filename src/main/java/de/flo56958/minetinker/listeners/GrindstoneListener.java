@@ -170,7 +170,7 @@ public class GrindstoneListener implements Listener {
 				modManager.setFreeSlots(result, modManager.getFreeSlots(result) + gs.slots);
 
 				for (ItemStack stack : gs.itemStacks) {
-					if (player.getInventory().addItem(stack).size() != 0) { //adds items to (full) inventory
+					if (!player.getInventory().addItem(stack).isEmpty()) { //adds items to (full) inventory
 						player.getWorld().dropItem(player.getLocation(), stack);
 					} // no else as it gets added in if-clause
 				}

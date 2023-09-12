@@ -251,7 +251,7 @@ public class CommandManager implements TabExecutor {
 						String[] rules = args[i].split(",");
 						int index = new Random().nextInt(rules.length);
 						boolean isMod = false;
-						for (Modifier mod : ModManager.instance().getAllMods()) {
+						for (Modifier mod : ModManager.instance().getAllowedMods()) {
 							if (mod.getName().replace(" ", "_").equals(rules[index])) {
 								isMod = true;
 								break;
