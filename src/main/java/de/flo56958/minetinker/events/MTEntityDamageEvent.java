@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * The Event is only a extra trigger for the MineTinker-Modifiers (mostly used for Armor)
+ * The Event is only an extra trigger for the MineTinker-Modifiers (mostly used for Armor)
  * it's only purpose is it to activate the Listeners if a EntityDamageEvent matches
  * the criteria (right Armor, ...)
  */

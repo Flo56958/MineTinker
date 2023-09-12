@@ -19,7 +19,7 @@ import java.util.*;
 /**
  * Syntax of /mt addexp:
  * 		/mt addexp {Player} [Amount]
- *
+ * <p>
  * Legend:
  * 		{ }: not necessary
  * 		[ ]: necessary

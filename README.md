@@ -2,18 +2,18 @@
 
 # MineTinker
 <p align="center">
-    <a href="https://github.com/Flo56958/MineTinker" alt="Stars">
-        <img src="https://img.shields.io/github/stars/Flo56958/MineTinker?color=0088ff" /></a>
-    <a href="https://github.com/Flo56958/MineTinker/fork" alt="fork">
-        <img src="https://img.shields.io/github/forks/Flo56958/MineTinker?color=0088ff" /></a>
-    <a href="https://github.com/Flo56958/MineTinker/graphs/contributors" alt="Contributors">
-        <img src="https://img.shields.io/github/contributors/Flo56958/MineTinker" /></a>
-    <a href="https://github.com/Flo56958/MineTinker/pulse" alt="Activity">
-        <img src="https://img.shields.io/github/commit-activity/m/Flo56958/MineTinker" /></a>
-    <a href="https://github.com/Flo56958/MineTinker/issues" alt="Issues">
-        <img src="https://img.shields.io/github/issues/Flo56958/MineTinker" /></a>
-    <a href="https://www.codefactor.io/repository/github/flo56958/minetinker" alt="CodeFactor">
-        <img src="https://www.codefactor.io/repository/github/flo56958/minetinker/badge" /></a>
+    <a href="https://github.com/Flo56958/MineTinker">
+        <img src="https://img.shields.io/github/stars/Flo56958/MineTinker?color=0088ff" alt="Stars"/></a>
+    <a href="https://github.com/Flo56958/MineTinker/fork">
+        <img src="https://img.shields.io/github/forks/Flo56958/MineTinker?color=0088ff" alt="fork"/></a>
+    <a href="https://github.com/Flo56958/MineTinker/graphs/contributors">
+        <img src="https://img.shields.io/github/contributors/Flo56958/MineTinker" alt="Contributors"/></a>
+    <a href="https://github.com/Flo56958/MineTinker/pulse">
+        <img src="https://img.shields.io/github/commit-activity/m/Flo56958/MineTinker" alt="Activity"/></a>
+    <a href="https://github.com/Flo56958/MineTinker/issues">
+        <img src="https://img.shields.io/github/issues/Flo56958/MineTinker" alt="Issues"/></a>
+    <a href="https://www.codefactor.io/repository/github/flo56958/minetinker">
+        <img src="https://www.codefactor.io/repository/github/flo56958/minetinker/badge" alt="CodeFactor"/></a>
     <a href="https://discord.gg/ZEVNKhN">
         <img src="https://img.shields.io/discord/493806232784732181?logo=discord"
             alt="chat on Discord"></a>
@@ -27,7 +27,7 @@ Almost everything is configurable: recipes, level caps, which modifiers are enab
 ***
 ## Development
 This repository is maintained by Flo56958 and mainly contributed by [Draycia](https://github.com/Draycia) and Flo56958. 
-Everything is made in our free time and we are getting no money for making this plugin. It is mostly because we enjoy 
+Everything is made in our free time, and we are getting no money for making this plugin. It is mostly because we enjoy 
 coding and having fun making this Plugin. The development of MineTinker is therefore as fast as we see fit and have the 
 necessary time and motivation implement new features and fix bugs. The release schedule is not fixed and depends on the 
 features and bugfixes planned for the next release which can vary greatly with further development. If you cannot wait on
@@ -36,7 +36,7 @@ If you need support on a code topic, we are glad to assist! (But please do not a
 ***
 
 ## How to contribute to this repository:
-MineTinker is in development and we are constantly fixing bugs and adding new features. 
+MineTinker is in development, and we are constantly fixing bugs and adding new features. 
 **Everyone is welcome to contribute to this plugin.**
 
 There are several options for contributing:

@@ -1002,7 +1002,7 @@ public class ModManager {
 				meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
 			}
 			
-			if (knockback_res > 0.0d) { // The only way to be greater than 0 is being a netherite armor, so it doesn't needs is16compatible bool
+			if (knockback_res > 0.0d) { // The only way to be greater than 0 is being a netherite armor, so it doesn't need is16compatible bool
 				meta.removeAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
 				meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResAM);
 			}

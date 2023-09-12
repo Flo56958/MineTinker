@@ -152,7 +152,7 @@ public abstract class ButtonAction {
 			playerToAction.put(player, this);
 			player.closeInventory();
 			ChatWriter.sendMessage(player, ChatColor.RED, LanguageManager.getString("GUI.ButtonAction.REQUEST_INPUT")
-					.replace("%data", data + ChatColor.RESET + "" + ChatColor.RED));
+					.replace("%data", data + ChatColor.RESET + ChatColor.RED));
 		}
 
 		private void afterRun(Player player) {

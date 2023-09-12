@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 /**
  * Syntax of /mt convert:
  * 		/mt convert [name]
- *
+ * <p>
  * Legend:
  * 		{ }: not necessary
  * 		[ ]: necessary

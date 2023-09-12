@@ -157,7 +157,7 @@ public class GUI implements Listener {
 
 	/**
 	 * This will open the GUI again for further interactions.
-	 * can be used to micro manage the performance of the GUIs
+	 * can be used to micromanage the performance of the GUIs
 	 */
 	public void open() {
 		synchronized (this) {
@@ -173,7 +173,7 @@ public class GUI implements Listener {
 	/**
 	 * this will close the Listener section of the GUI
 	 * show() will throw Exception when called after close()
-	 * can be used to micro manage the performance of the GUIs
+	 * can be used to micromanage the performance of the GUIs
 	 */
 	public void close() {
 		synchronized (this) {

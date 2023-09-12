@@ -63,7 +63,7 @@ public class CommandManager implements TabExecutor {
 			return true;
 		}
 
-		if (args.length <= 0) {
+		if (args.length == 0) {
 			sendError(sender, LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
 			sendHelp(sender, null);
 			return true;

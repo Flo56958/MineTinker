@@ -114,7 +114,7 @@ public class DataHandler {
 		Bukkit.getPluginManager().callEvent(breakEvent);
 		
 		//Check if Event got cancelled and if not destroy the block and check if the player can successfully break the blocks (incl. drops)
-		//Block#breakNaturally(ItemStack itemStack) can not be used as it drops Items itself (without Event and we don't want that)
+		//Block#breakNaturally(ItemStack itemStack) can not be used as it drops Items itself (without Event, and we don't want that)
 		if (!breakEvent.isCancelled()) {
 			//Get all drops to drop
 			Collection<ItemStack> items = block.getDrops(itemStack);

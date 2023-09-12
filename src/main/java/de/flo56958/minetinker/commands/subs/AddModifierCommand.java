@@ -17,7 +17,7 @@ import java.util.*;
 /**
  * Syntax of /mt addmodifier:
  * 		/mt addmodifier [Modifier] {Level}
- *
+ * <p>
  * Legend:
  * 		{ }: not necessary
  * 		[ ]: necessary

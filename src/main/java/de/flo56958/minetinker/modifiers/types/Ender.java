@@ -171,7 +171,7 @@ public class Ender extends Modifier implements Listener {
 	/**
 	 * The Effect for the EntityDamageByEntityEvent
 	 *
-	 * @param event
+	 * @param event the event
 	 */
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageByEntityEvent event) {

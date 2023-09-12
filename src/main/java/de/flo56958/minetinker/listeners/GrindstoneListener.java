@@ -176,7 +176,7 @@ public class GrindstoneListener implements Listener {
 				}
 			}
 		} else {
-			// Avoid handling the clicks inside of the inventory.
+			// Avoid handling the clicks inside the inventory.
 			if (event.getSlotType() != InventoryType.SlotType.RESULT
 					&& event.getSlotType() != InventoryType.SlotType.CRAFTING) {
 				return;

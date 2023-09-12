@@ -19,7 +19,7 @@ import java.util.*;
 /**
  * Syntax of /mt convert:
  * 		/mt convert {Player}
- *
+ * <p>
  * Legend:
  * 		{ }: not necessary
  * 		[ ]: necessary

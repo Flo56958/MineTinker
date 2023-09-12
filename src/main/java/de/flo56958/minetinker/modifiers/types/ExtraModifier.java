@@ -54,7 +54,7 @@ public class ExtraModifier extends Modifier {
 
 		config.addDefault("Allowed", true);
 		config.addDefault("Color", "%WHITE%");
-		config.addDefault("ExtraModifierGain", 1); //How much Slots should be added per Nether-Star
+		config.addDefault("ExtraModifierGain", 1); //How many Slots should be added per Nether-Star
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);

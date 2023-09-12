@@ -80,7 +80,7 @@ public class Propelling extends Modifier implements Listener {
 		config.addDefault("Elytra.Sound", true);
 		config.addDefault("Elytra.Particles", true);
 		config.addDefault("ConsiderReinforced", true); //should Reinforced (Unbreaking) be considered
-		config.addDefault("ReinforcedUseLessDurability", true); //should Reinforced lessen the durability damage or if false chance to dont use durability at all
+		config.addDefault("ReinforcedUseLessDurability", true); //should Reinforced lessen the durability damage or if false chance to don't use durability at all
 
 		config.addDefault("EnchantCost", 25);
 		config.addDefault("Enchantable", true);

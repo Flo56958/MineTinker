@@ -14,7 +14,7 @@ public interface SubCommand {
 
 	/**
 	 * This method will be called by the CommandManager's TabCompleter after permission check.
-	 * @param sender	The command sender that will receive the auto completion hints
+	 * @param sender	The command sender that will receive the auto-completion hints
 	 * @param args		The arguments already written by the command sender
 	 * @return			The hints or null
 	 */

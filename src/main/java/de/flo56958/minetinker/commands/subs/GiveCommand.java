@@ -23,7 +23,7 @@ import java.util.*;
 /**
  * Syntax of /mt give:
  * 		/mt give {Player} [Material]
- *
+ * <p>
  * Legend:
  * 		{ }: not necessary
  * 		[ ]: necessary

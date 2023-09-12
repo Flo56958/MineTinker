@@ -17,7 +17,7 @@ import java.util.*;
 /**
  * Syntax of /mt removemodifier:
  * 		/mt removemodifier [Modifier] {Amount}
- *
+ * <p>
  * Legend:
  * 		{ }: not necessary
  * 		[ ]: necessary

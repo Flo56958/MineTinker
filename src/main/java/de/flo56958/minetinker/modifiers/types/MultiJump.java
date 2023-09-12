@@ -196,7 +196,7 @@ public class MultiJump extends Modifier implements Listener {
 	}
 
 	//This event only triggers when the Player has AllowFlight set to true.
-	//This method of jumping is not really clean.
+	//This method of jumping is not clean.
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onFly(@NotNull final PlayerToggleFlightEvent e) {
 		final Player p = e.getPlayer();

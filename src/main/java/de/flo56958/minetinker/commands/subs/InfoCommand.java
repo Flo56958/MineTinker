@@ -99,7 +99,6 @@ public class InfoCommand implements SubCommand {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
 		if (sender instanceof Player player) {
-			player = (Player) sender;
 			infoGUI.show(player);
 		} else {
 			ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.Info.Line1", null)

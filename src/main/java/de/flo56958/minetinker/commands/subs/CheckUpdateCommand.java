@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * Syntax of /mt checkupdate:
  * 		/mt checkupdate
- *
+ * <p>
  * Legend:
  * 		{ }: not necessary
  * 		[ ]: necessary

@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * The Event is only a extra trigger for the MineTinker-Modifiers
+ * The Event is only an extra trigger for the MineTinker-Modifiers
  * it's only purpose is it to activate the Listeners if a ProjectileHitEvent matches
  * the criteria (right Tool, ...)
  */

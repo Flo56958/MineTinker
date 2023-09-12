@@ -84,7 +84,7 @@ public class GUIs {
 				ItemMeta meta = item.getItemMeta();
 
 				if (meta != null) {
-					meta.setDisplayName(m.getColor() + "" + ChatColor.UNDERLINE + "" + ChatColor.BOLD + m.getName());
+					meta.setDisplayName(m.getColor() + "" + ChatColor.UNDERLINE + ChatColor.BOLD + m.getName());
 					ArrayList<String> lore = new ArrayList<>();
 
 					String modifierItemName = Objects.requireNonNull(m.getModItem().getItemMeta()).getDisplayName();
@@ -127,7 +127,7 @@ public class GUIs {
 						lore.addAll(ChatWriter.splitString(LanguageManager.getString("GUIs.Modifiers.BlockToEnchant")
 								.replace("%block", ChatColor.ITALIC
 										+ ChatWriter.toCamel(MineTinker.getPlugin().getConfig().getString("BlockToEnchantModifiers", ""))
-										+ ChatColor.RESET + "" + ChatColor.WHITE)
+										+ ChatColor.RESET + ChatColor.WHITE)
 								.replace("%mat", ChatWriter.toCamel(m.getModItem().getType().name())).replace("%key",
 										LanguageManager.getString("GUIs.RightClick")), 30));
 					}
@@ -320,7 +320,7 @@ public class GUIs {
 				}
 
 				if (buttonMeta == null) continue;
-				buttonMeta.setDisplayName(ChatColor.RESET + "" + ChatColor.WHITE + "" + ChatColor.BOLD + name);
+				buttonMeta.setDisplayName(ChatColor.RESET + "" + ChatColor.WHITE + ChatColor.BOLD + name);
 				buttonMeta.setLore(new ArrayList<>());
 				buttonStack.setItemMeta(buttonMeta);
 

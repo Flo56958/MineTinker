@@ -114,7 +114,7 @@ public enum ToolType {
 	 * get the tooltype for a given material
 	 *
 	 * @param material the material to check
-	 * @return material's tooltype, null if invalid
+	 * @return material's tooltype
 	 */
 	public static @NotNull ToolType get(@Nullable Material material) {
 		if (material == null) return ToolType.INVALID;

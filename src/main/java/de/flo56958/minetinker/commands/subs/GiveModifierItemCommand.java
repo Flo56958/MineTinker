@@ -20,7 +20,7 @@ import java.util.*;
 /**
  * Syntax of /mt givemodifieritem:
  * 		/mt givemodifieritem {Player} [Modifier] {Amount}
- *
+ * <p>
  * Legend:
  * 		{ }: not necessary
  * 		[ ]: necessary

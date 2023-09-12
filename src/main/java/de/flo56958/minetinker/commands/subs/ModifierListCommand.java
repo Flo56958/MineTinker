@@ -22,7 +22,7 @@ import java.util.Map;
  * Syntax of /mt modifiers:
  * 		/mt modifiers {-t}
  *  -t will paste information in the chat instead of using the GUI
- *
+ * <p>
  * Legend:
  * 		{ }: not necessary
  * 		[ ]: necessary

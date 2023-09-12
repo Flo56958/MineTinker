@@ -58,9 +58,9 @@ public class ChatWriter {
 	/**
 	 * Sends a chat message
 	 *
-	 * @param receiver
+	 * @param receiver The receiver of the message
 	 * @param color    The ChatColor after the CHAT_PREFIX
-	 * @param message
+	 * @param message  The content of the message
 	 */
 	public static void sendMessage(final CommandSender receiver, final ChatColor color, final String message) {
 		if (MineTinker.getPlugin().getConfig().getBoolean("chat-messages")) {
@@ -72,7 +72,7 @@ public class ChatWriter {
 	 * Logs specific information on MineTinker-Activities (toggleable through config)
 	 *
 	 * @param debug   Is the information a (unnecessary) debug information?
-	 * @param message
+	 * @param message The content of the message
 	 */
 	public static void log(final boolean debug, final String message) {
 		if (debug) {
@@ -89,7 +89,7 @@ public class ChatWriter {
 	/**
 	 * Logs severe errors. (not toggleable)
 	 *
-	 * @param message
+	 * @param message The content of the message
 	 */
 	public static void logError(final String message) {
 		Bukkit.getLogger().log(Level.SEVERE, CHAT_PREFIX + " " + message);
@@ -98,7 +98,7 @@ public class ChatWriter {
 	/**
 	 * Logs information. (not toggleable)
 	 *
-	 * @param message
+	 * @param message The content of the message
 	 */
 	public static void logInfo(final String message) {
 		Bukkit.getLogger().log(Level.INFO, CHAT_PREFIX + " " + message);
@@ -107,7 +107,7 @@ public class ChatWriter {
 	/**
 	 * Logs information with the ability to have text color (not toggleable)
 	 *
-	 * @param message
+	 * @param message The content of the message
 	 */
 	public static void logColor(final String message) {
 		Bukkit.getConsoleSender().sendMessage(CHAT_PREFIX + " " + message);
@@ -150,8 +150,8 @@ public class ChatWriter {
 	/**
 	 * Sends a message to the players actionbar
 	 *
-	 * @param player
-	 * @param message
+	 * @param player The player to send the message to
+	 * @param message The content of the message
 	 */
 	public static void sendActionBar(final Player player, final String message) {
 		//Extract from the source code of the Actionbar-API (altered)

@@ -59,7 +59,7 @@ public class Contributor {
 			}
 			contributorList.removeIf(o -> o.get("login").getAsString().contains("[bot]")); //filter out bots
 
-			//Add all Github Contributers that dont have Minecraft or Transifex
+			//Add all GitHub Contributers that don't have Minecraft or Transifex
 			contributorList.removeIf(o -> contributors.stream().anyMatch(c -> o.get("login").getAsString().equals(c.getGithubUsername())));
 			contributorList.forEach(o -> contributors.add(new Contributor(null, o, null, null, null, null)));
 		} catch (IOException e) {
