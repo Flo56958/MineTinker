@@ -195,12 +195,10 @@ public class EntityListener implements Listener {
 		// It works as a safeguard in general though.
 		if (modManager.isModifierItem(tool)) {
 			event.setCancelled(true);
-			player.updateInventory();
 			player.setCooldown(tool.getType(), 10);
 			return;
 		} else if (modManager.isModifierItem(player.getInventory().getItemInOffHand())) {
 			event.setCancelled(true);
-			player.updateInventory();
 			player.setCooldown(player.getInventory().getItemInOffHand().getType(), 10);
 			return;
 		}
@@ -247,10 +245,7 @@ public class EntityListener implements Listener {
 
 		if (mod != null && mod.getModItem().getType() == Material.ARROW) {
 			event.setCancelled(true);
-
-			player.updateInventory();
 			player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
-
 			return true;
 		}
 		return false;
