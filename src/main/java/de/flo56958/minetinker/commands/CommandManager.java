@@ -196,8 +196,8 @@ public class CommandManager implements TabExecutor {
 
 			for (ArgumentType type : atypes) {
                 switch (type) {
-                    case COLORED_TEXT -> {
-                    }
+                    case COLORED_TEXT -> //Convert to colored text
+							args[i] = ChatWriter.addColors(args[i]);
                     case PLAYER -> {
                         if (args[i].startsWith("@p")) {
                             if (sender instanceof Player) {
