@@ -104,7 +104,7 @@ public class EnchantingListener implements Listener {
 							modManager.setFreeSlots(event.getItem(), modManager.getFreeSlots(event.getItem()) - modifier.getSlotCost());
 						if (MineTinker.getPlugin().getConfig().getBoolean("RefundLostEnchantmentsAsItems", true)) {
 							for (; i < entry.getValue(); i++) { //Drop lost enchantments due to some error in addMod
-								if (event.getEnchanter().getInventory().addItem(modifier.getModItem()).size() != 0) { //adds items to (full) inventory
+								if (!event.getEnchanter().getInventory().addItem(modifier.getModItem()).isEmpty()) { //adds items to (full) inventory
 									event.getEnchanter().getWorld().dropItem(event.getEnchanter().getLocation(), modifier.getModItem());
 								} // no else as it gets added in if-clause
 							}
@@ -117,7 +117,7 @@ public class EnchantingListener implements Listener {
 		}
 
 		toremove.forEach(enchants::remove);
-		if (enchants.size() == 0) { //This Map should never be empty as the
+		if (enchants.isEmpty()) { //This Map should never be empty as the
 			enchants.put(fakeEnchant, 1);
 			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> event.getItem().removeEnchantment(fakeEnchant), 1);
 		}
@@ -171,7 +171,7 @@ public class EnchantingListener implements Listener {
 							if (MineTinker.getPlugin().getConfig().getBoolean("RefundLostEnchantmentsAsItems", true)
 									&& event.getSlotType() == InventoryType.SlotType.RESULT) {
 								for (; i < difference; i++) { //Drop lost enchantments due to some error in addMod
-									if (player.getInventory().addItem(modifier.getModItem()).size() != 0) { //adds items to (full) inventory
+									if (!player.getInventory().addItem(modifier.getModItem()).isEmpty()) { //adds items to (full) inventory
 										player.getWorld().dropItem(player.getLocation(), modifier.getModItem());
 									} // no else as it gets added in if-clause
 								}

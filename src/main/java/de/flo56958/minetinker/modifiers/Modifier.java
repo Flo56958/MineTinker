@@ -383,7 +383,7 @@ public abstract class Modifier {
 		}
 
 		if (player.getGameMode() == GameMode.CREATIVE) {
-			if (inventory.addItem(getModItem()).size() != 0) { //adds items to (full) inventory
+			if (!inventory.addItem(getModItem()).isEmpty()) { //adds items to (full) inventory
 				world.dropItem(location, getModItem());
 			} // no else as it gets added in if
 
@@ -399,7 +399,7 @@ public abstract class Modifier {
 			player.setLevel(newLevel);
 			item.setAmount(amount - 1);
 
-			if (inventory.addItem(getModItem()).size() != 0) { //adds items to (full) inventory
+			if (!inventory.addItem(getModItem()).isEmpty()) { //adds items to (full) inventory
 				world.dropItem(location, getModItem());
 			} // no else as it gets added in if
 

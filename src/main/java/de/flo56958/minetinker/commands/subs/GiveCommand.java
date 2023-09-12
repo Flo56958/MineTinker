@@ -59,7 +59,7 @@ public class GiveCommand implements SubCommand {
 				String name = args[1].replaceAll("_", " ");
 				for (final ItemStack stack : BuildersWandListener.getWands()) {
 					if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
-						if (player.getInventory().addItem(stack.clone()).size() != 0) { //adds items to (full) inventory
+						if (!player.getInventory().addItem(stack.clone()).isEmpty()) { //adds items to (full) inventory
 							player.getWorld().dropItem(player.getLocation(), stack.clone());
 						} // no else as it gets added in if
 						return true;
@@ -73,7 +73,7 @@ public class GiveCommand implements SubCommand {
 		final ItemStack tool = new ItemStack(material, 1);
 		ModManager.instance().convertItemStack(tool, player);
 
-		if (player.getInventory().addItem(tool).size() != 0) { //adds items to (full) inventory
+		if (!player.getInventory().addItem(tool).isEmpty()) { //adds items to (full) inventory
 			player.getWorld().dropItem(player.getLocation(), tool);
 		} // no else as it gets added in if
 

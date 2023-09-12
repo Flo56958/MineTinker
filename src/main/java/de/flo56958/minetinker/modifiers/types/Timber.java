@@ -90,12 +90,7 @@ public class Timber extends Modifier implements Listener {
 		this.maxBlocks = (this.maxBlocks == -1) ? Integer.MAX_VALUE : this.maxBlocks;
 	}
 
-	@Override
-	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
-		return true;
-	}
-
-	@EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true)
 	public void effect(WorldSaveEvent e) {
 		if (Bukkit.getOnlinePlayers().isEmpty()) {
 			events.clear();

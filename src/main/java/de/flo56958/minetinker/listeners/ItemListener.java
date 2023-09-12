@@ -171,7 +171,7 @@ public class ItemListener implements Listener {
 
 		item.setItemMeta(meta);
 
-		if (player.getInventory().addItem(item).size() != 0) { //adds items to (full) inventory
+		if (!player.getInventory().addItem(item).isEmpty()) { //adds items to (full) inventory
 			if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
 				Bukkit.getPluginManager().callEvent(
 						new PlayerDropItemEvent(player, player.getWorld().dropItem(

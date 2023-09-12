@@ -215,7 +215,7 @@ public class Directing extends Modifier implements Listener {
 
 			stat += current.getAmount();
 
-			if (player.getInventory().addItem(current).size() != 0) { //adds items to (full) inventory
+			if (!player.getInventory().addItem(current).isEmpty()) { //adds items to (full) inventory
 				player.getWorld().dropItem(player.getLocation(), current);
 			} // no else as it gets added in if-clause
 			toremove.add(current);

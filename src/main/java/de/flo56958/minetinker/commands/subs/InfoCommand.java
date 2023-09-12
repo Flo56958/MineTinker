@@ -60,7 +60,7 @@ public class InfoCommand implements SubCommand {
 			meta.setLore(lore);
 			stack.setItemMeta(meta);
 			window.addButton(3, stack);
-			if (Contributor.getContributors().size() != 0) {
+			if (!Contributor.getContributors().isEmpty()) {
 				stack = new ItemStack(Material.PLAYER_HEAD);
 				meta = stack.getItemMeta();
 				if (meta instanceof SkullMeta) {

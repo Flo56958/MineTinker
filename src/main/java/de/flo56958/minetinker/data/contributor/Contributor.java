@@ -146,7 +146,7 @@ public class Contributor {
 				}
 			});
 		}
-		if (displayName.length() > 0) {
+		if (!displayName.isEmpty()) {
 			itemMeta.setDisplayName(displayName.substring(0, displayName.length() - 1));
 		}
 		itemMeta.setLore(lore);

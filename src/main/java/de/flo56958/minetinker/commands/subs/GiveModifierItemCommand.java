@@ -138,7 +138,7 @@ public class GiveModifierItemCommand implements SubCommand {
 		}
 		final ItemStack item = mod.getModItem().clone();
 		item.setAmount(amount);
-		if (player.getInventory().addItem(item).size() != 0) { //adds items to (full) inventory
+		if (!player.getInventory().addItem(item).isEmpty()) { //adds items to (full) inventory
 			player.getWorld().dropItem(player.getLocation(), item);
 		} // no else as it gets added in if
 		return true;

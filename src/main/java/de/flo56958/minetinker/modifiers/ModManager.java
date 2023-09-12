@@ -782,7 +782,7 @@ public class ModManager {
 						}
 					}
 
-					if (toRemove.size() > 0) {
+					if (!toRemove.isEmpty()) {
 						int startIndex = oldLore.indexOf(toRemove.get(0));
 						//add Lore that was before MineTinker in front of it again
 						for (int i = 0; i < startIndex; i++) {
@@ -1153,7 +1153,7 @@ public class ModManager {
 				mods.remove(ExtraModifier.instance());
 				int amount = rand.nextInt(config.getInt("ConvertLoot.MaximumNumberOfModifiers") + 1);
 				for (int i = 0; i < amount; i++) {
-					while (mods.size() > 0) {
+					while (!mods.isEmpty()) {
 						final int index = rand.nextInt(mods.size());
 						final Modifier mod = mods.get(index);
 						if (addMod(player, item, mod, false, true, true,

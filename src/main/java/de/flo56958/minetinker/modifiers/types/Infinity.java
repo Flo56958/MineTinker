@@ -116,7 +116,7 @@ public class Infinity extends Modifier implements Listener {
 		if (!modManager.hasMod(tool, this)) return;
 
 		if(!((Arrow) arrow).hasCustomEffects()) {
-			if (player.getInventory().addItem(new ItemStack(Material.ARROW, 1)).size() != 0) { //adds items to (full) inventory
+			if (!player.getInventory().addItem(new ItemStack(Material.ARROW, 1)).isEmpty()) { //adds items to (full) inventory
 				player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.ARROW, 1)); //drops item when inventory is full
 			} // no else as it gets added in if
 

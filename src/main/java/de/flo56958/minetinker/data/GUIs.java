@@ -88,7 +88,7 @@ public class GUIs {
 					ArrayList<String> lore = new ArrayList<>();
 
 					String modifierItemName = Objects.requireNonNull(m.getModItem().getItemMeta()).getDisplayName();
-					if (!modifierItemName.equals("")) {
+					if (!modifierItemName.isEmpty()) {
 						lore.add(ChatColor.WHITE + modifierItemName);
 						lore.add("");
 					}
@@ -206,7 +206,7 @@ public class GUIs {
 					modButton.addAction(ClickType.SHIFT_LEFT, new ButtonAction.RUN_RUNNABLE_ON_PLAYER(modButton,
 							(player, input) -> {
 								if (player.hasPermission("minetinker.commands.givemodifieritem")) {
-									if (player.getInventory().addItem(m.getModItem()).size() != 0) { //adds items to (full) inventory
+									if (!player.getInventory().addItem(m.getModItem()).isEmpty()) { //adds items to (full) inventory
 										player.getWorld().dropItem(player.getLocation(), m.getModItem());
 									} // no else as it gets added in if-clause
 								}
@@ -670,7 +670,7 @@ public class GUIs {
 
 		for (String key : root.getKeys(true)) {
 			String explanation = LanguageManager.getString(start + key);
-			if (!explanation.equals("")) {
+			if (!explanation.isEmpty()) {
 				explanations.put(key, explanation);
 			}
 		}

@@ -195,90 +195,91 @@ public class CommandManager implements TabExecutor {
 			if (atypes == null) continue;
 
 			for (ArgumentType type : atypes) {
-				switch (type) {
-					case COLORED_TEXT:
-						break;
-					case PLAYER:
-						if (args[i].startsWith("@p")) {
-							if (sender instanceof Player) {
-								args[i] = sender.getName();
-							} else if (sender instanceof BlockCommandSender) {
-								List<Player> players = ((BlockCommandSender) sender).getBlock()
-																					.getWorld().getPlayers();
-								double distance = Double.POSITIVE_INFINITY;
+                switch (type) {
+                    case COLORED_TEXT -> {
+                    }
+                    case PLAYER -> {
+                        if (args[i].startsWith("@p")) {
+                            if (sender instanceof Player) {
+                                args[i] = sender.getName();
+                            } else if (sender instanceof BlockCommandSender) {
+                                List<Player> players = ((BlockCommandSender) sender).getBlock()
+                                        .getWorld().getPlayers();
+                                double distance = Double.POSITIVE_INFINITY;
 
-								for (Player player : players) {
-									double newDist = player.getLocation().distance(((BlockCommandSender) sender)
-																					.getBlock().getLocation());
-									if (newDist < distance) {
-										distance = newDist;
-										args[i] = player.getName();
-									}
-								}
-							}
-						} else if (args[i].startsWith("@rw")) { //random Player in World
-							World world = null;
-							if (sender instanceof BlockCommandSender) {
-								world = ((BlockCommandSender) sender).getBlock().getWorld();
-							} else if (sender instanceof Entity) {
-								world = ((Entity) sender).getWorld();
-							}
+                                for (Player player : players) {
+                                    double newDist = player.getLocation().distance(((BlockCommandSender) sender)
+                                            .getBlock().getLocation());
+                                    if (newDist < distance) {
+                                        distance = newDist;
+                                        args[i] = player.getName();
+                                    }
+                                }
+                            }
+                        } else if (args[i].startsWith("@rw")) { //random Player in World
+                            World world = null;
+                            if (sender instanceof BlockCommandSender) {
+                                world = ((BlockCommandSender) sender).getBlock().getWorld();
+                            } else if (sender instanceof Entity) {
+                                world = ((Entity) sender).getWorld();
+                            }
 
-							if (world == null) continue;
+                            if (world == null) continue;
 
-							List<Player> players = world.getPlayers();
-							args[i] = players.get(new Random().nextInt(players.size())).getName();
-						} else if (args[i].startsWith("@r")) {
-							Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
-							args[i] = onlinePlayers.toArray(new Player[0])
-									[new Random().nextInt(onlinePlayers.size())].getName();
-						} else {
-							try {
-								UUID uuid = UUID.fromString(args[i]);
-								Player player = Bukkit.getPlayer(uuid);
-								if (player != null) args[i] = player.getName();
-								else {
-									sendError(sender,
-											LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound")
-											.replace("%p", args[i]));
-								}
-							} catch (IllegalArgumentException ignored) {
-							}
-						}
-						break;
-					case RANDOM_NUMBER:
-						//like range 1-5 (inclusive), or from 1,2,3,6,7,8, or all of them combined like 1-5,7-9,11,13
-						String[] rules = args[i].split(",");
-						int index = new Random().nextInt(rules.length);
-						boolean isMod = false;
-						for (Modifier mod : ModManager.instance().getAllowedMods()) {
-							if (mod.getName().replace(" ", "_").equals(rules[index])) {
-								isMod = true;
-								break;
-							}
-						}
-						if (!isMod && rules[index].indexOf('-') != -1) {
-							String[] nums = rules[index].split("-");
-							if (nums.length != 2) {
-								sendError(sender,
-										LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
-								break;
-							}
-							try{
-								int min = Integer.parseInt(nums[0]);
-								int max = Integer.parseInt(nums[1]);
-								int rand = new Random().nextInt(max - min) + min;
-								args[i] = String.valueOf(rand);
-							} catch (NumberFormatException e) {
-								sendError(sender,
-										LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
-							}
-						} else {
-							args[i] = rules[index];
-						}
-						break;
-					default:
-				}
+                            List<Player> players = world.getPlayers();
+                            args[i] = players.get(new Random().nextInt(players.size())).getName();
+                        } else if (args[i].startsWith("@r")) {
+                            Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
+                            args[i] = onlinePlayers.toArray(new Player[0])
+                                    [new Random().nextInt(onlinePlayers.size())].getName();
+                        } else {
+                            try {
+                                UUID uuid = UUID.fromString(args[i]);
+                                Player player = Bukkit.getPlayer(uuid);
+                                if (player != null) args[i] = player.getName();
+                                else {
+                                    sendError(sender,
+                                            LanguageManager.getString("Commands.Failure.Cause.PlayerNotFound")
+                                                    .replace("%p", args[i]));
+                                }
+                            } catch (IllegalArgumentException ignored) {
+                            }
+                        }
+                    }
+                    case RANDOM_NUMBER -> {
+                        //like range 1-5 (inclusive), or from 1,2,3,6,7,8, or all of them combined like 1-5,7-9,11,13
+                        String[] rules = args[i].split(",");
+                        int index = new Random().nextInt(rules.length);
+                        boolean isMod = false;
+                        for (Modifier mod : ModManager.instance().getAllowedMods()) {
+                            if (mod.getName().replace(" ", "_").equals(rules[index])) {
+                                isMod = true;
+                                break;
+                            }
+                        }
+                        if (!isMod && rules[index].indexOf('-') != -1) {
+                            String[] nums = rules[index].split("-");
+                            if (nums.length != 2) {
+                                sendError(sender,
+                                        LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+                                break;
+                            }
+                            try {
+                                int min = Integer.parseInt(nums[0]);
+                                int max = Integer.parseInt(nums[1]);
+                                int rand = new Random().nextInt(max - min) + min;
+                                args[i] = String.valueOf(rand);
+                            } catch (NumberFormatException e) {
+                                sendError(sender,
+                                        LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+                            }
+                        } else {
+                            args[i] = rules[index];
+                        }
+                    }
+                    default -> {
+                    }
+                }
 			}
 		}
 	}

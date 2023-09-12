@@ -155,7 +155,7 @@ public class TinkerListener implements Listener {
 
 							final ItemStack drop = new ItemStack(m, amount);
 
-							if (player.getInventory().addItem(drop).size() != 0) { //adds items to (full) inventory
+							if (!player.getInventory().addItem(drop).isEmpty()) { //adds items to (full) inventory
 								player.getWorld().dropItem(player.getLocation(), drop); //drops item when inventory is full
 							} // no else as it gets added in if
 						}
@@ -179,7 +179,7 @@ public class TinkerListener implements Listener {
 								final Modifier mod = mods.get(index);
 								if (config.getBoolean("LevelUpEvents.RandomModifier.DropAsItem", false)) {
 									appliedRandomMod = true;
-									if (player.getInventory().addItem(mod.getModItem()).size() != 0) { //adds items to (full) inventory
+									if (!player.getInventory().addItem(mod.getModItem()).isEmpty()) { //adds items to (full) inventory
 										player.getWorld().dropItem(player.getLocation(), mod.getModItem()); //drops item when inventory is full
 									} // no else as it gets added in if
 								} else {

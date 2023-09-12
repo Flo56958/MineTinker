@@ -308,7 +308,7 @@ public class AutoSmelt extends Modifier implements Listener {
 			ItemStack items = new ItemStack(loot, amount);
 
 			if (modManager.hasMod(tool, Directing.instance())) {
-				if (player.getInventory().addItem(items).size() != 0) { //adds items to (full) inventory
+				if (!player.getInventory().addItem(items).isEmpty()) { //adds items to (full) inventory
 					player.getWorld().dropItem(player.getLocation(), items);
 				} // no else as it gets added in if-clause
 			} else {
