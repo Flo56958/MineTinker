@@ -35,6 +35,7 @@ public class Ender extends Modifier implements Listener {
 	private boolean giveNauseaOnUse;
 	private int nauseaDuration;
 	private boolean giveBlindnessOnUse;
+	private boolean requireSneaking;
 	private int blindnessDuration;
 
 	private Ender() {
@@ -81,6 +82,7 @@ public class Ender extends Modifier implements Listener {
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
 		config.addDefault("MinimumToolLevelRequirement", 1);
+		config.addDefault("RequireSneaking", true);
 
 		config.addDefault("Recipe.Enabled", true);
 		config.addDefault("Recipe.Top", "PPP");
@@ -104,6 +106,7 @@ public class Ender extends Modifier implements Listener {
 		this.nauseaDuration = config.getInt("NauseaDuration", 5) * 20;
 		this.giveBlindnessOnUse = config.getBoolean("GiveBlindnessOnUse", true);
 		this.blindnessDuration = config.getInt("BlindnessDuration", 3) * 20;
+		this.requireSneaking = config.getBoolean("RequireSneaking", true);
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -125,7 +128,7 @@ public class Ender extends Modifier implements Listener {
 			return;
 		}
 
-		if (!player.isSneaking()) {
+		if (this.requireSneaking && !player.isSneaking()) {
 			return;
 		}
 
