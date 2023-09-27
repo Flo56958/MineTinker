@@ -15,7 +15,10 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -103,20 +106,16 @@ public class Ender extends Modifier implements Listener {
 		this.blindnessDuration = config.getInt("BlindnessDuration", 3) * 20;
 	}
 
-	//@EventHandler
-	//public void effect(ProjectileLaunchEvent event) {
-		// TODO: Add Metadata to arrow
-	//}
+	@EventHandler(ignoreCancelled = true)
+	public void effect(ProjectileLaunchEvent event) {
+		if (!this.isAllowed()) return;
+		Projectile arrow = event.getEntity();
+		if (!(arrow instanceof Arrow)) return;
+		if (!(arrow.getShooter() instanceof Player player)) {
+			return;
+		}
 
-	/**
-	 * The Effect for the ProjectileHitEvent
-	 *
-	 * @param event the Event
-	 */
-	@EventHandler
-	public void effect(MTProjectileHitEvent event) {
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
+		ItemStack tool = player.getInventory().getItemInMainHand();
 
 		if (!player.hasPermission("minetinker.modifiers.ender.use")) {
 			return;
@@ -130,10 +129,35 @@ public class Ender extends Modifier implements Listener {
 			return;
 		}
 
+		arrow.setMetadata(this.getKey(),
+				new FixedMetadataValue(this.getSource(),
+						new FixedMetadataValue(this.getSource(), 0)));
+
+	}
+
+	/**
+	 * The Effect for the ProjectileHitEvent
+	 *
+	 * @param event the Event
+	 */
+	@EventHandler(ignoreCancelled = true)
+	public void effect(MTProjectileHitEvent event) {
+		if (!this.isAllowed()) return;
+		Player player = event.getPlayer();
+		ItemStack tool = event.getTool();
+		Projectile arrow = event.getEvent().getEntity();
+		List<MetadataValue> activated = arrow.getMetadata(this.getKey());
+		if (activated.isEmpty()) return;
+
+		if (!player.hasPermission("minetinker.modifiers.ender.use")) {
+			return;
+		}
+
 		Location loc = event.getEvent().getEntity().getLocation().clone(); //Location of the Arrow
 		Location oldLoc = player.getLocation();
 
-		player.teleport(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(), player.getLocation().getYaw(), player.getLocation().getPitch()).add(0, 1, 0));
+		player.teleport(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(),
+				player.getLocation().getYaw(), player.getLocation().getPitch()).add(0, 1, 0));
 
 		if (this.hasSound) {
 			player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F);
@@ -178,10 +202,6 @@ public class Ender extends Modifier implements Listener {
 		Player player = event.getPlayer();
 		Entity entity = event.getEvent().getEntity();
 
-		if (!player.isSneaking()) {
-			return;
-		}
-
 		//The Damage cause was not the arrow and therefore Ender should not be triggered
 		if (!event.getEvent().getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)) {
 			return;
@@ -195,11 +215,13 @@ public class Ender extends Modifier implements Listener {
 			return;
 		}
 
-		ItemStack tool = event.getTool();
-
-		if (!modManager.hasMod(tool, this)) {
-			return; //No check needed, as Ender can only be applied on the Bow
+		if (!(event.getEvent().getDamager() instanceof Arrow arrow)) {
+			return;
 		}
+
+		ItemStack tool = event.getTool();
+		List<MetadataValue> activated = arrow.getMetadata(this.getKey());
+		if (activated.isEmpty()) return;
 
 		if (modManager.getModLevel(tool, this) < 2) {
 			return;
