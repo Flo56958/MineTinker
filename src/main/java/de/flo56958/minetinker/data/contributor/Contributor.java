@@ -4,6 +4,7 @@ import com.google.gson.*;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -108,7 +109,7 @@ public class Contributor {
 							StandardCharsets.UTF_8).useDelimiter("\\A").next()).getAsJsonObject();
 					String name = mcLookup.get("name").getAsString();
 					displayName += name + "/";
-					((SkullMeta) itemMeta).setOwner(name);
+					((SkullMeta) itemMeta).setOwningPlayer(Bukkit.getOfflinePlayer(mcUUID));
 				} catch (IOException | NoSuchElementException e) {
 					ChatWriter.logError(LanguageManager.getString("Alert.MinecraftAPI"));
 					if (MineTinker.getPlugin().getConfig().getBoolean("logging.debug")) {

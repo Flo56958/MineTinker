@@ -64,7 +64,7 @@ public class InfoCommand implements SubCommand {
 				stack = new ItemStack(Material.PLAYER_HEAD);
 				meta = stack.getItemMeta();
 				if (meta instanceof SkullMeta) {
-					((SkullMeta) meta).setOwner("Flo56958");
+					((SkullMeta) meta).setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString("5b2c7922-ea02-4cfd-8003-e28778f8c225")));
 					meta.setDisplayName("Contributors");
 					meta.setLore(Collections.singletonList(ChatColor.WHITE + "Click here to see all contributors"));
 				}
