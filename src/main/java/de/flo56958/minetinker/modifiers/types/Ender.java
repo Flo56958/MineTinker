@@ -130,9 +130,7 @@ public class Ender extends Modifier implements Listener {
 		}
 
 		arrow.setMetadata(this.getKey(),
-				new FixedMetadataValue(this.getSource(),
-						new FixedMetadataValue(this.getSource(), 0)));
-
+				new FixedMetadataValue(this.getSource(), 0));
 	}
 
 	/**
