@@ -21,6 +21,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,40 +44,39 @@ public class EntityListener implements Listener {
 			return;
 		}
 
-		Player player;
+		Player player = null;
 
 		if (event.getDamager() instanceof final Arrow arrow && !(event.getDamager() instanceof Trident)) {
 			final ProjectileSource source = arrow.getShooter();
 
 			if (source instanceof Player) {
 				player = (Player) source;
-			} else {
-				return;
 			}
-
 		} else if (event.getDamager() instanceof final Trident trident) {
 			final ProjectileSource source = trident.getShooter();
 
 			if (source instanceof Player) {
 				player = (Player) source;
-			} else {
-				return;
 			}
-
 		} else if (event.getDamager() instanceof Player) {
 			player = (Player) event.getDamager();
-		} else {
-			return;
 		}
 
+		if (player == null) return;
+
+		ItemStack tool = player.getInventory().getItemInMainHand();
+		if (event.getDamager() instanceof final Arrow arrow) {
+			List<MetadataValue> tools = arrow.getMetadata(MineTinker.getPlugin().getName() + "item");
+			FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
+			if (obj == null || !(obj.value() instanceof ItemStack t)) return;
+			tool = t;
+		}
 
 //        if (e.getEntity() instanceof Player) {
 //            if (((Player) e.getEntity()).isBlocking()) {
 //                return;
 //            }
 //        }
-
-		ItemStack tool = player.getInventory().getItemInMainHand();
 
 		if (event.getDamager() instanceof final Trident trident) {
 			tool = TridentListener.TridentToItemStack.remove(trident);
@@ -168,10 +169,12 @@ public class EntityListener implements Listener {
 
 			tool = TridentListener.TridentToItemStack.get(trident);
 			TridentListener.TridentToItemStack.remove(trident);
-
-			if (tool == null) {
-				return;
-			}
+		} else if (event.getEntity() instanceof final Arrow arrow) {
+			List<MetadataValue> tools = arrow.getMetadata(MineTinker.getPlugin().getName() + "item");
+			if (tools.isEmpty()) return;
+			FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
+			if (obj == null || !(obj.value() instanceof ItemStack t)) return;
+			tool = t;
 		}
 
 		if (!modManager.isToolViable(tool)) {
@@ -212,6 +215,10 @@ public class EntityListener implements Listener {
 		}
 
 		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerArrowShot"), true);
+
+		// add item reference to arrow
+		event.getEntity().setMetadata(MineTinker.getPlugin().getName() + "item",
+				new FixedMetadataValue(MineTinker.getPlugin(), tool));
 
         /*
         Self-Repair and Experienced will no longer trigger on bowfire
