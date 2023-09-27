@@ -217,8 +217,10 @@ public class EntityListener implements Listener {
 		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerArrowShot"), true);
 
 		// add item reference to arrow
-		event.getEntity().setMetadata(MineTinker.getPlugin().getName() + "item",
-				new FixedMetadataValue(MineTinker.getPlugin(), tool));
+		if(!event.getEntity().hasMetadata(MineTinker.getPlugin().getName() + "item")) {
+			event.getEntity().setMetadata(MineTinker.getPlugin().getName() + "item",
+					new FixedMetadataValue(MineTinker.getPlugin(), tool));
+		}
 
         /*
         Self-Repair and Experienced will no longer trigger on bowfire
@@ -232,6 +234,13 @@ public class EntityListener implements Listener {
 		}
 
 		final ItemStack offHand = player.getInventory().getItemInOffHand();
+
+		final ItemStack bow = event.getBow();
+		if (bow != null) {
+			// add item reference to arrow
+			event.getProjectile().setMetadata(MineTinker.getPlugin().getName() + "item",
+					new FixedMetadataValue(MineTinker.getPlugin(), bow));
+		}
 
 		if (offHand.getType() == Material.ARROW) {
 			if (playSound(event, player, offHand)) return;

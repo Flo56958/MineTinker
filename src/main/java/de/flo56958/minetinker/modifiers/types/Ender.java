@@ -15,7 +15,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
@@ -110,15 +110,15 @@ public class Ender extends Modifier implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void effect(ProjectileLaunchEvent event) {
+	public void effect(EntityShootBowEvent event) {
 		if (!this.isAllowed()) return;
-		Projectile arrow = event.getEntity();
+		Entity arrow = event.getProjectile();
 		if (!(arrow instanceof Arrow)) return;
-		if (!(arrow.getShooter() instanceof Player player)) {
+		if (!(event.getEntity() instanceof Player player)) {
 			return;
 		}
 
-		ItemStack tool = player.getInventory().getItemInMainHand();
+		ItemStack tool = event.getBow();
 
 		if (!player.hasPermission("minetinker.modifiers.ender.use")) {
 			return;
