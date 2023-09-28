@@ -188,7 +188,7 @@ public class EntityListener implements Listener {
 		}
 	}
 
-	@EventHandler(ignoreCancelled = true)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onProjectileLaunch(@NotNull final ProjectileLaunchEvent event) {
 		if (!(event.getEntity().getShooter() instanceof final Player player)) {
 			return;

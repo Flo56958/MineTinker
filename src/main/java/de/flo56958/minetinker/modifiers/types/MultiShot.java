@@ -21,6 +21,7 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -140,7 +141,9 @@ public class MultiShot extends Modifier implements Listener {
 			return;
 		}
 
-		ItemStack tool = player.getInventory().getItemInMainHand();
+		List<MetadataValue> tools = arrow.getMetadata(MineTinker.getPlugin().getName() + "item");
+		FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
+		if (obj == null || !(obj.value() instanceof ItemStack tool)) return;
 
 		if (ToolType.CROSSBOW.contains(tool.getType()) && getConfig().getBoolean("UseEnchantOnCrossbow")) {
 			return;

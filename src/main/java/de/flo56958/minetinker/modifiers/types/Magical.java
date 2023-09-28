@@ -18,6 +18,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 
 import java.io.File;
 import java.util.*;
@@ -102,7 +104,7 @@ public class Magical extends Modifier implements Listener {
 				.replace("%xp", String.valueOf(this.experienceCost));
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onShoot(ProjectileLaunchEvent event) {
 		if (!this.isAllowed()) return;
 
@@ -113,7 +115,9 @@ public class Magical extends Modifier implements Listener {
 
 		if (!player.hasPermission("minetinker.modifiers.magical.use")) return;
 
-		ItemStack tool = player.getInventory().getItemInMainHand();
+		List<MetadataValue> tools = arrow.getMetadata(MineTinker.getPlugin().getName() + "item");
+		FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
+		if (obj == null || !(obj.value() instanceof ItemStack tool)) return;
 
 		if (!modManager.isToolViable(tool)) return;
 

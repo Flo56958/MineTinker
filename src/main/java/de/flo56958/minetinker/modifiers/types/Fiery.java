@@ -17,6 +17,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -108,7 +110,9 @@ public class Fiery extends Modifier implements Listener {
 
 		if(!player.hasPermission("minetinker.modifiers.fiery.use")) return;
 
-		ItemStack tool = player.getInventory().getItemInMainHand();
+		List<MetadataValue> tools = arrow.getMetadata(MineTinker.getPlugin().getName() + "item");
+		FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
+		if (obj == null || !(obj.value() instanceof ItemStack tool)) return;
 
 		if (!ToolType.CROSSBOW.contains(tool.getType())) return;
 
