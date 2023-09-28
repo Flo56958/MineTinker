@@ -200,6 +200,15 @@ public class EntityListener implements Listener {
 			tool = trident.getItem();
 		}
 
+		// get reference from bow shoot
+		if(event.getEntity().hasMetadata(MineTinker.getPlugin().getName() + "item")) {
+			List<MetadataValue> tools = event.getEntity().getMetadata(MineTinker.getPlugin().getName() + "item");
+			if (tools.isEmpty()) return;
+			FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
+			if (obj == null || !(obj.value() instanceof ItemStack t)) return;
+			tool = t;
+		}
+
 		// This isn't the best detection, if the player has a non modifier in one hand and
 		// one in the other, this won't know which was actually thrown.
 		// TODO: Maybe improve this before release.
@@ -228,12 +237,6 @@ public class EntityListener implements Listener {
 		if(!event.getEntity().hasMetadata(MineTinker.getPlugin().getName() + "item")) {
 			event.getEntity().setMetadata(MineTinker.getPlugin().getName() + "item",
 					new FixedMetadataValue(MineTinker.getPlugin(), tool));
-		} else {
-			List<MetadataValue> tools = event.getEntity().getMetadata(MineTinker.getPlugin().getName() + "item");
-			if (tools.isEmpty()) return;
-			FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
-			if (obj == null || !(obj.value() instanceof ItemStack t)) return;
-			tool = t;
 		}
 
 		Bukkit.getPluginManager().callEvent(new MTProjectileLaunchEvent(player, tool, event));
