@@ -1,4 +1,4 @@
-package de.flo56958.minetinker.events;
+package de.flo56958.minetinker.api.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * The Event is only an extra trigger for the MineTinker-Modifiers (mostly used for Armor)
  * it's only purpose is it to activate the Listeners if a EntityDamageEvent matches
- * the criteria (right Armor, ...)
+ * the criteria (right armor, ...)
  */
 public class MTEntityDamageEvent extends Event implements Cancellable {
 	private static final HandlerList handlers = new HandlerList();

@@ -25,16 +25,16 @@ import org.bukkit.plugin.Plugin;
  * @see de.flo56958.minetinker.modifiers.Modifier
  * <p>
  * MineTinker-Events:
- * @see de.flo56958.minetinker.events.ModifierApplyEvent
- * @see de.flo56958.minetinker.events.ModifierFailEvent
- * @see de.flo56958.minetinker.events.MTBlockBreakEvent
- * @see de.flo56958.minetinker.events.MTEntityDamageByEntityEvent
- * @see de.flo56958.minetinker.events.MTEntityDamageEvent
- * @see de.flo56958.minetinker.events.MTEntityDeathEvent
- * @see de.flo56958.minetinker.events.MTPlayerInteractEvent
- * @see de.flo56958.minetinker.events.MTProjectileHitEvent
- * @see de.flo56958.minetinker.events.ToolLevelUpEvent
- * @see de.flo56958.minetinker.events.ToolUpgradeEvent
+ * @see de.flo56958.minetinker.api.events.ModifierApplyEvent
+ * @see de.flo56958.minetinker.api.events.ModifierFailEvent
+ * @see de.flo56958.minetinker.api.events.MTBlockBreakEvent
+ * @see de.flo56958.minetinker.api.events.MTEntityDamageByEntityEvent
+ * @see de.flo56958.minetinker.api.events.MTEntityDamageEvent
+ * @see de.flo56958.minetinker.api.events.MTEntityDeathEvent
+ * @see de.flo56958.minetinker.api.events.MTPlayerInteractEvent
+ * @see de.flo56958.minetinker.api.events.MTProjectileHitEvent
+ * @see de.flo56958.minetinker.api.events.ToolLevelUpEvent
+ * @see de.flo56958.minetinker.api.events.ToolUpgradeEvent
  */
 public class MineTinkerAPI {
 

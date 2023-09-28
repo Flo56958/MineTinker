@@ -1,11 +1,11 @@
 package de.flo56958.minetinker.listeners;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.events.ModifierApplyEvent;
+import de.flo56958.minetinker.api.events.ModifierFailEvent;
+import de.flo56958.minetinker.api.events.ToolUpgradeEvent;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ModifierFailCause;
-import de.flo56958.minetinker.events.ModifierApplyEvent;
-import de.flo56958.minetinker.events.ModifierFailEvent;
-import de.flo56958.minetinker.events.ToolUpgradeEvent;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.datatypes.Pair;

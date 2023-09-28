@@ -2,7 +2,7 @@ package de.flo56958.minetinker.utils;
 
 import com.google.common.base.CaseFormat;
 import de.flo56958.minetinker.MineTinker;
-import de.flo56958.minetinker.events.*;
+import de.flo56958.minetinker.api.events.*;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import net.md_5.bungee.api.ChatMessageType;

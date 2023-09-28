@@ -1,9 +1,10 @@
 package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.events.MTEntityDamageByEntityEvent;
+import de.flo56958.minetinker.api.events.MTProjectileHitEvent;
+import de.flo56958.minetinker.api.events.MTProjectileLaunchEvent;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
-import de.flo56958.minetinker.events.MTProjectileHitEvent;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -16,7 +17,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
@@ -139,15 +139,13 @@ public class Ender extends Modifier implements Listener {
 
 	// for tridents
 	@EventHandler(ignoreCancelled = true)
-	public void effect(ProjectileLaunchEvent event) {
+	public void effect(final MTProjectileLaunchEvent event) {
 		if (!this.isAllowed()) return;
-		Projectile trident = event.getEntity();
+		Projectile trident = event.getEvent().getEntity();
 		if (!(trident instanceof Trident)) return;
-		if (!(event.getEntity().getShooter() instanceof final Player player)) {
-			return;
-		}
 
-		ItemStack tool = ((Trident) trident).getItem();
+		final Player player = event.getPlayer();
+		final ItemStack tool = ((Trident) trident).getItem();
 
 		if (!player.hasPermission("minetinker.modifiers.ender.use")) {
 			return;

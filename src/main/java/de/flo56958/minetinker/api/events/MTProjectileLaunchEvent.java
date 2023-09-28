@@ -1,26 +1,25 @@
-package de.flo56958.minetinker.events;
+package de.flo56958.minetinker.api.events;
 
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * The Event is only an extra trigger for the MineTinker-Modifiers
- * it's only purpose is it to activate the Listeners if a BlockBreakEvent matches
- * the criteria (right Tool, ...)
+ * it's only purpose is it to activate the Listeners if a ProjectileLaunchEvent matches
+ * the criteria (right tool, ...)
  */
-public class MTBlockBreakEvent extends Event implements Cancellable {
+public class MTProjectileLaunchEvent extends Event implements Cancellable {
 	private static final HandlerList handlers = new HandlerList();
 
 	private final Player player;
 	private final ItemStack tool;
 
-	private final BlockBreakEvent event;
+	private final ProjectileLaunchEvent event;
 
 	/**
 	 * Event constructor
@@ -28,8 +27,8 @@ public class MTBlockBreakEvent extends Event implements Cancellable {
 	 * @param tool  The ItemStack (MUST be a MineTinker-Tool)
 	 * @param event The BlockBreakEvent from which it was called
 	 */
-	public MTBlockBreakEvent(@NotNull ItemStack tool, @NotNull BlockBreakEvent event) {
-		this.player = event.getPlayer();
+	public MTProjectileLaunchEvent(@NotNull Player player, @NotNull ItemStack tool, @NotNull ProjectileLaunchEvent event) {
+		this.player = player;
 		this.tool = tool;
 		this.event = event;
 	}
@@ -47,9 +46,9 @@ public class MTBlockBreakEvent extends Event implements Cancellable {
 	}
 
 	/**
-	 * @return The original BlockBreakEvent
+	 * @return The original ProjectileLaunchEvent
 	 */
-	public BlockBreakEvent getEvent() {
+	public ProjectileLaunchEvent getEvent() {
 		return event;
 	}
 
@@ -65,11 +64,7 @@ public class MTBlockBreakEvent extends Event implements Cancellable {
 	}
 
 	@Override
-	public void setCancelled(boolean b) {
-		event.setCancelled(b);
-	}
-
-	public Block getBlock() {
-		return event.getBlock();
+	public void setCancelled(boolean cancel) {
+		event.setCancelled(cancel);
 	}
 }

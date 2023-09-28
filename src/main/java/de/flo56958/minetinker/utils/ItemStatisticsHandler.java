@@ -1,13 +1,13 @@
 package de.flo56958.minetinker.utils;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.events.MTBlockBreakEvent;
+import de.flo56958.minetinker.api.events.MTEntityDamageByEntityEvent;
+import de.flo56958.minetinker.api.events.MTEntityDamageEvent;
+import de.flo56958.minetinker.api.events.MTEntityDeathEvent;
 import de.flo56958.minetinker.api.gui.ButtonAction;
 import de.flo56958.minetinker.api.gui.GUI;
 import de.flo56958.minetinker.data.GUIs;
-import de.flo56958.minetinker.events.MTBlockBreakEvent;
-import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
-import de.flo56958.minetinker.events.MTEntityDamageEvent;
-import de.flo56958.minetinker.events.MTEntityDeathEvent;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.data.DataHandler;

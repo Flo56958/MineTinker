@@ -1,9 +1,9 @@
 package de.flo56958.minetinker.modifiers;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.events.ToolLevelUpEvent;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.events.ToolLevelUpEvent;
 import de.flo56958.minetinker.listeners.ActionBarListener;
 import de.flo56958.minetinker.modifiers.types.*;
 import de.flo56958.minetinker.utils.ChatWriter;

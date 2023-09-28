@@ -1,12 +1,12 @@
 package de.flo56958.minetinker.listeners;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.events.MTBlockBreakEvent;
+import de.flo56958.minetinker.api.events.MTPlayerInteractEvent;
 import de.flo56958.minetinker.api.gui.ButtonAction;
 import de.flo56958.minetinker.api.gui.GUI;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.events.MTBlockBreakEvent;
-import de.flo56958.minetinker.events.MTPlayerInteractEvent;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.modifiers.types.Power;

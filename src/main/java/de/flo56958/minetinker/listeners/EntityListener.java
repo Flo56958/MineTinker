@@ -1,11 +1,12 @@
 package de.flo56958.minetinker.listeners;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.events.MTEntityDamageByEntityEvent;
+import de.flo56958.minetinker.api.events.MTEntityDeathEvent;
+import de.flo56958.minetinker.api.events.MTProjectileHitEvent;
+import de.flo56958.minetinker.api.events.MTProjectileLaunchEvent;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.events.MTEntityDamageByEntityEvent;
-import de.flo56958.minetinker.events.MTEntityDeathEvent;
-import de.flo56958.minetinker.events.MTProjectileHitEvent;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import org.bukkit.Bukkit;
@@ -227,7 +228,15 @@ public class EntityListener implements Listener {
 		if(!event.getEntity().hasMetadata(MineTinker.getPlugin().getName() + "item")) {
 			event.getEntity().setMetadata(MineTinker.getPlugin().getName() + "item",
 					new FixedMetadataValue(MineTinker.getPlugin(), tool));
+		} else {
+			List<MetadataValue> tools = event.getEntity().getMetadata(MineTinker.getPlugin().getName() + "item");
+			if (tools.isEmpty()) return;
+			FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
+			if (obj == null || !(obj.value() instanceof ItemStack t)) return;
+			tool = t;
 		}
+
+		Bukkit.getPluginManager().callEvent(new MTProjectileLaunchEvent(player, tool, event));
 
         /*
         Self-Repair and Experienced will no longer trigger on bowfire

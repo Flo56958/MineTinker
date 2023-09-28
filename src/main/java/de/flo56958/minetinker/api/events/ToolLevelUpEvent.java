@@ -1,4 +1,4 @@
-package de.flo56958.minetinker.events;
+package de.flo56958.minetinker.api.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

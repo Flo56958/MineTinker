@@ -1,4 +1,4 @@
-package de.flo56958.minetinker.events;
+package de.flo56958.minetinker.api.events;
 
 import de.flo56958.minetinker.data.ModifierFailCause;
 import de.flo56958.minetinker.modifiers.ModManager;

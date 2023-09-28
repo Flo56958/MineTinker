@@ -1,6 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.events.MTProjectileLaunchEvent;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -10,10 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.Vector;
 
 import java.io.File;
@@ -97,28 +95,24 @@ public class Homing extends Modifier implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void onShoot(ProjectileLaunchEvent event) {
+	public void onShoot(final MTProjectileLaunchEvent event) {
 		if (!this.isAllowed()) {
 			return;
 		}
 
-		Projectile arrow = event.getEntity();
+		Projectile arrow = event.getEvent().getEntity();
 
 		if (!(arrow instanceof Arrow)) {
 			return;
 		}
 
-		if (!(arrow.getShooter() instanceof Player player)) {
-			return;
-		}
+		final Player player = event.getPlayer();
 
 		if (!player.hasPermission("minetinker.modifiers.homing.use")) {
 			return;
 		}
 
-		List<MetadataValue> tools = arrow.getMetadata(MineTinker.getPlugin().getName() + "item");
-		FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
-		if (obj == null || !(obj.value() instanceof ItemStack tool)) return;
+		final ItemStack tool = event.getTool();
 
 		if (!modManager.isToolViable(tool)) {
 			return;
