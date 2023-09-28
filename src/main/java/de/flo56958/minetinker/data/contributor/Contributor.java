@@ -109,7 +109,9 @@ public class Contributor {
 							StandardCharsets.UTF_8).useDelimiter("\\A").next()).getAsJsonObject();
 					String name = mcLookup.get("name").getAsString();
 					displayName += name + "/";
-					((SkullMeta) itemMeta).setOwningPlayer(Bukkit.getOfflinePlayer(mcUUID));
+					try {
+						((SkullMeta) itemMeta).setOwningPlayer(Bukkit.getOfflinePlayer(mcUUID));
+					} catch (NullPointerException ignored) {}
 				} catch (IOException | NoSuchElementException e) {
 					ChatWriter.logError(LanguageManager.getString("Alert.MinecraftAPI"));
 					if (MineTinker.getPlugin().getConfig().getBoolean("logging.debug")) {
