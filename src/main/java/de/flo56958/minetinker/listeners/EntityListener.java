@@ -110,7 +110,16 @@ public class EntityListener implements Listener {
 			return;
 		}
 
-		final ItemStack tool = player.getInventory().getItemInMainHand();
+		ItemStack tool = player.getInventory().getItemInMainHand();
+		if (mob.getLastDamageCause() instanceof EntityDamageByEntityEvent lastevent) {
+			if (lastevent.getDamager() instanceof Arrow || lastevent.getDamager() instanceof Trident) {
+				List<MetadataValue> tools = lastevent.getDamager().getMetadata(MineTinker.getPlugin().getName() + "item");
+				FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
+				if (obj == null || !(obj.value() instanceof ItemStack t)) return;
+				tool = t;
+			}
+		}
+
 
 		if (!modManager.isToolViable(tool)) {
 			return;
