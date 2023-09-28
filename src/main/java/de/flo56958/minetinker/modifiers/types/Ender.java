@@ -16,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
@@ -133,6 +134,34 @@ public class Ender extends Modifier implements Listener {
 		}
 
 		arrow.setMetadata(this.getKey(),
+				new FixedMetadataValue(this.getSource(), 0));
+	}
+
+	// for tridents
+	@EventHandler(ignoreCancelled = true)
+	public void effect(ProjectileLaunchEvent event) {
+		if (!this.isAllowed()) return;
+		Projectile trident = event.getEntity();
+		if (!(trident instanceof Trident)) return;
+		if (!(event.getEntity().getShooter() instanceof final Player player)) {
+			return;
+		}
+
+		ItemStack tool = ((Trident) trident).getItem();
+
+		if (!player.hasPermission("minetinker.modifiers.ender.use")) {
+			return;
+		}
+
+		if (!modManager.hasMod(tool, this)) {
+			return;
+		}
+
+		if (this.requireSneaking && !player.isSneaking()) {
+			return;
+		}
+
+		trident.setMetadata(this.getKey(),
 				new FixedMetadataValue(this.getSource(), 0));
 	}
 

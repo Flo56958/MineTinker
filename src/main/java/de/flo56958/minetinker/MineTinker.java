@@ -105,7 +105,6 @@ public class MineTinker extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new ItemListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new TinkerListener(), this);
-		Bukkit.getPluginManager().registerEvents(new TridentListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerInfo(), this);
 		Bukkit.getPluginManager().registerEvents(new EnchantingListener(), this);
 		Bukkit.getPluginManager().registerEvents(new GrindstoneListener(), this);

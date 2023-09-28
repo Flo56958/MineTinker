@@ -65,8 +65,8 @@ public class EntityListener implements Listener {
 		if (player == null) return;
 
 		ItemStack tool = player.getInventory().getItemInMainHand();
-		if (event.getDamager() instanceof final Arrow arrow) {
-			List<MetadataValue> tools = arrow.getMetadata(MineTinker.getPlugin().getName() + "item");
+		if (event.getDamager() instanceof Arrow || event.getDamager() instanceof Trident) {
+			List<MetadataValue> tools = event.getDamager().getMetadata(MineTinker.getPlugin().getName() + "item");
 			FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
 			if (obj == null || !(obj.value() instanceof ItemStack t)) return;
 			tool = t;
@@ -77,14 +77,6 @@ public class EntityListener implements Listener {
 //                return;
 //            }
 //        }
-
-		if (event.getDamager() instanceof final Trident trident) {
-			tool = TridentListener.TridentToItemStack.remove(trident);
-
-			if (tool == null) {
-				return;
-			}
-		}
 
 		if (!modManager.isToolViable(tool)) {
 			return;
@@ -99,6 +91,10 @@ public class EntityListener implements Listener {
 		modManager.addExp(player, tool,
 				MineTinker.getPlugin().getConfig().getInt("ExtraExpPerEntityHit."
 						+ event.getEntity().getType(), 0), true);
+
+		if (event.getEntity() instanceof Trident trident) {
+			trident.setItem(tool);
+		}
 	}
 
 	@EventHandler
@@ -164,13 +160,8 @@ public class EntityListener implements Listener {
 			return;
 		}
 
-		if (event.getEntity() instanceof final Trident trident) {
-			// Intellij gets confused if this isn't assigned to a variable
-
-			tool = TridentListener.TridentToItemStack.get(trident);
-			TridentListener.TridentToItemStack.remove(trident);
-		} else if (event.getEntity() instanceof final Arrow arrow) {
-			List<MetadataValue> tools = arrow.getMetadata(MineTinker.getPlugin().getName() + "item");
+		if (event.getEntity() instanceof Trident || event.getEntity() instanceof Arrow) {
+			List<MetadataValue> tools = event.getEntity().getMetadata(MineTinker.getPlugin().getName() + "item");
 			if (tools.isEmpty()) return;
 			FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
 			if (obj == null || !(obj.value() instanceof ItemStack t)) return;
@@ -182,6 +173,10 @@ public class EntityListener implements Listener {
 		}
 
 		Bukkit.getPluginManager().callEvent(new MTProjectileHitEvent(player, tool, event));
+
+		if (event.getEntity() instanceof Trident trident) {
+			trident.setItem(tool);
+		}
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -190,7 +185,10 @@ public class EntityListener implements Listener {
 			return;
 		}
 
-		final ItemStack tool = player.getInventory().getItemInMainHand();
+		ItemStack tool = player.getInventory().getItemInMainHand();
+		if (event.getEntity() instanceof Trident trident) {
+			tool = trident.getItem();
+		}
 
 		// This isn't the best detection, if the player has a non modifier in one hand and
 		// one in the other, this won't know which was actually thrown.
