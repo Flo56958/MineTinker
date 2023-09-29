@@ -135,7 +135,6 @@ public class Magical extends Modifier implements Listener {
 			player.giveExp(-this.experienceCost);
 		}
 
-		arrow.setBounce(true);
 		((Arrow) arrow).setColor(Color.PURPLE);
 		((Arrow) arrow).setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
 		arrow.setGravity(false);
