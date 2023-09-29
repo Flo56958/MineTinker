@@ -6,6 +6,7 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -16,6 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.util.*;
@@ -28,8 +30,6 @@ public class Evasive extends Modifier implements Listener {
 	private double sneakMultiplier;
 	private double sprintMultiplier;
 	private double pvpMultiplier;
-
-	private final HashMap<String, Long> cooldownTracker = new HashMap<>();
 
 	private Evasive() {
 		super(MineTinker.getPlugin());
@@ -123,13 +123,12 @@ public class Evasive extends Modifier implements Listener {
 
 		//cooldown checker
 		Long time = System.currentTimeMillis();
-		if (this.cooldownInSeconds > 0) {
-			Long cd = cooldownTracker.get(player.getUniqueId().toString());
+		if (this.cooldownInSeconds > 1 / 20.0) {
+			Long cd = DataHandler.getTag(tool, this.getKey() + "cooldown", PersistentDataType.LONG, false);
 			if (cd != null) { //was on cooldown
-				if (time - cd > this.cooldownInSeconds * 1000L || player.getGameMode() == GameMode.CREATIVE) {
-					cooldownTracker.remove(player.getUniqueId().toString());
-				} else {
+				if (time - cd < this.cooldownInSeconds * 1000L && player.getGameMode() != GameMode.CREATIVE) {
 					ChatWriter.logModifier(player, event, this, tool, "Cooldown");
+					//ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getString("Alert.OnCooldown", player));
 					return; //still on cooldown
 				}
 			}
@@ -169,8 +168,9 @@ public class Evasive extends Modifier implements Listener {
 		}
 
 
-		if (this.cooldownInSeconds > 0)
-			cooldownTracker.put(player.getUniqueId().toString(), time);
+		if (this.cooldownInSeconds > 1 / 20.0)
+			DataHandler.setTag(tool, this.getKey() + "cooldown", System.currentTimeMillis(),
+					PersistentDataType.LONG, false);
 
 		event.setCancelled(true);
 		if (getConfig().getBoolean("Sound", true))

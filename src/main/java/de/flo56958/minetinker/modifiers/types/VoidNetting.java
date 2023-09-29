@@ -6,6 +6,7 @@ import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
+import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -14,6 +15,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.io.File;
@@ -30,8 +34,6 @@ public class VoidNetting extends Modifier implements Listener {
 	private double cooldownReductionPerLevel;
 	private boolean particles;
 	private boolean sound;
-
-	private final HashMap<String, Long> cooldownTracker = new HashMap<>();
 
 	private VoidNetting() {
 		super(MineTinker.getPlugin());
@@ -104,7 +106,8 @@ public class VoidNetting extends Modifier implements Listener {
 
 		this.description = this.description.replaceAll("%radius", String.valueOf(this.radiusPerLevel))
 				.replaceAll("%cmax", String.valueOf(this.cooldownInSeconds))
-				.replaceAll("%cmin", String.valueOf(Math.round(this.cooldownInSeconds * Math.pow(1.0 - this.cooldownReductionPerLevel, this.getMaxLvl() - 1))));
+				.replaceAll("%cmin", String.valueOf(Math.round(this.cooldownInSeconds
+						* Math.pow(1.0 - this.cooldownReductionPerLevel, this.getMaxLvl() - 1))));
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
@@ -126,21 +129,22 @@ public class VoidNetting extends Modifier implements Listener {
 		Long time = System.currentTimeMillis();
 		long cooldownTime = (long) (this.cooldownInSeconds * 1000 * Math.pow(1.0 - this.cooldownReductionPerLevel, level - 1));
 		if (this.cooldownInSeconds > 1 / 20.0) {
-			Long cd = cooldownTracker.get(player.getUniqueId().toString());
+			Long cd = DataHandler.getTag(armor, this.getKey() + "cooldown", PersistentDataType.LONG, false);
 			if (cd != null) { //was on cooldown
-				if (time - cd > cooldownTime || player.getGameMode() == GameMode.CREATIVE) {
-					cooldownTracker.remove(player.getUniqueId().toString());
-				} else {
+				if (time - cd < cooldownTime && player.getGameMode() != GameMode.CREATIVE) {
 					ChatWriter.logModifier(player, event, this, armor, "Cooldown");
-					ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getString("Alert.OnCooldown", player));
+					//ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getString("Alert.OnCooldown", player));
 					return; //still on cooldown
 				}
 			}
 		}
 
-		cooldownTracker.put(player.getUniqueId().toString(), time - Math.round(this.cooldownInSeconds * 0.95)); //Add small cooldown to improve server performance
+		//Add small cooldown to improve server performance
+		DataHandler.setTag(armor, this.getKey() + "cooldown",
+				time - Math.round(this.cooldownInSeconds * 0.95), PersistentDataType.LONG, false);
 
-		Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> { //run effect async as it does not need to stop all action on server if search takes to long
+		Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> {
+			//run effect async as it does not need to stop all action on server if search takes to long
 			Location loc = player.getLocation();
 			for (int i = 0; i < level * radiusPerLevel; i++) {
 				for (int d = -i; d <= i; d++) {
@@ -162,11 +166,11 @@ public class VoidNetting extends Modifier implements Listener {
 			if (loc.equals(player.getLocation())) {
 				//No suitable place found
 				ChatWriter.logModifier(player, event, this, armor, "Could not find suitable Block to teleport!");
-				ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getString("Modifier.Void-Netting.CouldNotFindBlock", player));
+				ChatWriter.sendActionBar(player, this.getName() + ": "
+						+ LanguageManager.getString("Modifier.Void-Netting.CouldNotFindBlock", player));
 				return;
 			}
 			Location oldLoc = player.getLocation().clone();
-			cooldownTracker.put(player.getUniqueId().toString(), time);
 			ChatWriter.logModifier(player, event, this, armor,
 					String.format("Location(%d/%d/%d -> %d/%d/%d)",
 							oldLoc.getBlockX(), oldLoc.getBlockY(), oldLoc.getBlockZ(),
@@ -174,8 +178,13 @@ public class VoidNetting extends Modifier implements Listener {
 
 			Location finalLoc = loc;
 			Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> { //Teleport needs to be in sync
+				//Slow the fall
+				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 20, 0, false));
 				player.teleport(finalLoc);
-				player.setVelocity(new Vector(0, 0.3, 0)); //Slow the fall
+				player.setVelocity(new Vector(0, 0, 0));
+
+				DataHandler.setTag(armor, this.getKey() + "cooldown", System.currentTimeMillis(),
+						PersistentDataType.LONG, false);
 
 				if (this.particles) {
 					finalLoc.getWorld().spawnParticle(Particle.PORTAL, finalLoc, 20);

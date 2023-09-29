@@ -5,6 +5,7 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -16,6 +17,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -34,7 +36,6 @@ public class Scotopic extends Modifier implements Listener {
 	private double cooldownInSeconds;
 	private double cooldownReductionPerLevel;
 	private boolean givesImmunity;
-	private final HashMap<String, Long> cooldownTracker = new HashMap<>();
 
 	private Scotopic() {
 		super(MineTinker.getPlugin());
@@ -141,11 +142,9 @@ public class Scotopic extends Modifier implements Listener {
 		Long time = System.currentTimeMillis();
 		long cooldownTime = Math.round(this.cooldownInSeconds * 1000 * Math.pow(1.0D - this.cooldownReductionPerLevel, level - 1));
 		if (this.cooldownInSeconds > 1 / 20.0) {
-			Long cd = cooldownTracker.get(player.getUniqueId().toString());
+			Long cd = DataHandler.getTag(helmet, this.getKey() + "cooldown", PersistentDataType.LONG, false);
 			if (cd != null) { //was on cooldown
-				if (time - cd > cooldownTime || player.getGameMode() == GameMode.CREATIVE) {
-					cooldownTracker.remove(player.getUniqueId().toString());
-				} else {
+				if (time - cd < cooldownTime && player.getGameMode() != GameMode.CREATIVE) {
 					return; //still on cooldown
 				}
 			}
@@ -160,7 +159,7 @@ public class Scotopic extends Modifier implements Listener {
 			player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,
 					duration + 10 * 20, // To disable the flickering below 10 seconds
 					level - 1, false, false, false));
-			cooldownTracker.put(player.getUniqueId().toString(), time);
+			DataHandler.setTag(helmet, this.getKey() + "cooldown", time, PersistentDataType.LONG, false);
 			ChatWriter.logModifier(player, event, this, helmet,
 					String.format("Cooldown(%ds)", cooldownTime / 1000),
 					String.format("LightLevel(%d/%d)", lightlevel, this.requiredLightLevel),

@@ -6,6 +6,7 @@ import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
+import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -16,11 +17,15 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class Propelling extends Modifier implements Listener {
 
@@ -33,7 +38,6 @@ public class Propelling extends Modifier implements Listener {
 	private boolean useLessDurability;
 
 	private double cooldownInSeconds;
-	private final HashMap<String, Long> cooldownTracker = new HashMap<>();
 
 	private Propelling() {
 		super(MineTinker.getPlugin());
@@ -150,14 +154,12 @@ public class Propelling extends Modifier implements Listener {
 
 		if (cooldownInSeconds > 1 / 20.0) {
 			long time = System.currentTimeMillis();
-			Long playerTime = this.cooldownTracker.get(player.getUniqueId().toString());
+			Long playerTime = DataHandler.getTag(elytra, this.getKey() + "cooldown", PersistentDataType.LONG, false);
 			if (playerTime != null) {
 				if (time - playerTime < this.cooldownInSeconds * 1000) {
 					ChatWriter.logModifier(player, event, this, elytra, "Cooldown");
 					ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getString("Alert.OnCooldown", player));
 					return;
-				} else {
-					this.cooldownTracker.remove(player.getUniqueId().toString());
 				}
 			}
 		}
@@ -203,8 +205,9 @@ public class Propelling extends Modifier implements Listener {
 
 		if (sound) player.getWorld().playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
 
-		if (cooldownInSeconds > 0) {
-			this.cooldownTracker.put(player.getUniqueId().toString(), System.currentTimeMillis());
+		if (cooldownInSeconds > 1 / 20.0) {
+			DataHandler.setTag(elytra, this.getKey() + "cooldown", System.currentTimeMillis(),
+					PersistentDataType.LONG, false);
 		}
 
 		ChatWriter.logModifier(player, event, this, elytra);
