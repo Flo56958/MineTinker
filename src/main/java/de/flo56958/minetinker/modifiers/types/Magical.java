@@ -10,6 +10,7 @@ import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.PlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.AbstractArrow;
@@ -125,12 +126,14 @@ public class Magical extends Modifier implements Listener {
 		int modLevel = modManager.getModLevel(tool, this);
 		if (modLevel <= 0) return;
 
-		if (PlayerInfo.getPlayerExp(player) < this.experienceCost) {
-			event.setCancelled(true);
-			return;
-		}
+		if (player.getGameMode() != GameMode.CREATIVE) {
+			if (PlayerInfo.getPlayerExp(player) < this.experienceCost) {
+				event.setCancelled(true);
+				return;
+			}
 
-		player.giveExp(- this.experienceCost);
+			player.giveExp(-this.experienceCost);
+		}
 
 		arrow.setBounce(true);
 		((Arrow) arrow).setColor(Color.PURPLE);
