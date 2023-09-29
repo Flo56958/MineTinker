@@ -285,7 +285,7 @@ Modifier:
     DescriptionModifierItem: "Modifizierungs-Item für die Glück-Modifikation"
   Magical:
     Name: "Magisch"
-    Description: "Schieße ein magisches Projektil, welches nicht von Gravitation beeinflusst wird aber %amount% langsamer fliegt! Wenn das Projektil ein Ziel trifft, macht es %min% bis %max% zusätzlichen Schaden (abhängig vom Level)! Kostet %xp XP zum Schießen!"
+    Description: "Schieße einen magischen Pfeil, welcher nicht von Gravitation beeinflusst wird und mit %amount% normaler Geschwindigkeit fliegt! Wenn der Pfeil ein Ziel trifft, macht es %min% bis %max% zusätzlichen Schaden (abhängig vom Level)! Kostet %xp XP zum Schießen!"
     ModifierItemName: "Magischer Pfeil"
     DescriptionModifierItem: "Modifizierungs-Item für die Magisch-Modifikation"
   Melting:
