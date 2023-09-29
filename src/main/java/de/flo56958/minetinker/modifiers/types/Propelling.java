@@ -32,7 +32,7 @@ public class Propelling extends Modifier implements Listener {
 	private boolean considerReinforced;
 	private boolean useLessDurability;
 
-	private int cooldownInSeconds;
+	private double cooldownInSeconds;
 	private final HashMap<String, Long> cooldownTracker = new HashMap<>();
 
 	private Propelling() {
@@ -74,7 +74,7 @@ public class Propelling extends Modifier implements Listener {
 		config.addDefault("Color", "%GOLD%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
-		config.addDefault("CooldownInSeconds", 5);
+		config.addDefault("CooldownInSeconds", 5.0);
 		config.addDefault("Elytra.DurabilityLoss", 10);
 		config.addDefault("Elytra.SpeedPerLevel", 0.15);
 		config.addDefault("Elytra.Sound", true);
@@ -97,7 +97,7 @@ public class Propelling extends Modifier implements Listener {
 		this.speedPerLevel = config.getDouble("Elytra.SpeedPerLevel", 0.05);
 		this.considerReinforced = config.getBoolean("ConsiderReinforced", true);
 		this.useLessDurability = config.getBoolean("ReinforcedUseLessDurability", true);
-		this.cooldownInSeconds = config.getInt("CooldownInSeconds", 5);
+		this.cooldownInSeconds = config.getDouble("CooldownInSeconds", 5.0);
 
 		this.sound = config.getBoolean("Elytra.Sound", true);
 		this.particles = config.getBoolean("Elytra.Particles", true);
@@ -148,11 +148,11 @@ public class Propelling extends Modifier implements Listener {
 			return;
 		}
 
-		if (cooldownInSeconds > 0) {
+		if (cooldownInSeconds > 1 / 20.0) {
 			long time = System.currentTimeMillis();
 			Long playerTime = this.cooldownTracker.get(player.getUniqueId().toString());
 			if (playerTime != null) {
-				if (time - playerTime < this.cooldownInSeconds * 1000L) {
+				if (time - playerTime < this.cooldownInSeconds * 1000) {
 					ChatWriter.logModifier(player, event, this, elytra, "Cooldown");
 					ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getString("Alert.OnCooldown", player));
 					return;
@@ -195,7 +195,7 @@ public class Propelling extends Modifier implements Listener {
 		Location loc = player.getLocation();
 		Vector dir = loc.getDirection().normalize();
 
-		player.setVelocity(dir.multiply(1 + speedPerLevel * level));
+		player.setVelocity(dir.multiply(1 + speedPerLevel * level).add(player.getVelocity().multiply(0.1f)));
 
 		if (particles && loc.getWorld() != null) {
 			loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);

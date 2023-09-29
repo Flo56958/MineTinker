@@ -26,7 +26,7 @@ public class VoidNetting extends Modifier implements Listener {
 
 	private static VoidNetting instance;
 	private int radiusPerLevel;
-	private int cooldownInSeconds;
+	private double cooldownInSeconds;
 	private double cooldownReductionPerLevel;
 	private boolean particles;
 	private boolean sound;
@@ -68,7 +68,7 @@ public class VoidNetting extends Modifier implements Listener {
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
 		config.addDefault("RadiusPerLevel", 10);
-		config.addDefault("CooldownInSeconds", 3600);
+		config.addDefault("CooldownInSeconds", 3600.0);
 		config.addDefault("CooldownReductionPerLevel", 0.4);
 		config.addDefault("Particles", true);
 		config.addDefault("Sound", true);
@@ -97,7 +97,7 @@ public class VoidNetting extends Modifier implements Listener {
 		init(Material.COBWEB);
 
 		this.radiusPerLevel = config.getInt("RadiusPerLevel", 5);
-		this.cooldownInSeconds = config.getInt("CooldownInSeconds", 3600);
+		this.cooldownInSeconds = config.getDouble("CooldownInSeconds", 3600.0);
 		this.cooldownReductionPerLevel = config.getDouble("CooldownReductionPerLevel", 0.4);
 		this.particles = config.getBoolean("Particles", true);
 		this.sound = config.getBoolean("Sound", true);
@@ -125,7 +125,7 @@ public class VoidNetting extends Modifier implements Listener {
 		//cooldown checker
 		Long time = System.currentTimeMillis();
 		long cooldownTime = (long) (this.cooldownInSeconds * 1000 * Math.pow(1.0 - this.cooldownReductionPerLevel, level - 1));
-		if (this.cooldownInSeconds > 0) {
+		if (this.cooldownInSeconds > 1 / 20.0) {
 			Long cd = cooldownTracker.get(player.getUniqueId().toString());
 			if (cd != null) { //was on cooldown
 				if (time - cd > cooldownTime || player.getGameMode() == GameMode.CREATIVE) {

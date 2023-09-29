@@ -31,7 +31,7 @@ public class Scotopic extends Modifier implements Listener {
 
 	private int requiredLightLevel;
 	private int durationPerLevel;
-	private int cooldownInSeconds;
+	private double cooldownInSeconds;
 	private double cooldownReductionPerLevel;
 	private boolean givesImmunity;
 	private final HashMap<String, Long> cooldownTracker = new HashMap<>();
@@ -71,7 +71,7 @@ public class Scotopic extends Modifier implements Listener {
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 2);
 		config.addDefault("RequiredLightLevel", 6);
-		config.addDefault("CooldownInSeconds", 120); //in seconds
+		config.addDefault("CooldownInSeconds", 120.0); //in seconds
 		config.addDefault("DurationPerLevel", 100); //in ticks
 		config.addDefault("CooldownReductionPerLevel", 0.65);
 		config.addDefault("GivesImmunityToBlindness", true);
@@ -97,7 +97,7 @@ public class Scotopic extends Modifier implements Listener {
 		init(Material.FERMENTED_SPIDER_EYE);
 		this.requiredLightLevel = config.getInt("RequiredLightLevel", 6);
 		this.durationPerLevel = config.getInt("DurationPerLevel", 100);
-		this.cooldownInSeconds = config.getInt("CooldownInSeconds", 120);
+		this.cooldownInSeconds = config.getDouble("CooldownInSeconds", 120.0);
 		this.cooldownReductionPerLevel = config.getDouble("CooldownReductionPerLevel", 0.65);
 		this.givesImmunity = config.getBoolean("GivesImmunityToEffect", true);
 
@@ -140,7 +140,7 @@ public class Scotopic extends Modifier implements Listener {
 		//cooldown checker
 		Long time = System.currentTimeMillis();
 		long cooldownTime = Math.round(this.cooldownInSeconds * 1000 * Math.pow(1.0D - this.cooldownReductionPerLevel, level - 1));
-		if (this.cooldownInSeconds > 0) {
+		if (this.cooldownInSeconds > 1 / 20.0) {
 			Long cd = cooldownTracker.get(player.getUniqueId().toString());
 			if (cd != null) { //was on cooldown
 				if (time - cd > cooldownTime || player.getGameMode() == GameMode.CREATIVE) {

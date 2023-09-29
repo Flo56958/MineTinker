@@ -24,7 +24,7 @@ public class Evasive extends Modifier implements Listener {
 
 	private static Evasive instance;
 	private int percentPerLevel;
-	private int cooldownInSeconds;
+	private double cooldownInSeconds;
 	private double sneakMultiplier;
 	private double sprintMultiplier;
 	private double pvpMultiplier;
@@ -69,7 +69,7 @@ public class Evasive extends Modifier implements Listener {
 		config.addDefault("SneakMultiplier", 0.5);
 		config.addDefault("SprintMultiplier", 2.0);
 		config.addDefault("PvPMultiplier", 0.5);
-		config.addDefault("CooldownInSeconds", 5);
+		config.addDefault("CooldownInSeconds", 5.0);
 		config.addDefault("Sound", true);
 
 		config.addDefault("EnchantCost", 10);
@@ -95,7 +95,7 @@ public class Evasive extends Modifier implements Listener {
 		this.percentPerLevel = config.getInt("PercentPerLevel", 5);
 		this.sneakMultiplier = config.getDouble("SneakMultiplier", 0.5);
 		this.sprintMultiplier = config.getDouble("SprintMultiplier", 2.0);
-		this.cooldownInSeconds = config.getInt("CooldownInSeconds", 5);
+		this.cooldownInSeconds = config.getDouble("CooldownInSeconds", 5.0);
 		this.pvpMultiplier = config.getDouble("PvPMultiplier", 1.0);
 
 		this.description = this.description.replaceAll("%chance", String.valueOf(this.percentPerLevel))
