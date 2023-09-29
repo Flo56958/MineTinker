@@ -18,7 +18,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -177,12 +179,13 @@ public class MultiShot extends Modifier implements Listener {
 						break;
 					}
 
-					if (offhand.getType() == Material.ARROW && offhand.getAmount() >= 2) { // 2 as the main arrow is detracted later
+					if (!modManager.isModifierItem(offhand)
+							&& offhand.getType() == Material.ARROW && offhand.getAmount() >= 2) { // 2 as the main arrow is detracted later
 						offhand.setAmount(offhand.getAmount() - 1);
 						hasArrow = true;
 					} else {
 						for (ItemStack item : player.getInventory().getContents()) {
-							if (item == null) {
+							if (item == null || modManager.isModifierItem(item)) {
 								continue;
 							}
 
@@ -213,6 +216,8 @@ public class MultiShot extends Modifier implements Listener {
 				arr.setDamage(((Arrow) arrow).getDamage());
 				arr.setMetadata(this.getKey(), new FixedMetadataValue(this.getSource(), null));
 
+				Bukkit.getPluginManager().callEvent(
+						new EntityShootBowEvent(player, tool, new ItemStack(Material.ARROW, 1), arr, EquipmentSlot.HAND, (float) vel.length(), false));
 				Bukkit.getPluginManager().callEvent(new ProjectileLaunchEvent(arr));
 			}, 0);
 		}
