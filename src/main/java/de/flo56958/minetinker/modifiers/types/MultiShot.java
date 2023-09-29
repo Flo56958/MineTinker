@@ -160,17 +160,14 @@ public class MultiShot extends Modifier implements Listener {
 		Vector vel = arrow.getVelocity().clone();
 		Location loc = arrow.getLocation().clone();
 
-		final boolean hasInfinity = modManager.hasMod(tool, Infinity.instance());
+		ChatWriter.logModifier(player, event, this, tool);
 
-		final boolean hasFiery = modManager.hasMod(tool, Fiery.instance()) && player.hasPermission("minetinker.modifiers.fiery.use");
-		ChatWriter.logModifier(player, event, this, tool,
-				Fiery.instance().getKey() + "(" + hasFiery + ")",
-				Infinity.instance().getKey() + "(" + hasInfinity + ")");
+		final int amount = (ToolType.CROSSBOW.contains(tool.getType())) ? 1 : 2;
 
 		for (int i = 1; i <= modLevel; i++) {
 			if (!player.getGameMode().equals(GameMode.CREATIVE)) {
 				boolean hasArrow = true;
-				if (!hasInfinity && needsArrows) {
+				if (needsArrows) {
 					hasArrow = false;
 
 					ItemStack offhand = player.getInventory().getItemInOffHand();
@@ -180,7 +177,7 @@ public class MultiShot extends Modifier implements Listener {
 					}
 
 					if (!modManager.isModifierItem(offhand)
-							&& offhand.getType() == Material.ARROW && offhand.getAmount() >= 2) { // 2 as the main arrow is detracted later
+							&& offhand.getType() == Material.ARROW && offhand.getAmount() >= amount) { // 2 as the main arrow is detracted later
 						offhand.setAmount(offhand.getAmount() - 1);
 						hasArrow = true;
 					} else {
@@ -189,7 +186,7 @@ public class MultiShot extends Modifier implements Listener {
 								continue;
 							}
 
-							if (item.getType() == Material.ARROW && item.getAmount() >= 2) {
+							if (item.getType() == Material.ARROW && item.getAmount() >= amount) {
 								item.setAmount(item.getAmount() - 1);
 								hasArrow = true;
 								break;
@@ -205,21 +202,41 @@ public class MultiShot extends Modifier implements Listener {
 
 			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
 				final Arrow arr = loc.getWorld().spawnArrow(loc, vel, (float) vel.length(), (float) spread);
-				if(hasFiery) arr.setFireTicks(2000);
 				arr.setShooter(player);
 
-				if (hasInfinity || player.getGameMode().equals(GameMode.CREATIVE)) {
+				if (player.getGameMode().equals(GameMode.CREATIVE)) {
 					arr.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
 				}
 
 				arr.setCritical(((Arrow) arrow).isCritical());
 				arr.setDamage(((Arrow) arrow).getDamage());
+				// no recursive actions
 				arr.setMetadata(this.getKey(), new FixedMetadataValue(this.getSource(), null));
 
-				Bukkit.getPluginManager().callEvent(
-						new EntityShootBowEvent(player, tool, new ItemStack(Material.ARROW, 1), arr, EquipmentSlot.HAND, (float) vel.length(), false));
-				Bukkit.getPluginManager().callEvent(new ProjectileLaunchEvent(arr));
+				EntityShootBowEvent bowEvent = new EntityShootBowEvent(player, tool, new ItemStack(Material.ARROW, 1), arr, EquipmentSlot.HAND, (float) vel.length(), false);
+				Bukkit.getPluginManager().callEvent(bowEvent);
+				if (bowEvent.isCancelled()) {
+					// return arrow
+					returnArrow(player, arr);
+					arr.remove();
+					return;
+				}
+				ProjectileLaunchEvent launchEvent = new ProjectileLaunchEvent(arr);
+				Bukkit.getPluginManager().callEvent(launchEvent);
+				if (launchEvent.isCancelled()) {
+					// return arrow
+					returnArrow(player, arr);
+					arr.remove();
+				}
 			}, 0);
+		}
+	}
+
+	private void returnArrow(Player player, Arrow arr) {
+		if (needsArrows && player.getGameMode() != GameMode.CREATIVE && arr.getPickupStatus() != AbstractArrow.PickupStatus.CREATIVE_ONLY) {
+			if (!player.getInventory().addItem(new ItemStack(Material.ARROW, 1)).isEmpty()) { //adds items to (full) inventory
+				player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.ARROW, 1)); //drops item when inventory is full
+			} // no else as it gets added in if
 		}
 	}
 }
