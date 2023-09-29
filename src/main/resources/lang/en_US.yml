@@ -285,7 +285,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Luck-Modifier"
   Magical:
     Name: "Magical"
-    Description: "Shoot a magic orb that is not affected by gravity but flies %amount% slower! If the orb hits a target it does %min% to %max% more damage (depending on level)! Costs %xp XP to shoot!"
+    Description: "Shoot a magic arrow that is not affected by gravity and flies %amount% of the normal speed! If the arrow hits a target it does %min% to %max% more damage (depending on level)! Costs %xp XP to shoot!"
     ModifierItemName: "Magic Arrow"
     DescriptionModifierItem: "Modifier-Item for the Magical-Modifier"
   Melting:

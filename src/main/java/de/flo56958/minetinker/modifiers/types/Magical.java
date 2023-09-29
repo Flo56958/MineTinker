@@ -12,15 +12,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.*;
+import org.bukkit.entity.AbstractArrow;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Magical extends Modifier implements Listener {
 
@@ -65,7 +71,7 @@ public class Magical extends Modifier implements Listener {
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
 
-		config.addDefault("MultiplierArrowSpeed", 0.3);
+		config.addDefault("MultiplierArrowSpeed", 0.5);
 		config.addDefault("MultiplierArrowDamagePerLevel", 1.25);
 		config.addDefault("ExperienceCost", 3);
 		config.addDefault("HasKnockback", true);
@@ -96,7 +102,7 @@ public class Magical extends Modifier implements Listener {
 		this.experienceCost = config.getInt("ExperienceCost", 10);
 		this.hasKnockback = config.getBoolean("HasKnockback", true);
 
-		this.description = this.description.replace("%amount", String.valueOf(Math.round((1.0 - this.multiplierArrowSpeed) * 100)))
+		this.description = this.description.replace("%amount", String.valueOf(Math.round(this.multiplierArrowSpeed * 100)))
 				.replace("%min", String.valueOf(Math.round((this.multiplierDamagePerLevel - 1.0) * 100)))
 				.replace("%max", String.valueOf(Math.round((Math.pow(this.multiplierDamagePerLevel, this.getMaxLvl()) - 1.0) * 100)))
 				.replace("%xp", String.valueOf(this.experienceCost));
@@ -132,96 +138,39 @@ public class Magical extends Modifier implements Listener {
 		arrow.setGravity(false);
 		//arrow.setGlowing(true);
 
-		Entity entity = player.getLocation().getWorld().spawnEntity(arrow.getLocation().add(arrow.getVelocity().normalize().multiply(-0.5)), EntityType.ENDERMITE);
-		if (entity instanceof LivingEntity) {
-			((LivingEntity) entity).setRemoveWhenFarAway(true);
-			//((LivingEntity) entity).setAI(false); can not move
-			entity.setGravity(false);
-			entity.setVelocity(arrow.getVelocity().multiply(this.multiplierArrowSpeed)); //does not work
-			entity.setInvulnerable(true);
-			entity.setSilent(true);
-			((LivingEntity) entity).setCollidable(false);
-
-			for (int i = 5; i < 10 * 20; i = i + 5) {
-				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
-					entity.teleport(arrow.getLocation().add(arrow.getVelocity().normalize().multiply(-0.4)));
-					entity.setVelocity(arrow.getVelocity()); //does not work
-				}, i);
-			}
-		}
-		arrow.setCustomName(this.getKey() + ":" + modLevel + ":" + entity.getUniqueId());
-
-		arrow.addAttachment(MineTinker.getPlugin(), this.getKey() + ":" + modLevel, true);
-
-		arrow.setVelocity(arrow.getVelocity().multiply(this.multiplierArrowSpeed));
-
+		final Vector velocity = arrow.getVelocity().multiply(this.multiplierArrowSpeed).clone();
+		arrow.setVelocity(velocity.clone());
 		((Arrow) arrow).setDamage(((Arrow) arrow).getDamage() * Math.pow(this.multiplierDamagePerLevel, modLevel));
 
 		ChatWriter.logModifier(player, event, this, tool, "Cost(" + this.experienceCost + ")");
 
+		for (int i = 1; i < 30; i++) {
+			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
+				arrow.setVelocity(velocity.clone());
+			}, i * 20L);
+		}
+
 		Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
-			entity.remove();
-			arrow.remove();
-		}, 10 * 20L);
-
-		//TODO: Find a way to hide the arrow from clients
-	}
-
-	@EventHandler
-	public void onHit(ProjectileHitEvent event) {
-		if (!this.isAllowed()) return;
-
-		Projectile arrow = event.getEntity();
-		if (!(arrow instanceof Arrow)) return;
-
-		if (!(arrow.getShooter() instanceof Player player)) return;
-
-		if(!player.hasPermission("minetinker.modifiers.magical.use")) return;
-
-		String customName = arrow.getCustomName();
-		if (customName == null) return;
-
-		String[] name = customName.split(":");
-		if (name.length != 3) return;
-		if (!name[0].equals(this.getKey())) return;
-
-		try {
-			//int modLevel = Integer.parseInt(name[1]);
-
-			Entity entity = Bukkit.getServer().getEntity(UUID.fromString(name[2]));
-			if (entity != null) {
-				entity.remove();
-			}
-
-			arrow.remove();
-		} catch (NumberFormatException ignored) {}
+			arrow.setGravity(true);
+		}, 30 * 20L);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onEntityHit(MTEntityDamageByEntityEvent event) {
 		if (!this.isAllowed()) return;
-
 		if (!(event.getEvent().getDamager() instanceof Arrow arrow)) return;
+		if (arrow.hasGravity()) return;
+		if (!(arrow.getShooter() instanceof Player player)) return;
+		if (!player.hasPermission("minetinker.modifiers.magical.use")) return;
+		if (!modManager.hasMod(event.getTool(), this)) return;
 
-		String customName = arrow.getCustomName();
-		if (customName == null) return;
-
-		String[] name = customName.split(":");
-		if (name.length != 3) return;
-		if (!name[0].equals(this.getKey())) return;
-
-		try {
-			int modLevel = Integer.parseInt(name[1]);
-
-			double oldDamage = event.getEvent().getDamage();
-			double newDamage = oldDamage * Math.pow(this.multiplierDamagePerLevel, modLevel);
-
-			event.getEvent().setDamage(newDamage);
-			ChatWriter.logModifier(event.getPlayer(), event, this, event.getTool(), String.format("Damage(%.2f -> %.2f [%.4f])", oldDamage, newDamage, newDamage/oldDamage));
-
-			if (this.hasKnockback) {
-				event.getEntity().setVelocity(arrow.getVelocity().normalize().multiply(modLevel));
-			}
-		} catch (NumberFormatException ignored) {}
+		int modLevel = modManager.getModLevel(event.getTool(), this);
+		double oldDamage = event.getEvent().getDamage() / this.multiplierArrowSpeed;
+		double newDamage = oldDamage * Math.pow(this.multiplierDamagePerLevel, modLevel);
+		event.getEvent().setDamage(newDamage);
+		ChatWriter.logModifier(event.getPlayer(), event, this, event.getTool(), String.format("Damage(%.2f -> %.2f [%.4f])", oldDamage, newDamage, newDamage/oldDamage));
+		if (this.hasKnockback) {
+			event.getEntity().setVelocity(arrow.getVelocity().normalize().multiply(modLevel));
+		}
 	}
 }
