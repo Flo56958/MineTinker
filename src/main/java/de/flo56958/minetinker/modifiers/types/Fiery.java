@@ -108,11 +108,7 @@ public class Fiery extends Modifier implements Listener {
 		if (!player.hasPermission("minetinker.modifiers.fiery.use")) return;
 
 		final ItemStack tool = event.getTool();
-
-		if (!ToolType.CROSSBOW.contains(tool.getType())) return;
-
 		if (!modManager.isToolViable(tool)) return;
-
 		if (!modManager.hasMod(tool, this)) return;
 
 		arrow.setFireTicks(2000);
@@ -121,21 +117,16 @@ public class Fiery extends Modifier implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	public void onHit(MTEntityDamageByEntityEvent event) {
 		if (!this.isAllowed()) return;
+
 		ItemStack tool = event.getTool();
-		if (!ToolType.CROSSBOW.contains(tool.getType()) && !ToolType.BOW.contains(tool.getType())) return; //The enchantment is working for other tools
-
 		if (!modManager.hasMod(tool, this)) return;
-
-		if(event.getEvent().getDamager().equals(event.getPlayer())) return; //Melee interaction
-
-		if(!event.getPlayer().hasPermission("minetinker.modifiers.fiery.use")) return;
+		if (!(event.getEvent().getDamager() instanceof Projectile projectile)) return; //Melee interaction
+		if (projectile.getFireTicks() <= 0) return; // not a flame arrow anymore
+		if (!event.getPlayer().hasPermission("minetinker.modifiers.fiery.use")) return;
 
 		int fireticks = event.getEntity().getFireTicks();
-		int addedFT = 100 * (modManager.getModLevel(tool, this) - 1); //Flame adds 100 Ticks; Fire aspect multiplies that by the level
-
-		if (addedFT == 0) return;
-
-		event.getEntity().setFireTicks(fireticks + addedFT);
-		ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("FireTicks(%d -> %d)", fireticks, fireticks + addedFT));
+		int addedFT = 100 * modManager.getModLevel(tool, this); //Flame adds 100 Ticks; Fire aspect multiplies that by the level
+		event.getEntity().setFireTicks(Math.max(fireticks, addedFT));
+		ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("FireTicks(%d -> %d)", fireticks, Math.max(fireticks, addedFT)));
 	}
 }

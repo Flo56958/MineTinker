@@ -101,9 +101,8 @@ public class Infinity extends Modifier implements Listener {
 	public void onShoot(final MTProjectileLaunchEvent event) {
 		if (!this.isAllowed()) return;
 
-		Projectile arrow = event.getEvent().getEntity();
-		if (!(arrow instanceof Arrow)) return;
-		if (arrow.hasMetadata(MultiShot.instance().getKey())) return;
+		Projectile projectile = event.getEvent().getEntity();
+		if (!(projectile instanceof Arrow arrow)) return;
 
 		final Player player = event.getPlayer();
 		if (!player.hasPermission("minetinker.modifiers.infinity.use")) return;
@@ -111,19 +110,19 @@ public class Infinity extends Modifier implements Listener {
 
 		final ItemStack tool = event.getTool();
 
-		if (!ToolType.CROSSBOW.contains(tool.getType())) return;
-
 		if (!modManager.isToolViable(tool)) return;
 
 		if (!modManager.hasMod(tool, this)) return;
 
-		if(!((Arrow) arrow).hasCustomEffects()) {
-			if (!player.getInventory().addItem(new ItemStack(Material.ARROW, 1)).isEmpty()) { //adds items to (full) inventory
-				player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.ARROW, 1)); //drops item when inventory is full
-			} // no else as it gets added in if
+		if(!(arrow.hasCustomEffects())) {
+			if (arrow.getPickupStatus() != AbstractArrow.PickupStatus.CREATIVE_ONLY) {
+				if (!player.getInventory().addItem(new ItemStack(Material.ARROW, 1)).isEmpty()) { //adds items to (full) inventory
+					player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.ARROW, 1)); //drops item when inventory is full
+				} // no else as it gets added in if
 
-			((Arrow) arrow).setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
-			ChatWriter.logModifier(player, event, this, tool);
+				arrow.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+				ChatWriter.logModifier(player, event, this, tool);
+			}
 		}
 	}
 }
