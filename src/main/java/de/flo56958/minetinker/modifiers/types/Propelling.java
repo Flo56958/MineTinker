@@ -76,7 +76,7 @@ public class Propelling extends Modifier implements Listener {
 		config.addDefault("SlotCost", 1);
 		config.addDefault("CooldownInSeconds", 5);
 		config.addDefault("Elytra.DurabilityLoss", 10);
-		config.addDefault("Elytra.SpeedPerLevel", 0.05);
+		config.addDefault("Elytra.SpeedPerLevel", 0.15);
 		config.addDefault("Elytra.Sound", true);
 		config.addDefault("Elytra.Particles", true);
 		config.addDefault("ConsiderReinforced", true); //should Reinforced (Unbreaking) be considered
@@ -195,7 +195,7 @@ public class Propelling extends Modifier implements Listener {
 		Location loc = player.getLocation();
 		Vector dir = loc.getDirection().normalize();
 
-		player.setVelocity(player.getVelocity().add(dir.multiply(1 + speedPerLevel * level)));
+		player.setVelocity(dir.multiply(1 + speedPerLevel * level));
 
 		if (particles && loc.getWorld() != null) {
 			loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
