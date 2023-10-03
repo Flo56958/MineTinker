@@ -92,6 +92,7 @@ public class Undead extends Modifier implements Listener {
 		if (!this.isAllowed()) return;
 		if (!this.disableAttacks) return;
 		if (!(event.getDamager() instanceof Player player)) return;
+		if (event.getEntity() instanceof Player) return;
 		if (!player.hasPermission("minetinker.modifiers.undead.use")) return;
 
 		ItemStack helmet = player.getInventory().getHelmet();
