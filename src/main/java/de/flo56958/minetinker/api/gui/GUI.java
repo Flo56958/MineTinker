@@ -266,7 +266,7 @@ public class GUI implements Listener {
 		private final Button[] buttonMap;
 		private Runnable showRunnable = null;
 		private int runnableRepeatTime = -1;
-		private int showRunnableTaskID;
+		private int showRunnableTaskID = -1;
 
 		/**
 		 * Creates a new Window with the given size and the given title.

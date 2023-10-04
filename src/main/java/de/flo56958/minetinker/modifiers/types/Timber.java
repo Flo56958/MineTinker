@@ -12,13 +12,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.world.WorldSaveEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
@@ -30,6 +34,7 @@ public class Timber extends Modifier implements Listener {
 	private int maxBlocks;
 
 	private static final ConcurrentHashMap<Location, Integer> events = new ConcurrentHashMap<>();
+	private HashSet<Material> grasses = new HashSet<>();
 
 	private Timber() {
 		super(MineTinker.getPlugin());
@@ -62,7 +67,7 @@ public class Timber extends Modifier implements Listener {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-		config.addDefault("MaxLevel", 1);
+		config.addDefault("MaxLevel", 2);
 		config.addDefault("SlotCost", 2);
 		config.addDefault("Color", "%GREEN%");
 		config.addDefault("MaximumBlocksPerSwing", 2000); //-1 to disable it
@@ -92,6 +97,13 @@ public class Timber extends Modifier implements Listener {
 		init(Material.EMERALD);
 		this.maxBlocks = config.getInt("MaximumBlocksPerSwing", 2000);
 		this.maxBlocks = (this.maxBlocks == -1) ? Integer.MAX_VALUE : this.maxBlocks;
+
+		this.grasses.clear();
+		this.grasses.addAll(Arrays.asList(Material.GRASS_BLOCK, Material.DIRT, Material.PODZOL, Material.COARSE_DIRT,
+				Material.NETHERRACK, Material.CRIMSON_NYLIUM, Material.WARPED_NYLIUM));
+		if (MineTinker.is19compatible) {
+			this.grasses.add(Material.MUD);
+		}
 	}
 
     @EventHandler(ignoreCancelled = true)
@@ -124,7 +136,7 @@ public class Timber extends Modifier implements Listener {
 				HashSet<Location> locs = new HashSet<>();
 				locs.add(block.getLocation());
 				Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(),
-						() -> breakTree(player, tool, block, new HashSet<>(Collections.singletonList(block.getType())), locs));
+						() -> breakTree(player, tool, block, new HashSet<>(Collections.singletonList(block.getType())), locs, null));
 			}
 		} else {
 			HashSet<Material> allowed = new HashSet<>();
@@ -141,12 +153,7 @@ public class Timber extends Modifier implements Listener {
 			for (int y = block.getY() - 1, airgap = 0; y >= block.getWorld().getMinHeight() && airgap < 10; y--) {
 				final Material blockType = player.getWorld().getBlockAt(block.getX(), y, block.getZ()).getType();
 
-				if (blockType == Material.GRASS_BLOCK || blockType == Material.DIRT
-						|| blockType == Material.PODZOL || blockType == Material.COARSE_DIRT
-						|| blockType == Material.NETHERRACK || blockType == Material.CRIMSON_NYLIUM
-						|| blockType == Material.WARPED_NYLIUM
-						|| (MineTinker.is19compatible && blockType == Material.MUD)) {
-
+				if (this.grasses.contains(blockType)) {
 					isTreeBottom = true;
 					break;
 				}
@@ -168,16 +175,20 @@ public class Timber extends Modifier implements Listener {
 				}
 			}
 
+			Material saplingType = null;
+
 			//airgap is for trees like acacia
 			for (int dy = block.getY() + 1, airgap = 0; dy < block.getWorld().getMaxHeight() && airgap < 10; dy++) {
 				if (!allowed.contains(player.getWorld().getBlockAt(block.getX(), dy, block.getZ()).getType())) {
 					final Location loc = block.getLocation().clone();
 					loc.setY(dy);
 
-					final Material mat = player.getWorld().getBlockAt(loc).getType();
+					final Block leaves = player.getWorld().getBlockAt(loc);
+					final Material mat = leaves.getType();
 
 					if (Lists.getWoodLeaves().contains(mat)) {
 						isTreeTop = true;
+						saplingType = Material.getMaterial(mat.toString().split("_")[0] + "_SAPLING");
 					} else if (mat.isAir() || !mat.isSolid()
 							// For mangrove trees
 							|| (MineTinker.is19compatible && (mat.equals(Material.MOSS_CARPET) || mat.equals(Material.MANGROVE_PROPAGULE)))) {
@@ -194,17 +205,20 @@ public class Timber extends Modifier implements Listener {
 
 			final HashSet<Location> locs = new HashSet<>();
 			locs.add(block.getLocation());
-			Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> breakTree(player, tool, block, allowed, locs));
+			final Material finalSaplingType = saplingType;
+			Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> breakTree(player, tool, block, allowed, locs, finalSaplingType));
 		}
 		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType() + ")");
 
 	}
 
-	private void breakTree(@NotNull Player player, @NotNull ItemStack tool, Block block, HashSet<Material> allowed, @NotNull HashSet<Location> locs) {
+	private void breakTree(@NotNull Player player, @NotNull ItemStack tool, Block block, HashSet<Material> allowed,
+						   @NotNull HashSet<Location> locs, @Nullable Material sapling) {
 		//TODO: Improve algorithm and performance
 		if (locs.size() >= maxBlocks) {
 			return;
 		}
+		final int level = modManager.getModLevel(tool, this);
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dy = -1; dy <= 1; dy++) {
 				for (int dz = -1; dz <= 1; dz++) {
@@ -223,11 +237,34 @@ public class Timber extends Modifier implements Listener {
 
 					final Block toBreak = player.getWorld().getBlockAt(loc);
 					if (allowed.contains(toBreak.getType())) {
-						breakTree(player, tool, toBreak, allowed, locs);
+						breakTree(player, tool, toBreak, allowed, locs, sapling);
 						events.put(toBreak.getLocation(), 0);
 						Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
 							try {
 								DataHandler.playerBreakBlock(player, toBreak, tool);
+								if (level >= 2 && sapling != null) {
+									final Block grassBlock = toBreak.getRelative(BlockFace.DOWN);
+									if (this.grasses.contains(grassBlock.getType())) {
+										for (final ItemStack stack : player.getInventory().getContents()) {
+											if (stack == null) continue;
+											if (stack.getType() != sapling) continue;
+
+											if (stack.getAmount() >= 1) {
+												final BlockPlaceEvent placeEvent =
+														new BlockPlaceEvent(toBreak, toBreak.getState(), grassBlock, stack,
+																player, true, EquipmentSlot.HAND);
+												Bukkit.getPluginManager().callEvent(placeEvent);
+
+												//check the pseudoevent
+												if (placeEvent.canBuild() && !placeEvent.isCancelled()) {
+													stack.setAmount(stack.getAmount() - 1);
+													toBreak.setType(sapling);
+												}
+												break;
+											}
+										}
+									}
+								}
 							} catch (IllegalArgumentException e) {
 								e.printStackTrace();
 							}
