@@ -223,6 +223,46 @@ public class Timber extends Modifier implements Listener {
 			for (int dy = -1; dy <= 1; dy++) {
 				for (int dz = -1; dz <= 1; dz++) {
 					if (dx == 0 && dy == 0 && dz == 0) {
+						if (level >= 2 && sapling != null) {
+							final Block grassBlock = block.getRelative(BlockFace.DOWN);
+							if (this.grasses.contains(grassBlock.getType())) {
+								for (final ItemStack stack : player.getInventory().getContents()) {
+									if (stack == null) continue;
+									if (stack.getType() != sapling) continue;
+
+									if (stack.getAmount() >= 1) {
+										final Material finalSapling = sapling;
+										Runnable runnable = new Runnable() {
+											private int counter = 0;
+											@Override
+											public void run() {
+												if (block.getType() != Material.AIR) {
+													// Block isn't broken yet
+													counter++;
+													if (counter <= 10) {
+														Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), this, 10L);
+													}
+													return;
+												}
+												final BlockPlaceEvent placeEvent =
+														new BlockPlaceEvent(block, block.getState(), grassBlock, stack,
+																player, true, EquipmentSlot.HAND);
+												Bukkit.getPluginManager().callEvent(placeEvent);
+
+												//check the pseudoevent
+												if (placeEvent.canBuild() && !placeEvent.isCancelled()) {
+													stack.setAmount(stack.getAmount() - 1);
+													block.setType(finalSapling);
+												}
+											}
+										};
+										Bukkit.getScheduler().runTask(MineTinker.getPlugin(), runnable);
+										break;
+									}
+								}
+								sapling = null;
+							}
+						}
 						continue;
 					}
 
@@ -242,29 +282,6 @@ public class Timber extends Modifier implements Listener {
 						Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
 							try {
 								DataHandler.playerBreakBlock(player, toBreak, tool);
-								if (level >= 2 && sapling != null) {
-									final Block grassBlock = toBreak.getRelative(BlockFace.DOWN);
-									if (this.grasses.contains(grassBlock.getType())) {
-										for (final ItemStack stack : player.getInventory().getContents()) {
-											if (stack == null) continue;
-											if (stack.getType() != sapling) continue;
-
-											if (stack.getAmount() >= 1) {
-												final BlockPlaceEvent placeEvent =
-														new BlockPlaceEvent(toBreak, toBreak.getState(), grassBlock, stack,
-																player, true, EquipmentSlot.HAND);
-												Bukkit.getPluginManager().callEvent(placeEvent);
-
-												//check the pseudoevent
-												if (placeEvent.canBuild() && !placeEvent.isCancelled()) {
-													stack.setAmount(stack.getAmount() - 1);
-													toBreak.setType(sapling);
-												}
-												break;
-											}
-										}
-									}
-								}
 							} catch (IllegalArgumentException e) {
 								e.printStackTrace();
 							}
