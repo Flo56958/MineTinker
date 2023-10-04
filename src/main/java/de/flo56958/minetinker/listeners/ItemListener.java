@@ -3,7 +3,6 @@ package de.flo56958.minetinker.listeners;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.modifiers.ModManager;
-import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Item;
@@ -97,22 +96,19 @@ public class ItemListener implements Listener {
 			return;
 		}
 
-		for (ItemStack itemStack : inventory.getContents()) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) return;
+
+
+		for (ItemStack itemStack : new ArrayList<>(event.getDrops())) {
 			if (itemStack == null) {
-				continue; // More consistent nullability in NotNull fields
+				continue;
 			}
 
 			boolean isMineTinker = false;
 
 			if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) { //Modifieritems
-				final ItemStack modifierTester = itemStack.clone();
-				modifierTester.setAmount(1);
-
-				for (Modifier modifier : modManager.getAllowedMods()) {
-					if (modifier.getModItem().equals(modifierTester)) {
-						isMineTinker = true;
-						break;
-					}
+				if (modManager.isModifierItem(itemStack)) {
+					isMineTinker = true;
 				}
 			}
 
@@ -125,12 +121,10 @@ public class ItemListener implements Listener {
 				continue;
 			}
 
-			if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
-				Bukkit.getPluginManager().callEvent(
-						new PlayerDropItemEvent(player, player.getWorld().dropItem(
-								player.getLocation(), itemStack))); //To trigger item behaviour
-				itemStack.setAmount(0);
-			}
+			Bukkit.getPluginManager().callEvent(
+					new PlayerDropItemEvent(player, player.getWorld().dropItem(
+							player.getLocation(), itemStack))); //To trigger item behaviour
+			event.getDrops().remove(itemStack);
 		}
 	}
 

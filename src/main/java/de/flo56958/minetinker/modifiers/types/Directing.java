@@ -200,15 +200,12 @@ public class Directing extends Modifier implements Listener {
 			return;
 		}
 
-		final List<ItemStack> drops = event.getEvent().getDrops();
-		final List<ItemStack> toremove = new ArrayList<>();
-
 		//Track stats
 		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
 				? DataHandler.getTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false)
 				: 0;
 
-		for (ItemStack current : drops) {
+		for (ItemStack current : new ArrayList<>(event.getEvent().getDrops())) {
 			if (modManager.hasMod(current, Soulbound.instance())) {
 				continue;
 			}
@@ -218,12 +215,10 @@ public class Directing extends Modifier implements Listener {
 			if (!player.getInventory().addItem(current).isEmpty()) { //adds items to (full) inventory
 				player.getWorld().dropItem(player.getLocation(), current);
 			} // no else as it gets added in if-clause
-			toremove.add(current);
+			event.getEvent().getDrops().remove(current);
 		}
 
 		DataHandler.setTag(tool, getKey() + "_stat_used", stat, PersistentDataType.INTEGER, false);
-
-		drops.removeAll(toremove);
 
 		if (this.workOnXP && modManager.getModLevel(tool, this) >= this.minimumLevelForXP) {
 			//Spawn Experience Orb as adding it directly to the player would prevent Mending from working
