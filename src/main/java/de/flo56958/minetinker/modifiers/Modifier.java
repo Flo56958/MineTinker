@@ -17,6 +17,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
@@ -26,10 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public abstract class Modifier {
 	protected static final ModManager modManager = ModManager.instance();
@@ -331,19 +329,22 @@ public abstract class Modifier {
 						return;
 					}
 
-					final Material material = Material.getMaterial(materialName);
+					final HashSet<Material> mats = new HashSet<>();
+					for (final String mat : materialName.split(",")) {
+						if (mat.isEmpty()) continue;
+						mats.add(Material.getMaterial(mat));
+					}
 
-					if (material == null) {
+					if (mats.isEmpty()) {
 						ChatWriter.log(false, "Material [" + materialName + "] is null for mod [" + this.name + "]");
 						return;
 					} else {
-						newRecipe.setIngredient(key.charAt(0), material);
+						newRecipe.setIngredient(key.charAt(0), new RecipeChoice.MaterialChoice(mats.stream().toList()));
 					}
 				}
 			} else {
 				ChatWriter.logError("Could not register recipe for the " + this.name + "-Modifier!"); //executes if the recipe could not initialize
 				ChatWriter.logError("Cause: Malformed recipe config.");
-
 				return;
 			}
 
@@ -351,6 +352,7 @@ public abstract class Modifier {
 			ChatWriter.log(false, "Registered recipe for the " + this.name + "-Modifier!");
 			ModManager.instance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
+			e.printStackTrace();
 			ChatWriter.logError("Could not register recipe for the " + this.name + "-Modifier!"); //executes if the recipe could not initialize
 		}
 	}

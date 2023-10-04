@@ -77,7 +77,11 @@ public class Timber extends Modifier implements Listener {
 		config.addDefault("Recipe.Bottom", "LLL");
 
 		Map<String, String> recipeMaterials = new HashMap<>();
-		recipeMaterials.put("L", Material.OAK_WOOD.name());
+		StringBuilder mats = new StringBuilder();
+		for (final Material mat : Lists.getWoodWood()) {
+			mats.append(mat.name()).append(",");
+		}
+		recipeMaterials.put("L", mats.substring(0, mats.length() - 1));
 		recipeMaterials.put("E", Material.EMERALD.name());
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
