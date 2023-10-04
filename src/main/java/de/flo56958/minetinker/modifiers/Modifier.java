@@ -325,14 +325,16 @@ public abstract class Modifier {
 					final String materialName = materials.getString(key);
 
 					if (materialName == null) {
-						ChatWriter.logInfo(LanguageManager.getString("Modifier.MaterialEntryNotFound"));
+						ChatWriter.logError(LanguageManager.getString("Modifier.MaterialEntryNotFound"));
 						return;
 					}
 
 					final HashSet<Material> mats = new HashSet<>();
 					for (final String mat : materialName.split(",")) {
 						if (mat.isEmpty()) continue;
-						mats.add(Material.getMaterial(mat));
+						final Material m = Material.getMaterial(mat);
+						if (m == null) continue;
+						mats.add(m);
 					}
 
 					if (mats.isEmpty()) {
@@ -359,8 +361,8 @@ public abstract class Modifier {
 
 	@Contract(value = "null -> false", pure = true)
 	public boolean equals(@Nullable Object o) {
-		if (o instanceof Modifier) {
-			return ((Modifier) o).getKey().equals(this.getKey());
+		if (o instanceof Modifier mod) {
+			return mod.getKey().equals(this.getKey());
 		}
 		return false;
 	}

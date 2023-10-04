@@ -23,10 +23,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -35,6 +32,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,7 +61,11 @@ public class BuildersWandListener implements Listener {
 		config.addDefault(recipe + ".Middle", " S ");
 		config.addDefault(recipe + ".Bottom", "S  ");
 		config.addDefault(recipe + ".Materials.S", "STICK");
-		config.addDefault(recipe + ".Materials.W", "LEGACY_WOOD");
+		StringBuilder mats = new StringBuilder();
+		for (final Material mat : Lists.getWoodPlanks()) {
+			mats.append(mat.name()).append(",");
+		}
+		config.addDefault(recipe + ".Materials.W", mats.substring(0, mats.length() - 1));
 
 		recipe = "Recipes.Stone";
 		config.addDefault(recipe + ".Top", "  C");
@@ -158,11 +160,27 @@ public class BuildersWandListener implements Listener {
 			newRecipe.shape(top, middle, bottom); //makes recipe
 
 			for (final String key : Objects.requireNonNull(materials, "Builderswand Materials are Null").getKeys(false)) {
-				newRecipe.setIngredient(key.charAt(0), Objects.requireNonNull(Material.getMaterial(
-						Objects.requireNonNull(materials.getString(key), "Builderswand Materials are Null")),
-						"Builderswand Materials are Null"));
-			}
+				final String materialName = materials.getString(key);
 
+				if (materialName == null) {
+					ChatWriter.logError("Builderswand Materials are Null");
+					return;
+				}
+
+				final HashSet<Material> mats = new HashSet<>();
+				for (final String mat : materialName.split(",")) {
+					if (mat.isEmpty()) continue;
+					final Material m = Material.getMaterial(mat);
+					if (m == null) continue;
+					mats.add(m);
+				}
+
+				if (mats.isEmpty()) {
+					ChatWriter.log(false, "Builderswand Materials are Null");
+				} else {
+					newRecipe.setIngredient(key.charAt(0), new RecipeChoice.MaterialChoice(mats.stream().toList()));
+				}
+			}
 			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 			ModManager.instance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
