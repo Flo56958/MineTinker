@@ -128,7 +128,7 @@ public class GUI implements Listener {
 				throw new IllegalStateException("GUI (" + this.hashCode() + ") is closed.");
 			}
 
-			player.openInventory(windows.get(page).inventory);
+			windows.get(page).show(player);
 		}
 	}
 
@@ -143,7 +143,7 @@ public class GUI implements Listener {
 						+ ") does not manage Window (" + window.hashCode() + ")!");
 			}
 
-			player.openInventory(window.inventory);
+			window.show(player);
 		}
 	}
 
@@ -183,22 +183,7 @@ public class GUI implements Listener {
 
 			isClosed = true;
 			for (Window w : windows) {
-				for (HumanEntity humanEntity : new ArrayList<>(w.getInventory().getViewers())) {
-					//new ArrayList is required as of ModificationException
-					humanEntity.closeInventory();
-				}
-
-				for (GUI.Window.Button button : w.buttonMap) {
-					if (button == null) continue;
-					for (ButtonAction action : button.actions.values()) {
-						if (action instanceof ButtonAction.PAGE_GOTO) {
-							GUI other = ((ButtonAction.PAGE_GOTO) action).window.gui;
-							if (!other.equals(this)) { //Close other GUIs
-								other.close();
-							}
-						}
-					}
-				}
+				w.close();
 			}
 
 			HandlerList.unregisterAll(this);
@@ -279,6 +264,9 @@ public class GUI implements Listener {
 		private final Inventory inventory;
 		private final GUI gui;
 		private final Button[] buttonMap;
+		private Runnable showRunnable = null;
+		private int runnableRepeatTime = -1;
+		private int showRunnableTaskID;
 
 		/**
 		 * Creates a new Window with the given size and the given title.
@@ -363,11 +351,6 @@ public class GUI implements Listener {
 		}
 
 		@NotNull
-		public Inventory getInventory() {
-			return inventory;
-		}
-
-		@NotNull
 		public GUI getGUI() {
 			return gui;
 		}
@@ -375,6 +358,50 @@ public class GUI implements Listener {
 		@Nullable
 		public Button getButtonFromSlot(final int slot) {
 			return buttonMap[slot];
+		}
+
+		public void setShowRunnable(final Runnable runnable, final int repeatTime) {
+			this.showRunnable = runnable;
+			this.runnableRepeatTime = repeatTime;
+		}
+
+		public void show(final Player player) {
+			player.openInventory(this.inventory);
+
+			if (showRunnable != null && this.showRunnableTaskID == -1) {
+				this.showRunnableTaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(this.gui.plugin, () -> {
+					if (inventory.getViewers().isEmpty()) {
+						Bukkit.getScheduler().cancelTask(this.showRunnableTaskID);
+						this.showRunnableTaskID = -1;
+						return;
+					}
+
+					this.showRunnable.run();
+				}, 0, runnableRepeatTime);
+			}
+		}
+
+		public void close() {
+			if (showRunnableTaskID != -1) {
+				Bukkit.getScheduler().cancelTask(this.showRunnableTaskID);
+				this.showRunnableTaskID = -1;
+			}
+			for (HumanEntity humanEntity : new ArrayList<>(this.inventory.getViewers())) {
+				//new ArrayList is required as of ModificationException
+				humanEntity.closeInventory();
+			}
+
+			for (GUI.Window.Button button : this.buttonMap) {
+				if (button == null) continue;
+				for (ButtonAction action : button.actions.values()) {
+					if (action instanceof ButtonAction.PAGE_GOTO) {
+						GUI other = ((ButtonAction.PAGE_GOTO) action).window.gui;
+						if (!other.equals(this.gui)) { //Close other GUIs
+							other.close();
+						}
+					}
+				}
+			}
 		}
 
 		/**

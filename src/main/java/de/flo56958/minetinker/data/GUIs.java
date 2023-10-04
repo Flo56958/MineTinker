@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -228,6 +229,7 @@ public class GUIs {
 					if (rec != null) {
 						GUI.Window modRecipe = modRecipes.addWindow(3, m.getColor() + m.getName());
 						if (rec instanceof ShapedRecipe srec) {
+							HashMap<GUI.Window.Button, RecipeChoice.MaterialChoice> choices = new HashMap<>();
 							ItemStack modItem = m.getModItem().clone();
 							DataHandler.setTag(modItem, "Showcase", (int) Math.round(Math.random() * 1000), PersistentDataType.INTEGER, false);
 							GUI.Window.Button result = modRecipe.addButton(6, 1, modItem);
@@ -251,7 +253,14 @@ public class GUIs {
 										ItemStack resItem = srec.getIngredientMap().get(c).clone();
 										DataHandler.setTag(resItem, "MT-MODSRecipeItem",
 												Math.round(Math.random() * 42), PersistentDataType.LONG, false);
-										modRecipe.addButton((slot % 3) + 2, (slot / 3), resItem);
+										final GUI.Window.Button recButton = modRecipe.addButton((slot % 3) + 2, (slot / 3), resItem);
+
+										// prepare runnable for multiple choices
+										if (srec.getChoiceMap().get(c) instanceof RecipeChoice.MaterialChoice mchoice) {
+											if (mchoice.getChoices().size() > 1) {
+												choices.put(recButton, mchoice);
+											}
+										}
 									} catch (NullPointerException ignored) {
 									}
 								}
@@ -259,6 +268,26 @@ public class GUIs {
 								if (s.length() == 1) {
 									slot++;
 								}
+							}
+
+							if (!choices.isEmpty()) {
+								final Runnable runnable = new Runnable() {
+									private final HashMap<GUI.Window.Button, RecipeChoice.MaterialChoice> map = choices;
+									private int counter = 0;
+									@Override
+									public void run() {
+										for (Map.Entry<GUI.Window.Button, RecipeChoice.MaterialChoice> entry : map.entrySet()) {
+											final List<Material> choices = entry.getValue().getChoices();
+											entry.getKey().getItemStack().setType(choices.get(counter % choices.size()));
+										}
+
+										counter++;
+										if (counter < 0) {
+											counter = 0;
+										}
+									}
+								};
+								modRecipe.setShowRunnable(runnable, 20);
 							}
 						}
 						modButton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(modButton, modRecipe));
