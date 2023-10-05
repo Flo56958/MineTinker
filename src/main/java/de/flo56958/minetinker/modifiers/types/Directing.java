@@ -120,6 +120,7 @@ public class Directing extends Modifier implements Listener {
 
 		if (this.workOnXP && modManager.getModLevel(tool, this) >= this.minimumLevelForXP) {
 			//Spawn Experience Orb as adding it directly to the player would prevent Mending from working
+			if (event.getEvent().getExpToDrop() <= 0) return;
 			ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(player.getLocation(), EntityType.EXPERIENCE_ORB);
 			orb.setExperience(event.getEvent().getExpToDrop());
 			event.getEvent().setExpToDrop(0);
@@ -222,6 +223,7 @@ public class Directing extends Modifier implements Listener {
 
 		if (this.workOnXP && modManager.getModLevel(tool, this) >= this.minimumLevelForXP) {
 			//Spawn Experience Orb as adding it directly to the player would prevent Mending from working
+			if (event.getEvent().getDroppedExp() <= 0) return;
 			ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(player.getLocation(), EntityType.EXPERIENCE_ORB);
 			orb.setExperience(event.getEvent().getDroppedExp());
 			event.getEvent().setDroppedExp(0);
