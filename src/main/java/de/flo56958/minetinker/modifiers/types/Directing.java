@@ -207,7 +207,7 @@ public class Directing extends Modifier implements Listener {
 				: 0;
 
 		for (ItemStack current : new ArrayList<>(event.getEvent().getDrops())) {
-			if (modManager.hasMod(current, Soulbound.instance())) {
+			if (modManager.hasMod(current, Soulbound.instance()) && event.getEvent().getEntity() instanceof Player) {
 				continue;
 			}
 

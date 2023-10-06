@@ -26,6 +26,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
@@ -45,23 +46,7 @@ public class EntityListener implements Listener {
 			return;
 		}
 
-		Player player = null;
-
-		if (event.getDamager() instanceof final Arrow arrow && !(event.getDamager() instanceof Trident)) {
-			final ProjectileSource source = arrow.getShooter();
-
-			if (source instanceof Player) {
-				player = (Player) source;
-			}
-		} else if (event.getDamager() instanceof final Trident trident) {
-			final ProjectileSource source = trident.getShooter();
-
-			if (source instanceof Player) {
-				player = (Player) source;
-			}
-		} else if (event.getDamager() instanceof Player) {
-			player = (Player) event.getDamager();
-		}
+		Player player = getPlayer(event);
 
 		if (player == null) return;
 
@@ -98,6 +83,28 @@ public class EntityListener implements Listener {
 		}
 	}
 
+	@Nullable
+	private static Player getPlayer(@NotNull EntityDamageByEntityEvent event) {
+		Player player = null;
+
+		if (event.getDamager() instanceof final Arrow arrow && !(event.getDamager() instanceof Trident)) {
+			final ProjectileSource source = arrow.getShooter();
+
+			if (source instanceof Player) {
+				player = (Player) source;
+			}
+		} else if (event.getDamager() instanceof final Trident trident) {
+			final ProjectileSource source = trident.getShooter();
+
+			if (source instanceof Player) {
+				player = (Player) source;
+			}
+		} else if (event.getDamager() instanceof Player) {
+			player = (Player) event.getDamager();
+		}
+		return player;
+	}
+
 	@EventHandler
 	public void onDeath(@NotNull final EntityDeathEvent event) {
 		final LivingEntity mob = event.getEntity();
@@ -128,24 +135,26 @@ public class EntityListener implements Listener {
 
 		final FileConfiguration config = MineTinker.getPlugin().getConfig();
 
-		if (config.getBoolean("ConvertLoot.MobDrops", true)) {
-			for (ItemStack item : event.getDrops()) {
-				modManager.convertLoot(item, player);
+		if (!(mob instanceof Player)) {
+			if (config.getBoolean("ConvertLoot.MobDrops", true)) {
+				for (ItemStack item : event.getDrops()) {
+					modManager.convertLoot(item, player);
+				}
 			}
-		}
 
-		if (config.getBoolean("MobDropModifierItems.Enabled", true)) {
-			if (config.getBoolean("MobDropModifierItems.ConsiderIncludedMobs") ==
-					config.getStringList("MobDropModifierItems.IncludedMobs").contains(mob.getType().name())) {
-				Random rand = new Random();
-				if (rand.nextInt(100) < config.getInt("MobDropModifierItems.Chance", 2)) {
-					int amount = rand.nextInt(config.getInt("MobDropModifierItems.MaximumAmount") + 1);
-					final List<Modifier> mods = modManager.getAllowedMods();
-					for (int i = 0; i < amount; i++) {
-						final int index = rand.nextInt(mods.size());
-						final Modifier mod = mods.get(index);
-						if (!config.getStringList("MobDropModifierItems.ExcludeModifiers").contains(mod.getKey())) {
-							event.getDrops().add(mod.getModItem().clone());
+			if (config.getBoolean("MobDropModifierItems.Enabled", true)) {
+				if (config.getBoolean("MobDropModifierItems.ConsiderIncludedMobs") ==
+						config.getStringList("MobDropModifierItems.IncludedMobs").contains(mob.getType().name())) {
+					Random rand = new Random();
+					if (rand.nextInt(100) < config.getInt("MobDropModifierItems.Chance", 2)) {
+						int amount = rand.nextInt(config.getInt("MobDropModifierItems.MaximumAmount") + 1);
+						final List<Modifier> mods = modManager.getAllowedMods();
+						for (int i = 0; i < amount; i++) {
+							final int index = rand.nextInt(mods.size());
+							final Modifier mod = mods.get(index);
+							if (!config.getStringList("MobDropModifierItems.ExcludeModifiers").contains(mod.getKey())) {
+								event.getDrops().add(mod.getModItem().clone());
+							}
 						}
 					}
 				}
