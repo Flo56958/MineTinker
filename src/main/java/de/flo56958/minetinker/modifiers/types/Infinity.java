@@ -99,8 +99,6 @@ public class Infinity extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onShoot(final MTProjectileLaunchEvent event) {
-		if (!this.isAllowed()) return;
-
 		Projectile projectile = event.getEvent().getEntity();
 		if (!(projectile instanceof Arrow arrow)) return;
 
@@ -109,8 +107,6 @@ public class Infinity extends Modifier implements Listener {
 		if (player.getGameMode() == GameMode.CREATIVE) return;
 
 		final ItemStack tool = event.getTool();
-
-		if (!modManager.isToolViable(tool)) return;
 
 		if (!modManager.hasMod(tool, this)) return;
 

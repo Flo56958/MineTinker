@@ -12,12 +12,11 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.AbstractArrow;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -121,17 +120,30 @@ public class MultiShot extends Modifier implements Listener {
 		return true;
 	}
 
+	@EventHandler(priority = EventPriority.LOW)
+	public void onHit(final EntityDamageByEntityEvent event) {
+		if (!this.isAllowed()) return;
+		if (!(event.getDamager() instanceof Arrow arrow)) return;
+		if (!arrow.hasMetadata(this.getKey())) return;
+		if (!(event.getEntity() instanceof LivingEntity entity)) return;
+
+		// Fix Arrows reflecting of entity
+		entity.setNoDamageTicks(0);
+		entity.setMaximumNoDamageTicks(0);
+		event.setCancelled(false);
+	}
+
 	@EventHandler(ignoreCancelled = true)
 	public void onShoot(final MTProjectileLaunchEvent event) {
 		if (!this.isAllowed()) {
 			return;
 		}
 
-		Projectile arrow = event.getEvent().getEntity();
+		Projectile projectile = event.getEvent().getEntity();
 
-		if (arrow.hasMetadata(this.getKey())) return;
+		if (projectile.hasMetadata(this.getKey())) return;
 
-		if (!(arrow instanceof Arrow)) {
+		if (!(projectile instanceof Arrow arrow)) {
 			return;
 		}
 
@@ -208,8 +220,8 @@ public class MultiShot extends Modifier implements Listener {
 					arr.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
 				}
 
-				arr.setCritical(((Arrow) arrow).isCritical());
-				arr.setDamage(((Arrow) arrow).getDamage());
+				arr.setCritical(arrow.isCritical());
+				arr.setDamage(arrow.getDamage());
 				// no recursive actions
 				arr.setMetadata(this.getKey(), new FixedMetadataValue(this.getSource(), null));
 
@@ -230,6 +242,8 @@ public class MultiShot extends Modifier implements Listener {
 				}
 			}, 0);
 		}
+
+		arrow.setMetadata(this.getKey(), new FixedMetadataValue(this.getSource(), null));
 	}
 
 	private void returnArrow(Player player, Arrow arr) {
