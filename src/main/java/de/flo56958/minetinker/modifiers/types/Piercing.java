@@ -49,7 +49,7 @@ public class Piercing extends Modifier implements Listener {
 	@Override
 	public List<ToolType> getAllowedTools() {
 		if (allowBow) return Arrays.asList(ToolType.CROSSBOW, ToolType.BOW);
-		else return Collections.singletonList(ToolType.CROSSBOW);
+		return Collections.singletonList(ToolType.CROSSBOW);
 	}
 
 	@Override

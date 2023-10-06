@@ -22,6 +22,8 @@ public class Sharpness extends Modifier {
 
 	private static Sharpness instance;
 
+	private boolean allowAxes;
+
 	private Sharpness() {
 		super(MineTinker.getPlugin());
 		customModelData = 10_032;
@@ -44,7 +46,8 @@ public class Sharpness extends Modifier {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT);
+		if (allowAxes) return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT);
+		return Arrays.asList(ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT);
 	}
 
 	@Override
@@ -61,6 +64,7 @@ public class Sharpness extends Modifier {
 		config.addDefault("Color", "%WHITE%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("AllowAxes", true);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -81,6 +85,8 @@ public class Sharpness extends Modifier {
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
 		init(Material.QUARTZ_BLOCK);
+
+		this.allowAxes = config.getBoolean("AllowAxes", true);
 	}
 
 	@Override
