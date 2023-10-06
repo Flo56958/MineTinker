@@ -610,8 +610,12 @@ permissions:
   minetinker.modifiers.piercing.*:
     children:
       minetinker.modifiers.piercing.apply: true
+      minetinker.modifiers.piercing.use: true
   minetinker.modifiers.piercing.apply:
     description: Allows to apply Piercing to the MineTinker-Tool
+    default: true
+  minetinker.modifiers.piercing.use:
+    description: Allows to use the Photosynthesis-Modifier on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.smite.*:

@@ -1,26 +1,30 @@
 package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.events.MTProjectileLaunchEvent;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
+import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class Piercing extends Modifier {
+public class Piercing extends Modifier implements Listener {
 
 	private static Piercing instance;
+
+	private boolean allowBow = true;
 
 	private Piercing() {
 		super(MineTinker.getPlugin());
@@ -44,13 +48,15 @@ public class Piercing extends Modifier {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Collections.singletonList(ToolType.CROSSBOW);
+		if (allowBow) return Arrays.asList(ToolType.CROSSBOW, ToolType.BOW);
+		else return Collections.singletonList(ToolType.CROSSBOW);
 	}
 
 	@Override
 	public @NotNull List<Enchantment> getAppliedEnchantments() {
 		return Collections.singletonList(Enchantment.PIERCING);
 	}
+	//The mod does not apply the enchantment anymore
 
 	@Override
 	public void reload() {
@@ -61,6 +67,7 @@ public class Piercing extends Modifier {
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 4);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("AllowBow", true);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -83,20 +90,24 @@ public class Piercing extends Modifier {
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
 		init(Material.ARROW);
+
+		this.allowBow = config.getBoolean("AllowBow", true);
 	}
 
-	@Override
-	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
-		ItemMeta meta = tool.getItemMeta();
+	@EventHandler
+	public void onLaunch(final MTProjectileLaunchEvent event) {
+		final Projectile projectile = event.getEvent().getEntity();
+		if (!(projectile instanceof final Arrow arrow)) return;
 
-		if (meta != null) {
-			if (ToolType.CROSSBOW.contains(tool.getType())) {
-				meta.addEnchant(Enchantment.PIERCING, modManager.getModLevel(tool, this), true);
-			}
+		final Player player = event.getPlayer();
+		if (!player.hasPermission("minetinker.modifiers.piercing.use")) return;
 
-			tool.setItemMeta(meta);
-		}
+		final ItemStack tool = event.getTool();
+		if (!modManager.hasMod(tool, this)) return;
 
-		return true;
+		final int level = modManager.getModLevel(tool, this);
+		arrow.setPierceLevel(level);
+
+		ChatWriter.logModifier(player, event, this, tool);
 	}
 }
