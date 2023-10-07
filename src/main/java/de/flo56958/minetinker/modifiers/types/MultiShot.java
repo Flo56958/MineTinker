@@ -34,6 +34,7 @@ public class MultiShot extends Modifier implements Listener {
 	private static MultiShot instance;
 	private double spread;
 	private boolean needsArrows;
+	private boolean allowMultipleHits;
 
 	private MultiShot() {
 		super(MineTinker.getPlugin());
@@ -77,6 +78,7 @@ public class MultiShot extends Modifier implements Listener {
 		config.addDefault("ArrowSpread", 5.0);
 		config.addDefault("NeedsArrows", true);
 		config.addDefault("UseEnchantOnCrossbow", false);
+		config.addDefault("AllowMultipleHits", true);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -98,8 +100,9 @@ public class MultiShot extends Modifier implements Listener {
 
 		init(Material.ARROW);
 
-		this.spread = config.getDouble("ArrowSpread");
-		this.needsArrows = config.getBoolean("NeedsArrows");
+		this.spread = config.getDouble("ArrowSpread", 5.0);
+		this.needsArrows = config.getBoolean("NeedsArrows", true);
+		this.allowMultipleHits = config.getBoolean("AllowMultipleHits", true);
 	}
 
 	@Override
@@ -122,7 +125,7 @@ public class MultiShot extends Modifier implements Listener {
 
 	@EventHandler(priority = EventPriority.LOW)
 	public void onHit(final EntityDamageByEntityEvent event) {
-		if (!this.isAllowed()) return;
+		if (!this.allowMultipleHits) return;
 		if (!(event.getDamager() instanceof Arrow arrow)) return;
 		if (!arrow.hasMetadata(this.getKey())) return;
 		if (!(event.getEntity() instanceof LivingEntity entity)) return;
@@ -135,10 +138,6 @@ public class MultiShot extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onShoot(final MTProjectileLaunchEvent event) {
-		if (!this.isAllowed()) {
-			return;
-		}
-
 		Projectile projectile = event.getEvent().getEntity();
 
 		if (projectile.hasMetadata(this.getKey())) return;
