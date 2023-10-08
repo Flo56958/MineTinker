@@ -5,7 +5,6 @@ import de.flo56958.minetinker.api.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -25,7 +24,6 @@ public class Vigilant extends Modifier implements Listener {
 	private static Vigilant instance;
 
 	private double percentile;
-	private int durationPerLevel;
 
 	private Vigilant() {
 		super(MineTinker.getPlugin());
@@ -66,7 +64,6 @@ public class Vigilant extends Modifier implements Listener {
 		config.addDefault("Enchantable", true);
 		config.addDefault("MinimumToolLevelRequirement", 1);
 		config.addDefault("AmountDamageAsShield", 0.33);
-		config.addDefault("DurationOfShieldPerLevel", 40);
 
 		config.addDefault("Recipe.Enabled", false);
 
@@ -76,14 +73,13 @@ public class Vigilant extends Modifier implements Listener {
 		init(Material.GOLDEN_APPLE);
 
 		this.percentile = config.getDouble("AmountDamageAsShield", 0.33);
-		this.durationPerLevel = config.getInt("DurationOfShieldPerLevel", 20);
 
-		this.description = this.description.replaceAll("%amount", Math.round(this.percentile * 100) + "%")
-				.replaceAll("%duration", String.format("%.2f", this.durationPerLevel / 20.0d));
+		this.description = this.description.replaceAll("%amount", Math.round(this.percentile * 100) + "%");
 	}
 
 	private void effect(@NotNull final Player player, final double damage) {
 		if (!player.hasPermission("minetinker.modifiers.vigilant.use")) return;
+		if (player.getAbsorptionAmount() >= 0.5) return;
 
 		final ItemStack chestplate = player.getInventory().getChestplate();
 		if (!modManager.isArmorViable(chestplate)) return;
@@ -91,21 +87,16 @@ public class Vigilant extends Modifier implements Listener {
 
 		final int level = modManager.getModLevel(chestplate, this);
 
-		final double absorption = damage * this.percentile;
+		final double absorption = damage * this.percentile * level;
 		//Add absorption
-		player.setAbsorptionAmount(player.getAbsorptionAmount() + absorption);
-
-		//Remove absorption again
-		Bukkit.getServer().getScheduler().runTaskLater(MineTinker.getPlugin(),
-				() -> player.setAbsorptionAmount(Math.max(0.0d, player.getAbsorptionAmount() - absorption)),
-				(long) durationPerLevel * level);
+		player.setAbsorptionAmount(absorption);
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onDamage(@NotNull MTEntityDamageByEntityEvent event) {
 		// Player was damaged
 		if (event.getPlayer().equals(event.getEvent().getEntity())) {
-			effect(event.getPlayer(), Math.max(0.0d, event.getEvent().getFinalDamage() - event.getPlayer().getAbsorptionAmount()));
+			effect(event.getPlayer(), Math.max(0.0d, event.getEvent().getFinalDamage()));
 		}
 	}
 

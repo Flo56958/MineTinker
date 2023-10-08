@@ -34,7 +34,7 @@ public class ShadowDive extends Modifier implements Listener {
 	private static ShadowDive instance;
 
 	private int requiredLightLevel;
-	private final HashSet<Player> activePlayers = new HashSet<>();
+	private final HashMap<Player, Integer> activePlayers = new HashMap<>();
 
 	private BukkitTask task;
 	private ShadowDive() {
@@ -55,13 +55,13 @@ public class ShadowDive extends Modifier implements Listener {
 	private final Runnable runnable = new Runnable() {
 		@Override
 		public void run() {
-			Iterator<Player> iterator = activePlayers.iterator();
+			Iterator<Player> iterator = activePlayers.keySet().iterator();
 			//noinspection WhileLoopReplaceableByForEach
 			while (iterator.hasNext()) {
 				Player p = iterator.next();
 				Location loc = p.getLocation();
 				byte lightlevel = p.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()).getLightLevel();
-				if (!p.isSneaking() || lightlevel > requiredLightLevel || p.hasPotionEffect(PotionEffectType.GLOWING)) {
+				if (!p.isSneaking() || lightlevel > requiredLightLevel + activePlayers.get(p) || p.hasPotionEffect(PotionEffectType.GLOWING)) {
 					showPlayer(p);
 					ChatWriter.sendActionBar(p, ChatColor.RED + ShadowDive.instance().getName() + ": "
 							+ LanguageManager.getString("Modifier.Shadow-Dive.LightToHigh", p));
@@ -104,9 +104,9 @@ public class ShadowDive extends Modifier implements Listener {
 
 		config.addDefault("Allowed", true);
 		config.addDefault("Color", "%GRAY%");
-		config.addDefault("MaxLevel", 1);
+		config.addDefault("MaxLevel", 10);
 		config.addDefault("SlotCost", 3);
-		config.addDefault("RequiredLightLevel", 6);
+		config.addDefault("RequiredLightLevel", 3);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -127,15 +127,15 @@ public class ShadowDive extends Modifier implements Listener {
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
 		init(Material.DIAMOND);
-		this.requiredLightLevel = config.getInt("RequiredLightLevel", 6);
+		this.requiredLightLevel = config.getInt("RequiredLightLevel", 3);
 
 		this.description = this.description.replaceAll("%level", String.valueOf(this.requiredLightLevel));
 
 		if (this.isAllowed()) task = Bukkit.getScheduler().runTaskTimer(MineTinker.getPlugin(), runnable, 0,5);
 	}
 
-	private void hidePlayer(Player p) {
-		activePlayers.add(p);
+	private void hidePlayer(Player p, int level) {
+		activePlayers.put(p, level);
 
 		//Clear all mob targets
 		Collection<Entity> nearbyEntities = p.getWorld().getNearbyEntities(p.getLocation(), 64, 64, 64);
@@ -156,7 +156,7 @@ public class ShadowDive extends Modifier implements Listener {
 	}
 
 	private void showPlayer(Player p) {
-		if (activePlayers.remove(p)) {
+		if (activePlayers.remove(p) != null) {
 			for (Player player : Bukkit.getServer().getOnlinePlayers()) {
 				if (!p.equals(player)) player.showPlayer(MineTinker.getPlugin(), p);
 			}
@@ -165,14 +165,14 @@ public class ShadowDive extends Modifier implements Listener {
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onJoin(PlayerJoinEvent event) {
-		for(Player p : activePlayers) {
+		for(Player p : activePlayers.keySet()) {
 			event.getPlayer().hidePlayer(MineTinker.getPlugin(), p);
 		}
 	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onLeave(PlayerQuitEvent event) {
-		for(Player p : activePlayers) {
+		for(Player p : activePlayers.keySet()) {
 			event.getPlayer().showPlayer(MineTinker.getPlugin(), p);
 		}
 	}
@@ -181,7 +181,7 @@ public class ShadowDive extends Modifier implements Listener {
 	public void onTarget(EntityTargetLivingEntityEvent event) {
 		if (event.getTarget() instanceof Player) {
 			//noinspection SuspiciousMethodCalls
-			if (activePlayers.contains(event.getTarget())) {
+			if (activePlayers.containsKey(event.getTarget())) {
 				event.setCancelled(true);
 			}
 		}
@@ -215,10 +215,10 @@ public class ShadowDive extends Modifier implements Listener {
 				return;
 			}
 
-			hidePlayer(player);
+			hidePlayer(player, modManager.getModLevel(boots, this));
 
 		} else { //disable
-			if (!activePlayers.contains(player)) return;
+			if (!activePlayers.containsKey(player)) return;
 			showPlayer(player);
 		}
 	}

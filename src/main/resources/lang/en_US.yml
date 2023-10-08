@@ -357,7 +357,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Scotopic-Modifier"
   Shadow-Dive:
     Name: "Shadow Dive"
-    Description: "Vanish completely from sight when sneaking in dark places! (Lightlevel <= %level)"
+    Description: "Vanish completely from sight when sneaking in dark places! (Lightlevel <= %level + modifier level)"
     ModifierItemName: "Vanishing Crystal"
     DescriptionModifierItem: "Modifier-Item for the Shadow-Dive-Modifier"
     LightToHigh: "The lightlevel is to high!"
@@ -449,7 +449,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Undead-Modifier"
   Vigilant:
     Name: "Vigilant"
-    Description: "Gain a temporary shield equal to %amount damage received. This shield lasts for %duration seconds per level."
+    Description: "If you do not have absorption hearts gain a temporary shield equal to %amount damage received per level."
     ModifierItemName: "Forbidden Apple"
     DescriptionModifierItem: "Modifier-Item for the Vigilant-Modifier"
   Void-Netting:
