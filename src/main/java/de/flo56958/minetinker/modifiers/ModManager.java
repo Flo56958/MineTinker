@@ -132,6 +132,7 @@ public class ModManager {
 		incompatibilityList.add(Sharpness.instance().getKey() + ":" + Explosive.instance().getKey());
 		incompatibilityList.add(Magical.instance().getKey() + ":" + Explosive.instance().getKey());
 		incompatibilityList.add(Piercing.instance().getKey() + ":" + Explosive.instance().getKey());
+		incompatibilityList.add(Channeling.instance().getKey() + ":" + Explosive.instance().getKey());
 
 		Plugin plugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
 		if (plugin != null && plugin.isEnabled()) {

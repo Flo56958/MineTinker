@@ -15,13 +15,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Explosive extends Modifier implements Listener {
 
@@ -57,7 +55,7 @@ public class Explosive extends Modifier implements Listener {
 
 	@Override
 	public @NotNull List<Enchantment> getAppliedEnchantments() {
-		return Arrays.asList(Enchantment.DAMAGE_ALL, Enchantment.ARROW_DAMAGE, Enchantment.IMPALING);
+		return new ArrayList<>();
 	}
 
 	@Override
@@ -69,7 +67,7 @@ public class Explosive extends Modifier implements Listener {
 		config.addDefault("Color", "%RED%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
-		config.addDefault("PowerPerLevel", 1.0);
+		config.addDefault("PowerPerLevel", 0.33);
 		config.addDefault("SetFire", false);
 		config.addDefault("BlockBreak", false);
 
@@ -103,6 +101,7 @@ public class Explosive extends Modifier implements Listener {
 	public void onProjectileHit(final MTProjectileHitEvent event) {
 		Player p = event.getPlayer();
 		ItemStack tool = event.getTool();
+		if (event.getEvent().getEntity().hasMetadata(this.getKey())) return;
 		if (!modManager.hasMod(tool, this)) return;
 
 		final int level = modManager.getModLevel(tool, this);
@@ -112,6 +111,7 @@ public class Explosive extends Modifier implements Listener {
 		final Location loc = event.getEvent().getEntity().getLocation();
 
 		loc.getWorld().createExplosion(loc, this.powerPerLevel * level, false, false, p);
+		event.getEvent().getEntity().setMetadata(this.getKey(), new FixedMetadataValue(MineTinker.getPlugin(), 0));
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -126,7 +126,7 @@ public class Explosive extends Modifier implements Listener {
 
 		if (!p.hasPermission("minetinker.modifiers.explosive.use")) return;
 
-		final Location loc = event.getEntity().getLocation();
+		final Location loc = event.getEntity().getLocation().add(0, 0.2, 0);
 
 		loc.getWorld().createExplosion(loc, this.powerPerLevel * level, this.setFire, this.blockBreak, p);
 	}

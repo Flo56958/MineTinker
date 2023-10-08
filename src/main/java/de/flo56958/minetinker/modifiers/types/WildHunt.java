@@ -65,10 +65,10 @@ public class WildHunt extends Modifier implements Listener {
 		config.addDefault("Allowed", true);
 		config.addDefault("Color", "%GOLD%");
 		config.addDefault("MaxLevel", 5);
-		config.addDefault("SlotCost", 1);
+		config.addDefault("SlotCost", 2);
 		config.addDefault("PercentagePerLevel", 10);
 
-		config.addDefault("EnchantCost", 15);
+		config.addDefault("EnchantCost", 25);
 		config.addDefault("Enchantable", true);
 		config.addDefault("MinimumToolLevelRequirement", 1);
 
@@ -81,7 +81,8 @@ public class WildHunt extends Modifier implements Listener {
 		conversions.put(EntityType.ZOMBIE, List.of(new Tupel(Material.LEATHER, Material.ROTTEN_FLESH)));
 		conversions.put(EntityType.ZOMBIE_HORSE, List.of(new Tupel(Material.LEATHER, Material.ROTTEN_FLESH)));
 		conversions.put(EntityType.ZOMBIE_VILLAGER, List.of(new Tupel(Material.LEATHER, Material.ROTTEN_FLESH)));
-		conversions.put(EntityType.DROWNED, List.of(new Tupel(Material.LEATHER, Material.ROTTEN_FLESH)));
+		conversions.put(EntityType.DROWNED, List.of(new Tupel(Material.LEATHER, Material.ROTTEN_FLESH),
+													new Tupel(Material.NAUTILUS_SHELL, Material.COPPER_INGOT)));
 		conversions.put(EntityType.HUSK, List.of(new Tupel(Material.LEATHER, Material.ROTTEN_FLESH)));
 		conversions.put(EntityType.ZOGLIN, List.of(new Tupel(Material.LEATHER, Material.ROTTEN_FLESH)));
 		conversions.put(EntityType.ZOMBIFIED_PIGLIN, List.of(new Tupel(Material.LEATHER, Material.ROTTEN_FLESH),
@@ -92,6 +93,10 @@ public class WildHunt extends Modifier implements Listener {
 		conversions.put(EntityType.WITHER_SKELETON, List.of(new Tupel(Material.WITHER_ROSE, Material.COAL)));
 		conversions.put(EntityType.SHULKER, List.of(new Tupel(Material.SHULKER_BOX, Material.SHULKER_SHELL)));
 		conversions.put(EntityType.SLIME, List.of(new Tupel(Material.EMERALD, Material.SLIME_BALL)));
+		conversions.put(EntityType.WITCH, List.of(new Tupel(Material.BLAZE_ROD, Material.STICK),
+													new Tupel(Material.FERMENTED_SPIDER_EYE, Material.SPIDER_EYE),
+													new Tupel(Material.BREWING_STAND, Material.GLASS_BOTTLE)));
+		conversions.put(EntityType.WITHER, List.of(new Tupel(Material.BEACON, Material.NETHER_STAR)));
 
 		conversions.forEach((k, v) -> config.addDefault("Conversions." + k.toString(), v.stream().map(Tupel::toString).toList()));
 		conversions.clear();
