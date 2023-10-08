@@ -438,6 +438,17 @@ permissions:
     description: Allows to use Evasive on a MineTinker-Armor
     default: true
 
+  minetinker.modifiers.explosive.*:
+    children:
+      minetinker.modifiers.explosive.apply: true
+      minetinker.modifiers.explosive.use: true
+  minetinker.modifiers.explosive.apply:
+    description: Allows to apply Explosive to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.explosive.use:
+    description: Allows to use Explosive on a MineTinker-Tool
+    default: true
+
   minetinker.modifiers.multijump.*:
     children:
       minetinker.modifiers.multijump.apply: true
@@ -465,10 +476,25 @@ permissions:
     description: Allows to apply Fiery to a MineTinker-Tool
     default: true
   minetinker.modifiers.fiery.craft:
-    description: Allows to craft a Fiery-Modifiers
+    description: Allows to craft a Fiery-Modifier
     default: true
   minetinker.modifiers.fiery.use:
     description: Allows to use a Fiery-Modifiers on Crossbows
+    default: true
+
+  minetinker.modifiers.wildhunt.*:
+    children:
+      minetinker.modifiers.wildhunt.apply: true
+      minetinker.modifiers.wildhunt.craft: true
+      minetinker.modifiers.wildhunt.use: true
+  minetinker.modifiers.wildhunt.apply:
+    description: Allows to apply Wild Hunt to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.wildhunt.craft:
+    description: Allows to craft a Wild Hunt-Modifier
+    default: true
+  minetinker.modifiers.wildhunt.use:
+    description: Allows to use a Wild-Hunt-Modifier
     default: true
 
   minetinker.modifiers.freezing.*:

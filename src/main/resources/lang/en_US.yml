@@ -213,6 +213,11 @@ Modifier:
     ModifierItemName: "Essence of Experience"
     DescriptionModifierItem: "Modifier-Item for the Experienced-Modifier"
     Statistic_Amount: "Exp-Amount dropped: %amount"
+  Explosive:
+    Name: "Explosive"
+    Description: "Your attack explode with %power Power per level!"
+    ModifierItemName: "MoaB-TNT"
+    DescriptionModifierItem: "Modifier-Item for the Explosive-Modifier"
   Extra-Modifier:
     Name: "Extra-Modifier"
     Description: "Adds %amount additional Modifier-Slots to the tool!"
@@ -458,6 +463,12 @@ Modifier:
     Description: "Slow down enemies when you hit them or they hit you for %duration Ticks * %multiplier per level!"
     ModifierItemName: "Compressed Cobweb"
     DescriptionModifierItem: "Modifier-Item for the Webbed-Modifier"
+  Wild-Hunt:
+    Name: "Wild Hunt"
+    Description: "Improve drops from killed mobs! %chance% chance to activate per level."
+    ModifierItemName: "Enhanced Bone"
+    DescriptionModifierItem: "Modifier-Item for the Wild-Hunt-Modifier"
+    Statistic_Used: "Drops upgraded: %amount"
   Withered:
     Name: "Withered"
     Description: "Withers the target for %duration Ticks * %multiplier per level!"

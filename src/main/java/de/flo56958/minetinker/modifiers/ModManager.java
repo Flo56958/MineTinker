@@ -127,6 +127,11 @@ public class ModManager {
 		incompatibilityList.add(Thorned.instance().getKey() + ":" + Undead.instance().getKey());
 		incompatibilityList.add(Webbed.instance().getKey() + ":" + Undead.instance().getKey());
 		incompatibilityList.add(Withered.instance().getKey() + ":" + Undead.instance().getKey());
+		incompatibilityList.add(MultiShot.instance().getKey() + ":" + Explosive.instance().getKey());
+		incompatibilityList.add(Ender.instance().getKey() + ":" + Explosive.instance().getKey());
+		incompatibilityList.add(Sharpness.instance().getKey() + ":" + Explosive.instance().getKey());
+		incompatibilityList.add(Magical.instance().getKey() + ":" + Explosive.instance().getKey());
+		incompatibilityList.add(Piercing.instance().getKey() + ":" + Explosive.instance().getKey());
 
 		Plugin plugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
 		if (plugin != null && plugin.isEnabled()) {

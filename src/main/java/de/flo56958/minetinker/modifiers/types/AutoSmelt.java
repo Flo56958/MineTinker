@@ -94,6 +94,7 @@ public class AutoSmelt extends Modifier implements Listener {
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
 
+		conversions.clear();
 		conversions.put(Material.STONE, new Triplet(Material.STONE, 1));
 		conversions.put(Material.COBBLESTONE, new Triplet(Material.STONE, 1));
 		conversions.put(Material.SAND, new Triplet(Material.GLASS, 1));
@@ -226,11 +227,13 @@ public class AutoSmelt extends Modifier implements Listener {
 
 		init(Material.FURNACE);
 
-		this.percentagePerLevel = config.getInt("PercentagePerLevel", 20);
+		this.percentagePerLevel = config.getInt("PercentagePerLevel", 100);
 		this.hasSound = config.getBoolean("Sound", true);
 		this.hasParticles = config.getBoolean("Particles", true);
 		this.worksUnderWater = config.getBoolean("WorksUnderWater", true);
 		this.toggleable = config.getBoolean("Toggleable", false);
+
+		this.description = this.description.replace("%chance", String.valueOf(this.percentagePerLevel));
 
 		ConfigurationSection conversionConfig = config.getConfigurationSection("Conversions");
 		if (conversionConfig == null) return;
@@ -247,8 +250,6 @@ public class AutoSmelt extends Modifier implements Listener {
 			} else error = true;
 			if (error) ChatWriter.logError(this.getKey() +  ".yml: Error in conversion value for " + k);
 		});
-
-		this.description = this.description.replace("%chance", String.valueOf(this.percentagePerLevel));
 	}
 
 	/**

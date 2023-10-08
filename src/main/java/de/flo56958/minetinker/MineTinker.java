@@ -173,6 +173,7 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(Ender.instance());
 		modManager.register(Evasive.instance());
 		modManager.register(Experienced.instance());
+		modManager.register(Explosive.instance());
 		modManager.register(ExtraModifier.instance());
 		modManager.register(Fiery.instance());
 		modManager.register(Freezing.instance());
@@ -221,6 +222,7 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(Vigilant.instance());
 		modManager.register(VoidNetting.instance());
 		modManager.register(Webbed.instance());
+		modManager.register(WildHunt.instance());
 		modManager.register(Withered.instance());
 	}
 

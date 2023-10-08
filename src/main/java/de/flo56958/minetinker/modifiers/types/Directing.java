@@ -19,6 +19,7 @@ import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -174,7 +175,7 @@ public class Directing extends Modifier implements Listener {
 				String.format("Block(%d/%d/%d)", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void effect(MTEntityDeathEvent event) {
 		if (event.getPlayer().equals(event.getEvent().getEntity())) {
 			return;
