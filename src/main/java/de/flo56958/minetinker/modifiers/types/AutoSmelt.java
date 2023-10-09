@@ -211,7 +211,7 @@ public class AutoSmelt extends Modifier implements Listener {
 		}
 
 		for (Material m : Material.values()) {
-			if (m.isBurnable()) {
+			if (m.isBurnable() && m.isBlock()) {
 				conversions.putIfAbsent(m, new Triplet(Material.AIR, 1));
 			}
 		}

@@ -53,6 +53,7 @@ public class EntityListener implements Listener {
 		ItemStack tool = player.getInventory().getItemInMainHand();
 		if (event.getDamager() instanceof Arrow || event.getDamager() instanceof Trident) {
 			List<MetadataValue> tools = event.getDamager().getMetadata(MineTinker.getPlugin().getName() + "item");
+			if (tools.isEmpty()) return;
 			FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
 			if (obj == null || !(obj.value() instanceof ItemStack t)) return;
 			tool = t;
@@ -122,12 +123,12 @@ public class EntityListener implements Listener {
 		if (mob.getLastDamageCause() instanceof EntityDamageByEntityEvent lastevent) {
 			if (lastevent.getDamager() instanceof Arrow || lastevent.getDamager() instanceof Trident) {
 				List<MetadataValue> tools = lastevent.getDamager().getMetadata(MineTinker.getPlugin().getName() + "item");
+				if (tools.isEmpty()) return;
 				FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
 				if (obj == null || !(obj.value() instanceof ItemStack t)) return;
 				tool = t;
 			}
 		}
-
 
 		if (!modManager.isToolViable(tool)) {
 			return;
