@@ -222,16 +222,16 @@ public class Directing extends Modifier implements Listener {
 
 		DataHandler.setTag(tool, getKey() + "_stat_used", stat, PersistentDataType.INTEGER, false);
 
+		ChatWriter.logModifier(player, event, this, tool,
+				"Entity(" + event.getEvent().getEntity().getType() + ")");
+
 		if (this.workOnXP && modManager.getModLevel(tool, this) >= this.minimumLevelForXP) {
 			//Spawn Experience Orb as adding it directly to the player would prevent Mending from working
 			if (event.getEvent().getDroppedExp() <= 0) return;
 			ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(player.getLocation(), EntityType.EXPERIENCE_ORB);
-			orb.setExperience(event.getEvent().getDroppedExp());
+			orb.setExperience(orb.getExperience() + event.getEvent().getDroppedExp());
 			event.getEvent().setDroppedExp(0);
 		}
-
-		ChatWriter.logModifier(player, event, this, tool,
-				"Entity(" + event.getEvent().getEntity().getType() + ")");
 	}
 
 	@Override
