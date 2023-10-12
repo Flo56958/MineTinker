@@ -213,6 +213,11 @@ Modifier:
     ModifierItemName: "Essenz der Erfahrung"
     DescriptionModifierItem: "Modifizierungs-Item für die Erfahrend-Modifizierung"
     Statistic_Amount: "Anzahl XP generiert: %amount"
+  Explosive:
+    Name: "Explosiv"
+    Description: "Deine Attacken explodieren mit %power Stärke pro Level!"
+    ModifierItemName: "MoaB-TNT"
+    DescriptionModifierItem: "Modifizierungs-Item für die Explosiv-Modifikation"
   Extra-Modifier:
     Name: "Zusätzlicher Modifizierungsplatz"
     Description: "Fügt %amount zusätzliche Modifizierungsplätze hinzu!"
@@ -352,7 +357,7 @@ Modifier:
     DescriptionModifierItem: "Modifizierungs-Item für die Skotopisch-Modifikation"
   Shadow-Dive:
     Name: "Schattentaucher"
-    Description: "Werde komplett unsichtbar in dunklen Umgebungen wenn du schleichst! (Licht muss dunkler als %level sein)"
+    Description: "Werde komplett unsichtbar in dunklen Umgebungen wenn du schleichst! (Licht muss dunkler als %level + Modifikationslevel sein)"
     ModifierItemName: "Verschwindender Kristall"
     DescriptionModifierItem: "Modifizierungs-Item für die Schattentaucher-Modifikation"
     LightToHigh: "Das Lichtlevel ist zu hoch!"
@@ -444,7 +449,7 @@ Modifier:
     DescriptionModifierItem: "Modifizierungs-Item für die Untot-Modifizierung"
   Vigilant:
     Name: "Wachsam"
-    Description: "Bekomme ein temporäres Schild mit der Größe %amount des erhaltenen Schadens. Diese Schild hält für %duration Sekunden pro Level."
+    Description: "Bekomme ein temporäres Schild mit der Größe %amount des erhaltenen Schadens solltest du keine Absorptionsherzen haben."
     ModifierItemName: "Verbotener Apfel"
     DescriptionModifierItem: "Modifizierungs-Item für die Wachsam-Modifikation"
   Void-Netting:
@@ -458,6 +463,12 @@ Modifier:
     Description: "Verlangsame Gegner mit jedem Treffer für %duration Ticks * %multiplier per Level!"
     ModifierItemName: "Komprimierte Spinnenweben"
     DescriptionModifierItem: "Modifizierungs-Item für die Vernetzend-Modifizierung"
+  Wild-Hunt:
+    Name: "Wilde Jagd"
+    Description: "Verbessere Drops von getöteten Gegnern! %chance% Wahrscheinlichkeit zum Aktivieren pro Level."
+    ModifierItemName: "Verzauberter Knochen"
+    DescriptionModifierItem: "Modifizierungs-Item für die Wilde-Jagd-Modifikation"
+    Statistic_Used: "Drops verbessert: %amount"
   Withered:
     Name: "Verwelkend"
     Description: "Macht zusätzlichen Witherschaden für %duration Ticks * %multiplier pro Level!"
