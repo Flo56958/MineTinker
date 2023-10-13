@@ -272,6 +272,7 @@ public class BuildersWandListener implements Listener {
 			}
 
 			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+			ModManager.instance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
 			ChatWriter.logError(LanguageManager.getString("Builderswand.Error")
 					.replaceAll("%wand", wands.get(4).getItemMeta().getDisplayName()));
@@ -293,6 +294,7 @@ public class BuildersWandListener implements Listener {
 			}
 
 			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+			ModManager.instance().recipe_Namespaces.add(nkey);
 		} catch (Exception e) {
 			ChatWriter.logError(LanguageManager.getString("Builderswand.Error")
 					.replaceAll("%wand", wands.get(5).getItemMeta().getDisplayName()));

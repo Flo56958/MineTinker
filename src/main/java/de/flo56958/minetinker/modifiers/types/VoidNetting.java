@@ -112,7 +112,6 @@ public class VoidNetting extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onDamage(EntityDamageEvent event) {
-		if (!this.isAllowed()) return;
 		if (event.getCause() != EntityDamageEvent.DamageCause.VOID) return;
 		if (!(event.getEntity() instanceof Player player)) return;
 

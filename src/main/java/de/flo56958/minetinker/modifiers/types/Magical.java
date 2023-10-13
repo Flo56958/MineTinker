@@ -111,8 +111,6 @@ public class Magical extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onShoot(final MTProjectileLaunchEvent event) {
-		if (!this.isAllowed()) return;
-
 		Projectile arrow = event.getEvent().getEntity();
 		if (!(arrow instanceof Arrow)) return;
 
@@ -159,7 +157,6 @@ public class Magical extends Modifier implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onEntityHit(MTEntityDamageByEntityEvent event) {
-		if (!this.isAllowed()) return;
 		if (!(event.getEvent().getDamager() instanceof Arrow arrow)) return;
 		if (arrow.hasGravity()) return;
 		if (!(arrow.getShooter() instanceof Player player)) return;

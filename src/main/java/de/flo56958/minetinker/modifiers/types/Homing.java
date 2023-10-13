@@ -96,10 +96,6 @@ public class Homing extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onShoot(final MTProjectileLaunchEvent event) {
-		if (!this.isAllowed()) {
-			return;
-		}
-
 		Projectile arrow = event.getEvent().getEntity();
 
 		if (!(arrow instanceof Arrow)) {

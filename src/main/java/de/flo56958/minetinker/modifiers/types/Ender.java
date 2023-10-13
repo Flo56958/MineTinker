@@ -112,7 +112,6 @@ public class Ender extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(EntityShootBowEvent event) {
-		if (!this.isAllowed()) return;
 		Entity arrow = event.getProjectile();
 		if (!(arrow instanceof Arrow)) return;
 		if (!(event.getEntity() instanceof Player player)) {
@@ -140,7 +139,6 @@ public class Ender extends Modifier implements Listener {
 	// for tridents
 	@EventHandler(ignoreCancelled = true)
 	public void effect(final MTProjectileLaunchEvent event) {
-		if (!this.isAllowed()) return;
 		Projectile trident = event.getEvent().getEntity();
 		if (!(trident instanceof Trident)) return;
 
@@ -170,7 +168,6 @@ public class Ender extends Modifier implements Listener {
 	 */
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTProjectileHitEvent event) {
-		if (!this.isAllowed()) return;
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 		Projectile arrow = event.getEvent().getEntity();

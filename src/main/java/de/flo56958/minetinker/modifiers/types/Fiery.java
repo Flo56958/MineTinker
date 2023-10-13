@@ -99,8 +99,6 @@ public class Fiery extends Modifier implements Listener {
 
 	@EventHandler
 	public void onShoot(final MTProjectileLaunchEvent event) {
-		if (!this.isAllowed()) return;
-
 		Projectile arrow = event.getEvent().getEntity();
 		if (!(arrow instanceof Arrow)) return;
 
@@ -116,8 +114,6 @@ public class Fiery extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onHit(MTEntityDamageByEntityEvent event) {
-		if (!this.isAllowed()) return;
-
 		ItemStack tool = event.getTool();
 		if (!modManager.hasMod(tool, this)) return;
 		if (!(event.getEvent().getDamager() instanceof Projectile projectile)) return; //Melee interaction

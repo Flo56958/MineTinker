@@ -25,7 +25,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -135,9 +134,8 @@ public class ModManager {
 		incompatibilityList.add(Channeling.instance().getKey() + ":" + Explosive.instance().getKey());
 
 		Plugin plugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
-		if (plugin != null && plugin.isEnabled()) {
+		if (plugin != null && plugin.isEnabled())
 			incompatibilityList.add(Echoing.instance().getKey() + ":" + Undead.instance().getKey());
-		}
 
 		incompatibilityList.sort(String::compareToIgnoreCase);
 
@@ -151,7 +149,6 @@ public class ModManager {
 		ConfigurationManager.saveConfig(modifierconfig);
 	}
 
-	//TODO: AUTO-DISCOVER RECIPES
 	public final ArrayList<NamespacedKey> recipe_Namespaces = new ArrayList<>();
 	private final HashMap<Modifier, Set<Modifier>> incompatibilities = new HashMap<>();
 	/**
@@ -200,76 +197,63 @@ public class ModManager {
 				|| name.equals("diamond") && material == Material.DIAMOND
 				|| name.equals("leather") && material == Material.LEATHER
 				|| name.equals("turtle") && material == Material.SCUTE
-				|| name.equals("chainmail") && material == Material.IRON_BARS) {
+				|| name.equals("chainmail") && material == Material.IRON_BARS
+				|| name.equals("netherite") && material == Material.NETHERITE_INGOT)
 			return null;
-		}
-
-		if(name.equals("netherite") && material == Material.NETHERITE_INGOT) {
-			return null;
-		}
 
 		// upgrading from diamond to netherrite should only require one material
 		final boolean reduceToOne = name.equals("diamond") && material == Material.NETHERITE_INGOT;
 
-		if (ToolType.SWORD.contains(tool)) {
+		if (ToolType.SWORD.contains(tool))
 			return new Pair<>(getToolUpgrade(material, "SWORD"), reduceToOne ? 1 : 2);
-		} else if (ToolType.PICKAXE.contains(tool)) {
+		else if (ToolType.PICKAXE.contains(tool))
 			return new Pair<>(getToolUpgrade(material, "PICKAXE"), reduceToOne ? 1 : 3);
-		} else if (ToolType.AXE.contains(tool)) {
+		else if (ToolType.AXE.contains(tool))
 			return new Pair<>(getToolUpgrade(material, "AXE"), reduceToOne ? 1 : 3);
-		} else if (ToolType.SHOVEL.contains(tool)) {
+		else if (ToolType.SHOVEL.contains(tool))
 			return new Pair<>(getToolUpgrade(material, "SHOVEL"), 1);
-		} else if (ToolType.HOE.contains(tool)) {
+		else if (ToolType.HOE.contains(tool))
 			return new Pair<>(getToolUpgrade(material, "HOE"), reduceToOne ? 1 : 2);
-		} else if (ToolType.HELMET.contains(tool)) {
+		else if (ToolType.HELMET.contains(tool))
 			return new Pair<>(getArmorUpgrade(material, "HELMET"), reduceToOne ? 1 : 5);
-		} else if (ToolType.CHESTPLATE.contains(tool)) {
+		else if (ToolType.CHESTPLATE.contains(tool))
 			return new Pair<>(getArmorUpgrade(material, "CHESTPLATE"), reduceToOne ? 1 : 8);
-		} else if (ToolType.LEGGINGS.contains(tool)) {
+		else if (ToolType.LEGGINGS.contains(tool))
 			return new Pair<>(getArmorUpgrade(material, "LEGGINGS"), reduceToOne ? 1 : 7);
-		} else if (ToolType.BOOTS.contains(tool)) {
+		else if (ToolType.BOOTS.contains(tool))
 			return new Pair<>(getArmorUpgrade(material, "BOOTS"), reduceToOne ? 1 : 4);
-		}
 
 		return null;
 	}
 
 	private static @Nullable Material getToolUpgrade(@NotNull final Material material, @NotNull final String tool) {
-		if (material == Material.NETHERITE_INGOT) {
-			return Material.getMaterial("NETHERITE_" + tool);
-		}
 		return switch (material) {
 			case ACACIA_PLANKS, BIRCH_PLANKS, DARK_OAK_PLANKS, JUNGLE_PLANKS, OAK_PLANKS, SPRUCE_PLANKS
 					-> Material.getMaterial("WOODEN_" + tool);
 			case COBBLESTONE -> Material.getMaterial("STONE_" + tool);
-			case IRON_INGOT -> Material.getMaterial("IRON_" + tool);
-			case GOLD_INGOT -> Material.getMaterial("GOLDEN_" + tool);
 			case DIAMOND -> Material.getMaterial("DIAMOND_" + tool);
+			case GOLD_INGOT -> Material.getMaterial("GOLDEN_" + tool);
+			case IRON_INGOT -> Material.getMaterial("IRON_" + tool);
+			case NETHERITE_INGOT -> Material.getMaterial("NETHERITE_" + tool);
 			default -> null;
 		};
 	}
 
 	private static @Nullable Material getArmorUpgrade(@NotNull final Material material, @NotNull final String tool) {
-		if(material == Material.NETHERITE_INGOT) {
-			return Material.getMaterial("NETHERITE_" + tool);
-		}
 		return switch (material) {
-			case LEATHER -> Material.getMaterial("LEATHER_" + tool);
-			case IRON_INGOT -> Material.getMaterial("IRON_" + tool);
-			case GOLD_INGOT -> Material.getMaterial("GOLDEN_" + tool);
 			case DIAMOND -> Material.getMaterial("DIAMOND_" + tool);
+			case GOLD_INGOT -> Material.getMaterial("GOLDEN_" + tool);
 			case IRON_BARS -> Material.getMaterial("CHAINMAIL_" + tool);
+			case IRON_INGOT -> Material.getMaterial("IRON_" + tool);
+			case LEATHER -> Material.getMaterial("LEATHER_" + tool);
+			case NETHERITE_INGOT -> Material.getMaterial("NETHERITE_" + tool);
 			default -> null;
 		};
 	}
 
 	public List<Modifier> getToolMods(ItemStack tool) {
-		ArrayList<Modifier> mods = new ArrayList<>();
-		for (Modifier mod : getAllowedMods()) {
-			if (hasMod(tool, mod)) {
-				mods.add(mod);
-			}
-		}
+		ArrayList<Modifier> mods = new ArrayList<>(this.mods);
+		mods.removeIf(mod -> !this.hasMod(tool, mod));
 		return mods;
 	}
 
@@ -279,16 +263,8 @@ public class ModManager {
 
 		removeRecipes();
 		mods.clear();
-
-		for (final Modifier m : allMods) {
-			m.reload();
-
-			if (m.isAllowed()) {
-				mods.add(m);
-			} else {
-				mods.remove(m);
-			}
-		}
+		mods.addAll(allMods);
+		mods.removeIf(mod -> !mod.isAllowed());
 
 		mods.sort(Comparator.comparing(Modifier::getName));
 
@@ -296,9 +272,7 @@ public class ModManager {
 		this.ArmorIdentifier = config.getString("ArmorIdentifier");
 
 		removeRecipes();
-		for (final Modifier m : this.mods) {
-			m.registerCraftingRecipe();
-		}
+		this.mods.forEach(Modifier::registerCraftingRecipe);
 
 		//get Modifier incompatibilities
 		this.reloadIncompatibilities();
@@ -329,42 +303,37 @@ public class ModManager {
 		FileConfiguration modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
 
 		final List<String> possibleKeys = new ArrayList<>();
-		for (final Modifier m : this.allMods) {
-			possibleKeys.add(m.getKey());
-		}
+		this.allMods.forEach(m -> possibleKeys.add(m.getKey()));
 		possibleKeys.sort(String::compareToIgnoreCase);
 		possibleKeys.add(0, "Do not edit this list; just for documentation of what Keys can be used under Incompatibilities");
 		modifierconfig.set("PossibleKeys", possibleKeys);
 		ConfigurationManager.saveConfig(modifierconfig);
 		ConfigurationManager.loadConfig("", "Modifiers.yml");
 		incompatibilities.clear();
-		for (final Modifier m : this.allMods) {
-			incompatibilities.putIfAbsent(m, new HashSet<>());
-		}
+		this.allMods.forEach(m -> incompatibilities.putIfAbsent(m, new HashSet<>()));
 		modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
 		final List<String> incompatibilityList = modifierconfig.getStringList("Incompatibilities");
-		for (final String s : incompatibilityList) {
+		incompatibilityList.forEach(s -> {
 			final String[] splits = s.split(":");
-			if (splits.length != 2) continue;
-			Modifier mod1 = null;
-			Modifier mod2 = null;
-			for (final Modifier m : this.allMods) {
-				if (m.getKey().equals(splits[0])) {
-					mod1 = m;
-				}
-				if (m.getKey().equals(splits[1])) {
-					mod2 = m;
-				}
-			}
+			if (splits.length != 2) return;
+			final Modifier mod1 = this.allMods.stream()
+					.filter(m -> m.getKey().equals(splits[0]))
+					.findFirst()
+					.orElse(null);
 
-			if (mod1 == null || mod2 == null) continue;
-			if (mod1.equals(mod2)) continue; //Modifier can not be incompatible with itself
-			if (!mod1.isAllowed() || !mod2.isAllowed()) continue; //not enabled Modifiers should not be listed
+			final Modifier mod2 = this.allMods.stream()
+					.filter(m -> m.getKey().equals(splits[1]))
+					.findFirst()
+					.orElse(null);
+
+			if (mod1 == null || mod2 == null) return;
+			if (mod1.equals(mod2)) return; //Modifier can not be incompatible with itself
+			if (!mod1.isAllowed() || !mod2.isAllowed()) return; //not enabled Modifiers should not be listed
 
 			//Cross-link incompatibilities
 			incompatibilities.get(mod1).add(mod2);
 			incompatibilities.get(mod2).add(mod1);
-		}
+		});
 
 		//Make the incompatibilities unmodifiable
 		incompatibilities.replaceAll((m, set) -> Collections.unmodifiableSet(set));
@@ -376,8 +345,7 @@ public class ModManager {
 	 * @return The incompatibilities
 	 */
 	public @NotNull Set<Modifier> getIncompatibilities(final Modifier m) {
-		final Set<Modifier> set = incompatibilities.get(m);
-		return set != null ? set : new HashSet<>();
+		return incompatibilities.getOrDefault(m, new HashSet<>());
 	}
 
 	/**
@@ -396,27 +364,24 @@ public class ModManager {
 	@Contract("null -> false")
 	public boolean register(@Nullable final Modifier mod) {
 		if (mod == null) return false;
-		if (!allMods.contains(mod)) {
-			mod.reload();
-			allMods.add(mod);
-			if (mod.isAllowed()) {
-				mods.add(mod);
-				mods.sort(Comparator.comparing(Modifier::getName));
-				mod.registerCraftingRecipe();
-				if (mod instanceof Listener listener) { //Enable Events
-					Bukkit.getPluginManager().registerEvents(listener, MineTinker.getPlugin());
-				}
-			}
-			reloadIncompatibilities();
-			if (!mod.getSource().equals(MineTinker.getPlugin())) {
-				GUIs.reload();
-			}
-			ChatWriter.logColor(LanguageManager.getString("ModManager.RegisterModifier")
-					.replace("%mod", mod.getColor() + mod.getName())
-					.replace("%plugin", mod.getSource().getName()));
-			return true;
+		if (allMods.contains(mod)) throw new IllegalArgumentException("Modifier already registered!");
+
+		mod.reload();
+		allMods.add(mod);
+		if (mod.isAllowed()) {
+			mods.add(mod);
+			mods.sort(Comparator.comparing(Modifier::getName));
+			mod.registerCraftingRecipe();
+			if (mod instanceof Listener listener) //Enable Events
+				Bukkit.getPluginManager().registerEvents(listener, MineTinker.getPlugin());
 		}
-		return false;
+		reloadIncompatibilities();
+		if (!mod.getSource().equals(MineTinker.getPlugin())) GUIs.reload();
+
+		ChatWriter.logColor(LanguageManager.getString("ModManager.RegisterModifier")
+				.replace("%mod", mod.getColor() + mod.getName())
+				.replace("%plugin", mod.getSource().getName()));
+		return true;
 	}
 
 	/**
@@ -428,9 +393,9 @@ public class ModManager {
 		allMods.remove(mod);
 		mods.remove(mod);
 		incompatibilities.remove(mod);
-		if (mod instanceof Listener listener) { //Disable Events
+		if (mod instanceof Listener listener) //Disable Events
 			HandlerList.unregisterAll(listener);
-		}
+
 		ChatWriter.logColor(LanguageManager.getString("ModManager.UnregisterModifier")
 				.replace("%mod", mod.getColor() + mod.getName())
 				.replace("%plugin", MineTinker.getPlugin().getName()));
@@ -471,36 +436,32 @@ public class ModManager {
 	}
 
 	public boolean addMod(final Player player, @NotNull final ItemStack item, @NotNull final Modifier modifier, final boolean fromCommand, final boolean fromRandom, final boolean silent, final boolean modifySlotCount) {
-		if (!modifier.getKey().equals(ExtraModifier.instance().getKey())) {
-			if (!modifier.checkAndAdd(player, item,
-					modifier.getKey().toLowerCase().replace("-", ""), fromCommand, fromRandom, silent, modifySlotCount)) {
+		if (!modifier.getKey().equals(ExtraModifier.instance().getKey())
+				&& !modifier.checkAndAdd(player, item, modifier.getKey().toLowerCase().replace("-", ""),
+											fromCommand, fromRandom, silent, modifySlotCount))
 				return false;
-			}
+
+		// apply modifier
+		if (!modifier.applyMod(player, item, fromCommand)) return false;
+
+		ItemMeta meta = item.getItemMeta();
+
+		if (meta == null) return true;
+
+		if (MineTinker.getPlugin().getConfig().getBoolean("HideEnchants", true)) {
+			meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		} else {
+			meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
 		}
 
-		final boolean success = modifier.applyMod(player, item, fromCommand);
-
-		if (success) {
-			ItemMeta meta = item.getItemMeta();
-
-			if (meta != null) {
-				if (MineTinker.getPlugin().getConfig().getBoolean("HideEnchants", true)) {
-					meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-				} else {
-					meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-				}
-
-				if (MineTinker.getPlugin().getConfig().getBoolean("HideAttributes", true)) {
-					meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-				} else {
-					meta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-				}
-
-				item.setItemMeta(meta);
-			}
+		if (MineTinker.getPlugin().getConfig().getBoolean("HideAttributes", true)) {
+			meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+		} else {
+			meta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		}
 
-		return success;
+		item.setItemMeta(meta);
+		return true;
 	}
 
 	/**
@@ -523,11 +484,11 @@ public class ModManager {
 	 * @param mod the modifier to remove
 	 */
 	public void removeMod(@NotNull final ItemStack is, @NotNull final Modifier mod) {
-		if (hasMod(is, mod)) {
-			DataHandler.removeTag(is, mod.getKey(), false);
-			mod.removeMod(is);
-			rewriteLore(is);
-		}
+		if (!hasMod(is, mod)) return;
+
+		DataHandler.removeTag(is, mod.getKey(), false);
+		mod.removeMod(is);
+		rewriteLore(is);
 	}
 
 	/**
@@ -610,13 +571,12 @@ public class ModManager {
 	 * @return long value of the exp required
 	 */
 	public long getNextLevelReq(final int level) {
-		if (config.getBoolean("ProgressionIsLinear")) {
+		if (config.getBoolean("ProgressionIsLinear"))
 			return Math.round(MineTinker.getPlugin().getConfig().getInt("LevelStep")
 					* MineTinker.getPlugin().getConfig().getDouble("LevelFactor") * level);
-		} else {
-			return Math.round(MineTinker.getPlugin().getConfig().getInt("LevelStep")
+
+		return Math.round(MineTinker.getPlugin().getConfig().getInt("LevelStep")
 					* Math.pow(MineTinker.getPlugin().getConfig().getDouble("LevelFactor"), level - 1));
-		}
 	}
 
 	/**
@@ -625,39 +585,32 @@ public class ModManager {
 	 * @param amount how much exp should the tool get
 	 */
 	public void addExp(@Nullable final Player player, @NotNull final ItemStack tool, final long amount, final boolean callLevelUpEvent) {
-		if (amount == 0) {
-			return;
-		}
+		if (amount == 0) return;
 
 		int level = this.getLevel(tool);
 		long exp = this.getExp(tool);
 
-		if (level == -1 || exp == -1) {
-			return;
-		}
+		if (level == -1 || exp == -1) return;
 
 		if (exp + 1 < 0 || level + 1 < 0) {
-			if (MineTinker.getPlugin().getConfig().getBoolean("ResetAtIntOverflow")) { //secures a "good" exp-system if the Values get to big
-				level = 1;
-				setLevel(tool, level);
-				exp = 0;
-			} else {
-				return;
-			}
+			// secures a "good" exp-system if the Values get to big
+			if (!MineTinker.getPlugin().getConfig().getBoolean("ResetAtIntOverflow")) return;
+
+			level = 1;
+			setLevel(tool, level);
+			exp = 0;
 		}
 
 		exp = exp + amount;
-		while (exp >= getNextLevelReq(level)) { //tests for a level up
+		while (exp >= getNextLevelReq(level)) { // tests for a level up
 			level++;
 			setLevel(tool, level);
-			if (callLevelUpEvent) {
+			if (callLevelUpEvent)
 				Bukkit.getPluginManager().callEvent(new ToolLevelUpEvent(player, tool));
-			}
 		}
 
-		if (config.getBoolean("actionbar-on-exp-gain")) {
+		if (config.getBoolean("actionbar-on-exp-gain"))
 			ActionBarListener.addXP(player, (int) amount);
-		}
 
 		setExp(tool, exp);
 		rewriteLore(tool);
@@ -669,7 +622,8 @@ public class ModManager {
 	 */
 	@Contract("null -> false")
 	public boolean isArmorViable(@Nullable final ItemStack armor) {
-		return armor != null && DataHandler.hasTag(armor, this.ArmorIdentifier, PersistentDataType.INTEGER, false);
+		return armor != null && DataHandler.hasTag(armor, this.ArmorIdentifier,
+										PersistentDataType.INTEGER, false);
 	}
 
 	/**
@@ -678,7 +632,8 @@ public class ModManager {
 	 */
 	@Contract("null -> false")
 	public boolean isToolViable(@Nullable final ItemStack tool) {
-		return tool != null && DataHandler.hasTag(tool, this.ToolIdentifier, PersistentDataType.INTEGER, false);
+		return tool != null && DataHandler.hasTag(tool, this.ToolIdentifier,
+										PersistentDataType.INTEGER, false);
 	}
 
 	/**
@@ -687,7 +642,8 @@ public class ModManager {
 	 */
 	@Contract("null -> false")
 	public boolean isWandViable(@Nullable final ItemStack wand) {
-		return wand != null && DataHandler.hasTag(wand, "identifier_builderswand", PersistentDataType.INTEGER, false);
+		return wand != null && DataHandler.hasTag(wand, "identifier_builderswand",
+										PersistentDataType.INTEGER, false);
 	}
 
 	/**
@@ -696,9 +652,7 @@ public class ModManager {
 	 * @param is The Itemstack to rewrite the Lore
 	 */
 	private void rewriteLore(@NotNull final ItemStack is) {
-		if (!MineTinker.getPlugin().getConfig().getBoolean("EnableLore")) {
-			return;
-		}
+		if (!MineTinker.getPlugin().getConfig().getBoolean("EnableLore")) return;
 
 		final ArrayList<String> lore = new ArrayList<>(this.loreScheme);
 
@@ -707,10 +661,14 @@ public class ModManager {
 		final long nextLevelReq = getNextLevelReq(level);
 		final int freeSlots = getFreeSlots(is);
 
-		final String exp_ = layout.getBoolean("UseRomans.Exp") ? ChatWriter.toRomanNumerals((int) exp) : String.valueOf(exp);
-		final String level_ = layout.getBoolean("UseRomans.Level") ? ChatWriter.toRomanNumerals(level) : String.valueOf(level);
-		final String nextLevelReq_ = layout.getBoolean("UseRomans.Exp") ? ChatWriter.toRomanNumerals((int) nextLevelReq) : String.valueOf(nextLevelReq);
-		final String freeSlots_ = layout.getBoolean("UseRomans.FreeSlots") ? ChatWriter.toRomanNumerals(freeSlots) : String.valueOf(freeSlots);
+		final String exp_ = layout.getBoolean("UseRomans.Exp")
+				? ChatWriter.toRomanNumerals((int) exp) : String.valueOf(exp);
+		final String level_ = layout.getBoolean("UseRomans.Level")
+				? ChatWriter.toRomanNumerals(level) : String.valueOf(level);
+		final String nextLevelReq_ = layout.getBoolean("UseRomans.Exp")
+				? ChatWriter.toRomanNumerals((int) nextLevelReq) : String.valueOf(nextLevelReq);
+		final String freeSlots_ = layout.getBoolean("UseRomans.FreeSlots")
+				? ChatWriter.toRomanNumerals(freeSlots) : String.valueOf(freeSlots);
 
 		final OfflinePlayer creator = getCreator(is);
 		final String creator_ = (creator != null) ? creator.getName() : "null";
@@ -732,80 +690,75 @@ public class ModManager {
 			}
 		}
 
-		if (index == -1) {
-			return;
-		}
+		if (index == -1) return;
 
 		lore.remove(index);
 
 		for (final Modifier m : this.mods) {
-			if (DataHandler.hasTag(is, m.getKey(), PersistentDataType.INTEGER, false)) {
-				final int modLevel = getModLevel(is, m);
-				final String modLevel_ = layout.getBoolean("UseRomans.ModifierLevels")
-						? ChatWriter.toRomanNumerals(modLevel) : String.valueOf(modLevel);
+			if (!DataHandler.hasTag(is, m.getKey(), PersistentDataType.INTEGER, false)) continue;
 
-				String s = this.modifierLayout;
-				s = s.replaceAll("%MODIFIER%", m.getColor() + m.getName());
-				s = s.replaceAll("%MODLEVEL%", modLevel_);
+			final int modLevel = getModLevel(is, m);
+			final String modLevel_ = layout.getBoolean("UseRomans.ModifierLevels")
+					? ChatWriter.toRomanNumerals(modLevel) : String.valueOf(modLevel);
 
-				lore.add(index++, s);
-			}
+			String s = this.modifierLayout;
+			s = s.replaceAll("%MODIFIER%", m.getColor() + m.getName());
+			s = s.replaceAll("%MODLEVEL%", modLevel_);
+
+			lore.add(index++, s);
 		}
 
 		final ItemMeta meta = is.getItemMeta();
 
-		if (meta != null) {
-			if (layout.getBoolean("UsePatternMatcher", false)) {
-
-				final List<String> oldLore = meta.getLore();
-				if (oldLore != null) {
-					//clean up lore from old MineTinker-Lore
-					final ArrayList<String> toRemove = new ArrayList<>();
-					final String mod = "\\Q" + this.modifierLayout + "\\E";
-					for (String s : oldLore) {
-						boolean removed = false;
-						for (String m : this.loreScheme) {
-							m = "\\Q" + m + "\\E";
-							if (s.matches("[§f]{0,2}" +
-									m.replace("%LEVEL%", "\\E[a-zA-Z0-9&§]+?\\Q")
-											.replace("%EXP%", "\\E[a-zA-Z0-9&§]+?\\Q")
-											.replace("%FREE_SLOTS%", "\\E[a-zA-Z0-9&§]+?\\Q")
-											.replace("%NEXT_LEVEL_EXP%", "\\E[a-zA-Z0-9&§]+?\\Q")
-											.replace("%CREATOR%", "\\E[a-zA-Z0-9&§]+?\\Q"))) {
-								toRemove.add(s);
-								removed = true;
-								break;
-							}
-						}
-						if (removed) continue;
-						for (Modifier m : this.mods) {
-							if (s.matches("[§f]{0,2}" +
-									mod.replace("%MODIFIER%", "\\E.+\\Q" + m.getName())
-											.replace("%MODLEVEL%", "\\E[a-zA-Z0-9&§]+?\\Q"))) {
-								toRemove.add(s);
-								break;
-							}
-						}
+		if (meta == null) return;
+		if (layout.getBoolean("UsePatternMatcher", false) && meta.hasLore()) {
+			// clean up lore from old MineTinker-Lore
+			final List<String> oldLore = meta.getLore();
+			final ArrayList<String> toRemove = new ArrayList<>();
+			final String mod = "\\Q" + this.modifierLayout + "\\E";
+			for (String s : oldLore) {
+				boolean removed = false;
+				for (String m : this.loreScheme) {
+					m = "\\Q" + m + "\\E";
+					if (s.matches("[§f]{0,2}" +
+							m.replace("%LEVEL%", "\\E[a-zA-Z0-9&§]+?\\Q")
+									.replace("%EXP%", "\\E[a-zA-Z0-9&§]+?\\Q")
+									.replace("%FREE_SLOTS%", "\\E[a-zA-Z0-9&§]+?\\Q")
+									.replace("%NEXT_LEVEL_EXP%", "\\E[a-zA-Z0-9&§]+?\\Q")
+									.replace("%CREATOR%", "\\E[a-zA-Z0-9&§]+?\\Q"))) {
+						toRemove.add(s);
+						removed = true;
+						break;
 					}
-
-					if (!toRemove.isEmpty()) {
-						int startIndex = oldLore.indexOf(toRemove.get(0));
-						//add Lore that was before MineTinker in front of it again
-						for (int i = 0; i < startIndex; i++) {
-							lore.add(i, oldLore.get(0));
-							oldLore.remove(0);
-						}
-						oldLore.removeAll(toRemove);
+				}
+				if (removed) continue;
+				for (Modifier m : this.getToolMods(is)) {
+					if (s.matches("[§f]{0,2}" +
+							mod.replace("%MODIFIER%", "\\E.+\\Q" + m.getName())
+									.replace("%MODLEVEL%", "\\E[a-zA-Z0-9&§]+?\\Q"))) {
+						toRemove.add(s);
+						break;
 					}
-
-					//add not MineTinker-Lore
-					lore.addAll(oldLore);
 				}
 			}
 
-			meta.setLore(lore);
-			is.setItemMeta(meta);
+			if (!toRemove.isEmpty()) {
+				int startIndex = oldLore.indexOf(toRemove.get(0));
+				//add Lore that was before MineTinker in front of it again
+				for (int i = 0; i < startIndex; i++) {
+					lore.add(i, oldLore.get(0));
+					oldLore.remove(0);
+				}
+				oldLore.removeAll(toRemove);
+			}
+
+			//add not MineTinker-Lore
+			lore.addAll(oldLore);
 		}
+
+		meta.setLore(lore);
+		is.setItemMeta(meta);
+
 	}
 
 	/**
@@ -822,23 +775,18 @@ public class ModManager {
 		int damage = 0;
 
 		// Don't convert already converted items
-		if (isArmorViable(is) || isToolViable(is) || isWandViable(is)) {
-			return false;
-		}
+		if (isArmorViable(is) || isToolViable(is) || isWandViable(is)) return false;
 
-		if (is.getItemMeta() instanceof Damageable) {
+		if (is.getItemMeta() instanceof Damageable)
 			damage = ((Damageable) is.getItemMeta()).getDamage();
-		}
 
-		if (!ToolType.ALL.contains(m)) {
-			return false;
-		}
+		if (!ToolType.ALL.contains(m)) return false;
 
 		if (!MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantsAndAttributes")) {
 			final ItemMeta meta = new ItemStack(is.getType(), is.getAmount()).getItemMeta();
 
-			if (meta instanceof Damageable) {
-				((Damageable) meta).setDamage(damage);
+			if (meta instanceof Damageable damagable) {
+				damagable.setDamage(damage);
 			}
 
 			is.setItemMeta(meta);
@@ -888,9 +836,7 @@ public class ModManager {
 		for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
 			final Modifier modifier = getModifierFromEnchantment(entry.getKey());
 
-			if (modifier == null) {
-				continue;
-			}
+			if (modifier == null) continue;
 
 			meta.removeEnchant(entry.getKey());
 
@@ -971,58 +917,55 @@ public class ModManager {
 
 		ItemMeta meta = is.getItemMeta();
 
-		if (meta != null) {
-			AttributeModifier armorAM;
-			AttributeModifier toughnessAM;
-			AttributeModifier knockbackResAM = null;
+		if (meta == null) return;
 
-			if (ToolType.BOOTS.contains(is.getType())) {
-				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
-				toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
-				knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
-			} else if (ToolType.CHESTPLATE.contains(is.getType())) {
-				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
-				toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
-				knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
-			} else if (ToolType.HELMET.contains(is.getType())) {
-				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
-				toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
-				knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
-			} else if (ToolType.LEGGINGS.contains(is.getType())) {
-				armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
-				toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
-				knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
-			} else if (ToolType.ELYTRA.contains(is.getType())) {
-				armorAM = null;
-				toughnessAM = null;
-			} else return;
+		AttributeModifier armorAM;
+		AttributeModifier toughnessAM;
+		AttributeModifier knockbackResAM;
 
-			if (armor > 0.0d) {
-				assert armorAM != null;
-				meta.removeAttributeModifier(Attribute.GENERIC_ARMOR);
-				meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
-			}
+		if (ToolType.BOOTS.contains(is.getType())) {
+			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+			toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+		} else if (ToolType.CHESTPLATE.contains(is.getType())) {
+			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+			toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+		} else if (ToolType.HELMET.contains(is.getType())) {
+			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+			toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+		} else if (ToolType.LEGGINGS.contains(is.getType())) {
+			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+			toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+		} else return;
 
-			if (toughness > 0.0d) {
-				meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);
-				meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
-			}
-			
-			if (knockback_res > 0.0d) { // The only way to be greater than 0 is being a netherite armor, so it doesn't need is16compatible bool
-				meta.removeAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
-				meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResAM);
-			}
-
-			if (MineTinker.getPlugin().getConfig().getBoolean("HideAttributes")) {
-				meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-			} else {
-				meta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-			}
-
-			is.setItemMeta(meta);
-
-			Hardened.instance().reapplyAttributes(is);
+		if (armor > 0.0d) {
+			meta.removeAttributeModifier(Attribute.GENERIC_ARMOR);
+			meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
 		}
+
+		if (toughness > 0.0d) {
+			meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);
+			meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
+		}
+
+		if (knockback_res > 0.0d) { // The only way to be greater than 0 is being a netherite armor, so it doesn't need is16compatible bool
+			meta.removeAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+			meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResAM);
+		}
+
+		if (MineTinker.getPlugin().getConfig().getBoolean("HideAttributes")) {
+			meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+		} else {
+			meta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+		}
+
+		is.setItemMeta(meta);
+
+		Hardened.instance().reapplyAttributes(is);
+
 	}
 
 	public @NotNull ItemStack createModifierItem(@NotNull final Material m, @NotNull final String name,
@@ -1030,36 +973,34 @@ public class ModManager {
 		final ItemStack is = new ItemStack(m, 1);
 		final ItemMeta meta = is.getItemMeta();
 
-		if (meta != null) {
-			meta.setDisplayName(name);
-
-			final ArrayList<String> lore = new ArrayList<>(ChatWriter.splitString(description, 40));
-			//Tool Level Requirement
-			if (mod.getMinimumLevelRequirement() >= 1) {
-				lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.MinimumToolLevel")
-						.replaceFirst("%level",
-								layout.getBoolean("UseRomans.Level")
-										? ChatWriter.toRomanNumerals(mod.getMinimumLevelRequirement())
-										: String.valueOf(mod.getMinimumLevelRequirement())));
-			}
-			//Slot cost
-			if (mod.getSlotCost() >= 0) {
-				lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.SlotCost")
-						.replaceFirst("%amount",
-								layout.getBoolean("UseRomans.FreeSlots")
-										? ChatWriter.toRomanNumerals(mod.getSlotCost())
-										: String.valueOf(mod.getSlotCost())));
-			}
-			meta.setLore(lore);
-
-			meta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
-
-			is.setItemMeta(meta);
-		}
-
 		DataHandler.setTag(is, "modifier_item", mod.getKey(), PersistentDataType.STRING, false);
 		//TODO: DataHandler.setStringList(is, "CanPlaceOn", true, "minecraft:air");
 
+		if (meta == null) return is;
+		meta.setDisplayName(name);
+
+		final List<String> lore = ChatWriter.splitString(description, 40);
+		//Tool Level Requirement
+		if (mod.getMinimumLevelRequirement() >= 1) {
+			lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.MinimumToolLevel")
+					.replaceFirst("%level",
+							layout.getBoolean("UseRomans.Level")
+									? ChatWriter.toRomanNumerals(mod.getMinimumLevelRequirement())
+									: String.valueOf(mod.getMinimumLevelRequirement())));
+		}
+		//Slot cost
+		if (mod.getSlotCost() >= 0) {
+			lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.SlotCost")
+					.replaceFirst("%amount",
+							layout.getBoolean("UseRomans.FreeSlots")
+									? ChatWriter.toRomanNumerals(mod.getSlotCost())
+									: String.valueOf(mod.getSlotCost())));
+		}
+		meta.setLore(lore);
+
+		meta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
+
+		is.setItemMeta(meta);
 		return is;
 	}
 
@@ -1079,27 +1020,17 @@ public class ModManager {
 	 */
 	@Nullable
 	public Modifier getModifierFromItem(@Nullable final ItemStack item) {
-		if (!isModifierItem(item)) {
+		if (!isModifierItem(item)) return null;
+		if (!DataHandler.hasTag(item, "modifier_item", PersistentDataType.STRING, false))
 			return null;
-		}
-
-		if (!DataHandler.hasTag(item, "modifier_item", PersistentDataType.STRING, false)) {
-			return null;
-		}
 
 		final String name = DataHandler.getTag(item, "modifier_item", PersistentDataType.STRING, false);
+		if (name == null) return null;
 
-		if (name == null) {
-			return null;
-		}
-
-		for (Modifier m : getAllowedMods()) {
-			if (m.getKey().equals(name)) {
-				return m;
-			}
-		}
-
-		return null;
+		return getAllowedMods().stream()
+				.filter(m -> m.getKey().equals(name))
+				.findFirst()
+				.orElse(null);
 	}
 
 	/**
@@ -1110,13 +1041,10 @@ public class ModManager {
 	 */
 	@Nullable
 	public Modifier getModifierFromEnchantment(@NotNull final Enchantment enchantment) {
-		for (Modifier modifier : getAllowedMods()) {
-			if (modifier.getAppliedEnchantments().contains(enchantment)) {
-				return modifier;
-			}
-		}
-
-		return null;
+		return this.getAllowedMods().stream()
+				.filter(modifier -> modifier.getAppliedEnchantments().contains(enchantment))
+				.findFirst()
+				.orElse(null);
 	}
 
 	/**
@@ -1127,49 +1055,45 @@ public class ModManager {
 	 */
 	@Nullable
 	public Modifier getModifierFromAttribute(@NotNull final Attribute attribute) {
-		for (Modifier modifier : getAllowedMods()) {
-			if (modifier.getAppliedAttributes().contains(attribute)) {
-				return modifier;
-			}
-		}
-
-		return null;
+		return this.getAllowedMods().stream()
+				.filter(modifier -> modifier.getAppliedAttributes().contains(attribute))
+				.findFirst()
+				.orElse(null);
 	}
 
 	public void convertLoot(@Nullable ItemStack item, @Nullable Player player) {
 		Random rand = new Random();
-		if (rand.nextInt(100) < config.getInt("ConvertLoot.Chance", 100)) {
-			if (!convertItemStack(item, null)) return;
-			//Item is now MT
-			//continue if already was MT or not right material
+		if (rand.nextInt(100) >= config.getInt("ConvertLoot.Chance", 100)) return;
+		if (!convertItemStack(item, null)) return;
+		//Item is now MT
+		//continue if already was MT or not right material
 
-			if (config.getBoolean("ConvertLoot.ApplyExp", true)) {
-				final int exp = rand.nextInt(config.getInt("ConvertLoot.MaximumNumberOfExp", 650));
-				addExp(null, item, exp, false);
-				int level = getLevel(item);
-				setFreeSlots(item, getFreeSlots(item) + level * config.getInt("AddModifierSlotsPerLevel"));
-			}
+		if (config.getBoolean("ConvertLoot.ApplyExp", true)) {
+			final int exp = rand.nextInt(config.getInt("ConvertLoot.MaximumNumberOfExp", 650));
+			addExp(null, item, exp, false);
+			int level = getLevel(item);
+			setFreeSlots(item, getFreeSlots(item) + level * config.getInt("AddModifierSlotsPerLevel"));
+		}
 
-			if (config.getBoolean("ConvertLoot.ApplyModifiers", true)) {
-				//Remove all enchants if modifiers will get added
-				for (Modifier mod : allMods) {
-					removeMod(item, mod);
-				}
-				List<Modifier> mods = getAllowedMods();
-				mods.remove(ExtraModifier.instance());
-				int amount = rand.nextInt(config.getInt("ConvertLoot.MaximumNumberOfModifiers") + 1);
-				for (int i = 0; i < amount; i++) {
-					while (!mods.isEmpty()) {
-						final int index = rand.nextInt(mods.size());
-						final Modifier mod = mods.get(index);
-						if (addMod(player, item, mod, false, true, true,
-								config.getBoolean("ConvertLoot.AppliedModifiersConsiderSlots", true))) {
-							break;
-						} else {
-							mods.remove(mod);
-						}
+		if (config.getBoolean("ConvertLoot.ApplyModifiers", true)) {
+			//Remove all enchants if modifiers will get added
+			allMods.forEach(mod -> removeMod(item, mod));
+			final List<Modifier> mods = getAllowedMods();
+			mods.remove(ExtraModifier.instance());
+			int amount = rand.nextInt(config.getInt("ConvertLoot.MaximumNumberOfModifiers") + 1);
+			for (int i = 0; i < amount; i++) {
+				while (!mods.isEmpty()) {
+					final int index = rand.nextInt(mods.size());
+					final Modifier mod = mods.get(index);
+					if (addMod(player, item, mod, false, true, true,
+							config.getBoolean("ConvertLoot.AppliedModifiersConsiderSlots", true))) {
+						break;
 					}
+
+					mods.remove(mod);
 				}
+
+				if (mods.isEmpty()) break;
 			}
 		}
 	}
@@ -1200,25 +1124,7 @@ public class ModManager {
 	}
 
 	public void removeRecipes() {
-		Iterator<Recipe> it = Bukkit.getServer().recipeIterator();
-		//TODO: Find a different way to remove recipes! Bukkit is bugged atm
-
-		while (it.hasNext()) {
-			final ItemStack result = it.next().getResult();
-
-			//Modifieritems
-			if (ModManager.instance().isModifierItem(result)) {
-				it.remove();
-				continue;
-			}
-
-			//Builderswands
-			if (ModManager.instance().isWandViable(result)) {
-				it.remove();
-			}
-
-		}
-
-		ModManager.instance().recipe_Namespaces.clear();
+		this.recipe_Namespaces.forEach(key -> Bukkit.getServer().removeRecipe(key));
+		this.recipe_Namespaces.clear();
 	}
 }

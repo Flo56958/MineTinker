@@ -76,7 +76,6 @@ public class Undead extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onTarget(@NotNull EntityTargetLivingEntityEvent event) {
-		if (!this.isAllowed()) return;
 		if (!(event.getTarget() instanceof Player player)) return;
 		if (!player.hasPermission("minetinker.modifiers.undead.use")) return;
 
@@ -89,7 +88,6 @@ public class Undead extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onAttack(@NotNull EntityDamageByEntityEvent event) {
-		if (!this.isAllowed()) return;
 		if (!this.disableAttacks) return;
 		if (!(event.getDamager() instanceof Player player)) return;
 		if (event.getEntity() instanceof Player) return;
