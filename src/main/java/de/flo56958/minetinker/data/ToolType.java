@@ -88,7 +88,7 @@ public enum ToolType {
 		tools.put(ToolType.ALL, new ArrayList<>(getAllToolMaterials()));
 	}
 
-	public static @NotNull EnumMap<ToolType, List<Material>> getTools() {
+	private static @NotNull EnumMap<ToolType, List<Material>> getTools() {
 		return tools;
 	}
 
@@ -123,7 +123,7 @@ public enum ToolType {
 				continue;
 			}
 
-			if (getTools().get(type).contains(material)) {
+			if (type.contains(material)) {
 				return type;
 			}
 		}

@@ -129,7 +129,7 @@ public class Experienced extends Modifier implements Listener {
 	 * @param tool the Tool
 	 */
 	private void effect(Player player, ItemStack tool, Event event) {
-		if (!player.hasPermission("minetinker.modifiers.experienced.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

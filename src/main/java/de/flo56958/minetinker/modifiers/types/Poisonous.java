@@ -110,7 +110,7 @@ public class Poisonous extends Modifier implements Listener {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!player.hasPermission("minetinker.modifiers.poisonous.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 
@@ -131,7 +131,7 @@ public class Poisonous extends Modifier implements Listener {
 		if (!(event.getEntity() instanceof Player player)) return;
 		if (!this.effectHealsPlayer) return;
 
-		if (!player.hasPermission("minetinker.modifiers.poisonous.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

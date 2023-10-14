@@ -115,7 +115,7 @@ public class Magical extends Modifier implements Listener {
 		if (!(arrow instanceof Arrow)) return;
 
 		final Player player = event.getPlayer();
-		if (!player.hasPermission("minetinker.modifiers.magical.use")) return;
+		if (!player.hasPermission(getUsePermission())) return;
 
 		final ItemStack tool = event.getTool();
 
@@ -160,7 +160,7 @@ public class Magical extends Modifier implements Listener {
 		if (!(event.getEvent().getDamager() instanceof Arrow arrow)) return;
 		if (arrow.hasGravity()) return;
 		if (!(arrow.getShooter() instanceof Player player)) return;
-		if (!player.hasPermission("minetinker.modifiers.magical.use")) return;
+		if (!player.hasPermission(getUsePermission())) return;
 		if (!modManager.hasMod(event.getTool(), this)) return;
 
 		int modLevel = modManager.getModLevel(event.getTool(), this);

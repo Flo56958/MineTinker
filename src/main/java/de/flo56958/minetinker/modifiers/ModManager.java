@@ -155,6 +155,7 @@ public class ModManager {
 	 * stores the list of all MineTinker modifiers
 	 */
 	private final HashSet<Modifier> allMods = new HashSet<>();
+	private final HashMap<String, Modifier> modKeys = new HashMap<>();
 	/**
 	 * stores the list of allowed modifiers
 	 */
@@ -203,27 +204,18 @@ public class ModManager {
 
 		// upgrading from diamond to netherrite should only require one material
 		final boolean reduceToOne = name.equals("diamond") && material == Material.NETHERITE_INGOT;
-
-		if (ToolType.SWORD.contains(tool))
-			return new Pair<>(getToolUpgrade(material, "SWORD"), reduceToOne ? 1 : 2);
-		else if (ToolType.PICKAXE.contains(tool))
-			return new Pair<>(getToolUpgrade(material, "PICKAXE"), reduceToOne ? 1 : 3);
-		else if (ToolType.AXE.contains(tool))
-			return new Pair<>(getToolUpgrade(material, "AXE"), reduceToOne ? 1 : 3);
-		else if (ToolType.SHOVEL.contains(tool))
-			return new Pair<>(getToolUpgrade(material, "SHOVEL"), 1);
-		else if (ToolType.HOE.contains(tool))
-			return new Pair<>(getToolUpgrade(material, "HOE"), reduceToOne ? 1 : 2);
-		else if (ToolType.HELMET.contains(tool))
-			return new Pair<>(getArmorUpgrade(material, "HELMET"), reduceToOne ? 1 : 5);
-		else if (ToolType.CHESTPLATE.contains(tool))
-			return new Pair<>(getArmorUpgrade(material, "CHESTPLATE"), reduceToOne ? 1 : 8);
-		else if (ToolType.LEGGINGS.contains(tool))
-			return new Pair<>(getArmorUpgrade(material, "LEGGINGS"), reduceToOne ? 1 : 7);
-		else if (ToolType.BOOTS.contains(tool))
-			return new Pair<>(getArmorUpgrade(material, "BOOTS"), reduceToOne ? 1 : 4);
-
-		return null;
+		return switch(ToolType.get(tool)) {
+			case AXE -> new Pair<>(getToolUpgrade(material, "AXE"), reduceToOne ? 1 : 3);
+			case BOOTS -> new Pair<>(getArmorUpgrade(material, "BOOTS"), reduceToOne ? 1 : 4);
+			case CHESTPLATE -> new Pair<>(getArmorUpgrade(material, "CHESTPLATE"), reduceToOne ? 1 : 8);
+			case HELMET -> new Pair<>(getArmorUpgrade(material, "HELMET"), reduceToOne ? 1 : 5);
+			case HOE -> new Pair<>(getToolUpgrade(material, "HOE"), reduceToOne ? 1 : 2);
+			case LEGGINGS -> new Pair<>(getArmorUpgrade(material, "LEGGINGS"), reduceToOne ? 1 : 7);
+			case PICKAXE -> new Pair<>(getToolUpgrade(material, "PICKAXE"), reduceToOne ? 1 : 3);
+			case SHOVEL -> new Pair<>(getToolUpgrade(material, "SHOVEL"), 1);
+			case SWORD -> new Pair<>(getToolUpgrade(material, "SWORD"), reduceToOne ? 1 : 2);
+			default -> null;
+		};
 	}
 
 	private static @Nullable Material getToolUpgrade(@NotNull final Material material, @NotNull final String tool) {
@@ -359,13 +351,20 @@ public class ModManager {
 	 * register a new modifier to the list
 	 *
 	 * @param mod the modifier instance
+	 * @throws IllegalArgumentException if the modifier is already registered
+	 * 									or if a modifier with the same CustomModelData is already registered
+	 * 									or if a modifier with the same Key is already registered
 	 */
 	@SuppressWarnings("UnusedReturnValue")
 	@Contract("null -> false")
 	public boolean register(@Nullable final Modifier mod) {
 		if (mod == null) return false;
-		if (allMods.contains(mod)) throw new IllegalArgumentException("Modifier already registered!");
+		if (allMods.contains(mod)) throw new IllegalArgumentException("Modifier " + mod.getKey() + " already registered!");
+		if (allMods.stream().filter(m -> m.customModelData == mod.customModelData).findFirst().orElse(null) != null)
+			throw new IllegalArgumentException("Modifier " + mod.getKey() + " with same CustomModelData " + mod.customModelData + " already registered!");
+		if (modKeys.containsKey(mod.getKey())) throw new IllegalArgumentException("Modifier with Key " + mod.getKey() + " already registered!");
 
+		modKeys.put(mod.getKey(), mod);
 		mod.reload();
 		allMods.add(mod);
 		if (mod.isAllowed()) {
@@ -388,11 +387,14 @@ public class ModManager {
 	 * unregisters the Modifier from the list
 	 *
 	 * @param mod the modifier instance
+	 * @throws IllegalArgumentException if the modifier is not registered
 	 */
 	public void unregister(@NotNull final Modifier mod) {
+		if (!allMods.contains(mod)) throw new IllegalArgumentException("Modifier not registered!");
 		allMods.remove(mod);
 		mods.remove(mod);
 		incompatibilities.remove(mod);
+		modKeys.remove(mod.getKey());
 		if (mod instanceof Listener listener) //Disable Events
 			HandlerList.unregisterAll(listener);
 
@@ -851,7 +853,7 @@ public class ModManager {
 		for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : meta.getAttributeModifiers().asMap().entrySet()) {
 			final Modifier modifier = getModifierFromAttribute(entry.getKey());
 
-			if (modifier == null || modifier == Hardened.instance()) {
+			if (modifier == null || modifier.equals(Hardened.instance())) {
 				continue;
 			}
 
@@ -875,6 +877,9 @@ public class ModManager {
 	}
 
 	public void addArmorAttributes(@NotNull final ItemStack is) {
+		ItemMeta meta = is.getItemMeta();
+		if (meta == null) return;
+
 		double armor = 0.0d;
 		double toughness = 0.0d;
 		double knockback_res = 0.0d;
@@ -915,30 +920,38 @@ public class ModManager {
 			}
 		}
 
-		ItemMeta meta = is.getItemMeta();
-
-		if (meta == null) return;
-
 		AttributeModifier armorAM;
 		AttributeModifier toughnessAM;
 		AttributeModifier knockbackResAM;
 
 		if (ToolType.BOOTS.contains(is.getType())) {
-			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
-			toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
-			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor,
+					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+			toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness,
+					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res,
+					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
 		} else if (ToolType.CHESTPLATE.contains(is.getType())) {
-			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
-			toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
-			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor,
+					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+			toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness,
+					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res,
+					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
 		} else if (ToolType.HELMET.contains(is.getType())) {
-			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
-			toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
-			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor,
+					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+			toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness,
+					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res,
+					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
 		} else if (ToolType.LEGGINGS.contains(is.getType())) {
-			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
-			toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
-			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor,
+					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+			toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness,
+					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res,
+					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
 		} else return;
 
 		if (armor > 0.0d) {
@@ -951,7 +964,7 @@ public class ModManager {
 			meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
 		}
 
-		if (knockback_res > 0.0d) { // The only way to be greater than 0 is being a netherite armor, so it doesn't need is16compatible bool
+		if (knockback_res > 0.0d) {
 			meta.removeAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
 			meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResAM);
 		}
@@ -965,16 +978,12 @@ public class ModManager {
 		is.setItemMeta(meta);
 
 		Hardened.instance().reapplyAttributes(is);
-
 	}
 
 	public @NotNull ItemStack createModifierItem(@NotNull final Material m, @NotNull final String name,
 												 @NotNull final String description, @NotNull final Modifier mod) {
 		final ItemStack is = new ItemStack(m, 1);
 		final ItemMeta meta = is.getItemMeta();
-
-		DataHandler.setTag(is, "modifier_item", mod.getKey(), PersistentDataType.STRING, false);
-		//TODO: DataHandler.setStringList(is, "CanPlaceOn", true, "minecraft:air");
 
 		if (meta == null) return is;
 		meta.setDisplayName(name);
@@ -1001,6 +1010,8 @@ public class ModManager {
 		meta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
 
 		is.setItemMeta(meta);
+		DataHandler.setTag(is, "modifier_item", mod.getKey(), PersistentDataType.STRING, false);
+		//TODO: DataHandler.setStringList(is, "CanPlaceOn", true, "minecraft:air");
 		return is;
 	}
 
@@ -1021,16 +1032,22 @@ public class ModManager {
 	@Nullable
 	public Modifier getModifierFromItem(@Nullable final ItemStack item) {
 		if (!isModifierItem(item)) return null;
-		if (!DataHandler.hasTag(item, "modifier_item", PersistentDataType.STRING, false))
-			return null;
 
 		final String name = DataHandler.getTag(item, "modifier_item", PersistentDataType.STRING, false);
 		if (name == null) return null;
 
-		return getAllowedMods().stream()
-				.filter(m -> m.getKey().equals(name))
-				.findFirst()
-				.orElse(null);
+		return getModifierFromKey(name);
+	}
+
+	/**
+	 * @param key the ItemStack
+	 */
+	@Nullable
+	public Modifier getModifierFromKey(@Nullable final String key) {
+		if (key == null || key.isEmpty() || key.isBlank()) return null;
+		final Modifier mod = modKeys.get(key);
+		if (mod == null || !mod.isAllowed()) return null;
+		return mod;
 	}
 
 	/**
@@ -1107,18 +1124,17 @@ public class ModManager {
 	 * @return false: if broken; true: if enough durability
 	 */
 	public boolean durabilityCheck(@NotNull final Cancellable cancellable, @NotNull final Player player, @NotNull final ItemStack tool) {
+		if (!config.getBoolean("UnbreakableTools", true)) return true;
+
 		final ItemMeta meta = tool.getItemMeta();
 
-		if (meta instanceof Damageable) {
-			if (config.getBoolean("UnbreakableTools", true)
-					&& tool.getType().getMaxDurability() - ((Damageable) meta).getDamage() <= 2) {
-				cancellable.setCancelled(true);
+		if (meta instanceof Damageable damageable && tool.getType().getMaxDurability() - damageable.getDamage() <= 2) {
+			cancellable.setCancelled(true);
 
-				if (config.getBoolean("Sound.OnBreaking", true)) {
-					player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
-				}
-				return false;
+			if (config.getBoolean("Sound.OnBreaking", true)) {
+				player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
 			}
+			return false;
 		}
 		return true;
 	}

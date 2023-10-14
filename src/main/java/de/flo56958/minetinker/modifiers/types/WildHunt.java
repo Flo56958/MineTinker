@@ -34,7 +34,7 @@ public class WildHunt extends Modifier implements Listener {
 
 	private WildHunt() {
 		super(MineTinker.getPlugin());
-		customModelData = 10_062;
+		customModelData = 10_064;
 	}
 
 	public static WildHunt instance() {
@@ -130,7 +130,7 @@ public class WildHunt extends Modifier implements Listener {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!player.hasPermission("minetinker.modifiers.wildhunt.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

@@ -116,7 +116,7 @@ public class Channeling extends Modifier implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	private void onProjectileHit(@NotNull final MTProjectileHitEvent event) {
 		final ItemStack tool = event.getTool();
-		if (!event.getPlayer().hasPermission("minetinker.modifiers.channeling.use")) return;
+		if (!event.getPlayer().hasPermission(getUsePermission())) return;
 		if (event.getEvent().getHitEntity() != null) return;
 
 		if (modManager.hasMod(tool, this)) {
@@ -132,7 +132,7 @@ public class Channeling extends Modifier implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	private void onEntityHit(@NotNull final MTEntityDamageByEntityEvent event) {
 		final ItemStack tool = event.getTool();
-		if (!event.getPlayer().hasPermission("minetinker.modifiers.channeling.use")) return;
+		if (!event.getPlayer().hasPermission(getUsePermission())) return;
 
 		if (modManager.hasMod(tool, this)) {
 			if (new Random().nextInt(100) < modManager.getModLevel(tool, this) * chancePerLevel) {

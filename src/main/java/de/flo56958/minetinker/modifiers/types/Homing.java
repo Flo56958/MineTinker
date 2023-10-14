@@ -104,7 +104,7 @@ public class Homing extends Modifier implements Listener {
 
 		final Player player = event.getPlayer();
 
-		if (!player.hasPermission("minetinker.modifiers.homing.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

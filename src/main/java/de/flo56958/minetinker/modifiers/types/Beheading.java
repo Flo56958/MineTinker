@@ -97,7 +97,7 @@ public class Beheading extends Modifier implements Listener {
 		LivingEntity mob = event.getEvent().getEntity();
 		ItemStack loot = new ItemStack(Material.AIR, 1);
 
-		if (player.hasPermission("minetinker.modifiers.beheading.use")) {
+		if (player.hasPermission(getUsePermission())) {
 			if (modManager.hasMod(tool, this)) {
 				Random rand = new Random();
 				if(this.dropSpawneggChancePerLevel > 0) {

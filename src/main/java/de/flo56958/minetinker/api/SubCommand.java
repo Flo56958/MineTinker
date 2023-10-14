@@ -1,6 +1,7 @@
 package de.flo56958.minetinker.api;
 
 import de.flo56958.minetinker.commands.ArgumentType;
+import de.flo56958.minetinker.modifiers.ModManager;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface SubCommand {
+	ModManager modManager = ModManager.instance();
 	@SuppressWarnings("SameReturnValue")
 	boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args);
 

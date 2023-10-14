@@ -84,7 +84,7 @@ public class Melting extends Modifier implements Listener {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!player.hasPermission("minetinker.modifiers.melting.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 
@@ -141,7 +141,7 @@ public class Melting extends Modifier implements Listener {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!player.hasPermission("minetinker.modifiers.melting.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

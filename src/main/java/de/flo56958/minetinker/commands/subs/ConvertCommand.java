@@ -3,7 +3,6 @@ package de.flo56958.minetinker.commands.subs;
 import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
-import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
@@ -57,7 +56,7 @@ public class ConvertCommand implements SubCommand {
 
 		ItemStack item = player.getInventory().getItemInMainHand();
 
-		ModManager.instance().convertItemStack(item, player);
+		modManager.convertItemStack(item, player);
 		return true;
 	}
 

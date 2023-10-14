@@ -110,7 +110,7 @@ public class Webbed extends Modifier implements Listener {
 		if (!this.givesImmunity) return;
 
 		Player player = event.getPlayer();
-		if (!player.hasPermission("minetinker.modifiers.webbed.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 
@@ -155,7 +155,7 @@ public class Webbed extends Modifier implements Listener {
 	}
 
 	private void effect(Player player, ItemStack tool, Entity entity, Event event) {
-		if (!player.hasPermission("minetinker.modifiers.webbed.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

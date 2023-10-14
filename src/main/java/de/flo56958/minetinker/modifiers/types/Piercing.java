@@ -100,7 +100,7 @@ public class Piercing extends Modifier implements Listener {
 		if (!(projectile instanceof final Arrow arrow)) return;
 
 		final Player player = event.getPlayer();
-		if (!player.hasPermission("minetinker.modifiers.piercing.use")) return;
+		if (!player.hasPermission(getUsePermission())) return;
 
 		final ItemStack tool = event.getTool();
 		if (!modManager.hasMod(tool, this)) return;

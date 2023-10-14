@@ -108,14 +108,14 @@ public class Withered extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageByEntityEvent event) {
-		if (!(event.getEntity() instanceof LivingEntity)) {
+		if (!(event.getEntity() instanceof LivingEntity entity)) {
 			return;
 		}
 
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!player.hasPermission("minetinker.modifiers.withered.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 
@@ -127,7 +127,7 @@ public class Withered extends Modifier implements Listener {
 			return;
 		}
 
-		((LivingEntity) event.getEntity()).addPotionEffect(getPotionEffect(event, event.getEntity(), player, tool));
+		entity.addPotionEffect(getPotionEffect(event, event.getEntity(), player, tool));
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
@@ -136,7 +136,7 @@ public class Withered extends Modifier implements Listener {
 		if (!(event.getEntity() instanceof Player player)) return;
 		if (!this.effectHealsPlayer) return;
 
-		if (!player.hasPermission("minetinker.modifiers.withered.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

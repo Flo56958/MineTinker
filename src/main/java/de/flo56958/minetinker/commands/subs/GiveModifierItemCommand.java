@@ -3,7 +3,6 @@ package de.flo56958.minetinker.commands.subs;
 import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
-import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.Bukkit;
@@ -37,19 +36,16 @@ public class GiveModifierItemCommand implements SubCommand {
 		int amount = 1;
 		switch (args.length) {
 			case 2 -> {
-				for (final Modifier m : ModManager.instance().getAllowedMods()) {
-					if (m.getName().replaceAll(" ", "_").equalsIgnoreCase(args[1])) {
-						mod = m;
-						if (sender instanceof Player) {
-							player = (Player) sender;
-						} else {
-							CommandManager.sendError(sender,
-									LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
-							return true;
-						}
-						break;
-					}
+				args[1] = args[1].replaceAll("_", " ");
+				mod = modManager.getModifierFromKey(args[1]);
+				if (sender instanceof Player) {
+					player = (Player) sender;
+				} else {
+					CommandManager.sendError(sender,
+							LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
+					return true;
 				}
+
 				if (mod == null) {
 					CommandManager.sendError(sender,
 							LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
@@ -64,20 +60,15 @@ public class GiveModifierItemCommand implements SubCommand {
 					} catch (IllegalArgumentException ignored) {
 					}
 				}
-				if (player == null) modifierIndex = 1;
-				else modifierIndex = 2;
-				for (Modifier m : ModManager.instance().getAllowedMods()) {
-					if (m.getName().replaceAll(" ", "_").equalsIgnoreCase(args[modifierIndex])) {
-						mod = m;
-						if (sender instanceof Player) {
-							player = (Player) sender;
-						} else if (modifierIndex == 1) {
-							CommandManager.sendError(sender,
-									LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
-							return true;
-						}
-						break;
-					}
+				modifierIndex = (player == null) ? 1 : 2;
+				args[modifierIndex] = args[modifierIndex].replaceAll("_", " ");
+				mod = modManager.getModifierFromKey(args[modifierIndex]);
+				if (sender instanceof Player && player == null) {
+					player = (Player) sender;
+				} else if (modifierIndex == 1) {
+					CommandManager.sendError(sender,
+							LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
+					return true;
 				}
 				if (mod == null) {
 					CommandManager.sendError(sender,
@@ -111,12 +102,8 @@ public class GiveModifierItemCommand implements SubCommand {
 							LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 					return true;
 				}
-				for (final Modifier m : ModManager.instance().getAllowedMods()) {
-					if (m.getName().replaceAll(" ", "_").equalsIgnoreCase(args[modifierIndex])) {
-						mod = m;
-						break;
-					}
-				}
+				args[modifierIndex] = args[modifierIndex].replaceAll("_", " ");
+				mod = modManager.getModifierFromKey(args[modifierIndex]);
 				if (mod == null) {
 					CommandManager.sendError(sender,
 							LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
@@ -161,7 +148,7 @@ public class GiveModifierItemCommand implements SubCommand {
 				}
 			}
 			case 3 -> {
-				for (Modifier m : ModManager.instance().getAllowedMods()) {
+				for (Modifier m : modManager.getAllowedMods()) {
 					result.add(m.getName().replaceAll(" ", "_"));
 				}
 			}

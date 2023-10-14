@@ -105,7 +105,7 @@ public class Glowing extends Modifier implements Listener {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!player.hasPermission("minetinker.modifiers.glowing.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

@@ -102,7 +102,7 @@ public class Knockback extends Modifier implements Listener {
 		if (event.getEvent().getDamager() instanceof Projectile) return; //Not a melee hit
 		if (!event.isBlocking()) return;
 
-		if (!event.getPlayer().hasPermission("minetinker.modifiers.knockback.use")) return;
+		if (!event.getPlayer().hasPermission(getUsePermission())) return;
 
 		ItemStack shield = event.getTool();
 		if (!ToolType.SHIELD.contains(shield.getType())) return; //Not the shield

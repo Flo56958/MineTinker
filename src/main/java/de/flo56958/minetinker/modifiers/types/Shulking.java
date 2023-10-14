@@ -108,7 +108,7 @@ public class Shulking extends Modifier implements Listener {
 			return;
 		}
 
-		if (!player.hasPermission("minetinker.modifiers.shulking.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 
@@ -141,7 +141,7 @@ public class Shulking extends Modifier implements Listener {
 		final Player player = event.getPlayer();
 		final ItemStack tool = event.getTool();
 
-		if (!player.hasPermission("minetinker.modifiers.shulking.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

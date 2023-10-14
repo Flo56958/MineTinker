@@ -103,7 +103,7 @@ public class Fiery extends Modifier implements Listener {
 		if (!(arrow instanceof Arrow)) return;
 
 		final Player player = event.getPlayer();
-		if (!player.hasPermission("minetinker.modifiers.fiery.use")) return;
+		if (!player.hasPermission(getUsePermission())) return;
 
 		final ItemStack tool = event.getTool();
 		if (!modManager.isToolViable(tool)) return;
@@ -118,7 +118,7 @@ public class Fiery extends Modifier implements Listener {
 		if (!modManager.hasMod(tool, this)) return;
 		if (!(event.getEvent().getDamager() instanceof Projectile projectile)) return; //Melee interaction
 		if (projectile.getFireTicks() <= 0) return; // not a flame arrow anymore
-		if (!event.getPlayer().hasPermission("minetinker.modifiers.fiery.use")) return;
+		if (!event.getPlayer().hasPermission(getUsePermission())) return;
 
 		int fireticks = event.getEntity().getFireTicks();
 		int addedFT = 100 * modManager.getModLevel(tool, this); //Flame adds 100 Ticks; Fire aspect multiplies that by the level

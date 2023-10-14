@@ -3,7 +3,6 @@ package de.flo56958.minetinker.commands.subs;
 import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
-import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.command.CommandSender;
@@ -30,36 +29,39 @@ public class AddModifierCommand implements SubCommand {
 					LanguageManager.getString("Commands.Failure.Cause.PlayerOnlyCommand"));
 			return true;
 		}
-		if (args.length >= 2) {
-			ModManager modManager = ModManager.instance();
-			for (Modifier m : modManager.getAllowedMods()) {
-				if (m.getName().equalsIgnoreCase(args[1].replaceAll("_", " "))) {
-					ItemStack tool = player.getInventory().getItemInMainHand();
-
-					if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
-						int amount = 1;
-						if (args.length >= 3) {
-							try {
-								amount = Integer.parseInt(args[2]);
-							} catch (NumberFormatException e) {
-								CommandManager.sendError(sender,
-										LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
-							}
-						}
-						for (int i = 0; i < amount; i++) {
-							if (!modManager.addMod(player, tool, m, true, false, true, false))
-								break;
-						}
-					} else {
-						CommandManager.sendError(sender,
-								LanguageManager.getString("Commands.Failure.Cause.InvalidItem"));
-					}
-					break;
-				}
-			}
-		} else {
+		if (args.length < 2) {
 			CommandManager.sendError(sender,
 					LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+			return true;
+		}
+
+		args[1] = args[1].replaceAll("_", " ");
+		final Modifier m = modManager.getModifierFromKey(args[1]);
+		if (m == null) {
+			CommandManager.sendError(sender,
+					LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));
+			return true;
+		}
+		ItemStack tool = player.getInventory().getItemInMainHand();
+
+		if (!modManager.isToolViable(tool) && !modManager.isArmorViable(tool)) {
+			CommandManager.sendError(sender,
+					LanguageManager.getString("Commands.Failure.Cause.InvalidItem"));
+			return true;
+		}
+
+		int amount = 1;
+		if (args.length >= 3) {
+			try {
+				amount = Integer.parseInt(args[2]);
+			} catch (NumberFormatException e) {
+				CommandManager.sendError(sender,
+						LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
+			}
+		}
+		for (int i = 0; i < amount; i++) {
+			if (!modManager.addMod(player, tool, m, true, false, true, false))
+				break;
 		}
 		return true;
 	}
@@ -69,7 +71,7 @@ public class AddModifierCommand implements SubCommand {
 		List<String> result = new ArrayList<>();
 		if (sender instanceof Player) {
 			if (args.length == 2) {
-				for (Modifier mod : ModManager.instance().getAllowedMods()) {
+				for (Modifier mod : modManager.getAllowedMods()) {
 					result.add(mod.getName().replaceAll(" ", "_"));
 				}
 			} else if (args.length == 3) {

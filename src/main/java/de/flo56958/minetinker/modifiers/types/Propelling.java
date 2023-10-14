@@ -134,7 +134,7 @@ public class Propelling extends Modifier implements Listener {
 			return;
 		}
 
-		if (!player.hasPermission("minetinker.modifiers.propelling.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

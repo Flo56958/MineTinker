@@ -120,7 +120,7 @@ public class Ender extends Modifier implements Listener {
 
 		ItemStack tool = event.getBow();
 
-		if (!player.hasPermission("minetinker.modifiers.ender.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 
@@ -145,7 +145,7 @@ public class Ender extends Modifier implements Listener {
 		final Player player = event.getPlayer();
 		final ItemStack tool = ((Trident) trident).getItem();
 
-		if (!player.hasPermission("minetinker.modifiers.ender.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 
@@ -174,7 +174,7 @@ public class Ender extends Modifier implements Listener {
 		List<MetadataValue> activated = arrow.getMetadata(this.getKey());
 		if (activated.isEmpty()) return;
 
-		if (!player.hasPermission("minetinker.modifiers.ender.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 
@@ -236,7 +236,7 @@ public class Ender extends Modifier implements Listener {
 			return;
 		}
 
-		if (!player.hasPermission("minetinker.modifiers.ender.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

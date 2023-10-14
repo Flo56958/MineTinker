@@ -128,7 +128,7 @@ public class Drilling extends Modifier implements Listener {
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public boolean canUseDrilling(Player player, ItemStack tool, Location loc) {
-		if (!player.hasPermission("minetinker.modifiers.drilling.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return false;
 		}
 

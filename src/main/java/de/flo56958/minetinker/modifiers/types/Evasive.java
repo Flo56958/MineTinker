@@ -113,7 +113,7 @@ public class Evasive extends Modifier implements Listener {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!player.hasPermission("minetinker.modifiers.evasive.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

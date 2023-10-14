@@ -85,7 +85,7 @@ public class ExtraModifier extends Modifier {
 
 	@Override
 	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
-		if (!player.hasPermission("minetinker.modifiers.extramodifier.apply")) {
+		if (!player.hasPermission(getApplyPermission())) {
 			pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.NO_PERMISSION, isCommand));
 			return false;
 		}

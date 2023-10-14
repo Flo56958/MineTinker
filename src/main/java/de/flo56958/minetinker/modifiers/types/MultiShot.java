@@ -148,7 +148,7 @@ public class MultiShot extends Modifier implements Listener {
 
 		final Player player = event.getPlayer();
 
-		if (!player.hasPermission("minetinker.modifiers.multishot.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

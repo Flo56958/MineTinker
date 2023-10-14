@@ -103,7 +103,7 @@ public class Berserk extends Modifier implements Listener {
 			return;
 		}
 
-		if (!player.hasPermission("minetinker.modifiers.berserk.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

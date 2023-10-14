@@ -106,7 +106,7 @@ public class Explosive extends Modifier implements Listener {
 
 		final int level = modManager.getModLevel(tool, this);
 
-		if (!p.hasPermission("minetinker.modifiers.explosive.use")) return;
+		if (!p.hasPermission(getUsePermission())) return;
 
 		final Location loc = event.getEvent().getEntity().getLocation();
 
@@ -124,7 +124,7 @@ public class Explosive extends Modifier implements Listener {
 
 		final int level = modManager.getModLevel(tool, this);
 
-		if (!p.hasPermission("minetinker.modifiers.explosive.use")) return;
+		if (!p.hasPermission(getUsePermission())) return;
 
 		final Location loc = event.getEntity().getLocation().add(0, 0.2, 0);
 

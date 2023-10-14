@@ -68,7 +68,7 @@ public abstract class Modifier {
 
 		//Check for Permission
 		if (player != null) {
-			if (!player.hasPermission("minetinker.modifiers." + permission + ".apply")) {
+			if (!player.hasPermission(getApplyPermission())) {
 				if (!silent)
 					pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.NO_PERMISSION, isCommand));
 				return false;
@@ -374,7 +374,7 @@ public abstract class Modifier {
 	 * @param item The item that will be enchanted
 	 */
 	public void enchantItem(@NotNull Player player, @NotNull ItemStack item) {
-		if (!player.hasPermission("minetinker.modifiers." + getKey().replace("-", "").toLowerCase() + ".craft")) {
+		if (!player.hasPermission(getCraftPermission())) {
 			return;
 		}
 
@@ -419,6 +419,18 @@ public abstract class Modifier {
 			ChatWriter.log(false, player.getDisplayName() + " tried to create a "
 					+ getName() + "-Modifiers but had not enough levels!");
 		}
+	}
+
+	public String getCraftPermission() {
+		return "minetinker.modifiers." + getKey().replace("-", "").toLowerCase() + ".craft";
+	}
+
+	public String getUsePermission() {
+		return "minetinker.modifiers." + getKey().replace("-", "").toLowerCase() + ".use";
+	}
+
+	public String getApplyPermission() {
+		return "minetinker.modifiers." + getKey().replace("-", "").toLowerCase() + ".apply";
 	}
 
 	public List<String> getStatistics(ItemStack item) {

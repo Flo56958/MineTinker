@@ -114,7 +114,7 @@ public class Scotopic extends Modifier implements Listener {
 		if (!this.givesImmunity) return;
 
 		Player player = event.getPlayer();
-		if (!player.hasPermission("minetinker.modifiers.scotopic.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 
@@ -131,7 +131,7 @@ public class Scotopic extends Modifier implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
-		if (!player.hasPermission("minetinker.modifiers.scotopic.use")) return;
+		if (!player.hasPermission(getUsePermission())) return;
 
 		ItemStack helmet = player.getInventory().getHelmet();
 		if (!modManager.isArmorViable(helmet)) return;

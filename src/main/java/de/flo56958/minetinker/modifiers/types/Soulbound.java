@@ -113,7 +113,7 @@ public class Soulbound extends Modifier implements Listener {
 			}
 
 			if (modManager.isArmorViable(itemStack) || modManager.isToolViable(itemStack) || modManager.isWandViable(itemStack)) {
-				if (!player.hasPermission("minetinker.modifiers.soulbound.use")) {
+				if (!player.hasPermission(getUsePermission())) {
 					continue;
 				}
 
@@ -164,7 +164,7 @@ public class Soulbound extends Modifier implements Listener {
 		Player player = event.getPlayer();
 		PlayerInventory inventory = player.getInventory();
 
-		if (!player.hasPermission("minetinker.modifiers.soulbound.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

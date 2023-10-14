@@ -3,7 +3,6 @@ package de.flo56958.minetinker.commands.subs;
 import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.data.GUIs;
-import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
@@ -41,7 +40,7 @@ public class ModifierListCommand implements SubCommand {
 
 		int index = 1;
 
-		for (Modifier m : ModManager.instance().getAllowedMods()) {
+		for (Modifier m : modManager.getAllowedMods()) {
 			ChatWriter.sendMessage(sender, ChatColor.WHITE, index++ + ". " + m.getColor() + m.getName()
 																		+ ChatColor.WHITE + ": " + m.getDescription());
 		}

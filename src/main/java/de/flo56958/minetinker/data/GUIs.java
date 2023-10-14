@@ -30,8 +30,8 @@ import java.util.*;
 
 public class GUIs {
 
-	private final static ItemStack forwardStack;
-	private final static ItemStack backStack;
+	public final static ItemStack forwardStack;
+	public final static ItemStack backStack;
 	private final static ItemStack backOtherMenuStack;
 	private static GUI modGUI;
 	private static GUI configurationsGUI;

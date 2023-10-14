@@ -99,7 +99,7 @@ public class Lifesteal extends Modifier implements Listener {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!player.hasPermission("minetinker.modifiers.lifesteal.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

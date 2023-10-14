@@ -120,7 +120,7 @@ public class SelfRepair extends Modifier implements Listener {
 			return;
 		}
 
-		if (!event.getPlayer().hasPermission("minetinker.modifiers.selfrepair.use")) {
+		if (!event.getPlayer().hasPermission(getUsePermission())) {
 			return;
 		}
 

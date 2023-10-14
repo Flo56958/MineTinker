@@ -190,7 +190,7 @@ public class ShadowDive extends Modifier implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onSneak(PlayerToggleSneakEvent event) {
 		Player player = event.getPlayer();
-		if (!player.hasPermission("minetinker.modifiers.shadowdive.use")) return;
+		if (!player.hasPermission(getUsePermission())) return;
 
 		ItemStack boots = player.getInventory().getBoots();
 		if (!modManager.isArmorViable(boots)) return;

@@ -127,7 +127,7 @@ public class Timber extends Modifier implements Listener {
 			return;
 		}
 
-		if (!player.hasPermission("minetinker.modifiers.timber.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

@@ -77,7 +77,7 @@ public class Undead extends Modifier implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	public void onTarget(@NotNull EntityTargetLivingEntityEvent event) {
 		if (!(event.getTarget() instanceof Player player)) return;
-		if (!player.hasPermission("minetinker.modifiers.undead.use")) return;
+		if (!player.hasPermission(getUsePermission())) return;
 
 		ItemStack helmet = player.getInventory().getHelmet();
 		if (!modManager.isArmorViable(helmet)) return;
@@ -91,7 +91,7 @@ public class Undead extends Modifier implements Listener {
 		if (!this.disableAttacks) return;
 		if (!(event.getDamager() instanceof Player player)) return;
 		if (event.getEntity() instanceof Player) return;
-		if (!player.hasPermission("minetinker.modifiers.undead.use")) return;
+		if (!player.hasPermission(getUsePermission())) return;
 
 		ItemStack helmet = player.getInventory().getHelmet();
 		if (!modManager.isArmorViable(helmet)) return;

@@ -81,7 +81,7 @@ public class GrindstoneListener implements Listener {
 				int amount = 0;
 				boolean hadMods = false;
 				gs.tool = result;
-				for (Modifier mod : ModManager.instance().getAllMods()) {
+				for (Modifier mod : ModManager.instance().getAllowedMods()) {
 					int level = ModManager.instance().getModLevel(result, mod);
 					amount += level * mod.getSlotCost();
 					for(int i = 0; i < level; i++) {

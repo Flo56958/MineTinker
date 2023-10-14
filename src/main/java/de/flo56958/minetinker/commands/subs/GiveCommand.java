@@ -5,7 +5,6 @@ import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.listeners.BuildersWandListener;
-import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.Bukkit;
@@ -71,7 +70,7 @@ public class GiveCommand implements SubCommand {
 		}
 
 		final ItemStack tool = new ItemStack(material, 1);
-		ModManager.instance().convertItemStack(tool, player);
+		modManager.convertItemStack(tool, player);
 
 		if (!player.getInventory().addItem(tool).isEmpty()) { //adds items to (full) inventory
 			player.getWorld().dropItem(player.getLocation(), tool);

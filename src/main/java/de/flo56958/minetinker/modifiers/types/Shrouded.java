@@ -108,7 +108,7 @@ public class Shrouded extends Modifier implements Listener {
 	}
 
 	private void effect(Event event, Player player, ItemStack tool, Location location) {
-		if (!player.hasPermission("minetinker.modifiers.shrouded.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 		if (!modManager.hasMod(tool, this)) {
@@ -129,25 +129,25 @@ public class Shrouded extends Modifier implements Listener {
 
 		cloud.addCustomEffect(new PotionEffect(PotionEffectType.BLINDNESS, duration, 0, false, false), true);
 		ArrayList<String> extras = new ArrayList<>();
-		if (modManager.hasMod(tool, Glowing.instance()) && player.hasPermission("minetinker.modifiers.glowing.use")) {
+		if (modManager.hasMod(tool, Glowing.instance()) && player.hasPermission(Glowing.instance().getUsePermission())) {
 			extras.add(Glowing.instance().getKey());
-			cloud.addCustomEffect(Glowing.instance().getPotionEffect(null, null, player, tool), true);
+			cloud.addCustomEffect(Glowing.instance().getPotionEffect(event, cloud, player, tool), true);
 		}
-		if (modManager.hasMod(tool, Poisonous.instance()) && player.hasPermission("minetinker.modifiers.poisonous.use")) {
+		if (modManager.hasMod(tool, Poisonous.instance()) && player.hasPermission(Poisonous.instance().getUsePermission())) {
 			extras.add(Poisonous.instance().getKey());
-			cloud.addCustomEffect(Poisonous.instance().getPotionEffect(null, null, player, tool), true);
+			cloud.addCustomEffect(Poisonous.instance().getPotionEffect(event, cloud, player, tool), true);
 		}
-		if (modManager.hasMod(tool, Shulking.instance()) && player.hasPermission("minetinker.modifiers.shulking.use")) {
+		if (modManager.hasMod(tool, Shulking.instance()) && player.hasPermission(Shulking.instance().getUsePermission())) {
 			extras.add(Shulking.instance().getKey());
-			cloud.addCustomEffect(Shulking.instance().getPotionEffect(null, null, player, tool), true);
+			cloud.addCustomEffect(Shulking.instance().getPotionEffect(event, cloud, player, tool), true);
 		}
-		if (modManager.hasMod(tool, Webbed.instance()) && player.hasPermission("minetinker.modifiers.webbed.use")) {
+		if (modManager.hasMod(tool, Webbed.instance()) && player.hasPermission(Webbed.instance().getUsePermission())) {
 			extras.add(Webbed.instance().getKey());
-			cloud.addCustomEffect(Webbed.instance().getPotionEffect(null, null, player, tool), true);
+			cloud.addCustomEffect(Webbed.instance().getPotionEffect(event, cloud, player, tool), true);
 		}
-		if (modManager.hasMod(tool, Withered.instance()) && player.hasPermission("minetinker.modifiers.withered.use")) {
+		if (modManager.hasMod(tool, Withered.instance()) && player.hasPermission(Withered.instance().getUsePermission())) {
 			extras.add(Withered.instance().getKey());
-			cloud.addCustomEffect(Withered.instance().getPotionEffect(null, null, player, tool), true);
+			cloud.addCustomEffect(Withered.instance().getPotionEffect(event, cloud, player, tool), true);
 		}
 		StringBuilder ex = new StringBuilder();
 		for (String s : extras) {

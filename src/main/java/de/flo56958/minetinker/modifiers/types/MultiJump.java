@@ -152,7 +152,7 @@ public class MultiJump extends Modifier implements Listener {
 			return;
 		}
 
-		if (p.hasPermission("minetinker.modifiers.multijump.use")) {
+		if (p.hasPermission(getUsePermission())) {
 			AtomicInteger jumpcharge = this.jumpcharge.get(e.getPlayer());
 			if (jumpcharge == null) {
 				jumpcharge = new AtomicInteger(0);
@@ -219,7 +219,7 @@ public class MultiJump extends Modifier implements Listener {
 			return;
 		}
 
-		if (p.hasPermission("minetinker.modifiers.multijump.use")) {
+		if (p.hasPermission(getUsePermission())) {
 			AtomicInteger jumpcharge = this.jumpcharge.get(e.getPlayer());
 			if (jumpcharge == null) {
 				jumpcharge = new AtomicInteger(0);

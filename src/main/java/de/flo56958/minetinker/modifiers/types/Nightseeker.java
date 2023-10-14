@@ -106,7 +106,7 @@ public class Nightseeker extends Modifier implements Listener {
 	}
 
 	private void effect(Event e, EntityDamageEvent event, ItemStack tool, Player player) {
-		if (!player.hasPermission("minetinker.modifiers.nightseeker.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

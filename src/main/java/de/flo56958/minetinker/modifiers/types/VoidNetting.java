@@ -115,7 +115,7 @@ public class VoidNetting extends Modifier implements Listener {
 		if (event.getCause() != EntityDamageEvent.DamageCause.VOID) return;
 		if (!(event.getEntity() instanceof Player player)) return;
 
-		if (!player.hasPermission("minetinker.voidnetting.use")) return;
+		if (!player.hasPermission(getUsePermission())) return;
 
 		ItemStack armor = player.getInventory().getBoots();
 		if (!modManager.isArmorViable(armor)) return;

@@ -3,7 +3,6 @@ package de.flo56958.minetinker.commands.subs;
 import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
-import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.command.CommandSender;
@@ -30,7 +29,6 @@ public class RemoveModifierCommand implements SubCommand {
 			return true;
 		}
 		if (args.length >= 2) {
-			final ModManager modManager = ModManager.instance();
 			for (final Modifier m : modManager.getAllowedMods()) {
 				if (m.getName().equalsIgnoreCase(args[1].replaceAll("_", " "))) {
 					ItemStack tool = player.getInventory().getItemInMainHand();
@@ -70,8 +68,8 @@ public class RemoveModifierCommand implements SubCommand {
 		if (sender instanceof Player) {
 			ItemStack item = ((Player) sender).getInventory().getItemInMainHand();
 			if (args.length == 2) {
-				for (Modifier mod : ModManager.instance().getAllowedMods()) {
-					if (ModManager.instance().hasMod(item, mod))
+				for (Modifier mod : modManager.getAllowedMods()) {
+					if (modManager.hasMod(item, mod))
 						result.add(mod.getName().replaceAll(" ", "_"));
 				}
 			} else if (args.length == 3) {

@@ -107,7 +107,7 @@ public class Directing extends Modifier implements Listener {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!player.hasPermission("minetinker.modifiers.directing.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 
@@ -133,7 +133,7 @@ public class Directing extends Modifier implements Listener {
 		Player player = event.getPlayer();
 		ItemStack tool = player.getInventory().getItemInMainHand();
 
-		if (!player.hasPermission("minetinker.modifiers.directing.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 
@@ -194,7 +194,7 @@ public class Directing extends Modifier implements Listener {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!player.hasPermission("minetinker.modifiers.directing.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

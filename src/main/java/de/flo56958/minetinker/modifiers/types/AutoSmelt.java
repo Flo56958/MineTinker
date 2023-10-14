@@ -264,7 +264,7 @@ public class AutoSmelt extends Modifier implements Listener {
 		Block block = event.getBlock();
 		BlockBreakEvent breakEvent = event.getEvent();
 
-		if (!player.hasPermission("minetinker.modifiers.autosmelt.use")) {
+		if (!player.hasPermission(getUsePermission())) {
 			return;
 		}
 

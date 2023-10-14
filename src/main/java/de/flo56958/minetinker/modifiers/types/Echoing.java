@@ -33,7 +33,7 @@ public class Echoing extends Modifier {
 
 	private final Runnable runnable = () -> {
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			if (!player.hasPermission("minetinker.modifiers.echoing.use")) continue;
+			if (!player.hasPermission(getUsePermission())) continue;
 
 			final ItemStack helmet = player.getInventory().getHelmet();
 			if (!modManager.isArmorViable(helmet)) continue;

@@ -4,7 +4,6 @@ import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.data.Lists;
-import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.command.CommandSender;
@@ -44,7 +43,7 @@ public class NameCommand implements SubCommand {
 
 		ItemStack tool = player.getInventory().getItemInMainHand();
 
-		if (ModManager.instance().isToolViable(tool) || ModManager.instance().isArmorViable(tool)) {
+		if (modManager.isToolViable(tool) || modManager.isArmorViable(tool)) {
 			StringBuilder name = new StringBuilder();
 
 			for (int i = 1; i < args.length; i++) {

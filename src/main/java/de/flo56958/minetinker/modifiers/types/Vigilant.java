@@ -78,7 +78,7 @@ public class Vigilant extends Modifier implements Listener {
 	}
 
 	private void effect(@NotNull final Player player, final double damage) {
-		if (!player.hasPermission("minetinker.modifiers.vigilant.use")) return;
+		if (!player.hasPermission(getUsePermission())) return;
 		if (player.getAbsorptionAmount() >= 0.5) return;
 
 		final ItemStack chestplate = player.getInventory().getChestplate();
