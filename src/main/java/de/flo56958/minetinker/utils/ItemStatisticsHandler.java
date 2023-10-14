@@ -44,6 +44,11 @@ public class ItemStatisticsHandler implements Listener {
 				LanguageManager.getString("GUIs.Statistics.Title")
 						.replaceAll("%tool", ChatWriter.getDisplayName(item)));
 
+		ItemStack backStack = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
+		ItemMeta backStackmeta = backStack.getItemMeta();
+		backStackmeta.setDisplayName(LanguageManager.getString("GUIs.BackOtherMenu"));
+		backStack.setItemMeta(backStackmeta);
+
 		{
 			ItemStack itemStack = new ItemStack(item.getType());
 			ItemMeta itemMeta = itemStack.getItemMeta();
@@ -77,6 +82,8 @@ public class ItemStatisticsHandler implements Listener {
 				int i = 0;
 
 				GUIs.addNavigationButtons(currentPage);
+				GUI.Window.Button backbutton = currentPage.addButton(4, 5, backStack);
+				backbutton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(backbutton, window));
 
 				for (Modifier m : mods) {
 					if (!ModManager.instance().hasMod(item, m)) continue;
@@ -99,6 +106,8 @@ public class ItemStatisticsHandler implements Listener {
 										.replaceFirst("%pageNo", String.valueOf(++pageNo)));
 
 						GUIs.addNavigationButtons(currentPage);
+						backbutton = currentPage.addButton(4, 5, backStack);
+						backbutton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(backbutton, window));
 						i = 0;
 					}
 				}
@@ -129,6 +138,8 @@ public class ItemStatisticsHandler implements Listener {
 					int i = 0;
 
 					GUIs.addNavigationButtons(currentPage);
+					GUI.Window.Button backbutton = currentPage.addButton(4, 5, backStack);
+					backbutton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(backbutton, window));
 
 					ArrayList<Material> materials = new ArrayList<>(map.keySet());
 					materials.sort(Comparator.comparing(map::get));
@@ -157,6 +168,8 @@ public class ItemStatisticsHandler implements Listener {
 									.replace("%pageNo", String.valueOf(++pageNo)));
 
 							GUIs.addNavigationButtons(currentPage);
+							backbutton = currentPage.addButton(4, 5, backStack);
+							backbutton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(backbutton, window));
 							i = 0;
 						}
 					}
@@ -214,6 +227,8 @@ public class ItemStatisticsHandler implements Listener {
 					int i = 0;
 
 					GUIs.addNavigationButtons(currentPage);
+					GUI.Window.Button backbutton = currentPage.addButton(4, 5, backStack);
+					backbutton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(backbutton, window));
 
 					ArrayList<EntityType> types = new ArrayList<>(map.keySet());
 					types.sort(Comparator.comparing(map::get));
@@ -241,6 +256,8 @@ public class ItemStatisticsHandler implements Listener {
 									.replace("%pageNo", String.valueOf(++pageNo)));
 
 							GUIs.addNavigationButtons(currentPage);
+							backbutton = currentPage.addButton(4, 5, backStack);
+							backbutton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(backbutton, window));
 							i = 0;
 						}
 					}

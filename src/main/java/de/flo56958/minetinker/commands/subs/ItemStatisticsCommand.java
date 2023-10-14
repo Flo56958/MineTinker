@@ -6,7 +6,7 @@ import de.flo56958.minetinker.api.gui.ButtonAction;
 import de.flo56958.minetinker.api.gui.GUI;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
-import de.flo56958.minetinker.modifiers.ModManager;
+import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ItemStatisticsHandler;
@@ -44,7 +44,7 @@ public class ItemStatisticsCommand implements SubCommand {
 					.replace("%p", args[1]));
 			return true;
 		}
-		ModManager modManager = ModManager.instance();
+
 		List<ItemStack> items = new ArrayList<>();
 		for (ItemStack stack : player.getInventory().getContents()) {
 			if (!modManager.isToolViable(stack) && !modManager.isArmorViable(stack)) continue;
@@ -61,7 +61,8 @@ public class ItemStatisticsCommand implements SubCommand {
 				GUI.Window.Button button = window.addButton(i, items.get(i));
 				GUI statisticGUI = ItemStatisticsHandler.getGUI(items.get(i));
 				button.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(button, Objects.requireNonNull(statisticGUI.getWindow(0))));
-
+				GUI.Window.Button backButton = statisticGUI.getWindow(0).addButton(8, GUIs.backStack);
+				backButton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(backButton, window));
 			}
 			gui.show((Player) sender);
 		} else {
