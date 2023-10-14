@@ -21,7 +21,7 @@ public class PlayerInfo implements Listener {
 		Long time = combatTagTracker.getOrDefault(player.getUniqueId().toString(), -1L);
 		if (time == -1L) return false;
 
-		return System.currentTimeMillis() - time < 5 * 1000;
+		return System.currentTimeMillis() - time < 5 * 1000L;
 	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -52,7 +52,6 @@ public class PlayerInfo implements Listener {
 		combatTagTracker.remove(event.getPlayer().getUniqueId().toString());
 	}
 
-
 	/**
 	 * @param player The player to get the facing direction of as a single character
 	 * @return The facing direction of the player in Degrees
@@ -72,19 +71,13 @@ public class PlayerInfo implements Listener {
 	 * @return The compass facing direction
 	 */
 	private @Nullable static Direction getDirection(double rot) {
-		if (0 <= rot && rot < 45) {
-			return Direction.WEST;
-		} else if (45 <= rot && rot < 135) {
-			return Direction.NORTH;
-		} else if (135 <= rot && rot < 225) {
-			return Direction.EAST;
-		} else if (225 <= rot && rot < 315) {
-			return Direction.SOUTH;
-		} else if (315 <= rot && rot < 360) {
-			return Direction.WEST;
-		} else {
-			return null;
-		}
+        return switch ((int) (rot / 45)) {
+            case 0, 7 -> Direction.WEST;
+            case 1, 2 -> Direction.NORTH;
+            case 3, 4 -> Direction.EAST;
+            case 5, 6 -> Direction.SOUTH;
+            default -> null;
+        };
 	}
 
 	// Calculate amount of EXP needed to level up

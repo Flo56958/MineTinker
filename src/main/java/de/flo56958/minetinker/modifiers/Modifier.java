@@ -56,7 +56,7 @@ public abstract class Modifier {
 		this.source = source;
 	}
 
-	boolean checkAndAdd(Player player, ItemStack tool, String permission, boolean isCommand, boolean fromRandom, boolean silent, boolean modifySlotCount) {
+	final boolean checkAndAdd(Player player, ItemStack tool, String permission, boolean isCommand, boolean fromRandom, boolean silent, boolean modifySlotCount) {
 		if (modifySlotCount) {
 			//Check for free Slots
 			if ((modManager.getFreeSlots(tool) < this.getSlotCost() && !this.equals(ExtraModifier.instance())) && !isCommand) {
@@ -141,54 +141,54 @@ public abstract class Modifier {
 
 	public abstract List<ToolType> getAllowedTools();
 
-	public String getDescription() {
+	public final String getDescription() {
 		return description;
 	}
 
-	public ChatColor getColor() {
+	public final ChatColor getColor() {
 		return color;
 	}
 
-	public int getMaxLvl() {
+	public final int getMaxLvl() {
 		return maxLvl;
 	}
 
-	public int getSlotCost() {
+	public final int getSlotCost() {
 		return slotCost;
 	}
 
-	public ItemStack getModItem() {
+	public final ItemStack getModItem() {
 		return modItem;
 	}
 
-	public int getMinimumLevelRequirement() {
+	public final int getMinimumLevelRequirement() {
 		return minimumLevelRequirement;
 	}
 
-	public boolean hasRecipe() {
+	public final boolean hasRecipe() {
 		return getConfig().getBoolean("Recipe.Enabled", false);
 	}
 
-	public Plugin getSource() {
+	public final Plugin getSource() {
 		return source;
 	} //for other Plugins/Addons that register Modifiers
 
-	public String getName() {
+	public final String getName() {
 		return this.name;
 	}
 
-	public int getEnchantCost() {
+	public final int getEnchantCost() {
 		return getConfig().getInt("EnchantCost", 10);
 	}
 
-	public boolean isEnchantable() {
+	public final boolean isEnchantable() {
 		return getConfig().getBoolean("Enchantable", false);
 	}
 
 	/**
 	 * changes the core settings of the Modifier (like a secondary constructor)
 	 */
-	protected void init(@NotNull Material m) {
+	protected final void init(@NotNull Material m) {
 		FileConfiguration config = getConfig();
 
 		try {
@@ -267,11 +267,11 @@ public abstract class Modifier {
 	/**
 	 * @return is the modifier allowed
 	 */
-	public boolean isAllowed() {
+	public final boolean isAllowed() {
 		return getConfig().getBoolean("Allowed", true);
 	}
 
-	public String getFileName() {
+	public final String getFileName() {
 		return fileName;
 	}
 
@@ -290,7 +290,7 @@ public abstract class Modifier {
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
-	protected boolean isMaterialCompatible(@NotNull Material material) {
+	protected final boolean isMaterialCompatible(@NotNull Material material) {
 		for (final ToolType toolType : getAllowedTools()) {
 			if (toolType.contains(material)) {
 				return true;
@@ -300,11 +300,11 @@ public abstract class Modifier {
 		return false;
 	}
 
-	protected FileConfiguration getConfig() {
+	protected final FileConfiguration getConfig() {
 		return ConfigurationManager.getConfig(this);
 	}
 
-	protected void registerCraftingRecipe() {
+	protected final void registerCraftingRecipe() {
 		if (!hasRecipe()) {
 			return;
 		}
@@ -360,7 +360,7 @@ public abstract class Modifier {
 	}
 
 	@Contract(value = "null -> false", pure = true)
-	public boolean equals(@Nullable Object o) {
+	public final boolean equals(@Nullable Object o) {
 		if (o instanceof Modifier mod) {
 			return mod.getKey().equals(this.getKey());
 		}
@@ -373,7 +373,7 @@ public abstract class Modifier {
 	 * @param player The player that enchants
 	 * @param item The item that will be enchanted
 	 */
-	public void enchantItem(@NotNull Player player, @NotNull ItemStack item) {
+	public final void enchantItem(@NotNull Player player, @NotNull ItemStack item) {
 		if (!player.hasPermission(getCraftPermission())) {
 			return;
 		}
@@ -421,15 +421,15 @@ public abstract class Modifier {
 		}
 	}
 
-	public String getCraftPermission() {
+	public final String getCraftPermission() {
 		return "minetinker.modifiers." + getKey().replace("-", "").toLowerCase() + ".craft";
 	}
 
-	public String getUsePermission() {
+	public final String getUsePermission() {
 		return "minetinker.modifiers." + getKey().replace("-", "").toLowerCase() + ".use";
 	}
 
-	public String getApplyPermission() {
+	public final String getApplyPermission() {
 		return "minetinker.modifiers." + getKey().replace("-", "").toLowerCase() + ".apply";
 	}
 

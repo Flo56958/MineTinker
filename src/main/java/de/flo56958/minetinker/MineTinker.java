@@ -89,13 +89,11 @@ public class MineTinker extends JavaPlugin {
 
 		ChatWriter.logInfo(LanguageManager.getString("StartUp.Commands"));
 
-		if (getConfig().getBoolean("AllowCrafting")) {
+		if (getConfig().getBoolean("AllowCrafting"))
 			Bukkit.getPluginManager().registerEvents(new CreateToolListener(), this);
-		}
 
-		if (getConfig().getBoolean("AllowConverting")) {
+		if (getConfig().getBoolean("AllowConverting"))
 			Bukkit.getPluginManager().registerEvents(new ConvertToolListener(), this);
-		}
 
 		Bukkit.getPluginManager().registerEvents(new AnvilListener(), this);
 		Bukkit.getPluginManager().registerEvents(new ArmorListener(), this);
@@ -126,13 +124,11 @@ public class MineTinker extends JavaPlugin {
 			ChatWriter.log(false, LanguageManager.getString("StartUp.EasyHarvest"));
 		}
 
-		if (getConfig().getBoolean("actionbar-on-exp-gain", false)) {
+		if (getConfig().getBoolean("actionbar-on-exp-gain", false))
 			Bukkit.getPluginManager().registerEvents(new ActionBarListener(), this);
-		}
 
-		if (getConfig().getBoolean("ItemBehaviour.TrackStatistics", true)) {
+		if (getConfig().getBoolean("ItemBehaviour.TrackStatistics", true))
 			Bukkit.getPluginManager().registerEvents(new ItemStatisticsHandler(), this);
-		}
 
 		ChatWriter.log(false, LanguageManager.getString("StartUp.Events"));
 
@@ -154,9 +150,8 @@ public class MineTinker extends JavaPlugin {
 			Lists.BLOCKFACE.put(current, BlockFace.SELF);
 		}
 
-		if (getConfig().getBoolean("CheckForUpdates")) {
+		if (getConfig().getBoolean("CheckForUpdates"))
 			Bukkit.getScheduler().runTaskLaterAsynchronously(this, (@NotNull Runnable) Updater::checkForUpdate, 20);
-		}
 	}
 
 	private void addCoreMods() {

@@ -181,7 +181,7 @@ public class ModManager {
 		synchronized (ModManager.class) {
 			if (instance == null) {
 				instance = new ModManager();
-				instance.init();
+				instance.reload();
 			}
 		}
 
@@ -308,19 +308,18 @@ public class ModManager {
 		incompatibilityList.forEach(s -> {
 			final String[] splits = s.split(":");
 			if (splits.length != 2) return;
-			final Modifier mod1 = this.allMods.stream()
+			final Modifier mod1 = this.mods.stream()
 					.filter(m -> m.getKey().equals(splits[0]))
 					.findFirst()
 					.orElse(null);
 
-			final Modifier mod2 = this.allMods.stream()
+			final Modifier mod2 = this.mods.stream()
 					.filter(m -> m.getKey().equals(splits[1]))
 					.findFirst()
 					.orElse(null);
 
 			if (mod1 == null || mod2 == null) return;
 			if (mod1.equals(mod2)) return; //Modifier can not be incompatible with itself
-			if (!mod1.isAllowed() || !mod2.isAllowed()) return; //not enabled Modifiers should not be listed
 
 			//Cross-link incompatibilities
 			incompatibilities.get(mod1).add(mod2);
@@ -334,17 +333,10 @@ public class ModManager {
 	/**
 	 * This Method returns the original Set.
 	 * @param m The modifier to get the Incompatibilities for
-	 * @return The incompatibilities
+	 * @return The incompatibilities as an unmodifiable Set
 	 */
 	public @NotNull Set<Modifier> getIncompatibilities(final Modifier m) {
-		return incompatibilities.getOrDefault(m, new HashSet<>());
-	}
-
-	/**
-	 * checks and loads all modifiers with configurations settings into memory
-	 */
-	private void init() {
-		reload();
+		return incompatibilities.getOrDefault(m, Collections.unmodifiableSet(new HashSet<>()));
 	}
 
 	/**
@@ -414,14 +406,19 @@ public class ModManager {
 	}
 
 	/**
-	 * get all the modifiers in the list
+	 * get all the allowed modifiers that are registered
 	 *
-	 * @return the modifier list
+	 * @return the modifier list which is copied and can be modified
 	 */
 	public @NotNull List<Modifier> getAllowedMods() {
 		return new ArrayList<>(this.mods);
 	}
 
+	/**
+	 * get all the modifiers that are registered
+	 *
+	 * @return the modifier list which is copied and can be modified
+	 */
 	public @NotNull HashSet<Modifier> getAllMods() {
 		return new HashSet<>(this.allMods);
 	}
@@ -447,7 +444,6 @@ public class ModManager {
 		if (!modifier.applyMod(player, item, fromCommand)) return false;
 
 		ItemMeta meta = item.getItemMeta();
-
 		if (meta == null) return true;
 
 		if (MineTinker.getPlugin().getConfig().getBoolean("HideEnchants", true)) {
@@ -548,7 +544,8 @@ public class ModManager {
 	/**
 	 * sets the exp amount of the tool
 	 *
-	 * @param is the item to get the information from
+	 * @param is the item for exp to be set
+	 * @param exp the amount of exp to set
 	 */
 	private void setExp(@Nullable final ItemStack is, final long exp) {
 		if (is == null) return;
@@ -582,6 +579,8 @@ public class ModManager {
 	}
 
 	/**
+	 * Add exp to the tool
+	 *
 	 * @param player Player that uses the tool
 	 * @param tool   tool that needs to get exp
 	 * @param amount how much exp should the tool get
@@ -770,7 +769,7 @@ public class ModManager {
 	 * @return If the conversion was successful. Also returns false if the item is already MT compatible.
 	 */
 	@Contract("null, _ -> false")
-	public boolean convertItemStack(final ItemStack is, @Nullable final Entity entity) {
+	public boolean convertItemStack(@Nullable final ItemStack is, @Nullable final Entity entity) {
 		if (is == null) return false;
 
 		final Material m = is.getType();
@@ -864,11 +863,21 @@ public class ModManager {
 		return true;
 	}
 
+	/**
+	 * set the creator of the item
+	 * @param is the item
+	 * @param entity the entity that created the item
+	 */
 	private void setCreator(@Nullable final ItemStack is, @Nullable final Entity entity) {
 		if (is == null || entity == null) return;
 		DataHandler.setTag(is, "creator", entity.getUniqueId(), UUIDTagType.instance, false);
 	}
 
+	/**
+	 * get the creator of the item
+	 * @param is the item
+	 * @return the creator of the item
+	 */
 	public @Nullable OfflinePlayer getCreator(@Nullable final ItemStack is) {
 		if (is == null) return null;
 		UUID creator = DataHandler.getTag(is, "creator", UUIDTagType.instance, false);
@@ -876,6 +885,10 @@ public class ModManager {
 		return Bukkit.getOfflinePlayer(creator);
 	}
 
+	/**
+	 * Add the Armor Attributes to the ItemStack
+	 * @param is the enchantment
+	 */
 	public void addArmorAttributes(@NotNull final ItemStack is) {
 		ItemMeta meta = is.getItemMeta();
 		if (meta == null) return;
@@ -980,6 +993,13 @@ public class ModManager {
 		Hardened.instance().reapplyAttributes(is);
 	}
 
+	/**
+	 * @param m the material the item should be
+	 * @param name the name of the item
+	 * @param description the description of the item, the description is split into multiple lines depending on length
+	 * @param mod the modifier that is applied to the item
+	 * @return the created ItemStack
+	 */
 	public @NotNull ItemStack createModifierItem(@NotNull final Material m, @NotNull final String name,
 												 @NotNull final String description, @NotNull final Modifier mod) {
 		final ItemStack is = new ItemStack(m, 1);
@@ -1041,6 +1061,7 @@ public class ModManager {
 
 	/**
 	 * @param key the ItemStack
+	 * @return the Modifier of the Modifier-Key or null if not found
 	 */
 	@Nullable
 	public Modifier getModifierFromKey(@Nullable final String key) {
@@ -1054,7 +1075,7 @@ public class ModManager {
 	 * Gets the first found modifier that applies the supplied enchantment.
 	 *
 	 * @param enchantment The enchantment to get the Modifier for
-	 * @return the Modifier or null
+	 * @return the Modifier or null if not found
 	 */
 	@Nullable
 	public Modifier getModifierFromEnchantment(@NotNull final Enchantment enchantment) {
@@ -1139,6 +1160,9 @@ public class ModManager {
 		return true;
 	}
 
+	/**
+	 * removes all recipes that are registered by MineTinker
+	 */
 	public void removeRecipes() {
 		this.recipe_Namespaces.forEach(key -> Bukkit.getServer().removeRecipe(key));
 		this.recipe_Namespaces.clear();

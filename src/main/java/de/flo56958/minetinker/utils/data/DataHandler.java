@@ -32,7 +32,17 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class DataHandler {
-	
+
+	/**
+	 * Checks if the ItemStack has a Tag with the given key and the given dataType.
+	 * @param item The ItemStack to check
+	 * @param key The key of the Tag
+	 * @param dataType The dataType of the Tag
+	 * @param useMinecraft If the key should be the Minecraft-Namespace or the Plugin-Namespace
+	 * @return true if the ItemStack has a Tag with the given key and the given dataType, false otherwise
+	 * @param <T> The type of the Tag
+	 * @param <Z> The type of the value of the Tag
+	 */
 	public static <T, Z> boolean hasTag(@NotNull ItemStack item, @NotNull String key, PersistentDataType<T, Z> dataType, boolean useMinecraft) {
 		ItemMeta meta = item.getItemMeta();
 		if (meta == null) return false;
@@ -40,7 +50,17 @@ public class DataHandler {
 		
 		return container.has((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)), dataType);
 	}
-	
+
+	/**
+	 * Sets a Tag with the given key and the given value and dataType.
+	 * @param item The ItemStack to set the Tag on
+	 * @param key The key of the Tag
+	 * @param value The value of the Tag
+	 * @param dataType The dataType of the Tag
+	 * @param useMinecraft If the key should be the Minecraft-Namespace or the Plugin-Namespace
+	 * @param <T> The type of the Tag
+	 * @param <Z> The type of the value of the Tag
+	 */
 	public static <T, Z> void setTag(@NotNull ItemStack item, @NotNull String key, Z value, PersistentDataType<T, Z> dataType, boolean useMinecraft) {
 		ItemMeta meta = item.getItemMeta();
 		if (meta == null) return;
@@ -49,7 +69,17 @@ public class DataHandler {
 		container.set((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)), dataType, value);
 		item.setItemMeta(meta);
 	}
-	
+
+	/**
+	 * Gets a Tag with the given key and the given dataType.
+	 * @param item The ItemStack to get the Tag from
+	 * @param key The key of the Tag
+	 * @param dataType The dataType of the Tag
+	 * @param useMinecraft If the key should be the Minecraft-Namespace or the Plugin-Namespace
+	 * @return The value of the Tag or null if the ItemStack does not have a Tag with the given key and the given dataType
+	 * @param <T> The type of the Tag
+	 * @param <Z> The type of the value of the Tag
+	 */
 	public static <T, Z> @Nullable Z getTag(@NotNull ItemStack item, @NotNull String key, PersistentDataType<T, Z> dataType, boolean useMinecraft) {
 		ItemMeta meta = item.getItemMeta();
 		if (meta == null) return null;
@@ -57,7 +87,13 @@ public class DataHandler {
 		PersistentDataContainer container = meta.getPersistentDataContainer();
 		return container.get((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)), dataType);
 	}
-	
+
+	/**
+	 * Removes a Tag with the given key.
+	 * @param item The ItemStack to remove the Tag from
+	 * @param key The key of the Tag
+	 * @param useMinecraft If the key should be the Minecraft-Namespace or the Plugin-Namespace
+	 */
 	public static void removeTag(@NotNull ItemStack item, @NotNull String key, boolean useMinecraft) {
 		ItemMeta meta = item.getItemMeta();
 		if (meta == null) return;
@@ -66,7 +102,15 @@ public class DataHandler {
 		container.remove((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)));
 		item.setItemMeta(meta);
 	}
-	
+
+	/**
+	 * Let the player break a block with the given itemStack through the plugin.
+	 * @param player The player that should break the block
+	 * @param block The block that should be broken
+	 * @param itemStack The itemStack that is used to break the block
+	 * @return true if the player successfully broke the block, false otherwise
+	 * @throws IllegalArgumentException if the player or the itemStack is null
+	 */
 	public static boolean playerBreakBlock(@NotNull Player player, Block block, @NotNull ItemStack itemStack) throws IllegalArgumentException {
 		//
 		//This skips all interactions and synergies with MT and other Plugins but is way less performance heavy
@@ -188,7 +232,12 @@ public class DataHandler {
 		
 		return false;
 	}
-	
+
+	/**
+	 * Calculates the amount of experience that should be dropped when breaking a block.
+	 * @param type The type of the block that should be broken.
+	 * @return The amount of experience that should be dropped when breaking a block.
+	 */
 	private static int calculateExp(Material type) {
 		//TODO: Find better method then hardcoded values
 		if (MineTinker.is19compatible) {

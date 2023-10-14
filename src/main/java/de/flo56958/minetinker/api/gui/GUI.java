@@ -13,6 +13,7 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,7 +28,6 @@ import java.util.List;
  *
  * @author Flo56958
  */
-@SuppressWarnings("unused")
 public class GUI implements Listener {
 
 	private final List<Window> windows = Collections.synchronizedList(new ArrayList<>());
@@ -35,7 +35,7 @@ public class GUI implements Listener {
 
 	private volatile boolean isClosed = true;
 
-	public GUI(JavaPlugin plugin) {
+	public GUI(@NotNull final JavaPlugin plugin) {
 		this.plugin = plugin;
 		open();
 	}
@@ -48,9 +48,8 @@ public class GUI implements Listener {
 	 * @throws IllegalStateException when GUI is closed
 	 */
 	public Window addWindow(final int size, @NotNull final String title) {
-		if (isClosed) {
+		if (isClosed)
 			throw new IllegalStateException("GUI (" + this.hashCode() + ") is already closed!");
-		}
 
 		Window window = new Window(size, title, this);
 		windows.add(window);
@@ -58,10 +57,9 @@ public class GUI implements Listener {
 		return window;
 	}
 
-	public Window addWindow(Inventory inventory) {
-		if (isClosed) {
+	public Window addWindow(@NotNull Inventory inventory) {
+		if (isClosed)
 			throw new IllegalStateException("GUI (" + this.hashCode() + ") is already closed!");
-		}
 
 		Window window = new Window(inventory, this);
 		windows.add(window);
@@ -87,18 +85,9 @@ public class GUI implements Listener {
 	 * @return the found window or null
 	 */
 	@Nullable
-	public Window getWindowFromInventory(final Inventory inv) {
-		if (inv == null) {
-			return null;
-		}
-
-		for (Window window : windows) {
-			if (window.inventory.equals(inv)) {
-				return window;
-			}
-		}
-
-		return null;
+	@Contract(pure = true)
+	public Window getWindowFromInventory(@NotNull final Inventory inv) {
+		return windows.stream().filter(window -> window.inventory.equals(inv)).findFirst().orElse(null);
 	}
 
 	@Nullable
@@ -118,15 +107,14 @@ public class GUI implements Listener {
 	/**
 	 * shows the [page] page of the GUI to the specified Player
 	 *
-	 * @param player    the Player
+	 * @param player the Player
 	 * @param page the Page shown to the Player
 	 * @throws IllegalStateException when show() was called as the GUI was closed
 	 */
 	public void show(@NotNull final Player player, final int page) {
 		synchronized (this) {
-			if (isClosed) {
+			if (isClosed)
 				throw new IllegalStateException("GUI (" + this.hashCode() + ") is closed.");
-			}
 
 			windows.get(page).show(player);
 		}
@@ -134,14 +122,12 @@ public class GUI implements Listener {
 
 	public void show(@NotNull final Player player, final Window window) {
 		synchronized (this) {
-			if (isClosed) {
+			if (isClosed)
 				throw new IllegalStateException("GUI (" + this.hashCode() + ") is closed.");
-			}
 
-			if (!window.getGUI().equals(this)) {
+			if (!window.getGUI().equals(this))
 				throw new IllegalArgumentException("GUI (" + this.hashCode()
 						+ ") does not manage Window (" + window.hashCode() + ")!");
-			}
 
 			window.show(player);
 		}
@@ -177,14 +163,10 @@ public class GUI implements Listener {
 	 */
 	public void close() {
 		synchronized (this) {
-			if (isClosed) {
-				return;
-			}
+			if (isClosed) return;
 
 			isClosed = true;
-			for (Window w : windows) {
-				w.close();
-			}
+			windows.forEach(Window::close);
 
 			HandlerList.unregisterAll(this);
 		}
@@ -212,7 +194,7 @@ public class GUI implements Listener {
 
 		if (w1 == null) return;
 
-		Window.Button clickedButton = w1.getButtonFromSlot(event.getSlot());
+		Window.Button clickedButton = w1.getButton(event.getSlot());
 
 		if (clickedButton != null) {
 			clickedButton.executeAction(event);
@@ -296,16 +278,16 @@ public class GUI implements Listener {
 		}
 
 		/**
-		 * Calculates the slot nr. from the coordinates
+		 * Calculates the slot number from the coordinates
 		 *
 		 * @param x x-Coordinate
 		 * @param y y-Coordinate
 		 * @return the slot
 		 * @throws IllegalArgumentException when Coordinates less than zero
 		 */
-		public static int getSlot(final int x, final int y, Window window) {
-			if (x < 0 || y < 0) {
-				throw new IllegalArgumentException("Coordinates can not be less than ZERO!");
+		private static int getSlot(final int x, final int y, Window window) throws IllegalArgumentException {
+			if (x < 0 || y < 0 || x > 8) {
+				throw new IllegalArgumentException("Coordinates can not be less than ZERO or too big!");
 			}
 
 			int slot = (9 * y) + x;
@@ -317,36 +299,53 @@ public class GUI implements Listener {
 			return slot;
 		}
 
-		public Button addButton(final int x, final int y, @NotNull final ItemStack item) {
+		public Button addButton(final int x, final int y, @NotNull final ItemStack item) throws IllegalArgumentException {
 			return addButton(getSlot(x, y, this), item);
 		}
 
-//        /**
-//         *
-//         * @param x
-//         * @param y
-//         * @return  null on failure
-//         */
-//        @Nullable
-//        public Button getButton(final int x, final int y) {
-//            //TODO: Parameter check
-//            return buttonMap[getSlot(x, y, this)];
-//        }
-//
-//        @Nullable
-//        public Button getButton(final int slot) {
-//            //TODO: Parameter check
-//            return buttonMap[slot];
-//        }
+        /**
+         * Get the button at the given coordinates
+		 *
+         * @param x x-Coordinate
+         * @param y y-Coordinate
+         * @return the Button or null if there is no Button
+		 * @throws IllegalArgumentException when Coordinates less than zero or bigger than the Inventory
+         */
+        @Nullable
+        public Button getButton(final int x, final int y) throws IllegalArgumentException {
+            return buttonMap[getSlot(x, y, this)];
+        }
 
-		public Button addButton(final int slot, @NotNull final ItemStack item) {
+		/**
+		 * Get the button at the given slot
+		 *
+		 * @param slot the slot index
+		 * @return the Button or null if there is no Button
+		 * @throws IllegalArgumentException when slot is out of bounds
+		 */
+        @Nullable
+        public Button getButton(final int slot) throws IllegalArgumentException {
+			if (slot < 0 || slot >= buttonMap.length) throw new IllegalArgumentException("Slot is out of bounds!");
+            return buttonMap[slot];
+        }
+
+		/**
+		 * Adds a new Button to the Window
+		 *
+		 * @param slot the slot where the Button should be placed
+		 * @param item the ItemStack that will appear in the Window
+		 * @return the Button
+		 * @throws IllegalArgumentException when slot is out of bounds
+		 */
+		public Button addButton(final int slot, @NotNull final ItemStack item) throws IllegalArgumentException {
+			if (slot < 0 || slot >= buttonMap.length) throw new IllegalArgumentException("Slot is out of bounds!");
+
 			Button b = new Button(item, this);
 
 			buttonMap[slot] = b;
 			inventory.setItem(slot, b.item);
 
 			b.item = inventory.getItem(slot); //Update item as it gets changed during inventory.setItem();
-
 			return b;
 		}
 
@@ -355,14 +354,10 @@ public class GUI implements Listener {
 			return gui;
 		}
 
-		@Nullable
-		public Button getButtonFromSlot(final int slot) {
-			return buttonMap[slot];
-		}
-
-		public void setShowRunnable(final Runnable runnable, final int repeatTime) {
+		public Window setShowRunnable(final Runnable runnable, final int repeatTime) {
 			this.showRunnable = runnable;
 			this.runnableRepeatTime = repeatTime;
+			return this;
 		}
 
 		public void show(final Player player) {
@@ -422,8 +417,9 @@ public class GUI implements Listener {
 				this.item = item;
 			}
 
-			public void addAction(@NotNull ClickType c_action, @NotNull ButtonAction b_action) {
+			public Button addAction(@NotNull ClickType c_action, @NotNull ButtonAction b_action) {
 				actions.put(c_action, b_action);
+				return this;
 			}
 
 			private void executeAction(@NotNull InventoryClickEvent event) {
