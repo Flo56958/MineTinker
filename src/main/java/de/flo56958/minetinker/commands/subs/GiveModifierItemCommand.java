@@ -31,8 +31,8 @@ public class GiveModifierItemCommand implements SubCommand {
 		int modifierIndex;
 		int amountIndex;
 
-		Modifier mod = null;
-		Player player = null;
+		Modifier mod;
+		Player player;
 		int amount = 1;
 		switch (args.length) {
 			case 2 -> {

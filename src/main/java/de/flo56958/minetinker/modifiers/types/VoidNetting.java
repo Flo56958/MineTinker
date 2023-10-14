@@ -125,7 +125,7 @@ public class VoidNetting extends Modifier implements Listener {
 		int level = modManager.getModLevel(armor, this);
 
 		//cooldown checker
-		Long time = System.currentTimeMillis();
+		long time = System.currentTimeMillis();
 		long cooldownTime = (long) (this.cooldownInSeconds * 1000 * Math.pow(1.0 - this.cooldownReductionPerLevel, level - 1));
 		if (this.cooldownInSeconds > 1 / 20.0) {
 			Long cd = DataHandler.getTag(armor, this.getKey() + "cooldown", PersistentDataType.LONG, false);

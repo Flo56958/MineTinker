@@ -34,7 +34,7 @@ public class Timber extends Modifier implements Listener {
 	private int maxBlocks;
 
 	private static final ConcurrentHashMap<Location, Integer> events = new ConcurrentHashMap<>();
-	private HashSet<Material> grasses = new HashSet<>();
+	private final HashSet<Material> grasses = new HashSet<>();
 
 	private Timber() {
 		super(MineTinker.getPlugin());

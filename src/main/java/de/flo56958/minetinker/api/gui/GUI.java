@@ -183,6 +183,7 @@ public class GUI implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
 	public void onClick(@NotNull InventoryClickEvent event) {
+		if (event.getClickedInventory() == null) return;
 		Window w1 = getWindowFromInventory(event.getClickedInventory());
 		Window w2 = getWindowFromInventory(event.getWhoClicked().getOpenInventory().getTopInventory());
 
