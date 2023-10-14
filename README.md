@@ -1,7 +1,7 @@
 <img width="150" height="150" style="float: left; margin: 0 10px 0 0;" alt="MineTinker logo" src="https://i.imgur.com/8ZFiViM.png">
 
 # MineTinker
-<p style="text-align: center">
+<p align="center">
     <a href="https://github.com/Flo56958/MineTinker">
         <img src="https://img.shields.io/github/stars/Flo56958/MineTinker?color=0088ff" alt="Stars"/></a>
     <a href="https://github.com/Flo56958/MineTinker/fork">
