@@ -15,15 +15,19 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
-public class Echoing extends Modifier {
+public class Echoing extends Modifier implements Listener {
 
 	private static Echoing instance;
 
@@ -33,7 +37,7 @@ public class Echoing extends Modifier {
 
 	private int radiusPerLevel;
 
-	private void sendPacket(@NotNull Player player, @NotNull Entity entity, final byte value) {
+	private void sendPacket(@NotNull final Player player, @NotNull final Entity entity, final byte value) {
 		PacketContainer packet = protocolManager.createPacket(PacketType.Play.Server.ENTITY_METADATA);
 		packet.getIntegers().write(0, entity.getEntityId());
 
@@ -53,18 +57,43 @@ public class Echoing extends Modifier {
 		}
 	}
 
+	private void revert(@NotNull final Player player) {
+		final Collection<Entity> entities = this.entities.get(player);
+		if (entities == null) return;
+
+		for (final Entity ent : entities) {
+			if (!ent.isGlowing()) {
+				sendPacket(player, ent, (byte) 0x00);
+			}
+		}
+		this.entities.remove(player);
+	}
+
+	private HashMap<Player, Collection<Entity>> entities = new HashMap<>();
+
 	private final Runnable runnable = () -> {
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			if (!player.hasPermission(getUsePermission())) continue;
+			if (!player.hasPermission(getUsePermission())) {
+				revert(player);
+				continue;
+			}
 
 			final ItemStack helmet = player.getInventory().getHelmet();
-			if (!modManager.isArmorViable(helmet)) continue;
-			if (!modManager.hasMod(helmet, this)) continue;
+			if (!modManager.isArmorViable(helmet)) {
+				revert(player);
+				continue;
+			}
+			if (!modManager.hasMod(helmet, this)) {
+				revert(player);
+				continue;
+			}
 
 			int radius = this.radiusPerLevel * modManager.getModLevel(helmet, this);
 			Collection<Entity> entities = player.getWorld().getNearbyEntities(player.getLocation(), radius, radius, radius);
 			Collection<Entity> entities_wide = player.getWorld().getNearbyEntities(player.getLocation(), radius * 2, radius * 2, radius * 2);
 			entities_wide.removeAll(entities);
+
+			this.entities.put(player, entities);
 
 			for (final Entity ent : entities) {
 				if (ent.isGlowing()) continue;
@@ -132,6 +161,8 @@ public class Echoing extends Modifier {
 
 		init(Material.ENDER_EYE);
 
+		this.entities.clear();
+
 		int tickTime = config.getInt("TickTime", 20);
 		this.radiusPerLevel = config.getInt("RadiusPerLevel", 10);
 
@@ -142,5 +173,10 @@ public class Echoing extends Modifier {
 		}
 
 		this.description = this.description.replaceFirst("%amount", String.valueOf(this.radiusPerLevel));
+	}
+
+	@EventHandler(ignoreCancelled = true)
+	private void onPlayerQuit(@NotNull final PlayerQuitEvent event) {
+		revert(event.getPlayer());
 	}
 }
