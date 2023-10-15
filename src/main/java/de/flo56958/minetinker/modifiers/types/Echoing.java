@@ -4,6 +4,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
@@ -15,6 +16,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Collection;
@@ -31,6 +33,26 @@ public class Echoing extends Modifier {
 
 	private int radiusPerLevel;
 
+	private void sendPacket(@NotNull Player player, @NotNull Entity entity, final byte value) {
+		PacketContainer packet = protocolManager.createPacket(PacketType.Play.Server.ENTITY_METADATA);
+		packet.getIntegers().write(0, entity.getEntityId());
+
+		if (!MineTinker.is19compatible) {
+			WrappedDataWatcher watcher = new WrappedDataWatcher();
+			watcher.setEntity(entity);
+			watcher.setObject(0, WrappedDataWatcher.Registry.get(Byte.class), value);
+			packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
+		} else {
+			packet.getDataValueCollectionModifier().write(0, List.of(
+							new WrappedDataValue(0, WrappedDataWatcher.Registry.get(Byte.class), value)));
+		}
+		try {
+			protocolManager.sendServerPacket(player, packet);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	private final Runnable runnable = () -> {
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			if (!player.hasPermission(getUsePermission())) continue;
@@ -44,36 +66,16 @@ public class Echoing extends Modifier {
 			Collection<Entity> entities_wide = player.getWorld().getNearbyEntities(player.getLocation(), radius * 2, radius * 2, radius * 2);
 			entities_wide.removeAll(entities);
 
-			for (Entity ent : entities) {
+			for (final Entity ent : entities) {
 				if (ent.isGlowing()) continue;
 				if (ent.equals(player)) continue;
 
-				PacketContainer packet = protocolManager.createPacket(PacketType.Play.Server.ENTITY_METADATA);
-				packet.getIntegers().write(0, ent.getEntityId());
-				WrappedDataWatcher watcher = new WrappedDataWatcher();
-				WrappedDataWatcher.Serializer serializer = WrappedDataWatcher.Registry.get(Byte.class);
-				watcher.setObject(0, serializer, (byte) (0x40));
-				packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
-				try {
-					protocolManager.sendServerPacket(player, packet);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				sendPacket(player, ent, (byte) 0x40); // Glowing is 0x40
 			}
 
 			for (Entity ent : entities_wide) {
 				if (ent.isGlowing()) continue;
-				PacketContainer packet = protocolManager.createPacket(PacketType.Play.Server.ENTITY_METADATA);
-				packet.getIntegers().write(0, ent.getEntityId());
-				WrappedDataWatcher watcher = new WrappedDataWatcher();
-				WrappedDataWatcher.Serializer serializer = WrappedDataWatcher.Registry.get(Byte.class);
-				watcher.setObject(0, serializer, (byte) 0);
-				packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
-				try {
-					protocolManager.sendServerPacket(player, packet);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				sendPacket(player, ent, (byte) 0x00);
 			}
 		}
 	};
