@@ -32,7 +32,7 @@ public class MultiJump extends Modifier implements Listener {
 	//The Integer tells the Plugin how much Level of MultiJump have been used up by the Player
 	private final ConcurrentHashMap<Player, AtomicInteger> jumpcharge = new ConcurrentHashMap<>();
 
-	private final HashSet<Player> allowFlight = new HashSet<>();
+	private final ConcurrentHashMap<Player, Long> allowFlight = new ConcurrentHashMap<>();
 
 	private MultiJump() {
 		super(MineTinker.getPlugin());
@@ -94,7 +94,7 @@ public class MultiJump extends Modifier implements Listener {
 		//This can enable the player to jump more often than they are eligible to but reload() should not be called
 		//often
 		jumpcharge.clear();
-		for (Player p : allowFlight) {
+		for (Player p : allowFlight.keySet()) {
 			p.setAllowFlight(false);
 		}
 		allowFlight.clear();
@@ -103,19 +103,15 @@ public class MultiJump extends Modifier implements Listener {
 	//These two methods should improve compatibility with flight plugins as with them MT will only disallow flight
 	//if MT previously enabled it for that player.
 	//With them the player should use flight plugins without problems unless he has Multijump boots equipped.
-	private void enableFlight(@NotNull Player p) {
-		synchronized (allowFlight) {
-			allowFlight.add(p);
-			p.setAllowFlight(true);
-		}
+	private void enableFlight(@NotNull final Player p) {
+		if (p.getAllowFlight()) return;
+		allowFlight.put(p, System.currentTimeMillis());
+		p.setAllowFlight(true);
 	}
 
-	private void disableFlight(@NotNull Player p) {
-		synchronized (allowFlight) {
-			if (allowFlight.remove(p)) {
-				p.setAllowFlight(false);
-			}
-		}
+	private void disableFlight(@NotNull final Player p) {
+		if (allowFlight.remove(p) != null)
+			p.setAllowFlight(false);
 	}
 
 	@EventHandler
@@ -132,22 +128,24 @@ public class MultiJump extends Modifier implements Listener {
 			return;
 		}
 
-		if (p.isFlying()) {
+		// Player can normally fly -> Multijump not needed
+		if (p.getAllowFlight() && !allowFlight.containsKey(p)) {
 			return;
 		}
+
+		// check if something got through and the player can still fly
+		long time = System.currentTimeMillis();
+		if (allowFlight.getOrDefault(p, time) - time <= -1000L)
+			disableFlight(p);
+
+		if (p.isFlying()) return;
 
 		final ItemStack boots = p.getInventory().getBoots();
-		if (!modManager.isArmorViable(boots)) {
-			return;
-		}
+		if (!modManager.isArmorViable(boots)) return;
 		final int level = modManager.getModLevel(boots, this);
-		if (level == 0) {
-			return;
-		}
+		if (level == 0) return;
 
-		//Do not check for p.isGliding() here as you should be able to jump mid-glide and not have the AllowFlight(true)
-		//exploitable
-		if (p.isSwimming() || p.isSleeping() /*|| p.isGliding()*/ || p.isDead()) {
+		if (p.isSwimming() || p.isSleeping() || p.isGliding() || p.isDead()) {
 			disableFlight(p);
 			return;
 		}
@@ -179,7 +177,6 @@ public class MultiJump extends Modifier implements Listener {
 			//FIXME: Find a better solution for MultiJump so it does not trigger AntiCheat or can easily exploited
 			else if (below.getType() == Material.CAVE_AIR || below.getType() == Material.AIR
 					|| below.getType() == Material.VOID_AIR) {
-				//This can and will remove flight if the player uses a fly command
 				if(jumpcharge.get() < level) {
 					enableFlight(p);
 				} else {
@@ -200,24 +197,20 @@ public class MultiJump extends Modifier implements Listener {
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onFly(@NotNull final PlayerToggleFlightEvent e) {
 		final Player p = e.getPlayer();
-		if (p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR) {
-			return;
-		}
+		if (p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR) return;
+
+		// Player can normally fly -> Multijump not needed
+		if (p.getAllowFlight() && !allowFlight.containsKey(p)) return;
 
 		//Do not check for p.isGliding() here as you should be able to jump mid-glide and not have the AllowFlight(true)
 		//exploitable while flying with elytra.
-		if (p.isFlying() || p.isSwimming() || p.isSleeping() /*|| p.isGliding()*/ || p.isDead()) {
-			return;
-		}
+		if (p.isFlying() || p.isSwimming() || p.isSleeping() /*|| p.isGliding()*/ || p.isDead()) return;
 
 		final ItemStack boots = p.getInventory().getBoots();
-		if (!modManager.isArmorViable(boots)) {
-			return;
-		}
+		if (!modManager.isArmorViable(boots)) return;
+
 		final int level = modManager.getModLevel(boots, this);
-		if (level == 0) {
-			return;
-		}
+		if (level == 0) return;
 
 		if (p.hasPermission(getUsePermission())) {
 			AtomicInteger jumpcharge = this.jumpcharge.get(e.getPlayer());
@@ -242,17 +235,13 @@ public class MultiJump extends Modifier implements Listener {
 	//To avoid that you can have flight without the boots
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onArmorWear(@NotNull InventoryClickEvent e) {
-		if (e.getSlotType().equals(InventoryType.SlotType.ARMOR)) {
-			ItemStack item = e.getCurrentItem();
-			if (modManager.isArmorViable(item)) {
-				if (modManager.hasMod(item, this)) {
-					if (e.getWhoClicked() instanceof Player p) {
-						if (p.getGameMode() == GameMode.ADVENTURE || p.getGameMode() == GameMode.SURVIVAL) {
-							disableFlight(p);
-						}
-					}
-				}
-			}
+		if (!e.getSlotType().equals(InventoryType.SlotType.ARMOR)) return;
+		ItemStack item = e.getCurrentItem();
+		if (!modManager.isArmorViable(item)) return;
+		if (!modManager.hasMod(item, this)) return;
+		if (!(e.getWhoClicked() instanceof Player p)) return;
+		if (p.getGameMode() == GameMode.ADVENTURE || p.getGameMode() == GameMode.SURVIVAL) {
+			disableFlight(p);
 		}
 	}
 }
