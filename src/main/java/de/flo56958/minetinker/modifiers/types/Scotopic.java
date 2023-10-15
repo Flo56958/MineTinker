@@ -2,12 +2,10 @@ package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.modifiers.Modifier;
+import de.flo56958.minetinker.modifiers.CooldownModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
-import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,7 +15,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -27,14 +24,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Scotopic extends Modifier implements Listener {
+public class Scotopic extends CooldownModifier implements Listener {
 
 	private static Scotopic instance;
 
 	private int requiredLightLevel;
 	private int durationPerLevel;
-	private double cooldownInSeconds;
-	private double cooldownReductionPerLevel;
 	private boolean givesImmunity;
 
 	private Scotopic() {
@@ -106,7 +101,7 @@ public class Scotopic extends Modifier implements Listener {
 				.replaceAll("%amount", String.valueOf(this.durationPerLevel / 20.0))
 				.replaceAll("%light", String.valueOf(this.requiredLightLevel))
 				.replaceAll("%cmax", String.valueOf(this.cooldownInSeconds))
-				.replaceAll("%cmin", String.valueOf(Math.round(this.cooldownInSeconds * Math.pow(1.0 - this.cooldownReductionPerLevel, this.getMaxLvl() - 1))));
+				.replaceAll("%cmin", String.valueOf(this.getCooldownForLevel(this.getMaxLvl()) / 1000.0));
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -138,41 +133,31 @@ public class Scotopic extends Modifier implements Listener {
 		int level = modManager.getModLevel(helmet, this);
 		if (level <= 0) return;
 
-		//cooldown checker
-		Long time = System.currentTimeMillis();
-		long cooldownTime = Math.round(this.cooldownInSeconds * 1000 * Math.pow(1.0D - this.cooldownReductionPerLevel, level - 1));
-		if (this.cooldownInSeconds > 1 / 20.0) {
-			Long cd = DataHandler.getTag(helmet, this.getKey() + "cooldown", PersistentDataType.LONG, false);
-			if (cd != null) { //was on cooldown
-				if (time - cd < cooldownTime && player.getGameMode() != GameMode.CREATIVE) {
-					return; //still on cooldown
-				}
-			}
-		}
+		if (onCooldown(player, helmet, true, event)) return;
 
 		Location loc = event.getTo();
 		if (loc == null) return;
 		byte lightlevel = player.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()).getLightLevel();
 
-		if (lightlevel <= this.requiredLightLevel) {
-			int duration = this.durationPerLevel * level;
-			player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,
-					duration + 10 * 20, // To disable the flickering below 10 seconds
-					level - 1, false, false, false));
-			DataHandler.setTag(helmet, this.getKey() + "cooldown", time, PersistentDataType.LONG, false);
-			ChatWriter.logModifier(player, event, this, helmet,
-					String.format("Cooldown(%ds)", cooldownTime / 1000),
-					String.format("LightLevel(%d/%d)", lightlevel, this.requiredLightLevel),
-					String.format("Duration(%d)", duration));
+		if (lightlevel > this.requiredLightLevel) return;
 
-			Bukkit.getServer().getScheduler().runTaskLater(this.getSource(), () -> {
-				PotionEffect effect = player.getPotionEffect(PotionEffectType.NIGHT_VISION);
-				if (effect == null) return;
-				if (Math.abs(effect.getDuration() - duration) <= 1) {
-					//Effect was most likely applied by MineTinker, so remove it
-					player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-				}
-			}, duration);
-		}
+		int duration = this.durationPerLevel * level;
+		player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,
+				duration + 10 * 20, // To disable the flickering below 10 seconds
+				level - 1, false, false, false));
+		setCooldown(helmet);
+		ChatWriter.logModifier(player, event, this, helmet,
+				String.format("Cooldown(%ds)", getCooldownForLevel(level) / 1000),
+				String.format("LightLevel(%d/%d)", lightlevel, this.requiredLightLevel),
+				String.format("Duration(%d)", duration));
+
+		Bukkit.getServer().getScheduler().runTaskLater(this.getSource(), () -> {
+			PotionEffect effect = player.getPotionEffect(PotionEffectType.NIGHT_VISION);
+			if (effect == null) return;
+			if (Math.abs(effect.getDuration() - duration) <= 1) {
+				//Effect was most likely applied by MineTinker, so remove it
+				player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+			}
+		}, duration);
 	}
 }

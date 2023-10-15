@@ -3,11 +3,9 @@ package de.flo56958.minetinker.modifiers.types;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.modifiers.Modifier;
+import de.flo56958.minetinker.modifiers.CooldownModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
-import de.flo56958.minetinker.utils.data.DataHandler;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,16 +15,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.util.*;
 
-public class Evasive extends Modifier implements Listener {
+public class Evasive extends CooldownModifier implements Listener {
 
 	private static Evasive instance;
 	private int percentPerLevel;
-	private double cooldownInSeconds;
 	private double sneakMultiplier;
 	private double sprintMultiplier;
 	private double pvpMultiplier;
@@ -106,33 +102,15 @@ public class Evasive extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
 	public void effect(MTEntityDamageByEntityEvent event) {
-		if (!event.getPlayer().equals(event.getEvent().getEntity())) {
-			return; //when event was not triggered by the armor
-		}
+		if (!event.getPlayer().equals(event.getEvent().getEntity())) return; //when event was not triggered by the armor
 
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
-
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
-
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
 
 		//cooldown checker
-		Long time = System.currentTimeMillis();
-		if (this.cooldownInSeconds > 1 / 20.0) {
-			Long cd = DataHandler.getTag(tool, this.getKey() + "cooldown", PersistentDataType.LONG, false);
-			if (cd != null) { //was on cooldown
-				if (time - cd < this.cooldownInSeconds * 1000L && player.getGameMode() != GameMode.CREATIVE) {
-					ChatWriter.logModifier(player, event, this, tool, "Cooldown");
-					//ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getString("Alert.OnCooldown", player));
-					return; //still on cooldown
-				}
-			}
-		}
+		if (onCooldown(player, tool, true, event)) return;
 
 		//calculating chance
 		Random rand = new Random();
@@ -167,10 +145,7 @@ public class Evasive extends Modifier implements Listener {
 			return;
 		}
 
-
-		if (this.cooldownInSeconds > 1 / 20.0)
-			DataHandler.setTag(tool, this.getKey() + "cooldown", System.currentTimeMillis(),
-					PersistentDataType.LONG, false);
+		setCooldown(tool);
 
 		event.setCancelled(true);
 		if (getConfig().getBoolean("Sound", true))

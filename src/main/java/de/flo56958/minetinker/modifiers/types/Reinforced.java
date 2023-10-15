@@ -96,20 +96,13 @@ public class Reinforced extends Modifier {
 	@Override
 	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
 		ItemMeta meta = tool.getItemMeta();
+		if (meta == null) return false;
 
-		if (meta != null) {
-			meta.addEnchant(Enchantment.DURABILITY, modManager.getModLevel(tool, this), true);
+		meta.addEnchant(Enchantment.DURABILITY, modManager.getModLevel(tool, this), true);
+		meta.setUnbreakable(this.applyUnbreakableOnMaxLevel && modManager.getModLevel(tool, this) == this.getMaxLvl());
+		if (hideUnbreakableFlag) meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
 
-			if (modManager.getModLevel(tool, this) == this.getMaxLvl() && this.applyUnbreakableOnMaxLevel) {
-				meta.setUnbreakable(true);
-				if (hideUnbreakableFlag) {
-					meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-				}
-			}
-
-			tool.setItemMeta(meta);
-		}
-
+		tool.setItemMeta(meta);
 		return true;
 	}
 
@@ -117,14 +110,12 @@ public class Reinforced extends Modifier {
 	public void removeMod(ItemStack tool) {
 		ItemMeta meta = tool.getItemMeta();
 
-		if (meta != null) {
-			meta.removeEnchant(Enchantment.DURABILITY);
-			if (this.applyUnbreakableOnMaxLevel) {
-				meta.setUnbreakable(false);
-				meta.removeItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-			}
+		if (meta == null) return;
 
-			tool.setItemMeta(meta);
-		}
+		meta.removeEnchant(Enchantment.DURABILITY);
+		meta.removeItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+		if (this.applyUnbreakableOnMaxLevel) meta.setUnbreakable(false);
+
+		tool.setItemMeta(meta);
 	}
 }

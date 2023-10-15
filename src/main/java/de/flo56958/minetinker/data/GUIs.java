@@ -231,7 +231,7 @@ public class GUIs {
 						if (rec instanceof ShapedRecipe srec) {
 							HashMap<GUI.Window.Button, RecipeChoice.MaterialChoice> choices = new HashMap<>();
 							ItemStack modItem = m.getModItem().clone();
-							DataHandler.setTag(modItem, "Showcase", (int) Math.round(Math.random() * 1000), PersistentDataType.INTEGER, false);
+							DataHandler.setTag(modItem, "Showcase", (int) Math.round(Math.random() * 1000), PersistentDataType.INTEGER);
 							GUI.Window.Button result = modRecipe.addButton(6, 1, modItem);
 							result.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(result, currentPage));
 
@@ -252,7 +252,7 @@ public class GUIs {
 									try {
 										ItemStack resItem = srec.getIngredientMap().get(c).clone();
 										DataHandler.setTag(resItem, "MT-MODSRecipeItem",
-												Math.round(Math.random() * 42), PersistentDataType.LONG, false);
+												Math.round(Math.random() * 42), PersistentDataType.LONG);
 										final GUI.Window.Button recButton = modRecipe.addButton((slot % 3) + 2, (slot / 3), resItem);
 
 										// prepare runnable for multiple choices

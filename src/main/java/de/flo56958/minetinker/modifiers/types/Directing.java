@@ -148,8 +148,8 @@ public class Directing extends Modifier implements Listener {
 		Iterator<Item> itemIterator = event.getItems().iterator();
 
 		//Track stats
-		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
-				? DataHandler.getTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false)
+		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER))
+				? DataHandler.getTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER)
 				: 0;
 
 		while (itemIterator.hasNext()) {
@@ -168,7 +168,7 @@ public class Directing extends Modifier implements Listener {
 			itemIterator.remove();
 		}
 
-		DataHandler.setTag(tool, getKey() + "_stat_used", stat, PersistentDataType.INTEGER, false);
+		DataHandler.setTag(tool, getKey() + "_stat_used", stat, PersistentDataType.INTEGER);
 
 		Location loc = event.getBlock().getLocation();
 		ChatWriter.logModifier(player, event, this, tool,
@@ -203,8 +203,8 @@ public class Directing extends Modifier implements Listener {
 		}
 
 		//Track stats
-		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
-				? DataHandler.getTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false)
+		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER))
+				? DataHandler.getTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER)
 				: 0;
 
 		for (ItemStack current : new ArrayList<>(event.getEvent().getDrops())) {
@@ -220,7 +220,7 @@ public class Directing extends Modifier implements Listener {
 			event.getEvent().getDrops().remove(current);
 		}
 
-		DataHandler.setTag(tool, getKey() + "_stat_used", stat, PersistentDataType.INTEGER, false);
+		DataHandler.setTag(tool, getKey() + "_stat_used", stat, PersistentDataType.INTEGER);
 
 		ChatWriter.logModifier(player, event, this, tool,
 				"Entity(" + event.getEvent().getEntity().getType() + ")");
@@ -237,8 +237,8 @@ public class Directing extends Modifier implements Listener {
 	@Override
 	public List<String> getStatistics(ItemStack item) {
 		//Track stats
-		int stat = (DataHandler.hasTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
-				? DataHandler.getTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER, false)
+		int stat = (DataHandler.hasTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER))
+				? DataHandler.getTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER)
 				: 0;
 		List<String> lore = new ArrayList<>();
 		lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Directing.Statistic_Used")

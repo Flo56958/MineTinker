@@ -71,7 +71,7 @@ public class AddModifierCommand implements SubCommand {
 		List<String> result = new ArrayList<>();
 		if (sender instanceof Player) {
 			if (args.length == 2) {
-				for (Modifier mod : modManager.getAllowedMods()) {
+				for (final Modifier mod : modManager.getAllowedMods()) {
 					result.add(mod.getName().replaceAll(" ", "_"));
 				}
 			} else if (args.length == 3) {

@@ -150,24 +150,24 @@ public class Tanky extends Modifier implements Listener {
 		Double health;
 		ItemStack chest = event.getPlayer().getInventory().getChestplate();
 		if (modManager.isArmorViable(chest) && modManager.hasMod(chest, this)) {
-			health = DataHandler.getTag(chest, "modifier_tanky_health_save", PersistentDataType.DOUBLE, false);
+			health = DataHandler.getTag(chest, "modifier_tanky_health_save", PersistentDataType.DOUBLE);
 			if (health != null && health > 0) {
 				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
 					try {
 						event.getPlayer().setHealth(health);
 					} catch(IllegalArgumentException ignored) {}
 				}, 10L);
-				DataHandler.removeTag(chest, "modifier_tanky_health_save", false);
+				DataHandler.removeTag(chest, "modifier_tanky_health_save");
 			} else {
 				return;
 			}
 		} else {
 			chest = event.getPlayer().getInventory().getLeggings();
 			if (modManager.isArmorViable(chest) && modManager.hasMod(chest, this)) {
-				health = DataHandler.getTag(chest, "modifier_tanky_health_save", PersistentDataType.DOUBLE, false);
+				health = DataHandler.getTag(chest, "modifier_tanky_health_save", PersistentDataType.DOUBLE);
 				if (health != null) {
 					Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> event.getPlayer().setHealth(health), 10L);
-					DataHandler.removeTag(chest, "modifier_tanky_health_save", false);
+					DataHandler.removeTag(chest, "modifier_tanky_health_save");
 				} else {
 					return;
 				}
@@ -184,13 +184,13 @@ public class Tanky extends Modifier implements Listener {
 			ItemStack chest = event.getPlayer().getInventory().getChestplate();
 			if (modManager.isArmorViable(chest) && modManager.hasMod(chest, this)) {
 				DataHandler.setTag(chest, "modifier_tanky_health_save", event.getPlayer().getHealth(),
-						PersistentDataType.DOUBLE, false);
+						PersistentDataType.DOUBLE);
 				return;
 			}
 			chest = event.getPlayer().getInventory().getLeggings();
 			if (modManager.isArmorViable(chest) && modManager.hasMod(chest, this)) {
 				DataHandler.setTag(chest, "modifier_tanky_health_save", event.getPlayer().getHealth(),
-						PersistentDataType.DOUBLE, false);
+						PersistentDataType.DOUBLE);
 			}
 		}
 	}

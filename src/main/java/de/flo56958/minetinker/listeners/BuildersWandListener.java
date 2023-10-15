@@ -139,7 +139,7 @@ public class BuildersWandListener implements Listener {
 
 		//TODO: DataHandler.setStringList(wand, "CanDestroy", true, "minecraft:air");
 		DataHandler.setTag(wand, "identifier_builderswand", 0,
-				PersistentDataType.INTEGER, false);
+				PersistentDataType.INTEGER);
 
 		return wand;
 	}

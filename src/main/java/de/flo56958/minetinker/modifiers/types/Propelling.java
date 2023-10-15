@@ -2,11 +2,9 @@ package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.modifiers.Modifier;
+import de.flo56958.minetinker.modifiers.CooldownModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
-import de.flo56958.minetinker.utils.LanguageManager;
-import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -17,7 +15,6 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Propelling extends Modifier implements Listener {
+public class Propelling extends CooldownModifier implements Listener {
 
 	private static Propelling instance;
 	private int durabilityLoss;
@@ -36,8 +33,6 @@ public class Propelling extends Modifier implements Listener {
 	private boolean particles;
 	private boolean considerReinforced;
 	private boolean useLessDurability;
-
-	private double cooldownInSeconds;
 
 	private Propelling() {
 		super(MineTinker.getPlugin());
@@ -126,43 +121,16 @@ public class Propelling extends Modifier implements Listener {
 	public void onElytraSneak(PlayerToggleSneakEvent event) {
 		Player player = event.getPlayer();
 
-		if (event.isSneaking()) {
-			return;
-		}
-
-		if (!player.isGliding()) {
-			return;
-		}
-
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
+		if (event.isSneaking()) return;
+		if (!player.isGliding()) return;
+		if (!player.hasPermission(getUsePermission())) return;
 
 		ItemStack elytra = player.getInventory().getChestplate();
+		if (elytra == null) return;
+		if (!(modManager.isArmorViable(elytra) && ToolType.ELYTRA.contains(elytra.getType()))) return;
+		if (!modManager.hasMod(elytra, this)) return;
 
-		if (elytra == null) {
-			return;
-		}
-
-		if (!(modManager.isArmorViable(elytra) && ToolType.ELYTRA.contains(elytra.getType()))) {
-			return;
-		}
-
-		if (!modManager.hasMod(elytra, this)) {
-			return;
-		}
-
-		if (cooldownInSeconds > 1 / 20.0) {
-			long time = System.currentTimeMillis();
-			Long playerTime = DataHandler.getTag(elytra, this.getKey() + "cooldown", PersistentDataType.LONG, false);
-			if (playerTime != null) {
-				if (time - playerTime < this.cooldownInSeconds * 1000) {
-					ChatWriter.logModifier(player, event, this, elytra, "Cooldown");
-					ChatWriter.sendActionBar(player, this.getName() + ": " + LanguageManager.getString("Alert.OnCooldown", player));
-					return;
-				}
-			}
-		}
+		if (onCooldown(player, elytra, true, event)) return;
 
 		int maxDamage = elytra.getType().getMaxDurability();
 		ItemMeta meta = elytra.getItemMeta();
@@ -199,17 +167,12 @@ public class Propelling extends Modifier implements Listener {
 
 		player.setVelocity(dir.multiply(1 + speedPerLevel * level).add(player.getVelocity().multiply(0.1f)));
 
-		if (particles && loc.getWorld() != null) {
+		if (particles && loc.getWorld() != null)
 			loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
-		}
 
 		if (sound) player.getWorld().playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
 
-		if (cooldownInSeconds > 1 / 20.0) {
-			DataHandler.setTag(elytra, this.getKey() + "cooldown", System.currentTimeMillis(),
-					PersistentDataType.LONG, false);
-		}
-
+		setCooldown(elytra);
 		ChatWriter.logModifier(player, event, this, elytra);
 	}
 }

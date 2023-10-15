@@ -298,10 +298,10 @@ public class AutoSmelt extends Modifier implements Listener {
 			if (level > 0) extra = new Random().nextInt(level + 1) * amount;
 			amount += amount + extra;
 
-			int luckstat = (DataHandler.hasTag(tool, getKey() + "_stat_luck", PersistentDataType.INTEGER, false))
-					? DataHandler.getTag(tool, getKey() + "_stat_luck", PersistentDataType.INTEGER, false)
+			int luckstat = (DataHandler.hasTag(tool, getKey() + "_stat_luck", PersistentDataType.INTEGER))
+					? DataHandler.getTag(tool, getKey() + "_stat_luck", PersistentDataType.INTEGER)
 					: 0;
-			DataHandler.setTag(tool, getKey() + "_stat_luck", luckstat + extra, PersistentDataType.INTEGER, false);
+			DataHandler.setTag(tool, getKey() + "_stat_luck", luckstat + extra, PersistentDataType.INTEGER);
 			//Times amount is for clay as it drops 4 per block
 		}
 
@@ -325,10 +325,10 @@ public class AutoSmelt extends Modifier implements Listener {
 				Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
 
 		//Track stats
-		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
-				? DataHandler.getTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, false)
+		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER))
+				? DataHandler.getTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER)
 				: 0;
-		DataHandler.setTag(tool, getKey() + "_stat_used", stat + 1, PersistentDataType.INTEGER, false);
+		DataHandler.setTag(tool, getKey() + "_stat_used", stat + 1, PersistentDataType.INTEGER);
 
 		ChatWriter.logModifier(player, event, this, tool, "Block(" + breakEvent.getBlock().getType() + ")");
 	}
@@ -336,11 +336,11 @@ public class AutoSmelt extends Modifier implements Listener {
 	@Override
 	public List<String> getStatistics(ItemStack item) {
 		List<String> lore = new ArrayList<>();
-		int stat = (DataHandler.hasTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER, false))
-				? DataHandler.getTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER, false)
+		int stat = (DataHandler.hasTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER))
+				? DataHandler.getTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER)
 				: 0;
-		int luckstat = (DataHandler.hasTag(item, getKey() + "_stat_luck", PersistentDataType.INTEGER, false))
-				? DataHandler.getTag(item, getKey() + "_stat_luck", PersistentDataType.INTEGER, false)
+		int luckstat = (DataHandler.hasTag(item, getKey() + "_stat_luck", PersistentDataType.INTEGER))
+				? DataHandler.getTag(item, getKey() + "_stat_luck", PersistentDataType.INTEGER)
 				: 0;
 		lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Auto-Smelt.Statistic_Used")
 				.replaceAll("%amount", String.valueOf(stat)));

@@ -80,9 +80,9 @@ public class ItemStatisticsCommand implements SubCommand {
 				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Modifiers"));
 
 				for (Modifier mod : modManager.getAllowedMods()) {
-					if (DataHandler.hasTag(stack, mod.getKey(), PersistentDataType.INTEGER, false)) {
+					if (DataHandler.hasTag(stack, mod.getKey(), PersistentDataType.INTEGER)) {
 						ChatWriter.sendMessage(sender, ChatColor.WHITE, mod.getColor() + mod.getName() + ChatColor.WHITE
-								+ " " + DataHandler.getTag(stack, mod.getKey(), PersistentDataType.INTEGER, false));
+								+ " " + DataHandler.getTag(stack, mod.getKey(), PersistentDataType.INTEGER));
 					}
 				}
 			}

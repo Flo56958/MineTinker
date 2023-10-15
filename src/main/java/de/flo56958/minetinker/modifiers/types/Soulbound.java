@@ -145,7 +145,7 @@ public class Soulbound extends Modifier implements Listener {
 					if (newLevel == 0) {
 						modManager.removeMod(itemStack, this);
 					} else {
-						DataHandler.setTag(itemStack, getKey(), modManager.getModLevel(itemStack, this) - 1, PersistentDataType.INTEGER, false);
+						DataHandler.setTag(itemStack, getKey(), modManager.getModLevel(itemStack, this) - 1, PersistentDataType.INTEGER);
 					}
 				}
 
