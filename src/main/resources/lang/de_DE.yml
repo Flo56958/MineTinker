@@ -313,6 +313,11 @@ Modifier:
     Description: "Mache mehr oder bekomme weniger Schaden (%amountmin% - %amountmax%) wenn der Mond scheint (abhängig vom Level und der Mondposition). Dieser Effekt ist invertiert am Tag und im Nether hat aber volle Stärke im Ende!"
     ModifierItemName: "Dunkler Tageslicht Detektor"
     DescriptionModifierItem: "Modifizierungs-Item für die Nachtsucher-Modifizierung"
+  Phasing:
+    Name: "Phasenveränderlich"
+    Description: "Pfeile können Wände durchdringen!"
+    ModifierItemName: "Phasenveränderliche Chorusfrucht"
+    DescriptionModifierItem: "Modifizierungs-Item für die Phasenveränderlich-Modifizierung"
   Photosynthesis:
     Name: "Photosynthese"
     Description: "Repariere dein Item im Sonnenlicht mit %amount Haltbarkeit pro Level jede %ticks Ticks. Je länger du in der Sonne bleibst desto schneller wird das Item repariert. (%multiplier%)"
