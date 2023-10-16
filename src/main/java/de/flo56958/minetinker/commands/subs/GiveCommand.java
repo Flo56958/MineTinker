@@ -83,10 +83,8 @@ public class GiveCommand implements SubCommand {
 	public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String[] args) {
 		List<String> result = new ArrayList<>();
 		switch (args.length) {
-			case 2 -> {
-				for (final Player player : Bukkit.getOnlinePlayers()) {
-					result.add(player.getName());
-				}
+			case 2:
+				result.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).toList());
 				result.add("@a");
 				result.add("@r");
 				if (sender instanceof Entity || sender instanceof BlockState) {
@@ -94,19 +92,14 @@ public class GiveCommand implements SubCommand {
 					result.add("@p");
 					result.add("@rw");
 				}
-			}
-			case 3 -> {
-				for (final ToolType type : ToolType.values()) {
-					for (final Material mat : type.getToolMaterials()) {
-						result.add(mat.toString());
-					}
-				}
+			case 3:
+				// rewrite this
+				result.addAll(ToolType.ALL.getToolMaterials().stream().map(Material::toString).toList());
 				if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("enabled")) {
 					for (final ItemStack wand : BuildersWandListener.getWands()) {
 						result.add(wand.getItemMeta().getDisplayName().replaceAll(" ", "_"));
 					}
 				}
-			}
 		}
 		return result;
 	}

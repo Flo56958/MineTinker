@@ -84,13 +84,13 @@ public class AutoSmelt extends Modifier implements Listener {
 		config.addDefault("MinimumToolLevelRequirement", 1);
 
 		config.addDefault("Recipe.Enabled", true);
-		config.addDefault("Recipe.Top", "CCC");
-		config.addDefault("Recipe.Middle", "CFC");
-		config.addDefault("Recipe.Bottom", "CCC");
+		config.addDefault("Recipe.Top", "FFF");
+		config.addDefault("Recipe.Middle", "FBF");
+		config.addDefault("Recipe.Bottom", "FFF");
 
 		Map<String, String> recipeMaterials = new HashMap<>();
-		recipeMaterials.put("C", Material.FURNACE.name());
-		recipeMaterials.put("F", Material.BLAZE_ROD.name());
+		recipeMaterials.put("F", Material.FURNACE.name());
+		recipeMaterials.put("B", Material.BLAZE_ROD.name());
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
 

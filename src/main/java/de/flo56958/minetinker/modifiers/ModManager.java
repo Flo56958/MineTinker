@@ -137,7 +137,6 @@ public class ModManager {
 		incompatibilityList.add(Phasing.instance().getKey() + ":" + Ender.instance().getKey());
 		incompatibilityList.add(Phasing.instance().getKey() + ":" + Magical.instance().getKey());
 		incompatibilityList.add(Phasing.instance().getKey() + ":" + Homing.instance().getKey());
-		incompatibilityList.add(Phasing.instance().getKey() + ":" + Magical.instance().getKey());
 
 		Plugin plugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
 		if (plugin != null && plugin.isEnabled())
@@ -936,9 +935,9 @@ public class ModManager {
 			}
 		}
 
-		AttributeModifier armorAM;
-		AttributeModifier toughnessAM;
-		AttributeModifier knockbackResAM;
+		AttributeModifier armorAM = null;
+		AttributeModifier toughnessAM = null;
+		AttributeModifier knockbackResAM = null;
 
 		if (ToolType.BOOTS.contains(is.getType())) {
 			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor,
@@ -968,19 +967,19 @@ public class ModManager {
 					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
 			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res,
 					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
-		} else return;
+		} else if (!ToolType.ELYTRA.contains(is.getType())) return;
 
-		if (armor > 0.0d) {
+		if (armor > 0.0d && armorAM != null) {
 			meta.removeAttributeModifier(Attribute.GENERIC_ARMOR);
 			meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
 		}
 
-		if (toughness > 0.0d) {
+		if (toughness > 0.0d && toughnessAM != null) {
 			meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);
 			meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
 		}
 
-		if (knockback_res > 0.0d) {
+		if (knockback_res > 0.0d && knockbackResAM != null) {
 			meta.removeAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
 			meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResAM);
 		}

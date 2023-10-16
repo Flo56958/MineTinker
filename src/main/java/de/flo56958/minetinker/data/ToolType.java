@@ -4,7 +4,10 @@ import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.HashSet;
 
 public enum ToolType {
 
@@ -30,49 +33,52 @@ public enum ToolType {
 	SWORD,
 	TRIDENT;
 
-	private static final EnumMap<ToolType, List<Material>> tools = new EnumMap<>(ToolType.class);
-	private static final HashSet<Material> toolMaterials = new HashSet<>();
+	private static final EnumMap<ToolType, HashSet<Material>> tools = new EnumMap<>(ToolType.class);
+
+	private static final EnumMap<Material, ToolType> materialMap = new EnumMap<>(Material.class);
 
 	static {
-		tools.put(ToolType.AXE, new ArrayList<>(Arrays.asList(Material.WOODEN_AXE, Material.STONE_AXE, Material.IRON_AXE,
+		tools.put(ToolType.AXE, new HashSet<>(Arrays.asList(Material.WOODEN_AXE, Material.STONE_AXE, Material.IRON_AXE,
 				Material.GOLDEN_AXE, Material.DIAMOND_AXE, Material.NETHERITE_AXE)));
-		tools.put(ToolType.BOOTS, new ArrayList<>(Arrays.asList(Material.LEATHER_BOOTS, Material.CHAINMAIL_BOOTS,
+		tools.put(ToolType.BOOTS, new HashSet<>(Arrays.asList(Material.LEATHER_BOOTS, Material.CHAINMAIL_BOOTS,
 				Material.IRON_BOOTS, Material.GOLDEN_BOOTS, Material.DIAMOND_BOOTS, Material.NETHERITE_BOOTS)));
-		tools.put(ToolType.BOW, new ArrayList<>(Collections.singletonList(Material.BOW)));
-		tools.put(ToolType.CHESTPLATE, new ArrayList<>(Arrays.asList(Material.LEATHER_CHESTPLATE, Material.CHAINMAIL_CHESTPLATE,
+		tools.put(ToolType.BOW, new HashSet<>(Collections.singletonList(Material.BOW)));
+		tools.put(ToolType.CHESTPLATE, new HashSet<>(Arrays.asList(Material.LEATHER_CHESTPLATE, Material.CHAINMAIL_CHESTPLATE,
 				Material.IRON_CHESTPLATE, Material.GOLDEN_CHESTPLATE, Material.DIAMOND_CHESTPLATE, Material.NETHERITE_CHESTPLATE)));
-		tools.put(ToolType.CROSSBOW, new ArrayList<>(Collections.singletonList(Material.CROSSBOW)));
-		tools.put(ToolType.ELYTRA, new ArrayList<>(Collections.singletonList(Material.ELYTRA)));
-		tools.put(ToolType.HELMET, new ArrayList<>(Arrays.asList(Material.LEATHER_HELMET, Material.CHAINMAIL_HELMET,
+		tools.put(ToolType.CROSSBOW, new HashSet<>(Collections.singletonList(Material.CROSSBOW)));
+		tools.put(ToolType.ELYTRA, new HashSet<>(Collections.singletonList(Material.ELYTRA)));
+		tools.put(ToolType.HELMET, new HashSet<>(Arrays.asList(Material.LEATHER_HELMET, Material.CHAINMAIL_HELMET,
 				Material.IRON_HELMET, Material.GOLDEN_HELMET, Material.DIAMOND_HELMET, Material.TURTLE_HELMET, Material.NETHERITE_HELMET)));
-		tools.put(ToolType.HOE, new ArrayList<>(Arrays.asList(Material.WOODEN_HOE, Material.STONE_HOE, Material.IRON_HOE,
+		tools.put(ToolType.HOE, new HashSet<>(Arrays.asList(Material.WOODEN_HOE, Material.STONE_HOE, Material.IRON_HOE,
 				Material.GOLDEN_HOE, Material.DIAMOND_HOE, Material.NETHERITE_HOE)));
-		tools.put(ToolType.LEGGINGS, new ArrayList<>(Arrays.asList(Material.LEATHER_LEGGINGS, Material.CHAINMAIL_LEGGINGS,
+		tools.put(ToolType.LEGGINGS, new HashSet<>(Arrays.asList(Material.LEATHER_LEGGINGS, Material.CHAINMAIL_LEGGINGS,
 				Material.IRON_LEGGINGS, Material.GOLDEN_LEGGINGS, Material.DIAMOND_LEGGINGS, Material.NETHERITE_LEGGINGS)));
-		tools.put(ToolType.PICKAXE, new ArrayList<>(Arrays.asList(Material.WOODEN_PICKAXE, Material.STONE_PICKAXE,
+		tools.put(ToolType.PICKAXE, new HashSet<>(Arrays.asList(Material.WOODEN_PICKAXE, Material.STONE_PICKAXE,
 				Material.IRON_PICKAXE, Material.GOLDEN_PICKAXE, Material.DIAMOND_PICKAXE, Material.NETHERITE_PICKAXE)));
-		tools.put(ToolType.FISHINGROD, new ArrayList<>(Collections.singletonList(Material.FISHING_ROD)));
-		tools.put(ToolType.SHIELD, new ArrayList<>(Collections.singletonList(Material.SHIELD)));
-		tools.put(ToolType.SHOVEL, new ArrayList<>(Arrays.asList(Material.WOODEN_SHOVEL, Material.STONE_SHOVEL,
+		tools.put(ToolType.FISHINGROD, new HashSet<>(Collections.singletonList(Material.FISHING_ROD)));
+		tools.put(ToolType.SHIELD, new HashSet<>(Collections.singletonList(Material.SHIELD)));
+		tools.put(ToolType.SHOVEL, new HashSet<>(Arrays.asList(Material.WOODEN_SHOVEL, Material.STONE_SHOVEL,
 				Material.IRON_SHOVEL, Material.GOLDEN_SHOVEL, Material.DIAMOND_SHOVEL, Material.NETHERITE_SHOVEL)));
-		tools.put(ToolType.SWORD, new ArrayList<>(Arrays.asList(Material.WOODEN_SWORD, Material.STONE_SWORD, Material.IRON_SWORD,
+		tools.put(ToolType.SWORD, new HashSet<>(Arrays.asList(Material.WOODEN_SWORD, Material.STONE_SWORD, Material.IRON_SWORD,
 				Material.GOLDEN_SWORD, Material.DIAMOND_SWORD, Material.NETHERITE_SWORD)));
-		tools.put(ToolType.TRIDENT, new ArrayList<>(Collections.singletonList(Material.TRIDENT)));
-		tools.put(ToolType.OTHER, new ArrayList<>(Arrays.asList(Material.FLINT_AND_STEEL, Material.CARROT_ON_A_STICK)));
-		tools.put(ToolType.SHEARS, new ArrayList<>(Collections.singletonList(Material.SHEARS)));
+		tools.put(ToolType.TRIDENT, new HashSet<>(Collections.singletonList(Material.TRIDENT)));
+		tools.put(ToolType.OTHER, new HashSet<>(Arrays.asList(Material.FLINT_AND_STEEL, Material.CARROT_ON_A_STICK)));
+		tools.put(ToolType.SHEARS, new HashSet<>(Collections.singletonList(Material.SHEARS)));
 		
-		tools.put(ToolType.INVALID, Collections.emptyList());
+		tools.put(ToolType.INVALID, new HashSet<>());
 
-		ToolType.getTools().values().forEach(toolMaterials::addAll);
+		HashSet<Material> all = new HashSet<>();
+		ToolType.tools.values().forEach(all::addAll);
+		ToolType.tools.forEach((type, materials) -> materials.forEach(material -> ToolType.materialMap.put(material, type)));
 
-		tools.put(ToolType.ARMOR, new ArrayList<>(ToolType.HELMET.getToolMaterials())); //as other lists are unmodifiable
+		tools.put(ToolType.ARMOR, new HashSet<>(ToolType.HELMET.getToolMaterials())); //as other lists are unmodifiable
 		tools.get(ToolType.ARMOR).addAll(ToolType.ELYTRA.getToolMaterials());
 		tools.get(ToolType.ARMOR).addAll(ToolType.CHESTPLATE.getToolMaterials());
 		tools.get(ToolType.ARMOR).addAll(ToolType.LEGGINGS.getToolMaterials());
 		tools.get(ToolType.ARMOR).addAll(ToolType.BOOTS.getToolMaterials());
 		tools.get(ToolType.ARMOR).addAll(ToolType.SHIELD.getToolMaterials());
 
-		tools.put(ToolType.TOOLS, new ArrayList<>(ToolType.SWORD.getToolMaterials()));
+		tools.put(ToolType.TOOLS, new HashSet<>(ToolType.SWORD.getToolMaterials()));
 		tools.get(ToolType.TOOLS).addAll(ToolType.SHEARS.getToolMaterials());
 		tools.get(ToolType.TOOLS).addAll(ToolType.PICKAXE.getToolMaterials());
 		tools.get(ToolType.TOOLS).addAll(ToolType.SHOVEL.getToolMaterials());
@@ -85,18 +91,14 @@ public enum ToolType {
 		tools.get(ToolType.TOOLS).addAll(ToolType.SHIELD.getToolMaterials());
 		tools.get(ToolType.TOOLS).addAll(ToolType.AXE.getToolMaterials());
 
-		tools.put(ToolType.ALL, new ArrayList<>(getAllToolMaterials()));
+		tools.put(ToolType.ALL, all);
 	}
 
-	private static @NotNull EnumMap<ToolType, List<Material>> getTools() {
+	private static @NotNull EnumMap<ToolType, HashSet<Material>> getTools() {
 		return tools;
 	}
 
-	public static @NotNull HashSet<Material> getAllToolMaterials() {
-		return toolMaterials;
-	}
-
-	public static boolean isMaterialCompatible(Material material) {
+	public static boolean isMaterialCompatible(final Material material) {
 		return ToolType.ALL.contains(material);
 	}
 
@@ -118,20 +120,10 @@ public enum ToolType {
 	 */
 	public static @NotNull ToolType get(@Nullable Material material) {
 		if (material == null) return ToolType.INVALID;
-		for (ToolType type : values()) {
-			if (type == ToolType.ALL || type == ToolType.TOOLS || type == ToolType.ARMOR || type == ToolType.INVALID) {
-				continue;
-			}
-
-			if (type.contains(material)) {
-				return type;
-			}
-		}
-
-		return ToolType.INVALID;
+		return materialMap.getOrDefault(material, INVALID);
 	}
 
-	public List<Material> getToolMaterials() {
+	public HashSet<Material> getToolMaterials() {
 		return getTools().get(this);
 	}
 

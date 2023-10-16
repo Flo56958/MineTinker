@@ -134,6 +134,10 @@ public class MultiShot extends Modifier implements Listener {
 		entity.setNoDamageTicks(0);
 		entity.setMaximumNoDamageTicks(0);
 		event.setCancelled(false);
+
+		Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
+			entity.setMaximumNoDamageTicks(20);
+			}, 20);
 	}
 
 	@EventHandler(ignoreCancelled = true)
