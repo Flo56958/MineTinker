@@ -135,8 +135,12 @@ public class Timber extends Modifier implements Listener {
 			if (Lists.getWoodLeaves().contains(block.getType())) {
 				HashSet<Location> locs = new HashSet<>();
 				locs.add(block.getLocation());
+
+				HashSet<Material> allowed = new HashSet<>();
+				allowed.add(block.getType());
+
 				Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(),
-						() -> breakTree(player, tool, block, new HashSet<>(Collections.singletonList(block.getType())), locs, null));
+						() -> breakTree(player, tool, block, allowed, locs, null));
 			}
 		} else {
 			HashSet<Material> allowed = new HashSet<>();
@@ -212,12 +216,11 @@ public class Timber extends Modifier implements Listener {
 
 	}
 
-	private void breakTree(@NotNull Player player, @NotNull ItemStack tool, Block block, HashSet<Material> allowed,
+	private void breakTree(@NotNull Player player, @NotNull ItemStack tool, @NotNull Block block, @NotNull HashSet<Material> allowed,
 						   @NotNull HashSet<Location> locs, @Nullable Material sapling) {
 		//TODO: Improve algorithm and performance
-		if (locs.size() >= maxBlocks) {
-			return;
-		}
+		if (locs.size() >= maxBlocks) return;
+
 		final int level = modManager.getModLevel(tool, this);
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dy = -1; dy <= 1; dy++) {
@@ -269,11 +272,7 @@ public class Timber extends Modifier implements Listener {
 					final Location loc = block.getLocation();
 					loc.add(dx, dy, dz);
 
-					if (locs.contains(loc)) {
-						continue;
-					}
-
-					locs.add(loc);
+					if (!locs.add(loc))	continue;
 
 					final Block toBreak = player.getWorld().getBlockAt(loc);
 					if (allowed.contains(toBreak.getType())) {

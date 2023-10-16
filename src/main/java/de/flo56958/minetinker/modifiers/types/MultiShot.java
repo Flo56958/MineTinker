@@ -135,9 +135,7 @@ public class MultiShot extends Modifier implements Listener {
 		entity.setMaximumNoDamageTicks(0);
 		event.setCancelled(false);
 
-		Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
-			entity.setMaximumNoDamageTicks(20);
-			}, 20);
+		Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> entity.setMaximumNoDamageTicks(20), 20);
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -168,9 +166,7 @@ public class MultiShot extends Modifier implements Listener {
 
 		int modLevel = modManager.getModLevel(tool, this);
 
-		if (modLevel <= 0) {
-			return;
-		}
+		if (modLevel <= 0) return;
 
 		Vector vel = arrow.getVelocity().clone();
 		Location loc = arrow.getLocation().clone();
