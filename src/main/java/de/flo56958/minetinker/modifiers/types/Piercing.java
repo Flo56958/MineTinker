@@ -33,9 +33,8 @@ public class Piercing extends Modifier implements Listener {
 
 	public static Piercing instance() {
 		synchronized (Piercing.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Piercing();
-			}
 		}
 
 		return instance;

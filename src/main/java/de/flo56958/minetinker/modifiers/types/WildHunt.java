@@ -129,17 +129,10 @@ public class WildHunt extends Modifier implements Listener {
 	public void effect(@NotNull MTEntityDeathEvent event) {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
-
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
-
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
 
 		final Random rand = new Random();
-
 		final List<Tupel> conv = conversions.get(event.getEvent().getEntity().getType());
 		if (conv == null) return;
 
@@ -150,14 +143,11 @@ public class WildHunt extends Modifier implements Listener {
 			if (loot == null || replaces == null) continue;
 
 			LinkedList<ItemStack> items = new LinkedList<>(drops);
-			items.removeIf(k -> k.getType() != replaces);
+			items.removeIf(k -> k == null || k.getType() != replaces);
 
 			if (items.isEmpty()) continue;
 
-			int amount = 0;
-			for (ItemStack item : items) {
-				amount += item.getAmount();
-			}
+			int amount = items.stream().mapToInt(ItemStack::getAmount).sum();
 			if (amount <= 0) continue;
 
 			int convertedAmount = 0;
@@ -211,11 +201,8 @@ public class WildHunt extends Modifier implements Listener {
 		static WildHunt.Tupel fromString(@NotNull String input) {
 			String[] tok = input.split(regex);
 			try {
-				if (tok.length == 2) {
-					return new Tupel(Material.valueOf(tok[0]), Material.valueOf(tok[1]));
-				} else {
-					return null;
-				}
+				if (tok.length == 2) return new Tupel(Material.valueOf(tok[0]), Material.valueOf(tok[1]));
+				else return null;
 			} catch (IllegalArgumentException e) {
 				return null;
 			}

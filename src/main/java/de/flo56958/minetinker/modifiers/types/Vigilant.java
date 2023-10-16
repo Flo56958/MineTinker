@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,9 +31,8 @@ public class Vigilant extends Modifier implements Listener {
 
 	public static Vigilant instance() {
 		synchronized (Vigilant.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Vigilant();
-			}
 		}
 
 		return instance;
@@ -95,16 +93,7 @@ public class Vigilant extends Modifier implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onDamage(@NotNull MTEntityDamageByEntityEvent event) {
 		// Player was damaged
-		if (event.getPlayer().equals(event.getEvent().getEntity())) {
+		if (event.getPlayer().equals(event.getEvent().getEntity()))
 			effect(event.getPlayer(), Math.max(0.0d, event.getEvent().getFinalDamage()));
-		}
-	}
-
-	@EventHandler(ignoreCancelled = true)
-	public void onEat(@NotNull PlayerItemConsumeEvent event) {
-		ItemStack item = event.getItem().clone();
-		if (item.hasItemMeta() && item.getItemMeta().hasCustomModelData() && item.getItemMeta().getCustomModelData() == this.customModelData) {
-			event.setCancelled(true);
-		}
 	}
 }

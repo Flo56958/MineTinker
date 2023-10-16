@@ -39,9 +39,8 @@ public class Tanky extends Modifier implements Listener {
 
 	public static Tanky instance() {
 		synchronized (Tanky.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Tanky();
-			}
 		}
 
 		return instance;
@@ -54,9 +53,8 @@ public class Tanky extends Modifier implements Listener {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		if (allowElytra) {
+		if (allowElytra)
 			return Arrays.asList(ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.ELYTRA);
-		}
 		return Arrays.asList(ToolType.CHESTPLATE, ToolType.LEGGINGS);
 	}
 
@@ -69,9 +67,7 @@ public class Tanky extends Modifier implements Listener {
 	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
 		ItemMeta meta = tool.getItemMeta();
 
-		if (meta == null) {
-			return false;
-		}
+		if (meta == null) return false;
 
 		//To check if armor modifiers are on the armor
 		Collection<AttributeModifier> attributeModifiers = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR);
@@ -86,21 +82,19 @@ public class Tanky extends Modifier implements Listener {
 		double healthOnItem = 0.0D;
 		if (!(healthModifiers == null || healthModifiers.isEmpty())) {
 			HashSet<String> names = new HashSet<>();
-			for (AttributeModifier am : healthModifiers) {
+			for (AttributeModifier am : healthModifiers)
 				if (names.add(am.getName())) healthOnItem += am.getAmount();
-			}
 		}
 		meta.removeAttributeModifier(Attribute.GENERIC_MAX_HEALTH);
 		modManager.addArmorAttributes(tool);
-		if (ToolType.LEGGINGS.contains(tool.getType())) {
+		if (ToolType.LEGGINGS.contains(tool.getType()))
 			meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(),
 					"generic.max_health", healthOnItem + this.healthPerLevel,
 					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
-		} else { //Chestplate and Elytra
+		else //Chestplate and Elytra
 			meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(),
 					"generic.max_health", healthOnItem + this.healthPerLevel,
 					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
-		}
 
 		tool.setItemMeta(meta);
 		return true;
@@ -168,12 +162,8 @@ public class Tanky extends Modifier implements Listener {
 				if (health != null) {
 					Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> event.getPlayer().setHealth(health), 10L);
 					DataHandler.removeTag(chest, "modifier_tanky_health_save");
-				} else {
-					return;
-				}
-			} else {
-				return;
-			}
+				} else return;
+			} else return;
 		}
 		ChatWriter.logModifier(event.getPlayer(), event, this, chest, String.format("ApplyHealth(%.2f -> %.2f)", event.getPlayer().getHealth(), health));
 	}

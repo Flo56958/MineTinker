@@ -41,9 +41,8 @@ public class Propelling extends CooldownModifier implements Listener {
 
 	public static Propelling instance() {
 		synchronized (Propelling.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Propelling();
-			}
 		}
 
 		return instance;
@@ -107,9 +106,9 @@ public class Propelling extends CooldownModifier implements Listener {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
-			if (ToolType.TRIDENT.contains(tool.getType())) {
+			if (ToolType.TRIDENT.contains(tool.getType()))
 				meta.addEnchant(Enchantment.RIPTIDE, modManager.getModLevel(tool, this), true);
-			} //Elytra does not get an enchantment
+			//Elytra does not get an enchantment
 
 			tool.setItemMeta(meta);
 		}
@@ -118,18 +117,17 @@ public class Propelling extends CooldownModifier implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void onElytraSneak(PlayerToggleSneakEvent event) {
-		Player player = event.getPlayer();
+	public void onElytraSneak(final PlayerToggleSneakEvent event) {
+		final Player player = event.getPlayer();
 
 		if (event.isSneaking()) return;
 		if (!player.isGliding()) return;
 		if (!player.hasPermission(getUsePermission())) return;
 
-		ItemStack elytra = player.getInventory().getChestplate();
+		final ItemStack elytra = player.getInventory().getChestplate();
 		if (elytra == null) return;
 		if (!(modManager.isArmorViable(elytra) && ToolType.ELYTRA.contains(elytra.getType()))) return;
 		if (!modManager.hasMod(elytra, this)) return;
-
 		if (onCooldown(player, elytra, true, event)) return;
 
 		int maxDamage = elytra.getType().getMaxDurability();
@@ -142,13 +140,11 @@ public class Propelling extends CooldownModifier implements Listener {
 
 			if (considerReinforced) {
 				int level = modManager.getModLevel(elytra, Reinforced.instance());
-				if (useLessDurability) {
+				if (useLessDurability)
 					loss = (int) Math.round(durabilityLoss * (1.0 / (level + 1)));
-				} else {
-					int durabilityChance = 60 + (40 / (level + 1));
-					if (new Random().nextInt(100) > durabilityChance) {
-						loss = 0;
-					}
+				else {
+					final int durabilityChance = 60 + (40 / (level + 1));
+					if (new Random().nextInt(100) > durabilityChance) loss = 0;
 				}
 			}
 
@@ -161,9 +157,9 @@ public class Propelling extends CooldownModifier implements Listener {
 			elytra.setItemMeta(meta);
 		}
 
-		int level = modManager.getModLevel(elytra, this);
-		Location loc = player.getLocation();
-		Vector dir = loc.getDirection().normalize();
+		final int level = modManager.getModLevel(elytra, this);
+		final Location loc = player.getLocation();
+		final Vector dir = loc.getDirection().normalize();
 
 		player.setVelocity(dir.multiply(1 + speedPerLevel * level).add(player.getVelocity().multiply(0.1f)));
 

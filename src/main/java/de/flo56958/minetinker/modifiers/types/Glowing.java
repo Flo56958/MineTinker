@@ -39,9 +39,8 @@ public class Glowing extends Modifier implements Listener {
 
 	public static Glowing instance() {
 		synchronized (Glowing.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Glowing();
-			}
 		}
 
 		return instance;
@@ -98,38 +97,25 @@ public class Glowing extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageByEntityEvent event) {
-		if (!(event.getEntity() instanceof LivingEntity entity)) {
-			return;
-		}
+		if (!(event.getEntity() instanceof LivingEntity entity)) return;
 
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
-
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
-
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
-
-		if (modManager.hasMod(tool, Shrouded.instance())) { //Should not trigger twice
-			return;
-		}
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
+		if (modManager.hasMod(tool, Shrouded.instance())) return; //Should not trigger twice
 
 		entity.addPotionEffect(getPotionEffect(event, entity, player, tool));
 	}
 
 	public PotionEffect getPotionEffect(@Nullable Event event, @Nullable Entity entity, @NotNull Player player, @NotNull ItemStack tool) {
-		int level = modManager.getModLevel(tool, this);
-		int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (level - 1)));
-		if (entity == null) {
+		final int level = modManager.getModLevel(tool, this);
+		final int duration = (int) (this.duration * Math.pow(this.durationMultiplier, (level - 1)));
+		if (entity == null)
 			ChatWriter.logModifier(player, event, this, tool, "Duration(" + duration + ")");
-		} else {
+		else
 			ChatWriter.logModifier(player, event, this, tool,
-					"Duration(" + duration + ")",
-					"Entity(" + entity.getType() + ")");
-		}
+					"Duration(" + duration + ")", "Entity(" + entity.getType() + ")");
 
 		return new PotionEffect(PotionEffectType.GLOWING, duration, 0, false, false);
 	}

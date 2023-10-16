@@ -36,9 +36,8 @@ public class Infinity extends Modifier implements Listener {
 
 	public static Infinity instance() {
 		synchronized (Infinity.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Infinity();
-			}
 		}
 
 		return instance;
@@ -86,11 +85,10 @@ public class Infinity extends Modifier implements Listener {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
-			if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType())) {
+			if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType()))
 				meta.addEnchant(Enchantment.ARROW_INFINITE, modManager.getModLevel(tool, this), true);
-			} else if (ToolType.TRIDENT.contains(tool.getType())) {
+			else if (ToolType.TRIDENT.contains(tool.getType()))
 				meta.addEnchant(Enchantment.LOYALTY, modManager.getModLevel(tool, this), true);
-			}
 
 			tool.setItemMeta(meta);
 		}
@@ -101,25 +99,22 @@ public class Infinity extends Modifier implements Listener {
 	public void onShoot(final MTProjectileLaunchEvent event) {
 		Projectile projectile = event.getEvent().getEntity();
 		if (!(projectile instanceof Arrow arrow)) return;
+		if (arrow.hasCustomEffects()) return;
+		if (arrow.getPickupStatus() == AbstractArrow.PickupStatus.CREATIVE_ONLY) return;
 
 		final Player player = event.getPlayer();
 		if (!player.hasPermission(getUsePermission())) return;
 		if (player.getGameMode() == GameMode.CREATIVE) return;
 
 		final ItemStack tool = event.getTool();
-
 		if (!modManager.hasMod(tool, this)) return;
 
-		if(!(arrow.hasCustomEffects())) {
-			if (arrow.getPickupStatus() != AbstractArrow.PickupStatus.CREATIVE_ONLY) {
-				if (!player.getInventory().addItem(new ItemStack(Material.ARROW, 1)).isEmpty()) { //adds items to (full) inventory
-					player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.ARROW, 1)); //drops item when inventory is full
-				} // no else as it gets added in if
+		if (!player.getInventory().addItem(new ItemStack(Material.ARROW, 1)).isEmpty()) { //adds items to (full) inventory
+			player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.ARROW, 1)); //drops item when inventory is full
+		} // no else as it gets added in if
 
-				arrow.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
-				ChatWriter.logModifier(player, event, this, tool);
-			}
-		}
+		arrow.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+		ChatWriter.logModifier(player, event, this, tool);
 	}
 }
 

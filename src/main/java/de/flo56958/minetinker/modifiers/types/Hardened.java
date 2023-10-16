@@ -32,9 +32,8 @@ public class Hardened extends Modifier implements Listener {
 
 	public static Hardened instance() {
 		synchronized (Hardened.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Hardened();
-			}
 		}
 
 		return instance;

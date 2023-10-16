@@ -41,9 +41,8 @@ public class Luck extends Modifier {
 
 	public static Luck instance() {
 		synchronized (Luck.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Luck();
-			}
 		}
 
 		return instance;
@@ -101,9 +100,8 @@ public class Luck extends Modifier {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
-			for (Enchantment enchantment : applicableEnchants.get(ToolType.get(tool.getType()))) {
+			for (final Enchantment enchantment : applicableEnchants.get(ToolType.get(tool.getType())))
 				meta.addEnchant(enchantment, modManager.getModLevel(tool, this), true);
-			}
 
 			tool.setItemMeta(meta);
 		}

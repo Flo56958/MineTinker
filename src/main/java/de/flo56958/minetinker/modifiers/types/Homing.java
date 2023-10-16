@@ -27,9 +27,8 @@ public class Homing extends Modifier implements Listener {
 
 	public static Homing instance() {
 		synchronized (Homing.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Homing();
-			}
 		}
 
 		return instance;
@@ -96,45 +95,33 @@ public class Homing extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onShoot(final MTProjectileLaunchEvent event) {
-		Projectile arrow = event.getEvent().getEntity();
-
-		if (!(arrow instanceof Arrow)) {
-			return;
-		}
+		final Projectile projectile = event.getEvent().getEntity();
+		if (!(projectile instanceof final Arrow arrow)) return;
 
 		final Player player = event.getPlayer();
-
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
 
 		final ItemStack tool = event.getTool();
+		if (!modManager.isToolViable(tool)) return;
 
-		if (!modManager.isToolViable(tool)) {
-			return;
-		}
+		final int modLevel = modManager.getModLevel(tool, this);
+		if (modLevel <= 0) return;
 
-		int modLevel = modManager.getModLevel(tool, this);
-
-		if (modLevel <= 0) {
-			return;
-		}
-
-		long start = System.currentTimeMillis();
-		double accuracy = modLevel * this.accuracy;
+		final long start = System.currentTimeMillis();
+		final double accuracy = modLevel * this.accuracy;
 		final Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
 				if (System.currentTimeMillis() - start > Homing.this.homingSeconds * 1000L) return;
-				if (((Arrow) arrow).isInBlock()) return;
+				if (arrow.isInBlock()) return;
 				if (arrow.isDead()) return;
 				if (arrow.getVelocity().length() <= 0.1) return;
 				if (arrow.getLastDamageCause() != null) return;
 
 				List<Entity> entities = arrow.getNearbyEntities(Homing.this.radius,Homing.this.radius,Homing.this.radius);
 				entities.sort(Comparator.comparing(e -> e.getLocation().distance(arrow.getLocation())));
-				for (var e : entities) {
-					if (arrow.getShooter().equals(e)) continue;
+				for (final Entity e : entities) {
+					if (e.equals(arrow.getShooter())) continue;
 					if (e instanceof Arrow) continue;
 					if (e instanceof Item) continue;
 					if (e instanceof ItemFrame) continue;
@@ -142,17 +129,12 @@ public class Homing extends Modifier implements Listener {
 					if (e instanceof Boat) continue;
 					if (e instanceof Painting) continue;
 					if (e instanceof Player && !Homing.this.worksOnPlayers) continue;
-
-					if (e instanceof LivingEntity liv) {
-						if (!liv.hasLineOfSight(arrow)) continue;
-					}
+					if (e instanceof LivingEntity liv && !liv.hasLineOfSight(arrow)) continue;
 
 					double velocity = arrow.getVelocity().length();
 					Vector vel = arrow.getVelocity().normalize();
 					Vector newVel = e.getLocation().toVector().subtract(arrow.getLocation().toVector()).normalize();
-					if (vel.dot(newVel) <= 0.0) {
-						continue;
-					}
+					if (vel.dot(newVel) <= 0.0) continue;
 					newVel = newVel.multiply(accuracy).add(vel.multiply(1 - accuracy));
 					newVel = newVel.normalize().multiply(velocity);
 

@@ -37,7 +37,7 @@ public abstract class CooldownModifier extends Modifier {
                                        final boolean sendAlert, @Nullable final Event event) {
         final long time = System.currentTimeMillis();
         final int level = modManager.getModLevel(tool, this);
-        long cooldownTime = getCooldownForLevel(level);
+        long cooldownTime = getCooldown(level);
         if (cooldownTime <= /* one tick in ms */ 1000 / 20) return false; // cooldown is disabled
         Long cd = DataHandler.getTag(tool, this.getKey() + "cooldown", PersistentDataType.LONG);
         if (cd == null) return false; // was never on cooldown
@@ -73,7 +73,7 @@ public abstract class CooldownModifier extends Modifier {
      * @param level the level of the modifier
      * @return the cooldown in ms
      */
-    protected final long getCooldownForLevel(final int level) {
+    protected final long getCooldown(final int level) {
         double cooldownTime = this.cooldownInSeconds * 1000L;
         if (this.cooldownReductionPerLevel > 1e-7) cooldownTime *= Math.pow(1.0 - this.cooldownReductionPerLevel, level - 1);
         return Math.round(cooldownTime);

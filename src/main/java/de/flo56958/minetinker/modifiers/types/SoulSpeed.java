@@ -29,9 +29,8 @@ public class SoulSpeed extends Modifier {
 
 	public static SoulSpeed instance() {
 		synchronized (SoulSpeed.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new SoulSpeed();
-			}
 		}
 
 		return instance;

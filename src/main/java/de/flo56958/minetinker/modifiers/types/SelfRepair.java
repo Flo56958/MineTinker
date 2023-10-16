@@ -36,9 +36,8 @@ public class SelfRepair extends Modifier implements Listener {
 
 	public static SelfRepair instance() {
 		synchronized (SelfRepair.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new SelfRepair();
-			}
 		}
 
 		return instance;
@@ -93,15 +92,14 @@ public class SelfRepair extends Modifier implements Listener {
 	}
 
 	@Override
-	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
-		ItemMeta meta = tool.getItemMeta();
+	public boolean applyMod(final Player player, final ItemStack tool, final boolean isCommand) {
+		final ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
-			if (useMending) {
+			if (useMending)
 				meta.addEnchant(Enchantment.MENDING, modManager.getModLevel(tool, this), true);
-			} else {
+			else
 				meta.removeEnchant(Enchantment.MENDING);
-			}
 		}
 		tool.setItemMeta(meta);
 		return true;
@@ -110,46 +108,34 @@ public class SelfRepair extends Modifier implements Listener {
 	//------------------------------------------------------
 
 	@EventHandler(ignoreCancelled = true)
-	public void effect(PlayerItemDamageEvent event) {
-		if (useMending) {
+	public void effect(@NotNull final PlayerItemDamageEvent event) {
+		if (useMending) return;
+
+		final ItemStack tool = event.getItem();
+		if (!modManager.isToolViable(tool) && !modManager.isArmorViable(tool)) return;
+		if (!event.getPlayer().hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
+
+		final int level = modManager.getModLevel(tool, this);
+		final Random rand = new Random();
+		final int n = rand.nextInt(100);
+		final int c = this.percentagePerLevel * level;
+
+		if (n > c) {
+			ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Chance(%d/%d)", n, c));
 			return;
 		}
 
-		ItemStack tool = event.getItem();
-		if (!modManager.isToolViable(tool) && !modManager.isArmorViable(tool)) {
-			return;
+		if (tool.getItemMeta() instanceof final Damageable damageable) {
+			int dura = damageable.getDamage();
+			int newDura = dura - this.healthRepair;
+
+			newDura = Math.max(0, newDura);
+			damageable.setDamage(newDura);
+
+			tool.setItemMeta(damageable);
+			ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Chance(%d/%d)", n, c),
+					String.format("Repair(%d -> %d)", dura, newDura));
 		}
-
-		if (!event.getPlayer().hasPermission(getUsePermission())) {
-			return;
-		}
-
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
-
-		int level = modManager.getModLevel(tool, this);
-		Random rand = new Random();
-		int n = rand.nextInt(100);
-		int c = this.percentagePerLevel * level;
-
-		if (n <= c) {
-			if (tool.getItemMeta() instanceof Damageable damageable) {
-				int dura = damageable.getDamage();
-				int newDura = dura - this.healthRepair;
-
-				if (newDura < 0) {
-					newDura = 0;
-				}
-
-				damageable.setDamage(newDura);
-
-				tool.setItemMeta(damageable);
-				ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Chance(%d/%d)", n, c),
-						String.format("Repair(%d -> %d)", dura, newDura));
-				return;
-			}
-		}
-		ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Chance(%d/%d)", n, c));
 	}
 }

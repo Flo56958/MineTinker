@@ -41,9 +41,8 @@ public class Shulking extends Modifier implements Listener {
 
 	public static Shulking instance() {
 		synchronized (Shulking.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Shulking();
-			}
 		}
 
 		return instance;
@@ -104,13 +103,9 @@ public class Shulking extends Modifier implements Listener {
 	public void onMove(@NotNull final EntityPotionEffectEvent event) {
 		if (!this.givesImmunity) return;
 
-		if (!(event.getEntity() instanceof final Player player)) {
-			return;
-		}
+		if (!(event.getEntity() instanceof final Player player)) return;
 
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
 
 		boolean hasShulking = false;
 		ItemStack armor = null;
@@ -134,24 +129,14 @@ public class Shulking extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(@NotNull final MTEntityDamageByEntityEvent event) {
-		if (!(event.getEntity() instanceof LivingEntity)) {
-			return;
-		}
+		if (!(event.getEntity() instanceof LivingEntity)) return;
 
 		final Player player = event.getPlayer();
 		final ItemStack tool = event.getTool();
 
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
-
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
-
-		if (modManager.hasMod(tool, Shrouded.instance())) { //Should not trigger twice
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
+		if (modManager.hasMod(tool, Shrouded.instance())) return; //Should not trigger twice
 
 		((LivingEntity) event.getEntity()).addPotionEffect(getPotionEffect(event, event.getEntity(), player, tool));
 	}

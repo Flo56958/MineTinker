@@ -46,9 +46,8 @@ public class Poisonous extends Modifier implements Listener {
 
 	public static Poisonous instance() {
 		synchronized (Poisonous.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Poisonous();
-			}
 		}
 
 		return instance;
@@ -103,41 +102,30 @@ public class Poisonous extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageByEntityEvent event) {
-		if (!(event.getEntity() instanceof LivingEntity)) {
-			return;
-		}
+		if (!(event.getEntity() instanceof LivingEntity)) return;
 
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
 
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
+		if (!modManager.hasMod(tool, this)) return;
 
-		if (modManager.hasMod(tool, Shrouded.instance())) { //Should not trigger twice
-			return;
-		}
+		if (modManager.hasMod(tool, Shrouded.instance())) return; //Should not trigger twice
 
 		((LivingEntity) event.getEntity()).addPotionEffect(getPotionEffect(event, event.getEntity(), player, tool));
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
-	public void onDamage(EntityDamageEvent event) {
+	public void onDamage(final EntityDamageEvent event) {
 		if (event.getCause() != EntityDamageEvent.DamageCause.POISON) return;
 		if (!(event.getEntity() instanceof Player player)) return;
 		if (!this.effectHealsPlayer) return;
-
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
 
 		boolean hasPoisonous = false;
 		ItemStack armor = null;
-		for (ItemStack stack : player.getInventory().getArmorContents()) {
+		for (final ItemStack stack : player.getInventory().getArmorContents()) {
 			if (stack == null) continue;
 			if (modManager.hasMod(stack, this)) {
 				hasPoisonous = true;
@@ -177,20 +165,14 @@ public class Poisonous extends Modifier implements Listener {
 
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event) {
-		if (!dropPoisonedMeat) {
-			return;
-		}
+		if (!dropPoisonedMeat) return;
 
 		LivingEntity mob = event.getEntity();
 		Player player = mob.getKiller();
 
-		if (player == null) {
-			return;
-		}
+		if (player == null) return;
 
-		if (Lists.WORLDS.contains(player.getWorld().getName())) {
-			return;
-		}
+		if (Lists.WORLDS.contains(player.getWorld().getName())) return;
 
 		boolean isPoisoned = false;
 
@@ -201,9 +183,7 @@ public class Poisonous extends Modifier implements Listener {
 			}
 		}
 
-		if (!isPoisoned) {
-			return;
-		}
+		if (!isPoisoned) return;
 
 		int numberOfMeat = 0;
 		int numberOfPotatoes = 0;

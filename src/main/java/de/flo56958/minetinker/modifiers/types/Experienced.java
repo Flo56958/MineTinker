@@ -37,9 +37,8 @@ public class Experienced extends Modifier implements Listener {
 
 	public static Experienced instance() {
 		synchronized (Experienced.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Experienced();
-			}
 		}
 
 		return instance;
@@ -105,7 +104,6 @@ public class Experienced extends Modifier implements Listener {
 				|| ToolType.LEGGINGS.contains(event.getTool().getType())
 				|| ToolType.CHESTPLATE.contains(event.getTool().getType())
 				|| ToolType.HELMET.contains(event.getTool().getType())) {
-
 			return; //Makes sure that armor does not get the double effect as it also gets the effect in EntityDamageEvent
 		}
 
@@ -122,21 +120,9 @@ public class Experienced extends Modifier implements Listener {
 		effect(event.getPlayer(), event.getTool(), event);
 	}
 
-	/**
-	 * The Effect of the modifier
-	 *
-	 * @param player    the Player
-	 * @param tool the Tool
-	 */
-	private void effect(Player player, ItemStack tool, Event event) {
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
-
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
-
+	private void effect(final Player player, final ItemStack tool, final Event event) {
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
 		int level = modManager.getModLevel(tool, this);
 
 		Random rand = new Random();

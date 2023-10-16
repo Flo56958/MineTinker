@@ -33,9 +33,8 @@ public class Knockback extends Modifier implements Listener {
 
 	public static Knockback instance() {
 		synchronized (Knockback.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Knockback();
-			}
 		}
 
 		return instance;
@@ -83,11 +82,10 @@ public class Knockback extends Modifier implements Listener {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
-			if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType()) || ToolType.TRIDENT.contains(tool.getType())) {
+			if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType()) || ToolType.TRIDENT.contains(tool.getType()))
 				meta.addEnchant(Enchantment.KNOCKBACK, modManager.getModLevel(tool, this), true);
-			} else if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType())) {
+			else if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType()))
 				meta.addEnchant(Enchantment.ARROW_KNOCKBACK, modManager.getModLevel(tool, this), true);
-			}
 			//Shields do not get the enchant
 
 			tool.setItemMeta(meta);
@@ -104,16 +102,15 @@ public class Knockback extends Modifier implements Listener {
 
 		if (!event.getPlayer().hasPermission(getUsePermission())) return;
 
-		ItemStack shield = event.getTool();
+		final ItemStack shield = event.getTool();
 		if (!ToolType.SHIELD.contains(shield.getType())) return; //Not the shield
-
 		int level = modManager.getModLevel(shield, this);
 		if (level <= 0) return;
 
 		//calculate vector
-		Vector vector = event.getEvent().getDamager().getLocation().subtract(event.getPlayer().getLocation()).toVector();
-		vector = vector.normalize().multiply(new Vector(1, 0, 1)).add(new Vector(0, 0.2, 0));
-		vector = vector.multiply(new Vector(level * 0.2, 1, level * 0.2));
+		final Vector vector = event.getEvent().getDamager().getLocation().subtract(event.getPlayer().getLocation()).toVector()
+				.normalize().multiply(new Vector(1, 0, 1)).add(new Vector(0, 0.2, 0))
+				.multiply(new Vector(level * 0.2, 1, level * 0.2));
 
 		event.getEntity().setVelocity(vector);
 		ChatWriter.logModifier(event.getPlayer(), event, this, shield,

@@ -38,9 +38,8 @@ public class VoidNetting extends CooldownModifier implements Listener {
 
 	public static VoidNetting instance() {
 		synchronized (VoidNetting.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new VoidNetting();
-			}
 		}
 
 		return instance;
@@ -102,7 +101,7 @@ public class VoidNetting extends CooldownModifier implements Listener {
 
 		this.description = this.description.replaceAll("%radius", String.valueOf(this.radiusPerLevel))
 				.replaceAll("%cmax", String.valueOf(this.cooldownInSeconds))
-				.replaceAll("%cmin", String.valueOf(this.getCooldownForLevel(this.getMaxLvl()) / 1000.0));
+				.replaceAll("%cmin", String.valueOf(this.getCooldown(this.getMaxLvl()) / 1000.0));
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
@@ -153,7 +152,7 @@ public class VoidNetting extends CooldownModifier implements Listener {
 					String.format("Location(%d/%d/%d -> %d/%d/%d)",
 							oldLoc.getBlockX(), oldLoc.getBlockY(), oldLoc.getBlockZ(),
 							loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()), String.format("Cooldown(%ds)",
-							this.getCooldownForLevel(level) / 1000));
+							this.getCooldown(level) / 1000));
 
 			Location finalLoc = loc;
 			Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> { //Teleport needs to be in sync

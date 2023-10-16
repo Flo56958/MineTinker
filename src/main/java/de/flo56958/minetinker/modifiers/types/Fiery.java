@@ -35,9 +35,8 @@ public class Fiery extends Modifier implements Listener {
 
 	public static Fiery instance() {
 		synchronized (Fiery.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Fiery();
-			}
 		}
 
 		return instance;
@@ -85,11 +84,10 @@ public class Fiery extends Modifier implements Listener {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
-			if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType())) {
+			if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType()))
 				meta.addEnchant(Enchantment.ARROW_FIRE, modManager.getModLevel(tool, this), true);
-			} else if (ToolType.SWORD.contains(tool.getType()) || ToolType.AXE.contains(tool.getType())) {
+			else if (ToolType.SWORD.contains(tool.getType()) || ToolType.AXE.contains(tool.getType()))
 				meta.addEnchant(Enchantment.FIRE_ASPECT, modManager.getModLevel(tool, this), true);
-			}
 
 			tool.setItemMeta(meta);
 		}
@@ -99,7 +97,7 @@ public class Fiery extends Modifier implements Listener {
 
 	@EventHandler
 	public void onShoot(final MTProjectileLaunchEvent event) {
-		Projectile arrow = event.getEvent().getEntity();
+		final Projectile arrow = event.getEvent().getEntity();
 		if (!(arrow instanceof Arrow)) return;
 
 		final Player player = event.getPlayer();
@@ -120,9 +118,10 @@ public class Fiery extends Modifier implements Listener {
 		if (projectile.getFireTicks() <= 0) return; // not a flame arrow anymore
 		if (!event.getPlayer().hasPermission(getUsePermission())) return;
 
-		int fireticks = event.getEntity().getFireTicks();
-		int addedFT = 100 * modManager.getModLevel(tool, this); //Flame adds 100 Ticks; Fire aspect multiplies that by the level
+		final int fireticks = event.getEntity().getFireTicks();
+		final int addedFT = 100 * modManager.getModLevel(tool, this); //Flame adds 100 Ticks; Fire aspect multiplies that by the level
 		event.getEntity().setFireTicks(Math.max(fireticks, addedFT));
-		ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("FireTicks(%d -> %d)", fireticks, Math.max(fireticks, addedFT)));
+		ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("FireTicks(%d -> %d)",
+				fireticks, Math.max(fireticks, addedFT)));
 	}
 }

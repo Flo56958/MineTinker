@@ -26,9 +26,8 @@ public class Thorned extends Modifier {
 
 	public static Thorned instance() {
 		synchronized (Thorned.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Thorned();
-			}
 		}
 
 		return instance;
@@ -87,7 +86,6 @@ public class Thorned extends Modifier {
 
 		if (meta != null) {
 			meta.addEnchant(Enchantment.THORNS, modManager.getModLevel(tool, this), true);
-
 			tool.setItemMeta(meta);
 		}
 

@@ -44,9 +44,8 @@ public class Withered extends Modifier implements Listener {
 
 	public static Withered instance() {
 		synchronized (Withered.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Withered();
-			}
 		}
 
 		return instance;
@@ -108,24 +107,13 @@ public class Withered extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageByEntityEvent event) {
-		if (!(event.getEntity() instanceof LivingEntity entity)) {
-			return;
-		}
+		if (!(event.getEntity() instanceof LivingEntity entity)) return;
 
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
-
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
-
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
-
-		if (modManager.hasMod(tool, Shrouded.instance())) { //Should not trigger twice
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
+		if (modManager.hasMod(tool, Shrouded.instance())) return; //Should not trigger twice
 
 		entity.addPotionEffect(getPotionEffect(event, event.getEntity(), player, tool));
 	}
@@ -136,9 +124,7 @@ public class Withered extends Modifier implements Listener {
 		if (!(event.getEntity() instanceof Player player)) return;
 		if (!this.effectHealsPlayer) return;
 
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
 
 		boolean hasWither = false;
 		ItemStack armor = null;

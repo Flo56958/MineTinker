@@ -38,9 +38,8 @@ public class Shrouded extends Modifier implements Listener {
 
 	public static Shrouded instance() {
 		synchronized (Shrouded.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Shrouded();
-			}
 		}
 
 		return instance;
@@ -108,12 +107,8 @@ public class Shrouded extends Modifier implements Listener {
 	}
 
 	private void effect(Event event, Player player, ItemStack tool, Location location) {
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
 
 		int level = modManager.getModLevel(tool, this);
 

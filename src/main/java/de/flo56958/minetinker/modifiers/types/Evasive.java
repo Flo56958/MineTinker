@@ -34,9 +34,8 @@ public class Evasive extends CooldownModifier implements Listener {
 
 	public static Evasive instance() {
 		synchronized (Evasive.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Evasive();
-			}
 		}
 
 		return instance;
@@ -139,7 +138,6 @@ public class Evasive extends CooldownModifier implements Listener {
 		chanceCalculation += ")";
 
 		int c = rand.nextInt(100);
-
 		if (c > chance) {
 			ChatWriter.logModifier(player, event, this, tool, chanceCalculation, "Failed(" + c + "/" + chance + ")");
 			return;

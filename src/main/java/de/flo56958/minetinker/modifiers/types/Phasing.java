@@ -38,9 +38,8 @@ public class Phasing extends Modifier implements Listener {
 
 	public static Phasing instance() {
 		synchronized (Phasing.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Phasing();
-			}
 		}
 
 		return instance;

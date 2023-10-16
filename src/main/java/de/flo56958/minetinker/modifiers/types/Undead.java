@@ -31,9 +31,8 @@ public class Undead extends Modifier implements Listener {
 
 	public static Undead instance() {
 		synchronized (Undead.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Undead();
-			}
 		}
 
 		return instance;

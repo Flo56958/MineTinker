@@ -32,9 +32,8 @@ public class Reinforced extends Modifier {
 
 	public static Reinforced instance() {
 		synchronized (Reinforced.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Reinforced();
-			}
 		}
 
 		return instance;
@@ -77,7 +76,7 @@ public class Reinforced extends Modifier {
 		config.addDefault("Recipe.Middle", "ODO");
 		config.addDefault("Recipe.Bottom", "IOI");
 
-		Map<String, String> recipeMaterials = new HashMap<>();
+		final Map<String, String> recipeMaterials = new HashMap<>();
 		recipeMaterials.put("O", Material.OBSIDIAN.name());
 		recipeMaterials.put("I", Material.IRON_INGOT.name());
 		recipeMaterials.put("D", Material.DIAMOND.name());
@@ -94,8 +93,8 @@ public class Reinforced extends Modifier {
 	}
 
 	@Override
-	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
-		ItemMeta meta = tool.getItemMeta();
+	public boolean applyMod(final Player player, final ItemStack tool, final boolean isCommand) {
+		final ItemMeta meta = tool.getItemMeta();
 		if (meta == null) return false;
 
 		meta.addEnchant(Enchantment.DURABILITY, modManager.getModLevel(tool, this), true);
@@ -108,7 +107,7 @@ public class Reinforced extends Modifier {
 
 	@Override
 	public void removeMod(ItemStack tool) {
-		ItemMeta meta = tool.getItemMeta();
+		final ItemMeta meta = tool.getItemMeta();
 
 		if (meta == null) return;
 

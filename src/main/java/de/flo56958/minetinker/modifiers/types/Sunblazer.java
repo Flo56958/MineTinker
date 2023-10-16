@@ -35,9 +35,8 @@ public class Sunblazer extends Modifier implements Listener {
 
 	public static Sunblazer instance() {
 		synchronized (Sunblazer.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Sunblazer();
-			}
 		}
 
 		return instance;
@@ -50,7 +49,8 @@ public class Sunblazer extends Modifier implements Listener {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.SWORD, ToolType.AXE, ToolType.TRIDENT, ToolType.ELYTRA, ToolType.BOOTS, ToolType.CHESTPLATE, ToolType.CROSSBOW, ToolType.BOW, ToolType.HELMET, ToolType.LEGGINGS);
+		return Arrays.asList(ToolType.SWORD, ToolType.AXE, ToolType.TRIDENT, ToolType.ELYTRA, ToolType.BOOTS,
+				ToolType.CHESTPLATE, ToolType.CROSSBOW, ToolType.BOW, ToolType.HELMET, ToolType.LEGGINGS);
 	}
 
 	@Override
@@ -106,9 +106,7 @@ public class Sunblazer extends Modifier implements Listener {
 	}
 
 	private void effect(Event e, EntityDamageEvent event, ItemStack tool, Player player) {
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
 
 		int level = modManager.getModLevel(tool, this);
 		if (level <= 0) return;
@@ -117,16 +115,15 @@ public class Sunblazer extends Modifier implements Listener {
 		long worldtime = player.getWorld().getTime() / 1000;
 		double daytimeMultiplier;
 		if (player.getWorld().getEnvironment() == World.Environment.NORMAL) {
-			if (worldtime >= 12) { //value range: -1.0 - 1.0
+			if (worldtime >= 12) //value range: [-1.0; 1.0]
 				daytimeMultiplier = -(6 - Math.abs(18 - worldtime)) / 6.0;
-			} else {
+			else
 				daytimeMultiplier = (6 - Math.abs(6 - worldtime)) / 6.0;
-			}
-		} else if (player.getWorld().getEnvironment() == World.Environment.NETHER) {
+		} else if (player.getWorld().getEnvironment() == World.Environment.NETHER)
 			daytimeMultiplier = 1.0;
-		} else if (player.getWorld().getEnvironment() == World.Environment.THE_END) {
+		else if (player.getWorld().getEnvironment() == World.Environment.THE_END)
 			daytimeMultiplier = -1.0;
-		} else return;
+		else return;
 
 		final double oldDamage = event.getDamage();
 

@@ -46,9 +46,8 @@ public class Ender extends Modifier implements Listener {
 
 	public static Ender instance() {
 		synchronized (Ender.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Ender();
-			}
 		}
 
 		return instance;
@@ -114,23 +113,12 @@ public class Ender extends Modifier implements Listener {
 	public void effect(EntityShootBowEvent event) {
 		Entity arrow = event.getProjectile();
 		if (!(arrow instanceof Arrow)) return;
-		if (!(event.getEntity() instanceof Player player)) {
-			return;
-		}
+		if (!(event.getEntity() instanceof Player player)) return;
 
 		ItemStack tool = event.getBow();
-
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
-
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
-
-		if (this.requireSneaking && !player.isSneaking()) {
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
+		if (this.requireSneaking && !player.isSneaking()) return;
 
 		arrow.setMetadata(this.getKey(),
 				new FixedMetadataValue(this.getSource(), 0));
@@ -139,23 +127,15 @@ public class Ender extends Modifier implements Listener {
 	// for tridents
 	@EventHandler(ignoreCancelled = true)
 	public void effect(final MTProjectileLaunchEvent event) {
-		Projectile trident = event.getEvent().getEntity();
+		final Projectile trident = event.getEvent().getEntity();
 		if (!(trident instanceof Trident)) return;
 
 		final Player player = event.getPlayer();
 		final ItemStack tool = ((Trident) trident).getItem();
 
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
-
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
-
-		if (this.requireSneaking && !player.isSneaking()) {
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
+		if (this.requireSneaking && !player.isSneaking()) return;
 
 		trident.setMetadata(this.getKey(),
 				new FixedMetadataValue(this.getSource(), 0));
@@ -168,25 +148,21 @@ public class Ender extends Modifier implements Listener {
 	 */
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTProjectileHitEvent event) {
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
-		Projectile arrow = event.getEvent().getEntity();
-		List<MetadataValue> activated = arrow.getMetadata(this.getKey());
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
+		final Projectile arrow = event.getEvent().getEntity();
+		final List<MetadataValue> activated = arrow.getMetadata(this.getKey());
 		if (activated.isEmpty()) return;
+		if (!player.hasPermission(getUsePermission())) return;
 
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
-
-		Location loc = event.getEvent().getEntity().getLocation().clone(); //Location of the Arrow
-		Location oldLoc = player.getLocation();
+		final Location loc = event.getEvent().getEntity().getLocation().clone(); //Location of the Arrow
+		final Location oldLoc = player.getLocation();
 
 		player.teleport(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(),
 				player.getLocation().getYaw(), player.getLocation().getPitch()).add(0, 1, 0));
 
-		if (this.hasSound) {
+		if (this.hasSound)
 			player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 0.3F);
-		}
 
 		//Track stats
 		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER))
@@ -228,29 +204,16 @@ public class Ender extends Modifier implements Listener {
 		Entity entity = event.getEvent().getEntity();
 
 		//The Damage cause was not the arrow and therefore Ender should not be triggered
-		if (!event.getEvent().getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)) {
-			return;
-		}
+		if (!event.getEvent().getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)) return;
+		if (player.equals(event.getEvent().getEntity())) return;
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!(event.getEvent().getDamager() instanceof Arrow arrow)) return;
 
-		if (player.equals(event.getEvent().getEntity())) {
-			return;
-		}
-
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
-
-		if (!(event.getEvent().getDamager() instanceof Arrow arrow)) {
-			return;
-		}
-
-		ItemStack tool = event.getTool();
-		List<MetadataValue> activated = arrow.getMetadata(this.getKey());
+		final ItemStack tool = event.getTool();
+		final List<MetadataValue> activated = arrow.getMetadata(this.getKey());
 		if (activated.isEmpty()) return;
 
-		if (modManager.getModLevel(tool, this) < 2) {
-			return;
-		}
+		if (modManager.getModLevel(tool, this) < 2) return; //Level 2 is required for this effect
 
 		if (entity instanceof Player) {
 			//Save Players from getting teleported
@@ -261,8 +224,8 @@ public class Ender extends Modifier implements Listener {
 			}
 		}
 
-		Location loc = entity.getLocation().clone();
-		Location oldLoc = player.getLocation();
+		final Location loc = entity.getLocation().clone();
+		final Location oldLoc = player.getLocation();
 		entity.teleport(oldLoc);
 
 		spawnParticles(player, loc);

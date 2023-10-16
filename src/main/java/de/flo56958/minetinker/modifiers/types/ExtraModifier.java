@@ -29,9 +29,8 @@ public class ExtraModifier extends Modifier {
 
 	public static ExtraModifier instance() {
 		synchronized (ExtraModifier.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new ExtraModifier();
-			}
 		}
 
 		return instance;
@@ -103,9 +102,7 @@ public class ExtraModifier extends Modifier {
 		}
 
 		int amount = slotsRemaining + gain;
-
 		modManager.setFreeSlots(tool, amount);
-
 		return true;
 	}
 }

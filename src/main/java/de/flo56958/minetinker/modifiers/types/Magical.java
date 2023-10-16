@@ -44,9 +44,8 @@ public class Magical extends Modifier implements Listener {
 
 	public static Magical instance() {
 		synchronized (Magical.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Magical();
-			}
 		}
 
 		return instance;
@@ -111,17 +110,15 @@ public class Magical extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onShoot(final MTProjectileLaunchEvent event) {
-		Projectile arrow = event.getEvent().getEntity();
-		if (!(arrow instanceof Arrow)) return;
+		final Projectile projectile = event.getEvent().getEntity();
+		if (!(projectile instanceof Arrow arrow)) return;
 
 		final Player player = event.getPlayer();
 		if (!player.hasPermission(getUsePermission())) return;
 
 		final ItemStack tool = event.getTool();
-
 		if (!modManager.isToolViable(tool)) return;
-
-		int modLevel = modManager.getModLevel(tool, this);
+		final int modLevel = modManager.getModLevel(tool, this);
 		if (modLevel <= 0) return;
 
 		if (player.getGameMode() != GameMode.CREATIVE) {
@@ -133,14 +130,14 @@ public class Magical extends Modifier implements Listener {
 			player.giveExp(-this.experienceCost);
 		}
 
-		((Arrow) arrow).setColor(Color.PURPLE);
-		((Arrow) arrow).setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+		arrow.setColor(Color.PURPLE);
+		arrow.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
 		arrow.setGravity(false);
 		//arrow.setGlowing(true);
 
 		final Vector velocity = arrow.getVelocity().multiply(this.multiplierArrowSpeed).clone();
 		arrow.setVelocity(velocity.clone());
-		((Arrow) arrow).setDamage(((Arrow) arrow).getDamage() * Math.pow(this.multiplierDamagePerLevel, modLevel));
+		arrow.setDamage(arrow.getDamage() * Math.pow(this.multiplierDamagePerLevel, modLevel));
 
 		ChatWriter.logModifier(player, event, this, tool, "Cost(" + this.experienceCost + ")");
 
@@ -163,9 +160,8 @@ public class Magical extends Modifier implements Listener {
 		double oldDamage = event.getEvent().getDamage() / this.multiplierArrowSpeed;
 		double newDamage = oldDamage * Math.pow(this.multiplierDamagePerLevel, modLevel);
 		event.getEvent().setDamage(newDamage);
-		ChatWriter.logModifier(event.getPlayer(), event, this, event.getTool(), String.format("Damage(%.2f -> %.2f [%.4f])", oldDamage, newDamage, newDamage/oldDamage));
-		if (this.hasKnockback) {
-			event.getEntity().setVelocity(arrow.getVelocity().normalize().multiply(modLevel));
-		}
+		ChatWriter.logModifier(event.getPlayer(), event, this, event.getTool(),
+				String.format("Damage(%.2f -> %.2f [%.4f])", oldDamage, newDamage, newDamage/oldDamage));
+		if (this.hasKnockback) event.getEntity().setVelocity(arrow.getVelocity().normalize().multiply(modLevel));
 	}
 }

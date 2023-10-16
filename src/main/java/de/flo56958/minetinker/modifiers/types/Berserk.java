@@ -39,9 +39,8 @@ public class Berserk extends Modifier implements Listener {
 
 	public static Berserk instance() {
 		synchronized (Berserk.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Berserk();
-			}
 		}
 
 		return instance;
@@ -99,34 +98,21 @@ public class Berserk extends Modifier implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onHit(@NotNull EntityDamageEvent event) {
-		if (!(event.getEntity() instanceof Player player)) {
-			return;
-		}
-
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
+		if (!(event.getEntity() instanceof Player player)) return;
+		if (!player.hasPermission(getUsePermission())) return;
 
 		final ItemStack chest = player.getInventory().getChestplate();
-
-		if (!modManager.isArmorViable(chest)) {
-			return;
-		}
+		if (!modManager.isArmorViable(chest)) return;
 
 		int modifierLevel = modManager.getModLevel(chest, this);
 
-		if (modifierLevel <= 0) {
-			return;
-		}
+		if (modifierLevel <= 0) return;
 
 		final double lifeAfterDamage = player.getHealth() - event.getFinalDamage();
 		AttributeInstance healthAttr = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
 
 		double maxHealth = 20;
-
-		if (healthAttr != null) {
-			maxHealth = healthAttr.getValue();
-		}
+		if (healthAttr != null) maxHealth = healthAttr.getValue();
 
 		if (player.getHealth() / maxHealth > trigger / 100.0 && lifeAfterDamage / maxHealth <= trigger / 100.0) {
 			player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, boostTime,

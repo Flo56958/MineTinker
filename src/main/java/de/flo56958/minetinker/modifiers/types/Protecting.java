@@ -26,9 +26,8 @@ public class Protecting extends Modifier {
 
 	public static Protecting instance() {
 		synchronized (Protecting.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Protecting();
-			}
 		}
 
 		return instance;
@@ -88,7 +87,6 @@ public class Protecting extends Modifier {
 
 		if (meta != null) {
 			meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, modManager.getModLevel(tool, this), true);
-
 			tool.setItemMeta(meta);
 		}
 

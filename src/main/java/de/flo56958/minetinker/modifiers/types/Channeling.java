@@ -35,9 +35,8 @@ public class Channeling extends Modifier implements Listener {
 
 	public static Channeling instance() {
 		synchronized (Channeling.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Channeling();
-			}
 		}
 
 		return instance;
@@ -103,9 +102,8 @@ public class Channeling extends Modifier implements Listener {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
-			if (ToolType.TRIDENT.contains(tool.getType())) {
+			if (ToolType.TRIDENT.contains(tool.getType()))
 				meta.addEnchant(Enchantment.CHANNELING, modManager.getModLevel(tool, this), true);
-			}
 
 			tool.setItemMeta(meta);
 		}
@@ -118,29 +116,27 @@ public class Channeling extends Modifier implements Listener {
 		final ItemStack tool = event.getTool();
 		if (!event.getPlayer().hasPermission(getUsePermission())) return;
 		if (event.getEvent().getHitEntity() != null) return;
+		if (!modManager.hasMod(tool, this)) return;
+		if (new Random().nextInt(100) >= modManager.getModLevel(tool, this) * chancePerLevel) return;
 
-		if (modManager.hasMod(tool, this)) {
-			if (new Random().nextInt(100) < modManager.getModLevel(tool, this) * chancePerLevel) {
-				final Location loc = event.getEvent().getEntity().getLocation();
-				if (!loc.getWorld().hasStorm() && worksOnlyInStorms) return;
-				loc.getWorld().strikeLightning(loc);
-				ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Location: %d/%d/%d", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
-			}
-		}
+		final Location loc = event.getEvent().getEntity().getLocation();
+		if (!loc.getWorld().hasStorm() && worksOnlyInStorms) return;
+		loc.getWorld().strikeLightning(loc);
+		ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Location: %d/%d/%d",
+				loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
 	}
 
 	@EventHandler(ignoreCancelled = true)
 	private void onEntityHit(@NotNull final MTEntityDamageByEntityEvent event) {
 		final ItemStack tool = event.getTool();
 		if (!event.getPlayer().hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
+		if (new Random().nextInt(100) >= modManager.getModLevel(tool, this) * chancePerLevel) return;
 
-		if (modManager.hasMod(tool, this)) {
-			if (new Random().nextInt(100) < modManager.getModLevel(tool, this) * chancePerLevel) {
-				final Location loc = event.getEntity().getLocation();
-				if (!loc.getWorld().hasStorm() && worksOnlyInStorms) return;
-				loc.getWorld().strikeLightning(loc);
-				ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Location: %d/%d/%d", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
-			}
-		}
+		final Location loc = event.getEntity().getLocation();
+		if (!loc.getWorld().hasStorm() && worksOnlyInStorms) return;
+		loc.getWorld().strikeLightning(loc);
+		ChatWriter.logModifier(event.getPlayer(), event, this, tool, String.format("Location: %d/%d/%d",
+				loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
 	}
 }

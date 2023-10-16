@@ -28,7 +28,7 @@ public class Drilling extends Modifier implements Listener {
 
 	public static final ConcurrentHashMap<Location, Integer> events = new ConcurrentHashMap<>();
 	private static Drilling instance;
-	private ArrayList<Material> blacklist;
+	private HashSet<Material> blacklist;
 	private boolean treatAsWhitelist;
 	private boolean toggleable;
 
@@ -106,50 +106,25 @@ public class Drilling extends Modifier implements Listener {
 		this.toggleable = config.getBoolean("Toggleable", true);
 		this.treatAsWhitelist = config.getBoolean("TreatAsWhitelist", false);
 
-		blacklist = new ArrayList<>();
+		blacklist.clear();
 
-		List<String> blacklistConfig = config.getStringList("Blacklist");
-
-		for (String mat : blacklistConfig) {
-			try {
-				Material material = Material.valueOf(mat);
-
-				if (blacklist == null) {
-					continue;
-				}
-
-				blacklist.add(material);
-			} catch (IllegalArgumentException e) {
-				MineTinker.getPlugin().getLogger()
-						.warning("Illegal material name found when loading Drilling blacklist: " + mat);
-			}
-		}
+		final List<String> blacklistConfig = config.getStringList("Blacklist");
+		blacklist.addAll(blacklistConfig.stream().map(Material::getMaterial).toList());
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public boolean canUseDrilling(Player player, ItemStack tool, Location loc) {
-		if (!player.hasPermission(getUsePermission())) {
-			return false;
-		}
-
-		if (events.remove(loc, 0)) {
-			return false;
-		}
-
-		if (toggleable) {
-			if (player.isSneaking()) {
-				return false;
-			}
-		}
+		if (!player.hasPermission(getUsePermission())) return false;
+		if (events.remove(loc, 0)) return false;
+		if (toggleable && player.isSneaking()) return false;
 
 		return modManager.hasMod(tool, this);
 	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(WorldSaveEvent e) {
-		if (Bukkit.getOnlinePlayers().isEmpty()) {
+		if (Bukkit.getOnlinePlayers().isEmpty())
 			events.clear();
-		}
 	}
 
 	/**
@@ -159,13 +134,10 @@ public class Drilling extends Modifier implements Listener {
 	 */
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTBlockBreakEvent event) {
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
-		Block block = event.getBlock();
-
-		if (!canUseDrilling(player, tool, block.getLocation())) {
-			return;
-		}
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
+		final Block block = event.getBlock();
+		if (!canUseDrilling(player, tool, block.getLocation())) return;
 
 		final int level = modManager.getModLevel(tool, this);
 
@@ -179,7 +151,7 @@ public class Drilling extends Modifier implements Listener {
 
 		final float hardness = block.getType().getHardness();
 
-		BlockFace finalFace = face.getOppositeFace();
+		final BlockFace finalFace = face.getOppositeFace();
 		Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
 			for (int i = 1; i <= level; i++) {
 				if (!drillingBlockBreak(block.getRelative(finalFace, i),
@@ -193,17 +165,10 @@ public class Drilling extends Modifier implements Listener {
 	}
 
 	private boolean drillingBlockBreak(final Block block, final float centralBlockHardness, final Player player, final ItemStack tool) {
-		if (treatAsWhitelist ^ blacklist.contains(block.getType())) {
-			return false;
-		}
-
-		if (block.getDrops(player.getInventory().getItemInMainHand()).isEmpty()) {
-			return false;
-		}
-
-		if (block.getType().getHardness() > centralBlockHardness + 2) {
-			return false; //So Obsidian can not be mined using Cobblestone and Drilling
-		}
+		if (treatAsWhitelist ^ blacklist.contains(block.getType())) return false;
+		if (block.getDrops(player.getInventory().getItemInMainHand()).isEmpty()) return false;
+		//So Obsidian can not be mined using Cobblestone and Drilling
+		if (block.getType().getHardness() > centralBlockHardness + 2) return false;
 
 		try {
 			events.put(block.getLocation(), 0);

@@ -41,9 +41,8 @@ public class MultiJump extends Modifier implements Listener {
 
 	public static MultiJump instance() {
 		synchronized (MultiJump.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new MultiJump();
-			}
 		}
 
 		return instance;
@@ -94,9 +93,7 @@ public class MultiJump extends Modifier implements Listener {
 		//This can enable the player to jump more often than they are eligible to but reload() should not be called
 		//often
 		jumpcharge.clear();
-		for (Player p : allowFlight.keySet()) {
-			p.setAllowFlight(false);
-		}
+		allowFlight.keySet().forEach(p -> p.setAllowFlight(false));
 		allowFlight.clear();
 	}
 
@@ -124,20 +121,13 @@ public class MultiJump extends Modifier implements Listener {
 	public void onMove(@NotNull final PlayerMoveEvent e) {
 		final Player p = e.getPlayer();
 
-		if (p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR) {
-			return;
-		}
-
+		if (p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR) return;
 		// Player can normally fly -> Multijump not needed
-		if (p.getAllowFlight() && !allowFlight.containsKey(p)) {
-			return;
-		}
+		if (p.getAllowFlight() && !allowFlight.containsKey(p)) return;
 
 		// check if something got through and the player can still fly
 		long time = System.currentTimeMillis();
-		if (allowFlight.getOrDefault(p, time) - time <= -1000L)
-			disableFlight(p);
-
+		if (allowFlight.getOrDefault(p, time) - time <= -1000L) disableFlight(p);
 		if (p.isFlying()) return;
 
 		final ItemStack boots = p.getInventory().getBoots();
@@ -177,11 +167,10 @@ public class MultiJump extends Modifier implements Listener {
 			//FIXME: Find a better solution for MultiJump so it does not trigger AntiCheat or can easily exploited
 			else if (below.getType() == Material.CAVE_AIR || below.getType() == Material.AIR
 					|| below.getType() == Material.VOID_AIR) {
-				if(jumpcharge.get() < level) {
+				if(jumpcharge.get() < level)
 					enableFlight(p);
-				} else {
+				else
 					disableFlight(p);
-				}
 			}
 
 			//Disable when swimming
@@ -240,8 +229,7 @@ public class MultiJump extends Modifier implements Listener {
 		if (!modManager.isArmorViable(item)) return;
 		if (!modManager.hasMod(item, this)) return;
 		if (!(e.getWhoClicked() instanceof Player p)) return;
-		if (p.getGameMode() == GameMode.ADVENTURE || p.getGameMode() == GameMode.SURVIVAL) {
+		if (p.getGameMode() == GameMode.ADVENTURE || p.getGameMode() == GameMode.SURVIVAL)
 			disableFlight(p);
-		}
 	}
 }

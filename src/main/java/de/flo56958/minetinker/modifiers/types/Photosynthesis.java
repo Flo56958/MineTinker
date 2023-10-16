@@ -39,7 +39,7 @@ public class Photosynthesis extends Modifier implements Listener {
 	private boolean mustStandStill;
 	private boolean notifyWhenActive;
 
-	private final Set<Material> allowedMaterials = new HashSet<>();
+	private final HashSet<Material> allowedMaterials = new HashSet<>();
 
 	private final Runnable runnable = () -> {
 		for (final UUID id : data.keySet()) {
@@ -69,9 +69,7 @@ public class Photosynthesis extends Modifier implements Listener {
 			}
 			tupel.isAboveGround = isAboveGround;
 
-			if (tupel.loc == null) {
-				tupel.loc = pLoc;
-			}
+			if (tupel.loc == null) tupel.loc = pLoc;
 
 			if (isAboveGround) {
 				if (mustStandStill && !(player.getWorld().equals(tupel.loc.getWorld()) && pLoc.getX() == tupel.loc.getX()
@@ -104,10 +102,7 @@ public class Photosynthesis extends Modifier implements Listener {
 				final ItemStack[] items = new ItemStack[6];
 
 				int i = 0;
-				for (final ItemStack item : inv.getArmorContents()) {
-					items[i++] = item;
-				}
-
+				for (final ItemStack item : inv.getArmorContents()) items[i++] = item;
 				items[4] = inv.getItemInMainHand();
 				if (allowOffhand) items[5] = inv.getItemInOffHand();
 
@@ -177,9 +172,8 @@ public class Photosynthesis extends Modifier implements Listener {
 
 	public static Photosynthesis instance() {
 		synchronized (Photosynthesis.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Photosynthesis();
-			}
 		}
 
 		return instance;
@@ -197,9 +191,7 @@ public class Photosynthesis extends Modifier implements Listener {
 
 	@Override
 	public void reload() {
-		if (taskID != -1) {
-			Bukkit.getScheduler().cancelTask(taskID);
-		}
+		if (taskID != -1) Bukkit.getScheduler().cancelTask(taskID);
 
 		FileConfiguration config = getConfig();
 		config.options().copyDefaults(true);
@@ -250,29 +242,25 @@ public class Photosynthesis extends Modifier implements Listener {
 				.replace("%multiplier", String.valueOf(Math.round((multiplierPerTick - 1.0) * 100)));
 
 		allowedMaterials.clear();
-		for (final Material mat : Material.values()) {
-			if (mat.isAir() || !mat.isOccluding() || !mat.isSolid() ) {
-				allowedMaterials.add(mat);
-			}
-		}
+		allowedMaterials.addAll(Arrays.stream(Material.values())
+						.filter(mat -> mat.isAir() || !mat.isOccluding() || !mat.isSolid()).toList());
 
 		if (isAllowed()) {
 			data.clear();
 
-			for (final Player player : Bukkit.getOnlinePlayers()) {
+			for (final Player player : Bukkit.getOnlinePlayers())
 				data.putIfAbsent(player.getUniqueId(), new Tupel(player.getLocation(), System.currentTimeMillis(), false));
-			}
 			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MineTinker.getPlugin(), this.runnable, 5 * 20L, this.tickTime);
-		} else {
+		} else
 			this.taskID = -1;
-		}
 	}
 
 	//------------------------------------------------------
 
 	@EventHandler
 	public void onJoin(@NotNull final PlayerJoinEvent event) {
-		data.putIfAbsent(event.getPlayer().getUniqueId(), new Tupel(event.getPlayer().getLocation(), System.currentTimeMillis(), false));
+		data.putIfAbsent(event.getPlayer().getUniqueId(),
+				new Tupel(event.getPlayer().getLocation(), System.currentTimeMillis(), false));
 	}
 
 	@EventHandler

@@ -56,7 +56,8 @@ public abstract class Modifier {
 		this.source = source;
 	}
 
-	final boolean checkAndAdd(Player player, ItemStack tool, String permission, boolean isCommand, boolean fromRandom, boolean silent, boolean modifySlotCount) {
+	final boolean checkAndAdd(final Player player, final ItemStack tool, final boolean isCommand,
+							  final boolean fromRandom, final boolean silent, final boolean modifySlotCount) {
 		if (modifySlotCount) {
 			//Check for free Slots
 			if ((modManager.getFreeSlots(tool) < this.getSlotCost() && !this.equals(ExtraModifier.instance())) && !isCommand) {
@@ -188,7 +189,7 @@ public abstract class Modifier {
 	/**
 	 * changes the core settings of the Modifier (like a secondary constructor)
 	 */
-	protected final void init(@NotNull Material m) {
+	protected final void init(@NotNull final Material m) {
 		FileConfiguration config = getConfig();
 
 		try {
@@ -234,7 +235,7 @@ public abstract class Modifier {
 	 * @return true if successful
 	 * false if failure
 	 */
-	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
+	public boolean applyMod(final Player player, final ItemStack tool, final boolean isCommand) {
 		return true;
 	}
 
@@ -243,17 +244,15 @@ public abstract class Modifier {
 	 *
 	 * @param tool the Tool
 	 */
-	public void removeMod(ItemStack tool) {
+	public void removeMod(final ItemStack tool) {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
-			for (Enchantment enchantment : getAppliedEnchantments()) {
+			for (Enchantment enchantment : getAppliedEnchantments())
 				meta.removeEnchant(enchantment);
-			}
 
-			for (Attribute attribute : getAppliedAttributes()) {
+			for (Attribute attribute : getAppliedAttributes())
 				meta.removeAttributeModifier(attribute);
-			}
 
 			tool.setItemMeta(meta);
 		}
@@ -290,11 +289,10 @@ public abstract class Modifier {
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
-	protected final boolean isMaterialCompatible(@NotNull Material material) {
+	protected final boolean isMaterialCompatible(@NotNull final Material material) {
 		for (final ToolType toolType : getAllowedTools()) {
-			if (toolType.contains(material)) {
+			if (toolType.contains(material))
 				return true;
-			}
 		}
 
 		return false;
@@ -361,9 +359,8 @@ public abstract class Modifier {
 
 	@Contract(value = "null -> false", pure = true)
 	public final boolean equals(@Nullable Object o) {
-		if (o instanceof Modifier mod) {
+		if (o instanceof Modifier mod)
 			return mod.getKey().equals(this.getKey());
-		}
 		return false;
 	}
 
@@ -374,17 +371,13 @@ public abstract class Modifier {
 	 * @param item The item that will be enchanted
 	 */
 	public final void enchantItem(@NotNull Player player, @NotNull ItemStack item) {
-		if (!player.hasPermission(getCraftPermission())) {
-			return;
-		}
+		if (!player.hasPermission(getCraftPermission())) return;
 
 		final Location location = player.getLocation();
 		final World world = location.getWorld();
 		final PlayerInventory inventory = player.getInventory();
 
-		if (world == null) {
-			return;
-		}
+		if (world == null) return;
 
 		if (player.getGameMode() == GameMode.CREATIVE) {
 			if (!inventory.addItem(getModItem()).isEmpty()) { //adds items to (full) inventory

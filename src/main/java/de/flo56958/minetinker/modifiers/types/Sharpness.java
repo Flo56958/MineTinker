@@ -31,9 +31,8 @@ public class Sharpness extends Modifier {
 
 	public static Sharpness instance() {
 		synchronized (Sharpness.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Sharpness();
-			}
 		}
 
 		return instance;

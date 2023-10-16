@@ -29,9 +29,8 @@ public class SwiftSneaking extends Modifier {
 
 	public static SwiftSneaking instance() {
 		synchronized (SwiftSneaking.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new SwiftSneaking();
-			}
 		}
 
 		return instance;

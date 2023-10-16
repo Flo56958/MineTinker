@@ -41,9 +41,8 @@ public class Soulbound extends Modifier implements Listener {
 
 	public static Soulbound instance() {
 		synchronized (Soulbound.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Soulbound();
-			}
 		}
 
 		return instance;
@@ -100,34 +99,23 @@ public class Soulbound extends Modifier implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void effect(PlayerDeathEvent event) {
-		if (event.getKeepInventory()) {
-			return;
-		}
+		if (event.getKeepInventory()) return;
 
 		Player player = event.getEntity();
+		if (!player.hasPermission(getUsePermission())) return;
 		Inventory inventory = player.getInventory();
 		for (int index = 0; index < inventory.getContents().length; index++) {
 			ItemStack itemStack = inventory.getItem(index);
-			if (itemStack == null) {
-				continue; // More consistent nullability in NotNull fields
-			}
+			if (itemStack == null) continue; // More consistent nullability in NotNull fields
 
 			if (modManager.isArmorViable(itemStack) || modManager.isToolViable(itemStack) || modManager.isWandViable(itemStack)) {
-				if (!player.hasPermission(getUsePermission())) {
-					continue;
-				}
-
-				if (!modManager.hasMod(itemStack, this)) {
-					continue;
-				}
+				if (!modManager.hasMod(itemStack, this)) continue;
 
 				Random rand = new Random();
 				int n = rand.nextInt(100);
 				int c = modManager.getModLevel(itemStack, this) * percentagePerLevel;
 				ChatWriter.logModifier(player, event, this, itemStack, String.format("Chance(%d/%d)", n, c));
-				if (n > c) {
-					continue;
-				}
+				if (n > c) continue;
 
 				storedItemStacks.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>()); // ?
 				storedItemStacksLocation.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>());
@@ -135,18 +123,14 @@ public class Soulbound extends Modifier implements Listener {
 				ArrayList<ItemStack> stored = storedItemStacks.get(player.getUniqueId());
 				ArrayList<Integer> storedLocation = storedItemStacksLocation.get(player.getUniqueId());
 
-				if (stored.contains(itemStack)) {
-					continue;
-				}
+				if (stored.contains(itemStack)) continue;
 
 				if (decrementModLevelOnUse) {
 					int newLevel = modManager.getModLevel(itemStack, this) - 1;
 
-					if (newLevel == 0) {
-						modManager.removeMod(itemStack, this);
-					} else {
-						DataHandler.setTag(itemStack, getKey(), modManager.getModLevel(itemStack, this) - 1, PersistentDataType.INTEGER);
-					}
+					if (newLevel == 0) modManager.removeMod(itemStack, this);
+					else DataHandler.setTag(itemStack, getKey(), modManager.getModLevel(itemStack, this) - 1,
+							PersistentDataType.INTEGER);
 				}
 
 				stored.add(itemStack.clone());
@@ -164,13 +148,10 @@ public class Soulbound extends Modifier implements Listener {
 		Player player = event.getPlayer();
 		PlayerInventory inventory = player.getInventory();
 
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
 
-		if (!storedItemStacks.containsKey(player.getUniqueId()) || !storedItemStacksLocation.containsKey(player.getUniqueId())) {
+		if (!storedItemStacks.containsKey(player.getUniqueId()) || !storedItemStacksLocation.containsKey(player.getUniqueId()))
 			return;
-		}
 
 		ArrayList<ItemStack> stored = storedItemStacks.get(player.getUniqueId());
 		ArrayList<Integer> storedLocation = storedItemStacksLocation.get(player.getUniqueId());
@@ -191,23 +172,14 @@ public class Soulbound extends Modifier implements Listener {
 	 */
 	@EventHandler(ignoreCancelled = true)
 	public void effect(PlayerDropItemEvent event) {
+		if (toolDroppable) return;
+
 		Item item = event.getItemDrop();
 		ItemStack tool = item.getItemStack();
-
-		if (!(modManager.isArmorViable(tool) || modManager.isToolViable(tool) || modManager.isWandViable(tool))) {
-			return;
-		}
-
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
-
-		if (toolDroppable) {
-			return;
-		}
+		if (!(modManager.isArmorViable(tool) || modManager.isToolViable(tool) || modManager.isWandViable(tool))) return;
+		if (!modManager.hasMod(tool, this)) return;
 
 		ChatWriter.logModifier(event.getPlayer(), event, this, tool, "Tool not droppable");
-
 		event.setCancelled(true);
 	}
 }

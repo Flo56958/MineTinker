@@ -28,9 +28,8 @@ public class SilkTouch extends Modifier {
 
 	public static SilkTouch instance() {
 		synchronized (SilkTouch.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new SilkTouch();
-			}
 		}
 
 		return instance;
@@ -79,7 +78,6 @@ public class SilkTouch extends Modifier {
 
 		if (meta != null) {
 			meta.addEnchant(Enchantment.SILK_TOUCH, modManager.getModLevel(tool, this), true);
-
 			tool.setItemMeta(meta);
 		}
 

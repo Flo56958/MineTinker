@@ -29,9 +29,8 @@ public class Freezing extends Modifier {
 
 	public static Freezing instance() {
 		synchronized (Freezing.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Freezing();
-			}
 		}
 
 		return instance;
@@ -89,7 +88,6 @@ public class Freezing extends Modifier {
 
 		if (meta != null) {
 			meta.addEnchant(Enchantment.FROST_WALKER, modManager.getModLevel(tool, this), true);
-
 			tool.setItemMeta(meta);
 		}
 

@@ -41,9 +41,8 @@ public class Beheading extends Modifier implements Listener {
 
 	public static Beheading instance() {
 		synchronized (Beheading.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Beheading();
-			}
 		}
 
 		return instance;
@@ -97,61 +96,60 @@ public class Beheading extends Modifier implements Listener {
 		LivingEntity mob = event.getEvent().getEntity();
 		ItemStack loot = new ItemStack(Material.AIR, 1);
 
-		if (player.hasPermission(getUsePermission())) {
-			if (modManager.hasMod(tool, this)) {
-				Random rand = new Random();
-				if(this.dropSpawneggChancePerLevel > 0) {
-					int n = rand.nextInt(100);
-					int i = this.dropSpawneggChancePerLevel * modManager.getModLevel(tool, this);
-					if (n <= i) {
-							Material mat = Material.getMaterial(mob.getType().toString().toUpperCase() + "_SPAWN_EGG");
-							if (mat != null) {
-								ItemStack egg = new ItemStack(mat, 1);
-								event.getEvent().getDrops().add(egg);
-							}
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
+
+		Random rand = new Random();
+		if(this.dropSpawneggChancePerLevel > 0) {
+			int n = rand.nextInt(100);
+			int i = this.dropSpawneggChancePerLevel * modManager.getModLevel(tool, this);
+			if (n <= i) {
+					Material mat = Material.getMaterial(mob.getType().toString().toUpperCase() + "_SPAWN_EGG");
+					if (mat != null) {
+						ItemStack egg = new ItemStack(mat, 1);
+						event.getEvent().getDrops().add(egg);
 					}
-					ChatWriter.logModifier(player, event, this, tool,
-							String.format("DropEggChance(%d/%d)", n, i), "Entity(" + mob.getType() + ")");
+			}
+			ChatWriter.logModifier(player, event, this, tool,
+					String.format("DropEggChance(%d/%d)", n, i), "Entity(" + mob.getType() + ")");
+		}
+		int n = rand.nextInt(100);
+		int i = this.percentagePerLevel * modManager.getModLevel(tool, this);
+
+		if (n <= i) {
+			if (mob.getType() == EntityType.CREEPER) {
+				loot = new ItemStack(Material.CREEPER_HEAD, 1);
+			} else if (mob.getType() == EntityType.SKELETON) {
+				loot = new ItemStack(Material.SKELETON_SKULL, 1);
+			} else if (mob.getType() == EntityType.WITHER_SKELETON) {
+				loot = new ItemStack(Material.WITHER_SKELETON_SKULL, 1);
+			} else if (mob.getType() == EntityType.ZOMBIE) {
+				loot = new ItemStack(Material.ZOMBIE_HEAD, 1);
+			} else if (mob.getType() == EntityType.ZOMBIE_VILLAGER) {
+				loot = new ItemStack(Material.ZOMBIE_HEAD, 1);
+			} else if (mob.getType() == EntityType.PLAYER) {
+				ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
+
+				if (head.getItemMeta() != null) {
+					SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+					headMeta.setOwningPlayer((OfflinePlayer) mob);
+					head.setItemMeta(headMeta);
 				}
-				int n = rand.nextInt(100);
-				int i = this.percentagePerLevel * modManager.getModLevel(tool, this);
 
-				if (n <= i) {
-					if (mob.getType() == EntityType.CREEPER) {
-						loot = new ItemStack(Material.CREEPER_HEAD, 1);
-					} else if (mob.getType() == EntityType.SKELETON) {
-						loot = new ItemStack(Material.SKELETON_SKULL, 1);
-					} else if (mob.getType() == EntityType.WITHER_SKELETON) {
-						loot = new ItemStack(Material.WITHER_SKELETON_SKULL, 1);
-					} else if (mob.getType() == EntityType.ZOMBIE) {
-						loot = new ItemStack(Material.ZOMBIE_HEAD, 1);
-					} else if (mob.getType() == EntityType.ZOMBIE_VILLAGER) {
-						loot = new ItemStack(Material.ZOMBIE_HEAD, 1);
-					} else if (mob.getType() == EntityType.PLAYER) {
-						ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
+				loot = head;
+			} else if (MineTinker.is20compatible && mob.getType() == EntityType.PIGLIN) {
+				loot = new ItemStack(Material.PIGLIN_HEAD, 1);
+			}
 
-						if (head.getItemMeta() != null) {
-							SkullMeta headMeta = (SkullMeta) head.getItemMeta();
-							headMeta.setOwningPlayer((OfflinePlayer) mob);
-							head.setItemMeta(headMeta);
-						}
-
-						loot = head;
-					} else if (MineTinker.is20compatible && mob.getType() == EntityType.PIGLIN) {
-						loot = new ItemStack(Material.PIGLIN_HEAD, 1);
-					}
-
-					if (loot.getType() != Material.AIR) {
-						event.getEvent().getDrops().add(loot);
-						ChatWriter.logModifier(player, event, this, tool,
-								String.format("Chance(%d/%d)", n, i), "Entity(" + mob.getType() + ")");
-						//Track stats
-						int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER))
-								? DataHandler.getTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER)
-								: 0;
-						DataHandler.setTag(tool, getKey() + "_stat_used", stat + 1, PersistentDataType.INTEGER);
-					}
-				}
+			if (loot.getType() != Material.AIR) {
+				event.getEvent().getDrops().add(loot);
+				ChatWriter.logModifier(player, event, this, tool,
+						String.format("Chance(%d/%d)", n, i), "Entity(" + mob.getType() + ")");
+				//Track stats
+				int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER))
+						? DataHandler.getTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER)
+						: 0;
+				DataHandler.setTag(tool, getKey() + "_stat_used", stat + 1, PersistentDataType.INTEGER);
 			}
 		}
 	}

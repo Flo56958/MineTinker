@@ -44,9 +44,8 @@ public class Directing extends Modifier implements Listener {
 
 	public static Directing instance() {
 		synchronized (Directing.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Directing();
-			}
 		}
 
 		return instance;
@@ -103,21 +102,12 @@ public class Directing extends Modifier implements Listener {
 
 	//used for exp teleportation
 	@EventHandler(ignoreCancelled = true)
-	public void effect(MTBlockBreakEvent event) {
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
-
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
-
-		if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
-			return;
-		}
-
-		if (!modManager.isToolViable(tool) || !modManager.hasMod(tool, this)) {
-			return;
-		}
+	public void effect(final MTBlockBreakEvent event) {
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
+		if (!player.hasPermission(getUsePermission())) return;
+		if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
+		if (!modManager.isToolViable(tool) || !modManager.hasMod(tool, this)) return;
 
 		if (this.workOnXP && modManager.getModLevel(tool, this) >= this.minimumLevelForXP) {
 			//Spawn Experience Orb as adding it directly to the player would prevent Mending from working
@@ -129,23 +119,15 @@ public class Directing extends Modifier implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void effect(BlockDropItemEvent event) {
-		Player player = event.getPlayer();
-		ItemStack tool = player.getInventory().getItemInMainHand();
+	public void effect(final BlockDropItemEvent event) {
+		final Player player = event.getPlayer();
+		final ItemStack tool = player.getInventory().getItemInMainHand();
 
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
+		if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
+		if (!modManager.isToolViable(tool) || !modManager.hasMod(tool, this)) return;
 
-		if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
-			return;
-		}
-
-		if (!modManager.isToolViable(tool) || !modManager.hasMod(tool, this)) {
-			return;
-		}
-
-		Iterator<Item> itemIterator = event.getItems().iterator();
+		final Iterator<Item> itemIterator = event.getItems().iterator();
 
 		//Track stats
 		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER))
@@ -153,11 +135,10 @@ public class Directing extends Modifier implements Listener {
 				: 0;
 
 		while (itemIterator.hasNext()) {
-			Item item = itemIterator.next();
-
+			final Item item = itemIterator.next();
 			stat += item.getItemStack().getAmount();
 
-			HashMap<Integer, ItemStack> refusedItems = player.getInventory().addItem(item.getItemStack());
+			final HashMap<Integer, ItemStack> refusedItems = player.getInventory().addItem(item.getItemStack());
 
 			if (!refusedItems.isEmpty()) {
 				for (ItemStack itemStack : refusedItems.values()) {
@@ -177,30 +158,16 @@ public class Directing extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void effect(MTEntityDeathEvent event) {
-		if (event.getPlayer().equals(event.getEvent().getEntity())) {
-			return;
-		}
-		if (!this.workInPVP && event.getEvent().getEntity() instanceof Player) {
-			return;
-		}
+		if (event.getPlayer().equals(event.getEvent().getEntity())) return;
+		if (!this.workInPVP && event.getEvent().getEntity() instanceof Player) return;
 
 		// Disable Directing when KeepInventory is on
-		if (event.getEvent() instanceof PlayerDeathEvent devent) {
-			if (devent.getKeepInventory()) {
-				return;
-			}
-		}
+		if (event.getEvent() instanceof PlayerDeathEvent devent && devent.getKeepInventory()) return;
 
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
-
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
-
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
 
 		//Track stats
 		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER))
@@ -208,9 +175,8 @@ public class Directing extends Modifier implements Listener {
 				: 0;
 
 		for (ItemStack current : new ArrayList<>(event.getEvent().getDrops())) {
-			if (modManager.hasMod(current, Soulbound.instance()) && event.getEvent().getEntity() instanceof Player) {
+			if (modManager.hasMod(current, Soulbound.instance()) && event.getEvent().getEntity() instanceof Player)
 				continue;
-			}
 
 			stat += current.getAmount();
 

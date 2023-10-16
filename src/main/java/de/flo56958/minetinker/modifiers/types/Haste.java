@@ -29,9 +29,8 @@ public class Haste extends Modifier {
 
 	public static Haste instance() {
 		synchronized (Haste.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Haste();
-			}
 		}
 
 		return instance;
@@ -44,7 +43,8 @@ public class Haste extends Modifier {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.CROSSBOW, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.SHEARS, ToolType.FISHINGROD);
+		return Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.CROSSBOW, ToolType.PICKAXE, ToolType.SHOVEL,
+				ToolType.SHEARS, ToolType.FISHINGROD);
 	}
 
 	@Override
@@ -86,17 +86,16 @@ public class Haste extends Modifier {
 	}
 
 	@Override
-	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
-		ItemMeta meta = tool.getItemMeta();
+	public boolean applyMod(final Player player, final ItemStack tool, final boolean isCommand) {
+		final ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
-			if (ToolType.FISHINGROD.contains(tool.getType())) {
+			if (ToolType.FISHINGROD.contains(tool.getType()))
 				meta.addEnchant(Enchantment.LURE, modManager.getModLevel(tool, this), true);
-			} else if (ToolType.CROSSBOW.contains(tool.getType())) {
+			else if (ToolType.CROSSBOW.contains(tool.getType()))
 				meta.addEnchant(Enchantment.QUICK_CHARGE, modManager.getModLevel(tool, this), true);
-			} else {
+			else
 				meta.addEnchant(Enchantment.DIG_SPEED, modManager.getModLevel(tool, this), true);
-			}
 
 			tool.setItemMeta(meta);
 		}

@@ -158,9 +158,10 @@ public class DataHandler {
 	 * @param block The block that should be broken
 	 * @param itemStack The itemStack that is used to break the block
 	 * @return true if the player successfully broke the block, false otherwise
-	 * @throws IllegalArgumentException if the player or the itemStack is null
+	 * @throws IllegalArgumentException
 	 */
-	public static boolean playerBreakBlock(@NotNull Player player, Block block, @NotNull ItemStack itemStack) throws IllegalArgumentException {
+	public static boolean playerBreakBlock(@NotNull Player player, @NotNull Block block, @NotNull ItemStack itemStack)
+			throws IllegalArgumentException {
 		//
 		//This skips all interactions and synergies with MT and other Plugins but is way less performance heavy
 		//

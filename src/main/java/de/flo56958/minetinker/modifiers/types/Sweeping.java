@@ -29,9 +29,8 @@ public class Sweeping extends Modifier {
 
 	public static Sweeping instance() {
 		synchronized (Sweeping.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Sweeping();
-			}
 		}
 
 		return instance;
@@ -80,7 +79,6 @@ public class Sweeping extends Modifier {
 
 		if (meta != null) {
 			meta.addEnchant(Enchantment.SWEEPING_EDGE, modManager.getModLevel(tool, this), true);
-
 			tool.setItemMeta(meta);
 		}
 

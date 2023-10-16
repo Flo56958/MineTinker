@@ -32,9 +32,8 @@ public class Melting extends Modifier implements Listener {
 
 	public static Melting instance() {
 		synchronized (Melting.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Melting();
-			}
 		}
 
 		return instance;
@@ -80,34 +79,23 @@ public class Melting extends Modifier implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void effect(MTEntityDamageByEntityEvent event) {
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
-
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
-
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
+	public void effect(final MTEntityDamageByEntityEvent event) {
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
 
 		if (event.getPlayer().equals(event.getEvent().getEntity())) {
             /*
             The melting effect if the Player gets damaged. getTool = Armor piece
              */
-			int level = modManager.getModLevel(tool, this);
+			final int level = modManager.getModLevel(tool, this);
 
-			if (player.getFireTicks() <= 0) {
-				return;
-			}
+			if (player.getFireTicks() <= 0) return;
+			if (player.getFireTicks() > 0 && cancelBurning) player.setFireTicks(0);
 
-			if (player.getFireTicks() > 0 && cancelBurning) {
-				player.setFireTicks(0);
-			}
-
-			double oldDamage = event.getEvent().getDamage();
-			double newDamage = oldDamage * (1 - this.bonusMultiplier * level);
+			final double oldDamage = event.getEvent().getDamage();
+			final double newDamage = oldDamage * (1 - this.bonusMultiplier * level);
 
 			event.getEvent().setDamage(newDamage);
 			ChatWriter.logModifier(player, event, this, tool, String.format("Damage(%.2f -> %.2f [x%.4f])", oldDamage, newDamage, newDamage/oldDamage));
@@ -116,19 +104,12 @@ public class Melting extends Modifier implements Listener {
             The melting effect, if the Player is the Damager
              */
 			if (event.getEvent().getEntity() instanceof LivingEntity entity) {
+				if (entity.isDead()) return;
+				final int level = modManager.getModLevel(tool, this);
+				if (entity.getFireTicks() <= 0) return;
 
-				if (entity.isDead()) {
-					return;
-				}
-
-				int level = modManager.getModLevel(tool, this);
-
-				if (entity.getFireTicks() <= 0) {
-					return;
-				}
-
-				double oldDamage = event.getEvent().getDamage();
-				double newDamage = oldDamage * (1 + this.bonusMultiplier * level);
+				final double oldDamage = event.getEvent().getDamage();
+				final double newDamage = oldDamage * (1 + this.bonusMultiplier * level);
 
 				event.getEvent().setDamage(newDamage);
 				ChatWriter.logModifier(player, event, this, tool, String.format("Damage(%.2f -> %.2f [x%.4f])", oldDamage, newDamage, newDamage/oldDamage));
@@ -137,17 +118,11 @@ public class Melting extends Modifier implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void effect(MTEntityDamageEvent event) {
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
-
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
-
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
+	public void effect(final MTEntityDamageEvent event) {
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
 
 		int ticks = player.getFireTicks();
 		if (ticks > 0 && cancelBurning) {

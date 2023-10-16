@@ -441,8 +441,7 @@ public class ModManager {
 
 	public boolean addMod(final Player player, @NotNull final ItemStack item, @NotNull final Modifier modifier, final boolean fromCommand, final boolean fromRandom, final boolean silent, final boolean modifySlotCount) {
 		if (!modifier.getKey().equals(ExtraModifier.instance().getKey())
-				&& !modifier.checkAndAdd(player, item, modifier.getKey().toLowerCase().replace("-", ""),
-											fromCommand, fromRandom, silent, modifySlotCount))
+				&& !modifier.checkAndAdd(player, item, fromCommand, fromRandom, silent, modifySlotCount))
 				return false;
 
 		// apply modifier

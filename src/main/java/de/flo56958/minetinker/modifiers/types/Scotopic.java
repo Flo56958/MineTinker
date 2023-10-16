@@ -39,9 +39,8 @@ public class Scotopic extends CooldownModifier implements Listener {
 
 	public static Scotopic instance() {
 		synchronized (Scotopic.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Scotopic();
-			}
 		}
 
 		return instance;
@@ -101,19 +100,17 @@ public class Scotopic extends CooldownModifier implements Listener {
 				.replaceAll("%amount", String.valueOf(this.durationPerLevel / 20.0))
 				.replaceAll("%light", String.valueOf(this.requiredLightLevel))
 				.replaceAll("%cmax", String.valueOf(this.cooldownInSeconds))
-				.replaceAll("%cmin", String.valueOf(this.getCooldownForLevel(this.getMaxLvl()) / 1000.0));
+				.replaceAll("%cmin", String.valueOf(this.getCooldown(this.getMaxLvl()) / 1000.0));
 	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void onMoveImmune(PlayerMoveEvent event) {
 		if (!this.givesImmunity) return;
 
-		Player player = event.getPlayer();
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
+		final Player player = event.getPlayer();
+		if (!player.hasPermission(getUsePermission())) return;
 
-		ItemStack armor = player.getInventory().getHelmet();
+		final ItemStack armor = player.getInventory().getHelmet();
 		if (armor == null) return;
 
 		if (!modManager.hasMod(armor, this)) return;
@@ -125,29 +122,29 @@ public class Scotopic extends CooldownModifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onMove(PlayerMoveEvent event) {
-		Player player = event.getPlayer();
+		final Player player = event.getPlayer();
 		if (!player.hasPermission(getUsePermission())) return;
 
-		ItemStack helmet = player.getInventory().getHelmet();
+		final ItemStack helmet = player.getInventory().getHelmet();
 		if (!modManager.isArmorViable(helmet)) return;
 		int level = modManager.getModLevel(helmet, this);
 		if (level <= 0) return;
 
 		if (onCooldown(player, helmet, true, event)) return;
 
-		Location loc = event.getTo();
+		final Location loc = event.getTo();
 		if (loc == null) return;
 		byte lightlevel = player.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()).getLightLevel();
 
 		if (lightlevel > this.requiredLightLevel) return;
 
-		int duration = this.durationPerLevel * level;
+		final int duration = this.durationPerLevel * level;
 		player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,
 				duration + 10 * 20, // To disable the flickering below 10 seconds
 				level - 1, false, false, false));
 		setCooldown(helmet);
 		ChatWriter.logModifier(player, event, this, helmet,
-				String.format("Cooldown(%ds)", getCooldownForLevel(level) / 1000),
+				String.format("Cooldown(%ds)", getCooldown(level) / 1000),
 				String.format("LightLevel(%d/%d)", lightlevel, this.requiredLightLevel),
 				String.format("Duration(%d)", duration));
 

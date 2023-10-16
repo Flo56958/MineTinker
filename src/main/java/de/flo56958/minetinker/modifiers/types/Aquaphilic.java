@@ -26,9 +26,8 @@ public class Aquaphilic extends Modifier {
 
 	public static Aquaphilic instance() {
 		synchronized (Aquaphilic.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Aquaphilic();
-			}
 		}
 
 		return instance;

@@ -43,9 +43,8 @@ public class Webbed extends Modifier implements Listener {
 
 	public static Webbed instance() {
 		synchronized (Webbed.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Webbed();
-			}
 		}
 
 		return instance;

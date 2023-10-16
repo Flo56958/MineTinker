@@ -116,9 +116,8 @@ public class Echoing extends Modifier implements Listener {
 
 	public static Echoing instance() {
 		synchronized (Echoing.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Echoing();
-			}
 		}
 
 		return instance;
@@ -136,9 +135,7 @@ public class Echoing extends Modifier implements Listener {
 
 	@Override
 	public void reload() {
-		if (taskID != -1) {
-			Bukkit.getScheduler().cancelTask(taskID);
-		}
+		if (taskID != -1) Bukkit.getScheduler().cancelTask(taskID);
 
 		FileConfiguration config = getConfig();
 		config.options().copyDefaults(true);
@@ -166,11 +163,11 @@ public class Echoing extends Modifier implements Listener {
 		int tickTime = config.getInt("TickTime", 20);
 		this.radiusPerLevel = config.getInt("RadiusPerLevel", 10);
 
-		if (isAllowed()) {
-			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MineTinker.getPlugin(), this.runnable, 5 * 20L, tickTime);
-		} else {
+		if (isAllowed())
+			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MineTinker.getPlugin(),
+					this.runnable, 5 * 20L, tickTime);
+		else
 			this.taskID = -1;
-		}
 
 		this.description = this.description.replaceFirst("%amount", String.valueOf(this.radiusPerLevel));
 	}

@@ -30,9 +30,8 @@ public class Speedy extends Modifier {
 
 	public static Speedy instance() {
 		synchronized (Speedy.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Speedy();
-			}
 		}
 
 		return instance;
@@ -57,9 +56,7 @@ public class Speedy extends Modifier {
 	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
 		ItemMeta meta = tool.getItemMeta();
 
-		if (meta == null) {
-			return false;
-		}
+		if (meta == null) return false;
 
 		//To check if armor modifiers are on the armor
 		Collection<AttributeModifier> attributeModifiers = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR);
@@ -75,9 +72,8 @@ public class Speedy extends Modifier {
 		if (!(speedModifiers == null || speedModifiers.isEmpty())) {
 			HashSet<String> names = new HashSet<>();
 
-			for (AttributeModifier am : speedModifiers) {
+			for (AttributeModifier am : speedModifiers)
 				if (names.add(am.getName())) speedOnItem += am.getAmount();
-			}
 		}
 
 		meta.removeAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED);

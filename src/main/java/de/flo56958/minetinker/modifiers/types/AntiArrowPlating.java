@@ -26,9 +26,8 @@ public class AntiArrowPlating extends Modifier {
 
 	public static AntiArrowPlating instance() {
 		synchronized (AntiArrowPlating.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new AntiArrowPlating();
-			}
 		}
 
 		return instance;
@@ -89,14 +88,12 @@ public class AntiArrowPlating extends Modifier {
 
 		if (meta != null) {
 			if (ToolType.HELMET.contains(tool.getType()) || ToolType.CHESTPLATE.contains(tool.getType())
-					|| ToolType.LEGGINGS.contains(tool.getType()) || ToolType.BOOTS.contains(tool.getType())) {
-
+					|| ToolType.LEGGINGS.contains(tool.getType()) || ToolType.BOOTS.contains(tool.getType()))
 				meta.addEnchant(Enchantment.PROTECTION_PROJECTILE, modManager.getModLevel(tool, this), true);
-			}
 
 			tool.setItemMeta(meta);
 		}
-
+		
 		return true;
 	}
 }

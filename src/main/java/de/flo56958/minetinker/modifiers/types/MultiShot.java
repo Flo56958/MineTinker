@@ -43,9 +43,8 @@ public class MultiShot extends Modifier implements Listener {
 
 	public static MultiShot instance() {
 		synchronized (MultiShot.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new MultiShot();
-			}
 		}
 
 		return instance;
@@ -141,31 +140,18 @@ public class MultiShot extends Modifier implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	public void onShoot(final MTProjectileLaunchEvent event) {
 		Projectile projectile = event.getEvent().getEntity();
-
 		if (projectile.hasMetadata(this.getKey())) return;
-
-		if (!(projectile instanceof Arrow arrow)) {
-			return;
-		}
+		if (!(projectile instanceof Arrow arrow)) return;
 
 		final Player player = event.getPlayer();
-
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
 
 		final ItemStack tool = event.getTool();
 
-		if (ToolType.CROSSBOW.contains(tool.getType()) && getConfig().getBoolean("UseEnchantOnCrossbow")) {
-			return;
-		}
-
-		if (!modManager.isToolViable(tool)) {
-			return;
-		}
+		if (ToolType.CROSSBOW.contains(tool.getType()) && getConfig().getBoolean("UseEnchantOnCrossbow")) return;
+		if (!modManager.isToolViable(tool)) return;
 
 		int modLevel = modManager.getModLevel(tool, this);
-
 		if (modLevel <= 0) return;
 
 		Vector vel = arrow.getVelocity().clone();
@@ -183,19 +169,17 @@ public class MultiShot extends Modifier implements Listener {
 
 					ItemStack offhand = player.getInventory().getItemInOffHand();
 
-					if (!player.getInventory().contains(Material.ARROW) && offhand != null && offhand.getType() != Material.ARROW) {
-						break;
-					}
+					if (!player.getInventory().contains(Material.ARROW)
+							&& offhand != null && offhand.getType() != Material.ARROW) break;
 
 					if (!modManager.isModifierItem(offhand)
-							&& offhand.getType() == Material.ARROW && offhand.getAmount() >= amount) { // 2 as the main arrow is detracted later
+							&& offhand.getType() == Material.ARROW && offhand.getAmount() >= amount) {
+						// 2 as the main arrow is detracted later
 						offhand.setAmount(offhand.getAmount() - 1);
 						hasArrow = true;
 					} else {
 						for (ItemStack item : player.getInventory().getContents()) {
-							if (item == null || modManager.isModifierItem(item)) {
-								continue;
-							}
+							if (item == null || modManager.isModifierItem(item)) continue;
 
 							if (item.getType() == Material.ARROW && item.getAmount() >= amount) {
 								item.setAmount(item.getAmount() - 1);
@@ -206,9 +190,7 @@ public class MultiShot extends Modifier implements Listener {
 					}
 				}
 
-				if (!hasArrow) {
-					break;
-				}
+				if (!hasArrow) break;
 			}
 
 			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
@@ -216,16 +198,17 @@ public class MultiShot extends Modifier implements Listener {
 				arr.setShooter(player);
 				arr.setShotFromCrossbow(arrow.isShotFromCrossbow());
 
-				if (player.getGameMode().equals(GameMode.CREATIVE)) {
+				if (player.getGameMode().equals(GameMode.CREATIVE))
 					arr.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
-				}
 
 				arr.setCritical(arrow.isCritical());
 				arr.setDamage(arrow.getDamage());
 				// no recursive actions
 				arr.setMetadata(this.getKey(), new FixedMetadataValue(this.getSource(), null));
 
-				EntityShootBowEvent bowEvent = new EntityShootBowEvent(player, tool, new ItemStack(Material.ARROW, 1), arr, EquipmentSlot.HAND, (float) vel.length(), false);
+				EntityShootBowEvent bowEvent =
+						new EntityShootBowEvent(player, tool, new ItemStack(Material.ARROW, 1), arr,
+								EquipmentSlot.HAND, (float) vel.length(), false);
 				Bukkit.getPluginManager().callEvent(bowEvent);
 				if (bowEvent.isCancelled()) {
 					// return arrow
@@ -247,7 +230,8 @@ public class MultiShot extends Modifier implements Listener {
 	}
 
 	private void returnArrow(Player player, Arrow arr) {
-		if (needsArrows && player.getGameMode() != GameMode.CREATIVE && arr.getPickupStatus() != AbstractArrow.PickupStatus.CREATIVE_ONLY) {
+		if (needsArrows && player.getGameMode() != GameMode.CREATIVE
+				&& arr.getPickupStatus() != AbstractArrow.PickupStatus.CREATIVE_ONLY) {
 			if (!player.getInventory().addItem(new ItemStack(Material.ARROW, 1)).isEmpty()) { //adds items to (full) inventory
 				player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.ARROW, 1)); //drops item when inventory is full
 			} // no else as it gets added in if

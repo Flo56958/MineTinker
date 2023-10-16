@@ -26,9 +26,8 @@ public class SpidersBane extends Modifier {
 
 	public static SpidersBane instance() {
 		synchronized (SpidersBane.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new SpidersBane();
-			}
 		}
 
 		return instance;
@@ -86,10 +85,8 @@ public class SpidersBane extends Modifier {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
-			if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType())) {
+			if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType()))
 				meta.addEnchant(Enchantment.DAMAGE_ARTHROPODS, modManager.getModLevel(tool, this), true);
-			}
-
 			tool.setItemMeta(meta);
 		} else return false;
 

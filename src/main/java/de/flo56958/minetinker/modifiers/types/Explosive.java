@@ -35,9 +35,8 @@ public class Explosive extends Modifier implements Listener {
 
 	public static Explosive instance() {
 		synchronized (Explosive.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Explosive();
-			}
 		}
 
 		return instance;
@@ -101,15 +100,12 @@ public class Explosive extends Modifier implements Listener {
 	public void onProjectileHit(final MTProjectileHitEvent event) {
 		Player p = event.getPlayer();
 		ItemStack tool = event.getTool();
+		if (!p.hasPermission(getUsePermission())) return;
 		if (event.getEvent().getEntity().hasMetadata(this.getKey())) return;
 		if (!modManager.hasMod(tool, this)) return;
 
 		final int level = modManager.getModLevel(tool, this);
-
-		if (!p.hasPermission(getUsePermission())) return;
-
 		final Location loc = event.getEvent().getEntity().getLocation();
-
 		loc.getWorld().createExplosion(loc, this.powerPerLevel * level, false, false, p);
 		event.getEvent().getEntity().setMetadata(this.getKey(), new FixedMetadataValue(MineTinker.getPlugin(), 0));
 	}
@@ -118,16 +114,13 @@ public class Explosive extends Modifier implements Listener {
 	public void onEntityHit(final MTEntityDamageByEntityEvent event) {
 		Player p = event.getPlayer();
 		ItemStack tool = event.getTool();
+		if (!p.hasPermission(getUsePermission())) return;
 		if (event.getEvent().getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION ||
 				event.getEvent().getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) return;
 		if (!modManager.hasMod(tool, this)) return;
 
 		final int level = modManager.getModLevel(tool, this);
-
-		if (!p.hasPermission(getUsePermission())) return;
-
 		final Location loc = event.getEntity().getLocation().add(0, 0.2, 0);
-
 		loc.getWorld().createExplosion(loc, this.powerPerLevel * level, this.setFire, this.blockBreak, p);
 	}
 }

@@ -32,9 +32,8 @@ public class KineticPlating extends Modifier implements Listener {
 
 	public static KineticPlating instance() {
 		synchronized (KineticPlating.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new KineticPlating();
-			}
 		}
 
 		return instance;
@@ -91,17 +90,15 @@ public class KineticPlating extends Modifier implements Listener {
 	public void effect(EntityDamageEvent event) {
 		if (!(event.getEntity() instanceof Player player)) return;
 		if (event.getCause() != EntityDamageEvent.DamageCause.FLY_INTO_WALL) return;
-
 		if (!player.hasPermission(getUsePermission())) return;
-		ItemStack elytra = player.getInventory().getChestplate();
 
+		final ItemStack elytra = player.getInventory().getChestplate();
 		if (!modManager.hasMod(elytra, this)) return;
 
-		int level = modManager.getModLevel(elytra, this);
-		double damageMod = 1.0 - ((this.amount / 100.0) * level);
-		if (damageMod < 0.0) damageMod = 0.0;
-		double oldDamage = event.getDamage();
-		double newDamage = oldDamage * damageMod;
+		final int level = modManager.getModLevel(elytra, this);
+		final double damageMod = Math.max(0.0, 1.0 - ((this.amount / 100.0) * level));
+		final double oldDamage = event.getDamage();
+		final double newDamage = oldDamage * damageMod;
 		event.setDamage(newDamage);
 		ChatWriter.logModifier(player, event, this, elytra, String.format("Damage(%.2f -> %.2f [x%.2f])", oldDamage, newDamage, damageMod));
 	}

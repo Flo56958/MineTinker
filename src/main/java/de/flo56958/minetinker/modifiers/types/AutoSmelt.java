@@ -46,9 +46,8 @@ public class AutoSmelt extends Modifier implements Listener {
 
 	public static AutoSmelt instance() {
 		synchronized (AutoSmelt.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new AutoSmelt();
-			}
 		}
 
 		return instance;
@@ -259,27 +258,15 @@ public class AutoSmelt extends Modifier implements Listener {
 	 */
 	@EventHandler(ignoreCancelled = true)
 	public void effect(@NotNull MTBlockBreakEvent event) {
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
-		Block block = event.getBlock();
-		BlockBreakEvent breakEvent = event.getEvent();
-
-		if (!player.hasPermission(getUsePermission())) {
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
+		final Block block = event.getBlock();
+		final BlockBreakEvent breakEvent = event.getEvent();
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
+		if (!worksUnderWater && (player.isSwimming() || player.getWorld().getBlockAt(player.getLocation()).getType() == Material.WATER))
 			return;
-		}
-
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
-
-		if (!worksUnderWater) {
-			if (player.isSwimming() || player.getWorld().getBlockAt(player.getLocation()).getType() == Material.WATER)
-				return;
-		}
-
-		if (toggleable) {
-			if (player.isSneaking()) return;
-		}
+		if (toggleable && player.isSneaking()) return;
 
 		if (!(new Random().nextInt(100) <= this.percentagePerLevel * modManager.getModLevel(tool, this)
 				&& block.getLocation().getWorld() != null)) return;
@@ -377,13 +364,12 @@ public class AutoSmelt extends Modifier implements Listener {
 		static Triplet fromString(@NotNull String input) {
 			String[] tok = input.split(regex);
 			try {
-				if (tok.length == 2) {
+				if (tok.length == 2)
 					return new Triplet(Material.valueOf(tok[0]), Integer.parseInt(tok[1]));
-				} else if (tok.length == 3) {
+				else if (tok.length == 3)
 					return new Triplet(Material.valueOf(tok[0]), Integer.parseInt(tok[1]), Boolean.parseBoolean(tok[2]));
-				} else {
+				else
 					return null;
-				}
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 				return null;

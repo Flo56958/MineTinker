@@ -32,9 +32,8 @@ public class Lifesteal extends Modifier implements Listener {
 
 	public static Lifesteal instance() {
 		synchronized (Lifesteal.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new Lifesteal();
-			}
 		}
 
 		return instance;
@@ -92,44 +91,32 @@ public class Lifesteal extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH) //because of Melting
 	public void effect(MTEntityDamageByEntityEvent event) {
-		if (event.getPlayer().equals(event.getEvent().getEntity())) {
-			return; //when event was triggered by the armor
-		}
+		if (event.getPlayer().equals(event.getEvent().getEntity())) return; //when event was triggered by the armor
 
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
 
-		if (!player.hasPermission(getUsePermission())) {
-			return;
-		}
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.hasMod(tool, this)) return;
 
-		if (!modManager.hasMod(tool, this)) {
-			return;
-		}
-
-		Random rand = new Random();
-		int n = rand.nextInt(100);
+		final Random rand = new Random();
+		final int n = rand.nextInt(100);
 
 		if (n > this.percentToTrigger) {
 			ChatWriter.logModifier(player, event, this, tool, String.format("Chance(%d/%d)", n, this.percentToTrigger));
 			return;
 		}
 
-		int level = modManager.getModLevel(tool, this);
-		double damage = event.getEvent().getDamage();
-		double recovery = damage * ((percentPerLevel * level) / 100.0);
-		double health = player.getHealth() + recovery;
+		final int level = modManager.getModLevel(tool, this);
+		final double damage = event.getEvent().getDamage();
+		final double recovery = damage * ((percentPerLevel * level) / 100.0);
+		final double health = player.getHealth() + recovery;
 
 		AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
 
-		if (attribute != null) {
-			// for IllegalArgumentExeption if Health is biggen than MaxHealth
-			if (health > attribute.getValue()) {
-				health = attribute.getValue();
-			}
-
-			player.setHealth(health);
-		}
+		if (attribute != null)
+							// for IllegalArgumentExeption if Health is biggen than MaxHealth
+			player.setHealth(Math.min(health, attribute.getValue()));
 
 		ChatWriter.logModifier(player, event, this, tool, String.format("Chance(%d/%d)", n, this.percentToTrigger),
 				String.format("HealthGain(%.2f [%.2f/%.2f = %.4f])", recovery, recovery, damage, recovery/damage));

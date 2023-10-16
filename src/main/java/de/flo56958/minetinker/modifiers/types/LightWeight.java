@@ -27,9 +27,8 @@ public class LightWeight extends Modifier {
 
 	public static LightWeight instance() {
 		synchronized (LightWeight.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new LightWeight();
-			}
 		}
 
 		return instance;
@@ -78,7 +77,6 @@ public class LightWeight extends Modifier {
 
 		if (meta != null) {
 			meta.addEnchant(Enchantment.PROTECTION_FALL, modManager.getModLevel(tool, this), true);
-
 			tool.setItemMeta(meta);
 		}
 

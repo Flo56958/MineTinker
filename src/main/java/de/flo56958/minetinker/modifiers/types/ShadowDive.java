@@ -44,9 +44,8 @@ public class ShadowDive extends Modifier implements Listener {
 
 	public static ShadowDive instance() {
 		synchronized (ShadowDive.class) {
-			if (instance == null) {
+			if (instance == null)
 				instance = new ShadowDive();
-			}
 		}
 
 		return instance;
@@ -58,26 +57,26 @@ public class ShadowDive extends Modifier implements Listener {
 			Iterator<Player> iterator = activePlayers.keySet().iterator();
 			//noinspection WhileLoopReplaceableByForEach
 			while (iterator.hasNext()) {
-				Player p = iterator.next();
-				Location loc = p.getLocation();
+				final Player p = iterator.next();
+				final Location loc = p.getLocation();
 				byte lightlevel = p.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()).getLightLevel();
 				if (!p.isSneaking() || lightlevel > requiredLightLevel + activePlayers.get(p) || p.hasPotionEffect(PotionEffectType.GLOWING)) {
 					showPlayer(p);
 					ChatWriter.sendActionBar(p, ChatColor.RED + ShadowDive.instance().getName() + ": "
 							+ LanguageManager.getString("Modifier.Shadow-Dive.LightToHigh", p));
+					continue;
 				} else if (PlayerInfo.isCombatTagged(p)) {
 					showPlayer(p);
 					ChatWriter.sendActionBar(p, ChatColor.RED + ShadowDive.instance().getName() + ": "
 							+ LanguageManager.getString("Modifier.Shadow-Dive.InCombat", p));
-				} else {
-					for(Player pl : Bukkit.getOnlinePlayers()) {
-						if (pl.equals(p)) continue;
-						if (pl.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
-							pl.showPlayer(MineTinker.getPlugin(), p);
-						} else {
-							pl.hidePlayer(MineTinker.getPlugin(), p);
-						}
-					}
+					continue;
+				}
+				for(final Player pl : Bukkit.getOnlinePlayers()) {
+					if (pl.equals(p)) continue;
+					if (pl.hasPotionEffect(PotionEffectType.NIGHT_VISION))
+						pl.showPlayer(MineTinker.getPlugin(), p);
+					else
+						pl.hidePlayer(MineTinker.getPlugin(), p);
 				}
 			}
 		}
@@ -138,41 +137,42 @@ public class ShadowDive extends Modifier implements Listener {
 		activePlayers.put(p, level);
 
 		//Clear all mob targets
-		Collection<Entity> nearbyEntities = p.getWorld().getNearbyEntities(p.getLocation(), 64, 64, 64);
-		for (Entity ent : nearbyEntities) {
-			if (ent instanceof Creature) {
-				if (p.equals(((Creature) ent).getTarget())) {
-					((Creature) ent).setTarget(null);
-				}
+		final Collection<Entity> nearbyEntities = p.getWorld().getNearbyEntities(p.getLocation(), 64, 64, 64);
+		for (final Entity ent : nearbyEntities) {
+			if (ent instanceof final Creature creature) {
+				if (p.equals(creature.getTarget()))
+					creature.setTarget(null);
 			}
 		}
 
 		//Hide from all players
-		for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+		for (final Player player : Bukkit.getServer().getOnlinePlayers()) {
 			if (!p.equals(player)) {
-				if (!player.hasPotionEffect(PotionEffectType.NIGHT_VISION)) player.hidePlayer(MineTinker.getPlugin(), p);
+				if (!player.hasPotionEffect(PotionEffectType.NIGHT_VISION))
+					player.hidePlayer(MineTinker.getPlugin(), p);
 			}
 		}
 	}
 
 	private void showPlayer(Player p) {
 		if (activePlayers.remove(p) != null) {
-			for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-				if (!p.equals(player)) player.showPlayer(MineTinker.getPlugin(), p);
+			for (final Player player : Bukkit.getServer().getOnlinePlayers()) {
+				if (!p.equals(player))
+					player.showPlayer(MineTinker.getPlugin(), p);
 			}
 		}
 	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onJoin(PlayerJoinEvent event) {
-		for(Player p : activePlayers.keySet()) {
+		for(final Player p : activePlayers.keySet()) {
 			event.getPlayer().hidePlayer(MineTinker.getPlugin(), p);
 		}
 	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onLeave(PlayerQuitEvent event) {
-		for(Player p : activePlayers.keySet()) {
+		for(final Player p : activePlayers.keySet()) {
 			event.getPlayer().showPlayer(MineTinker.getPlugin(), p);
 		}
 	}
@@ -216,7 +216,6 @@ public class ShadowDive extends Modifier implements Listener {
 			}
 
 			hidePlayer(player, modManager.getModLevel(boots, this));
-
 		} else { //disable
 			if (!activePlayers.containsKey(player)) return;
 			showPlayer(player);
