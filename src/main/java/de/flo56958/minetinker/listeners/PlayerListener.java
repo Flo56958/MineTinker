@@ -20,6 +20,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.LootGenerateEvent;
@@ -37,6 +38,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class PlayerListener implements Listener {
 
 	private static final ModManager modManager = ModManager.instance();
+
+	@EventHandler(ignoreCancelled = true)
+	public void onConsume(@NotNull final PlayerItemConsumeEvent event) {
+		event.setCancelled(modManager.isModifierItem(event.getItem()));
+	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void onInventoryClick(@NotNull final InventoryClickEvent event) {
