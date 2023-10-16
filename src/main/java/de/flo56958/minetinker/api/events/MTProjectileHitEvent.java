@@ -1,6 +1,7 @@
 package de.flo56958.minetinker.api.events;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
  * it's only purpose is it to activate the Listeners if a ProjectileHitEvent matches
  * the criteria (right tool, ...)
  */
-public class MTProjectileHitEvent extends Event {
+public class MTProjectileHitEvent extends Event implements Cancellable {
 	private static final HandlerList handlers = new HandlerList();
 
 	private final Player player;
@@ -55,5 +56,15 @@ public class MTProjectileHitEvent extends Event {
 	@Override
 	public HandlerList getHandlers() {
 		return handlers;
+	}
+
+	@Override
+	public boolean isCancelled() {
+		return event.isCancelled();
+	}
+
+	@Override
+	public void setCancelled(boolean cancel) {
+		event.setCancelled(cancel);
 	}
 }

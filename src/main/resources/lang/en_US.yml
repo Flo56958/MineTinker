@@ -313,6 +313,11 @@ Modifier:
     Description: "Deal more or receive less damage (%amountmin% to %amountmax%) when the moon is shining (depends on level and moon position). This effect gets inverted at daytime and in the Nether but has the full strength in the End!"
     ModifierItemName: "Dark Daylight Detector"
     DescriptionModifierItem: "Modifier-Item for the Nightseeker-Modifier"
+  Phasing:
+    Name: "Phasing"
+    Description: "Arrows can pass through walls!"
+    ModifierItemName: "Phasing chorus fruit"
+    DescriptionModifierItem: "Modifier-Item for the Phasing-Modifier"
   Photosynthesis:
     Name: "Photosynthesis"
     Description: "Repair your item with %amount durability per level every %ticks Ticks while the sun shines. The longer the faster it repairs. (%multiplier%)"

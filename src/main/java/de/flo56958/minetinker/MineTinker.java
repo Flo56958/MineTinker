@@ -188,6 +188,7 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(MultiJump.instance());
 		modManager.register(MultiShot.instance());
 		modManager.register(Nightseeker.instance());
+		modManager.register(Phasing.instance());
 		modManager.register(Photosynthesis.instance());
 		modManager.register(Piercing.instance());
 		modManager.register(Poisonous.instance());

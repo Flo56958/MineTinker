@@ -210,6 +210,7 @@ permissions:
       minetinker.modifiers.multijump.*: true
       minetinker.modifiers.multishot.*: true
       minetinker.modifiers.nightseeker.*: true
+      minetinker.modifiers.phasing.*: true
       minetinker.modifiers.photosynthesis.*: true
       minetinker.modifiers.piercing.*: true
       minetinker.modifiers.poisonous.*: true
@@ -616,6 +617,21 @@ permissions:
     default: true
   minetinker.modifiers.multishot.use:
     description: Allows to use Multishot on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.phasing.*:
+    children:
+      minetinker.modifiers.phasing.apply: true
+      minetinker.modifiers.phasing.craft: true
+      minetinker.modifiers.phasing.use: true
+  minetinker.modifiers.phasing.apply:
+    description: Allows to apply Phasing to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.phasing.craft:
+    description: Allows to craft a Phasing-Modifiers
+    default: true
+  minetinker.modifiers.phasing.use:
+    description: Allows to use the Phasing-Modifier on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.photosynthesis.*:

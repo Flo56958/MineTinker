@@ -132,6 +132,12 @@ public class ModManager {
 		incompatibilityList.add(Magical.instance().getKey() + ":" + Explosive.instance().getKey());
 		incompatibilityList.add(Piercing.instance().getKey() + ":" + Explosive.instance().getKey());
 		incompatibilityList.add(Channeling.instance().getKey() + ":" + Explosive.instance().getKey());
+		incompatibilityList.add(Phasing.instance().getKey() + ":" + Explosive.instance().getKey());
+		incompatibilityList.add(Phasing.instance().getKey() + ":" + MultiShot.instance().getKey());
+		incompatibilityList.add(Phasing.instance().getKey() + ":" + Ender.instance().getKey());
+		incompatibilityList.add(Phasing.instance().getKey() + ":" + Magical.instance().getKey());
+		incompatibilityList.add(Phasing.instance().getKey() + ":" + Homing.instance().getKey());
+		incompatibilityList.add(Phasing.instance().getKey() + ":" + Magical.instance().getKey());
 
 		Plugin plugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
 		if (plugin != null && plugin.isEnabled())
