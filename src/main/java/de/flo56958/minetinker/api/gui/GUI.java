@@ -1,6 +1,7 @@
 package de.flo56958.minetinker.api.gui;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -365,9 +366,9 @@ public class GUI implements Listener {
 			player.openInventory(this.inventory);
 
 			if (showRunnable != null && this.showRunnableTaskID == -1) {
-				this.showRunnableTaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(this.gui.plugin, () -> {
+				this.showRunnableTaskID = ServerHandler.getServerHandler().scheduleSyncRepeatingTask(() -> {
 					if (inventory.getViewers().isEmpty()) {
-						Bukkit.getScheduler().cancelTask(this.showRunnableTaskID);
+						ServerHandler.getServerHandler().cancelTask(this.showRunnableTaskID);
 						this.showRunnableTaskID = -1;
 						return;
 					}
@@ -379,7 +380,7 @@ public class GUI implements Listener {
 
 		public void close() {
 			if (showRunnableTaskID != -1) {
-				Bukkit.getScheduler().cancelTask(this.showRunnableTaskID);
+				ServerHandler.getServerHandler().cancelTask(this.showRunnableTaskID);
 				this.showRunnableTaskID = -1;
 			}
 			for (HumanEntity humanEntity : new ArrayList<>(this.inventory.getViewers())) {

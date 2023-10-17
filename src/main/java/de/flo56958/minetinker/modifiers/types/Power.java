@@ -3,6 +3,7 @@ package de.flo56958.minetinker.modifiers.types;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.api.events.MTPlayerInteractEvent;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
@@ -178,7 +179,7 @@ public class Power extends Modifier implements Listener {
 
 		final float hardness = block.getType().getHardness();
 
-		Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> {
+		ServerHandler.getServerHandler().runTaskAsynchronously(() -> {
 			int level = modManager.getModLevel(tool, this);
 
 			boolean down_up = face.equals(BlockFace.DOWN) || face.equals(BlockFace.UP);
@@ -313,7 +314,7 @@ public class Power extends Modifier implements Listener {
 	private void powerBlockBreak(@Nullable final Block block, final float centralBlockHardness, final Player player, final ItemStack tool, final BlockFace face) {
 		if (block == null) return;
 
-		Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
+		ServerHandler.getServerHandler().runTask(() -> {
 			if (treatAsWhitelist ^ blacklist.contains(block.getType())) return;
 			if (block.getDrops(tool).isEmpty()) return;
 			if (block.getType().getHardness() > centralBlockHardness + 2) // + 2 so you can mine ore as well

@@ -4,6 +4,7 @@ import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.api.gui.ButtonAction;
 import de.flo56958.minetinker.api.gui.GUI;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.data.GUIs;
@@ -55,7 +56,7 @@ public class ItemStatisticsCommand implements SubCommand {
 		if (sender instanceof Player && MineTinker.getPlugin().getConfig().getBoolean("EnableLore", true)) { //GUI instead of Wall of Text through chat
 			int amount = items.size();
 			GUI gui = new GUI(MineTinker.getPlugin());
-			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), gui::close, 5 * 60 * 20);
+			ServerHandler.getServerHandler().runTaskLater(gui::close, 5 * 60 * 20);
 			GUI.Window window = gui.addWindow(Math.min(Math.max((int) Math.ceil(amount / 9.0), 1), 6), player.getDisplayName());
 			for (int i = 0; i < amount; i++) {
 				GUI.Window.Button button = window.addButton(i, items.get(i));

@@ -7,12 +7,12 @@ import de.flo56958.minetinker.api.events.MTEntityDamageEvent;
 import de.flo56958.minetinker.api.events.MTEntityDeathEvent;
 import de.flo56958.minetinker.api.gui.ButtonAction;
 import de.flo56958.minetinker.api.gui.GUI;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.data.DataHandler;
 import de.flo56958.minetinker.utils.data.EnumMapTagType;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -36,7 +36,7 @@ public class ItemStatisticsHandler implements Listener {
 	@NotNull
 	public static GUI getGUI(final ItemStack item) {
 		GUI gui = new GUI(MineTinker.getPlugin());
-		Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), gui::close, 5 * 60 * 20);
+		ServerHandler.getServerHandler().runTaskLater(gui::close, 5 * 60 * 20);
 		List<Modifier> mods = ModManager.instance().getAllowedMods();
 		mods.sort(Comparator.comparing(Modifier::getName));
 

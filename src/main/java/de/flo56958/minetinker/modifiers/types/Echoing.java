@@ -7,6 +7,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
@@ -135,7 +136,7 @@ public class Echoing extends Modifier implements Listener {
 
 	@Override
 	public void reload() {
-		if (taskID != -1) Bukkit.getScheduler().cancelTask(taskID);
+		if (taskID != -1) ServerHandler.getServerHandler().cancelTask(taskID);
 
 		FileConfiguration config = getConfig();
 		config.options().copyDefaults(true);
@@ -164,7 +165,7 @@ public class Echoing extends Modifier implements Listener {
 		this.radiusPerLevel = config.getInt("RadiusPerLevel", 10);
 
 		if (isAllowed())
-			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MineTinker.getPlugin(),
+			this.taskID = ServerHandler.getServerHandler().scheduleSyncRepeatingTask(
 					this.runnable, 5 * 20L, tickTime);
 		else
 			this.taskID = -1;

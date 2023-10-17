@@ -1,12 +1,16 @@
 package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.CooldownModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -120,7 +124,7 @@ public class VoidNetting extends CooldownModifier implements Listener {
 		//Add small cooldown to improve server performance
 		setCooldown(armor, Math.round(this.cooldownInSeconds * 0.05));
 
-		Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> {
+		ServerHandler.getServerHandler().runTaskAsynchronously(() -> {
 			//run effect async as it does not need to stop all action on server if search takes to long
 			Location loc = player.getLocation();
 			for (int i = 0; i < level * radiusPerLevel; i++) {
@@ -155,9 +159,10 @@ public class VoidNetting extends CooldownModifier implements Listener {
 							this.getCooldown(level) / 1000));
 
 			Location finalLoc = loc;
-			Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> { //Teleport needs to be in sync
+			ServerHandler.getServerHandler().runTask(() -> { //Teleport needs to be in sync
 				//Slow the fall
 				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 20, 0, false));
+				ServerHandler.getServerHandler().teleportEntity(player, finalLoc);
 				player.teleport(finalLoc);
 				player.setVelocity(new Vector(0, 0, 0));
 

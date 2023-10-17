@@ -1,15 +1,18 @@
 package de.flo56958.minetinker.listeners;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
-import org.bukkit.Bukkit;
+import io.papermc.paper.enchantments.EnchantmentRarity;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
+import org.bukkit.entity.EntityCategory;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,17 +23,24 @@ import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.AnvilInventory;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class EnchantingListener implements Listener {
 
 	private final ModManager modManager = ModManager.instance();
 
 	private static final Enchantment fakeEnchant = new Enchantment(new NamespacedKey(MineTinker.getPlugin(), "fake_enchant")) {
+		@Override
+		public @NotNull String translationKey() {
+			return null;
+		}
+
 		@Override
 		public @NotNull String getName() {
 			return "MineTinker Fake Enchant";
@@ -69,6 +79,36 @@ public class EnchantingListener implements Listener {
 		@Override
 		public boolean canEnchantItem(@NotNull ItemStack item) {
 			return ModManager.instance().isArmorViable(item) || ModManager.instance().isToolViable(item);
+		}
+
+		@Override
+		public @NotNull Component displayName(int level) {
+			return null;
+		}
+
+		@Override
+		public boolean isTradeable() {
+			return false;
+		}
+
+		@Override
+		public boolean isDiscoverable() {
+			return false;
+		}
+
+		@Override
+		public @NotNull EnchantmentRarity getRarity() {
+			return null;
+		}
+
+		@Override
+		public float getDamageIncrease(int level, @NotNull EntityCategory entityCategory) {
+			return 0;
+		}
+
+		@Override
+		public @NotNull Set<EquipmentSlot> getActiveSlots() {
+			return null;
 		}
 	};
 
@@ -119,7 +159,7 @@ public class EnchantingListener implements Listener {
 		toremove.forEach(enchants::remove);
 		if (enchants.isEmpty()) { //This Map should never be empty as the
 			enchants.put(fakeEnchant, 1);
-			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> event.getItem().removeEnchantment(fakeEnchant), 1);
+			ServerHandler.getServerHandler().runTaskLater(() -> event.getItem().removeEnchantment(fakeEnchant), 1);
 		}
 	}
 

@@ -2,6 +2,7 @@ package de.flo56958.minetinker.commands.subs;
 
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.SubCommand;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.data.Lists;
@@ -10,7 +11,6 @@ import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.Updater;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -59,7 +59,7 @@ public class ReloadCommand implements SubCommand {
 				LanguageManager.getString("Commands.Reload.Finish", player));
 
 		if (MineTinker.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
-			Bukkit.getScheduler().runTaskLaterAsynchronously(MineTinker.getPlugin(), (Runnable) Updater::checkForUpdate, 20);
+			ServerHandler.getServerHandler().runTaskLaterAsynchronously(Updater::checkForUpdate, 20);
 		}
 		return true;
 	}

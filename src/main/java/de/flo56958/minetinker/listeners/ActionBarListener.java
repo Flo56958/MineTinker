@@ -1,6 +1,6 @@
 package de.flo56958.minetinker.listeners;
 
-import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.Bukkit;
@@ -31,7 +31,7 @@ public class ActionBarListener implements Listener {
 							.replaceAll("%amount", a));
 				}
 			}
-			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), this, 20);
+			ServerHandler.getServerHandler().runTaskLater(this, 20);
 		}
 	};
 

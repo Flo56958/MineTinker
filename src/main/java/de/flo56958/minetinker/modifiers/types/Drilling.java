@@ -2,6 +2,7 @@ package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTBlockBreakEvent;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
@@ -152,7 +153,7 @@ public class Drilling extends Modifier implements Listener {
 		final float hardness = block.getType().getHardness();
 
 		final BlockFace finalFace = face.getOppositeFace();
-		Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
+		ServerHandler.getServerHandler().runTask(() -> {
 			for (int i = 1; i <= level; i++) {
 				if (!drillingBlockBreak(block.getRelative(finalFace, i),
 						hardness, player, tool)) break;

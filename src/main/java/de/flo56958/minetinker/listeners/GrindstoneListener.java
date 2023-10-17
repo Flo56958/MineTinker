@@ -1,11 +1,11 @@
 package de.flo56958.minetinker.listeners;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -65,7 +65,7 @@ public class GrindstoneListener implements Listener {
 					//Illegal state
 					if (modManager.isToolViable(cursorItem) || modManager.isArmorViable(cursorItem)) {
 						event.setResult(Event.Result.DENY);
-						Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
+						ServerHandler.getServerHandler().runTaskLater(
 								() -> event.getClickedInventory().setItem(2, null), 1);
 					}
 					return;
@@ -112,7 +112,7 @@ public class GrindstoneListener implements Listener {
 				}
 
 				if (!hadMods) {
-					Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
+					ServerHandler.getServerHandler().runTaskLater(
 							() -> event.getClickedInventory().setItem(2, null), 2);
 					return;
 				}
@@ -139,7 +139,7 @@ public class GrindstoneListener implements Listener {
 				//by the player.
 				//This has mayor drawback e.g. it is highly incompatible with other grindstone plugins
 				//FIXME: Find a better workaround to set the output of the Grindstone
-				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
+				ServerHandler.getServerHandler().runTaskLater(
 						() -> event.getClickedInventory().setItem( /*Resultslot*/ 2, result), 1);
 				save.put(player, gs);
 			} else if (event.getSlotType() == InventoryType.SlotType.RESULT) { //on Gridstone use

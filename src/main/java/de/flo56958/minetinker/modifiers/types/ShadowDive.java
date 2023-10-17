@@ -1,6 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
@@ -24,7 +25,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.util.*;
@@ -36,7 +36,7 @@ public class ShadowDive extends Modifier implements Listener {
 	private int requiredLightLevel;
 	private final HashMap<Player, Integer> activePlayers = new HashMap<>();
 
-	private BukkitTask task;
+	private int taskID = -1;
 	private ShadowDive() {
 		super(MineTinker.getPlugin());
 		customModelData = 10_052;
@@ -94,9 +94,9 @@ public class ShadowDive extends Modifier implements Listener {
 
 	@Override
 	public void reload() {
-		if (task != null) {
-			task.cancel();
-			task = null;
+		if (taskID != -1) {
+			ServerHandler.getServerHandler().cancelTask(taskID);
+			taskID = -1;
 		}
 		FileConfiguration config = getConfig();
 		config.options().copyDefaults(true);
@@ -130,7 +130,7 @@ public class ShadowDive extends Modifier implements Listener {
 
 		this.description = this.description.replaceAll("%level", String.valueOf(this.requiredLightLevel));
 
-		if (this.isAllowed()) task = Bukkit.getScheduler().runTaskTimer(MineTinker.getPlugin(), runnable, 0,5);
+		if (this.isAllowed()) taskID = ServerHandler.getServerHandler().scheduleSyncRepeatingTask(runnable, 0,5);
 	}
 
 	private void hidePlayer(Player p, int level) {

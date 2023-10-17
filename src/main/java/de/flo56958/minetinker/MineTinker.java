@@ -1,5 +1,6 @@
 package de.flo56958.minetinker;
 
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.data.Lists;
@@ -17,7 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -72,6 +72,7 @@ public class MineTinker extends JavaPlugin {
 		loadConfig(); //load Main config
 
 		parseMCVersion();
+		ServerHandler.init();
 		LanguageManager.reload(); //Load Language system
 
 		ConfigurationManager.reload();
@@ -151,7 +152,7 @@ public class MineTinker extends JavaPlugin {
 		}
 
 		if (getConfig().getBoolean("CheckForUpdates"))
-			Bukkit.getScheduler().runTaskLaterAsynchronously(this, (@NotNull Runnable) Updater::checkForUpdate, 20);
+			ServerHandler.getServerHandler().runTaskLaterAsynchronously(Updater::checkForUpdate, 20);
 	}
 
 	private void addCoreMods() {

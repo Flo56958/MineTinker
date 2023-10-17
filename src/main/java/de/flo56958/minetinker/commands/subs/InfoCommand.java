@@ -6,6 +6,7 @@ import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.api.gui.ButtonAction;
 import de.flo56958.minetinker.api.gui.GUI;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.data.contributor.Contributor;
@@ -35,7 +36,7 @@ public class InfoCommand implements SubCommand {
 
 	public InfoCommand() {
 		infoGUI = new GUI(MineTinker.getPlugin());
-		Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> {
+		ServerHandler.getServerHandler().runTaskAsynchronously(() -> {
 			GUI.Window window = infoGUI.addWindow(1, "MineTinker-Info");
 			ItemStack stack = new ItemStack(Material.DIAMOND_PICKAXE);
 			ItemMeta meta = stack.getItemMeta();

@@ -1,6 +1,7 @@
 package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
@@ -191,7 +192,7 @@ public class Photosynthesis extends Modifier implements Listener {
 
 	@Override
 	public void reload() {
-		if (taskID != -1) Bukkit.getScheduler().cancelTask(taskID);
+		if (taskID != -1) ServerHandler.getServerHandler().cancelTask(taskID);
 
 		FileConfiguration config = getConfig();
 		config.options().copyDefaults(true);
@@ -250,7 +251,7 @@ public class Photosynthesis extends Modifier implements Listener {
 
 			for (final Player player : Bukkit.getOnlinePlayers())
 				data.putIfAbsent(player.getUniqueId(), new Tupel(player.getLocation(), System.currentTimeMillis(), false));
-			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MineTinker.getPlugin(), this.runnable, 5 * 20L, this.tickTime);
+			this.taskID = ServerHandler.getServerHandler().scheduleSyncRepeatingTask(this.runnable, 5 * 20L, this.tickTime);
 		} else
 			this.taskID = -1;
 	}

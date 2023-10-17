@@ -5,6 +5,7 @@ import de.flo56958.minetinker.api.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.api.events.MTPlayerInteractEvent;
 import de.flo56958.minetinker.api.gui.ButtonAction;
 import de.flo56958.minetinker.api.gui.GUI;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.ModManager;
@@ -221,7 +222,7 @@ public class BlockListener implements Listener {
 				} else {
 					// Create GUI for easy choosing of Modifier to enchant
 					final GUI gui = new GUI(MineTinker.getPlugin());
-					Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), gui::close, 5 * 60 * 20);
+					ServerHandler.getServerHandler().runTaskLater(gui::close, 5 * 60 * 20);
 
 					final int size = Math.min(modifiers.size() / 9 + 1, 6);
 					final GUI.Window window = gui.addWindow(size, LanguageManager.getString("GUIs.Enchantable.Title", player));

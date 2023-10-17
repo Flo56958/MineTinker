@@ -8,6 +8,7 @@ description: @project.description@
 website: @project.url@
 database: false
 api-version: "1.14"
+folia-supported: true
 
 softdepend: [ProtocolLib]
 

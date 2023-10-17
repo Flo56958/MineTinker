@@ -3,12 +3,12 @@ package de.flo56958.minetinker.modifiers.types;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.api.events.MTProjectileLaunchEvent;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.PlayerInfo;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -142,10 +142,10 @@ public class Magical extends Modifier implements Listener {
 		ChatWriter.logModifier(player, event, this, tool, "Cost(" + this.experienceCost + ")");
 
 		for (int i = 1; i < 30; i++) {
-			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> arrow.setVelocity(velocity.clone()), i * 20L);
+			ServerHandler.getServerHandler().runTaskLater(() -> arrow.setVelocity(velocity.clone()), i * 20L);
 		}
 
-		Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> arrow.setGravity(true), 30 * 20L);
+		ServerHandler.getServerHandler().runTaskLater(() -> arrow.setGravity(true), 30 * 20L);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)

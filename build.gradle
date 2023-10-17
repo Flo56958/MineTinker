@@ -18,6 +18,11 @@ repositories {
         url = uri('https://hub.spigotmc.org/nexus/content/repositories/snapshots/')
     }
 
+    // Paper
+    maven {
+        url = uri("https://repo.papermc.io/repository/maven-public/")
+    }
+
     maven {
         url = uri('https://repo.codemc.org/repository/maven-public')
     }
@@ -36,12 +41,14 @@ dependencies {
     implementation 'org.bstats:bstats-bukkit:3.0.2'
 
     compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "5.1.0"
+
+    compileOnly "dev.folia:folia-api:1.20.1-R0.1-SNAPSHOT"
 }
 
 group = 'de.flo56958'
 version = '1.8.2'
 description = 'A TinkersConstruct (and other mods) inspired spigot server plugin'
-java.sourceCompatibility = JavaVersion.VERSION_16
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 jar.dependsOn(processResources)
 assemble.dependsOn(shadowJar)

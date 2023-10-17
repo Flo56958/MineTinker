@@ -2,6 +2,7 @@ package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTBlockBreakEvent;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
@@ -125,7 +126,7 @@ public class Timber extends Modifier implements Listener {
 				final HashSet<Material> allowed = new HashSet<>();
 				allowed.add(block.getType());
 
-				Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(),
+				ServerHandler.getServerHandler().runTaskAsynchronously(
 						() -> breakTree(player, tool, block, allowed, locs, null));
 				ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType() + ")");
 			}
@@ -196,7 +197,7 @@ public class Timber extends Modifier implements Listener {
 		final HashSet<Location> locs = new HashSet<>();
 		locs.add(block.getLocation());
 		final Material finalSaplingType = saplingType;
-		Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(),
+		ServerHandler.getServerHandler().runTaskAsynchronously(
 				() -> breakTree(player, tool, block, allowed, locs, finalSaplingType));
 
 		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType() + ")");
@@ -231,7 +232,7 @@ public class Timber extends Modifier implements Listener {
 													// Block isn't broken yet
 													counter++;
 													if (counter <= 10) {
-														Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), this, 10L);
+														ServerHandler.getServerHandler().runTaskLater(this, 10L);
 													}
 													return;
 												}
@@ -247,7 +248,7 @@ public class Timber extends Modifier implements Listener {
 												}
 											}
 										};
-										Bukkit.getScheduler().runTask(MineTinker.getPlugin(), runnable);
+										ServerHandler.getServerHandler().runTask(runnable);
 										break;
 									}
 								}
@@ -266,7 +267,7 @@ public class Timber extends Modifier implements Listener {
 					if (allowed.contains(toBreak.getType())) {
 						breakTree(player, tool, toBreak, allowed, locs, sapling);
 						events.put(toBreak.getLocation(), 0);
-						Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
+						ServerHandler.getServerHandler().runTask(() -> {
 							try {
 								DataHandler.playerBreakBlock(player, toBreak, tool);
 							} catch (IllegalArgumentException e) {

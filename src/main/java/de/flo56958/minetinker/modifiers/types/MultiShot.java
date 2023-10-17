@@ -2,6 +2,7 @@ package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTProjectileLaunchEvent;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
@@ -134,7 +135,7 @@ public class MultiShot extends Modifier implements Listener {
 		entity.setMaximumNoDamageTicks(0);
 		event.setCancelled(false);
 
-		Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> entity.setMaximumNoDamageTicks(20), 20);
+		ServerHandler.getServerHandler().runTaskLater(() -> entity.setMaximumNoDamageTicks(20), 20);
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -193,7 +194,7 @@ public class MultiShot extends Modifier implements Listener {
 				if (!hasArrow) break;
 			}
 
-			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
+			ServerHandler.getServerHandler().runTaskLater(() -> {
 				final Arrow arr = loc.getWorld().spawnArrow(loc, vel, (float) vel.length(), (float) spread);
 				arr.setShooter(player);
 				arr.setShotFromCrossbow(arrow.isShotFromCrossbow());

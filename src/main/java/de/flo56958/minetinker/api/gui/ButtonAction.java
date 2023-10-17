@@ -1,6 +1,7 @@
 package de.flo56958.minetinker.api.gui;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.Bukkit;
@@ -156,7 +157,7 @@ public abstract class ButtonAction {
 		}
 
 		private void afterRun(Player player) {
-			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> button.getWindow().getGUI().show(player, button.getWindow()), 10);
+			ServerHandler.getServerHandler().runTaskLater(() -> button.getWindow().getGUI().show(player, button.getWindow()), 10);
 		}
 	}
 

@@ -1,12 +1,12 @@
 package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -146,7 +146,7 @@ public class Tanky extends Modifier implements Listener {
 		if (modManager.isArmorViable(chest) && modManager.hasMod(chest, this)) {
 			health = DataHandler.getTag(chest, "modifier_tanky_health_save", PersistentDataType.DOUBLE);
 			if (health != null && health > 0) {
-				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
+				ServerHandler.getServerHandler().runTaskLater(() -> {
 					try {
 						event.getPlayer().setHealth(health);
 					} catch(IllegalArgumentException ignored) {}
@@ -160,7 +160,7 @@ public class Tanky extends Modifier implements Listener {
 			if (modManager.isArmorViable(chest) && modManager.hasMod(chest, this)) {
 				health = DataHandler.getTag(chest, "modifier_tanky_health_save", PersistentDataType.DOUBLE);
 				if (health != null) {
-					Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> event.getPlayer().setHealth(health), 10L);
+					ServerHandler.getServerHandler().runTaskLater(() -> event.getPlayer().setHealth(health), 10L);
 					DataHandler.removeTag(chest, "modifier_tanky_health_save");
 				} else return;
 			} else return;
