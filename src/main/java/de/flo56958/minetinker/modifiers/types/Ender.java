@@ -4,6 +4,7 @@ import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.api.events.MTProjectileHitEvent;
 import de.flo56958.minetinker.api.events.MTProjectileLaunchEvent;
+import de.flo56958.minetinker.api.serverhandler.ServerHandler;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
@@ -158,7 +159,7 @@ public class Ender extends Modifier implements Listener {
 		final Location loc = event.getEvent().getEntity().getLocation().clone(); //Location of the Arrow
 		final Location oldLoc = player.getLocation();
 
-		player.teleport(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(),
+		ServerHandler.getServerHandler().teleportEntity(player, new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(),
 				player.getLocation().getYaw(), player.getLocation().getPitch()).add(0, 1, 0));
 
 		if (this.hasSound)
@@ -226,11 +227,11 @@ public class Ender extends Modifier implements Listener {
 
 		final Location loc = entity.getLocation().clone();
 		final Location oldLoc = player.getLocation();
-		entity.teleport(oldLoc);
+		ServerHandler.getServerHandler().teleportEntity(entity, oldLoc);
 
 		spawnParticles(player, loc);
 
-		player.teleport(loc);
+		ServerHandler.getServerHandler().teleportEntity(player, loc);
 
 		//Track stats
 		int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER))
