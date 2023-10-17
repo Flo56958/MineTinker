@@ -28,7 +28,7 @@ public class Drilling extends Modifier implements Listener {
 
 	public static final ConcurrentHashMap<Location, Integer> events = new ConcurrentHashMap<>();
 	private static Drilling instance;
-	private HashSet<Material> blacklist;
+	private HashSet<Material> blacklist = new HashSet<>();
 	private boolean treatAsWhitelist;
 	private boolean toggleable;
 
