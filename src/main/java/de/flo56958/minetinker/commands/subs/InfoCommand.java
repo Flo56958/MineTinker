@@ -64,7 +64,9 @@ public class InfoCommand implements SubCommand {
 				stack = new ItemStack(Material.PLAYER_HEAD);
 				meta = stack.getItemMeta();
 				if (meta instanceof SkullMeta) {
-					((SkullMeta) meta).setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString("5b2c7922-ea02-4cfd-8003-e28778f8c225")));
+					try {
+						((SkullMeta) meta).setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString("5b2c7922-ea02-4cfd-8003-e28778f8c225")));
+					} catch (NullPointerException ignored) {} // If this happens, the UUID can not be looked up
 					meta.setDisplayName("Contributors");
 					meta.setLore(Collections.singletonList(ChatColor.WHITE + "Click here to see all contributors"));
 				}
