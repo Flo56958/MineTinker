@@ -268,20 +268,20 @@ public class GUI implements Listener {
 		 * @return the slot
 		 * @throws IllegalArgumentException when Coordinates less than zero
 		 */
-		private static int getSlot(final int x, final int y, Window window) throws IllegalArgumentException {
+		private int getSlot(final int x, final int y) throws IllegalArgumentException {
 			if (x < 0 || y < 0 || x > 8)
 				throw new IllegalArgumentException("Coordinates can not be less than ZERO or too big!");
 
 			int slot = (9 * y) + x;
 
-			if (slot >= window.inventory.getSize())
+			if (slot >= this.inventory.getSize())
 				throw new IllegalArgumentException("Coordinates are to big for the given Inventory!");
 
 			return slot;
 		}
 
 		public Button addButton(final int x, final int y, @NotNull final ItemStack item) throws IllegalArgumentException {
-			return addButton(getSlot(x, y, this), item);
+			return addButton(getSlot(x, y), item);
 		}
 
         /**
@@ -294,7 +294,7 @@ public class GUI implements Listener {
          */
         @Nullable
         public Button getButton(final int x, final int y) throws IllegalArgumentException {
-            return buttonMap[getSlot(x, y, this)];
+            return buttonMap[getSlot(x, y)];
         }
 
 		/**
@@ -378,6 +378,10 @@ public class GUI implements Listener {
 					}
 				}
 			}
+		}
+
+		public int getSize() {
+			return this.inventory.getSize();
 		}
 
 		/**

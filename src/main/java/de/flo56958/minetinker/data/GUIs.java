@@ -218,10 +218,6 @@ public class GUIs {
 								for (final char c : s.toCharArray()) {
 									slot++;
 
-									if (c == ' ') {
-										continue;
-									}
-
 									try {
 										ItemStack resItem = srec.getIngredientMap().get(c).clone();
 										DataHandler.setTag(resItem, "MT-MODSRecipeItem",
@@ -235,6 +231,8 @@ public class GUIs {
 											}
 										}
 									} catch (NullPointerException ignored) {
+										// Add empty button if no ingredient is present
+										modRecipe.addButton((slot % 3) + 2, (slot / 3), new ItemStack(Material.AIR));
 									}
 								}
 
@@ -281,6 +279,31 @@ public class GUIs {
 			}
 		}
 
+		if (i == 0) modifierGUI.removeWindow(currentPage);
+
+		while(i % 28 != 0) {
+			currentPage.addButton((i % 7) + 1, (i / 7) + 1, new ItemStack(Material.AIR));
+			i++;
+		}
+
+		final ItemStack filler = new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1);
+		final ItemMeta fillerMeta = filler.getItemMeta();
+		if (fillerMeta != null) {
+			fillerMeta.setDisplayName(ChatColor.WHITE + "");
+			filler.setItemMeta(fillerMeta);
+		}
+
+		for (GUI gui : List.of(modifierGUI, modRecipes)) {
+			for (int id = 0; id < gui.getWindowAmount(); id++) {
+				GUI.Window window = gui.getWindow(id);
+				for (int slot = 0; slot < window.getSize(); slot++) {
+					if (window.getButton(slot) == null) {
+						window.addButton(slot, filler);
+					}
+				}
+			}
+		}
+
 		return modifierGUI;
 	}
 
@@ -323,6 +346,8 @@ public class GUIs {
 				final List<Modifier> mods = ModManager.instance().getAllowedMods();
 				mods.removeIf(mod -> !mod.getAllowedTools().stream().map(ToolType::getToolMaterials)
 						.flatMap(HashSet::stream).anyMatch(type.getToolMaterials()::contains));
+
+				if (mods.isEmpty()) continue;
 
 				final GUI filteredGUI = (type == ToolType.ALL)
 						? modGUI : createModGUI(mods, LanguageManager.getString("ToolType." + type.name()) + ": ");
