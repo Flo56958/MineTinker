@@ -21,6 +21,7 @@ LanguageManagerNotifyOP: true         #Should the LanguageManager notify the ser
 #--COMMANDS--
 NameCommandBlacklist:                 #Which words are not allowed in the name of Tools and Armor (Regex-Expressions allowed)
   - BlacklistExample
+ExtendedModifierGUI: true             #Should the Extended Modifier GUI be enabled
 
 #---------------EXP-SETTINGS--------------
 LevelStep: 100                        #*(LevelFactor^LevelOfTool) [EXPONENTIAL]; *(LevelFactor*LevelOfTool) [LINEAR]

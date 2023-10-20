@@ -64,167 +64,140 @@ public class GUIs {
 		reload();
 	}
 
-	public static void reload() {
-		if (modGUI != null) modGUI.close();
-		if (configurationsGUI != null) configurationsGUI.close();
+	@NotNull
+	private static GUI createModGUI(@NotNull final Collection<Modifier> modifiers, @NotNull final String title) {
+		int pageNo = 0;
+		GUI modifierGUI = new GUI(MineTinker.getPlugin());
+		GUI modRecipes = new GUI(MineTinker.getPlugin());
+		GUI.Window currentPage = modifierGUI.addWindow(6, title + LanguageManager.getString("GUIs.Modifiers.Title")
+				.replaceFirst("%pageNo", String.valueOf(++pageNo)));
 
-		/*/mt mods GUIs*/
-		{
-			int pageNo = 0;
-			modGUI = new GUI(MineTinker.getPlugin());
-			GUI modRecipes = new GUI(MineTinker.getPlugin());
-			GUI.Window currentPage = modGUI.addWindow(6, LanguageManager.getString("GUIs.Modifiers.Title")
-					.replaceFirst("%pageNo", String.valueOf(++pageNo)));
+		int i = 0;
 
-			int i = 0;
-
+		if (modifiers.size() > 28)
 			addNavigationButtons(currentPage);
 
-			for (Modifier m : ModManager.instance().getAllowedMods()) {
-				ItemStack item = m.getModItem().clone();
-				ItemMeta meta = item.getItemMeta();
+		for (final Modifier m : modifiers) {
+			final ItemStack item = m.getModItem().clone();
+			final ItemMeta meta = item.getItemMeta();
 
-				if (meta != null) {
-					meta.setDisplayName(m.getColor() + "" + ChatColor.UNDERLINE + ChatColor.BOLD + m.getName());
-					ArrayList<String> lore = new ArrayList<>();
+			if (meta != null) {
+				meta.setDisplayName(m.getColor() + "" + ChatColor.UNDERLINE + ChatColor.BOLD + m.getName());
+				final ArrayList<String> lore = new ArrayList<>();
 
-					String modifierItemName = Objects.requireNonNull(m.getModItem().getItemMeta()).getDisplayName();
-					if (!modifierItemName.isEmpty()) {
-						lore.add(ChatColor.WHITE + modifierItemName);
-						lore.add("");
-					}
-
-					List<String> descList = ChatWriter.splitString(m.getDescription(), 30);
-					for (String descPart : descList) {
-						lore.add(ChatColor.WHITE + descPart);
-					}
-
+				String modifierItemName = Objects.requireNonNull(m.getModItem().getItemMeta()).getDisplayName();
+				if (!modifierItemName.isEmpty()) {
+					lore.add(ChatColor.WHITE + modifierItemName);
 					lore.add("");
+				}
 
-					// Max level
-					final String maxLevel = ChatColor.WHITE
-							+ (ModManager.layout.getBoolean("UseRomans.Level")
-							? ChatWriter.toRomanNumerals(m.getMaxLvl())
-							: String.valueOf(m.getMaxLvl())) + ChatColor.GOLD;
-					lore.add(ChatColor.GOLD + LanguageManager.getString("GUIs.Modifiers.MaxLevel")
-							.replaceFirst("%maxLevel", maxLevel));
+				lore.addAll(ChatWriter.splitString(m.getDescription(), 30));
 
-					//Minimum Tool Level
-					if (m.getMinimumLevelRequirement() >= 1) {
-						lore.add(ChatColor.GOLD + LanguageManager.getString("GUIs.Modifiers.MinimumToolLevel")
-								.replaceFirst("%level",
-										ModManager.layout.getBoolean("UseRomans.Level")
-												? ChatWriter.toRomanNumerals(m.getMinimumLevelRequirement())
-												: String.valueOf(m.getMinimumLevelRequirement())));
-					}
+				lore.add("");
 
-					// Enchant Cost
-					if (m.isEnchantable()) {
-						final String cost = ChatColor.YELLOW + LanguageManager.getString("GUIs.Modifiers.EnchantCost");
-						lore.add(cost.replaceFirst("%enchantCost",
-								ModManager.layout.getBoolean("UseRomans.Level")
-										? ChatWriter.toRomanNumerals(m.getEnchantCost())
-										: String.valueOf(m.getEnchantCost())));
-						lore.addAll(ChatWriter.splitString(LanguageManager.getString("GUIs.Modifiers.BlockToEnchant")
-								.replace("%block", ChatColor.ITALIC
-										+ ChatWriter.toCamel(MineTinker.getPlugin().getConfig().getString("BlockToEnchantModifiers", ""))
-										+ ChatColor.RESET + ChatColor.WHITE)
-								.replace("%mat", ChatWriter.toCamel(m.getModItem().getType().name())).replace("%key",
-										LanguageManager.getString("GUIs.RightClick")), 30));
-					}
+				// Max level
+				final String maxLevel = ChatColor.WHITE
+						+ (ModManager.layout.getBoolean("UseRomans.Level")
+						? ChatWriter.toRomanNumerals(m.getMaxLvl())
+						: String.valueOf(m.getMaxLvl())) + ChatColor.GOLD;
+				lore.add(ChatColor.GOLD + LanguageManager.getString("GUIs.Modifiers.MaxLevel")
+						.replaceFirst("%maxLevel", maxLevel));
 
-					// Recipe Hint
-					if (m.hasRecipe()) {
-						lore.addAll(ChatWriter.splitString(LanguageManager.getString("GUIs.Modifiers.ClickToRecipe")
-								.replace("%key", LanguageManager.getString("GUIs.LeftClick")), 30));
-					}
+				//Minimum Tool Level
+				if (m.getMinimumLevelRequirement() > 1) {
+					lore.add(ChatColor.GOLD + LanguageManager.getString("GUIs.Modifiers.MinimumToolLevel")
+							.replaceFirst("%level",
+									ModManager.layout.getBoolean("UseRomans.Level")
+											? ChatWriter.toRomanNumerals(m.getMinimumLevelRequirement())
+											: String.valueOf(m.getMinimumLevelRequirement())));
+				}
 
-					//Slot cost
-					lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.SlotCost")
-							.replaceFirst("%amount",
-										ModManager.layout.getBoolean("UseRomans.FreeSlots")
-												? ChatWriter.toRomanNumerals(m.getSlotCost())
-												: String.valueOf(m.getSlotCost())));
+				// Enchant Cost
+				if (m.isEnchantable()) {
+					final String cost = ChatColor.YELLOW + LanguageManager.getString("GUIs.Modifiers.EnchantCost");
+					lore.add(cost.replaceFirst("%enchantCost",
+							ModManager.layout.getBoolean("UseRomans.Level")
+									? ChatWriter.toRomanNumerals(m.getEnchantCost())
+									: String.valueOf(m.getEnchantCost())));
+					lore.addAll(ChatWriter.splitString(LanguageManager.getString("GUIs.Modifiers.BlockToEnchant")
+							.replace("%block", ChatColor.ITALIC
+									+ ChatWriter.toCamel(MineTinker.getPlugin().getConfig().getString("BlockToEnchantModifiers", ""))
+									+ ChatColor.RESET + ChatColor.WHITE)
+							.replace("%mat", ChatWriter.toCamel(m.getModItem().getType().name())).replace("%key",
+									LanguageManager.getString("GUIs.RightClick")), 30));
+				}
 
-					lore.add("");
+				// Recipe Hint
+				if (m.hasRecipe()) {
+					lore.addAll(ChatWriter.splitString(LanguageManager.getString("GUIs.Modifiers.ClickToRecipe")
+							.replace("%key", LanguageManager.getString("GUIs.LeftClick")), 30));
+				}
 
-					//Modifier incompatibilities
-					List<Modifier> incomp = new ArrayList<>(ModManager.instance().getIncompatibilities(m));
-					incomp.removeIf(mod -> !mod.isAllowed());
-					if (!incomp.isEmpty()) {
-						incomp.sort(Comparator.comparing(Modifier::getName));
-						final StringBuilder incompatibilities = new StringBuilder();
-						for (final Modifier in : incomp) {
-							incompatibilities.append(in.getName()).append(", ");
-						}
+				//Slot cost
+				lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.SlotCost")
+						.replaceFirst("%amount",
+								ModManager.layout.getBoolean("UseRomans.FreeSlots")
+										? ChatWriter.toRomanNumerals(m.getSlotCost())
+										: String.valueOf(m.getSlotCost())));
 
-						lore.add(ChatColor.DARK_RED + "" + ChatColor.BOLD
-								+ LanguageManager.getString("GUIs.Modifiers.IncompatibleWith"));
+				lore.add("");
 
-						lore.addAll(ChatWriter.splitString(incompatibilities
-								.substring(0, incompatibilities.length() - 2), 30));
-					}
+				//Modifier incompatibilities
+				List<Modifier> incomp = new ArrayList<>(ModManager.instance().getIncompatibilities(m));
+				incomp.removeIf(mod -> !mod.isAllowed());
+				if (!incomp.isEmpty()) {
+					incomp.sort(Comparator.comparing(Modifier::getName));
+					final StringBuilder incompatibilities = new StringBuilder();
+					incomp.forEach(mod -> incompatibilities.append(mod.getName()).append(ChatColor.WHITE).append(", "));
 
-					// Applied Enchantments
-					final List<Enchantment> enchants = m.getAppliedEnchantments();
-					if (!enchants.isEmpty()) {
-						enchants.sort(Comparator.comparing(e -> LanguageManager.getString("Enchantment." + e.getKey().getKey())));
-						lore.add(ChatColor.BLUE + "" + ChatColor.BOLD + LanguageManager.getString("GUIs.Modifiers.CanApply"));
+					lore.add(ChatColor.DARK_RED + "" + ChatColor.BOLD
+							+ LanguageManager.getString("GUIs.Modifiers.IncompatibleWith"));
 
-						final StringBuilder e = new StringBuilder();
-						for (final Enchantment enchant : enchants) {
-							e.append(LanguageManager.getString("Enchantment." + enchant.getKey().getKey())).append(", ");
-						}
+					lore.addAll(ChatWriter.splitString(incompatibilities
+							.substring(0, incompatibilities.length() - 2), 30));
+				}
 
-						final List<String> lines = ChatWriter.splitString(e.substring(0, e.length() - 2),30);
-						lore.addAll(lines);
-					}
+				// Applied Enchantments
+				final List<Enchantment> enchants = m.getAppliedEnchantments();
+				if (!enchants.isEmpty()) {
+					enchants.sort(Comparator.comparing(e -> LanguageManager.getString("Enchantment." + e.getKey().getKey())));
+					lore.add(ChatColor.BLUE + "" + ChatColor.BOLD + LanguageManager.getString("GUIs.Modifiers.CanApply"));
 
-					// Allowed Tools
-					lore.add(ChatColor.BLUE + "" + ChatColor.BOLD + LanguageManager.getString("GUIs.Modifiers.WorksOn"));
+					final StringBuilder e = new StringBuilder();
+					enchants.forEach(enchant ->
+							e.append(LanguageManager.getString("Enchantment." + enchant.getKey().getKey())).append(", "));
+					lore.addAll(ChatWriter.splitString(e.substring(0, e.length() - 2),30));
+				}
 
-					final StringBuilder builder = new StringBuilder();
+				// Allowed Tools
+				lore.add(ChatColor.BLUE + "" + ChatColor.BOLD + LanguageManager.getString("GUIs.Modifiers.WorksOn"));
 
-					builder.append(ChatColor.WHITE);
+				final StringBuilder builder = new StringBuilder();
+				builder.append(ChatColor.WHITE);
+				final List<ToolType> types = m.getAllowedTools();
+				types.sort(Comparator.comparing(t -> LanguageManager.getString("ToolType." + t.name())));
+				types.forEach(type -> builder.append(LanguageManager.getString("ToolType." + type.name())).append(", "));
+				lore.addAll(ChatWriter.splitString(builder.substring(0, builder.length() - 2),30));
 
-					final List<ToolType> types = m.getAllowedTools();
-					types.sort(Comparator.comparing(t -> LanguageManager.getString("ToolType." + t.name())));
+				// Apply lore changes
+				meta.setLore(lore);
+				item.setItemMeta(meta);
 
-					for (final ToolType toolType : types) {
-						builder.append(LanguageManager.getString("ToolType." + toolType.name())).append(", ");
-					}
+				// Setup click actions
+				GUI.Window.Button modButton = currentPage.addButton((i % 7) + 1, (i / 7) + 1, item);
+				//GiveModifierItem-Action
+				modButton.addAction(ClickType.SHIFT_LEFT, new ButtonAction.RUN_RUNNABLE_ON_PLAYER(modButton,
+						(player, input) -> {
+							if (player.hasPermission("minetinker.commands.givemodifieritem")) {
+								if (!player.getInventory().addItem(m.getModItem()).isEmpty()) { //adds items to (full) inventory
+									player.getWorld().dropItem(player.getLocation(), m.getModItem());
+								} // no else as it gets added in if-clause
+							}
+						}));
 
-					final List<String> lines = ChatWriter.splitString(builder.substring(0, builder.length() - 2),30);
-					lore.addAll(lines);
-
-					// Apply lore changes
-					meta.setLore(lore);
-					item.setItemMeta(meta);
-
-					// Setup click actions
-					GUI.Window.Button modButton = currentPage.addButton((i % 7) + 1, (i / 7) + 1, item);
-					//GiveModifierItem-Action
-					modButton.addAction(ClickType.SHIFT_LEFT, new ButtonAction.RUN_RUNNABLE_ON_PLAYER(modButton,
-							(player, input) -> {
-								if (player.hasPermission("minetinker.commands.givemodifieritem")) {
-									if (!player.getInventory().addItem(m.getModItem()).isEmpty()) { //adds items to (full) inventory
-										player.getWorld().dropItem(player.getLocation(), m.getModItem());
-									} // no else as it gets added in if-clause
-								}
-							}));
-
-					//Recipe Action
-					Recipe rec = null;
-
-					Iterator<Recipe> it = Bukkit.getServer().recipeIterator();
-
-					while (it.hasNext()) {
-						Recipe temp = it.next();
-						if (temp.getResult().equals(m.getModItem())) {
-							rec = temp;
-							break;
-						}
-					}
+				//Recipe Action
+				if (m.getNamespaceKey() != null) {
+					final Recipe rec = Bukkit.getRecipe(m.getNamespaceKey());
 
 					if (rec != null) {
 						GUI.Window modRecipe = modRecipes.addWindow(3, m.getColor() + m.getName());
@@ -294,19 +267,79 @@ public class GUIs {
 						GUI.Window.Button returnButton = modRecipe.addButton(8, 2, backOtherMenuStack.clone());
 						returnButton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(returnButton, currentPage));
 					}
+				}
 
-					i++;
+				i++;
 
-					if (i % 28 == 0) {
-						currentPage = modGUI.addWindow(6, LanguageManager.getString("GUIs.Modifiers.Title")
-								.replace("%pageNo", String.valueOf(++pageNo)));
+				if (i % 28 == 0) {
+					currentPage = modifierGUI.addWindow(6, title + LanguageManager.getString("GUIs.Modifiers.Title")
+							.replace("%pageNo", String.valueOf(++pageNo)));
 
-						addNavigationButtons(currentPage);
-						i = 0;
-					}
+					addNavigationButtons(currentPage);
+					i = 0;
 				}
 			}
 		}
+
+		return modifierGUI;
+	}
+
+	public static void reload() {
+		if (modGUI != null) modGUI.close();
+		if (configurationsGUI != null) configurationsGUI.close();
+
+		modGUI = createModGUI(ModManager.instance().getAllowedMods(),
+				LanguageManager.getString("ToolType.ALL") + ": ");
+		if (MineTinker.getPlugin().getConfig().getBoolean("ExtendedModifierGUI", true)) {
+			ArrayList<GUI> guis = new ArrayList<>();
+			guis.add(modGUI);
+			ItemStack filterStack = new ItemStack(Material.BOOK, 1);
+			ItemMeta filterMeta = filterStack.getItemMeta();
+			if (filterMeta != null) {
+				filterMeta.setDisplayName(ChatColor.YELLOW + LanguageManager.getString("GUIs.Modifiers.FilterButton"));
+				filterStack.setItemMeta(filterMeta);
+			}
+
+			List<ToolType> toolTypes = new ArrayList<>(List.of(ToolType.values()));
+			toolTypes.remove(ToolType.INVALID);
+			toolTypes.remove(ToolType.OTHER);
+			toolTypes.sort(Comparator.comparing(t -> LanguageManager.getString("ToolType." + t.name())));
+
+			int rows = (int) Math.ceil(toolTypes.size() / 9.0);
+			final GUI filterGUI = new GUI(MineTinker.getPlugin());
+			final GUI.Window filterPage = filterGUI.addWindow(rows, LanguageManager.getString("GUIs.Modifiers.FilterButton"));
+			for (int i = 0; i < toolTypes.size(); i++) {
+				final ToolType type = toolTypes.get(i);
+				final List<Material> materials = Arrays.asList(type.getToolMaterials().toArray(new Material[0]));
+				materials.sort(Comparator.comparing(Material::getMaxDurability));
+				final ItemStack item = (type == ToolType.ALL)
+						? new ItemStack(Material.GRASS_BLOCK, 1) : new ItemStack(materials.get(materials.size() - 1), 1);
+				final ItemMeta itemMeta = item.getItemMeta();
+				if (itemMeta != null) {
+					itemMeta.setDisplayName(ChatColor.WHITE + LanguageManager.getString("ToolType." + type.name()));
+					item.setItemMeta(itemMeta);
+				}
+				final GUI.Window.Button button = filterPage.addButton(i, item);
+				final List<Modifier> mods = ModManager.instance().getAllowedMods();
+				mods.removeIf(mod -> !mod.getAllowedTools().stream().map(ToolType::getToolMaterials)
+						.flatMap(HashSet::stream).anyMatch(type.getToolMaterials()::contains));
+
+				final GUI filteredGUI = (type == ToolType.ALL)
+						? modGUI : createModGUI(mods, LanguageManager.getString("ToolType." + type.name()) + ": ");
+				if (filteredGUI != modGUI) guis.add(filteredGUI);
+				button.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(button, filteredGUI.getWindow(0)));
+			}
+
+			guis.forEach(gui -> {
+				for (int i = 0; i < gui.getWindowAmount(); i++) {
+					GUI.Window window = gui.getWindow(i);
+
+					GUI.Window.Button button = window.addButton(4, 5, filterStack);
+					button.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(button, filterPage));
+				}
+			});
+		}
+
 		/* Main Configuration Manager*/
 		{
 			configurationsGUI = new GUI(MineTinker.getPlugin());

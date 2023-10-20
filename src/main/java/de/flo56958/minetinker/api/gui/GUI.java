@@ -1,6 +1,5 @@
 package de.flo56958.minetinker.api.gui;
 
-import de.flo56958.minetinker.MineTinker;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -151,7 +150,7 @@ public class GUI implements Listener {
 				return;
 			}
 
-			Bukkit.getPluginManager().registerEvents(this, MineTinker.getPlugin());
+			Bukkit.getPluginManager().registerEvents(this, this.plugin);
 			isClosed = false;
 		}
 	}
@@ -176,9 +175,7 @@ public class GUI implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onDisable(@NotNull PluginDisableEvent event) {
-		if (event.getPlugin().equals(this.plugin)) {
-			this.close();
-		}
+		if (event.getPlugin().equals(this.plugin)) this.close();
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
@@ -186,29 +183,20 @@ public class GUI implements Listener {
 		if (event.getClickedInventory() == null) return;
 		Window w1 = getWindowFromInventory(event.getClickedInventory());
 		Window w2 = getWindowFromInventory(event.getWhoClicked().getOpenInventory().getTopInventory());
-
-		if (w1 == null && w2 == null) {
-			return;
-		}
+		if (w1 == null && w2 == null) return;
 
 		event.setCancelled(true);
 
 		if (w1 == null) return;
-
 		Window.Button clickedButton = w1.getButton(event.getSlot());
 
-		if (clickedButton != null) {
-			clickedButton.executeAction(event);
-		}
+		if (clickedButton != null) clickedButton.executeAction(event);
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
 	public void onDrag(@NotNull InventoryDragEvent event) {
 		Window w = getWindowFromInventory(event.getInventory());
-
-		if (w == null) {
-			return;
-		}
+		if (w == null) return;
 
 		event.setCancelled(true);
 	}
@@ -216,11 +204,8 @@ public class GUI implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
 	public void onMove(@NotNull InventoryMoveItemEvent event) {
 		Window w1 = getWindowFromInventory(event.getDestination());
-
 		Window w2 = getWindowFromInventory(event.getInitiator());
-
 		Window w3 = getWindowFromInventory(event.getSource());
-
 		if (w1 == null && w2 == null && w3 == null) return;
 
 		event.setCancelled(true);
@@ -229,10 +214,7 @@ public class GUI implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
 	public void onEvent(@NotNull InventoryInteractEvent event) {
 		Window w = getWindowFromInventory(event.getInventory());
-
-		if (w == null) {
-			return;
-		}
+		if (w == null) return;
 
 		event.setCancelled(true);
 	}
@@ -268,7 +250,7 @@ public class GUI implements Listener {
 			size *= 9;
 
 			this.inventory = Bukkit.createInventory(null, size, title);
-			this.buttonMap = new Button[54];
+			this.buttonMap = new Button[this.inventory.getSize()];
 			this.gui = gui;
 		}
 
@@ -287,15 +269,13 @@ public class GUI implements Listener {
 		 * @throws IllegalArgumentException when Coordinates less than zero
 		 */
 		private static int getSlot(final int x, final int y, Window window) throws IllegalArgumentException {
-			if (x < 0 || y < 0 || x > 8) {
+			if (x < 0 || y < 0 || x > 8)
 				throw new IllegalArgumentException("Coordinates can not be less than ZERO or too big!");
-			}
 
 			int slot = (9 * y) + x;
 
-			if (slot >= window.inventory.getSize()) {
+			if (slot >= window.inventory.getSize())
 				throw new IllegalArgumentException("Coordinates are to big for the given Inventory!");
-			}
 
 			return slot;
 		}

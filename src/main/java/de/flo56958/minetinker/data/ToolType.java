@@ -73,14 +73,13 @@ public enum ToolType {
 
 		tools.put(ToolType.ARMOR, new HashSet<>(ToolType.HELMET.getToolMaterials())); //as other lists are unmodifiable
 		tools.get(ToolType.ARMOR).addAll(ToolType.ELYTRA.getToolMaterials());
-		tools.get(ToolType.ARMOR).addAll(ToolType.CHESTPLATE.getToolMaterials());
 		tools.get(ToolType.ARMOR).addAll(ToolType.LEGGINGS.getToolMaterials());
 		tools.get(ToolType.ARMOR).addAll(ToolType.BOOTS.getToolMaterials());
 		tools.get(ToolType.ARMOR).addAll(ToolType.SHIELD.getToolMaterials());
+		tools.get(ToolType.ARMOR).addAll(ToolType.CHESTPLATE.getToolMaterials());
 
 		tools.put(ToolType.TOOLS, new HashSet<>(ToolType.SWORD.getToolMaterials()));
 		tools.get(ToolType.TOOLS).addAll(ToolType.SHEARS.getToolMaterials());
-		tools.get(ToolType.TOOLS).addAll(ToolType.PICKAXE.getToolMaterials());
 		tools.get(ToolType.TOOLS).addAll(ToolType.SHOVEL.getToolMaterials());
 		tools.get(ToolType.TOOLS).addAll(ToolType.HOE.getToolMaterials());
 		tools.get(ToolType.TOOLS).addAll(ToolType.TRIDENT.getToolMaterials());
@@ -90,6 +89,7 @@ public enum ToolType {
 		tools.get(ToolType.TOOLS).addAll(ToolType.OTHER.getToolMaterials());
 		tools.get(ToolType.TOOLS).addAll(ToolType.SHIELD.getToolMaterials());
 		tools.get(ToolType.TOOLS).addAll(ToolType.AXE.getToolMaterials());
+		tools.get(ToolType.TOOLS).addAll(ToolType.PICKAXE.getToolMaterials());
 
 		tools.put(ToolType.ALL, all);
 	}

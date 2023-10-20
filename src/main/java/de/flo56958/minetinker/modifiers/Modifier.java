@@ -45,6 +45,8 @@ public abstract class Modifier {
 
 	private int minimumLevelRequirement = 1;
 
+	private NamespacedKey namespaceKey;
+
 	/**
 	 * Class constructor
 	 *
@@ -185,6 +187,8 @@ public abstract class Modifier {
 	public final boolean isEnchantable() {
 		return getConfig().getBoolean("Enchantable", false);
 	}
+
+	public final NamespacedKey getNamespaceKey() { return namespaceKey; }
 
 	/**
 	 * changes the core settings of the Modifier (like a secondary constructor)
@@ -351,6 +355,7 @@ public abstract class Modifier {
 			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 			ChatWriter.log(false, "Registered recipe for the " + this.name + "-Modifier!");
 			ModManager.instance().recipe_Namespaces.add(nkey);
+			this.namespaceKey = nkey;
 		} catch (Exception e) {
 			e.printStackTrace();
 			ChatWriter.logError("Could not register recipe for the " + this.name + "-Modifier!"); //executes if the recipe could not initialize
