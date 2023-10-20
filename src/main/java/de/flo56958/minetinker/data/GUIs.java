@@ -344,8 +344,8 @@ public class GUIs {
 				}
 				final GUI.Window.Button button = filterPage.addButton(i, item);
 				final List<Modifier> mods = ModManager.instance().getAllowedMods();
-				mods.removeIf(mod -> !mod.getAllowedTools().stream().map(ToolType::getToolMaterials)
-						.flatMap(HashSet::stream).anyMatch(type.getToolMaterials()::contains));
+				mods.removeIf(mod -> mod.getAllowedTools().stream().map(ToolType::getToolMaterials)
+						.flatMap(HashSet::stream).noneMatch(type.getToolMaterials()::contains));
 
 				if (mods.isEmpty()) continue;
 

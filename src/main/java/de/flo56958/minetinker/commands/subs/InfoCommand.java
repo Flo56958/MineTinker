@@ -36,13 +36,15 @@ public class InfoCommand implements SubCommand {
 	public InfoCommand() {
 		infoGUI = new GUI(MineTinker.getPlugin());
 		Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> {
-			GUI.Window window = infoGUI.addWindow(1, "MineTinker-Info");
+			GUI.Window window = infoGUI.addWindow(1, LanguageManager.getString("Commands.Info.Title"));
 			ItemStack stack = new ItemStack(Material.DIAMOND_PICKAXE);
 			ItemMeta meta = stack.getItemMeta();
 			meta.setDisplayName(MineTinker.getPlugin().getDescription().getFullName());
 			ArrayList<String> lore = new ArrayList<>();
 			Updater.checkOnline();
-			lore.add(ChatColor.GOLD + "Latest Version: " + ((Updater.hasUpdate()) ? ChatColor.RED : ChatColor.WHITE) + Updater.getOnlineVersion());
+			lore.add(ChatColor.GOLD + "Current Version: " + ChatColor.WHITE + MineTinker.getPlugin().getDescription().getVersion());
+			lore.add(ChatColor.GOLD + "Latest Version: "
+					+ ((Updater.hasUpdate()) ? ChatColor.RED : ChatColor.WHITE) + Updater.getOnlineVersion());
 			//Obtain Information over GitHub API
 			try {
 				String cons = new Scanner(new URL("https://api.github.com/repos/Flo56958/MineTinker").openStream(),
@@ -55,7 +57,7 @@ public class InfoCommand implements SubCommand {
 				lore.add(ChatColor.GOLD + "Open Issues: " + ChatColor.WHITE + json.get("open_issues_count").getAsInt());
 				lore.add(ChatColor.GOLD + "License: " + ChatColor.WHITE + json.get("license").getAsJsonObject().get("name").getAsString());
 			} catch (IOException e) {
-				lore.add(ChatColor.RED + "Can not retrieve Informations from Github!");
+				lore.add(ChatColor.RED + LanguageManager.getString("Commands.Info.Failure"));
 			}
 			meta.setLore(lore);
 			stack.setItemMeta(meta);
@@ -67,17 +69,18 @@ public class InfoCommand implements SubCommand {
 					try {
 						((SkullMeta) meta).setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString("5b2c7922-ea02-4cfd-8003-e28778f8c225")));
 					} catch (NullPointerException ignored) {} // If this happens, the UUID can not be looked up
-					meta.setDisplayName("Contributors");
-					meta.setLore(Collections.singletonList(ChatColor.WHITE + "Click here to see all contributors"));
+					meta.setDisplayName(LanguageManager.getString("Commands.Info.Contributors"));
+					meta.setLore(Collections.singletonList(ChatColor.WHITE + LanguageManager.getString("Commands.Info.ContributorsAction")));
 				}
 				stack.setItemMeta(meta);
 
 				GUI contributorGUI = new GUI(MineTinker.getPlugin());
 				{
 					int pageNo = 1;
-					GUI.Window contributors = contributorGUI.addWindow(6, "Contributors #" + pageNo);
-					int i = 0;
 					ArrayList<Contributor> conlist = Contributor.getContributors();
+					GUI.Window contributors = contributorGUI.addWindow(Math.min(6, conlist.size() / 9 + 1),
+							LanguageManager.getString("Commands.Info.Contributors") + " #" + pageNo);
+					int i = 0;
 					conlist.sort(Comparator.comparing(Contributor::getCommits));
 					Collections.reverse(conlist);
 					for (Contributor c : conlist) {
@@ -86,7 +89,8 @@ public class InfoCommand implements SubCommand {
 							i = 0;
 							pageNo++;
 							GUIs.addNavigationButtons(contributors);
-							contributors = contributorGUI.addWindow(6, "Contributors #" + pageNo);
+							contributors = contributorGUI.addWindow(6,
+									LanguageManager.getString("Commands.Info.Contributors") + " #" + pageNo);
 							GUIs.addNavigationButtons(contributors);
 						}
 					}
