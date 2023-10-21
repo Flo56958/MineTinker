@@ -372,6 +372,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Shadow-Dive-Modifier"
     LightToHigh: "The lightlevel is to high!"
     InCombat: "You are in combat!"
+    Active: "Invisible..."
   Self-Repair:
     Name: "Self-Repair"
     Description: "%chance% chance per level to repair the tool / armor with %amount durability while using it!"

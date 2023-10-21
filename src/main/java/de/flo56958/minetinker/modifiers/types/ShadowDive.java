@@ -13,7 +13,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -28,13 +27,14 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ShadowDive extends Modifier implements Listener {
 
 	private static ShadowDive instance;
 
 	private int requiredLightLevel;
-	private final HashMap<Player, Integer> activePlayers = new HashMap<>();
+	private final ConcurrentHashMap<Player, Integer> activePlayers = new ConcurrentHashMap<>();
 
 	private BukkitTask task;
 	private ShadowDive() {
@@ -55,12 +55,12 @@ public class ShadowDive extends Modifier implements Listener {
 		@Override
 		public void run() {
 			Iterator<Player> iterator = activePlayers.keySet().iterator();
-			//noinspection WhileLoopReplaceableByForEach
 			while (iterator.hasNext()) {
 				final Player p = iterator.next();
 				final Location loc = p.getLocation();
-				byte lightlevel = p.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()).getLightLevel();
-				if (!p.isSneaking() || lightlevel > requiredLightLevel + activePlayers.get(p) || p.hasPotionEffect(PotionEffectType.GLOWING)) {
+				final int level = activePlayers.get(p);
+				final byte lightlevel = p.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()).getLightLevel();
+				if (!p.isSneaking() || lightlevel > requiredLightLevel + level || p.hasPotionEffect(PotionEffectType.GLOWING)) {
 					showPlayer(p);
 					ChatWriter.sendActionBar(p, ChatColor.RED + ShadowDive.instance().getName() + ": "
 							+ LanguageManager.getString("Modifier.Shadow-Dive.LightToHigh", p));
@@ -71,13 +71,10 @@ public class ShadowDive extends Modifier implements Listener {
 							+ LanguageManager.getString("Modifier.Shadow-Dive.InCombat", p));
 					continue;
 				}
-				for(final Player pl : Bukkit.getOnlinePlayers()) {
-					if (pl.equals(p)) continue;
-					if (pl.hasPotionEffect(PotionEffectType.NIGHT_VISION))
-						pl.showPlayer(MineTinker.getPlugin(), p);
-					else
-						pl.hidePlayer(MineTinker.getPlugin(), p);
-				}
+				ChatWriter.sendActionBar(p, ChatColor.MAGIC + "56958" + ChatColor.RESET
+						+ ChatColor.GRAY + LanguageManager.getString("Modifier.Shadow-Dive.Active", p)
+						+ ChatColor.RESET + ChatColor.MAGIC + "56958");
+				hidePlayer(p, level);
 			}
 		}
 	};
@@ -137,29 +134,24 @@ public class ShadowDive extends Modifier implements Listener {
 		activePlayers.put(p, level);
 
 		//Clear all mob targets
-		final Collection<Entity> nearbyEntities = p.getWorld().getNearbyEntities(p.getLocation(), 64, 64, 64);
-		for (final Entity ent : nearbyEntities) {
-			if (ent instanceof final Creature creature) {
-				if (p.equals(creature.getTarget()))
-					creature.setTarget(null);
-			}
-		}
+		p.getWorld().getNearbyEntities(p.getLocation(), 64, 64, 64).stream()
+			.filter(entity -> entity instanceof Creature)
+			.filter(entity -> p.equals(((Creature) entity).getTarget()))
+			.forEach(entity -> ((Creature) entity).setTarget(null));
 
 		//Hide from all players
-		for (final Player player : Bukkit.getServer().getOnlinePlayers()) {
-			if (!p.equals(player)) {
-				if (!player.hasPotionEffect(PotionEffectType.NIGHT_VISION))
-					player.hidePlayer(MineTinker.getPlugin(), p);
-			}
-		}
+		Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+			if (player.hasPotionEffect(PotionEffectType.NIGHT_VISION))
+				player.showPlayer(MineTinker.getPlugin(), p);
+			else
+				player.hidePlayer(MineTinker.getPlugin(), p);
+		});
 	}
 
 	private void showPlayer(Player p) {
 		if (activePlayers.remove(p) != null) {
-			for (final Player player : Bukkit.getServer().getOnlinePlayers()) {
-				if (!p.equals(player))
-					player.showPlayer(MineTinker.getPlugin(), p);
-			}
+			ChatWriter.sendActionBar(p, "");
+			Bukkit.getServer().getOnlinePlayers().forEach(player -> player.showPlayer(MineTinker.getPlugin(), p));
 		}
 	}
 
@@ -189,21 +181,22 @@ public class ShadowDive extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onSneak(PlayerToggleSneakEvent event) {
-		Player player = event.getPlayer();
+		final Player player = event.getPlayer();
 		if (!player.hasPermission(getUsePermission())) return;
 
-		ItemStack boots = player.getInventory().getBoots();
+		final ItemStack boots = player.getInventory().getBoots();
 		if (!modManager.isArmorViable(boots)) return;
 		if (!modManager.hasMod(boots, this)) return;
+		final int level = modManager.getModLevel(boots, this);
 
-		if (event.isSneaking() && !player.isGliding()) { //enable
+		if (event.isSneaking() && !player.isGliding() && !player.isFlying()) { //enable
 			Location loc = player.getLocation();
 			byte lightlevel = player.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()).getLightLevel();
 			boolean combatTagged = PlayerInfo.isCombatTagged(player);
 			ChatWriter.logModifier(player, event, this, boots,
-					String.format("LightLevel(%d/%d)", lightlevel, this.requiredLightLevel),
+					String.format("LightLevel(%d/%d)", lightlevel, this.requiredLightLevel + level),
 					String.format("InCombat(%b)", combatTagged));
-			if (lightlevel > this.requiredLightLevel || player.hasPotionEffect(PotionEffectType.GLOWING)) {
+			if (lightlevel > this.requiredLightLevel + level || player.hasPotionEffect(PotionEffectType.GLOWING)) {
 				ChatWriter.sendActionBar(player, ChatColor.RED + this.getName() + ": "
 						+ LanguageManager.getString("Modifier.Shadow-Dive.LightToHigh", player));
 				return;
