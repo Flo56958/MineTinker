@@ -84,9 +84,9 @@ public class Phasing extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onProjectileHit(final MTProjectileHitEvent event) {
-		Player p = event.getPlayer();
-		ItemStack tool = event.getTool();
-		Projectile projectile = event.getEvent().getEntity();
+		final Player p = event.getPlayer();
+		final ItemStack tool = event.getTool();
+		final Projectile projectile = event.getEvent().getEntity();
 		if (projectile.hasMetadata(this.getKey())) return;
 		projectile.setMetadata(this.getKey(), new FixedMetadataValue(MineTinker.getPlugin(), true));
 		if (!modManager.hasMod(tool, this)) return;
@@ -94,27 +94,31 @@ public class Phasing extends Modifier implements Listener {
 		final int level = modManager.getModLevel(tool, this);
 
 		if (!p.hasPermission(getUsePermission())) return;
-		if (!(projectile instanceof Arrow arrow)) return;
+		if (!(projectile instanceof final Arrow arrow)) return;
 
-		Vector stepsize = new Vector(arrow.getBoundingBox().getWidthX(),
+		final Vector stepsize = new Vector(arrow.getBoundingBox().getWidthX(),
 				arrow.getBoundingBox().getHeight(), arrow.getBoundingBox().getWidthZ()).multiply(0.5);
-		final Vector direction = arrow.getVelocity().clone().normalize();
+		final Vector direction = arrow.getVelocity().clone().normalize().multiply(stepsize);
 		Vector vector = arrow.getBoundingBox().getCenter();
 		// TODO: Implement DDA for better traversal
+		loop:
 		for (BoundingBox dist = arrow.getBoundingBox().clone();
 			 arrow.getLocation().distance(vector.toLocation(arrow.getWorld())) <= level * 1.5;
-			 dist.shift(direction.clone().multiply(stepsize))) {
+			 dist.shift(direction)) {
 			vector = dist.getCenter();
 			final Block block = arrow.getLocation().getWorld().getBlockAt(vector.toLocation(arrow.getWorld()));
 			if (block.isPassable()) {
 				// construct air bounding box
 				// TODO: make more efficient, we do not need 28 block checks
-				BoundingBox box = block.getBoundingBox();
+				final BoundingBox box = block.getBoundingBox();
 				for (int i = -1; i <= 1; i++) {
 					for (int j = -1; j <= 1; j++) {
 						for (int k = -1; k <= 1; k++) {
 							final Block b = block.getRelative(i, j, k);
-							if (b.isPassable()) box = box.union(b.getBoundingBox());
+							if (b.isPassable()) {
+								box.union(b.getBoundingBox());
+								if (box.contains(dist)) break loop;
+							}
 						}
 					}
 				}
@@ -131,7 +135,7 @@ public class Phasing extends Modifier implements Listener {
 		event.setCancelled(true);
 
 		// spawn new arrow and copy all data
-		Arrow phaser = arrow.getLocation().getWorld().spawnArrow(location, arrow.getVelocity(),
+		final Arrow phaser = arrow.getLocation().getWorld().spawnArrow(location, arrow.getVelocity(),
 				(float) arrow.getVelocity().length(), 0.0f);
 		phaser.setPierceLevel(arrow.getPierceLevel());
 		phaser.setPickupStatus(arrow.getPickupStatus());
@@ -150,7 +154,8 @@ public class Phasing extends Modifier implements Listener {
 		if (arrow.hasMetadata(Ender.instance().getKey()))
 			phaser.setMetadata(Ender.instance().getKey(), new FixedMetadataValue(MineTinker.getPlugin(), 0));
 
-		// other modifier should not trigger again on ProjectileLaunchEvent
+		// other modifier should not trigger again on ProjectileLaunchEvent,
+		// so we do not trigger any events
 
 		// Remove old arrow
 		arrow.remove();

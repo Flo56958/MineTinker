@@ -131,14 +131,12 @@ public class Homing extends Modifier implements Listener {
 					if (e instanceof Player && !Homing.this.worksOnPlayers) continue;
 					if (e instanceof LivingEntity liv && !liv.hasLineOfSight(arrow)) continue;
 
-					double velocity = arrow.getVelocity().length();
-					Vector vel = arrow.getVelocity().normalize();
-					Vector newVel = e.getLocation().toVector().subtract(arrow.getLocation().toVector()).normalize();
-					if (vel.dot(newVel) <= 0.0) continue;
-					newVel = newVel.multiply(accuracy).add(vel.multiply(1 - accuracy));
-					newVel = newVel.normalize().multiply(velocity);
+					final double velocity = arrow.getVelocity().length();
+					final Vector vel = arrow.getVelocity().normalize();
+					final Vector newVel = e.getLocation().toVector().subtract(arrow.getLocation().toVector()).normalize();
+					if (vel.dot(newVel) <= 0.0) continue; // is behind the arrow
 
-					arrow.setVelocity(newVel);
+					arrow.setVelocity(newVel.multiply(accuracy).add(vel.multiply(1 - accuracy)).normalize().multiply(velocity));
 					break;
 				}
 

@@ -323,36 +323,96 @@ public class GUIs {
 				filterStack.setItemMeta(filterMeta);
 			}
 
+			final HashMap<ToolType, ItemStack> toolmap = new HashMap<>();
+			toolmap.put(ToolType.ALL, new ItemStack(Material.ANVIL, 1));
+			toolmap.put(ToolType.ARMOR, new ItemStack(Material.ARMOR_STAND, 1));
+			toolmap.put(ToolType.TOOLS, new ItemStack(Material.STICK, 1));
+
+			toolmap.put(ToolType.AXE, new ItemStack(Material.DIAMOND_AXE, 1));
+			toolmap.put(ToolType.HOE, new ItemStack(Material.DIAMOND_HOE, 1));
+			toolmap.put(ToolType.PICKAXE, new ItemStack(Material.DIAMOND_PICKAXE, 1));
+			toolmap.put(ToolType.SHOVEL, new ItemStack(Material.DIAMOND_SHOVEL, 1));
+			toolmap.put(ToolType.SWORD, new ItemStack(Material.DIAMOND_SWORD, 1));
+
+			toolmap.put(ToolType.BOW, new ItemStack(Material.BOW, 1));
+			toolmap.put(ToolType.CROSSBOW, new ItemStack(Material.CROSSBOW, 1));
+			toolmap.put(ToolType.TRIDENT, new ItemStack(Material.TRIDENT, 1));
+
+            toolmap.put(ToolType.ELYTRA, new ItemStack(Material.ELYTRA, 1));
+			toolmap.put(ToolType.HELMET, new ItemStack(Material.DIAMOND_HELMET, 1));
+			toolmap.put(ToolType.CHESTPLATE, new ItemStack(Material.DIAMOND_CHESTPLATE, 1));
+			toolmap.put(ToolType.LEGGINGS, new ItemStack(Material.DIAMOND_LEGGINGS, 1));
+			toolmap.put(ToolType.BOOTS, new ItemStack(Material.DIAMOND_BOOTS, 1));
+			toolmap.put(ToolType.SHIELD, new ItemStack(Material.SHIELD, 1));
+
+			toolmap.put(ToolType.FISHINGROD, new ItemStack(Material.FISHING_ROD, 1));
+			toolmap.put(ToolType.SHEARS, new ItemStack(Material.SHEARS, 1));
+
 			List<ToolType> toolTypes = new ArrayList<>(List.of(ToolType.values()));
 			toolTypes.remove(ToolType.INVALID);
 			toolTypes.remove(ToolType.OTHER);
-			toolTypes.sort(Comparator.comparing(t -> LanguageManager.getString("ToolType." + t.name())));
 
-			int rows = (int) Math.ceil(toolTypes.size() / 9.0);
 			final GUI filterGUI = new GUI(MineTinker.getPlugin());
-			final GUI.Window filterPage = filterGUI.addWindow(rows, LanguageManager.getString("GUIs.Modifiers.FilterButton"));
-			for (int i = 0; i < toolTypes.size(); i++) {
-				final ToolType type = toolTypes.get(i);
-				final List<Material> materials = Arrays.asList(type.getToolMaterials().toArray(new Material[0]));
-				materials.sort(Comparator.comparing(Material::getMaxDurability));
-				final ItemStack item = (type == ToolType.ALL)
-						? new ItemStack(Material.GRASS_BLOCK, 1) : new ItemStack(materials.get(materials.size() - 1), 1);
-				final ItemMeta itemMeta = item.getItemMeta();
-				if (itemMeta != null) {
-					itemMeta.setDisplayName(ChatColor.WHITE + LanguageManager.getString("ToolType." + type.name()));
-					item.setItemMeta(itemMeta);
+			final GUI.Window filterPage = filterGUI.addWindow(6, LanguageManager.getString("GUIs.Modifiers.FilterButton"));
+            for (final ToolType type : toolTypes) {
+                final List<Material> materials = Arrays.asList(type.getToolMaterials().toArray(new Material[0]));
+                materials.sort(Comparator.comparing(Material::getMaxDurability));
+                final ItemStack item = toolmap.get(type);
+                final ItemMeta itemMeta = item.getItemMeta();
+                int slot = switch (type) {
+                    case ALL -> 5 * 9 + 4;
+                    case ARMOR -> 5 * 9 + 5;
+                    case TOOLS -> 5 * 9 + 3;
+                    case AXE -> 2 * 9 + 0;
+                    case HOE -> 4 * 9 + 0;
+                    case PICKAXE -> 1 * 9 + 0;
+                    case SHOVEL -> 3 * 9 + 0;
+                    case SWORD -> 0 * 9 + 0;
+                    case BOW -> 1 * 9 + 2;
+                    case CROSSBOW -> 2 * 9 + 2;
+                    case TRIDENT -> 3 * 9 + 2;
+                    case ELYTRA -> 1 * 9 + 6;
+                    case HELMET -> 0 * 9 + 5;
+                    case CHESTPLATE -> 1 * 9 + 5;
+                    case LEGGINGS -> 2 * 9 + 5;
+                    case BOOTS -> 3 * 9 + 5;
+                    case SHIELD -> 1 * 9 + 4;
+                    case FISHINGROD -> 1 * 9 + 8;
+                    case SHEARS -> 2 * 9 + 8;
+                    default -> -1;
+                };
+                final List<Modifier> mods = ModManager.instance().getAllowedMods();
+                mods.removeIf(mod -> mod.getAllowedTools().stream().map(ToolType::getToolMaterials)
+                        .flatMap(HashSet::stream).noneMatch(type.getToolMaterials()::contains));
+
+                if (itemMeta != null) {
+                    itemMeta.setDisplayName(ChatColor.WHITE + LanguageManager.getString("ToolType." + type.name()));
+                    itemMeta.setLore(List.of(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.FilterLore")
+                            .replace("%amount", String.valueOf(mods.size()))));
+                    item.setItemMeta(itemMeta);
+                }
+
+                final GUI.Window.Button button = filterPage.addButton(slot, item);
+
+                if (mods.isEmpty()) continue;
+
+                final GUI filteredGUI = (type == ToolType.ALL)
+                        ? modGUI : createModGUI(mods, LanguageManager.getString("ToolType." + type.name()) + ": ");
+                if (filteredGUI != modGUI) guis.add(filteredGUI);
+                button.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(button, filteredGUI.getWindow(0)));
+            }
+
+			final ItemStack filler = new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1);
+			final ItemMeta fillerMeta = filler.getItemMeta();
+			if (fillerMeta != null) {
+				fillerMeta.setDisplayName(ChatColor.WHITE + "");
+				filler.setItemMeta(fillerMeta);
+			}
+
+			for (int i = 0; i < 6 * 9; ++i) {
+				if (filterPage.getButton(i) == null) {
+					filterPage.addButton(i, filler);
 				}
-				final GUI.Window.Button button = filterPage.addButton(i, item);
-				final List<Modifier> mods = ModManager.instance().getAllowedMods();
-				mods.removeIf(mod -> mod.getAllowedTools().stream().map(ToolType::getToolMaterials)
-						.flatMap(HashSet::stream).noneMatch(type.getToolMaterials()::contains));
-
-				if (mods.isEmpty()) continue;
-
-				final GUI filteredGUI = (type == ToolType.ALL)
-						? modGUI : createModGUI(mods, LanguageManager.getString("ToolType." + type.name()) + ": ");
-				if (filteredGUI != modGUI) guis.add(filteredGUI);
-				button.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(button, filteredGUI.getWindow(0)));
 			}
 
 			guis.forEach(gui -> {

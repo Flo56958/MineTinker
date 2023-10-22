@@ -21,7 +21,10 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -120,64 +123,55 @@ public class MultiJump extends Modifier implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	public void onMove(@NotNull final PlayerMoveEvent e) {
 		final Player p = e.getPlayer();
+		if (!p.hasPermission(getUsePermission())) return;
 
 		if (p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR) return;
 		// Player can normally fly -> Multijump not needed
 		if (p.getAllowFlight() && !allowFlight.containsKey(p)) return;
-
-		// check if something got through and the player can still fly
-		long time = System.currentTimeMillis();
-		if (allowFlight.getOrDefault(p, time) - time <= -1000L) disableFlight(p);
 		if (p.isFlying()) return;
-
-		final ItemStack boots = p.getInventory().getBoots();
-		if (!modManager.isArmorViable(boots)) return;
-		final int level = modManager.getModLevel(boots, this);
-		if (level == 0) return;
 
 		if (p.isSwimming() || p.isSleeping() || p.isGliding() || p.isDead()) {
 			disableFlight(p);
 			return;
 		}
 
-		if (p.hasPermission(getUsePermission())) {
-			AtomicInteger jumpcharge = this.jumpcharge.get(e.getPlayer());
-			if (jumpcharge == null) {
-				jumpcharge = new AtomicInteger(0);
-				this.jumpcharge.put(e.getPlayer(), jumpcharge);
+		// check if something got through and the player can still fly
+		long time = System.currentTimeMillis();
+		if (allowFlight.getOrDefault(p, time) - time <= -1000L) disableFlight(p);
+
+		final ItemStack boots = p.getInventory().getBoots();
+		if (!modManager.isArmorViable(boots)) return;
+		final int level = modManager.getModLevel(boots, this);
+		if (level == 0) return;
+
+		AtomicInteger jumpcharge = this.jumpcharge.get(e.getPlayer());
+		if (jumpcharge == null) {
+			jumpcharge = new AtomicInteger(0);
+			this.jumpcharge.put(e.getPlayer(), jumpcharge);
+		}
+
+		//Check if the player is on the ground for a recharge
+		final Block below = p.getLocation().getWorld().getBlockAt(p.getLocation().add(0, -0.1, 0));
+		if (!below.isPassable()) {
+			if (jumpcharge.get() > 0) {
+				//Only decrement one at a time to have at least a little cooldown
+				jumpcharge.decrementAndGet();
 			}
+			disableFlight(p);
+		}
 
-			//Check if the player is on the ground for a recharge
-			final Block below = Objects.requireNonNull(p.getLocation().getWorld(), "Players world is null!")
-					.getBlockAt(p.getLocation().add(0, -0.1, 0));
-			if (!(below.getType() == Material.CAVE_AIR || below.getType() == Material.AIR
-					|| below.getType() == Material.VOID_AIR
-					|| below.getType() == Material.WATER || below.getType() == Material.BUBBLE_COLUMN
-					|| below.getType() == Material.LAVA)) {
-
-				if (jumpcharge.get() > 0) {
-					//Only decrement one at a time to have at least a little cooldown
-					jumpcharge.decrementAndGet();
-				}
+		//"Enable" multijump as a ToggleFlight hack
+		//This will surely get flagged by anti cheat plugins
+		//FIXME: Find a better solution for MultiJump so it does not trigger AntiCheat or can easily exploited
+		else if (below.getType().isAir()) {
+			if(jumpcharge.get() < level)
+				enableFlight(p);
+			else
 				disableFlight(p);
-			}
-
-			//"Enable" multijump as a ToggleFlight hack
-			//This will surely get flagged by anti cheat plugins
-			//FIXME: Find a better solution for MultiJump so it does not trigger AntiCheat or can easily exploited
-			else if (below.getType() == Material.CAVE_AIR || below.getType() == Material.AIR
-					|| below.getType() == Material.VOID_AIR) {
-				if(jumpcharge.get() < level)
-					enableFlight(p);
-				else
-					disableFlight(p);
-			}
-
-			//Disable when swimming
-			else if (below.getType() == Material.WATER || below.getType() == Material.BUBBLE_COLUMN
-					|| below.getType() == Material.LAVA) {
-				disableFlight(p);
-			}
+		}
+		//Disable when swimming
+		else if (below.isLiquid()) {
+			disableFlight(p);
 		}
 	}
 
