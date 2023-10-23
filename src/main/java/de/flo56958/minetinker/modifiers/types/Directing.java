@@ -156,7 +156,7 @@ public class Directing extends Modifier implements Listener {
 				String.format("Block(%d/%d/%d)", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
 	}
 
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void effect(MTEntityDeathEvent event) {
 		if (event.getPlayer().equals(event.getEvent().getEntity())) return;
 		if (!this.workInPVP && event.getEvent().getEntity() instanceof Player) return;

@@ -21,6 +21,7 @@ public class ExtraModifier extends Modifier {
 
 	private static ExtraModifier instance;
 	private int gain;
+	private int xpgain;
 
 	private ExtraModifier() {
 		super(MineTinker.getPlugin());
@@ -54,6 +55,7 @@ public class ExtraModifier extends Modifier {
 		config.addDefault("Allowed", true);
 		config.addDefault("Color", "%WHITE%");
 		config.addDefault("ExtraModifierGain", 1); //How many Slots should be added per Nether-Star
+		config.addDefault("XPGain", 250);
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -79,7 +81,9 @@ public class ExtraModifier extends Modifier {
 		this.slotCost = 0;
 
 		this.gain = config.getInt("ExtraModifierGain", 1);
-		this.description = this.description.replace("%amount", String.valueOf(this.gain));
+		this.xpgain = config.getInt("XPGain", 250);
+		this.description = this.description.replace("%amount", String.valueOf(this.gain))
+				.replace("%xpamount", String.valueOf(this.xpgain));
 	}
 
 	@Override
@@ -103,6 +107,7 @@ public class ExtraModifier extends Modifier {
 
 		int amount = slotsRemaining + gain;
 		modManager.setFreeSlots(tool, amount);
+		modManager.addExp(player, tool, xpgain, false);
 		return true;
 	}
 }

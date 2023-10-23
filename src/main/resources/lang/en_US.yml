@@ -226,7 +226,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Explosive-Modifier"
   Extra-Modifier:
     Name: "Extra-Modifier"
-    Description: "Adds %amount additional Modifier-Slots to the tool!"
+    Description: "Adds %amount additional Modifier-Slots and %xpamount experience to the tool!"
     ModifierItemName: "Refined Netherstar"
     DescriptionModifierItem: "Modifier-Item for the Extra-Modifier"
   Fiery:

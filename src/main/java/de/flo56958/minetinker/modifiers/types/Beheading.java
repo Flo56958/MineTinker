@@ -94,7 +94,7 @@ public class Beheading extends Modifier implements Listener {
 		Player player = event.getPlayer();
 		ItemStack tool = event.getTool();
 		LivingEntity mob = event.getEvent().getEntity();
-		ItemStack loot = new ItemStack(Material.AIR, 1);
+		ItemStack loot = null;
 
 		if (!player.hasPermission(getUsePermission())) return;
 		if (!modManager.hasMod(tool, this)) return;
@@ -141,7 +141,7 @@ public class Beheading extends Modifier implements Listener {
 				loot = new ItemStack(Material.PIGLIN_HEAD, 1);
 			}
 
-			if (loot.getType() != Material.AIR) {
+			if (loot != null) {
 				event.getEvent().getDrops().add(loot);
 				ChatWriter.logModifier(player, event, this, tool,
 						String.format("Chance(%d/%d)", n, i), "Entity(" + mob.getType() + ")");
