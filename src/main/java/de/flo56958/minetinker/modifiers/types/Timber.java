@@ -22,7 +22,6 @@ import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
@@ -117,165 +116,109 @@ public class Timber extends Modifier implements Listener {
 		if (!modManager.hasMod(tool, this)) return;
 		if (!player.hasPermission(getUsePermission())) return;
 
-		if (ToolType.SHEARS.contains(tool.getType())) {
-			if (Lists.getWoodLeaves().contains(block.getType())) {
-				final HashSet<Location> locs = new HashSet<>();
-				locs.add(block.getLocation());
-
-				final HashSet<Material> allowed = new HashSet<>();
-				allowed.add(block.getType());
-
-				Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(),
-						() -> breakTree(player, tool, block, allowed, locs, null));
-				ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType() + ")");
-			}
-			return;
-		}
-
 		final HashSet<Material> allowed = new HashSet<>();
 		allowed.addAll(Lists.getWoodLogs());
 		allowed.addAll(Lists.getWoodWood());
 
+		if (ToolType.SHEARS.contains(tool.getType()) && Lists.getWoodLeaves().contains(block.getType())) {
+			allowed.clear();
+			allowed.add(block.getType());
+		}
+
 		if (!allowed.contains(block.getType())) return;
 
-		boolean isTreeBottom = false; //checks for Grass or Dirt under Log
-		boolean isTreeTop = false; //checks for Leaves above Log
+		final int level = modManager.getModLevel(tool, this);
 
-		for (int y = block.getY() - 1, airgap = 0; y >= block.getWorld().getMinHeight() && airgap < 10; y--) {
-			final Material blockType = player.getWorld().getBlockAt(block.getX(), y, block.getZ()).getType();
+		final int sap_idx = block.getType().toString().lastIndexOf('_');
+		final Material saplingType = Material.getMaterial(block.getType().toString().substring(0, sap_idx) + "_SAPLING");
 
-			if (this.grasses.contains(blockType)) {
-				isTreeBottom = true;
-				break;
+		Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> {
+			final HashSet<Block> trunkBlocks = new HashSet<>();
+			final ArrayList<Block> groundBlocks = new ArrayList<>();
+			if (!parseTree(block, trunkBlocks, groundBlocks, allowed) && !ToolType.SHEARS.contains(tool.getType())) return;
+			final List<Block> trunkBlocksList = new ArrayList<>(trunkBlocks);
+			// Sort blocks by distance to the original block (closest first) and break them in that order
+			trunkBlocksList.sort(Comparator.comparingDouble(o -> (o.getLocation().distance(block.getLocation()))));
+			for (final Block trunkBlock : trunkBlocksList) {
+				Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
+					events.put(trunkBlock.getLocation(), 0);
+					try {
+						DataHandler.playerBreakBlock(player, trunkBlock, tool);
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					}
+				});
 			}
 
-			if (!allowed.contains(blockType)) {
-				// If it is a mangrove tree there can be air below the
-				if (MineTinker.is19compatible
-						&& (block.getType().equals(Material.MANGROVE_LOG)
-						|| block.getType().equals(Material.MANGROVE_ROOTS)
-						|| block.getType().equals(Material.MUDDY_MANGROVE_ROOTS))) {
-					if (blockType.isAir()
-							|| !blockType.isSolid()
-							|| blockType.equals(Material.WATER)) {
-						airgap++;
-						continue;
+			// Place sapling on all ground blocks if applicable
+			if (saplingType == null || level < 2 || groundBlocks.isEmpty()) return;
+			// sort ground blocks by distance to the original block (closest first)
+			groundBlocks.sort(Comparator.comparing(b -> {
+				final Location l = b.getLocation();
+				final Location l2 = block.getLocation();
+				return (l.getX() - l2.getX()) * (l.getX() - l2.getX()) + (l.getZ() - l2.getZ()) * (l.getZ() - l2.getZ());
+			}));
+
+			// try to place saplings on all ground blocks
+			Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
+				for (final Block groundBlock : groundBlocks) {
+					for (final ItemStack stack : player.getInventory().getContents()) {
+						if (stack == null) continue;
+						if (stack.getType() != saplingType) continue;
+						if (stack.getAmount() < 1) continue;
+						if (modManager.isModifierItem(stack)) continue;
+
+						final Block sap = groundBlock.getRelative(BlockFace.UP);
+						if (!sap.getType().isAir()) break;
+
+						final BlockPlaceEvent placeEvent =
+								new BlockPlaceEvent(sap, sap.getState(), groundBlock, stack,
+										player, true, EquipmentSlot.HAND);
+						Bukkit.getPluginManager().callEvent(placeEvent);
+
+						//check the pseudoevent
+						if (placeEvent.canBuild() && !placeEvent.isCancelled()) {
+							stack.setAmount(stack.getAmount() - 1);
+							sap.setType(saplingType);
+						}
+						break;
 					}
 				}
-				break;
-			}
-		}
-
-		Material saplingType = null;
-
-		//airgap is for trees like acacia
-		for (int dy = block.getY() + 1, airgap = 0; dy < block.getWorld().getMaxHeight() && airgap < 10; dy++) {
-			if (!allowed.contains(player.getWorld().getBlockAt(block.getX(), dy, block.getZ()).getType())) {
-				final Location loc = block.getLocation().clone();
-				loc.setY(dy);
-
-				final Block leaves = player.getWorld().getBlockAt(loc);
-				final Material mat = leaves.getType();
-
-				if (Lists.getWoodLeaves().contains(mat)) {
-					isTreeTop = true;
-					saplingType = Material.getMaterial(mat.toString().split("_")[0] + "_SAPLING");
-				} else if (mat.isAir() || !mat.isSolid()
-						// For mangrove trees
-						|| (MineTinker.is19compatible && (mat.equals(Material.MOSS_CARPET)
-						|| mat.equals(Material.MANGROVE_PROPAGULE)))) {
-					airgap++;
-					continue;
-				}
-				break;
-			}
-		}
-
-		if (!isTreeBottom || !isTreeTop) return; //TODO: Improve tree check
-
-		final HashSet<Location> locs = new HashSet<>();
-		locs.add(block.getLocation());
-		final Material finalSaplingType = saplingType;
-		Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(),
-				() -> breakTree(player, tool, block, allowed, locs, finalSaplingType));
+			});
+		});
 
 		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType() + ")");
-
 	}
 
-	private void breakTree(@NotNull Player player, @NotNull ItemStack tool, @NotNull Block block,
-						   @NotNull HashSet<Material> allowed, @NotNull HashSet<Location> locs,
-						   @Nullable Material sapling) {
-		//TODO: Improve algorithm and performance
-		if (locs.size() >= maxBlocks) return;
+	private boolean parseTree(@NotNull Block block,
+									 @NotNull final HashSet<Block> trunkBlocks, @NotNull final List<Block> groundBlocks,
+							  		 @NotNull final HashSet<Material> allowed) {
+		final Stack<Block> stack = new Stack<>();
+		boolean hasGround = false, hasLeaves = false;
+		stack.push(block);
+		while (trunkBlocks.size() < maxBlocks && !stack.isEmpty()) {
+			block = stack.pop();
+			if (this.grasses.contains(block.getRelative(BlockFace.DOWN).getType())) {
+				hasGround = true;
+				groundBlocks.add(block.getRelative(BlockFace.DOWN));
+			}
+			if (!hasLeaves && Lists.getWoodLeaves().contains(block.getRelative(BlockFace.UP).getType()))
+				hasLeaves = true;
 
-		final int level = modManager.getModLevel(tool, this);
-		for (int dx = -1; dx <= 1; dx++) {
-			for (int dy = -1; dy <= 1; dy++) {
-				for (int dz = -1; dz <= 1; dz++) {
-					if (dx == 0 && dy == 0 && dz == 0) {
-						if (level >= 2 && sapling != null) {
-							final Block grassBlock = block.getRelative(BlockFace.DOWN);
-							if (this.grasses.contains(grassBlock.getType())) {
-								for (final ItemStack stack : player.getInventory().getContents()) {
-									if (stack == null) continue;
-									if (stack.getType() != sapling) continue;
+			for (int dx = -1; dx <= 1; dx++) {
+				for (int dy = -1; dy <= 1; dy++) {
+					for (int dz = -1; dz <= 1; dz++) {
+						Block relative = block.getRelative(dx, dy, dz);
+						if (!allowed.contains(relative.getType())) continue;
+						if (!trunkBlocks.add(relative)) continue; // check if visited already
 
-									if (stack.getAmount() >= 1) {
-										final Material finalSapling = sapling;
-										Runnable runnable = new Runnable() {
-											private int counter = 0;
-											@Override
-											public void run() {
-												if (block.getType() != Material.AIR) {
-													// Block isn't broken yet
-													counter++;
-													if (counter <= 10) {
-														Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), this, 10L);
-													}
-													return;
-												}
-												final BlockPlaceEvent placeEvent =
-														new BlockPlaceEvent(block, block.getState(), grassBlock, stack,
-																player, true, EquipmentSlot.HAND);
-												Bukkit.getPluginManager().callEvent(placeEvent);
-
-												//check the pseudoevent
-												if (placeEvent.canBuild() && !placeEvent.isCancelled()) {
-													stack.setAmount(stack.getAmount() - 1);
-													block.setType(finalSapling);
-												}
-											}
-										};
-										Bukkit.getScheduler().runTask(MineTinker.getPlugin(), runnable);
-										break;
-									}
-								}
-								sapling = null;
-							}
-						}
-						continue;
-					}
-
-					final Location loc = block.getLocation();
-					loc.add(dx, dy, dz);
-
-					if (!locs.add(loc))	continue;
-
-					final Block toBreak = player.getWorld().getBlockAt(loc);
-					if (allowed.contains(toBreak.getType())) {
-						breakTree(player, tool, toBreak, allowed, locs, sapling);
-						events.put(toBreak.getLocation(), 0);
-						Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
-							try {
-								DataHandler.playerBreakBlock(player, toBreak, tool);
-							} catch (IllegalArgumentException e) {
-								e.printStackTrace();
-							}
-						});
+						// Add block to stack if not visited yet
+						stack.push(relative);
 					}
 				}
 			}
 		}
+
+		return hasGround && hasLeaves;
 	}
 }

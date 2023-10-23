@@ -75,7 +75,7 @@ public class Poisonous extends Modifier implements Listener {
 		config.addDefault("SlotCost", 1);
 		config.addDefault("Duration", 120); //ticks INTEGER (20 ticks ~ 1 sec)
 		config.addDefault("DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
-		config.addDefault("EffectAmplifier", 2); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...) INTEGER
+		config.addDefault("EffectAmplifier", 1); //per Level (Level 1 = 0, Level 2 = 1, Level 3 = 2, ...) INTEGER
 		config.addDefault("DropRottenMeatIfPoisoned", true);
 		config.addDefault("EffectHealsPlayer", true);
 

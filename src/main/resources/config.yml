@@ -121,7 +121,7 @@ ItemBehaviour:
   StopBreakEvent: true                #If the item breaks due to a bug, give the item back to the player with 1 durability
   AlertPlayerOnBreak: false           #If the item breaks due to a bug, alert the player
   ApplyOnPlayerDeath: true            #Applies ItemBehaviour on PlayerDeath, set false if another plugin controls keepInventory on deaths
-ModifiersCanBeUsedForCrafting: false  #Enablea crafting with Modifier-Items
+ModifiersCanBeUsedForCrafting: false  #Enable crafting with Modifier-Items
 
 #---------------MOB-DROPS-------------------
 ConvertLoot:
@@ -129,7 +129,7 @@ ConvertLoot:
   ChestLoot: true                     #Should Chestloot be converted to MineTinker
   Chance: 100                         #Not the real / actual chance as Modifier-Application can fail
   ApplyModifiers: true
-  MaximumNumberOfModifiers: 4         #Not the real / actual amount as Modifier-Application can fail
+  MaximumNumberOfModifiers: 1         #Not the real / actual amount as Modifier-Application can fail
   AppliedModifiersConsiderSlots: true
   ApplyExp: true
   MaximumNumberOfExp: 650

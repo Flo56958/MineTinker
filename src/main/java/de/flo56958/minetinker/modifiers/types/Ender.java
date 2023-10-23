@@ -72,12 +72,12 @@ public class Ender extends Modifier implements Listener {
 		config.addDefault("Color", "%DARK_GREEN%");
 		config.addDefault("MaxLevel", 2);
 		config.addDefault("SlotCost", 2);
-		config.addDefault("Sound", true); //#Enderman-Teleport-Sound
+		config.addDefault("Sound", true); // Enderman-Teleport-Sound
 		config.addDefault("Particles", true);
 		config.addDefault("GiveNauseaOnUse", true);
-		config.addDefault("NauseaDuration", 5); //seconds
+		config.addDefault("NauseaDuration", 5); // seconds
 		config.addDefault("GiveBlindnessOnUse", true);
-		config.addDefault("BlindnessDuration", 3); //seconds
+		config.addDefault("BlindnessDuration", 3); // seconds
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
