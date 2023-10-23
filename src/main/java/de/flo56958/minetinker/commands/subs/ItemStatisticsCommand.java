@@ -45,6 +45,11 @@ public class ItemStatisticsCommand implements SubCommand {
 			return true;
 		}
 
+		if (!player.equals(sender) && !sender.hasPermission(this.getPermission() + "other")) {
+			CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NoPermission"));
+			return true;
+		}
+
 		List<ItemStack> items = new ArrayList<>();
 		for (ItemStack stack : player.getInventory().getContents()) {
 			if (!modManager.isToolViable(stack) && !modManager.isArmorViable(stack)) continue;

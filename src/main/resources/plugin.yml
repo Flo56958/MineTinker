@@ -59,6 +59,7 @@ permissions:
       minetinker.commands.help: true
       minetinker.commands.info: true
       minetinker.commands.itemstatistics: true
+      minetinker.commands.itemstatisticsother: true
       minetinker.commands.modifiers: true
       minetinker.commands.addexp: true
       minetinker.commands.name: true
@@ -93,6 +94,12 @@ permissions:
       minetinker.commands.main: true
     description: Allows to access information about the held MineTinker-Item
     default: true
+
+  minetinker.commands.itemstatisticsother:
+    children:
+      minetinker.commands.main: true
+    description: Allows to access information about the held MineTinker-Item of other players
+    default: op
 
   minetinker.commands.modifiers:
     children:
