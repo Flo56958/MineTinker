@@ -98,7 +98,7 @@ public class ItemStatisticsCommand implements SubCommand {
 	@Override
 	public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String[] args) {
 		List<String> result = new ArrayList<>();
-		if (args.length == 2) {
+		if (args.length == 2 && sender.hasPermission(this.getPermission() + "other")) {
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				result.add(player.getName());
 			}

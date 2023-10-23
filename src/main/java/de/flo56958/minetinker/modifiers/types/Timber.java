@@ -68,7 +68,7 @@ public class Timber extends Modifier implements Listener {
 		config.addDefault("MaxLevel", 2);
 		config.addDefault("SlotCost", 2);
 		config.addDefault("Color", "%GREEN%");
-		config.addDefault("MaximumBlocksPerSwing", 2000); //-1 to disable it
+		config.addDefault("MaximumBlocksPerSwing", 250); //-1 to disable it
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -195,6 +195,7 @@ public class Timber extends Modifier implements Listener {
 							  		 @NotNull final HashSet<Material> allowed) {
 		final Stack<Block> stack = new Stack<>();
 		boolean hasGround = false, hasLeaves = false;
+		trunkBlocks.add(block);
 		stack.push(block);
 		while (trunkBlocks.size() < maxBlocks && !stack.isEmpty()) {
 			block = stack.pop();
@@ -218,6 +219,8 @@ public class Timber extends Modifier implements Listener {
 				}
 			}
 		}
+
+		trunkBlocks.remove(block); // remove the player broken block
 
 		return hasGround && hasLeaves;
 	}

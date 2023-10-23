@@ -37,14 +37,10 @@ public class EntityListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onDamage(@NotNull final EntityDamageByEntityEvent event) {
-		if (Lists.WORLDS.contains(event.getDamager().getWorld().getName())) {
-			return;
-		}
+		if (Lists.WORLDS.contains(event.getDamager().getWorld().getName())) return;
 
 		if (event.getCause().equals(EntityDamageEvent.DamageCause.SUICIDE)
-				|| event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
-			return;
-		}
+				|| event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) return;
 
 		Player player = getPlayer(event);
 
@@ -65,13 +61,9 @@ public class EntityListener implements Listener {
 //            }
 //        }
 
-		if (!modManager.isToolViable(tool)) {
-			return;
-		}
+		if (!modManager.isToolViable(tool)) return;
 
-		if (!modManager.durabilityCheck(event, player, tool)) {
-			return;
-		}
+		if (!modManager.durabilityCheck(event, player, tool)) return;
 
 		Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(player, tool, event.getEntity(), event));
 
@@ -79,9 +71,7 @@ public class EntityListener implements Listener {
 				MineTinker.getPlugin().getConfig().getInt("ExtraExpPerEntityHit."
 						+ event.getEntity().getType(), 0), true);
 
-		if (event.getEntity() instanceof Trident trident) {
-			trident.setItem(tool);
-		}
+		if (event.getEntity() instanceof Trident trident) trident.setItem(tool);
 	}
 
 	@Nullable
@@ -90,19 +80,12 @@ public class EntityListener implements Listener {
 
 		if (event.getDamager() instanceof final Arrow arrow && !(event.getDamager() instanceof Trident)) {
 			final ProjectileSource source = arrow.getShooter();
-
-			if (source instanceof Player) {
-				player = (Player) source;
-			}
+			if (source instanceof Player) player = (Player) source;
 		} else if (event.getDamager() instanceof final Trident trident) {
 			final ProjectileSource source = trident.getShooter();
-
-			if (source instanceof Player) {
-				player = (Player) source;
-			}
-		} else if (event.getDamager() instanceof Player) {
+			if (source instanceof Player) player = (Player) source;
+		} else if (event.getDamager() instanceof Player)
 			player = (Player) event.getDamager();
-		}
 		return player;
 	}
 
@@ -111,13 +94,34 @@ public class EntityListener implements Listener {
 		final LivingEntity mob = event.getEntity();
 		final Player player = mob.getKiller();
 
-		if (player == null) {
-			return;
+		if (Lists.WORLDS.contains(mob.getWorld().getName())) return;
+
+		final FileConfiguration config = MineTinker.getPlugin().getConfig();
+
+		// Trigger mobdrops even if the player is null
+		if (!(mob instanceof Player)) {
+			if (config.getBoolean("ConvertLoot.MobDrops", true))
+				event.getDrops().forEach(item -> modManager.convertLoot(item, player));
+
+			if (config.getBoolean("MobDropModifierItems.Enabled", true)) {
+				if (config.getBoolean("MobDropModifierItems.ConsiderIncludedMobs") ==
+						config.getStringList("MobDropModifierItems.IncludedMobs").contains(mob.getType().name())) {
+					Random rand = new Random();
+					if (rand.nextInt(100) < config.getInt("MobDropModifierItems.Chance", 50)) {
+						int amount = rand.nextInt(config.getInt("MobDropModifierItems.MaximumAmount", 2) + 1);
+						final List<Modifier> mods = modManager.getAllowedMods();
+						for (int i = 0; i < amount; i++) {
+							final int index = rand.nextInt(mods.size());
+							final Modifier mod = mods.get(index);
+							if (!config.getStringList("MobDropModifierItems.ExcludeModifiers").contains(mod.getKey()))
+								event.getDrops().add(mod.getModItem().clone());
+						}
+					}
+				}
+			}
 		}
 
-		if (Lists.WORLDS.contains(player.getWorld().getName())) {
-			return;
-		}
+		if (player == null) return;
 
 		ItemStack tool = player.getInventory().getItemInMainHand();
 		if (mob.getLastDamageCause() instanceof EntityDamageByEntityEvent lastevent) {
@@ -130,37 +134,7 @@ public class EntityListener implements Listener {
 			}
 		}
 
-		if (!modManager.isToolViable(tool)) {
-			return;
-		}
-
-		final FileConfiguration config = MineTinker.getPlugin().getConfig();
-
-		if (!(mob instanceof Player)) {
-			if (config.getBoolean("ConvertLoot.MobDrops", true)) {
-				for (ItemStack item : event.getDrops()) {
-					modManager.convertLoot(item, player);
-				}
-			}
-
-			if (config.getBoolean("MobDropModifierItems.Enabled", true)) {
-				if (config.getBoolean("MobDropModifierItems.ConsiderIncludedMobs") ==
-						config.getStringList("MobDropModifierItems.IncludedMobs").contains(mob.getType().name())) {
-					Random rand = new Random();
-					if (rand.nextInt(100) < config.getInt("MobDropModifierItems.Chance", 2)) {
-						int amount = rand.nextInt(config.getInt("MobDropModifierItems.MaximumAmount") + 1);
-						final List<Modifier> mods = modManager.getAllowedMods();
-						for (int i = 0; i < amount; i++) {
-							final int index = rand.nextInt(mods.size());
-							final Modifier mod = mods.get(index);
-							if (!config.getStringList("MobDropModifierItems.ExcludeModifiers").contains(mod.getKey())) {
-								event.getDrops().add(mod.getModItem().clone());
-							}
-						}
-					}
-				}
-			}
-		}
+		if (!modManager.isToolViable(tool)) return;
 
 		Bukkit.getPluginManager().callEvent(new MTEntityDeathEvent(player, tool, event));
 
@@ -170,15 +144,11 @@ public class EntityListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onArrowHit(@NotNull final ProjectileHitEvent event) {
-		if (!(event.getEntity().getShooter() instanceof final Player player)) {
-			return;
-		}
+		if (!(event.getEntity().getShooter() instanceof final Player player)) return;
 
 		ItemStack tool = player.getInventory().getItemInMainHand();
 
-		if (event.getHitBlock() == null && !ToolType.FISHINGROD.contains(tool.getType())) {
-			return;
-		}
+		if (event.getHitBlock() == null && !ToolType.FISHINGROD.contains(tool.getType())) return;
 
 		if (event.getEntity() instanceof Trident || event.getEntity() instanceof Arrow) {
 			List<MetadataValue> tools = event.getEntity().getMetadata(MineTinker.getPlugin().getName() + "item");
@@ -188,27 +158,19 @@ public class EntityListener implements Listener {
 			tool = t;
 		}
 
-		if (!modManager.isToolViable(tool)) {
-			return;
-		}
+		if (!modManager.isToolViable(tool)) return;
 
 		Bukkit.getPluginManager().callEvent(new MTProjectileHitEvent(player, tool, event));
 
-		if (event.getEntity() instanceof Trident trident) {
-			trident.setItem(tool);
-		}
+		if (event.getEntity() instanceof Trident trident) trident.setItem(tool);
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onProjectileLaunch(@NotNull final ProjectileLaunchEvent event) {
-		if (!(event.getEntity().getShooter() instanceof final Player player)) {
-			return;
-		}
+		if (!(event.getEntity().getShooter() instanceof final Player player)) return;
 
 		ItemStack tool = player.getInventory().getItemInMainHand();
-		if (event.getEntity() instanceof Trident trident) {
-			tool = trident.getItem();
-		}
+		if (event.getEntity() instanceof Trident trident) tool = trident.getItem();
 
 		// get reference from bow shoot
 		if(event.getEntity().hasMetadata(MineTinker.getPlugin().getName() + "item")) {
@@ -233,13 +195,9 @@ public class EntityListener implements Listener {
 			return;
 		}
 
-		if (!modManager.isToolViable(tool)) {
-			return;
-		}
+		if (!modManager.isToolViable(tool)) return;
 
-		if (!modManager.durabilityCheck(event, player, tool)) {
-			return;
-		}
+		if (!modManager.durabilityCheck(event, player, tool)) return;
 
 		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerArrowShot"), true);
 
@@ -258,9 +216,7 @@ public class EntityListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onBowShoot(@NotNull final EntityShootBowEvent event) {
-		if (!(event.getEntity() instanceof final Player player)) {
-			return;
-		}
+		if (!(event.getEntity() instanceof final Player player)) return;
 
 		final ItemStack offHand = player.getInventory().getItemInOffHand();
 
@@ -271,15 +227,13 @@ public class EntityListener implements Listener {
 					new FixedMetadataValue(MineTinker.getPlugin(), bow));
 		}
 
-		if (offHand.getType() == Material.ARROW) {
-			if (playSound(event, player, offHand)) return;
-		}
+		if (offHand.getType() == Material.ARROW && playSound(event, player, offHand)) return;
 
-		for (ItemStack item : player.getInventory().getContents()) {
+		for (final ItemStack item : player.getInventory().getContents()) {
 			if (item == null) continue; // Extremely consistently null
 
 			if (item.getType() == Material.ARROW) {
-				if (playSound(event, player, item)) return;
+				playSound(event, player, item);
 				return;
 			}
 		}

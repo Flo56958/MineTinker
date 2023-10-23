@@ -135,7 +135,7 @@ ConvertLoot:
   MaximumNumberOfExp: 650
 MobDropModifierItems:
   Enabled: true                       #Should Modifieritems be dropped from Mobs
-  Chance: 100
+  Chance: 50
   MaximumAmount: 2                    #Amount of possible different modifiers (Item will have amount of 1)
   ExcludeModifiers:
     - Extra-Modifier

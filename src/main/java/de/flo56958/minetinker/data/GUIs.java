@@ -134,11 +134,13 @@ public class GUIs {
 				}
 
 				//Slot cost
-				lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.SlotCost")
-						.replaceFirst("%amount",
-								ModManager.layout.getBoolean("UseRomans.FreeSlots")
-										? ChatWriter.toRomanNumerals(m.getSlotCost())
-										: String.valueOf(m.getSlotCost())));
+				if (m.getSlotCost() > 0) {
+					lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.SlotCost")
+							.replaceFirst("%amount",
+									ModManager.layout.getBoolean("UseRomans.FreeSlots")
+											? ChatWriter.toRomanNumerals(m.getSlotCost())
+											: String.valueOf(m.getSlotCost())));
+				}
 
 				lore.add("");
 
