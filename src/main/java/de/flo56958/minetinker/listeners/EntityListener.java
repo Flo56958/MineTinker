@@ -99,7 +99,7 @@ public class EntityListener implements Listener {
 		final FileConfiguration config = MineTinker.getPlugin().getConfig();
 
 		// Trigger mobdrops even if the player is null
-		if (!(mob instanceof Player)) {
+		if (!(mob instanceof Player) && (!event.getDrops().isEmpty() || event.getDroppedExp() != 0)) {
 			if (config.getBoolean("ConvertLoot.MobDrops", true))
 				event.getDrops().forEach(item -> modManager.convertLoot(item, player));
 

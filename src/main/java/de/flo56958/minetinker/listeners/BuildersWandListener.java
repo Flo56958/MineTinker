@@ -499,10 +499,7 @@ public class BuildersWandListener implements Listener {
 
 		final Material type = b.getWorld().getBlockAt(loc).getType();
 
-		if (!(type == Material.AIR || type == Material.CAVE_AIR ||
-				type == Material.WATER || type == Material.BUBBLE_COLUMN ||
-				type == Material.LAVA || type == Material.GRASS)) {
-
+		if (!type.isAir() && type.isSolid()) {
 			return false;
 		}
 

@@ -59,7 +59,7 @@ public class WildHunt extends Modifier implements Listener {
 
 	@Override
 	public void reload() {
-		FileConfiguration config = getConfig();
+		final FileConfiguration config = getConfig();
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
@@ -89,7 +89,8 @@ public class WildHunt extends Modifier implements Listener {
 																new Tupel(Material.GOLD_INGOT, Material.GOLD_NUGGET)));
 		conversions.put(EntityType.SPIDER, List.of(new Tupel(Material.COBWEB, Material.STRING)));
 		conversions.put(EntityType.CREEPER, List.of(new Tupel(Material.TNT, Material.GUNPOWDER)));
-		conversions.put(EntityType.GHAST, List.of(new Tupel(Material.TNT, Material.GUNPOWDER)));
+		conversions.put(EntityType.GHAST, List.of(new Tupel(Material.TNT, Material.GUNPOWDER),
+													new Tupel(Material.END_CRYSTAL, Material.GHAST_TEAR)));
 		conversions.put(EntityType.WITHER_SKELETON, List.of(new Tupel(Material.WITHER_ROSE, Material.COAL)));
 		conversions.put(EntityType.SHULKER, List.of(new Tupel(Material.SHULKER_BOX, Material.SHULKER_SHELL)));
 		conversions.put(EntityType.SLIME, List.of(new Tupel(Material.EMERALD, Material.SLIME_BALL)));
@@ -109,11 +110,11 @@ public class WildHunt extends Modifier implements Listener {
 		this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
 		this.description = this.description.replace("%chance", String.valueOf(this.percentagePerLevel));
 
-		for (EntityType entity : EntityType.values()) {
-			List<String> strings = config.getStringList("Conversions." + entity.toString());
+		for (final EntityType entity : EntityType.values()) {
+			final List<String> strings = config.getStringList("Conversions." + entity.toString());
 			if (strings.isEmpty()) continue;
 
-			HashSet<Tupel> set = new HashSet<>(strings.stream().map(Tupel::fromString).toList());
+			final HashSet<Tupel> set = new HashSet<>(strings.stream().map(Tupel::fromString).toList());
 			set.remove(null);
 			if (set.isEmpty()) continue;
 			conversions.put(entity, new LinkedList<>(set));
@@ -127,8 +128,8 @@ public class WildHunt extends Modifier implements Listener {
 	 */
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void effect(@NotNull MTEntityDeathEvent event) {
-		Player player = event.getPlayer();
-		ItemStack tool = event.getTool();
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
 		if (!player.hasPermission(getUsePermission())) return;
 		if (!modManager.hasMod(tool, this)) return;
 
@@ -137,12 +138,12 @@ public class WildHunt extends Modifier implements Listener {
 		if (conv == null) return;
 
 		final List<ItemStack> drops = event.getEvent().getDrops();
-		for (Tupel q : conv) {
-			Material loot = q.material;
-			Material replaces = q.replaces;
+		for (final Tupel q : conv) {
+			final Material loot = q.material;
+			final Material replaces = q.replaces;
 			if (loot == null || replaces == null) continue;
 
-			LinkedList<ItemStack> items = new LinkedList<>(drops);
+			final LinkedList<ItemStack> items = new LinkedList<>(drops);
 			items.removeIf(k -> k == null || k.getType() != replaces);
 
 			if (items.isEmpty()) continue;
@@ -176,8 +177,8 @@ public class WildHunt extends Modifier implements Listener {
 
 	@Override
 	public List<String> getStatistics(ItemStack item) {
-		List<String> lore = new ArrayList<>();
-		int stat = (DataHandler.hasTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER))
+		final List<String> lore = new ArrayList<>();
+		final int stat = (DataHandler.hasTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER))
 				? DataHandler.getTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER)
 				: 0;
 		lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Wild-Hunt.Statistic_Used")
@@ -199,7 +200,7 @@ public class WildHunt extends Modifier implements Listener {
 
 		@Nullable
 		static WildHunt.Tupel fromString(@NotNull String input) {
-			String[] tok = input.split(regex);
+			final String[] tok = input.split(regex);
 			try {
 				if (tok.length == 2) return new Tupel(Material.valueOf(tok[0]), Material.valueOf(tok[1]));
 				else return null;

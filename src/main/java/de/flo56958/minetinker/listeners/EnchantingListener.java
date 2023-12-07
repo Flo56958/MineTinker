@@ -5,11 +5,8 @@ import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,48 +26,6 @@ import java.util.Map;
 public class EnchantingListener implements Listener {
 
 	private final ModManager modManager = ModManager.instance();
-
-	private static final Enchantment fakeEnchant = new Enchantment(new NamespacedKey(MineTinker.getPlugin(), "fake_enchant")) {
-		@Override
-		public @NotNull String getName() {
-			return "MineTinker Fake Enchant";
-		}
-
-		@Override
-		public int getMaxLevel() {
-			return 1;
-		}
-
-		@Override
-		public int getStartLevel() {
-			return 1;
-		}
-
-		@Override
-		public @NotNull EnchantmentTarget getItemTarget() {
-			return EnchantmentTarget.BREAKABLE;
-		}
-
-		@Override
-		public boolean isTreasure() {
-			return false;
-		}
-
-		@Override
-		public boolean isCursed() {
-			return false;
-		}
-
-		@Override
-		public boolean conflictsWith(@NotNull Enchantment other) {
-			return false;
-		}
-
-		@Override
-		public boolean canEnchantItem(@NotNull ItemStack item) {
-			return ModManager.instance().isArmorViable(item) || ModManager.instance().isToolViable(item);
-		}
-	};
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onTableEnchant(@NotNull final EnchantItemEvent event) {
@@ -92,35 +47,25 @@ public class EnchantingListener implements Listener {
 			final Modifier modifier = modManager.getModifierFromEnchantment(entry.getKey());
 
 			// The modifier may be disabled
-			if (modifier != null && modifier.isAllowed()) {
-				for (int i = 0; i < entry.getValue(); i++) {
-					//Adding necessary slots
-					if (free)
-						modManager.setFreeSlots(event.getItem(), modManager.getFreeSlots(event.getItem()) + modifier.getSlotCost());
-					if (!modManager.addMod(event.getEnchanter(), event.getItem(), modifier,
-							false, false, true, true)) {
-						//Remove slots as they were not needed
-						if (free)
-							modManager.setFreeSlots(event.getItem(), modManager.getFreeSlots(event.getItem()) - modifier.getSlotCost());
-						if (MineTinker.getPlugin().getConfig().getBoolean("RefundLostEnchantmentsAsItems", true)) {
-							for (; i < entry.getValue(); i++) { //Drop lost enchantments due to some error in addMod
-								if (!event.getEnchanter().getInventory().addItem(modifier.getModItem()).isEmpty()) { //adds items to (full) inventory
-									event.getEnchanter().getWorld().dropItem(event.getEnchanter().getLocation(), modifier.getModItem());
-								} // no else as it gets added in if-clause
-							}
+			if (modifier == null || !modifier.isAllowed()) continue;
+
+			for (int i = 0; i < entry.getValue(); i++) {
+				if (!modManager.addMod(event.getEnchanter(), event.getItem(), modifier,
+						false, false, true, free)) {
+					if (MineTinker.getPlugin().getConfig().getBoolean("RefundLostEnchantmentsAsItems", true)) {
+						for (; i < entry.getValue(); i++) { //Drop lost enchantments due to some error in addMod
+							if (!event.getEnchanter().getInventory().addItem(modifier.getModItem()).isEmpty()) { //adds items to (full) inventory
+								event.getEnchanter().getWorld().dropItem(event.getEnchanter().getLocation(), modifier.getModItem());
+							} // no else as it gets added in if-clause
 						}
-						break;
 					}
+					break;
 				}
-				toremove.add(entry.getKey());
 			}
+			toremove.add(entry.getKey());
 		}
 
 		toremove.forEach(enchants::remove);
-		if (enchants.isEmpty()) { //This Map should never be empty as the
-			enchants.put(fakeEnchant, 1);
-			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> event.getItem().removeEnchantment(fakeEnchant), 1);
-		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
