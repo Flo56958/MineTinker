@@ -41,21 +41,10 @@ public class ArmorListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onPlayerDamage(@NotNull final EntityDamageEvent event) {
-		if (event.getDamage() <= 0) {
-			return;
-		}
-
-		if (Lists.WORLDS.contains(event.getEntity().getWorld().getName())) {
-			return;
-		}
-
-		if (!(event.getEntity() instanceof final Player player)) {
-			return;
-		}
-
-		if (blacklistedCauses.contains(event.getCause())) {
-			return;
-		}
+		if (event.getDamage() <= 0) return;
+		if (Lists.WORLDS.contains(event.getEntity().getWorld().getName())) return;
+		if (!(event.getEntity() instanceof final Player player)) return;
+		if (blacklistedCauses.contains(event.getCause())) return;
 
 		Entity entity = null;
 		EntityDamageByEntityEvent byEntityEvent = null;
