@@ -13,10 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Trident;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -171,6 +168,8 @@ public class EntityListener implements Listener {
 
 		ItemStack tool = player.getInventory().getItemInMainHand();
 		if (event.getEntity() instanceof Trident trident) tool = trident.getItem();
+		if (event.getEntity() instanceof FishHook && (tool == null || !ToolType.FISHINGROD.contains(tool.getType())))
+			tool = player.getInventory().getItemInOffHand(); // Fishing rods can also be thrown in offhand
 
 		// get reference from bow shoot
 		if(event.getEntity().hasMetadata(MineTinker.getPlugin().getName() + "item")) {
