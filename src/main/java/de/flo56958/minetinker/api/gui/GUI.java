@@ -23,7 +23,6 @@ import java.util.List;
 
 /**
  * This class is for all User-Interfaces and Items within them.
- * This class should be thread-safe to use.
  *
  * @author Flo56958
  */
@@ -50,17 +49,17 @@ public class GUI implements Listener {
 		if (isClosed)
 			throw new IllegalStateException("GUI (" + this.hashCode() + ") is already closed!");
 
-		Window window = new Window(size, title, this);
+		final Window window = new Window(size, title, this);
 		windows.add(window);
 
 		return window;
 	}
 
-	public Window addWindow(@NotNull Inventory inventory) {
+	public Window addWindow(@NotNull final Inventory inventory) {
 		if (isClosed)
 			throw new IllegalStateException("GUI (" + this.hashCode() + ") is already closed!");
 
-		Window window = new Window(inventory, this);
+		final Window window = new Window(inventory, this);
 		windows.add(window);
 
 		return window;
@@ -146,9 +145,7 @@ public class GUI implements Listener {
 	 */
 	public void open() {
 		synchronized (this) {
-			if (!isClosed) {
-				return;
-			}
+			if (!isClosed) throw new IllegalStateException("GUI (" + this.hashCode() + ") is already open!");
 
 			Bukkit.getPluginManager().registerEvents(this, this.plugin);
 			isClosed = false;
@@ -158,11 +155,13 @@ public class GUI implements Listener {
 	/**
 	 * this will close the Listener section of the GUI
 	 * show() will throw Exception when called after close()
-	 * can be used to micromanage the performance of the GUIs
+	 * can be used to micromanage the performance of the GUIs.
+	 * <p>
+	 * close() will also close GUIs that are connected to the GUI via {@link ButtonAction.PAGE_GOTO}
 	 */
 	public void close() {
 		synchronized (this) {
-			if (isClosed) return;
+			if (isClosed) throw new IllegalStateException("GUI (" + this.hashCode() + ") is already closed!");
 
 			isClosed = true;
 			windows.forEach(Window::close);
@@ -171,49 +170,54 @@ public class GUI implements Listener {
 		}
 	}
 
+	public boolean isClosed() {
+		return isClosed;
+	}
+
 	//<------------------------------------Events------------------------------------------->
 
 	@EventHandler(ignoreCancelled = true)
-	public void onDisable(@NotNull PluginDisableEvent event) {
-		if (event.getPlugin().equals(this.plugin)) this.close();
+	public void onDisable(@NotNull final PluginDisableEvent event) {
+		// check if GUI is already closed due to a connecting Button Action
+		if (this.plugin.equals(event.getPlugin()) && !this.isClosed()) this.close();
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-	public void onClick(@NotNull InventoryClickEvent event) {
+	public void onClick(@NotNull final InventoryClickEvent event) {
 		if (event.getClickedInventory() == null) return;
-		Window w1 = getWindowFromInventory(event.getClickedInventory());
-		Window w2 = getWindowFromInventory(event.getWhoClicked().getOpenInventory().getTopInventory());
+		final Window w1 = getWindowFromInventory(event.getClickedInventory());
+		final Window w2 = getWindowFromInventory(event.getWhoClicked().getOpenInventory().getTopInventory());
 		if (w1 == null && w2 == null) return;
 
 		event.setCancelled(true);
 
 		if (w1 == null) return;
-		Window.Button clickedButton = w1.getButton(event.getSlot());
+		final Window.Button clickedButton = w1.getButton(event.getSlot());
 
 		if (clickedButton != null) clickedButton.executeAction(event);
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-	public void onDrag(@NotNull InventoryDragEvent event) {
-		Window w = getWindowFromInventory(event.getInventory());
+	public void onDrag(@NotNull final InventoryDragEvent event) {
+		final Window w = getWindowFromInventory(event.getInventory());
 		if (w == null) return;
 
 		event.setCancelled(true);
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-	public void onMove(@NotNull InventoryMoveItemEvent event) {
-		Window w1 = getWindowFromInventory(event.getDestination());
-		Window w2 = getWindowFromInventory(event.getInitiator());
-		Window w3 = getWindowFromInventory(event.getSource());
+	public void onMove(@NotNull final InventoryMoveItemEvent event) {
+		final Window w1 = getWindowFromInventory(event.getDestination());
+		final Window w2 = getWindowFromInventory(event.getInitiator());
+		final Window w3 = getWindowFromInventory(event.getSource());
 		if (w1 == null && w2 == null && w3 == null) return;
 
 		event.setCancelled(true);
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-	public void onEvent(@NotNull InventoryInteractEvent event) {
-		Window w = getWindowFromInventory(event.getInventory());
+	public void onEvent(@NotNull final InventoryInteractEvent event) {
+		final Window w = getWindowFromInventory(event.getInventory());
 		if (w == null) return;
 
 		event.setCancelled(true);
@@ -225,7 +229,6 @@ public class GUI implements Listener {
 	 * A wrapper class for the Minecraft Inventory Window
 	 */
 	public static class Window {
-
 		private final Inventory inventory;
 		private final GUI gui;
 		private final Button[] buttonMap;
@@ -272,7 +275,7 @@ public class GUI implements Listener {
 			if (x < 0 || y < 0 || x > 8)
 				throw new IllegalArgumentException("Coordinates can not be less than ZERO or too big!");
 
-			int slot = (9 * y) + x;
+			final int slot = (9 * y) + x;
 
 			if (slot >= this.inventory.getSize())
 				throw new IllegalArgumentException("Coordinates are to big for the given Inventory!");
@@ -341,7 +344,7 @@ public class GUI implements Listener {
 			return this;
 		}
 
-		public void show(final Player player) {
+		private void show(@NotNull final Player player) {
 			player.openInventory(this.inventory);
 
 			if (showRunnable != null && this.showRunnableTaskID == -1) {
@@ -357,24 +360,23 @@ public class GUI implements Listener {
 			}
 		}
 
-		public void close() {
+		private void close() {
 			if (showRunnableTaskID != -1) {
 				Bukkit.getScheduler().cancelTask(this.showRunnableTaskID);
 				this.showRunnableTaskID = -1;
 			}
-			for (HumanEntity humanEntity : new ArrayList<>(this.inventory.getViewers())) {
-				//new ArrayList is required as of ModificationException
+			for (final HumanEntity humanEntity : new ArrayList<>(this.inventory.getViewers())) {
+				// new ArrayList is required because of ModificationException
 				humanEntity.closeInventory();
 			}
 
-			for (GUI.Window.Button button : this.buttonMap) {
+			for (final GUI.Window.Button button : this.buttonMap) {
 				if (button == null) continue;
-				for (ButtonAction action : button.actions.values()) {
-					if (action instanceof ButtonAction.PAGE_GOTO) {
-						GUI other = ((ButtonAction.PAGE_GOTO) action).window.gui;
-						if (!other.equals(this.gui)) { //Close other GUIs
-							other.close();
-						}
+				for (final ButtonAction action : button.actions.values()) {
+					if (!(action instanceof ButtonAction.PAGE_GOTO gotoAction)) continue;
+					final GUI other = gotoAction.window.gui;
+					if (other != null && !other.isClosed()) { //Close other GUIs
+						other.close();
 					}
 				}
 			}
@@ -409,15 +411,11 @@ public class GUI implements Listener {
 
 			private void executeAction(@NotNull InventoryClickEvent event) {
 				ButtonAction action = actions.get(event.getClick());
-
-				if (action == null) {
-					return;
-				}
+				if (action == null) return;
 
 				action.run();
-
-				if (action instanceof PlayerAction && event.getWhoClicked() instanceof Player) {
-					((PlayerAction) action).run((Player) event.getWhoClicked());
+				if (action instanceof PlayerAction playerAction && event.getWhoClicked() instanceof Player player) {
+					playerAction.run(player);
 				}
 			}
 

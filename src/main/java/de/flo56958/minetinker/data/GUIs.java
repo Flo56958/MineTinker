@@ -310,8 +310,8 @@ public class GUIs {
 	}
 
 	public static void reload() {
-		if (modGUI != null) modGUI.close();
-		if (configurationsGUI != null) configurationsGUI.close();
+		if (modGUI != null && !modGUI.isClosed()) modGUI.close();
+		if (configurationsGUI != null && !configurationsGUI.isClosed()) configurationsGUI.close();
 
 		modGUI = createModGUI(ModManager.instance().getAllowedMods(),
 				LanguageManager.getString("ToolType.ALL") + ": ");
