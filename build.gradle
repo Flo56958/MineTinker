@@ -39,7 +39,7 @@ dependencies {
 }
 
 group = 'de.flo56958'
-version = '1.8.2'
+version = '1.9'
 description = 'A TinkersConstruct (and other mods) inspired spigot server plugin'
 java.sourceCompatibility = JavaVersion.VERSION_16
 
