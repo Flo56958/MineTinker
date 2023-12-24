@@ -198,6 +198,7 @@ permissions:
       minetinker.modifiers.ender.*: true
       minetinker.modifiers.evasive.*: true
       minetinker.modifiers.experienced.*: true
+      minetinker.modifiers.explosive.*: true
       minetinker.modifiers.extramodifier.*: true
       minetinker.modifiers.fiery.*: true
       minetinker.modifiers.freezing.*: true
@@ -244,6 +245,7 @@ permissions:
       minetinker.modifiers.timber.*: true
       minetinker.modifiers.voidnetting.*: true
       minetinker.modifiers.webbed.*: true
+      minetinker.modifiers.wildhunt.*: true
       minetinker.modifiers.withered.*: true
       minetinker.modifiers.shrouded.*: true
 
