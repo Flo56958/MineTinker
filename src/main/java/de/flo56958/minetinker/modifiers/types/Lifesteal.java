@@ -114,8 +114,7 @@ public class Lifesteal extends Modifier implements Listener {
 
 		AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
 
-		if (attribute != null)
-							// for IllegalArgumentExeption if Health is biggen than MaxHealth
+		if (attribute != null) // for IllegalArgumentException if Health is bigger than MaxHealth
 			player.setHealth(Math.min(health, attribute.getValue()));
 
 		ChatWriter.logModifier(player, event, this, tool, String.format("Chance(%d/%d)", n, this.percentToTrigger),

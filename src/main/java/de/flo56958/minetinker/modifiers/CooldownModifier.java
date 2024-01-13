@@ -37,9 +37,9 @@ public abstract class CooldownModifier extends Modifier {
                                        final boolean sendAlert, @Nullable final Event event) {
         final long time = System.currentTimeMillis();
         final int level = modManager.getModLevel(tool, this);
-        long cooldownTime = getCooldown(level);
+        final long cooldownTime = getCooldown(level);
         if (cooldownTime <= /* one tick in ms */ 1000 / 20) return false; // cooldown is disabled
-        Long cd = DataHandler.getTag(tool, this.getKey() + "cooldown", PersistentDataType.LONG);
+        final Long cd = DataHandler.getTag(tool, this.getKey() + "cooldown", PersistentDataType.LONG);
         if (cd == null) return false; // was never on cooldown
 
         if (!(time - cd < Math.round(cooldownTime) && player.getGameMode() != GameMode.CREATIVE)) return false;

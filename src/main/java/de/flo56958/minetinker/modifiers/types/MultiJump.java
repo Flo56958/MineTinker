@@ -162,7 +162,7 @@ public class MultiJump extends Modifier implements Listener {
 
 		//"Enable" multijump as a ToggleFlight hack
 		//This will surely get flagged by anti cheat plugins
-		//FIXME: Find a better solution for MultiJump so it does not trigger AntiCheat or can easily exploited
+		//FIXME: Find a better solution for MultiJump so it does not trigger AntiCheat or can easily be exploited
 		else if (below.getType().isAir()) {
 			if(jumpcharge.get() < level)
 				enableFlight(p);
