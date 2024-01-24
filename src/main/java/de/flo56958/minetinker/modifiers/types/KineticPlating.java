@@ -88,8 +88,8 @@ public class KineticPlating extends Modifier implements Listener {
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void effect(EntityDamageEvent event) {
-		if (!(event.getEntity() instanceof Player player)) return;
 		if (event.getCause() != EntityDamageEvent.DamageCause.FLY_INTO_WALL) return;
+		if (!(event.getEntity() instanceof Player player)) return;
 		if (!player.hasPermission(getUsePermission())) return;
 
 		final ItemStack elytra = player.getInventory().getChestplate();

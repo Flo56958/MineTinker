@@ -44,6 +44,13 @@ ExtraExpPerEntityHit:                 #Extra Exp for entity hit
 ExtraExpPerEntityDeath:               #Extra Exp for entity death
   ENDER_DRAGON: 500
   WITHER: 250
+DisableExpFromDamageCause:
+  - SUICIDE
+  - VOID
+  - CUSTOM
+  - LAVA
+  - FIRE
+  - FIRE_TICK
 DisableExpFromEntity:                 #Certain Entities do not give Exp on hit
   - AREA_EFFECT_CLOUD
   - ARMOR_STAND

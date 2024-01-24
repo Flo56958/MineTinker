@@ -30,21 +30,12 @@ import java.util.Random;
 public class ArmorListener implements Listener {
 
 	private static final ModManager modManager = ModManager.instance();
-	private static final ArrayList<EntityDamageEvent.DamageCause> blacklistedCauses = new ArrayList<>();
-
-	static {
-		//List to disable XP-Farming on Armor with Suicide-Commands
-		blacklistedCauses.add(EntityDamageEvent.DamageCause.SUICIDE); //vanilla Suicide command
-		blacklistedCauses.add(EntityDamageEvent.DamageCause.VOID); //other Suicide commands
-		blacklistedCauses.add(EntityDamageEvent.DamageCause.CUSTOM); //Essentials Suicide
-	}
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onPlayerDamage(@NotNull final EntityDamageEvent event) {
 		if (event.getDamage() <= 0) return;
 		if (Lists.WORLDS.contains(event.getEntity().getWorld().getName())) return;
 		if (!(event.getEntity() instanceof final Player player)) return;
-		if (blacklistedCauses.contains(event.getCause())) return;
 
 		Entity entity = null;
 		EntityDamageByEntityEvent byEntityEvent = null;
@@ -92,6 +83,10 @@ public class ArmorListener implements Listener {
 			return;
 		if (MineTinker.getPlugin().getConfig().getBoolean("DisableNonPvPDamageExpWeapon", false)
 				&& !ToolType.TOOLS.contains(event.getTool().getType()))
+			return;
+
+		if (MineTinker.getPlugin().getConfig().getStringList("DisableExpFromDamageCause")
+				.contains(event.getEvent().getCause().toString()))
 			return;
 
 		expCalculation(event.isBlocking(), event.getTool(), event.getEvent(), event.getPlayer());

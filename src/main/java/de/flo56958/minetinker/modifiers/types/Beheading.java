@@ -100,7 +100,7 @@ public class Beheading extends Modifier implements Listener {
 		if (!modManager.hasMod(tool, this)) return;
 
 		Random rand = new Random();
-		if(this.dropSpawneggChancePerLevel > 0) {
+		if (this.dropSpawneggChancePerLevel > 0) {
 			int n = rand.nextInt(100);
 			int i = this.dropSpawneggChancePerLevel * modManager.getModLevel(tool, this);
 			if (n <= i) {
