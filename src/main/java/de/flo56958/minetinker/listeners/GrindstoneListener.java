@@ -137,8 +137,8 @@ public class GrindstoneListener implements Listener {
 			}
 
 			if (!hadMods) {
-				grindstoneInventory.setItem(2, null);
-				event.setResult(Event.Result.DENY);
+				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
+						() -> grindstoneInventory.setItem( /*Resultslot*/ 2, null), 1);
 				return;
 			}
 
