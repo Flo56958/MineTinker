@@ -68,7 +68,7 @@ public class EntityListener implements Listener {
 				MineTinker.getPlugin().getConfig().getInt("ExtraExpPerEntityHit."
 						+ event.getEntity().getType(), 0), true);
 
-		if (event.getEntity() instanceof Trident trident) trident.setItem(tool);
+		if (event.getDamager() instanceof Trident trident) trident.setItem(tool);
 	}
 
 	@Nullable
@@ -137,6 +137,10 @@ public class EntityListener implements Listener {
 
 		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig()
 				.getInt("ExtraExpPerEntityDeath." + event.getEntity().getType(), 0), true);
+
+		if (mob.getLastDamageCause() instanceof EntityDamageByEntityEvent lasteven) {
+			if (lasteven.getDamager() instanceof Trident trident) trident.setItem(tool);
+		}
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -207,6 +211,8 @@ public class EntityListener implements Listener {
 		}
 
 		Bukkit.getPluginManager().callEvent(new MTProjectileLaunchEvent(player, tool, event));
+
+		if (event.getEntity() instanceof Trident trident) trident.setItem(tool);
 
         /*
         Self-Repair and Experienced will no longer trigger on bowfire
