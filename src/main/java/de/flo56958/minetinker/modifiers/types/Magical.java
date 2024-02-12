@@ -135,7 +135,7 @@ public class Magical extends Modifier implements Listener {
 		arrow.setGravity(false);
 		//arrow.setGlowing(true);
 
-		final Vector velocity = arrow.getVelocity().multiply(this.multiplierArrowSpeed).clone();
+		final Vector velocity = arrow.getVelocity().multiply(this.multiplierArrowSpeed);
 		arrow.setVelocity(velocity.clone());
 		arrow.setDamage(arrow.getDamage() * Math.pow(this.multiplierDamagePerLevel, modLevel));
 

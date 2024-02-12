@@ -151,11 +151,11 @@ public class MultiShot extends Modifier implements Listener {
 		if (ToolType.CROSSBOW.contains(tool.getType()) && getConfig().getBoolean("UseEnchantOnCrossbow")) return;
 		if (!modManager.isToolViable(tool)) return;
 
-		int modLevel = modManager.getModLevel(tool, this);
+		final int modLevel = modManager.getModLevel(tool, this);
 		if (modLevel <= 0) return;
 
-		Vector vel = arrow.getVelocity().clone();
-		Location loc = arrow.getLocation().clone();
+		final Vector vel = arrow.getVelocity();
+		final Location loc = arrow.getLocation();
 
 		ChatWriter.logModifier(player, event, this, tool);
 
