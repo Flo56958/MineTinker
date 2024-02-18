@@ -38,8 +38,8 @@ public class CraftItemListener implements Listener {
 			return;
 		}
 
-		//If the tools are stacked because of a different plugin we do not want to interfere with that plugin
-		//tool.setAmount(1);
+		// If the tools are stacked because of a different plugin we do not want to interfere with that plugin
+		// tool.setAmount(1);
 
 		if (config.getBoolean("Sound.OnCrafting")) {
 			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);

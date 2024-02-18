@@ -248,6 +248,7 @@ permissions:
       minetinker.modifiers.wildhunt.*: true
       minetinker.modifiers.withered.*: true
       minetinker.modifiers.shrouded.*: true
+      minetinker.modifiers.zealous.*: true
 
   minetinker.modifiers.antiarrowplating.*:
     children:
@@ -962,6 +963,21 @@ permissions:
     default: true
   minetinker.modifiers.shadowdive.use:
     description: Allows to use Shadow Dive on a MineTinker-Boot
+    default: true
+
+  minetinker.modifiers.zealous.*:
+    children:
+      minetinker.modifiers.zealous.apply: true
+      minetinker.modifiers.zealous.use: true
+      minetinker.modifiers.zealous.craft: true
+  minetinker.modifiers.zealous.apply:
+    description: Allows to apply Zealous to a MineTinker-Weapon
+    default: true
+  minetinker.modifiers.zealous.use:
+    description: Allows to use Zealous on a MineTinker-Weapon
+    default: true
+  minetinker.modifiers.zealous.craft:
+    description: Allows to craft a Zealous-Modifiers
     default: true
 
   #Builderswands:

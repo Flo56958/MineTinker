@@ -7,8 +7,10 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,6 +23,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -150,6 +153,14 @@ public class Timber extends Modifier implements Listener {
 				});
 			}
 
+			Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
+				//Track stats
+				int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER))
+						? DataHandler.getTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER)
+						: 0;
+				DataHandler.setTag(tool, getKey() + "_stat_used", stat + 1, PersistentDataType.INTEGER);
+			});
+
 			// Place sapling on all ground blocks if applicable
 			if (saplingType == null || level < 2 || groundBlocks.isEmpty()) return;
 			// sort ground blocks by distance to the original block (closest first)
@@ -220,5 +231,16 @@ public class Timber extends Modifier implements Listener {
 		}
 
 		return hasGround && hasLeaves;
+	}
+
+	@Override
+	public List<String> getStatistics(ItemStack item) {
+		List<String> lore = new ArrayList<>();
+		int stat = (DataHandler.hasTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER))
+				? DataHandler.getTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER)
+				: 0;
+		lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Timber.Statistic_Used")
+				.replaceAll("%amount", String.valueOf(stat)));
+		return lore;
 	}
 }

@@ -454,6 +454,7 @@ Modifier:
     Description: "Chop down trees in an instant!"
     ModifierItemName: "Wooden Emerald"
     DescriptionModifierItem: "Modifier-Item for the Timber-Modifier"
+    Statistic_Used: "Trees chopped: %amount"
   Undead:
     Name: "Undead"
     Description: "Monster will not target you anymore but you also can not attack anyone!"
@@ -486,6 +487,13 @@ Modifier:
     Description: "Withers the target for %duration Ticks * %multiplier per level!"
     ModifierItemName: "Withered Wither Skeleton Skull"
     DescriptionModifierItem: "Modifier-Item for the Withered-Modifier"
+  Zealous:
+    Name: "Zealous"
+    Description: "Deal %percent% more damage each second you are in combat per level! This effect stacks infinitely and resets out of combat."
+    ModifierItemName: "Infernal Zeal"
+    DescriptionModifierItem: "Modifier-Item for the Zealous-Modifier"
+    Statistic_Damage: "Additional Damage dealt: %amount"
+    Statistic_Time: "Longest Combat: %amount seconds"
 
 DataType.Boolean: "Boolean (true/false)"
 DataType.String: "String"

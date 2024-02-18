@@ -1,7 +1,9 @@
 package de.flo56958.minetinker.utils;
 
+import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.modifiers.ModManager;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,20 +17,34 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerInfo implements Listener {
 
 	static final ModManager modManager = ModManager.instance();
 
-	private static final ConcurrentHashMap<String, Long> combatTagTracker = new ConcurrentHashMap<>();
-	private static final ConcurrentHashMap<String, ItemStack> fishingRodTracker = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<UUID, Long> combatTagTracker = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<UUID, Long> combatTagTimeTracker = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<UUID, ItemStack> fishingRodTracker = new ConcurrentHashMap<>();
 
-	public static boolean isCombatTagged(Player player) {
-		Long time = combatTagTracker.getOrDefault(player.getUniqueId().toString(), -1L);
+	public static boolean isCombatTagged(@NotNull final Player player) {
+		final long time = combatTagTracker.getOrDefault(player.getUniqueId(), -1L);
 		if (time == -1L) return false;
 
-		return System.currentTimeMillis() - time < 5 * 1000L;
+		return System.currentTimeMillis() - time
+				< MineTinker.getPlugin().getConfig().getInt("CombatTagDuration", 5) * 1000L;
+	}
+
+	/**
+	 * @param player The player to get the combat time of
+	 * @return The time the player is currently combat tagged in milliseconds
+	 */
+	public static long getCombatTagTime(@NotNull final Player player) {
+		if (!isCombatTagged(player)) return 0L;
+
+		final long time = System.currentTimeMillis();
+		return time - combatTagTimeTracker.getOrDefault(player.getUniqueId(), time);
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -36,7 +52,7 @@ public class PlayerInfo implements Listener {
 		switch (event.getState()) {
 			case FISHING:
 				if (event.getHand() == null) return;
-				fishingRodTracker.put(event.getPlayer().getUniqueId().toString(),
+				fishingRodTracker.put(event.getPlayer().getUniqueId(),
 						event.getPlayer().getInventory().getItem(event.getHand()));
 				break;
 			case CAUGHT_FISH:
@@ -45,7 +61,7 @@ public class PlayerInfo implements Listener {
 
 				// event.getHand() is null in State.CAUGHT_FISH
 				// looking for fishing rod
-				ItemStack rod = fishingRodTracker.get(player.getUniqueId().toString());
+				ItemStack rod = fishingRodTracker.get(player.getUniqueId());
 				if (!modManager.isToolViable(rod)) return;
 				// rod needs to be updated if the slot changed because of a hand swap
 				for (final ItemStack item : new ItemStack[]{player.getInventory().getItemInMainHand(),
@@ -61,40 +77,49 @@ public class PlayerInfo implements Listener {
 			case IN_GROUND:
 			case FAILED_ATTEMPT:
 			case REEL_IN:
-				fishingRodTracker.remove(event.getPlayer().getUniqueId().toString());
+				fishingRodTracker.remove(event.getPlayer().getUniqueId());
 			default:
 				break;
         }
 	}
 
+	private void setCombatTag(@Nullable final Entity entity) {
+		if (!(entity instanceof Player player)) return;
+
+		final long time = System.currentTimeMillis();
+
+		// set first damage time (begin of combat)
+		if (!isCombatTagged(player))
+			combatTagTimeTracker.put(player.getUniqueId(), time);
+
+		combatTagTracker.put(player.getUniqueId(), time);
+	}
+
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	private void onCombat(EntityDamageEvent event) {
-		if (event.getEntity() instanceof Player player) {
-			combatTagTracker.put(player.getUniqueId().toString(), System.currentTimeMillis());
-		}
+		setCombatTag(event.getEntity());
 	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	private void onCombat(EntityDamageByEntityEvent event) {
-		if (event.getEntity() instanceof Player player) {
-			combatTagTracker.put(player.getUniqueId().toString(), System.currentTimeMillis());
-		}
-
-		if (event.getDamager() instanceof Player player) {
-			combatTagTracker.put(player.getUniqueId().toString(), System.currentTimeMillis());
-		}
+		setCombatTag(event.getEntity());
+		setCombatTag(event.getDamager());
 	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onDeath(PlayerDeathEvent event) {
-		combatTagTracker.remove(event.getEntity().getUniqueId().toString());
-		fishingRodTracker.remove(event.getEntity().getUniqueId().toString());
+		combatTagTracker.remove(event.getEntity().getUniqueId());
+		combatTagTimeTracker.remove(event.getEntity().getUniqueId());
+
+		fishingRodTracker.remove(event.getEntity().getUniqueId());
 	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onDisconnect(PlayerQuitEvent event) {
-		combatTagTracker.remove(event.getPlayer().getUniqueId().toString());
-		fishingRodTracker.remove(event.getPlayer().getUniqueId().toString());
+		combatTagTracker.remove(event.getPlayer().getUniqueId());
+		combatTagTimeTracker.remove(event.getPlayer().getUniqueId());
+
+		fishingRodTracker.remove(event.getPlayer().getUniqueId());
 	}
 
 	/**

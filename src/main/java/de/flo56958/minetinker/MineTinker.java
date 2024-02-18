@@ -220,6 +220,7 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(Webbed.instance());
 		modManager.register(WildHunt.instance());
 		modManager.register(Withered.instance());
+		modManager.register(Zealous.instance());
 	}
 
 	public void AddSoftdependMods() {

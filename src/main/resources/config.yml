@@ -84,6 +84,7 @@ DisableExpFromEntity:                 #Certain Entities do not give Exp on hit
   - UNKNOWN
 EnableDamageExp: true                 #When true: Sword/Bow will gain XP equal to the damage dealt
 BlockExpCooldownInSeconds: 60         #How much cooldown should the placed block have until it gives Exp again
+CombatTagDuration: 5                      #How long should a player be combat tagged (in seconds)
 
 #---------------TOOL-SETTINGS--------------
 AddModifierSlotsPerLevel: 1           #Amount of new free Modifier-Slots for each Level-Up (must be positive or zero)
