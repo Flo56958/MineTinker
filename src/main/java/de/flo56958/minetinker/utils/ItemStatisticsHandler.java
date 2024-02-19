@@ -85,10 +85,10 @@ public class ItemStatisticsHandler implements Listener {
 				GUI.Window.Button backbutton = currentPage.addButton(4, 5, backStack);
 				backbutton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(backbutton, window));
 
-				for (Modifier m : mods) {
+				for (final Modifier m : mods) {
 					if (!ModManager.instance().hasMod(item, m)) continue;
-					ItemStack is = m.getModItem().clone();
-					ItemMeta meta = is.getItemMeta();
+					final ItemStack is = m.getModItem().clone();
+					final ItemMeta meta = is.getItemMeta();
 
 					if (meta != null) {
 						meta.setDisplayName(m.getColor() + m.getName());
@@ -191,21 +191,21 @@ public class ItemStatisticsHandler implements Listener {
 		{
 			EnumMap<EntityType, Long> map = DataHandler.getTag(item, keyStart + "entity_killed",
 					new EnumMapTagType<>(new EnumMap<>(EntityType.class)));
-			Double damageDealt = DataHandler.getTag(item, keyStart + "damage_dealt",
-					PersistentDataType.DOUBLE);
+			double damageDealt = DataHandler.getTagOrDefault(item, keyStart + "damage_dealt",
+					PersistentDataType.DOUBLE, 0.0D);
 
-			Double damageReceived = DataHandler.getTag(item, keyStart + "damage_received",
-					PersistentDataType.DOUBLE);
+			double damageReceived = DataHandler.getTagOrDefault(item, keyStart + "damage_received",
+					PersistentDataType.DOUBLE, 0.0D);
 
 			ItemStack itemStack = new ItemStack(Material.SKELETON_SKULL);
 			ItemMeta itemMeta = itemStack.getItemMeta();
 			if (itemMeta != null) {
 				itemMeta.setDisplayName(ChatColor.GOLD + LanguageManager.getString("GUIs.Statistics.Combat.Title"));
-				ArrayList<String> lore = new ArrayList<>();
-				if (damageDealt != null) lore.add(ChatColor.WHITE
+				final ArrayList<String> lore = new ArrayList<>();
+				lore.add(ChatColor.WHITE
 						+ LanguageManager.getString("GUIs.Statistics.Combat.DamageDealt")
 						.replace("%amount", String.valueOf(Math.round(damageDealt))));
-				if (damageReceived != null) lore.add(ChatColor.WHITE
+				lore.add(ChatColor.WHITE
 						+ LanguageManager.getString("GUIs.Statistics.Combat.DamageReceived")
 						.replace("%amount", String.valueOf(Math.round(damageReceived))));
 				itemMeta.setLore(lore);
@@ -272,18 +272,13 @@ public class ItemStatisticsHandler implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onBlockBreak(MTBlockBreakEvent event) {
-		ItemStack tool = event.getTool();
+		final ItemStack tool = event.getTool();
 
-		Material blockType = event.getBlock().getType();
-		EnumMap<Material, Long> map = DataHandler.getTag(tool, keyStart + "blocks_broken",
-				new EnumMapTagType<>(new EnumMap<>(Material.class)));
-		if (map == null) {
-			map = new EnumMap<>(Material.class);
-		}
-		Long count = map.get(blockType);
-		if (count == null) {
-			count = 0L;
-		}
+		final Material blockType = event.getBlock().getType();
+		final EnumMap<Material, Long> map = DataHandler.getTagOrDefault(tool, keyStart + "blocks_broken",
+				new EnumMapTagType<>(new EnumMap<>(Material.class)), new EnumMap<>(Material.class));
+
+		long count = map.getOrDefault(blockType, 0L);
 		count++;
 		map.put(blockType, count);
 		DataHandler.setTag(tool, keyStart + "blocks_broken", map,
@@ -292,18 +287,13 @@ public class ItemStatisticsHandler implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onEntityDeath(MTEntityDeathEvent event) {
-		ItemStack tool = event.getTool();
+		final ItemStack tool = event.getTool();
 
-		EntityType entityType = event.getEvent().getEntity().getType();
-		EnumMap<EntityType, Long> map = DataHandler.getTag(tool, keyStart + "entity_killed",
-				new EnumMapTagType<>(new EnumMap<>(EntityType.class)));
-		if (map == null) {
-			map = new EnumMap<>(EntityType.class);
-		}
-		Long count = map.get(entityType);
-		if (count == null) {
-			count = 0L;
-		}
+		final EntityType entityType = event.getEvent().getEntity().getType();
+		final EnumMap<EntityType, Long> map = DataHandler.getTagOrDefault(tool, keyStart + "entity_killed",
+				new EnumMapTagType<>(new EnumMap<>(EntityType.class)), new EnumMap<>(EntityType.class));
+
+		long count = map.getOrDefault(entityType, 0L);
 		count++;
 		map.put(entityType, count);
 		DataHandler.setTag(tool, keyStart + "entity_killed", map,
@@ -311,40 +301,31 @@ public class ItemStatisticsHandler implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-	public void onEntityDamage(MTEntityDamageEvent event) {
-		ItemStack armor = event.getTool();
+	public void onEntityDamage(@NotNull final MTEntityDamageEvent event) {
+		final ItemStack armor = event.getTool();
 		if (ModManager.instance().isArmorViable(armor)) {
-			double finalDamage = event.getEvent().getFinalDamage();
-			Double old = DataHandler.getTag(armor, keyStart + "damage_received",
-					PersistentDataType.DOUBLE);
-			if (old == null) {
-				old = 0.0d;
-			}
+			final double finalDamage = event.getEvent().getFinalDamage();
+			final double old = DataHandler.getTagOrDefault(armor, keyStart + "damage_received",
+					PersistentDataType.DOUBLE, 0.0D);
 			DataHandler.setTag(armor, keyStart + "damage_received", old + finalDamage,
 					PersistentDataType.DOUBLE);
 		}
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-	public void onEntityDamage(MTEntityDamageByEntityEvent event) {
-		ItemStack tool = event.getTool();
+	public void onEntityDamage(@NotNull final MTEntityDamageByEntityEvent event) {
+		final ItemStack tool = event.getTool();
 
 		if (event.getPlayer().equals(event.getEvent().getEntity())) { //Player is attacked
-			double finalDamage = event.getEvent().getFinalDamage();
-			Double old = DataHandler.getTag(tool, keyStart + "damage_received",
-					PersistentDataType.DOUBLE);
-			if (old == null) {
-				old = 0.0d;
-			}
+			final double finalDamage = event.getEvent().getFinalDamage();
+			final double old = DataHandler.getTagOrDefault(tool, keyStart + "damage_received",
+					PersistentDataType.DOUBLE, 0.0D);
 			DataHandler.setTag(tool, keyStart + "damage_received", old + finalDamage,
 					PersistentDataType.DOUBLE);
 		} else if (event.getPlayer().equals(event.getEvent().getDamager())) { //Player attacked
-			double finalDamage = event.getEvent().getFinalDamage();
-			Double old = DataHandler.getTag(tool, keyStart + "damage_dealt",
-					PersistentDataType.DOUBLE);
-			if (old == null) {
-				old = 0.0d;
-			}
+			final double finalDamage = event.getEvent().getFinalDamage();
+			final double old = DataHandler.getTagOrDefault(tool, keyStart + "damage_dealt",
+					PersistentDataType.DOUBLE, 0.0D);
 			DataHandler.setTag(tool, keyStart + "damage_dealt", old + finalDamage,
 					PersistentDataType.DOUBLE);
 		}

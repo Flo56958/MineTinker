@@ -164,10 +164,8 @@ public class WildHunt extends Modifier implements Listener {
 				drops.removeAll(items);
 				drops.add(new ItemStack(loot, convertedAmount));
 				if (amount > 0) drops.add(new ItemStack(replaces, amount));
-				//Track stats
-				int stat = (DataHandler.hasTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER))
-						? DataHandler.getTag(tool, getKey() + "_stat_used", PersistentDataType.INTEGER)
-						: 0;
+				// Track stats
+				final int stat = DataHandler.getTagOrDefault(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, 0);
 				DataHandler.setTag(tool, getKey() + "_stat_used", stat + convertedAmount, PersistentDataType.INTEGER);
 				ChatWriter.logModifier(player, event, this, tool, "Entity(" + event.getEvent().getEntity().getType() + ")",
 						"Item(" + replaces + "->" + loot + ")");
@@ -178,9 +176,7 @@ public class WildHunt extends Modifier implements Listener {
 	@Override
 	public List<String> getStatistics(ItemStack item) {
 		final List<String> lore = new ArrayList<>();
-		final int stat = (DataHandler.hasTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER))
-				? DataHandler.getTag(item, getKey() + "_stat_used", PersistentDataType.INTEGER)
-				: 0;
+		final int stat = DataHandler.getTagOrDefault(item, getKey() + "_stat_used", PersistentDataType.INTEGER, 0);
 		lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Wild-Hunt.Statistic_Used")
 				.replaceAll("%amount", String.valueOf(stat)));
 		return lore;

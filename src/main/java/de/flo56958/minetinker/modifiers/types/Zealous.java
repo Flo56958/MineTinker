@@ -106,27 +106,18 @@ public class Zealous extends Modifier implements Listener {
 				String.format("CombatTime(%d)", combatTime));
 
 		//Track stats
-		final double stat_damage = (DataHandler.hasTag(tool, getKey() + "_stat_damage", PersistentDataType.DOUBLE))
-				? DataHandler.getTag(tool, getKey() + "_stat_damage", PersistentDataType.DOUBLE)
-				: 0;
+		final double stat_damage = DataHandler.getTagOrDefault(tool, getKey() + "_stat_damage", PersistentDataType.DOUBLE, 0.0D);
 		DataHandler.setTag(tool, getKey() + "_stat_damage", stat_damage + addDamage, PersistentDataType.DOUBLE);
 
-		final long stat_time = (DataHandler.hasTag(tool, getKey() + "_stat_time", PersistentDataType.LONG))
-				? DataHandler.getTag(tool, getKey() + "_stat_time", PersistentDataType.LONG)
-				: 0;
+		final long stat_time = DataHandler.getTagOrDefault(tool, getKey() + "_stat_time", PersistentDataType.LONG, 0L);
 		DataHandler.setTag(tool, getKey() + "_stat_time", Math.max(stat_time, combatTime), PersistentDataType.LONG);
 	}
 
 	@Override
 	public List<String> getStatistics(ItemStack item) {
-		List<String> lore = new ArrayList<>();
-		final double stat_damage = (DataHandler.hasTag(item, getKey() + "_stat_damage", PersistentDataType.DOUBLE))
-				? DataHandler.getTag(item, getKey() + "_stat_damage", PersistentDataType.DOUBLE)
-				: 0;
-
-		final long stat_time = (DataHandler.hasTag(item, getKey() + "_stat_time", PersistentDataType.LONG))
-				? DataHandler.getTag(item, getKey() + "_stat_time", PersistentDataType.LONG)
-				: 0;
+		final List<String> lore = new ArrayList<>();
+		final double stat_damage = DataHandler.getTagOrDefault(item, getKey() + "_stat_damage", PersistentDataType.DOUBLE, 0.0D);
+		final long stat_time = DataHandler.getTagOrDefault(item, getKey() + "_stat_time", PersistentDataType.LONG, 0L);
 		lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Zealous.Statistic_Time")
 				.replaceAll("%amount", String.format("%,.2f", stat_time / 1000.0D)));
 		lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Zealous.Statistic_Damage")

@@ -77,8 +77,8 @@ public class PlayerInfo implements Listener {
 			case IN_GROUND:
 			case FAILED_ATTEMPT:
 			case REEL_IN:
-				fishingRodTracker.remove(event.getPlayer().getUniqueId());
 			default:
+				fishingRodTracker.remove(event.getPlayer().getUniqueId());
 				break;
         }
 	}
@@ -126,7 +126,7 @@ public class PlayerInfo implements Listener {
 	 * @param player The player to get the facing direction of as a single character
 	 * @return The facing direction of the player in Degrees
 	 */
-	public static Direction getFacingDirection(Player player) {
+	public static Direction getFacingDirection(final Player player) {
 		double rot = (player.getLocation().getYaw() - 90) % 360;
 
 		if (rot < 0) {
@@ -140,7 +140,7 @@ public class PlayerInfo implements Listener {
 	 * @param rot The rotation in degrees
 	 * @return The compass facing direction
 	 */
-	private @Nullable static Direction getDirection(double rot) {
+	private @Nullable static Direction getDirection(final double rot) {
         return switch ((int) (rot / 45)) {
             case 0, 7 -> Direction.WEST;
             case 1, 2 -> Direction.NORTH;
@@ -151,34 +151,36 @@ public class PlayerInfo implements Listener {
 	}
 
 	// Calculate amount of EXP needed to level up
-	private static int getExpToLevelUp(int level) {
-		if (level <= 15) {
-			return 2 * level + 7;
-		} else if (level <= 30) {
-			return 5 * level - 38;
-		} else {
-			return 9 * level - 158;
-		}
+	private static int getExpToLevelUp(final int level) {
+		return switch (level) {
+			case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ->
+					2 * level + 7;
+			case 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 ->
+					5 * level - 38;
+			default ->
+					9 * level - 158;
+		};
 	}
 
 	// Calculate total experience up to a level
-	private static int getExpAtLevel(int level) {
-		if (level <= 16) {
-			return (int) (Math.pow(level, 2) + 6 * level);
-		} else if (level <= 31) {
-			return (int) (2.5 * Math.pow(level, 2) - 40.5 * level + 360.0);
-		} else {
-			return (int) (4.5 * Math.pow(level, 2) - 162.5 * level + 2220.0);
-		}
+	private static int getExpAtLevel(final int level) {
+    	return switch (level) {
+    	    case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ->
+					(int) (Math.pow(level, 2) + 6 * level);
+    	    case 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ->
+    	            (int) (2.5 * Math.pow(level, 2) - 40.5 * level + 360.0);
+    	    default ->
+					(int) (4.5 * Math.pow(level, 2) - 162.5 * level + 2220.0);
+    	};
 	}
 
 	/**
 	 * @param player The player
 	 * @return the players current total exp amount
 	 */
-	public static int getPlayerExp(@NotNull Player player) {
+	public static int getPlayerExp(@NotNull final Player player) {
 		int exp = 0;
-		int level = player.getLevel();
+		final int level = player.getLevel();
 
 		// Get the amount of XP in past levels
 		exp += getExpAtLevel(level);

@@ -11,7 +11,6 @@ import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ItemStatisticsHandler;
 import de.flo56958.minetinker.utils.LanguageManager;
-import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.BlockState;
@@ -20,7 +19,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -71,7 +69,7 @@ public class ItemStatisticsCommand implements SubCommand {
 			}
 			gui.show((Player) sender);
 		} else {
-			for (ItemStack stack : items) {
+			for (final ItemStack stack : items) {
 				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Head")
 						.replaceFirst("%toolname", ChatWriter.getDisplayName(stack) + ChatColor.WHITE
 								+ " (" + stack.getType() + ")"));
@@ -84,10 +82,10 @@ public class ItemStatisticsCommand implements SubCommand {
 						.replaceFirst("%slots", String.valueOf(modManager.getFreeSlots(stack))));
 				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Modifiers"));
 
-				for (Modifier mod : modManager.getAllowedMods()) {
-					if (DataHandler.hasTag(stack, mod.getKey(), PersistentDataType.INTEGER)) {
+				for (final Modifier mod : modManager.getAllowedMods()) {
+					if (modManager.hasMod(stack, mod)) {
 						ChatWriter.sendMessage(sender, ChatColor.WHITE, mod.getColor() + mod.getName() + ChatColor.WHITE
-								+ " " + DataHandler.getTag(stack, mod.getKey(), PersistentDataType.INTEGER));
+								+ " " + modManager.getModLevel(stack, mod));
 					}
 				}
 			}

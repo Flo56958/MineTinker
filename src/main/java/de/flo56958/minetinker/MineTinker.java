@@ -11,6 +11,7 @@ import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -53,15 +54,12 @@ public class MineTinker extends JavaPlugin {
 					"If you are running a higher Version, please report this as an error.");
 			return;
 		}
-		if (is18compatible) {
+		if (is18compatible)
 			ChatWriter.log(false, "1.18 enhanced features activated!");
-		}
-		if (is19compatible) {
+		if (is19compatible)
 			ChatWriter.log(false, "1.19 enhanced features activated!");
-		}
-		if (is20compatible) {
+		if (is20compatible)
 			ChatWriter.log(false, "1.20 enhanced features activated!");
-		}
 	}
 
 	@Override
@@ -84,8 +82,13 @@ public class MineTinker extends JavaPlugin {
 		ChatWriter.reload();
 
 		final TabExecutor cmd = new CommandManager();
-		this.getCommand("minetinker").setExecutor(cmd); // must be after internals as it would throw a NullPointerException
-		this.getCommand("minetinker").setTabCompleter(cmd);
+		final PluginCommand command = this.getCommand("minetinker");
+		if (command == null) {
+			ChatWriter.logError("Could not register the command!");
+		} else {
+			command.setExecutor(cmd); // must be after internals as it would throw a NullPointerException
+			command.setTabCompleter(cmd);
+		}
 
 		ChatWriter.logInfo(LanguageManager.getString("StartUp.Commands"));
 
