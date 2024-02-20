@@ -119,41 +119,42 @@ public class EasyHarvestListener implements Listener {
 	}
 
 	private static void replantCrops(@NotNull final Player player, @NotNull final Block block, @NotNull final Material material) {
-		if (MineTinker.getPlugin().getConfig().getBoolean("EasyHarvest.replant")) {
-			if (!player.hasPermission("minetinker.easyharvest.replant")) {
-				return;
-			}
+        if (!MineTinker.getPlugin().getConfig().getBoolean("EasyHarvest.replant")) return;
+        if (!player.hasPermission("minetinker.easyharvest.replant")) return;
 
-			for (ItemStack itemStack : player.getInventory().getContents()) {
-				if (itemStack == null) {
-					// This is necessary as even though this is annotated @NotNull, it's still null sometimes
-					continue;
-				}
+        if (player.getGameMode() == GameMode.CREATIVE) {
+            block.setType(material);
+            return;
+        }
 
-				if (material == Material.BEETROOTS && itemStack.getType() == Material.BEETROOT_SEEDS) {
-					itemStack.setAmount(itemStack.getAmount() - 1);
-					block.setType(material);
-					break;
-				} else if (material == Material.CARROTS && itemStack.getType() == Material.CARROT) {
-					itemStack.setAmount(itemStack.getAmount() - 1);
-					block.setType(material);
-					break;
-				} else if (material == Material.POTATOES && itemStack.getType() == Material.POTATO) {
-					itemStack.setAmount(itemStack.getAmount() - 1);
-					block.setType(material);
-					break;
-				} else if (material == Material.WHEAT && itemStack.getType() == Material.WHEAT_SEEDS) {
-					itemStack.setAmount(itemStack.getAmount() - 1);
-					block.setType(material);
-					break;
-				} else if (material == Material.NETHER_WART && itemStack.getType() == Material.NETHER_WART) {
-					itemStack.setAmount(itemStack.getAmount() - 1);
-					block.setType(material);
-					break;
-				}
-			}
-		}
-	}
+        for (ItemStack itemStack : player.getInventory().getContents()) {
+            if (itemStack == null)
+                // This is necessary as even though this is annotated @NotNull, it's still null sometimes
+                continue;
+
+            if (material == Material.BEETROOTS && itemStack.getType() == Material.BEETROOT_SEEDS) {
+                itemStack.setAmount(itemStack.getAmount() - 1);
+                block.setType(material);
+                break;
+            } else if (material == Material.CARROTS && itemStack.getType() == Material.CARROT) {
+                itemStack.setAmount(itemStack.getAmount() - 1);
+                block.setType(material);
+                break;
+            } else if (material == Material.POTATOES && itemStack.getType() == Material.POTATO) {
+                itemStack.setAmount(itemStack.getAmount() - 1);
+                block.setType(material);
+                break;
+            } else if (material == Material.WHEAT && itemStack.getType() == Material.WHEAT_SEEDS) {
+                itemStack.setAmount(itemStack.getAmount() - 1);
+                block.setType(material);
+                break;
+            } else if (material == Material.NETHER_WART && itemStack.getType() == Material.NETHER_WART) {
+                itemStack.setAmount(itemStack.getAmount() - 1);
+                block.setType(material);
+                break;
+            }
+        }
+    }
 
 	private static void playSound(@NotNull final Block block) {
 		if (MineTinker.getPlugin().getConfig().getBoolean("EasyHarvest.Sound")) {
@@ -171,44 +172,21 @@ public class EasyHarvestListener implements Listener {
 
 	@EventHandler
 	public void onHarvestTry(@NotNull final PlayerInteractEvent event) {
-		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
-			return;
-		}
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
 		final Player player = event.getPlayer();
-
-		if (Lists.WORLDS_EASYHARVEST.contains(player.getWorld().getName())) {
-			return;
-		}
-
-		if (!(player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE
-				|| player.getGameMode() == GameMode.CREATIVE)) {
-			return;
-		}
+		if (Lists.WORLDS_EASYHARVEST.contains(player.getWorld().getName())) return;
 
 		final ItemStack tool = player.getInventory().getItemInMainHand();
 
-		if (!ToolType.HOE.contains(tool.getType())) {
-			return;
-		}
+		if (!ToolType.HOE.contains(tool.getType())) return;
+		if (!modManager.isToolViable(tool)) return;
 
-		if (!modManager.isToolViable(tool)) {
-			return;
-		}
-
-		if (event.getClickedBlock() == null) {
-			return;
-		}
-
-		if (event.getItem() == null) {
-			return;
-		}
+		if (event.getClickedBlock() == null) return;
+		if (event.getItem() == null) return;
 
 		final Block block = event.getClickedBlock();
-
-		if (!(block.getBlockData() instanceof Ageable)) {
-			return;
-		}
+		if (!(block.getBlockData() instanceof Ageable)) return;
 
 		//triggers a pseudoevent to find out if the Player can build
 		final BlockPlaceEvent placeEvent = new BlockPlaceEvent(block, block.getState(),
@@ -216,9 +194,7 @@ public class EasyHarvestListener implements Listener {
 		Bukkit.getPluginManager().callEvent(placeEvent);
 
 		//check the pseudoevent
-		if (!placeEvent.canBuild() || placeEvent.isCancelled()) {
-			return;
-		}
+		if (!placeEvent.canBuild() || placeEvent.isCancelled()) return;
 
 		harvestCrops(player, tool, block);
 	}

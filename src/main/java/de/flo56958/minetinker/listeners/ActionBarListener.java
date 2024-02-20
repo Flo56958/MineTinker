@@ -21,30 +21,23 @@ public class ActionBarListener implements Listener {
 	private static final Runnable run = new Runnable() {
 		@Override
 		public void run() {
-			for (Player p : Bukkit.getOnlinePlayers()) {
+			Bukkit.getOnlinePlayers().forEach(p -> {
 				final int xpamount = xpbuffer.get(p.getUniqueId()).getAndSet(0);
-				if (xpamount != 0) {
-					String a = String.valueOf(xpamount);
-					if (xpamount > 0) a = "+" + a;
-					else continue;
+				if (xpamount > 0)
 					ChatWriter.sendActionBar(p, LanguageManager.getString("ActionBar.ExpGain", p)
-							.replaceAll("%amount", a));
-				}
-			}
+						.replaceAll("%amount", "+" + xpamount));
+			});
 			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), this, 20);
 		}
 	};
 
 
 	public ActionBarListener() {
-		for (Player p : Bukkit.getOnlinePlayers()) {
-			xpbuffer.put(p.getUniqueId(), new AtomicInteger(0));
-		}
+		Bukkit.getOnlinePlayers().forEach(p -> xpbuffer.put(p.getUniqueId(), new AtomicInteger(0)));
 		run.run();
 	}
 
-	public static void addXP(Player p, int amount) {
-		if (p == null) return;
+	public static void addXP(@NotNull Player p, int amount) {
 		final AtomicInteger i = xpbuffer.get(p.getUniqueId());
 		if (i != null) {
 			i.addAndGet(amount);
