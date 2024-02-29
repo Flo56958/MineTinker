@@ -229,6 +229,11 @@ Modifier:
     Description: "Adds %amount additional Modifier-Slots and %xpamount experience to the tool!"
     ModifierItemName: "Refined Netherstar"
     DescriptionModifierItem: "Modifier-Item for the Extra-Modifier"
+  Farming:
+    Name: "Farming"
+    Description: "Replant crops when harvesting! Right-clicking crops makes them grow faster!"
+    ModifierItemName: "Enchanted Wheat"
+    DescriptionModifierItem: "Modifier-Item for the Farming-Modifier"
   Fiery:
     Name: "Fiery"
     Description: "One modifier to burn them all!"

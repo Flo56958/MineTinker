@@ -200,6 +200,7 @@ permissions:
       minetinker.modifiers.experienced.*: true
       minetinker.modifiers.explosive.*: true
       minetinker.modifiers.extramodifier.*: true
+      minetinker.modifiers.farming.*: true
       minetinker.modifiers.fiery.*: true
       minetinker.modifiers.freezing.*: true
       minetinker.modifiers.glowing.*: true
@@ -373,6 +374,21 @@ permissions:
     default: true
   minetinker.modifiers.beheading.use:
     description: Allows to use Beheading on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.farming.*:
+    children:
+      minetinker.modifiers.farming.apply: true
+      minetinker.modifiers.farming.craft: true
+      minetinker.modifiers.farming.use: true
+  minetinker.modifiers.farming.apply:
+    description: Allows to apply Farming to a MineTinker-Hoe
+    default: true
+  minetinker.modifiers.farming.craft:
+    description: Allows to craft a Farming-Modifiers
+    default: true
+  minetinker.modifiers.farming.use:
+    description: Allows to use Farming on a MineTinker-Hoe
     default: true
 
   minetinker.modifiers.berserk.*:

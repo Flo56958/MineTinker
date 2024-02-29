@@ -194,12 +194,3 @@ Sound:
 BannedWorlds:                         #Worlds where MineTinker-Tools can't be used
   - bannedExample1
   - bannedExample2
-
-#---------------EASYHARVEST-Settings--------------
-EasyHarvest:
-  enabled: true
-  replant: true                       #Should the crop be replanted (if item is in inventory)
-  Sound: true                         #Should there be sound when harvesting
-  BannedWorlds:                       #Worlds where EasyHarvest can't be used
-    - bannedExample1
-    - bannedExample2

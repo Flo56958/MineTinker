@@ -247,9 +247,8 @@ public class Power extends Modifier implements Listener {
 		if (block == null) return;
 		if (events.remove(block.getLocation(), 0)) return;
 
-		for (final Block b : getPowerBlocks(tool, block, event.getEvent().getBlockFace(), PlayerInfo.getFacingDirection(player))) {
+		for (final Block b : getPowerBlocks(tool, block, Lists.BLOCKFACE.getOrDefault(player, event.getEvent().getBlockFace()), PlayerInfo.getFacingDirection(player))) {
 			if (b.getType().isAir()) continue;
-			if (!b.getType().isSolid()) continue;
 			if (events.putIfAbsent(b.getLocation(), 0) != null) continue;
 
 			Bukkit.getScheduler().runTaskLater(getSource(),

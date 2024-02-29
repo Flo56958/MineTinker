@@ -20,8 +20,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class MineTinker extends JavaPlugin {
 
 	private static JavaPlugin plugin;
@@ -122,11 +120,6 @@ public class MineTinker extends JavaPlugin {
 			ChatWriter.log(false, LanguageManager.getString("StartUp.BuildersWands"));
 		}
 
-		if (getConfig().getBoolean("EasyHarvest.enabled")) {
-			Bukkit.getPluginManager().registerEvents(new EasyHarvestListener(), this);
-			ChatWriter.log(false, LanguageManager.getString("StartUp.EasyHarvest"));
-		}
-
 		if (getConfig().getBoolean("actionbar-on-exp-gain", false))
 			Bukkit.getPluginManager().registerEvents(new ActionBarListener(), this);
 
@@ -149,7 +142,6 @@ public class MineTinker extends JavaPlugin {
 		ChatWriter.log(true, LanguageManager.getString("StartUp.DebugLogging"));
 
 		for (final Player current : Bukkit.getServer().getOnlinePlayers()) {
-			Power.HAS_POWER.computeIfAbsent(current, player -> new AtomicBoolean(false));
 			Lists.BLOCKFACE.put(current, BlockFace.SELF);
 		}
 
@@ -173,6 +165,7 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(Experienced.instance());
 		modManager.register(Explosive.instance());
 		modManager.register(ExtraModifier.instance());
+		modManager.register(Farming.instance());
 		modManager.register(Fiery.instance());
 		modManager.register(Freezing.instance());
 		modManager.register(Glowing.instance());

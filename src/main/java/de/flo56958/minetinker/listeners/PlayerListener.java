@@ -5,7 +5,6 @@ import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
-import de.flo56958.minetinker.modifiers.types.Power;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.Updater;
@@ -33,7 +32,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PlayerListener implements Listener {
 
@@ -248,7 +246,6 @@ public class PlayerListener implements Listener {
 	public void onJoin(@NotNull final PlayerJoinEvent event) {
 		final Player player = event.getPlayer();
 		Lists.BLOCKFACE.put(player, BlockFace.SELF);
-		Power.HAS_POWER.computeIfAbsent(player, p -> new AtomicBoolean(false));
 
 		if (MineTinker.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
 			if (player.hasPermission("minetinker.update.notify")) {
@@ -291,7 +288,6 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onQuit(@NotNull final PlayerQuitEvent event) {
 		Lists.BLOCKFACE.remove(event.getPlayer());
-		Power.HAS_POWER.remove(event.getPlayer());
 	}
 
 	/**
@@ -301,39 +297,25 @@ public class PlayerListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.LOW)
 	public void onInteract(@NotNull final PlayerInteractEvent event) {
-		if (Lists.WORLDS.contains(event.getPlayer().getWorld().getName())) {
-			return;
-		}
+		if (Lists.WORLDS.contains(event.getPlayer().getWorld().getName())) return;
 
-		Player player = event.getPlayer();
+		final Player player = event.getPlayer();
 
 		if (!event.getBlockFace().equals(BlockFace.SELF)) {
-			if (!Power.HAS_POWER.getOrDefault(event.getPlayer(), new AtomicBoolean(false)).get())
-				Lists.BLOCKFACE.replace(event.getPlayer(), event.getBlockFace());
+			Lists.BLOCKFACE.replace(event.getPlayer(), event.getBlockFace());
 		}
 
-		if (!modManager.allowBookToModifier()) {
-			return;
-		}
+		if (!modManager.allowBookToModifier()) return;
 
-		if (event.getClickedBlock() == null || event.getClickedBlock().getType() != Material.BOOKSHELF) {
-			return;
-		}
+		if (event.getClickedBlock() == null || event.getClickedBlock().getType() != Material.BOOKSHELF) return;
 
-		if (event.getItem() == null || event.getItem().getType() != Material.ENCHANTED_BOOK) {
-			return;
-		}
+		if (event.getItem() == null || event.getItem().getType() != Material.ENCHANTED_BOOK) return;
+		if (event.getItem().getItemMeta() == null
+				|| !(event.getItem().getItemMeta() instanceof final EnchantmentStorageMeta meta)) return;
 
-		if (event.getItem().getItemMeta() == null || !(event.getItem().getItemMeta() instanceof final EnchantmentStorageMeta meta)) {
-			return;
-		}
-
-		for (Map.Entry<Enchantment, Integer> entry : meta.getStoredEnchants().entrySet()) {
+		for (final Map.Entry<Enchantment, Integer> entry : meta.getStoredEnchants().entrySet()) {
 			final Modifier modifier = modManager.getModifierFromEnchantment(entry.getKey());
-
-			if (modifier == null) {
-				continue;
-			}
+			if (modifier == null) continue;
 
 			final ItemStack modDrop = modifier.getModItem();
 			modDrop.setAmount(entry.getValue());
