@@ -178,6 +178,9 @@ public class DataHandler {
 
 		meta = itemStack.getItemMeta();
 		if (meta instanceof Damageable damageable) {
+			if (damageable.getDamage() + damageEvent.getDamage() >= itemStack.getType().getMaxDurability())
+				return false;
+
 			damageable.setDamage(damageable.getDamage() + damageEvent.getDamage());
 			itemStack.setItemMeta(meta);
 		}

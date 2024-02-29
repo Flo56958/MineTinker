@@ -259,6 +259,9 @@ public class ModManager {
 		layout = ConfigurationManager.getConfig("layout.yml");
 
 		removeRecipes();
+		mods.forEach(mod -> {
+			if (mod instanceof Listener listener) //Disable Events
+				HandlerList.unregisterAll(listener);});
 		mods.clear();
 		mods.addAll(allMods);
 		mods.removeIf(mod -> !mod.isAllowed());
@@ -269,10 +272,15 @@ public class ModManager {
 		this.ArmorIdentifier = config.getString("ArmorIdentifier");
 
 		removeRecipes();
+		this.allMods.forEach(Modifier::reload);
 		this.mods.forEach(Modifier::registerCraftingRecipe);
 
 		//get Modifier incompatibilities
 		this.reloadIncompatibilities();
+
+		mods.forEach(mod -> {
+			if (mod instanceof Listener listener) //Enable Events
+				Bukkit.getPluginManager().registerEvents(listener, mod.getSource());});
 
 		if (layout.getBoolean("OverrideLanguagesystem", false)) {
 			this.loreScheme = layout.getStringList("LoreLayout");
@@ -370,7 +378,7 @@ public class ModManager {
 			mods.sort(Comparator.comparing(Modifier::getName));
 			mod.registerCraftingRecipe();
 			if (mod instanceof Listener listener) //Enable Events
-				Bukkit.getPluginManager().registerEvents(listener, MineTinker.getPlugin());
+				Bukkit.getPluginManager().registerEvents(listener, mod.getSource());
 		}
 		reloadIncompatibilities();
 		if (!mod.getSource().equals(MineTinker.getPlugin())) GUIs.reload();
