@@ -277,7 +277,7 @@ public class Power extends Modifier implements Listener {
 			//Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
 			return;
 
-		// Also handles central block exp
+		// Also handles central block exp (if Power is disabled this won't be called TODO: fix)
 		modManager.addExp(player, tool,
 				MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
 
@@ -309,7 +309,7 @@ public class Power extends Modifier implements Listener {
 			//Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
 			return;
 
-		// Also handles central block exp
+		// Also handles central block exp (if Power is disabled this won't be called TODO: fix)
 		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
 
 		if (!canUsePower(player, tool)) return;
@@ -344,6 +344,7 @@ public class Power extends Modifier implements Listener {
 			block.setType(log); // Event only does Plugin event (no vanilla conversion to stripped and Tool-Damage)
 		}
 
+		// Also handles central block exp (if Power is disabled this won't be called TODO: fix)
 		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
 	}
 

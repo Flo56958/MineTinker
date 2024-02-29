@@ -135,7 +135,8 @@ public class Farming extends Modifier implements Listener {
 		if (!player.hasPermission(getUsePermission())) return;
 
 		final Block block = event.getBlock();
-		if (!(block.getBlockData() instanceof Ageable)) return;
+		if (!(block.getBlockData() instanceof Ageable ageable)) return;
+		if (ageable.getAge() != ageable.getMaximumAge()) return;
 
 		final ItemStack tool = event.getTool();
 		if (!modManager.hasMod(tool, this)) return;
