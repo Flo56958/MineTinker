@@ -7,6 +7,7 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -95,6 +96,8 @@ public class Channeling extends Modifier implements Listener {
 		chancePerLevel = config.getInt("ChancePerLevel", 100);
 
 		this.description = this.description.replaceAll("%amount", this.chancePerLevel + "%");
+		if (this.worksOnlyInStorms)
+			this.description = this.description + " " + LanguageManager.getString("Modifier.Channeling.Description_OnlyStorms");
 	}
 
 	@Override

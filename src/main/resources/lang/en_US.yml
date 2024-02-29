@@ -181,6 +181,7 @@ Modifier:
   Channeling:
     Name: "Channeling"
     Description: "Summon lightning with a chance of %amount per level!"
+    Description_OnlyStorms: "This only works during thunderstorms!"
     ModifierItemName: "Lightning Infused Shard"
     DescriptionModifierItem: "Modifier-Item for the Channeling-Modifier"
   Directing:
