@@ -166,6 +166,24 @@ public class DataHandler {
 		item.setItemMeta(meta);
 	}
 
+	public static boolean triggerItemDamage(@NotNull Player player, @NotNull ItemStack itemStack, int damage) {
+		ItemMeta meta = itemStack.getItemMeta();
+		if (meta == null) return true;
+        if (meta.isUnbreakable()) return true;
+
+        //Call damage event
+        final PlayerItemDamageEvent damageEvent = new PlayerItemDamageEvent(player, itemStack, damage);
+        Bukkit.getPluginManager().callEvent(damageEvent);
+        if (damageEvent.isCancelled()) return false;
+
+		meta = itemStack.getItemMeta();
+		if (meta instanceof Damageable damageable) {
+			damageable.setDamage(damageable.getDamage() + damageEvent.getDamage());
+			itemStack.setItemMeta(meta);
+		}
+        return true;
+	}
+
 	/**
 	 * Let the player break a block with the given itemStack through the plugin.
 	 * @param player The player that should break the block
@@ -280,14 +298,7 @@ public class DataHandler {
 							damage = 0;
 						}
 
-						//Call damage event
-						PlayerItemDamageEvent damageEvent = new PlayerItemDamageEvent(player, itemStack, damage);
-						Bukkit.getPluginManager().callEvent(damageEvent);
-						if (!damageEvent.isCancelled()) {
-							meta = itemStack.getItemMeta();
-							((Damageable) meta).setDamage(((Damageable) meta).getDamage() + damageEvent.getDamage());
-							itemStack.setItemMeta(meta);
-						}
+						triggerItemDamage(player, itemStack, damage);
 					}
 				}
 			}

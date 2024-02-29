@@ -15,15 +15,16 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Ageable;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,11 +34,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Power extends Modifier implements Listener {
 
-	public static final ConcurrentHashMap<Player, AtomicBoolean> HAS_POWER = new ConcurrentHashMap<>();
 	public static final ConcurrentHashMap<Location, Integer> events = new ConcurrentHashMap<>();
 
 	//Communicates the used BlockFace to the Drilling Modifier
@@ -60,26 +59,6 @@ public class Power extends Modifier implements Listener {
 		}
 
 		return instance;
-	}
-
-	private void powerCreateFarmland(Player player, ItemStack tool, Block block) {
-		if (block.getType().equals(Material.GRASS_BLOCK) || block.getType().equals(Material.DIRT)) {
-			if (block.getWorld().getBlockAt(block.getLocation().add(0, 1, 0)).getType().equals(Material.AIR)) {
-				if (tool.getItemMeta() instanceof Damageable damageable) {
-					damageable.setDamage(damageable.getDamage() + 1);
-					tool.setItemMeta(damageable);
-				}
-
-				events.put(block.getLocation(), 0);
-
-				PlayerInteractEvent event = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK,
-						tool, block, BlockFace.UP);
-				Bukkit.getPluginManager().callEvent(event);
-
-				block.setType(Material.FARMLAND); // Event only does Plugin event (no vanilla conversion to Farmland and
-				// Tool-Damage)
-			}
-		}
 	}
 
 	@Override
@@ -148,6 +127,79 @@ public class Power extends Modifier implements Listener {
 		return modManager.hasMod(tool, this);
 	}
 
+	private HashSet<Block> getPowerBlocks(@NotNull ItemStack tool, @NotNull Block block, @NotNull BlockFace face, @NotNull PlayerInfo.Direction direction) {
+		final int level = modManager.getModLevel(tool, this);
+
+		final HashSet<Block> blocks = new HashSet<>();
+
+		final boolean down_up = face.equals(BlockFace.DOWN) || face.equals(BlockFace.UP);
+		final boolean north_south = face.equals(BlockFace.NORTH) || face.equals(BlockFace.SOUTH);
+		if (level == 1) {
+			Block b1 = null, b2 = null;
+			if (lv1_vertical) {
+				if (down_up) {
+					if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
+						b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
+						b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
+					} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
+						b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
+						b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
+					}
+				} else {
+					b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
+					b2 = block.getWorld().getBlockAt(block.getLocation().add(0, -1, 0));
+				}
+			} else if (down_up) {
+				if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
+					b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
+					b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
+				} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
+					b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
+					b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
+				}
+			} else if (north_south) {
+				b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
+				b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
+			} else if (face.equals(BlockFace.WEST) || face.equals(BlockFace.EAST)) {
+				b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
+				b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
+			}
+			blocks.add(b1);
+			blocks.add(b2);
+		} else {
+			if (down_up) {
+				for (int x = -(level - 1); x <= (level - 1); x++) {
+					for (int z = -(level - 1); z <= (level - 1); z++) {
+						if (x != 0 || z != 0) {
+							Block b = block.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
+							blocks.add(b);
+						}
+					}
+				}
+			} else if (north_south) {
+				for (int x = -(level - 1); x <= (level - 1); x++) {
+					for (int y = -(level - 1); y <= (level - 1); y++) {
+						if (x != 0 || y != 0) {
+							Block b = block.getWorld().getBlockAt(block.getLocation().add(x, y, 0));
+							blocks.add(b);
+						}
+					}
+				}
+			} else if (face.equals(BlockFace.EAST) || face.equals(BlockFace.WEST)) {
+				for (int z = -(level - 1); z <= (level - 1); z++) {
+					for (int y = -(level - 1); y <= (level - 1); y++) {
+						if (y != 0 || z != 0) {
+							Block b = block.getWorld().getBlockAt(block.getLocation().add(0, y, z));
+							blocks.add(b);
+						}
+					}
+				}
+			}
+		}
+
+		return blocks;
+	}
+
 	@EventHandler(ignoreCancelled = true)
 	public void effect(WorldSaveEvent e) {
 		if (!Bukkit.getOnlinePlayers().isEmpty()) return;
@@ -171,143 +223,129 @@ public class Power extends Modifier implements Listener {
 
 		//Was the block broken by Power or Drilling, blocks unwanted recursion
 		if (events.remove(block.getLocation(), 0)) return;
-		if (ToolType.HOE.contains(tool.getType())) return;
 
 		final PlayerInfo.Direction direction = PlayerInfo.getFacingDirection(player);
 		final BlockFace face = Lists.BLOCKFACE.get(player);
 
 		final float hardness = block.getType().getHardness();
 
-		Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> {
-			int level = modManager.getModLevel(tool, this);
-
-			boolean down_up = face.equals(BlockFace.DOWN) || face.equals(BlockFace.UP);
-			boolean north_south = face.equals(BlockFace.NORTH) || face.equals(BlockFace.SOUTH);
-			if (level == 1) {
-				Block b1 = null, b2 = null;
-				if (lv1_vertical) {
-					if (down_up) {
-						if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
-							b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
-							b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
-						} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
-							b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
-							b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
-						}
-					} else {
-						b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
-						b2 = block.getWorld().getBlockAt(block.getLocation().add(0, -1, 0));
-					}
-				} else if (down_up) {
-					if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
-						b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
-						b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
-					} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
-						b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
-						b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
-					}
-				} else if (north_south) {
-					b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
-					b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
-				} else if (face.equals(BlockFace.WEST) || face.equals(BlockFace.EAST)) {
-					b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
-					b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
-				}
-				powerBlockBreak(b1, hardness, player, tool, face);
-				powerBlockBreak(b2, hardness, player, tool, face);
-			} else {
-				if (down_up) {
-					for (int x = -(level - 1); x <= (level - 1); x++) {
-						for (int z = -(level - 1); z <= (level - 1); z++) {
-							if (x != 0 || z != 0) {
-								Block b = block.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
-								powerBlockBreak(b, hardness, player, tool, face);
-							}
-						}
-					}
-				} else if (north_south) {
-					for (int x = -(level - 1); x <= (level - 1); x++) {
-						for (int y = -(level - 1); y <= (level - 1); y++) {
-							if (x != 0 || y != 0) {
-								Block b = block.getWorld().getBlockAt(block.getLocation().add(x, y, 0));
-								powerBlockBreak(b, hardness, player, tool, face);
-							}
-						}
-					}
-				} else if (face.equals(BlockFace.EAST) || face.equals(BlockFace.WEST)) {
-					for (int z = -(level - 1); z <= (level - 1); z++) {
-						for (int y = -(level - 1); y <= (level - 1); y++) {
-							if (y != 0 || z != 0) {
-								Block b = block.getWorld().getBlockAt(block.getLocation().add(0, y, z));
-								powerBlockBreak(b, hardness, player, tool, face);
-							}
-						}
-					}
-				}
-			}
-		});
+		for (final Block b : getPowerBlocks(tool, block, face, direction)) {
+			powerBlockBreak(b, hardness, player, tool, face);
+		}
 
 		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType() + ")");
+	}
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+	public void onInteract(@NotNull MTPlayerInteractEvent event) {
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
+		if (!canUsePower(player, tool)) return;
+
+		// Broadcast InteractEvent to other Blocks
+		final Block block = event.getEvent().getClickedBlock();
+		if (block == null) return;
+		if (events.remove(block.getLocation(), 0)) return;
+
+		for (final Block b : getPowerBlocks(tool, block, event.getEvent().getBlockFace(), PlayerInfo.getFacingDirection(player))) {
+			if (b.getType().isAir()) continue;
+			if (!b.getType().isSolid()) continue;
+			if (events.putIfAbsent(b.getLocation(), 0) != null) continue;
+
+			Bukkit.getScheduler().runTaskLater(getSource(),
+					() -> Bukkit.getPluginManager().callEvent(
+							new PlayerInteractEvent(player, event.getEvent().getAction(), tool, b, event.getEvent().getBlockFace())),
+					1);
+		}
 	}
 
 	/**
 	 * Effect for the PlayerInteractEvent for the Hoe
 	 */
 	@EventHandler(ignoreCancelled = true)
-	public void effect(@NotNull MTPlayerInteractEvent event) {
+	public void createFarmland(@NotNull final MTPlayerInteractEvent event) {
 		final Player player = event.getPlayer();
 		final ItemStack tool = event.getTool();
-
 		if (!ToolType.HOE.contains(tool.getType())) return;
+
+		final Block block = event.getEvent().getClickedBlock();
+		if (!(event.getEvent().getAction() == Action.RIGHT_CLICK_BLOCK && block != null)) return;
+		if (!(block.getType() == Material.GRASS_BLOCK
+				|| block.getType() == Material.DIRT || block.getType() == Material.DIRT_PATH)) return;
+
+		final Block upperBlock = player.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
+		if (!upperBlock.getType().isAir())
+			//Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
+			return;
+
+		// Also handles central block exp
+		modManager.addExp(player, tool,
+				MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
+
 		if (!canUsePower(player, tool)) return;
+		if (!events.containsKey(block.getLocation())) return;
+
 		ChatWriter.logModifier(player, event, this, tool);
 
-		final int level = modManager.getModLevel(tool, this);
+		if (!DataHandler.triggerItemDamage(player, tool, 1)) return;
+
+		block.setType(Material.FARMLAND); // Event only does Plugin event (no vanilla conversion to Farmland and Tool-Damage)
+	}
+
+	/**
+	 * Effect for the PlayerInteractEvent for the Shovel
+	 */
+	@EventHandler(ignoreCancelled = true)
+	public void createGrasspath(@NotNull final MTPlayerInteractEvent event) {
+		final Player player = event.getPlayer();
+		final ItemStack tool = player.getInventory().getItemInMainHand();
+		if (!ToolType.SHOVEL.contains(tool.getType())) return;
+
 		final Block block = event.getEvent().getClickedBlock();
-		if (block == null) return;
-		if (events.remove(block.getLocation(), 0)) return;
+		if (!(event.getEvent().getAction() == Action.RIGHT_CLICK_BLOCK && block != null)) return;
+		if (!(block.getType() == Material.GRASS_BLOCK || block.getType() == Material.DIRT)) return;
 
-		if (level == 1) {
-			if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
-				Block b1;
-				Block b2;
-				final PlayerInfo.Direction direction = PlayerInfo.getFacingDirection(player);
-				if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
-					if (this.lv1_vertical) {
-						b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
-						b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
-					} else {
-						b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
-						b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
-					}
-				} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
-					if (this.lv1_vertical) {
-						b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
-						b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
-					} else {
-						b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
-						b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
-					}
-				} else {
-					b1 = block;
-					b2 = block;
-				}
+		final Block upperBlock = player.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
+		if (!upperBlock.getType().isAir())
+			//Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
+			return;
 
-				powerCreateFarmland(player, tool, b1);
-				powerCreateFarmland(player, tool, b2);
-			}
-		} else {
-			if (Lists.BLOCKFACE.get(player).equals(BlockFace.DOWN) || Lists.BLOCKFACE.get(player).equals(BlockFace.UP)) {
-				for (int x = -(level - 1); x <= (level - 1); x++) {
-					for (int z = -(level - 1); z <= (level - 1); z++) {
-						if (!(x == 0 && z == 0)) {
-							final Block b_ = player.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
-							powerCreateFarmland(player, tool, b_);
-						}
-					}
-				}
-			}
+		// Also handles central block exp
+		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
+
+		if (!canUsePower(player, tool)) return;
+		if (!events.containsKey(block.getLocation())) return;
+
+		ChatWriter.logModifier(player, event, this, tool);
+
+		if (!DataHandler.triggerItemDamage(player, tool, 1)) return;
+
+		block.setType(Material.DIRT_PATH); // Event only does Plugin event (no vanilla conversion to Pathway and Tool-Damage)
+	}
+
+	@EventHandler(ignoreCancelled = true)
+	public void createStrippedLogs(@NotNull final MTPlayerInteractEvent event) {
+		final Player player = event.getPlayer();
+		final ItemStack tool = player.getInventory().getItemInMainHand();
+		if (!ToolType.AXE.contains(tool.getType())) return;
+
+		final Block block = event.getEvent().getClickedBlock();
+		if (!(event.getEvent().getAction() == Action.RIGHT_CLICK_BLOCK && block != null
+				&& (Lists.getWoodLogs().contains(block.getType()) || Lists.getWoodWood().contains(block.getType()))))
+			return;
+
+		if (canUsePower(player, tool) && events.containsKey(block.getLocation())) {
+			ChatWriter.logModifier(player, event, this, tool);
+
+			final Material log = Material.getMaterial("STRIPPED_" + block.getType().name());
+			if (log == null) return;
+
+			if (!DataHandler.triggerItemDamage(player, tool, 1)) return;
+
+			block.setType(log); // Event only does Plugin event (no vanilla conversion to stripped and Tool-Damage)
 		}
+
+		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
 	}
 
 	private void powerBlockBreak(@Nullable final Block block, final float centralBlockHardness, final Player player, final ItemStack tool, final BlockFace face) {
@@ -318,6 +356,8 @@ public class Power extends Modifier implements Listener {
 			if (block.getDrops(tool).isEmpty()) return;
 			if (block.getType().getHardness() > centralBlockHardness + 2) // + 2 so you can mine ore as well
 				return; //So Obsidian can not be mined using Cobblestone and Power
+			if (block.getBlockData() instanceof Ageable ageable && ageable.getAge() != ageable.getMaximumAge()) return;
+			if (!(block.getBlockData() instanceof Ageable) && ToolType.HOE.contains(tool.getType())) return;
 
 			events.put(block.getLocation(), 0);
 

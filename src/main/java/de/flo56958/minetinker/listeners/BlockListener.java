@@ -9,7 +9,6 @@ import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
-import de.flo56958.minetinker.modifiers.types.Power;
 import de.flo56958.minetinker.modifiers.types.SilkTouch;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
@@ -38,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BlockListener implements Listener {
 
@@ -95,39 +93,8 @@ public class BlockListener implements Listener {
 			modManager.addExp(player, tool, expAmount, true);
 		}
 
-		//-------------------------------------------POWERCHECK---------------------------------------------
-		if (Power.HAS_POWER.getOrDefault(player, new AtomicBoolean(false)).get()
-				&& !ToolType.PICKAXE.contains(tool.getType())
-				&& event.getBlock().getDrops(tool).isEmpty()
-				&& event.getBlock().getType() != Material.NETHER_WART) { //Necessary for EasyHarvest NetherWard-Break
-			event.setCancelled(true);
-			return;
-		}
-
 		Bukkit.getPluginManager().callEvent(new MTBlockBreakEvent(tool, event));
 		//Event-Trigger for Modifiers
-	}
-
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public static void onAxeUse(@NotNull final PlayerInteractEvent event) {
-		final Player player = event.getPlayer();
-
-		if (Lists.WORLDS.contains(player.getWorld().getName())) return;
-
-		final ItemStack tool = player.getInventory().getItemInMainHand();
-
-		if (!ToolType.AXE.contains(tool.getType())) return;
-		if (!modManager.isToolViable(tool)) return;
-
-		if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null
-				&& (Lists.getWoodLogs().contains(event.getClickedBlock().getType()) || Lists.getWoodWood().contains(event.getClickedBlock().getType()))))
-			return;
-
-		if (!modManager.durabilityCheck(event, player, tool)) return;
-
-		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
-
-		Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, event));
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -227,54 +194,15 @@ public class BlockListener implements Listener {
         event.setCancelled(true);
     }
 
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onHoeUse(@NotNull final PlayerInteractEvent event) {
+	@EventHandler(ignoreCancelled = true)
+	public void onInteract(@NotNull final PlayerInteractEvent event) {
 		final Player player = event.getPlayer();
 		if (Lists.WORLDS.contains(player.getWorld().getName())) return;
 
 		final ItemStack tool = player.getInventory().getItemInMainHand();
-		if (!ToolType.HOE.contains(tool.getType())) return;
 		if (!modManager.isToolViable(tool)) return;
 
-		final Block block = event.getClickedBlock();
-		if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK && block != null)) return;
-		if (!(block.getType() == Material.GRASS_BLOCK
-				|| block.getType() == Material.DIRT || block.getType() == Material.DIRT_PATH)) return;
-
-		final Block upperBlock = player.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
-		if (!upperBlock.getType().isAir())
-			//Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
-			return;
-
 		if (!modManager.durabilityCheck(event, player, tool)) return;
-
-		modManager.addExp(player, tool,
-				MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
-		Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, event));
-	}
-
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onShovelUse(@NotNull final PlayerInteractEvent event) {
-		final Player player = event.getPlayer();
-		if (Lists.WORLDS.contains(player.getWorld().getName())) return;
-
-		final ItemStack tool = player.getInventory().getItemInMainHand();
-		if (!ToolType.SHOVEL.contains(tool.getType())) return;
-		if (!modManager.isToolViable(tool)) return;
-
-		final Block block = event.getClickedBlock();
-		if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK && block != null)) return;
-		if (block.getType() != Material.GRASS_BLOCK) return;
-
-		final Block upperBlock = player.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
-		if (!upperBlock.getType().isAir())
-			//Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
-			return;
-
-		if (!modManager.durabilityCheck(event, player, tool)) return;
-
-		modManager.addExp(player, tool,
-				MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
 
 		Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, event));
 	}

@@ -820,6 +820,9 @@ public class ModManager {
 
 		addArmorAttributes(is);
 
+		// Remove all mods that are on the tool
+		this.allMods.forEach(mod -> removeMod(is, mod));
+
 		final ItemMeta meta = is.getItemMeta();
 
 		if (meta == null) return true;
@@ -829,8 +832,6 @@ public class ModManager {
 			final Modifier modifier = getModifierFromEnchantment(entry.getKey());
 
 			if (modifier == null) continue;
-
-			meta.removeEnchant(entry.getKey());
 
 			for (int i = 0; i < entry.getValue(); i++) { //possible to go over MaxLevel of the mod
 				addMod(is, modifier);

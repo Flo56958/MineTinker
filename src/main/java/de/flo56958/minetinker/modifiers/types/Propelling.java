@@ -5,6 +5,7 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.CooldownModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -13,7 +14,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -130,12 +130,7 @@ public class Propelling extends CooldownModifier implements Listener {
 		if (!modManager.hasMod(elytra, this)) return;
 		if (onCooldown(player, elytra, true, event)) return;
 
-		int maxDamage = elytra.getType().getMaxDurability();
-		ItemMeta meta = elytra.getItemMeta();
-
-		if (meta instanceof Damageable dam && !meta.isUnbreakable()
-				&& (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE)) {
-
+		if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
 			int loss = durabilityLoss;
 
 			if (considerReinforced) {
@@ -148,13 +143,10 @@ public class Propelling extends CooldownModifier implements Listener {
 				}
 			}
 
-			if (maxDamage <= dam.getDamage() + loss + 1) {
+			if (!DataHandler.triggerItemDamage(player, elytra, loss)) {
 				player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
 				return;
 			}
-
-			dam.setDamage(dam.getDamage() + loss);
-			elytra.setItemMeta(meta);
 		}
 
 		final int level = modManager.getModLevel(elytra, this);

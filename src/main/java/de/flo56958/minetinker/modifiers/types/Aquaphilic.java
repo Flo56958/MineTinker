@@ -13,7 +13,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Aquaphilic extends Modifier {
 
@@ -40,7 +43,7 @@ public class Aquaphilic extends Modifier {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return new ArrayList<>(Arrays.asList(ToolType.BOOTS, ToolType.HELMET));
+		return Arrays.asList(ToolType.BOOTS, ToolType.HELMET);
 	}
 
 	@Override
