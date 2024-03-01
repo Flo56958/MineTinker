@@ -127,7 +127,7 @@ public class ShadowDive extends Modifier implements Listener {
 
 		this.description = this.description.replaceAll("%level", String.valueOf(this.requiredLightLevel));
 
-		if (this.isAllowed()) task = Bukkit.getScheduler().runTaskTimer(MineTinker.getPlugin(), runnable, 0,5);
+		if (this.isAllowed()) task = Bukkit.getScheduler().runTaskTimer(this.getSource(), runnable, 0,5);
 	}
 
 	private void hidePlayer(Player p, int level) {

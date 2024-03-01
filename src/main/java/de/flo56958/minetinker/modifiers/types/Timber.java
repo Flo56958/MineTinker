@@ -135,7 +135,7 @@ public class Timber extends Modifier implements Listener {
 		final int sap_idx = block.getType().toString().lastIndexOf('_');
 		final Material saplingType = Material.getMaterial(block.getType().toString().substring(0, sap_idx) + "_SAPLING");
 
-		Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> {
+		Bukkit.getScheduler().runTaskAsynchronously(this.getSource(), () -> {
 			final HashSet<Block> trunkBlocks = new HashSet<>();
 			final ArrayList<Block> groundBlocks = new ArrayList<>();
 			if (!parseTree(block, trunkBlocks, groundBlocks, allowed) && !ToolType.SHEARS.contains(tool.getType())) return;
@@ -143,7 +143,7 @@ public class Timber extends Modifier implements Listener {
 			// Sort blocks by distance to the original block (closest first) and break them in that order
 			trunkBlocksList.sort(Comparator.comparingDouble(o -> (o.getLocation().distance(block.getLocation()))));
 			for (final Block trunkBlock : trunkBlocksList) {
-				Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
+				Bukkit.getScheduler().runTask(this.getSource(), () -> {
 					events.put(trunkBlock.getLocation(), 0);
 					try {
 						DataHandler.playerBreakBlock(player, trunkBlock, tool);
@@ -153,7 +153,7 @@ public class Timber extends Modifier implements Listener {
 				});
 			}
 
-			Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
+			Bukkit.getScheduler().runTask(this.getSource(), () -> {
 				//Track stats
 				final int stat = DataHandler.getTagOrDefault(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, 0);
 				DataHandler.setTag(tool, getKey() + "_stat_used", stat + 1, PersistentDataType.INTEGER);
@@ -169,7 +169,7 @@ public class Timber extends Modifier implements Listener {
 			}));
 
 			// try to place saplings on all ground blocks
-			Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
+			Bukkit.getScheduler().runTask(this.getSource(), () -> {
 				for (final Block groundBlock : groundBlocks) {
 					for (final ItemStack stack : player.getInventory().getContents()) {
 						if (stack == null) continue;

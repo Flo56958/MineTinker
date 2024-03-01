@@ -146,7 +146,7 @@ public class Tanky extends Modifier implements Listener {
 		if (modManager.isArmorViable(chest) && modManager.hasMod(chest, this)) {
 			health = DataHandler.getTag(chest, "modifier_tanky_health_save", PersistentDataType.DOUBLE);
 			if (health != null && health > 0) {
-				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
+				Bukkit.getScheduler().runTaskLater(this.getSource(), () -> {
 					try {
 						event.getPlayer().setHealth(health);
 					} catch(IllegalArgumentException ignored) {}
@@ -160,7 +160,7 @@ public class Tanky extends Modifier implements Listener {
 			if (modManager.isArmorViable(chest) && modManager.hasMod(chest, this)) {
 				health = DataHandler.getTag(chest, "modifier_tanky_health_save", PersistentDataType.DOUBLE);
 				if (health != null) {
-					Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> event.getPlayer().setHealth(health), 10L);
+					Bukkit.getScheduler().runTaskLater(this.getSource(), () -> event.getPlayer().setHealth(health), 10L);
 					DataHandler.removeTag(chest, "modifier_tanky_health_save");
 				} else return;
 			} else return;

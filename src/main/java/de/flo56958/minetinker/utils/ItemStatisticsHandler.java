@@ -36,7 +36,7 @@ public class ItemStatisticsHandler implements Listener {
 	@NotNull
 	public static GUI getGUI(final ItemStack item) {
 		GUI gui = new GUI(MineTinker.getPlugin());
-		Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), gui::close, 5 * 60 * 20);
+		Bukkit.getScheduler().runTaskLater(gui.getPlugin(), gui::close, 5 * 60 * 20);
 		List<Modifier> mods = ModManager.instance().getAllowedMods();
 		mods.sort(Comparator.comparing(Modifier::getName));
 

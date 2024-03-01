@@ -138,7 +138,7 @@ public abstract class ButtonAction {
 		}
 
 		private void afterRun(@NotNull final Player player) {
-			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
+			Bukkit.getScheduler().runTaskLater(this.button.getWindow().getGUI().getPlugin(),
 					() -> button.getWindow().getGUI().show(player, button.getWindow()), 10);
 		}
 	}

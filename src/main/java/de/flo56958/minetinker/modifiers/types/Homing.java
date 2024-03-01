@@ -144,6 +144,6 @@ public class Homing extends Modifier implements Listener {
 			}
 		};
 
-		Bukkit.getServer().getScheduler().runTaskLater(getSource(), runnable, 3);
+		Bukkit.getServer().getScheduler().runTaskLater(this.getSource(), runnable, 3);
 	}
 }

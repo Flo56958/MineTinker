@@ -37,7 +37,8 @@ public class Farming extends Modifier implements Listener {
 			Material.CARROTS, Material.CARROT,
 			Material.POTATOES, Material.POTATO,
 			Material.BEETROOTS, Material.BEETROOT_SEEDS,
-			Material.NETHER_WART, Material.NETHER_WART
+			Material.NETHER_WART, Material.NETHER_WART,
+			Material.COCOA, Material.COCOA_BEANS
 	);
 
 	private int boneMealDurabilityCost;
@@ -122,11 +123,10 @@ public class Farming extends Modifier implements Listener {
 		if (block.getBlockData() instanceof Ageable ageable && ageable.getAge() == ageable.getMaximumAge()) return;
 
 		// check if block is bone meal-able
-		block.applyBoneMeal(event.getEvent().getBlockFace());
+		if (!block.applyBoneMeal(event.getEvent().getBlockFace())) return;
 
 		final int damage = boneMealDurabilityCost - (boneMealDurabilityCostReductionPerLevel * (modManager.getModLevel(tool, this) - 1));
 		DataHandler.triggerItemDamage(player, tool, damage);
-
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -141,24 +141,23 @@ public class Farming extends Modifier implements Listener {
 		final ItemStack tool = event.getTool();
 		if (!modManager.hasMod(tool, this)) return;
 
-		final Material material = block.getType();
-		final Material required = materialMap.get(material);
+		final Material blockType = block.getType();
+		final Material requiredItem = materialMap.get(blockType);
 
-		if (required == null) return;
+		if (requiredItem == null) return;
 
-		Bukkit.getScheduler().runTaskLater(getSource(), () -> {
+		Bukkit.getScheduler().runTaskLater(this.getSource(), () -> {
 			if (player.getGameMode() == GameMode.CREATIVE || !requireSeeds) {
-				block.setType(material);
+				block.setType(blockType);
 				return;
 			}
 
-			for (ItemStack itemStack : player.getInventory().getContents()) {
-				if (itemStack == null || itemStack.getType() != required)
-					// This is necessary as even though this is annotated @NotNull, it's still null sometimes
-					continue;
+			for (final ItemStack itemStack : player.getInventory().getContents()) {
+				if (itemStack == null || itemStack.getType() != requiredItem) continue;
 
 				itemStack.setAmount(itemStack.getAmount() - 1);
-				block.setType(material);
+				block.setType(blockType);
+				break;
 			}
 		}, 1L);
 	}

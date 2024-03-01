@@ -152,7 +152,7 @@ public class Drilling extends Modifier implements Listener {
 		final float hardness = block.getType().getHardness();
 
 		final BlockFace finalFace = face.getOppositeFace();
-		Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
+		Bukkit.getScheduler().runTask(this.getSource(), () -> {
 			for (int i = 1; i <= level; i++) {
 				if (!drillingBlockBreak(block.getRelative(finalFace, i),
 						hardness, player, tool)) break;

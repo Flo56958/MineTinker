@@ -120,7 +120,7 @@ public class VoidNetting extends CooldownModifier implements Listener {
 		// Add small cooldown to improve server performance
 		setCooldown(armor, 500 /* ms */);
 
-		Bukkit.getScheduler().runTaskAsynchronously(MineTinker.getPlugin(), () -> {
+		Bukkit.getScheduler().runTaskAsynchronously(this.getSource(), () -> {
 			// run effect async as it does not need to stop all action on server if search takes to long
 			final World world = player.getWorld();
 			Location loc = player.getLocation();
@@ -156,7 +156,7 @@ public class VoidNetting extends CooldownModifier implements Listener {
 							this.getCooldown(level) / 1000));
 
 			final Location finalLoc = loc;
-			Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> { //Teleport needs to be in sync
+			Bukkit.getScheduler().runTask(this.getSource(), () -> { //Teleport needs to be in sync
 				// Slow the fall
 				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 20, 0, false));
 				player.teleport(finalLoc);

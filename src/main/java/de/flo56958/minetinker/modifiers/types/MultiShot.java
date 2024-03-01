@@ -134,7 +134,7 @@ public class MultiShot extends Modifier implements Listener {
 		entity.setMaximumNoDamageTicks(0);
 		event.setCancelled(false);
 
-		Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> entity.setMaximumNoDamageTicks(20), 20);
+		Bukkit.getScheduler().runTaskLater(this.getSource(), () -> entity.setMaximumNoDamageTicks(20), 20);
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -193,7 +193,7 @@ public class MultiShot extends Modifier implements Listener {
 				if (!hasArrow) break;
 			}
 
-			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
+			Bukkit.getScheduler().runTaskLater(this.getSource(), () -> {
 				final Arrow arr = loc.getWorld().spawnArrow(loc, vel, (float) vel.length(), (float) spread);
 				arr.setShooter(player);
 				arr.setShotFromCrossbow(arrow.isShotFromCrossbow());

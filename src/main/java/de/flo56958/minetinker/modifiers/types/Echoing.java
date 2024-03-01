@@ -164,7 +164,7 @@ public class Echoing extends Modifier implements Listener {
 		this.radiusPerLevel = config.getInt("RadiusPerLevel", 10);
 
 		if (isAllowed())
-			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MineTinker.getPlugin(),
+			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(this.getSource(),
 					this.runnable, 5 * 20L, tickTime);
 		else
 			this.taskID = -1;

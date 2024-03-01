@@ -251,7 +251,7 @@ public class Power extends Modifier implements Listener {
 			if (b.getType().isAir()) continue;
 			if (events.putIfAbsent(b.getLocation(), 0) != null) continue;
 
-			Bukkit.getScheduler().runTaskLater(getSource(),
+			Bukkit.getScheduler().runTaskLater(this.getSource(),
 					() -> Bukkit.getPluginManager().callEvent(
 							new PlayerInteractEvent(player, event.getEvent().getAction(), tool, b, event.getEvent().getBlockFace())),
 					1);
@@ -351,7 +351,7 @@ public class Power extends Modifier implements Listener {
 	private void powerBlockBreak(@Nullable final Block block, final float centralBlockHardness, final Player player, final ItemStack tool, final BlockFace face) {
 		if (block == null) return;
 
-		Bukkit.getScheduler().runTask(MineTinker.getPlugin(), () -> {
+		Bukkit.getScheduler().runTask(this.getSource(), () -> {
 			if (treatAsWhitelist ^ blacklist.contains(block.getType())) return;
 			if (block.getDrops(tool).isEmpty()) return;
 			if (block.getType().getHardness() > centralBlockHardness + 2) // + 2 so you can mine ore as well

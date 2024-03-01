@@ -142,10 +142,10 @@ public class Magical extends Modifier implements Listener {
 		ChatWriter.logModifier(player, event, this, tool, "Cost(" + this.experienceCost + ")");
 
 		for (int i = 1; i < 30; i++) {
-			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> arrow.setVelocity(velocity.clone()), i * 20L);
+			Bukkit.getScheduler().runTaskLater(this.getSource(), () -> arrow.setVelocity(velocity.clone()), i * 20L);
 		}
 
-		Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), () -> arrow.setGravity(true), 30 * 20L);
+		Bukkit.getScheduler().runTaskLater(this.getSource(), () -> arrow.setGravity(true), 30 * 20L);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)

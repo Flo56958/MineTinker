@@ -246,7 +246,7 @@ public class Photosynthesis extends Modifier implements Listener {
 
 			for (final Player player : Bukkit.getOnlinePlayers())
 				data.putIfAbsent(player.getUniqueId(), new Tupel(player.getLocation(), System.currentTimeMillis(), false));
-			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MineTinker.getPlugin(), this.runnable, 5 * 20L, this.tickTime);
+			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(this.getSource(), this.runnable, 5 * 20L, this.tickTime);
 		} else
 			this.taskID = -1;
 	}
