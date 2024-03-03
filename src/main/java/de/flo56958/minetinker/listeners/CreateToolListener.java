@@ -19,9 +19,7 @@ public class CreateToolListener implements Listener {
 
 	@EventHandler
 	public void PrepareCraft(@NotNull final PrepareItemCraftEvent event) {
-		if (event.getRecipe() == null) {
-			return;
-		}
+		if (event.getRecipe() == null) return;
 
 		//checking for dye process
 		for (ItemStack item : event.getInventory().getMatrix()) {
@@ -48,28 +46,17 @@ public class CreateToolListener implements Listener {
 			}
 		}
 
-		if (player == null) {
-			return;
-		}
-
-		if (!player.hasPermission("minetinker.tool.create")) {
-			return;
-		}
-
-		if (Lists.WORLDS.contains(player.getWorld().getName())) {
-			return;
-		}
+		if (player == null) return;
+		if (!player.hasPermission("minetinker.tool.create")) return;
+		if (Lists.WORLDS.contains(player.getWorld().getName())) return;
 
 		final ItemStack currentItem = event.getInventory().getResult();
-
-		if (currentItem == null) {
-			return;
-		}
+		if (currentItem == null) return;
 
 		int totalItems = 0;
 		ItemStack lastItem = null;
 
-		for (ItemStack item : event.getInventory().getMatrix()) {
+		for (final ItemStack item : event.getInventory().getMatrix()) {
 			// Keep this null check, it says it's NotNull but bukkit is lying :(
 			if (item != null && item.getType() != Material.AIR) {
 				totalItems += 1;
@@ -77,27 +64,16 @@ public class CreateToolListener implements Listener {
 			}
 		}
 
-		if (lastItem == null) {
-			return;
-		}
+		if (lastItem == null) return;
 
 		final ItemMeta m = currentItem.getItemMeta();
-
-		if (m != null) {
-			if (modManager.isWandViable(currentItem)) {
-				return;
-			}
-		}
+		if (m != null && modManager.isWandViable(currentItem)) return;
 
 		// Check for converting as we do not do this here
-		if (totalItems == 1 && lastItem.getType() == currentItem.getType()) {
-			return;
-		}
+		if (totalItems == 1 && lastItem.getType() == currentItem.getType()) return;
 
 		// Check for vanilla repairing in crafting grid, do not convert tool to MineTinker
-		if (totalItems == 2 && lastItem.getType() == currentItem.getType()) {
-			return;
-		}
+		if (totalItems == 2 && lastItem.getType() == currentItem.getType()) return;
 
 		modManager.convertItemStack(event.getInventory().getResult(), player);
 	}

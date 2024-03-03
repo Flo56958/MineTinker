@@ -67,7 +67,7 @@ public enum ToolType {
 		
 		tools.put(ToolType.INVALID, new HashSet<>());
 
-		HashSet<Material> all = new HashSet<>();
+		final HashSet<Material> all = new HashSet<>();
 		ToolType.tools.values().forEach(all::addAll);
 		ToolType.tools.forEach((type, materials) -> materials.forEach(material -> ToolType.materialMap.put(material, type)));
 

@@ -67,10 +67,9 @@ public class LanguageManager {
 			ChatWriter.logError(lang + " is currently not supported. If you want MineTinker to support this language you" +
 					" can help translating on Transifex!");
 		} else {
-			if (!lang.equals("en_US") && !lang.equals("de_DE")) {
+			if (!lang.equals("en_US") && !lang.equals("de_DE"))
 				ChatWriter.logInfo("You are using a community translation. Therefore the translation is not 100% reviewed" +
 						" and checked! Use with caution!");
-			}
 
 			double percentage = langFile.getKeys(true).size() / (double) langBackup.getKeys(true).size();
 			if (percentage < 1.0) {
@@ -96,9 +95,9 @@ public class LanguageManager {
 	@NotNull
 	public static String getString(@NotNull String path) {
 		String ret = langFile.getString(path);
-		if (ret == null || ret.isEmpty()) {
+		if (ret == null || ret.isEmpty())
 			ret = langBackup.getString(path, "");
-		}
+
 		return ChatWriter.addColors(ret);
 	}
 
@@ -116,9 +115,8 @@ public class LanguageManager {
 			YamlConfiguration langFile = loadLanguage(player.getLocale());
 			if (langFile != null) {
 				String ret = langFile.getString(path);
-				if (ret != null && !ret.isEmpty()) {
+				if (ret != null && !ret.isEmpty())
 					return ChatWriter.addColors(ret);
-				}
 			}
 		}
 		return getString(path);

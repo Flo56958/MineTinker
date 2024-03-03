@@ -47,9 +47,7 @@ public class GrindstoneListener implements Listener {
 		if (config.getBoolean("Grindstone.Enabled")) {
 			if (event.getSlotType() == InventoryType.SlotType.RESULT) { //on Gridstone use
 				final ItemStack result = event.getCurrentItem();
-				if (!modManager.isArmorViable(result) && !modManager.isToolViable(result)) {
-					return;
-				}
+				if (!modManager.isArmorViable(result) && !modManager.isToolViable(result)) return;
 
 				final ItemStack slot1 = grindstoneInventory.getItem(0);
 				final ItemStack slot2 = grindstoneInventory.getItem(1);
@@ -62,9 +60,9 @@ public class GrindstoneListener implements Listener {
 					event.setCancelled(true);
 					ChatWriter.sendActionBar(player,
 							LanguageManager.getString("Alert.InternalError", player));
-					if (config.getBoolean("Sound.OnFail")) {
+					if (config.getBoolean("Sound.OnFail"))
 						player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 2F);
-					}
+
 					return;
 				}
 
@@ -107,9 +105,11 @@ public class GrindstoneListener implements Listener {
 			final Random rand = new Random();
 			int amount = 0;
 			boolean hadMods = false;
+
 			gs.tool = result;
+
 			for (final Modifier mod : ModManager.instance().getAllowedMods()) {
-				int level = ModManager.instance().getModLevel(result, mod);
+				final int level = ModManager.instance().getModLevel(result, mod);
 				amount += level * mod.getSlotCost();
 				for (int i = 0; i < level; i++) {
 					hadMods = true;
@@ -173,29 +173,25 @@ public class GrindstoneListener implements Listener {
 		} else {
 			// Avoid handling the clicks inside the inventory.
 			if (event.getSlotType() != InventoryType.SlotType.RESULT
-					&& event.getSlotType() != InventoryType.SlotType.CRAFTING) {
+					&& event.getSlotType() != InventoryType.SlotType.CRAFTING)
 				return;
-			}
+
 			// Works fine even if the getItem method returns null.
             final ItemStack slot1 = grindstoneInventory.getItem(0);
             final ItemStack slot2 = grindstoneInventory.getItem(1);
 
             if (!(modManager.isToolViable(slot1) || modManager.isArmorViable(slot1)
-                    || modManager.isToolViable(slot2) || modManager.isArmorViable(slot2))) {
+                    || modManager.isToolViable(slot2) || modManager.isArmorViable(slot2)))
                 return;
-            }
 
-            if (event.getSlotType() != InventoryType.SlotType.RESULT) {
-                return;
-            }
+            if (event.getSlotType() != InventoryType.SlotType.RESULT) return;
 
             event.setResult(Event.Result.DENY);
             event.setCancelled(true);
 
             ChatWriter.sendActionBar(player, LanguageManager.getString("Alert.OnItemGrind", player));
-            if (config.getBoolean("Sound.OnFail")) {
+            if (config.getBoolean("Sound.OnFail"))
                 player.playSound(player.getLocation(), Sound.BLOCK_CHEST_LOCKED, 1.0F, 2F);
-            }
         }
 	}
 }

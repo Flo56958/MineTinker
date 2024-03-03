@@ -41,22 +41,20 @@ public class MineTinkerAPI {
 	private static final ModManager modManager = ModManager.instance();
 	private static MineTinkerAPI api;
 
-	private MineTinkerAPI() {
-	}
+	private MineTinkerAPI() {}
 
 	public static MineTinkerAPI instance() {
-		if (api == null) {
+		if (api == null)
 			api = new MineTinkerAPI();
-		}
 
 		return api;
 	}
 
-	public void registerModifier(Modifier mod) {
+	public void registerModifier(final Modifier mod) {
 		modManager.register(mod);
 	}
 
-	public void unregisterModifier(Modifier mod) {
+	public void unregisterModifier(final Modifier mod) {
 		modManager.unregister(mod);
 	}
 
@@ -67,7 +65,7 @@ public class MineTinkerAPI {
 	 * @param name   the name of the file with extension
 	 * @return the configuration
 	 */
-	public FileConfiguration getConfig(String folder, String name) {
+	public FileConfiguration getConfig(final String folder, final String name) {
 		ConfigurationManager.loadConfig(folder, name);
 
 		return ConfigurationManager.getConfig(name);
@@ -78,7 +76,7 @@ public class MineTinkerAPI {
 	 *
 	 * @param config the config you got through getConfig()
 	 */
-	public void saveConfig(FileConfiguration config) {
+	public void saveConfig(final FileConfiguration config) {
 		ConfigurationManager.saveConfig(config);
 	}
 

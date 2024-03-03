@@ -47,38 +47,30 @@ public class ItemListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onItemDrop(@NotNull final PlayerDropItemEvent event) {
-		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
-			return;
-		}
+		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) return;
 
 		final Item item = event.getItemDrop();
 		final ItemStack is = item.getItemStack();
 
 		boolean isMineTinker = false;
 
-		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems"))
 			isMineTinker = modManager.isModifierItem(is);
-		}
-		if (modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is)) {
+		if (modManager.isArmorViable(is) || modManager.isToolViable(is) || modManager.isWandViable(is))
 			isMineTinker = true;
-		}
 
-		if (!isMineTinker) {
-			return;
-		}
+		if (!isMineTinker) return;
 
 		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ShowName") && is.getItemMeta() != null) {
 			item.setCustomName(is.getItemMeta().getDisplayName());
 			item.setCustomNameVisible(true);
 		}
 
-		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.SetGlowing")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.SetGlowing"))
 			item.setGlowing(true);
-		}
 
-		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.SetInvulnerable")) {
+		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.SetInvulnerable"))
 			item.setInvulnerable(true);
-		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -90,36 +82,28 @@ public class ItemListener implements Listener {
 		final Player player = event.getEntity();
 		final Inventory inventory = player.getInventory();
 
-		if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ApplyOnPlayerDeath", true)) {
+		if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ApplyOnPlayerDeath", true))
 			//For DeadSouls and other Grave-Plugins
 			// TODO: Try to find better handling of this Event or with these Plugins
 			return;
-		}
 
 		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) return;
 
 
 		for (ItemStack itemStack : new ArrayList<>(event.getDrops())) {
-			if (itemStack == null) {
-				continue;
-			}
+			if (itemStack == null) continue;
 
 			boolean isMineTinker = false;
 
-			if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) { //Modifieritems
-				if (modManager.isModifierItem(itemStack)) {
+			if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ForModItems")) //Modifieritems
+				if (modManager.isModifierItem(itemStack))
 					isMineTinker = true;
-				}
-			}
 
 			if (modManager.isArmorViable(itemStack) || modManager.isToolViable(itemStack)
-					|| modManager.isWandViable(itemStack)) {
+					|| modManager.isWandViable(itemStack))
 				isMineTinker = true;
-			}
 
-			if (!isMineTinker) {
-				continue;
-			}
+			if (!isMineTinker) continue;
 
 			Bukkit.getPluginManager().callEvent(
 					new PlayerDropItemEvent(player, player.getWorld().dropItem(
@@ -132,47 +116,32 @@ public class ItemListener implements Listener {
 	public void onItemBreak(@NotNull final PlayerItemBreakEvent event) {
 		final Player player = event.getPlayer();
 		final ItemStack item = event.getBrokenItem();
+		if (!MineTinker.getPlugin().getConfig().getBoolean("UnbreakableTools", true)) return;
+		if (Lists.WORLDS.contains(player.getWorld().getName())) return;
 
-		if (!MineTinker.getPlugin().getConfig().getBoolean("UnbreakableTools", true)) {
-			return;
-		}
+		if (!modManager.isToolViable(item) && !modManager.isArmorViable(item)) return;
 
-		if (Lists.WORLDS.contains(player.getWorld().getName())) {
-			return;
-		}
-
-		if (!modManager.isToolViable(item) && !modManager.isArmorViable(item)) {
-			return;
-		}
-
-		if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.StopBreakEvent", true)) {
-			return;
-		}
-
-		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.AlertPlayerOnBreak", true)) {
+		if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.StopBreakEvent", true)) return;
+		if (MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.AlertPlayerOnBreak", true))
 			player.sendMessage(LanguageManager.getString("Alert.OnItemBreak", player));
-		}
 
 		final ItemMeta meta = item.getItemMeta();
 
-		if (meta instanceof Damageable) {
+		if (meta instanceof Damageable)
 			((Damageable) meta).setDamage(item.getType().getMaxDurability() - 1);
-		}
 
-		if (meta instanceof CrossbowMeta) { //TODO: Crossbow will still shoot arrow
-			((CrossbowMeta) meta).setChargedProjectiles(new ArrayList<>());
-		}
+		if (meta instanceof CrossbowMeta crossbowMeta) //TODO: Crossbow will still shoot arrow
+			crossbowMeta.setChargedProjectiles(new ArrayList<>());
 
 		item.setItemMeta(meta);
 
 		if (!player.getInventory().addItem(item).isEmpty()) { //adds items to (full) inventory
-			if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour")) {
+			if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.DisableDroppingBehaviour"))
 				Bukkit.getPluginManager().callEvent(
 						new PlayerDropItemEvent(player, player.getWorld().dropItem(
 								player.getLocation(), item))); //To trigger item behaviour
-			} else {
+			else
 				player.getWorld().dropItem(player.getLocation(), item);
-			}
 		} // no else as it gets added in if-clause
 	}
 
@@ -180,13 +149,8 @@ public class ItemListener implements Listener {
 	public void onItemUse(@NotNull final PlayerItemDamageEvent event) {
 		final ItemStack item = event.getItem();
 
-		if (modManager.isToolViable(item) && modManager.isArmorViable(item) && modManager.isWandViable(item)) {
-			return;
-		}
-
-		if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ConvertItemsOnUse", true)) {
-			return;
-		}
+		if (modManager.isToolViable(item) && modManager.isArmorViable(item) && modManager.isWandViable(item)) return;
+		if (!MineTinker.getPlugin().getConfig().getBoolean("ItemBehaviour.ConvertItemsOnUse", true)) return;
 
 		modManager.convertItemStack(event.getItem(), event.getPlayer());
 	}

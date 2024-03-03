@@ -39,9 +39,8 @@ public class ActionBarListener implements Listener {
 
 	public static void addXP(@NotNull Player p, int amount) {
 		final AtomicInteger i = xpbuffer.get(p.getUniqueId());
-		if (i != null) {
+		if (i != null)
 			i.addAndGet(amount);
-		}
 	}
 
 

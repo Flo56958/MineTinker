@@ -30,8 +30,7 @@ public abstract class ButtonAction {
 		this.button = button;
 	}
 
-	public void run() {
-	}
+	public void run() {}
 
 	public static class PAGE_UP extends ButtonAction implements PlayerAction {
 
@@ -56,9 +55,8 @@ public abstract class ButtonAction {
 			final GUI gui = this.button.getWindow().getGUI();
 			int pageNo = gui.getWindowNumber(this.button.getWindow()) - 1;
 
-			if (pageNo == -1) {
+			if (pageNo == -1)
 				pageNo = gui.getWindowAmount() - 1;
-			}
 
 			gui.show(player, pageNo);
 		}

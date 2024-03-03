@@ -62,15 +62,13 @@ public class ConvertCommand implements SubCommand {
 
 	@Override
 	public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String[] args) {
-		List<String> result = new ArrayList<>();
+		final List<String> result = new ArrayList<>();
 		if (args.length == 2) {
-			for (Player player : Bukkit.getOnlinePlayers()) {
+			for (final Player player : Bukkit.getOnlinePlayers())
 				result.add(player.getName());
-			}
 
-			if (sender instanceof Entity || sender instanceof BlockState) {
+			if (sender instanceof Entity || sender instanceof BlockState)
 				result.add("@p");
-			}
 		}
 		return result;
 	}
@@ -83,7 +81,7 @@ public class ConvertCommand implements SubCommand {
 
 	@Override @NotNull
 	public List<String> getAliases(boolean withName) {
-		ArrayList<String> aliases = new ArrayList<>();
+		final ArrayList<String> aliases = new ArrayList<>();
 		if (withName) aliases.add(getName());
 		aliases.add("c");
 		aliases.add("con");
@@ -97,7 +95,7 @@ public class ConvertCommand implements SubCommand {
 
 	@Override @NotNull
 	public Map<Integer, List<ArgumentType>> getArgumentsToParse() {
-		Map<Integer, List<ArgumentType>> argumentsToParse = new HashMap<>();
+		final Map<Integer, List<ArgumentType>> argumentsToParse = new HashMap<>();
 		argumentsToParse.put(1, Collections.singletonList(ArgumentType.PLAYER));
 		return argumentsToParse;
 	}

@@ -59,7 +59,6 @@ public class EntityListener implements Listener {
 //        }
 
 		if (!modManager.isToolViable(tool)) return;
-
 		if (!modManager.durabilityCheck(event, player, tool)) return;
 
 		Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(player, tool, event.getEntity(), event));
@@ -90,7 +89,6 @@ public class EntityListener implements Listener {
 	public void onDeath(@NotNull final EntityDeathEvent event) {
 		final LivingEntity mob = event.getEntity();
 		final Player player = mob.getKiller();
-
 		if (Lists.WORLDS.contains(mob.getWorld().getName())) return;
 
 		final FileConfiguration config = MineTinker.getPlugin().getConfig();
@@ -138,9 +136,8 @@ public class EntityListener implements Listener {
 		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig()
 				.getInt("ExtraExpPerEntityDeath." + event.getEntity().getType(), 0), true);
 
-		if (mob.getLastDamageCause() instanceof EntityDamageByEntityEvent lasteven) {
+		if (mob.getLastDamageCause() instanceof EntityDamageByEntityEvent lasteven)
 			if (lasteven.getDamager() instanceof Trident trident) trident.setItem(tool);
-		}
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -247,12 +244,10 @@ public class EntityListener implements Listener {
 
 	private boolean playSound(final EntityShootBowEvent event, final Player player, final ItemStack offHand) {
 		final Modifier mod = modManager.getModifierFromItem(offHand);
+        if (mod == null || mod.getModItem().getType() != Material.ARROW) return false;
 
-		if (mod != null && mod.getModItem().getType() == Material.ARROW) {
-			event.setCancelled(true);
-			player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
-			return true;
-		}
-		return false;
-	}
+        event.setCancelled(true);
+        player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
+        return true;
+    }
 }

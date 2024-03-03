@@ -18,6 +18,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
+import org.bukkit.event.inventory.PrepareSmithingEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -258,5 +259,19 @@ public class AnvilListener implements Listener {
 			event.setResult(newTool);
 			event.getInventory().setRepairCost(0);
 		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void onSmithPrepare(PrepareSmithingEvent event) {
+		if (ModManager.instance().isArmorViable(event.getResult()))
+			//The attributes need to be reapplied
+			ModManager.instance().addArmorAttributes(event.getResult());
+
+		if (!MineTinker.getPlugin().getConfig().getBoolean("UseSmithingTable", false)) return;
+
+		final ItemStack newTool = onPrepare(event.getInventory(), event.getViewers());
+		if (newTool == null) return;
+
+		event.setResult(newTool);
 	}
 }

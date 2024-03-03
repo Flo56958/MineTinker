@@ -21,9 +21,7 @@ public class CraftItemListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onCraft(@NotNull final CraftItemEvent event) {
-		if (!(event.getWhoClicked() instanceof final Player player)) {
-			return;
-		}
+		if (!(event.getWhoClicked() instanceof final Player player)) return;
 
 		final FileConfiguration config = MineTinker.getPlugin().getConfig();
 
@@ -34,16 +32,14 @@ public class CraftItemListener implements Listener {
 
 		final ItemStack tool = event.getInventory().getResult();
 
-		if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool) || modManager.isWandViable(tool))) {
+		if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool) || modManager.isWandViable(tool)))
 			return;
-		}
 
 		// If the tools are stacked because of a different plugin we do not want to interfere with that plugin
 		// tool.setAmount(1);
 
-		if (config.getBoolean("Sound.OnCrafting")) {
+		if (config.getBoolean("Sound.OnCrafting"))
 			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
-		}
 
 		ChatWriter.log(false, player.getName() + " crafted " + ChatWriter.getDisplayName(tool)
 					+ "! It is now a MineTinker-Item!");
@@ -53,12 +49,12 @@ public class CraftItemListener implements Listener {
 	public void onPrepare(@NotNull final PrepareItemCraftEvent event) {
 		if (MineTinker.getPlugin().getConfig().getBoolean("ModifiersCanBeUsedForCrafting")) return;
 		final CraftingInventory inv = event.getInventory();
-		for (ItemStack is : inv.getMatrix()) {
+		for (final ItemStack is : inv.getMatrix()) {
 			if (is == null) continue;
-			if (modManager.isModifierItem(is)) {
-				inv.setResult(null);
-				break;
-			}
-		}
+            if (!modManager.isModifierItem(is)) continue;
+
+			inv.setResult(null);
+			break;
+        }
 	}
 }

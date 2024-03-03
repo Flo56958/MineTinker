@@ -22,7 +22,6 @@ public class Contributor {
 
 	static {
 		try {
-
 			ArrayList<JsonObject> contributorList = new ArrayList<>();
 			{
 				//Obtain Information over GitHub API
@@ -99,8 +98,8 @@ public class Contributor {
 	private Contributor(UUID mcUUID, JsonObject github, String transifex, JsonArray languages, String discord, JsonArray other) {
 		this.mcUUID = mcUUID;
 
-		ItemMeta itemMeta = playerHead.getItemMeta();
-		ArrayList<String> lore = new ArrayList<>();
+		final ItemMeta itemMeta = playerHead.getItemMeta();
+		final ArrayList<String> lore = new ArrayList<>();
 		String displayName = "";
 		if (mcUUID != null) {
 			if (itemMeta instanceof SkullMeta) {
@@ -139,9 +138,10 @@ public class Contributor {
 				lore.add(ChatColor.GOLD + "Translating Languages: " + ChatColor.WHITE + sb.substring(0, sb.length() - 2));
 			}
 		}
-		if (discord != null) {
+
+		if (discord != null)
 			lore.add(ChatColor.GOLD + "Discord-Username: " + ChatColor.WHITE + discord);
-		}
+
 		if (other != null) {
 			other.forEach(e -> {
 				if (!e.isJsonNull()) {
@@ -149,9 +149,10 @@ public class Contributor {
 				}
 			});
 		}
-		if (!displayName.isEmpty()) {
+
+		if (!displayName.isEmpty())
 			itemMeta.setDisplayName(displayName.substring(0, displayName.length() - 1));
-		}
+
 		itemMeta.setLore(lore);
 
 		playerHead.setItemMeta(itemMeta);

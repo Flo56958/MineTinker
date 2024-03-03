@@ -68,14 +68,14 @@ public class ConfigurationManager {
 		configsFolder.put(fileConfiguration, customConfigFile);
 		configs.put(file, fileConfiguration);
 
-		if (customConfigFile.exists()) {
-			try {
-				fileConfiguration.load(customConfigFile);
-			} catch (IOException | InvalidConfigurationException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+        if (!customConfigFile.exists()) return;
+
+        try {
+            fileConfiguration.load(customConfigFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
 
 	public static void saveConfig(@NotNull FileConfiguration config) {
 		try {

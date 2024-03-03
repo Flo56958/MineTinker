@@ -50,18 +50,15 @@ public class Updater {
 	 * tries to get the newest MineTinker-Version number from api.spigotmc.org
 	 */
 	public static void checkOnline() {
-		if (hasUpdate()) {
-			return;
-		}
+		if (hasUpdate()) return;
 
 		try {
 			final URL url = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + 58940);
 			final URLConnection connection = url.openConnection();
 			final Scanner scan = new Scanner(connection.getInputStream());
 
-			if (scan.hasNextLine()) {
+			if (scan.hasNextLine())
 				onlineVersion = scan.nextLine();
-			}
 
 			scan.close();
 		} catch (Exception ignored) {
@@ -77,9 +74,8 @@ public class Updater {
 		checkOnline();
 
 		Player player = null;
-		if (sender instanceof Player) {
+		if (sender instanceof Player)
 			player = (Player) sender;
-		}
 
 		if (onlineVersion == null) {
 			ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Updater.Unable", player));

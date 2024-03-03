@@ -34,7 +34,7 @@ public class Lists {
 	}
 
 	public static ArrayList<Material> getLeatherArmor() {
-		ArrayList<Material> mats = new ArrayList<>();
+		final ArrayList<Material> mats = new ArrayList<>();
 
 		mats.add(Material.LEATHER_CHESTPLATE);
 		mats.add(Material.LEATHER_HELMET);
@@ -48,7 +48,7 @@ public class Lists {
 	 * @return All Leaf Type
 	 */
 	public static ArrayList<Material> getWoodLeaves() {
-		ArrayList<Material> mats = new ArrayList<>();
+		final ArrayList<Material> mats = new ArrayList<>();
 
 		mats.add(Material.ACACIA_LEAVES);
 		mats.add(Material.BIRCH_LEAVES);
@@ -60,12 +60,10 @@ public class Lists {
 		mats.add(Material.WARPED_WART_BLOCK);
 		mats.add(Material.AZALEA_LEAVES);
 
-		if (MineTinker.is19compatible) {
+		if (MineTinker.is19compatible)
 			mats.add(Material.MANGROVE_LEAVES);
-		}
-		if (MineTinker.is20compatible) {
+		if (MineTinker.is20compatible)
 			mats.add(Material.CHERRY_LEAVES);
-		}
 
 		return mats;
 	}
@@ -74,7 +72,8 @@ public class Lists {
 	 * @return All Plank types
 	 */
 	public static ArrayList<Material> getWoodPlanks() {
-		ArrayList<Material> mats = new ArrayList<>();
+		final ArrayList<Material> mats = new ArrayList<>();
+
 		mats.add(Material.ACACIA_PLANKS);
 		mats.add(Material.BIRCH_PLANKS);
 		mats.add(Material.DARK_OAK_PLANKS);
@@ -84,12 +83,10 @@ public class Lists {
 		mats.add(Material.CRIMSON_PLANKS);
 		mats.add(Material.WARPED_PLANKS);
 
-		if (MineTinker.is19compatible) {
+		if (MineTinker.is19compatible)
 			mats.add(Material.MANGROVE_PLANKS);
-		}
-		if (MineTinker.is20compatible) {
+		if (MineTinker.is20compatible)
 			mats.add(Material.CHERRY_PLANKS);
-		}
 		return mats;
 	}
 
@@ -97,7 +94,8 @@ public class Lists {
 	 * @return All Log types
 	 */
 	public static ArrayList<Material> getWoodLogs() {
-		ArrayList<Material> mats = new ArrayList<>();
+		final ArrayList<Material> mats = new ArrayList<>();
+
 		mats.add(Material.ACACIA_LOG);
 		mats.add(Material.BIRCH_LOG);
 		mats.add(Material.DARK_OAK_LOG);
@@ -114,9 +112,8 @@ public class Lists {
 			mats.add(Material.MANGROVE_ROOTS);
 			mats.add(Material.MUDDY_MANGROVE_ROOTS);
 		}
-		if (MineTinker.is20compatible) {
+		if (MineTinker.is20compatible)
 			mats.add(Material.CHERRY_LOG);
-		}
 		return mats;
 	}
 
@@ -124,7 +121,8 @@ public class Lists {
 	 * @return All stripped Log types
 	 */
 	public static ArrayList<Material> getWoodStrippedLogs() {
-		ArrayList<Material> mats = new ArrayList<>();
+		final ArrayList<Material> mats = new ArrayList<>();
+
 		mats.add(Material.STRIPPED_ACACIA_LOG);
 		mats.add(Material.STRIPPED_BIRCH_LOG);
 		mats.add(Material.STRIPPED_DARK_OAK_LOG);
@@ -134,12 +132,10 @@ public class Lists {
 		mats.add(Material.STRIPPED_CRIMSON_STEM);
 		mats.add(Material.STRIPPED_WARPED_STEM);
 
-		if (MineTinker.is19compatible) {
+		if (MineTinker.is19compatible)
 			mats.add(Material.STRIPPED_MANGROVE_LOG);
-		}
-		if (MineTinker.is20compatible) {
+		if (MineTinker.is20compatible)
 			mats.add(Material.STRIPPED_CHERRY_LOG);
-		}
 		return mats;
 	}
 
@@ -147,7 +143,8 @@ public class Lists {
 	 * @return All Wood types
 	 */
 	public static ArrayList<Material> getWoodWood() {
-		ArrayList<Material> mats = new ArrayList<>();
+		final ArrayList<Material> mats = new ArrayList<>();
+
 		mats.add(Material.ACACIA_WOOD);
 		mats.add(Material.BIRCH_WOOD);
 		mats.add(Material.DARK_OAK_WOOD);
@@ -157,12 +154,10 @@ public class Lists {
 		mats.add(Material.CRIMSON_HYPHAE);
 		mats.add(Material.WARPED_HYPHAE);
 
-		if (MineTinker.is19compatible) {
+		if (MineTinker.is19compatible)
 			mats.add(Material.MANGROVE_WOOD);
-		}
-		if (MineTinker.is20compatible) {
+		if (MineTinker.is20compatible)
 			mats.add(Material.CHERRY_WOOD);
-		}
 		return mats;
 	}
 
@@ -170,7 +165,8 @@ public class Lists {
 	 * @return All stripped Wood types
 	 */
 	public static ArrayList<Material> getWoodStrippedWood() {
-		ArrayList<Material> mats = new ArrayList<>();
+		final ArrayList<Material> mats = new ArrayList<>();
+
 		mats.add(Material.STRIPPED_ACACIA_WOOD);
 		mats.add(Material.STRIPPED_BIRCH_WOOD);
 		mats.add(Material.STRIPPED_DARK_OAK_WOOD);
@@ -180,12 +176,10 @@ public class Lists {
 		mats.add(Material.STRIPPED_CRIMSON_HYPHAE);
 		mats.add(Material.STRIPPED_WARPED_HYPHAE);
 
-		if (MineTinker.is19compatible) {
+		if (MineTinker.is19compatible)
 			mats.add(Material.STRIPPED_MANGROVE_WOOD);
-		}
-		if (MineTinker.is20compatible) {
+		if (MineTinker.is20compatible)
 			mats.add(Material.STRIPPED_CHERRY_WOOD);
-		}
 		return mats;
 	}
 
