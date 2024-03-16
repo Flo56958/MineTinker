@@ -282,14 +282,16 @@ public class AutoSmelt extends Modifier implements Listener {
 		if (conv.luckable) {
 			int level = modManager.getModLevel(tool, Luck.instance());
 
-			int extra = 0;
-			if (level > 0) extra = new Random().nextInt(level + 1) * amount;
-			amount += amount + extra;
+			if (level > 0) {
+				int extra = new Random().nextInt(level + 1) * amount; // Times amount is for clay as it drops 4 per block
+				amount += extra;
 
-			int luckstat = DataHandler.getTagOrDefault(tool, getKey() + "_stat_luck", PersistentDataType.INTEGER, 0);
-			DataHandler.setTag(tool, getKey() + "_stat_luck", luckstat + extra, PersistentDataType.INTEGER);
-			//Times amount is for clay as it drops 4 per block
+				int luckstat = DataHandler.getTagOrDefault(tool, getKey() + "_stat_luck", PersistentDataType.INTEGER, 0);
+				DataHandler.setTag(tool, getKey() + "_stat_luck", luckstat + extra, PersistentDataType.INTEGER);
+			}
 		}
+
+		System.out.println("Amount: " + amount + " (" + conv.amount + ") Loot: " + loot + " Block: " + block.getType());
 
 		if (!(loot == Material.AIR || amount <= 0)) {
 			ItemStack items = new ItemStack(loot, amount);
