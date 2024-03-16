@@ -218,6 +218,7 @@ permissions:
       minetinker.modifiers.melting.*: true
       minetinker.modifiers.multijump.*: true
       minetinker.modifiers.multishot.*: true
+      minetinker.modifiers.mutating.*: true
       minetinker.modifiers.nightseeker.*: true
       minetinker.modifiers.phasing.*: true
       minetinker.modifiers.photosynthesis.*: true
@@ -935,6 +936,17 @@ permissions:
     default: true
   minetinker.modifiers.timber.use:
     description: Allows to use Timber on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.mutating.*:
+    children:
+      minetinker.modifiers.mutating.apply: true
+      minetinker.modifiers.mutating.use: true
+  minetinker.modifiers.mutating.apply:
+    description: Allows to apply Mutating to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.mutating.use:
+    description: Allows to use Mutating on a MineTinker-Tool
     default: true
 
   minetinker.modifiers.webbed.*:

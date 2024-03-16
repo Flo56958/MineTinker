@@ -13,6 +13,8 @@ public class ToolLevelUpEvent extends Event {
 	private final Player player;
 	private final ItemStack tool;
 
+	private int newSlots = 0;
+
 	/**
 	 * Event constructor
 	 *
@@ -40,5 +42,13 @@ public class ToolLevelUpEvent extends Event {
 	@Override
 	public HandlerList getHandlers() {
 		return handlers;
+	}
+
+	public int getNewSlots() {
+		return newSlots;
+	}
+
+	public void setNewSlots(int newSlots) {
+		this.newSlots = newSlots;
 	}
 }

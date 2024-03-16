@@ -609,8 +609,11 @@ public class ModManager {
 		while (exp >= getNextLevelReq(level)) { // tests for a level up
 			level++;
 			setLevel(tool, level);
-			if (callLevelUpEvent)
-				Bukkit.getPluginManager().callEvent(new ToolLevelUpEvent(player, tool));
+			if (callLevelUpEvent) {
+				final ToolLevelUpEvent event = new ToolLevelUpEvent(player, tool);
+				Bukkit.getPluginManager().callEvent(event);
+				setFreeSlots(tool, getFreeSlots(tool) + event.getNewSlots());
+			}
 		}
 
 		if (player != null && config.getBoolean("actionbar-on-exp-gain"))

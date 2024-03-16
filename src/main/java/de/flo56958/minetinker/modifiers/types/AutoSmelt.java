@@ -291,8 +291,6 @@ public class AutoSmelt extends Modifier implements Listener {
 			}
 		}
 
-		System.out.println("Amount: " + amount + " (" + conv.amount + ") Loot: " + loot + " Block: " + block.getType());
-
 		if (!(loot == Material.AIR || amount <= 0)) {
 			ItemStack items = new ItemStack(loot, amount);
 

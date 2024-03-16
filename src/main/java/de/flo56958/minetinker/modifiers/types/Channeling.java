@@ -98,7 +98,7 @@ public class Channeling extends Modifier implements Listener {
 
 		this.description = this.description.replaceAll("%amount", this.chancePerLevel + "%");
 		if (this.worksOnlyInStorms)
-			this.description = this.description + " " + LanguageManager.getString("Modifier.Channeling.Description_OnlyStorms");
+			this.description += " " + LanguageManager.getString("Modifier.Channeling.Description_OnlyStorms");
 	}
 
 	@Override

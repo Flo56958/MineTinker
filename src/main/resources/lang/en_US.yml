@@ -461,6 +461,12 @@ Modifier:
     ModifierItemName: "Wooden Emerald"
     DescriptionModifierItem: "Modifier-Item for the Timber-Modifier"
     Statistic_Used: "Trees chopped: %amount"
+  Mutating:
+    Name: "Mutating"
+    Description: "Increases the chance by %chance% per level to get %amount random modifier on an item level up!"
+    Description_Level0: "This effect also works with a base chance when the tool does not have this modifier!"
+    ModifierItemName: "%ITALIC%Un%UNDERLINE%st%MAGIC%ab%RESET%%ITALIC%le C%MAGIC%o%STRIKE%re"
+    DescriptionModifierItem: "Modifier-Item for the Mutating-Modifier"
   Undead:
     Name: "Undead"
     Description: "Monster will not target you anymore but you also can not attack anyone!"
