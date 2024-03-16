@@ -82,6 +82,7 @@ public class Power extends Modifier implements Listener {
 		config.addDefault("Toggleable", true);
 		config.addDefault("MaxLevel", 2); // Algorithm for area of effect (except for level 1): (level * 2) - 1 x
 		config.addDefault("SlotCost", 2);
+		config.addDefault("ModifierItemMaterial", Material.EMERALD.name());
 
 		config.addDefault("EnchantCost", 15);
 		config.addDefault("Enchantable", true);
@@ -107,7 +108,7 @@ public class Power extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.EMERALD);
+		init();
 
 		this.lv1_vertical = config.getBoolean("Lv1Vertical", false);
 		this.toggleable = config.getBoolean("Toggleable", true);

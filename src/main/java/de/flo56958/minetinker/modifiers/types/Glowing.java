@@ -65,6 +65,7 @@ public class Glowing extends Modifier implements Listener {
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.GLOWSTONE.name());
 		config.addDefault("Duration", 200); //ticks INTEGER (20 ticks ~ 1 sec)
 		config.addDefault("DurationMultiplier", 1.4); //Duration * (Multiplier^Level) DOUBLE
 
@@ -86,7 +87,7 @@ public class Glowing extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.GLOWSTONE);
+		init();
 
 		this.duration = config.getInt("Duration", 200);
 		this.durationMultiplier = config.getDouble("DurationMultiplier", 1.4);

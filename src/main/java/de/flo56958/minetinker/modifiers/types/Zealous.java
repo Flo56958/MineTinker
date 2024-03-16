@@ -30,6 +30,7 @@ public class Zealous extends Modifier implements Listener {
 	private static Zealous instance;
 
 	private double percentPerSecond;
+	private boolean allowHelmet;
 
 	private Zealous() {
 		super(MineTinker.getPlugin());
@@ -52,8 +53,9 @@ public class Zealous extends Modifier implements Listener {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
+		if (allowHelmet) // this makes pvp battles infinite again
+			return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.HELMET);
 		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT);
-		// TODO: Maybe add armor, but that would negate the finite pvp battles again
 	}
 
 	@Override
@@ -65,7 +67,9 @@ public class Zealous extends Modifier implements Listener {
 		config.addDefault("Color", "%GOLD%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.BLAZE_ROD.name());
 		config.addDefault("PercentPerSecond", 1.0D);
+		config.addDefault("AllowHelmet", false);
 
 		config.addDefault("EnchantCost", 25);
 		config.addDefault("Enchantable", true);
@@ -76,13 +80,12 @@ public class Zealous extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.BLAZE_ROD);
+		init();
 
 		this.percentPerSecond = config.getDouble("PercentPerSecond", 1.0D);
-
 		this.description = this.description.replace("%percent", String.valueOf(this.percentPerSecond));
-
 		this.percentPerSecond /= 100.0D;
+		this.allowHelmet = config.getBoolean("AllowHelmet", false);
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)

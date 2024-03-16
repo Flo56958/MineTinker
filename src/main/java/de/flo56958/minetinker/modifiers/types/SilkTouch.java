@@ -59,6 +59,7 @@ public class SilkTouch extends Modifier {
 		config.addDefault("Color", "%WHITE%");
 		config.addDefault("MaxLevel", 1); //IF 2: Epic Spawners work with MT-SilkTouch
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.COBWEB.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", true);
@@ -69,7 +70,7 @@ public class SilkTouch extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.COBWEB);
+		init();
 	}
 
 	@Override

@@ -63,6 +63,7 @@ public class Sharpness extends Modifier {
 		config.addDefault("Color", "%WHITE%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.QUARTZ_BLOCK.name());
 		config.addDefault("AllowAxes", true);
 
 		config.addDefault("EnchantCost", 10);
@@ -83,7 +84,7 @@ public class Sharpness extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.QUARTZ_BLOCK);
+		init();
 
 		this.allowAxes = config.getBoolean("AllowAxes", true);
 	}

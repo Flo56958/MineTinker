@@ -57,10 +57,10 @@ public class SwiftSneaking extends Modifier {
 		config.options().copyDefaults(true);
 
 		config.addDefault("Allowed", true);
-
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.FEATHER.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -82,7 +82,7 @@ public class SwiftSneaking extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.FEATHER);
+		init();
 	}
 
 	@Override

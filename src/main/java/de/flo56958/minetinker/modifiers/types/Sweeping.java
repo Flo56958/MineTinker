@@ -60,6 +60,7 @@ public class Sweeping extends Modifier {
 		config.addDefault("Color", "%RED%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.IRON_INGOT.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", true);
@@ -70,7 +71,7 @@ public class Sweeping extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.IRON_INGOT);
+		init();
 	}
 
 	@Override

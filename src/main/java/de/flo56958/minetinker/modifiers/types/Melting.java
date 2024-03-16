@@ -58,6 +58,7 @@ public class Melting extends Modifier implements Listener {
 		config.addDefault("Color", "%GOLD%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.MAGMA_BLOCK.name());
 		config.addDefault("BonusMultiplier", 0.1); //Percent of Bonus-damage per Level or Damage-reduction on Armor
 		config.addDefault("CancelBurningOnArmor", true);
 
@@ -70,7 +71,7 @@ public class Melting extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.MAGMA_BLOCK);
+		init();
 
 		this.bonusMultiplier = config.getDouble("BonusMultiplier", 0.1);
 		this.cancelBurning = config.getBoolean("CancelBurningOnArmor", true);

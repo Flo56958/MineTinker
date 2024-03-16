@@ -60,6 +60,7 @@ public class Freezing extends Modifier {
 		config.addDefault("Color", "%AQUA%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.DIAMOND.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -79,7 +80,7 @@ public class Freezing extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.DIAMOND);
+		init();
 	}
 
 	@Override

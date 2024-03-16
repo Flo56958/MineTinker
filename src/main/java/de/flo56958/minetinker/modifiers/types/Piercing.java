@@ -66,6 +66,7 @@ public class Piercing extends Modifier implements Listener {
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 4);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.ARROW.name());
 		config.addDefault("AllowBow", true);
 
 		config.addDefault("EnchantCost", 10);
@@ -88,7 +89,7 @@ public class Piercing extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.ARROW);
+		init();
 
 		this.allowBow = config.getBoolean("AllowBow", true);
 	}

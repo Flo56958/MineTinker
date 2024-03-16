@@ -64,6 +64,7 @@ public class VoidNetting extends CooldownModifier implements Listener {
 		config.addDefault("Color", "%DARK_GRAY%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.COBWEB.name());
 		config.addDefault("RadiusPerLevel", 10);
 		config.addDefault("CooldownInSeconds", 3600.0);
 		config.addDefault("CooldownReductionPerLevel", 0.4);
@@ -86,12 +87,10 @@ public class VoidNetting extends CooldownModifier implements Listener {
 
 		config.addDefault("Recipe.Materials", recipeMaterials);
 
-		// Save Config
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		// Initialize modifier
-		init(Material.COBWEB);
+		init();
 
 		this.radiusPerLevel = config.getInt("RadiusPerLevel", 5);
 		this.cooldownInSeconds = config.getDouble("CooldownInSeconds", 3600.0);

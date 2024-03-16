@@ -70,6 +70,7 @@ public class Magical extends Modifier implements Listener {
 		config.addDefault("Color", "%DARK_PURPLE%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.ARROW.name());
 
 		config.addDefault("MultiplierArrowSpeed", 0.5);
 		config.addDefault("MultiplierArrowDamagePerLevel", 1.25);
@@ -95,7 +96,7 @@ public class Magical extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.ARROW);
+		init();
 
 		this.multiplierArrowSpeed = config.getDouble("MultiplierArrowSpeed", 0.3);
 		this.multiplierDamagePerLevel = config.getDouble("MultiplierArrowDamagePerLevel", 1.25);

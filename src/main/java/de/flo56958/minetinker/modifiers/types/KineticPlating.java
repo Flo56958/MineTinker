@@ -59,6 +59,7 @@ public class KineticPlating extends Modifier implements Listener {
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
 		config.addDefault("Amount", 20);
+		config.addDefault("ModifierItemMaterial", Material.IRON_BLOCK.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -78,7 +79,7 @@ public class KineticPlating extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.IRON_BLOCK);
+		init();
 
 		this.amount = config.getInt("Amount", 1);
 		this.description = this.description.replace("%amount", String.valueOf(this.amount));

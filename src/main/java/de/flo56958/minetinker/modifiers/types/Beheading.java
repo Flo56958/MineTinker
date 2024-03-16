@@ -67,6 +67,7 @@ public class Beheading extends Modifier implements Listener {
 		config.addDefault("Color", "%DARK_GRAY%");
 		config.addDefault("MaxLevel", 10);
 		config.addDefault("SlotCost", 2);
+		config.addDefault("ModifierItemMaterial", Material.WITHER_SKELETON_SKULL.name());
 		config.addDefault("PercentagePerLevel", 10);  //= 100% at Level 10
 		config.addDefault("DropSpawnEggChancePerLevel", 0);
 
@@ -79,7 +80,7 @@ public class Beheading extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.WITHER_SKELETON_SKULL);
+		init();
 
 		this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
 		this.dropSpawneggChancePerLevel = config.getInt("DropSpawnEggChancePerLevel", 0);

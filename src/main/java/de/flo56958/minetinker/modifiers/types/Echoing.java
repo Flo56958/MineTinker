@@ -144,6 +144,7 @@ public class Echoing extends Modifier implements Listener {
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 2);
+		config.addDefault("ModifierItemMaterial", Material.ENDER_EYE.name());
 		config.addDefault("TickTime", 20); //TickTime in Minecraft ticks
 
 		config.addDefault("EnchantCost", 20);
@@ -156,7 +157,7 @@ public class Echoing extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.ENDER_EYE);
+		init();
 
 		this.entities.clear();
 

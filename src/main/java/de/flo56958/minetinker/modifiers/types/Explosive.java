@@ -66,6 +66,7 @@ public class Explosive extends Modifier implements Listener {
 		config.addDefault("Color", "%RED%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.TNT.name());
 		config.addDefault("PowerPerLevel", 0.33);
 		config.addDefault("SetFire", false);
 		config.addDefault("BlockBreak", false);
@@ -87,7 +88,7 @@ public class Explosive extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.TNT);
+		init();
 
 		this.powerPerLevel = (float) config.getDouble("PowerPerLevel", 1.0);
 		this.setFire = config.getBoolean("SetFire", false);

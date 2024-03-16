@@ -64,6 +64,7 @@ public class Knockback extends Modifier implements Listener {
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 2);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.TNT.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", true);
@@ -74,7 +75,7 @@ public class Knockback extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.TNT);
+		init();
 	}
 
 	@Override

@@ -66,6 +66,7 @@ public class Drilling extends Modifier implements Listener {
 		config.addDefault("Toggleable", true);
 		config.addDefault("MaxLevel", 4);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.HOPPER.name());
 
 		config.addDefault("EnchantCost", 15);
 		config.addDefault("Enchantable", false);
@@ -101,7 +102,7 @@ public class Drilling extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.HOPPER);
+		init();
 
 		this.toggleable = config.getBoolean("Toggleable", true);
 		this.treatAsWhitelist = config.getBoolean("TreatAsWhitelist", false);

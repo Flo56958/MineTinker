@@ -57,6 +57,7 @@ public class AntiBlastPlating extends Modifier {
 		config.addDefault("MaxLevel", 4);
 		config.addDefault("SlotCost", 1);
 		config.addDefault("Color", "%WHITE%");
+		config.addDefault("ModifierItemMaterial", Material.IRON_BLOCK.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -77,7 +78,7 @@ public class AntiBlastPlating extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.IRON_BLOCK);
+		init();
 	}
 
 	@Override

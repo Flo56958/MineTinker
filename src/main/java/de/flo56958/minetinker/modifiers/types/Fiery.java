@@ -66,6 +66,7 @@ public class Fiery extends Modifier implements Listener {
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 2);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.BLAZE_ROD.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", true);
@@ -76,7 +77,7 @@ public class Fiery extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.BLAZE_ROD);
+		init();
 	}
 
 	@Override

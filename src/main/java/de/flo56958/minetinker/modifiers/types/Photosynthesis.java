@@ -196,6 +196,7 @@ public class Photosynthesis extends Modifier implements Listener {
 		config.addDefault("Color", "%GREEN%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.VINE.name());
 		config.addDefault("HealthRepairPerLevel", 1); //per Tick
 		config.addDefault("MultiplierPerTick", 1.05);
 		config.addDefault("TickTime", 100); //TickTime in Minecraft ticks
@@ -222,7 +223,7 @@ public class Photosynthesis extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.VINE);
+		init();
 
 		this.healthRepair = config.getInt("HealthRepairPerLevel", 2);
 		this.tickTime = config.getInt("TickTime", 100);

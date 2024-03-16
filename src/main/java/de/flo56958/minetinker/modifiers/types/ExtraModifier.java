@@ -56,6 +56,7 @@ public class ExtraModifier extends Modifier {
 		config.addDefault("Color", "%WHITE%");
 		config.addDefault("ExtraModifierGain", 1); //How many Slots should be added per Nether-Star
 		config.addDefault("XPGain", 250);
+		config.addDefault("ModifierItemMaterial", Material.NETHER_STAR.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -76,7 +77,7 @@ public class ExtraModifier extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.NETHER_STAR);
+		init();
 
 		this.slotCost = 0;
 

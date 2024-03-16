@@ -67,6 +67,7 @@ public class Infinity extends Modifier implements Listener {
 		config.addDefault("MaxLevel", 3); //higher values than 1 have no effect on Infinity
 		config.addDefault("SlotCost", 2);
 		config.addDefault("Color", "%WHITE%");
+		config.addDefault("ModifierItemMaterial", Material.ARROW.name());
 
 		config.addDefault("EnchantCost", 15);
 		config.addDefault("Enchantable", true);
@@ -77,7 +78,7 @@ public class Infinity extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.ARROW);
+		init();
 	}
 
 	@Override

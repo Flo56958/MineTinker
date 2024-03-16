@@ -57,6 +57,7 @@ public class Thorned extends Modifier {
 		config.addDefault("Color", "%DARK_GREEN%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.VINE.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -77,7 +78,7 @@ public class Thorned extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.VINE);
+		init();
 	}
 
 	@Override

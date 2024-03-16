@@ -57,6 +57,7 @@ public class Insulating extends Modifier {
 		config.addDefault("Color", "%WHITE%");
 		config.addDefault("MaxLevel", 4);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.MAGMA_CREAM.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -77,7 +78,7 @@ public class Insulating extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.MAGMA_CREAM);
+		init();
 	}
 
 	@Override

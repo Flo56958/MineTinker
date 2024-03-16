@@ -71,6 +71,7 @@ public class Withered extends Modifier implements Listener {
 		config.addDefault("Color", "%DARK_GRAY%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.WITHER_SKELETON_SKULL.name());
 		config.addDefault("Duration", 120); //ticks INTEGER (20 ticks ~ 1 sec)
 		config.addDefault("DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
 		config.addDefault("EffectAmplifier", 1); //per Level (Level 1 = 0, Level 2 = 2, Level 3 = 4, ...) INTEGER
@@ -94,7 +95,7 @@ public class Withered extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.WITHER_SKELETON_SKULL);
+		init();
 
 		this.duration = config.getInt("Duration", 120);
 		this.durationMultiplier = config.getDouble("DurationMultiplier", 1.1);

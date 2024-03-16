@@ -102,6 +102,7 @@ public class ShadowDive extends Modifier implements Listener {
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 10);
 		config.addDefault("SlotCost", 3);
+		config.addDefault("ModifierItemMaterial", Material.DIAMOND.name());
 		config.addDefault("RequiredLightLevel", 3);
 
 		config.addDefault("EnchantCost", 10);
@@ -122,9 +123,9 @@ public class ShadowDive extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.DIAMOND);
-		this.requiredLightLevel = config.getInt("RequiredLightLevel", 3);
+		init();
 
+		this.requiredLightLevel = config.getInt("RequiredLightLevel", 3);
 		this.description = this.description.replaceAll("%level", String.valueOf(this.requiredLightLevel));
 
 		if (this.isAllowed()) task = Bukkit.getScheduler().runTaskTimer(this.getSource(), runnable, 0,5);

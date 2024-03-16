@@ -72,6 +72,7 @@ public class AutoSmelt extends Modifier implements Listener {
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 1);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.FURNACE.name());
 		config.addDefault("PercentagePerLevel", 100);
 		config.addDefault("Sound", true); //Auto-Smelt makes a sound
 		config.addDefault("Particles", true); //Auto-Smelt will create a particle effect when triggered
@@ -224,7 +225,7 @@ public class AutoSmelt extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.FURNACE);
+		init();
 
 		this.percentagePerLevel = config.getInt("PercentagePerLevel", 100);
 		this.hasSound = config.getBoolean("Sound", true);

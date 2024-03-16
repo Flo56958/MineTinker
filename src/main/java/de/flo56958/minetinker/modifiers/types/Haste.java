@@ -62,6 +62,7 @@ public class Haste extends Modifier {
 		config.addDefault("Color", "%DARK_RED%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.REDSTONE_BLOCK.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -82,7 +83,7 @@ public class Haste extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.REDSTONE_BLOCK);
+		init();
 	}
 
 	@Override

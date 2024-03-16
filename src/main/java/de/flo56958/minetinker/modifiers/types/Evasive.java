@@ -60,6 +60,7 @@ public class Evasive extends CooldownModifier implements Listener {
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 3);
+		config.addDefault("ModifierItemMaterial", Material.FEATHER.name());
 		config.addDefault("PercentPerLevel", 10);
 		config.addDefault("SneakMultiplier", 0.5);
 		config.addDefault("SprintMultiplier", 2.0);
@@ -85,7 +86,7 @@ public class Evasive extends CooldownModifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.FEATHER);
+		init();
 
 		this.percentPerLevel = config.getInt("PercentPerLevel", 5);
 		this.sneakMultiplier = config.getDouble("SneakMultiplier", 0.5);

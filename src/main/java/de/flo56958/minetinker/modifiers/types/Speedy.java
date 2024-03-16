@@ -99,6 +99,7 @@ public class Speedy extends Modifier {
 		config.addDefault("Color", "%BLUE%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.RABBIT_HIDE.name());
 		config.addDefault("SpeedPerLevel", 0.01);
 
 		config.addDefault("EnchantCost", 10);
@@ -121,7 +122,7 @@ public class Speedy extends Modifier {
 
 		this.speedPerLevel = config.getDouble("SpeedPerLevel");
 
-		init(Material.RABBIT_HIDE);
+		init();
 
 		this.description = this.description.replace("%amount", String.valueOf(this.speedPerLevel * 100));
 	}

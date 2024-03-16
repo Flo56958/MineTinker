@@ -109,6 +109,7 @@ public class Tanky extends Modifier implements Listener {
 		config.addDefault("Color", "%DARK_GRAY%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.OBSIDIAN.name());
 		config.addDefault("HealthPerLevel", 3);
 
 		config.addDefault("EnchantCost", 10);
@@ -134,7 +135,7 @@ public class Tanky extends Modifier implements Listener {
 		this.healthPerLevel = config.getInt("HealthPerLevel", 3);
 		this.allowElytra = config.getBoolean("AllowElytra", false);
 
-		init(Material.OBSIDIAN);
+		init();
 
 		this.description = this.description.replace("%amount", String.valueOf(this.healthPerLevel / 2.0));
 	}

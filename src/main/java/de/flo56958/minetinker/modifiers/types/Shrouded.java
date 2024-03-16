@@ -65,6 +65,7 @@ public class Shrouded extends Modifier implements Listener {
 		config.addDefault("MaxLevel", 2);
 		config.addDefault("RadiusPerLevel", 1.5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.DRAGON_BREATH.name());
 		config.addDefault("Duration", 120); //ticks INTEGER (20 ticks ~ 1 sec)
 		config.addDefault("DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
 
@@ -86,7 +87,7 @@ public class Shrouded extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.DRAGON_BREATH);
+		init();
 
 		this.duration = config.getInt("Duration", 120);
 		this.durationMultiplier = config.getDouble("DurationMultiplier", 1.1);

@@ -73,6 +73,7 @@ public class Poisonous extends Modifier implements Listener {
 		config.addDefault("Color", "%DARK_GREEN%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.ROTTEN_FLESH.name());
 		config.addDefault("Duration", 120); //ticks INTEGER (20 ticks ~ 1 sec)
 		config.addDefault("DurationMultiplier", 1.1); //Duration * (Multiplier^Level) DOUBLE
 		config.addDefault("EffectAmplifier", 1); //per Level (Level 1 = 0, Level 2 = 1, Level 3 = 2, ...) INTEGER
@@ -88,7 +89,7 @@ public class Poisonous extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.ROTTEN_FLESH);
+		init();
 
 		this.duration = config.getInt("Duration", 120);
 		this.durationMultiplier = config.getDouble("DurationMultiplier", 1.1);

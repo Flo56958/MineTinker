@@ -64,6 +64,7 @@ public class Reinforced extends Modifier {
 		config.addDefault("Color", "%DARK_GRAY%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.OBSIDIAN.name());
 		config.addDefault("ApplyUnbreakableOnMaxLevel", false);
 		config.addDefault("HideUnbreakableFlag", true);
 
@@ -89,7 +90,7 @@ public class Reinforced extends Modifier {
 		this.applyUnbreakableOnMaxLevel = config.getBoolean("ApplyUnbreakableOnMaxLevel", false);
 		this.hideUnbreakableFlag = config.getBoolean("HideUnbreakableFlag", true);
 
-		init(Material.OBSIDIAN);
+		init();
 	}
 
 	@Override

@@ -57,6 +57,7 @@ public class SpidersBane extends Modifier {
 		config.addDefault("Color", "%RED%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.FERMENTED_SPIDER_EYE.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -77,7 +78,7 @@ public class SpidersBane extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.FERMENTED_SPIDER_EYE);
+		init();
 	}
 
 	@Override

@@ -62,6 +62,7 @@ public class Sunblazer extends Modifier implements Listener {
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.DAYLIGHT_DETECTOR.name());
 		config.addDefault("DamageMultiplierPerLevel", 0.1);
 
 		config.addDefault("EnchantCost", 10);
@@ -83,9 +84,9 @@ public class Sunblazer extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.DAYLIGHT_DETECTOR);
-		this.damageMultiplierPerLevel = config.getDouble("DamageMultiplierPerLevel", 0.1);
+		init();
 
+		this.damageMultiplierPerLevel = config.getDouble("DamageMultiplierPerLevel", 0.1);
 		this.description = this.description
 				.replaceAll("%amountmin", String.format("%.2f", (Math.pow(this.damageMultiplierPerLevel + 1.0, 1) - 1) * 100))
 				.replaceAll("%amountmax", String.format("%.2f", (Math.pow(this.damageMultiplierPerLevel + 1.0, this.getMaxLvl()) - 1) * 100));

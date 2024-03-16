@@ -58,6 +58,7 @@ public class Lifesteal extends Modifier implements Listener {
 		config.addDefault("Color", "%DARK_RED%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.NETHERRACK.name());
 		config.addDefault("PercentToTrigger", 50);
 		config.addDefault("PercentOfDamagePerLevel", 10);
 
@@ -80,7 +81,7 @@ public class Lifesteal extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.NETHERRACK);
+		init();
 
 		this.percentPerLevel = config.getInt("PercentOfDamagePerLevel", 10);
 		this.percentToTrigger = config.getInt("PercentToTrigger", 50);

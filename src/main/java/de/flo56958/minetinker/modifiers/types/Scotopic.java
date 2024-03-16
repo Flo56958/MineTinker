@@ -65,6 +65,7 @@ public class Scotopic extends CooldownModifier implements Listener {
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 2);
+		config.addDefault("ModifierItemMaterial", Material.FERMENTED_SPIDER_EYE.name());
 		config.addDefault("RequiredLightLevel", 6);
 		config.addDefault("CooldownInSeconds", 120.0); //in seconds
 		config.addDefault("DurationPerLevel", 100); //in ticks
@@ -89,7 +90,8 @@ public class Scotopic extends CooldownModifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.FERMENTED_SPIDER_EYE);
+		init();
+
 		this.requiredLightLevel = config.getInt("RequiredLightLevel", 6);
 		this.durationPerLevel = config.getInt("DurationPerLevel", 100);
 		this.cooldownInSeconds = config.getDouble("CooldownInSeconds", 120.0);

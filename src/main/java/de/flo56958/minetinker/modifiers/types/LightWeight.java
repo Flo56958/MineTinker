@@ -58,6 +58,7 @@ public class LightWeight extends Modifier {
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 4);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.FEATHER.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", true);
@@ -68,7 +69,7 @@ public class LightWeight extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.FEATHER);
+		init();
 	}
 
 	@Override

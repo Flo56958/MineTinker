@@ -66,6 +66,7 @@ public class WildHunt extends Modifier implements Listener {
 		config.addDefault("Color", "%GOLD%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 2);
+		config.addDefault("ModifierItemMaterial", Material.BONE.name());
 		config.addDefault("PercentagePerLevel", 10);
 
 		config.addDefault("EnchantCost", 25);
@@ -105,7 +106,7 @@ public class WildHunt extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.BONE);
+		init();
 
 		this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
 		this.description = this.description.replace("%chance", String.valueOf(this.percentagePerLevel));

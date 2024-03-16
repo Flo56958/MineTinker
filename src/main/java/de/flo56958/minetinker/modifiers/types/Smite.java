@@ -57,6 +57,7 @@ public class Smite extends Modifier {
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.BONE.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -77,7 +78,7 @@ public class Smite extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.BONE);
+		init();
 	}
 
 	@Override

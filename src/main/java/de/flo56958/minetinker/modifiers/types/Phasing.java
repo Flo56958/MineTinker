@@ -69,6 +69,7 @@ public class Phasing extends Modifier implements Listener {
 		config.addDefault("Color", "%RED%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.CHORUS_FRUIT.name());
 
 		config.addDefault("EnchantCost", 15);
 		config.addDefault("Enchantable", true);
@@ -79,7 +80,7 @@ public class Phasing extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.CHORUS_FRUIT);
+		init();
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)

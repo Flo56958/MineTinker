@@ -74,6 +74,7 @@ public class MultiShot extends Modifier implements Listener {
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.ARROW.name());
 		config.addDefault("ArrowSpread", 5.0);
 		config.addDefault("NeedsArrows", true);
 		config.addDefault("UseEnchantOnCrossbow", false);
@@ -97,7 +98,7 @@ public class MultiShot extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.ARROW);
+		init();
 
 		this.spread = config.getDouble("ArrowSpread", 5.0);
 		this.needsArrows = config.getBoolean("NeedsArrows", true);
@@ -162,7 +163,7 @@ public class MultiShot extends Modifier implements Listener {
 		final int amount = (ToolType.CROSSBOW.contains(tool.getType())) ? 1 : 2;
 
 		for (int i = 1; i <= modLevel; i++) {
-			if (!player.getGameMode().equals(GameMode.CREATIVE)) {
+			if (!player.getGameMode().equals(GameMode.CREATIVE) && arrow.getPickupStatus() != AbstractArrow.PickupStatus.CREATIVE_ONLY) {
 				boolean hasArrow = true;
 				if (needsArrows) {
 					hasArrow = false;

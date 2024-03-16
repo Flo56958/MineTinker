@@ -68,6 +68,7 @@ public class SelfRepair extends Modifier implements Listener {
 		config.addDefault("Color", "%GREEN%");
 		config.addDefault("MaxLevel", 10);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.MOSSY_COBBLESTONE.name());
 		config.addDefault("PercentagePerLevel", 10); //100% at Level 10 (not necessary for unbreakable tool in most cases)
 		config.addDefault("HealthRepair", 3); //How much durability should be repaired per trigger
 		config.addDefault("UseMending", false); //Disables the plugins own system and instead uses the vanilla Mending enchantment
@@ -81,7 +82,7 @@ public class SelfRepair extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.MOSSY_COBBLESTONE);
+		init();
 
 		this.percentagePerLevel = config.getInt("PercentagePerLevel", 10);
 		this.healthRepair = config.getInt("HealthRepair", 3);

@@ -78,6 +78,7 @@ public class Farming extends Modifier implements Listener {
 		config.addDefault("Color", "%GREEN%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.WHEAT.name());
 
 		config.addDefault("EnchantCost", 5);
 		config.addDefault("Enchantable", true);
@@ -92,7 +93,7 @@ public class Farming extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.WHEAT);
+		init();
 
 		this.boneMealDurabilityCost = config.getInt("BoneMealDurabilityCost", 10);
 		this.boneMealDurabilityCostReductionPerLevel = config.getInt("BoneMealDurabilityCostReductionPerLevel", 2);

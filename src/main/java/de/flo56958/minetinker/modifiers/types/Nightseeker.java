@@ -61,6 +61,7 @@ public class Nightseeker extends Modifier implements Listener {
 		config.addDefault("Color", "%DARK_GRAY%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.DAYLIGHT_DETECTOR.name());
 		config.addDefault("DamageMultiplierPerLevel", 0.1);
 
 		config.addDefault("EnchantCost", 10);
@@ -82,7 +83,7 @@ public class Nightseeker extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.DAYLIGHT_DETECTOR);
+		init();
 		this.damageMultiplierPerLevel = config.getDouble("DamageMultiplierPerLevel", 0.1);
 
 		this.description = this.description

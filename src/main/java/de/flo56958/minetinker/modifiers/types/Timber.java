@@ -70,6 +70,7 @@ public class Timber extends Modifier implements Listener {
 		config.addDefault("Allowed", true);
 		config.addDefault("MaxLevel", 2);
 		config.addDefault("SlotCost", 2);
+		config.addDefault("ModifierItemMaterial", Material.EMERALD.name());
 		config.addDefault("Color", "%GREEN%");
 		config.addDefault("MaximumBlocksPerSwing", 250); //-1 to disable it
 
@@ -93,7 +94,8 @@ public class Timber extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.EMERALD);
+		init();
+
 		this.maxBlocks = config.getInt("MaximumBlocksPerSwing", 2000);
 		this.maxBlocks = (this.maxBlocks == -1) ? Integer.MAX_VALUE : this.maxBlocks;
 

@@ -57,6 +57,7 @@ public class Undead extends Modifier implements Listener {
 		config.addDefault("Color", "%YELLOW%");
 		config.addDefault("MaxLevel", 1);
 		config.addDefault("SlotCost", 5);
+		config.addDefault("ModifierItemMaterial", Material.LIME_DYE.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", true);
@@ -68,7 +69,7 @@ public class Undead extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.LIME_DYE);
+		init();
 
 		this.disableAttacks = config.getBoolean("DisableAttacks", true);
 	}

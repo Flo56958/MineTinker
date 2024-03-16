@@ -72,6 +72,7 @@ public class Ender extends Modifier implements Listener {
 		config.addDefault("Color", "%DARK_GREEN%");
 		config.addDefault("MaxLevel", 2);
 		config.addDefault("SlotCost", 2);
+		config.addDefault("ModifierItemMaterial", Material.ENDER_EYE.name());
 		config.addDefault("Sound", true); // Enderman-Teleport-Sound
 		config.addDefault("Particles", true);
 		config.addDefault("GiveNauseaOnUse", true);
@@ -98,7 +99,7 @@ public class Ender extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.ENDER_EYE);
+		init();
 
 		this.hasSound = config.getBoolean("Sound", true);
 		this.hasParticles = config.getBoolean("Particles", true);

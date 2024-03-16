@@ -57,6 +57,7 @@ public class Vigilant extends Modifier implements Listener {
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.GOLDEN_APPLE.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", true);
@@ -68,7 +69,7 @@ public class Vigilant extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.GOLDEN_APPLE);
+		init();
 
 		this.percentile = config.getDouble("AmountDamageAsShield", 0.33);
 

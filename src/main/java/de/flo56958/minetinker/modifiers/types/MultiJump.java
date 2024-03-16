@@ -70,6 +70,7 @@ public class MultiJump extends Modifier implements Listener {
 		config.addDefault("Color", "%DARK_GREEN%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 3);
+		config.addDefault("ModifierItemMaterial", Material.RABBIT_FOOT.name());
 
 		config.addDefault("EnchantCost", 50);
 		config.addDefault("Enchantable", false);
@@ -90,7 +91,7 @@ public class MultiJump extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.RABBIT_FOOT);
+		init();
 
 		//Reset the used Datastructures
 		//This can enable the player to jump more often than they are eligible to but reload() should not be called

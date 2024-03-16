@@ -73,6 +73,7 @@ public class Directing extends Modifier implements Listener {
 		config.addDefault("MinimumLevelToGetXP", 1); //Modifier-Level to give Player XP
 		config.addDefault("WorkInPVP", true);
 		config.addDefault("Color", "%GRAY%");
+		config.addDefault("ModifierItemMaterial", Material.COMPASS.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -93,7 +94,7 @@ public class Directing extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.COMPASS);
+		init();
 
 		this.workInPVP = config.getBoolean("WorkInPVP", true);
 		this.workOnXP = config.getBoolean("WorksOnXP", true);

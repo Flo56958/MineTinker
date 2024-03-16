@@ -58,6 +58,7 @@ public class Protecting extends Modifier {
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 4);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.OBSIDIAN.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -78,7 +79,7 @@ public class Protecting extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.OBSIDIAN);
+		init();
 	}
 
 	@Override

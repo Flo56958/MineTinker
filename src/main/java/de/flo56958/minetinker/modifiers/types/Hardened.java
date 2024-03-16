@@ -140,6 +140,7 @@ public class Hardened extends Modifier implements Listener {
 		config.addDefault("Color", "%DARK_GRAY%");
 		config.addDefault("MaxLevel", 5);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.IRON_BLOCK.name());
 		config.addDefault("ArmorPerLevel", 1.0);
 		config.addDefault("ToughnessPerLevel", 0.5);
 
@@ -164,7 +165,7 @@ public class Hardened extends Modifier implements Listener {
 		this.armorPerLevel = config.getDouble("ArmorPerLevel", 1.0);
 		this.toughnessPerLevel = config.getDouble("ToughnessPerLevel", 0.5);
 
-		init(Material.IRON_BLOCK);
+		init();
 
 		this.description = this.description.replaceAll("%aamount", String.valueOf(this.armorPerLevel))
 				.replaceAll("%tamount", String.valueOf(this.toughnessPerLevel));

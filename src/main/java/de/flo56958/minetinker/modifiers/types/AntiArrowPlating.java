@@ -57,6 +57,7 @@ public class AntiArrowPlating extends Modifier {
 		config.addDefault("Color", "%WHITE%");
 		config.addDefault("MaxLevel", 4);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.IRON_BLOCK.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -79,7 +80,7 @@ public class AntiArrowPlating extends Modifier {
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
 		// Initialize modifier
-		init(Material.IRON_BLOCK);
+		init();
 	}
 
 	@Override

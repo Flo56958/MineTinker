@@ -72,6 +72,7 @@ public class Propelling extends CooldownModifier implements Listener {
 		config.addDefault("Color", "%GOLD%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.FIREWORK_STAR.name());
 		config.addDefault("CooldownInSeconds", 5.0);
 		config.addDefault("Elytra.DurabilityLoss", 10);
 		config.addDefault("Elytra.SpeedPerLevel", 0.15);
@@ -89,7 +90,7 @@ public class Propelling extends CooldownModifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.FIREWORK_STAR);
+		init();
 
 		this.durabilityLoss = config.getInt("Elytra.DurabilityLoss", 10);
 		this.speedPerLevel = config.getDouble("Elytra.SpeedPerLevel", 0.05);

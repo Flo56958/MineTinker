@@ -65,6 +65,7 @@ public class Berserk extends Modifier implements Listener {
 		config.addDefault("Color", "%DARK_RED%");
 		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.REDSTONE.name());
 		config.addDefault("BoostTimeInTicks", 200);
 		config.addDefault("TriggerPercent", 20);
 
@@ -89,7 +90,7 @@ public class Berserk extends Modifier implements Listener {
 		this.boostTime = config.getInt("BoostTimeInTicks");
 		this.trigger = config.getInt("TriggerPercent");
 
-		init(Material.REDSTONE);
+		init();
 
 		this.description = this.description
 				.replace("%duration", String.valueOf(this.boostTime / 20))

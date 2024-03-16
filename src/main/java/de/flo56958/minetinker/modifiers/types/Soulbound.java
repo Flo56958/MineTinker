@@ -67,6 +67,7 @@ public class Soulbound extends Modifier implements Listener {
 		config.addDefault("Color", "%GRAY%");
 		config.addDefault("MaxLevel", 1);
 		config.addDefault("SlotCost", 2);
+		config.addDefault("ModifierItemMaterial", Material.BEACON.name());
 		config.addDefault("PercentagePerLevel", 100);
 		config.addDefault("DecrementModLevelOnUse", false);
 		config.addDefault("ToolDropable", true);
@@ -90,7 +91,7 @@ public class Soulbound extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.BEACON);
+		init();
 
 		this.toolDroppable = config.getBoolean("ToolDropable", true);
 		this.decrementModLevelOnUse = config.getBoolean("DecrementModLevelOnUse", false);

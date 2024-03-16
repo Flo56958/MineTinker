@@ -56,6 +56,7 @@ public abstract class Modifier {
 		this.fileName = getKey().replace("'", "") + ".yml";
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, this.fileName);
 		this.source = source;
+		this.name = getKey(); // default name is the key
 	}
 
 	final boolean checkAndAdd(final Player player, final ItemStack tool, final boolean isCommand,
@@ -193,20 +194,26 @@ public abstract class Modifier {
 	/**
 	 * changes the core settings of the Modifier (like a secondary constructor)
 	 */
-	protected final void init(@NotNull final Material m) {
-		FileConfiguration config = getConfig();
+	protected final void init() {
+		final FileConfiguration config = getConfig();
 
 		try {
 			this.color = ChatWriter.getColor(Objects.requireNonNull(config.getString("Color", "%WHITE%"),
 					"Config has no Color-Value!"));
 		} catch (IllegalArgumentException | ArrayIndexOutOfBoundsException ignored) {
 			this.color = ChatColor.WHITE;
-			ChatWriter.logError("Illegal Color detected for Modifier " + this.getKey());
+			ChatWriter.logError("Illegal Color detected for Modifier " + this.name);
 		}
 
 		this.maxLvl = config.getInt("MaxLevel");
 		this.slotCost = config.getInt("SlotCost", 1);
 		this.minimumLevelRequirement = config.getInt("MinimumToolLevelRequirement", 1);
+
+		Material m = Material.getMaterial(config.getString("ModifierItemMaterial", "BEDROCK"));
+		if (m == null) {
+			ChatWriter.logError("Illegal Material detected for Modifier " + this.name);
+			m = Material.BEDROCK;
+		}
 
 		if (source.equals(MineTinker.getPlugin())) { //normal Languagesystem-Integration
 			String langStart = "Modifier." + getKey();

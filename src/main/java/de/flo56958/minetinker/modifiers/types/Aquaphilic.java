@@ -60,6 +60,7 @@ public class Aquaphilic extends Modifier {
 		config.addDefault("Color", "%AQUA%");
 		config.addDefault("MaxLevel", 3); //higher will have no effect on depth strider
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.HEART_OF_THE_SEA.name());
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -80,7 +81,7 @@ public class Aquaphilic extends Modifier {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.HEART_OF_THE_SEA);
+		init();
 	}
 
 	@Override

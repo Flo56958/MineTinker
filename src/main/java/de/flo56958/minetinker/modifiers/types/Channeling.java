@@ -67,6 +67,7 @@ public class Channeling extends Modifier implements Listener {
 		config.addDefault("Color", "%DARK_AQUA%");
 		config.addDefault("MaxLevel", 1);
 		config.addDefault("SlotCost", 1);
+		config.addDefault("ModifierItemMaterial", Material.PRISMARINE_SHARD.name());
 
 		config.addDefault("EnchantCost", 50);
 		config.addDefault("Enchantable", false);
@@ -90,7 +91,7 @@ public class Channeling extends Modifier implements Listener {
 		ConfigurationManager.saveConfig(config);
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
-		init(Material.PRISMARINE_SHARD);
+		init();
 
 		worksOnlyInStorms = config.getBoolean("WorksOnlyInStorms", true);
 		chancePerLevel = config.getInt("ChancePerLevel", 100);
