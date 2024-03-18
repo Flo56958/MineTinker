@@ -6,17 +6,22 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class Vigilant extends Modifier implements Listener {
 
@@ -87,7 +92,17 @@ public class Vigilant extends Modifier implements Listener {
 		final int level = modManager.getModLevel(chestplate, this);
 
 		final double absorption = damage * this.percentile * level;
-		//Add absorption
+
+		// Make sure the player can receive the absorption
+		final ItemMeta meta = chestplate.getItemMeta();
+		if (meta == null) return;
+		meta.removeAttributeModifier(Attribute.GENERIC_MAX_ABSORPTION); // Overwrite the old values
+		meta.addAttributeModifier(Attribute.GENERIC_MAX_ABSORPTION, new AttributeModifier(UUID.randomUUID(),
+				"generic.max_absorption", absorption,
+				AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
+		chestplate.setItemMeta(meta);
+
+		// Add absorption
 		player.setAbsorptionAmount(absorption);
 	}
 
