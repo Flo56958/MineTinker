@@ -449,7 +449,7 @@ public class ModManager {
 	}
 
 	public boolean addMod(final Player player, @NotNull final ItemStack item, @NotNull final Modifier modifier, final boolean fromCommand, final boolean fromRandom, final boolean silent, final boolean modifySlotCount) {
-		if (!modifier.getKey().equals(ExtraModifier.instance().getKey())
+		if (!modifier.equals(ExtraModifier.instance())
 				&& !modifier.checkAndAdd(player, item, fromCommand, fromRandom, silent, modifySlotCount))
 				return false;
 
@@ -459,17 +459,15 @@ public class ModManager {
 		ItemMeta meta = item.getItemMeta();
 		if (meta == null) return true;
 
-		if (config.getBoolean("HideEnchants", true)) {
+		if (config.getBoolean("HideEnchants", true))
 			meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-		} else {
+		else
 			meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-		}
 
-		if (config.getBoolean("HideAttributes", true)) {
+		if (config.getBoolean("HideAttributes", true))
 			meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-		} else {
+		else
 			meta.removeItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-		}
 
 		item.setItemMeta(meta);
 		return true;

@@ -111,8 +111,8 @@ public class MultiJump extends Modifier implements Listener {
 	}
 
 	private void disableFlight(@NotNull final Player p) {
-		if (allowFlight.remove(p) != null)
-			p.setAllowFlight(false);
+		if (allowFlight.remove(p) == null) return;
+		p.setAllowFlight(false);
 	}
 
 	@EventHandler
@@ -145,13 +145,9 @@ public class MultiJump extends Modifier implements Listener {
 		final int level = modManager.getModLevel(boots, this);
 		if (level == 0) return;
 
-		AtomicInteger jumpcharge = this.jumpcharge.get(e.getPlayer());
-		if (jumpcharge == null) {
-			jumpcharge = new AtomicInteger(0);
-			this.jumpcharge.put(e.getPlayer(), jumpcharge);
-		}
+        final AtomicInteger jumpcharge = this.jumpcharge.computeIfAbsent(e.getPlayer(), k -> new AtomicInteger(0));
 
-		//Check if the player is on the ground for a recharge
+        //Check if the player is on the ground for a recharge
 		final Block below = p.getLocation().getWorld().getBlockAt(p.getLocation().add(0, -0.1, 0));
 		if (!below.isPassable()) {
 			if (jumpcharge.get() > 0) {
@@ -182,6 +178,7 @@ public class MultiJump extends Modifier implements Listener {
 	public void onFly(@NotNull final PlayerToggleFlightEvent e) {
 		final Player p = e.getPlayer();
 		if (p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR) return;
+		if (!p.hasPermission(getUsePermission())) return;
 
 		// Player can normally fly -> Multijump not needed
 		if (p.getAllowFlight() && !allowFlight.containsKey(p)) return;
@@ -196,25 +193,19 @@ public class MultiJump extends Modifier implements Listener {
 		final int level = modManager.getModLevel(boots, this);
 		if (level == 0) return;
 
-		if (p.hasPermission(getUsePermission())) {
-			AtomicInteger jumpcharge = this.jumpcharge.get(e.getPlayer());
-			if (jumpcharge == null) {
-				jumpcharge = new AtomicInteger(0);
-				this.jumpcharge.put(e.getPlayer(), jumpcharge);
-			}
+        final AtomicInteger jumpcharge = this.jumpcharge.computeIfAbsent(e.getPlayer(), k -> new AtomicInteger(0));
 
-			//check if the player has enough jumps remaining
-			if (jumpcharge.get() < level) {
-				e.setCancelled(true);
-				jumpcharge.incrementAndGet();
-				//Reset the upwards Motion as if it was a real "new" jump
-				p.setVelocity(p.getVelocity().setY(0.42F));
-			}
+        //check if the player has enough jumps remaining
+        if (jumpcharge.get() < level) {
+            e.setCancelled(true);
+            jumpcharge.incrementAndGet();
+            //Reset the upwards Motion as if it was a real "new" jump
+            p.setVelocity(p.getVelocity().setY(0.42F));
+        }
 
-			//This will remove flight if the player uses a fly command
-			disableFlight(p);
-		}
-	}
+        //This will remove flight if the player uses a fly command
+        disableFlight(p);
+    }
 
 	//To avoid that you can have flight without the boots
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)

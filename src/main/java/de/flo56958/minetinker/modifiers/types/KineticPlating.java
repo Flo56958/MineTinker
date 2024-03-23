@@ -94,6 +94,7 @@ public class KineticPlating extends Modifier implements Listener {
 		if (!player.hasPermission(getUsePermission())) return;
 
 		final ItemStack elytra = player.getInventory().getChestplate();
+		if (!modManager.isArmorViable(elytra)) return;
 		if (!modManager.hasMod(elytra, this)) return;
 
 		final int level = modManager.getModLevel(elytra, this);
