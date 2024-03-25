@@ -199,7 +199,7 @@ public class MultiShot extends Modifier implements Listener {
 				arr.setShooter(player);
 				arr.setShotFromCrossbow(arrow.isShotFromCrossbow());
 
-				if (player.getGameMode().equals(GameMode.CREATIVE))
+				if (player.getGameMode().equals(GameMode.CREATIVE) || arrow.getPickupStatus() == AbstractArrow.PickupStatus.CREATIVE_ONLY)
 					arr.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
 
 				arr.setCritical(arrow.isCritical());
@@ -231,8 +231,7 @@ public class MultiShot extends Modifier implements Listener {
 	}
 
 	private void returnArrow(Player player, Arrow arr) {
-		if (needsArrows && player.getGameMode() != GameMode.CREATIVE
-				&& arr.getPickupStatus() != AbstractArrow.PickupStatus.CREATIVE_ONLY) {
+		if (needsArrows && (arr.getPickupStatus() != AbstractArrow.PickupStatus.CREATIVE_ONLY)) {
 			if (!player.getInventory().addItem(new ItemStack(Material.ARROW, 1)).isEmpty()) { //adds items to (full) inventory
 				player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.ARROW, 1)); //drops item when inventory is full
 			} // no else as it gets added in if
