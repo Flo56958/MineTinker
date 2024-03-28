@@ -13,6 +13,7 @@ import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
@@ -274,7 +275,7 @@ public class Power extends Modifier implements Listener {
 				|| block.getType() == Material.DIRT || block.getType() == Material.DIRT_PATH)) return;
 
 		final Block upperBlock = player.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
-		if (!upperBlock.getType().isAir())
+		if (!upperBlock.getType().isAir() && !Tag.MAINTAINS_FARMLAND.isTagged(upperBlock.getType()))
 			//Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
 			return;
 
@@ -331,7 +332,7 @@ public class Power extends Modifier implements Listener {
 
 		final Block block = event.getEvent().getClickedBlock();
 		if (!(event.getEvent().getAction() == Action.RIGHT_CLICK_BLOCK && block != null
-				&& (Lists.getWoodLogs().contains(block.getType()) || Lists.getWoodWood().contains(block.getType()))))
+				&& (Tag.LOGS.isTagged(block.getType()) && !block.getType().name().contains("STRIPPED_"))))
 			return;
 
 		if (canUsePower(player, tool) && events.containsKey(block.getLocation())) {

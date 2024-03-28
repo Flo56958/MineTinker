@@ -62,7 +62,7 @@ public class BuildersWandListener implements Listener {
 		config.addDefault(recipe + ".Bottom", "S  ");
 		config.addDefault(recipe + ".Materials.S", "STICK");
 		StringBuilder mats = new StringBuilder();
-		for (final Material mat : Lists.getWoodPlanks()) {
+		for (final Material mat : Tag.PLANKS.getValues()) {
 			mats.append(mat.name()).append(",");
 		}
 		config.addDefault(recipe + ".Materials.W", mats.substring(0, mats.length() - 1));

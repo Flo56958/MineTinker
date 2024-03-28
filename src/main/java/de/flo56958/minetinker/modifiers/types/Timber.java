@@ -2,17 +2,13 @@ package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTBlockBreakEvent;
-import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -85,7 +81,7 @@ public class Timber extends Modifier implements Listener {
 
 		Map<String, String> recipeMaterials = new HashMap<>();
 		StringBuilder mats = new StringBuilder();
-		Lists.getWoodWood().stream().map(Material::name).forEach(mat -> mats.append(mat).append(","));
+		Tag.LOGS.getValues().stream().map(Material::name).forEach(mat -> mats.append(mat).append(","));
 		recipeMaterials.put("L", mats.substring(0, mats.length() - 1));
 		recipeMaterials.put("E", Material.EMERALD.name());
 
@@ -121,11 +117,9 @@ public class Timber extends Modifier implements Listener {
 		if (!modManager.hasMod(tool, this)) return;
 		if (!player.hasPermission(getUsePermission())) return;
 
-		final HashSet<Material> allowed = new HashSet<>();
-		allowed.addAll(Lists.getWoodLogs());
-		allowed.addAll(Lists.getWoodWood());
+        final HashSet<Material> allowed = new HashSet<>(Tag.LOGS.getValues());
 
-		if (ToolType.SHEARS.contains(tool.getType()) && Lists.getWoodLeaves().contains(block.getType())) {
+		if (ToolType.SHEARS.contains(tool.getType()) && Tag.LEAVES.isTagged(block.getType())) {
 			allowed.clear();
 			allowed.add(block.getType());
 		}
@@ -213,7 +207,7 @@ public class Timber extends Modifier implements Listener {
 				hasGround = true;
 				groundBlocks.add(block.getRelative(BlockFace.DOWN));
 			}
-			if (!hasLeaves && Lists.getWoodLeaves().contains(block.getRelative(BlockFace.UP).getType()))
+			if (!hasLeaves && Tag.LEAVES.isTagged(block.getRelative(BlockFace.UP).getType()))
 				hasLeaves = true;
 
 			for (int dx = -1; dx <= 1; dx++) {

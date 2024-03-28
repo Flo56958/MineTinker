@@ -11,6 +11,7 @@ import de.flo56958.minetinker.utils.Updater;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -107,7 +108,7 @@ public class PlayerListener implements Listener {
 		//check if correct material is used
 		switch (beginning) {
 			case "shield", "wooden" -> {
-				if (Lists.getWoodPlanks().contains(repair.getType())) {
+				if (Tag.PLANKS.isTagged(repair.getType())) {
 					eligible = true;
 				}
 			}

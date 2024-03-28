@@ -1,6 +1,7 @@
 package de.flo56958.minetinker.data;
 
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,8 +39,7 @@ public enum ToolType {
 	private static final EnumMap<Material, ToolType> materialMap = new EnumMap<>(Material.class);
 
 	static {
-		tools.put(ToolType.AXE, new HashSet<>(Arrays.asList(Material.WOODEN_AXE, Material.STONE_AXE, Material.IRON_AXE,
-				Material.GOLDEN_AXE, Material.DIAMOND_AXE, Material.NETHERITE_AXE)));
+		tools.put(ToolType.AXE, new HashSet<>(Tag.ITEMS_AXES.getValues()));
 		tools.put(ToolType.BOOTS, new HashSet<>(Arrays.asList(Material.LEATHER_BOOTS, Material.CHAINMAIL_BOOTS,
 				Material.IRON_BOOTS, Material.GOLDEN_BOOTS, Material.DIAMOND_BOOTS, Material.NETHERITE_BOOTS)));
 		tools.put(ToolType.BOW, new HashSet<>(Collections.singletonList(Material.BOW)));
@@ -49,18 +49,14 @@ public enum ToolType {
 		tools.put(ToolType.ELYTRA, new HashSet<>(Collections.singletonList(Material.ELYTRA)));
 		tools.put(ToolType.HELMET, new HashSet<>(Arrays.asList(Material.LEATHER_HELMET, Material.CHAINMAIL_HELMET,
 				Material.IRON_HELMET, Material.GOLDEN_HELMET, Material.DIAMOND_HELMET, Material.TURTLE_HELMET, Material.NETHERITE_HELMET)));
-		tools.put(ToolType.HOE, new HashSet<>(Arrays.asList(Material.WOODEN_HOE, Material.STONE_HOE, Material.IRON_HOE,
-				Material.GOLDEN_HOE, Material.DIAMOND_HOE, Material.NETHERITE_HOE)));
+		tools.put(ToolType.HOE, new HashSet<>(Tag.ITEMS_HOES.getValues()));
 		tools.put(ToolType.LEGGINGS, new HashSet<>(Arrays.asList(Material.LEATHER_LEGGINGS, Material.CHAINMAIL_LEGGINGS,
 				Material.IRON_LEGGINGS, Material.GOLDEN_LEGGINGS, Material.DIAMOND_LEGGINGS, Material.NETHERITE_LEGGINGS)));
-		tools.put(ToolType.PICKAXE, new HashSet<>(Arrays.asList(Material.WOODEN_PICKAXE, Material.STONE_PICKAXE,
-				Material.IRON_PICKAXE, Material.GOLDEN_PICKAXE, Material.DIAMOND_PICKAXE, Material.NETHERITE_PICKAXE)));
+		tools.put(ToolType.PICKAXE, new HashSet<>(Tag.ITEMS_PICKAXES.getValues()));
 		tools.put(ToolType.FISHINGROD, new HashSet<>(Collections.singletonList(Material.FISHING_ROD)));
 		tools.put(ToolType.SHIELD, new HashSet<>(Collections.singletonList(Material.SHIELD)));
-		tools.put(ToolType.SHOVEL, new HashSet<>(Arrays.asList(Material.WOODEN_SHOVEL, Material.STONE_SHOVEL,
-				Material.IRON_SHOVEL, Material.GOLDEN_SHOVEL, Material.DIAMOND_SHOVEL, Material.NETHERITE_SHOVEL)));
-		tools.put(ToolType.SWORD, new HashSet<>(Arrays.asList(Material.WOODEN_SWORD, Material.STONE_SWORD, Material.IRON_SWORD,
-				Material.GOLDEN_SWORD, Material.DIAMOND_SWORD, Material.NETHERITE_SWORD)));
+		tools.put(ToolType.SHOVEL, new HashSet<>(Tag.ITEMS_SHOVELS.getValues()));
+		tools.put(ToolType.SWORD, new HashSet<>(Tag.ITEMS_SWORDS.getValues()));
 		tools.put(ToolType.TRIDENT, new HashSet<>(Collections.singletonList(Material.TRIDENT)));
 		tools.put(ToolType.OTHER, new HashSet<>(Arrays.asList(Material.FLINT_AND_STEEL, Material.CARROT_ON_A_STICK)));
 		tools.put(ToolType.SHEARS, new HashSet<>(Collections.singletonList(Material.SHEARS)));

@@ -59,7 +59,7 @@ public class EntityListener implements Listener {
 //        }
 
 		if (!modManager.isToolViable(tool)) return;
-		if (!modManager.durabilityCheck(event, player, tool)) return;
+		if (!modManager.durabilityCheck(event, player, tool, true)) return;
 
 		Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(player, tool, event.getEntity(), event));
 
@@ -198,8 +198,7 @@ public class EntityListener implements Listener {
 		}
 
 		if (!modManager.isToolViable(tool)) return;
-
-		if (!modManager.durabilityCheck(event, player, tool)) return;
+		if (!modManager.durabilityCheck(event, player, tool, true)) return;
 
 		if (!ToolType.FISHINGROD.contains(tool.getType())) // Disable Exp for spam clicking
 			modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerArrowShot"), true);
