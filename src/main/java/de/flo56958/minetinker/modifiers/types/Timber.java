@@ -21,6 +21,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.io.File;
 import java.util.*;
@@ -118,6 +119,7 @@ public class Timber extends Modifier implements Listener {
 		if (!player.hasPermission(getUsePermission())) return;
 
         final HashSet<Material> allowed = new HashSet<>(Tag.LOGS.getValues());
+		allowed.add(Material.MANGROVE_ROOTS); // Not in the material tag
 
 		if (ToolType.SHEARS.contains(tool.getType()) && Tag.LEAVES.isTagged(block.getType())) {
 			allowed.clear();
@@ -197,7 +199,7 @@ public class Timber extends Modifier implements Listener {
 
 	private boolean parseTree(@NotNull Block block,
 									 @NotNull final HashSet<Block> trunkBlocks, @NotNull final List<Block> groundBlocks,
-							  		 @NotNull final HashSet<Material> allowed) {
+							  		 @NotNull @Unmodifiable final HashSet<Material> allowed) {
 		final Stack<Block> stack = new Stack<>();
 		boolean hasGround = false, hasLeaves = false;
 		stack.push(block);

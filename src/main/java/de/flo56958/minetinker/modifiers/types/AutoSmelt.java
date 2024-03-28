@@ -8,10 +8,7 @@ import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -95,6 +92,9 @@ public class AutoSmelt extends Modifier implements Listener {
 		config.addDefault("Recipe.Materials", recipeMaterials);
 
 		conversions.clear();
+		Tag.LOGS_THAT_BURN.getValues().forEach(m -> conversions.put(m, new Triplet(Material.CHARCOAL, 1)));
+		Tag.LEAVES.getValues().forEach(m -> conversions.put(m, new Triplet(Material.STICK, 1)));
+
 		conversions.put(Material.STONE, new Triplet(Material.STONE, 1));
 		conversions.put(Material.COBBLESTONE, new Triplet(Material.STONE, 1));
 		conversions.put(Material.SAND, new Triplet(Material.GLASS, 1));
@@ -119,36 +119,6 @@ public class AutoSmelt extends Modifier implements Listener {
 		conversions.put(Material.GREEN_TERRACOTTA, new Triplet(Material.GREEN_GLAZED_TERRACOTTA, 1));
 		conversions.put(Material.RED_TERRACOTTA, new Triplet(Material.RED_GLAZED_TERRACOTTA, 1));
 		conversions.put(Material.BLACK_TERRACOTTA, new Triplet(Material.BLACK_GLAZED_TERRACOTTA, 1));
-		conversions.put(Material.ACACIA_LOG, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.BIRCH_LOG, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.DARK_OAK_LOG, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.JUNGLE_LOG, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.OAK_LOG, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.SPRUCE_LOG, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.STRIPPED_ACACIA_LOG, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.STRIPPED_BIRCH_LOG, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.STRIPPED_DARK_OAK_LOG, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.STRIPPED_JUNGLE_LOG, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.STRIPPED_OAK_LOG, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.STRIPPED_SPRUCE_LOG, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.ACACIA_WOOD, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.BIRCH_WOOD, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.DARK_OAK_WOOD, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.JUNGLE_WOOD, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.OAK_WOOD, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.SPRUCE_WOOD, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.STRIPPED_ACACIA_WOOD, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.STRIPPED_BIRCH_WOOD, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.STRIPPED_DARK_OAK_WOOD, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.STRIPPED_JUNGLE_WOOD, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.STRIPPED_OAK_WOOD, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.STRIPPED_SPRUCE_WOOD, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.ACACIA_LEAVES, new Triplet(Material.STICK, 1));
-		conversions.put(Material.BIRCH_LEAVES, new Triplet(Material.STICK, 1));
-		conversions.put(Material.DARK_OAK_LEAVES, new Triplet(Material.STICK, 1));
-		conversions.put(Material.JUNGLE_LEAVES, new Triplet(Material.STICK, 1));
-		conversions.put(Material.OAK_LEAVES, new Triplet(Material.STICK, 1));
-		conversions.put(Material.SPRUCE_LEAVES, new Triplet(Material.STICK, 1));
 
 		conversions.put(Material.IRON_ORE, new Triplet(Material.IRON_INGOT, 1, true));
 		conversions.put(Material.GOLD_ORE, new Triplet(Material.GOLD_INGOT, 1, true));
@@ -162,18 +132,8 @@ public class AutoSmelt extends Modifier implements Listener {
 		// 1.16 Additions
 		conversions.put(Material.ANCIENT_DEBRIS, new Triplet(Material.NETHERITE_SCRAP, 1, true));
 		conversions.put(Material.NETHER_GOLD_ORE, new Triplet(Material.GOLD_INGOT, 1, true));
-		conversions.put(Material.CRIMSON_HYPHAE, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.CRIMSON_STEM, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.WARPED_HYPHAE, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.WARPED_STEM, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.STRIPPED_CRIMSON_HYPHAE, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.STRIPPED_CRIMSON_STEM, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.STRIPPED_WARPED_HYPHAE, new Triplet(Material.CHARCOAL, 1));
-		conversions.put(Material.STRIPPED_WARPED_STEM, new Triplet(Material.CHARCOAL, 1));
 
 		//1.17 Additions
-		conversions.put(Material.AZALEA_LEAVES, new Triplet(Material.STICK, 1));
-
 		conversions.put(Material.DEEPSLATE, new Triplet(Material.DEEPSLATE, 1));
 
 		conversions.put(Material.DEEPSLATE_COAL_ORE, new Triplet(Material.AIR, 0));
@@ -187,26 +147,13 @@ public class AutoSmelt extends Modifier implements Listener {
 		conversions.put(Material.COPPER_ORE, new Triplet(Material.COPPER_INGOT, 1, true));
 
 		if (MineTinker.is19compatible) {
-			conversions.put(Material.MANGROVE_LEAVES, new Triplet(Material.STICK, 1));
 			// No muddy roots
 			conversions.put(Material.MANGROVE_ROOTS, new Triplet(Material.CHARCOAL, 1));
-			conversions.put(Material.MANGROVE_LOG, new Triplet(Material.CHARCOAL, 1));
-			conversions.put(Material.STRIPPED_MANGROVE_LOG, new Triplet(Material.CHARCOAL, 1));
-			conversions.put(Material.MANGROVE_WOOD, new Triplet(Material.CHARCOAL, 1));
-			conversions.put(Material.STRIPPED_MANGROVE_WOOD, new Triplet(Material.CHARCOAL, 1));
-
 			conversions.put(Material.MUD, new Triplet(Material.CLAY, 1));
 		}
 
 		if (MineTinker.is20compatible) {
-			conversions.put(Material.CHERRY_LEAVES, new Triplet(Material.STICK, 1));
-			conversions.put(Material.CHERRY_LOG, new Triplet(Material.CHARCOAL, 1));
-			conversions.put(Material.STRIPPED_CHERRY_LOG, new Triplet(Material.CHARCOAL, 1));
-			conversions.put(Material.CHERRY_WOOD, new Triplet(Material.CHARCOAL, 1));
-			conversions.put(Material.STRIPPED_CHERRY_WOOD, new Triplet(Material.CHARCOAL, 1));
-
 			conversions.put(Material.BAMBOO_BLOCK, new Triplet(Material.CHARCOAL, 1));
-
 			conversions.put(Material.SUSPICIOUS_SAND, new Triplet(Material.GLASS, 1));
 		}
 
