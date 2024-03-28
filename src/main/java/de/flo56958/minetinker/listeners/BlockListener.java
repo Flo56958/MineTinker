@@ -15,7 +15,9 @@ import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
+import org.bukkit.block.Container;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -50,7 +52,7 @@ public class BlockListener implements Listener {
 		final Player player = event.getPlayer();
 		final ItemStack tool = player.getInventory().getItemInMainHand();
 		if (modManager.isToolViable(tool))
-			modManager.durabilityCheck(event, player, tool);
+			modManager.durabilityCheck(event, player, tool, true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -121,15 +123,7 @@ public class BlockListener implements Listener {
         if (block == null) return;
 
         if (!player.isSneaking()) {
-            final Material type = block.getType();
-
-            if (type == Material.ANVIL || type == Material.CRAFTING_TABLE
-                    || type == Material.CHEST || type == Material.ENDER_CHEST
-                    || type == Material.DROPPER || type == Material.HOPPER
-                    || type == Material.DISPENSER || type == Material.TRAPPED_CHEST
-                    || type == Material.FURNACE || type == Material.ENCHANTING_TABLE) {
-                return;
-            }
+			if (isUIBlock(block)) return;
         }
 
         if (block.getType() != Material.getMaterial(
@@ -194,6 +188,18 @@ public class BlockListener implements Listener {
         event.setCancelled(true);
     }
 
+	private boolean isUIBlock(final Block block) {
+		if (block == null) return false;
+		final Material type = block.getType();
+
+        return block.getState() instanceof Container
+				|| Tag.ANVIL.isTagged(type) || type == Material.GRINDSTONE
+				|| type == Material.CRAFTING_TABLE || type == Material.ENCHANTING_TABLE
+				|| type == Material.LOOM || type == Material.SMITHING_TABLE
+				|| type == Material.ENDER_CHEST || type == Material.BREWING_STAND
+				|| Tag.BEDS.isTagged(type);
+    }
+
 	@EventHandler(ignoreCancelled = true)
 	public void onInteract(@NotNull final PlayerInteractEvent event) {
 		final Player player = event.getPlayer();
@@ -202,7 +208,11 @@ public class BlockListener implements Listener {
 		final ItemStack tool = player.getInventory().getItemInMainHand();
 		if (!modManager.isToolViable(tool)) return;
 
-		if (!modManager.durabilityCheck(event, player, tool)) return;
+		if (!isUIBlock(event.getClickedBlock())) // so you can still open chests and crafting tables
+			if (!modManager.durabilityCheck(event, player, tool, true)) return;
+
+		// So you can still open inventories but not trigger modifiers
+		if (!modManager.durabilityCheck(event, player, tool, false)) return;
 
 		Bukkit.getPluginManager().callEvent(new MTPlayerInteractEvent(tool, event));
 	}

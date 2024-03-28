@@ -1146,22 +1146,24 @@ public class ModManager {
 	 * @param tool        the Tool
 	 * @return false: if broken; true: if enough durability
 	 */
-	public boolean durabilityCheck(@NotNull final Cancellable cancellable, @NotNull final Player player, @NotNull final ItemStack tool) {
+	public boolean durabilityCheck(@NotNull final Cancellable cancellable, @NotNull final Player player, @NotNull final ItemStack tool, final boolean changeState) {
 		if (!config.getBoolean("UnbreakableTools", true)) return true;
 		if (player.getGameMode() == GameMode.CREATIVE) return true;
 
 		final ItemMeta meta = tool.getItemMeta();
 
-		if (meta instanceof Damageable damageable && tool.getType().getMaxDurability() - damageable.getDamage() <= 2) {
-			cancellable.setCancelled(true);
+        if (!(meta instanceof Damageable damageable) || tool.getType().getMaxDurability() - damageable.getDamage() > 2)
+            return true;
 
-			if (config.getBoolean("Sound.OnBreaking", true)) {
-				player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
-			}
-			return false;
-		}
-		return true;
-	}
+        if (changeState) {
+            cancellable.setCancelled(true);
+
+            if (config.getBoolean("Sound.OnBreaking", true)) {
+                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
+            }
+        }
+        return false;
+    }
 
 	/**
 	 * removes all recipes that are registered by MineTinker
