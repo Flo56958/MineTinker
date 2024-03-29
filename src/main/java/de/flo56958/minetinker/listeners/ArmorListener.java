@@ -41,15 +41,15 @@ public class ArmorListener implements Listener {
 		EntityDamageByEntityEvent byEntityEvent = null;
 
 		if (event instanceof EntityDamageByEntityEvent) {
-			byEntityEvent = (EntityDamageByEntityEvent)event;
+			byEntityEvent = (EntityDamageByEntityEvent) event;
 			entity = byEntityEvent.getDamager();
 
 			if (entity instanceof final Arrow arrow) {
 				final ProjectileSource source = arrow.getShooter();
-                if (!(source instanceof Entity)) return;
+				if (!(source instanceof Entity)) return;
 
 				entity = (Entity) source;
-            }
+			}
 		}
 
 		final ArrayList<ItemStack> armor = new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents()));
@@ -107,16 +107,16 @@ public class ArmorListener implements Listener {
 	}
 
 	private void expCalculation(final boolean isBlocking, @NotNull final ItemStack tool, @NotNull final EntityDamageEvent event, @NotNull final Player player) {
-		//Armor should not get Exp when successfully blocking
-		if(isBlocking && !ToolType.SHIELD.contains(tool.getType()) && ToolType.ARMOR.contains(tool.getType())) return;
-		//Shield should not get Exp when not successfully blocking when getting attacked
-		if(!isBlocking && player.equals(event.getEntity()) && ToolType.SHIELD.contains(tool.getType())) return;
+		// Armor should not get Exp when successfully blocking
+		if (isBlocking && !ToolType.SHIELD.contains(tool.getType()) && ToolType.ARMOR.contains(tool.getType())) return;
+		// Shield should not get Exp when not successfully blocking when getting attacked
+		if (!isBlocking && player.equals(event.getEntity()) && ToolType.SHIELD.contains(tool.getType())) return;
 		FileConfiguration config = MineTinker.getPlugin().getConfig();
 		int amount = config.getInt("ExpPerEntityHit", 1);
 
 		if (config.getBoolean("EnableDamageExp", true))
 			amount = Math.max(amount, (int) Math.round(event.getFinalDamage()));
-			//Max because the lowest exp amount you should get is ExpPerEntityHit
+		// Max because the lowest exp amount you should get is ExpPerEntityHit
 
 		modManager.addExp(player, tool, amount, true);
 	}
@@ -128,8 +128,8 @@ public class ArmorListener implements Listener {
 		if (!modManager.isArmorViable(event.getItem())) return;
 
 		final int chance = new Random().nextInt(100);
-        if (chance >= ConfigurationManager.getConfig("Elytra.yml").getInt("ExpChanceWhileFlying")) return;
+		if (chance >= ConfigurationManager.getConfig("Elytra.yml").getInt("ExpChanceWhileFlying")) return;
 
-        modManager.addExp(event.getPlayer(), event.getItem(), MineTinker.getPlugin().getConfig().getInt("ExpPerEntityHit"), true);
-    }
+		modManager.addExp(event.getPlayer(), event.getItem(), MineTinker.getPlugin().getConfig().getInt("ExpPerEntityHit"), true);
+	}
 }

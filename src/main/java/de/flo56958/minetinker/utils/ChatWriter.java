@@ -152,7 +152,7 @@ public class ChatWriter {
 	/**
 	 * Sends a message to the players actionbar
 	 *
-	 * @param player The player to send the message to
+	 * @param player  The player to send the message to
 	 * @param message The content of the message
 	 */
 	public static void sendActionBar(final Player player, final String message) {
@@ -177,27 +177,27 @@ public class ChatWriter {
 	@NotNull
 	public static String addColors(final @NotNull String input) {
 		return input.replaceAll("%BLACK%", ChatColor.BLACK.toString())
-			.replaceAll("%DARK_BLUE%", ChatColor.DARK_BLUE.toString())
-			.replaceAll("%DARK_GREEN%", ChatColor.DARK_GREEN.toString())
-			.replaceAll("%DARK_AQUA%", ChatColor.DARK_AQUA.toString())
-			.replaceAll("%DARK_RED%", ChatColor.DARK_RED.toString())
-			.replaceAll("%DARK_PURPLE%", ChatColor.DARK_PURPLE.toString())
-			.replaceAll("%GOLD%", ChatColor.GOLD.toString())
-			.replaceAll("%GRAY%", ChatColor.GRAY.toString())
-			.replaceAll("%DARK_GRAY%", ChatColor.DARK_GRAY.toString())
-			.replaceAll("%BLUE%", ChatColor.BLUE.toString())
-			.replaceAll("%GREEN%", ChatColor.GREEN.toString())
-			.replaceAll("%AQUA%", ChatColor.AQUA.toString())
-			.replaceAll("%RED%", ChatColor.RED.toString())
-			.replaceAll("%LIGHT_PURPLE%", ChatColor.LIGHT_PURPLE.toString())
-			.replaceAll("%YELLOW%", ChatColor.YELLOW.toString())
-			.replaceAll("%WHITE%", ChatColor.WHITE.toString())
-			.replaceAll("%BOLD%", ChatColor.BOLD.toString())
-			.replaceAll("%UNDERLINE%", ChatColor.UNDERLINE.toString())
-			.replaceAll("%ITALIC%", ChatColor.ITALIC.toString())
-			.replaceAll("%STRIKE%", ChatColor.STRIKETHROUGH.toString())
-			.replaceAll("%MAGIC%", ChatColor.MAGIC.toString())
-			.replaceAll("%RESET%", ChatColor.RESET.toString());
+				.replaceAll("%DARK_BLUE%", ChatColor.DARK_BLUE.toString())
+				.replaceAll("%DARK_GREEN%", ChatColor.DARK_GREEN.toString())
+				.replaceAll("%DARK_AQUA%", ChatColor.DARK_AQUA.toString())
+				.replaceAll("%DARK_RED%", ChatColor.DARK_RED.toString())
+				.replaceAll("%DARK_PURPLE%", ChatColor.DARK_PURPLE.toString())
+				.replaceAll("%GOLD%", ChatColor.GOLD.toString())
+				.replaceAll("%GRAY%", ChatColor.GRAY.toString())
+				.replaceAll("%DARK_GRAY%", ChatColor.DARK_GRAY.toString())
+				.replaceAll("%BLUE%", ChatColor.BLUE.toString())
+				.replaceAll("%GREEN%", ChatColor.GREEN.toString())
+				.replaceAll("%AQUA%", ChatColor.AQUA.toString())
+				.replaceAll("%RED%", ChatColor.RED.toString())
+				.replaceAll("%LIGHT_PURPLE%", ChatColor.LIGHT_PURPLE.toString())
+				.replaceAll("%YELLOW%", ChatColor.YELLOW.toString())
+				.replaceAll("%WHITE%", ChatColor.WHITE.toString())
+				.replaceAll("%BOLD%", ChatColor.BOLD.toString())
+				.replaceAll("%UNDERLINE%", ChatColor.UNDERLINE.toString())
+				.replaceAll("%ITALIC%", ChatColor.ITALIC.toString())
+				.replaceAll("%STRIKE%", ChatColor.STRIKETHROUGH.toString())
+				.replaceAll("%MAGIC%", ChatColor.MAGIC.toString())
+				.replaceAll("%RESET%", ChatColor.RESET.toString());
 	}
 
 	public static ChatColor getColor(final @NotNull String input)

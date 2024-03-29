@@ -119,7 +119,7 @@ public class Homing extends Modifier implements Listener {
 				if (arrow.getVelocity().length() <= 0.1) return;
 				if (arrow.getLastDamageCause() != null) return;
 
-				final List<Entity> entities = arrow.getNearbyEntities(Homing.this.radius,Homing.this.radius,Homing.this.radius);
+				final List<Entity> entities = arrow.getNearbyEntities(Homing.this.radius, Homing.this.radius, Homing.this.radius);
 				entities.sort(Comparator.comparing(e -> e.getLocation().distance(arrow.getLocation())));
 				for (final Entity e : entities) {
 					if (e.equals(arrow.getShooter())) continue;

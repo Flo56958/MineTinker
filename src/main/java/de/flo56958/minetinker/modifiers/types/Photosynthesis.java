@@ -48,7 +48,7 @@ public class Photosynthesis extends Modifier {
 
 			final PlayerInventory inv = player.getInventory();
 			final ArrayList<ItemStack> items = new ArrayList<>(6);
-            Collections.addAll(items, inv.getArmorContents());
+			Collections.addAll(items, inv.getArmorContents());
 			items.add(inv.getItemInMainHand());
 			if (allowOffhand) items.add(inv.getItemInOffHand());
 			items.removeIf(item -> !modManager.isToolViable(item) && !modManager.isArmorViable(item));
@@ -86,18 +86,18 @@ public class Photosynthesis extends Modifier {
 			final long worldTime = tupel.loc.getWorld().getTime() / 1000; //to get hours; 0 -> 6am
 
 			if (!tupel.isAboveGround || tupel.loc.getWorld().hasStorm() || worldTime > 12) {
-                // reset time
-                tupel.time = time;
+				// reset time
+				tupel.time = time;
 				continue;
-            }
+			}
 
-            final double daytimeMultiplier = (fullEffectAtNoon) ? Math.abs(6 - worldTime) / 6.0 : 1.0;
-            final long timeDif = time - tupel.time - (tickTime * 50L); //to make effect faster with time (first tick period does not count)
+			final double daytimeMultiplier = (fullEffectAtNoon) ? Math.abs(6 - worldTime) / 6.0 : 1.0;
+			final long timeDif = time - tupel.time - (tickTime * 50L); //to make effect faster with time (first tick period does not count)
 			final double timeAdvantage = multiplierPerTick * ((timeDif / 50.0) / tickTime);
 
 			boolean triggered = false;
-            for (final ItemStack item : items) {
-                final int level = modManager.getModLevel(item, this);
+			for (final ItemStack item : items) {
+				final int level = modManager.getModLevel(item, this);
 
 				if (!(item.getItemMeta() instanceof Damageable meta)) continue;
 
@@ -220,7 +220,7 @@ public class Photosynthesis extends Modifier {
 
 		allowedMaterials.clear();
 		allowedMaterials.addAll(Arrays.stream(Material.values())
-						.filter(mat -> mat.isAir() || !mat.isOccluding() || !mat.isSolid()).toList());
+				.filter(mat -> mat.isAir() || !mat.isOccluding() || !mat.isSolid()).toList());
 
 		if (isAllowed())
 			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(this.getSource(), this.runnable, 5 * 20L, this.tickTime);
@@ -234,6 +234,7 @@ public class Photosynthesis extends Modifier {
 		private Location loc;
 		private long time; //in ms
 		private boolean isAboveGround; //isAboveGround is not always false
+
 		private Tupel(@NotNull Location loc, long time, boolean isAboveGround) {
 			this.loc = loc;
 			this.time = time;

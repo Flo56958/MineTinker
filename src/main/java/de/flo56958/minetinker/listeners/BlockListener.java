@@ -71,7 +71,7 @@ public class BlockListener implements Listener {
 		boolean eligible = true;
 		if (cooldown > 0) {
 			final List<MetadataValue> blockPlaced = event.getBlock().getMetadata("blockPlaced");
-			for(final MetadataValue val : blockPlaced) {
+			for (final MetadataValue val : blockPlaced) {
 				if (val == null) continue;
 				if (!MineTinker.getPlugin().equals(val.getOwningPlugin())) continue; //Not MTs value
 
@@ -117,88 +117,88 @@ public class BlockListener implements Listener {
 			return;
 		}
 
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
-        final Block block = event.getClickedBlock();
-        if (block == null) return;
+		final Block block = event.getClickedBlock();
+		if (block == null) return;
 
-        if (!player.isSneaking()) {
+		if (!player.isSneaking()) {
 			if (isUIBlock(block)) return;
-        }
+		}
 
-        if (block.getType() != Material.getMaterial(
-                Objects.requireNonNull(MineTinker.getPlugin().getConfig()
-                                .getString("BlockToEnchantModifiers", Material.BOOKSHELF.name()),
-                        "BlockToEnchantModifiers is null!"))) return;
+		if (block.getType() != Material.getMaterial(
+				Objects.requireNonNull(MineTinker.getPlugin().getConfig()
+								.getString("BlockToEnchantModifiers", Material.BOOKSHELF.name()),
+						"BlockToEnchantModifiers is null!"))) return;
 
-        final ArrayList<Modifier> modifiers = new ArrayList<>();
+		final ArrayList<Modifier> modifiers = new ArrayList<>();
 
-        for (final Modifier m : modManager.getAllowedMods()) {
-            if (!m.isEnchantable()) continue;
-            if (m.getModItem().getType().equals(norm.getType())) {
-                modifiers.add(m);
-            }
-        }
+		for (final Modifier m : modManager.getAllowedMods()) {
+			if (!m.isEnchantable()) continue;
+			if (m.getModItem().getType().equals(norm.getType())) {
+				modifiers.add(m);
+			}
+		}
 
-        if (modifiers.isEmpty()) return;
-        else if (modifiers.size() == 1) {
-            final Modifier m = modifiers.remove(0);
-            m.enchantItem(player, norm);
-        } else {
-            // Create GUI for easy choosing of Modifier to enchant
-            final GUI gui = new GUI(MineTinker.getPlugin());
-            Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), gui::close, 5 * 60 * 20);
+		if (modifiers.isEmpty()) return;
+		else if (modifiers.size() == 1) {
+			final Modifier m = modifiers.remove(0);
+			m.enchantItem(player, norm);
+		} else {
+			// Create GUI for easy choosing of Modifier to enchant
+			final GUI gui = new GUI(MineTinker.getPlugin());
+			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), gui::close, 5 * 60 * 20);
 
-            final int size = Math.min(modifiers.size() / 9 + 1, 6);
-            final GUI.Window window = gui.addWindow(size, LanguageManager.getString("GUIs.Enchantable.Title", player));
-            modifiers.sort(Comparator.comparing(Modifier::getName));
+			final int size = Math.min(modifiers.size() / 9 + 1, 6);
+			final GUI.Window window = gui.addWindow(size, LanguageManager.getString("GUIs.Enchantable.Title", player));
+			modifiers.sort(Comparator.comparing(Modifier::getName));
 
-            int slot = 0;
-            for (final Modifier mod : modifiers) {
-                final GUI.Window.Button button = window.addButton(slot++, mod.getModItem());
-                final ItemStack itemStack = button.getItemStack();
+			int slot = 0;
+			for (final Modifier mod : modifiers) {
+				final GUI.Window.Button button = window.addButton(slot++, mod.getModItem());
+				final ItemStack itemStack = button.getItemStack();
 
-                final ItemMeta meta = itemStack.getItemMeta();
-                assert meta != null;
-                final List<String> lore = meta.getLore();
-                assert lore != null;
+				final ItemMeta meta = itemStack.getItemMeta();
+				assert meta != null;
+				final List<String> lore = meta.getLore();
+				assert lore != null;
 
-                final String s = LanguageManager.getString("GUIs.Modifiers.EnchantCost", player)
-                        .replaceFirst("%enchantCost", (mod.getEnchantCost() <= player.getLevel()
-                                        ? ChatColor.WHITE
-                                        : ChatColor.RED)
-                                        + ChatWriter.toRomanNumerals(mod.getEnchantCost()));
-                if (mod.getEnchantCost() <= player.getLevel()) {
-                    lore.add(ChatColor.WHITE + s);
-                    ItemStack finalNorm = norm;
-                    button.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE_ON_PLAYER(button,
-                            (p, input) -> {
-                                mod.enchantItem(p, finalNorm);
-                                gui.close();
-                            }));
-                } else {
-                    lore.add(ChatColor.RED + s);
-                }
-                meta.setLore(lore);
-                itemStack.setItemMeta(meta);
-            }
+				final String s = LanguageManager.getString("GUIs.Modifiers.EnchantCost", player)
+						.replaceFirst("%enchantCost", (mod.getEnchantCost() <= player.getLevel()
+								? ChatColor.WHITE
+								: ChatColor.RED)
+								+ ChatWriter.toRomanNumerals(mod.getEnchantCost()));
+				if (mod.getEnchantCost() <= player.getLevel()) {
+					lore.add(ChatColor.WHITE + s);
+					ItemStack finalNorm = norm;
+					button.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE_ON_PLAYER(button,
+							(p, input) -> {
+								mod.enchantItem(p, finalNorm);
+								gui.close();
+							}));
+				} else {
+					lore.add(ChatColor.RED + s);
+				}
+				meta.setLore(lore);
+				itemStack.setItemMeta(meta);
+			}
 
-            gui.show(player);
-        }
-        event.setCancelled(true);
-    }
+			gui.show(player);
+		}
+		event.setCancelled(true);
+	}
 
 	private boolean isUIBlock(final Block block) {
 		if (block == null) return false;
 		final Material type = block.getType();
 
-        return block.getState() instanceof Container
+		return block.getState() instanceof Container
 				|| Tag.ANVIL.isTagged(type) || type == Material.GRINDSTONE
 				|| type == Material.CRAFTING_TABLE || type == Material.ENCHANTING_TABLE
 				|| type == Material.LOOM || type == Material.SMITHING_TABLE
 				|| type == Material.ENDER_CHEST || type == Material.BREWING_STAND
 				|| Tag.BEDS.isTagged(type);
-    }
+	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void onInteract(@NotNull final PlayerInteractEvent event) {

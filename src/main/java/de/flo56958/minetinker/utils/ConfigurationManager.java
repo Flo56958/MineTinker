@@ -19,6 +19,7 @@ public class ConfigurationManager {
 	 */
 	private static final HashMap<String, FileConfiguration> configs = new HashMap<>();
 	private static final HashMap<FileConfiguration, File> configsFolder = new HashMap<>();
+
 	private ConfigurationManager() {} //So nobody can instantiate this class
 
 	/**
@@ -68,14 +69,14 @@ public class ConfigurationManager {
 		configsFolder.put(fileConfiguration, customConfigFile);
 		configs.put(file, fileConfiguration);
 
-        if (!customConfigFile.exists()) return;
+		if (!customConfigFile.exists()) return;
 
-        try {
-            fileConfiguration.load(customConfigFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-    }
+		try {
+			fileConfiguration.load(customConfigFile);
+		} catch (IOException | InvalidConfigurationException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static void saveConfig(@NotNull FileConfiguration config) {
 		try {

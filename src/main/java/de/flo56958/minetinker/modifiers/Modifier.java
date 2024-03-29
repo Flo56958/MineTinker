@@ -60,7 +60,7 @@ public abstract class Modifier {
 	}
 
 	final boolean checkAndAdd(final Player player, final ItemStack tool, final boolean isCommand,
-							  final boolean fromRandom, final boolean silent, final boolean modifySlotCount) {
+	                          final boolean fromRandom, final boolean silent, final boolean modifySlotCount) {
 		if (modifySlotCount) {
 			// Check for free Slots
 			if ((modManager.getFreeSlots(tool) < this.getSlotCost() && !this.equals(ExtraModifier.instance())) && !isCommand) {
@@ -88,7 +88,7 @@ public abstract class Modifier {
 		}
 
 		// Check for Tool Level
-		if(modManager.getLevel(tool) < this.minimumLevelRequirement) {
+		if (modManager.getLevel(tool) < this.minimumLevelRequirement) {
 			if (!silent)
 				pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.TOOL_LEVEL_TO_LOW, isCommand));
 			return false;
@@ -113,16 +113,16 @@ public abstract class Modifier {
 						return false;
 					}
 
-                    if (!modifiersconfig.getBoolean("IncompatibilitiesConsiderEnchants")) continue;
+					if (!modifiersconfig.getBoolean("IncompatibilitiesConsiderEnchants")) continue;
 					final ItemMeta meta = tool.getItemMeta();
 					if (meta == null) continue;
-                    for (final Enchantment e : m.getAppliedEnchantments()) {
-                        if (!meta.hasEnchant(e)) continue;
+					for (final Enchantment e : m.getAppliedEnchantments()) {
+						if (!meta.hasEnchant(e)) continue;
 						if (!silent)
 							pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
 						return false;
-                    }
-                }
+					}
+				}
 			}
 		}
 
@@ -189,7 +189,9 @@ public abstract class Modifier {
 		return getConfig().getBoolean("Enchantable", false);
 	}
 
-	public final NamespacedKey getNamespaceKey() { return namespaceKey; }
+	public final NamespacedKey getNamespaceKey() {
+		return namespaceKey;
+	}
 
 	/**
 	 * changes the core settings of the Modifier (like a secondary constructor)
@@ -317,37 +319,37 @@ public abstract class Modifier {
 
 			newRecipe.shape(top, middle, bottom); //makes recipe
 
-            if (materials == null) {
-                ChatWriter.logError("Could not register recipe for the " + this.name + "-Modifier!"); //executes if the recipe could not initialize
-                ChatWriter.logError("Cause: Malformed recipe config.");
-                return;
-            }
+			if (materials == null) {
+				ChatWriter.logError("Could not register recipe for the " + this.name + "-Modifier!"); //executes if the recipe could not initialize
+				ChatWriter.logError("Cause: Malformed recipe config.");
+				return;
+			}
 
-            for (final String key : materials.getKeys(false)) {
-                final String materialName = materials.getString(key);
+			for (final String key : materials.getKeys(false)) {
+				final String materialName = materials.getString(key);
 
-                if (materialName == null) {
-                    ChatWriter.logError(LanguageManager.getString("Modifier.MaterialEntryNotFound"));
-                    return;
-                }
+				if (materialName == null) {
+					ChatWriter.logError(LanguageManager.getString("Modifier.MaterialEntryNotFound"));
+					return;
+				}
 
-                final HashSet<Material> mats = new HashSet<>();
-                for (final String mat : materialName.split(",")) {
-                    if (mat.isEmpty()) continue;
-                    final Material m = Material.getMaterial(mat);
-                    if (m == null) continue;
-                    mats.add(m);
-                }
+				final HashSet<Material> mats = new HashSet<>();
+				for (final String mat : materialName.split(",")) {
+					if (mat.isEmpty()) continue;
+					final Material m = Material.getMaterial(mat);
+					if (m == null) continue;
+					mats.add(m);
+				}
 
-                if (mats.isEmpty()) {
-                    ChatWriter.log(false, "Material [" + materialName + "] is null for mod [" + this.name + "]");
-                    return;
-                }
+				if (mats.isEmpty()) {
+					ChatWriter.log(false, "Material [" + materialName + "] is null for mod [" + this.name + "]");
+					return;
+				}
 
-                newRecipe.setIngredient(key.charAt(0), new RecipeChoice.MaterialChoice(mats.stream().toList()));
-            }
+				newRecipe.setIngredient(key.charAt(0), new RecipeChoice.MaterialChoice(mats.stream().toList()));
+			}
 
-            MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
+			MineTinker.getPlugin().getServer().addRecipe(newRecipe); //adds recipe
 			ChatWriter.log(false, "Registered recipe for the " + this.name + "-Modifier!");
 			ModManager.instance().recipe_Namespaces.add(nkey);
 			this.namespaceKey = nkey;
@@ -368,7 +370,7 @@ public abstract class Modifier {
 
 	/**
 	 * @param player The player that enchants
-	 * @param item The item that will be enchanted
+	 * @param item   The item that will be enchanted
 	 */
 	public final void enchantItem(@NotNull Player player, @NotNull ItemStack item) {
 		if (!isEnchantable()) return;
@@ -392,14 +394,14 @@ public abstract class Modifier {
 			return;
 		}
 
-        if (player.getLevel() < getEnchantCost()) {
+		if (player.getLevel() < getEnchantCost()) {
 			ChatWriter.sendActionBar(player, ChatColor.RED
 					+ LanguageManager.getString("Modifier.Enchantable.LevelsRequired", player)
 					.replace("%amount", String.valueOf(getEnchantCost())));
 			ChatWriter.log(false, player.getDisplayName() + " tried to create a "
 					+ getName() + "-Modifiers but had not enough levels!");
 			return;
-        }
+		}
 
 		int amount = item.getAmount();
 		int newLevel = player.getLevel() - getEnchantCost();
@@ -414,7 +416,8 @@ public abstract class Modifier {
 		if (MineTinker.getPlugin().getConfig().getBoolean("Sound.OnEnchanting"))
 			player.playSound(location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 0.5F);
 
-		ChatWriter.log(false, player.getDisplayName() + " created a " + getName() + "-Modifiers!");    }
+		ChatWriter.log(false, player.getDisplayName() + " created a " + getName() + "-Modifiers!");
+	}
 
 	public final String getCraftPermission() {
 		return "minetinker.modifiers." + getKey().replace("-", "").toLowerCase() + ".craft";

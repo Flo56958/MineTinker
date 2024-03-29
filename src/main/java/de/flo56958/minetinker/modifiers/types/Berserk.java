@@ -126,6 +126,7 @@ public class Berserk extends Modifier implements Listener {
 			DataHandler.setTag(chest, getKey() + "_stat_used", stat + 1, PersistentDataType.INTEGER);
 		}
 	}
+
 	@Override
 	public List<String> getStatistics(ItemStack item) {
 		// Get stats

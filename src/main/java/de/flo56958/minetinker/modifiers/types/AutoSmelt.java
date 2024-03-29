@@ -195,7 +195,7 @@ public class AutoSmelt extends Modifier implements Listener {
 					conversions.put(material, t);
 				} else error = true;
 			} else error = true;
-			if (error) ChatWriter.logError(this.getKey() +  ".yml: Error in conversion value for " + k);
+			if (error) ChatWriter.logError(this.getKey() + ".yml: Error in conversion value for " + k);
 		});
 	}
 

@@ -48,7 +48,7 @@ public class Echoing extends Modifier implements Listener {
 			packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
 		} else {
 			packet.getDataValueCollectionModifier().write(0, List.of(
-							new WrappedDataValue(0, WrappedDataWatcher.Registry.get(Byte.class), value)));
+					new WrappedDataValue(0, WrappedDataWatcher.Registry.get(Byte.class), value)));
 		}
 		try {
 			protocolManager.sendServerPacket(player, packet);

@@ -17,11 +17,11 @@ import java.util.*;
 
 /**
  * Syntax of /mt convert:
- * 		/mt convert {Player}
+ * /mt convert {Player}
  * <p>
  * Legend:
- * 		{ }: not necessary
- * 		[ ]: necessary
+ * { }: not necessary
+ * [ ]: necessary
  */
 public class ConvertCommand implements SubCommand {
 
@@ -74,13 +74,13 @@ public class ConvertCommand implements SubCommand {
 	}
 
 
-	@Override @NotNull
-	public String getName() {
+	@Override
+	public @NotNull String getName() {
 		return "convert";
 	}
 
-	@Override @NotNull
-	public List<String> getAliases(boolean withName) {
+	@Override
+	public @NotNull List<String> getAliases(boolean withName) {
 		final ArrayList<String> aliases = new ArrayList<>();
 		if (withName) aliases.add(getName());
 		aliases.add("c");
@@ -88,13 +88,13 @@ public class ConvertCommand implements SubCommand {
 		return aliases;
 	}
 
-	@Override @NotNull
-	public String getPermission() {
+	@Override
+	public @NotNull String getPermission() {
 		return "minetinker.commands.convert";
 	}
 
-	@Override @NotNull
-	public Map<Integer, List<ArgumentType>> getArgumentsToParse() {
+	@Override
+	public @NotNull Map<Integer, List<ArgumentType>> getArgumentsToParse() {
 		final Map<Integer, List<ArgumentType>> argumentsToParse = new HashMap<>();
 		argumentsToParse.put(1, Collections.singletonList(ArgumentType.PLAYER));
 		return argumentsToParse;

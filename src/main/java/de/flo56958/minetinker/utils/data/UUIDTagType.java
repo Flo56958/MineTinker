@@ -9,15 +9,16 @@ import java.util.UUID;
 
 /**
  * from API-comment of
+ *
  * @see PersistentDataType
  */
 public class UUIDTagType implements PersistentDataType<byte[], UUID> {
 
-    public static final UUIDTagType instance = new UUIDTagType();
+	public static final UUIDTagType instance = new UUIDTagType();
 
-    private UUIDTagType() {}
+	private UUIDTagType() {}
 
-    @Override
+	@Override
 	public @NotNull Class<byte[]> getPrimitiveType() {
 		return byte[].class;
 	}

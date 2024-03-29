@@ -119,6 +119,6 @@ public class Lifesteal extends Modifier implements Listener {
 			player.setHealth(Math.min(health, attribute.getValue()));
 
 		ChatWriter.logModifier(player, event, this, tool, String.format("Chance(%d/%d)", n, this.percentToTrigger),
-				String.format("HealthGain(%.2f [%.2f/%.2f = %.4f])", recovery, recovery, damage, recovery/damage));
+				String.format("HealthGain(%.2f [%.2f/%.2f = %.4f])", recovery, recovery, damage, recovery / damage));
 	}
 }

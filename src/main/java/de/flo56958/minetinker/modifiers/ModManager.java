@@ -209,7 +209,7 @@ public class ModManager {
 
 		// upgrading from diamond to netherrite should only require one material
 		final boolean reduceToOne = name.equals("diamond") && material == Material.NETHERITE_INGOT;
-		return switch(ToolType.get(tool)) {
+		return switch (ToolType.get(tool)) {
 			case AXE -> new Pair<>(getToolUpgrade(material, "AXE"), reduceToOne ? 1 : 3);
 			case BOOTS -> new Pair<>(getArmorUpgrade(material, "BOOTS"), reduceToOne ? 1 : 4);
 			case CHESTPLATE -> new Pair<>(getArmorUpgrade(material, "CHESTPLATE"), reduceToOne ? 1 : 8);
@@ -225,8 +225,8 @@ public class ModManager {
 
 	private static @Nullable Material getToolUpgrade(@NotNull final Material material, @NotNull final String tool) {
 		return switch (material) {
-			case ACACIA_PLANKS, BIRCH_PLANKS, DARK_OAK_PLANKS, JUNGLE_PLANKS, OAK_PLANKS, SPRUCE_PLANKS
-					-> Material.getMaterial("WOODEN_" + tool);
+			case ACACIA_PLANKS, BIRCH_PLANKS, DARK_OAK_PLANKS, JUNGLE_PLANKS, OAK_PLANKS, SPRUCE_PLANKS ->
+					Material.getMaterial("WOODEN_" + tool);
 			case COBBLESTONE -> Material.getMaterial("STONE_" + tool);
 			case DIAMOND -> Material.getMaterial("DIAMOND_" + tool);
 			case GOLD_INGOT -> Material.getMaterial("GOLDEN_" + tool);
@@ -261,7 +261,8 @@ public class ModManager {
 		removeRecipes();
 		mods.forEach(mod -> {
 			if (mod instanceof Listener listener) //Disable Events
-				HandlerList.unregisterAll(listener);});
+				HandlerList.unregisterAll(listener);
+		});
 		mods.clear();
 		mods.addAll(allMods);
 		mods.removeIf(mod -> !mod.isAllowed());
@@ -280,7 +281,8 @@ public class ModManager {
 
 		mods.forEach(mod -> {
 			if (mod instanceof Listener listener) //Enable Events
-				Bukkit.getPluginManager().registerEvents(listener, mod.getSource());});
+				Bukkit.getPluginManager().registerEvents(listener, mod.getSource());
+		});
 
 		if (layout.getBoolean("OverrideLanguagesystem", false)) {
 			this.loreScheme = layout.getStringList("LoreLayout");
@@ -346,6 +348,7 @@ public class ModManager {
 
 	/**
 	 * This Method returns the original Set.
+	 *
 	 * @param m The modifier to get the Incompatibilities for
 	 * @return The incompatibilities as an unmodifiable Set
 	 */
@@ -358,17 +361,19 @@ public class ModManager {
 	 *
 	 * @param mod the modifier instance
 	 * @throws IllegalArgumentException if the modifier is already registered
-	 * 									or if a modifier with the same CustomModelData is already registered
-	 * 									or if a modifier with the same Key is already registered
+	 *                                  or if a modifier with the same CustomModelData is already registered
+	 *                                  or if a modifier with the same Key is already registered
 	 */
 	@SuppressWarnings("UnusedReturnValue")
 	@Contract("null -> false")
 	public boolean register(@Nullable final Modifier mod) {
 		if (mod == null) return false;
-		if (allMods.contains(mod)) throw new IllegalArgumentException("Modifier " + mod.getKey() + " already registered!");
+		if (allMods.contains(mod))
+			throw new IllegalArgumentException("Modifier " + mod.getKey() + " already registered!");
 		if (allMods.stream().filter(m -> m.customModelData == mod.customModelData).findFirst().orElse(null) != null)
 			throw new IllegalArgumentException("Modifier " + mod.getKey() + " with same CustomModelData " + mod.customModelData + " already registered!");
-		if (modKeys.containsKey(mod.getKey())) throw new IllegalArgumentException("Modifier with Key " + mod.getKey() + " already registered!");
+		if (modKeys.containsKey(mod.getKey()))
+			throw new IllegalArgumentException("Modifier with Key " + mod.getKey() + " already registered!");
 
 		modKeys.put(mod.getKey(), mod);
 		mod.reload();
@@ -451,7 +456,7 @@ public class ModManager {
 	public boolean addMod(final Player player, @NotNull final ItemStack item, @NotNull final Modifier modifier, final boolean fromCommand, final boolean fromRandom, final boolean silent, final boolean modifySlotCount) {
 		if (!modifier.equals(ExtraModifier.instance())
 				&& !modifier.checkAndAdd(player, item, fromCommand, fromRandom, silent, modifySlotCount))
-				return false;
+			return false;
 
 		// apply modifier
 		if (!modifier.applyMod(player, item, fromCommand)) return false;
@@ -547,7 +552,7 @@ public class ModManager {
 	/**
 	 * sets the exp amount of the tool
 	 *
-	 * @param is the item for exp to be set
+	 * @param is  the item for exp to be set
 	 * @param exp the amount of exp to set
 	 */
 	private void setExp(@Nullable final ItemStack is, final long exp) {
@@ -835,7 +840,7 @@ public class ModManager {
 		final ItemMeta meta = is.getItemMeta();
 
 		if (meta == null) return true;
-		if (!config.getBoolean("ConvertEnchantsAndAttributes"))  return true;
+		if (!config.getBoolean("ConvertEnchantsAndAttributes")) return true;
 
 		for (final Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
 			final Modifier modifier = getModifierFromEnchantment(entry.getKey());
@@ -866,7 +871,8 @@ public class ModManager {
 
 	/**
 	 * set the creator of the item
-	 * @param is the item
+	 *
+	 * @param is     the item
 	 * @param entity the entity that created the item
 	 */
 	private void setCreator(@Nullable final ItemStack is, @Nullable final Entity entity) {
@@ -876,6 +882,7 @@ public class ModManager {
 
 	/**
 	 * get the creator of the item
+	 *
 	 * @param is the item
 	 * @return the creator of the item
 	 */
@@ -888,6 +895,7 @@ public class ModManager {
 
 	/**
 	 * Add the Armor Attributes to the ItemStack
+	 *
 	 * @param is the enchantment
 	 */
 	public void addArmorAttributes(@NotNull final ItemStack is) {
@@ -900,7 +908,8 @@ public class ModManager {
 
 		switch (is.getType()) {
 			case LEATHER_BOOTS, CHAINMAIL_BOOTS, GOLDEN_BOOTS, LEATHER_HELMET -> armor = 1.0d;
-			case IRON_BOOTS, CHAINMAIL_HELMET, IRON_HELMET, GOLDEN_HELMET, TURTLE_HELMET, LEATHER_LEGGINGS -> armor = 2.0d;
+			case IRON_BOOTS, CHAINMAIL_HELMET, IRON_HELMET, GOLDEN_HELMET, TURTLE_HELMET, LEATHER_LEGGINGS ->
+					armor = 2.0d;
 			case DIAMOND_BOOTS, DIAMOND_HELMET -> {
 				armor = 3.0d;
 				toughness = 2.0d;
@@ -995,14 +1004,14 @@ public class ModManager {
 	}
 
 	/**
-	 * @param m the material the item should be
-	 * @param name the name of the item
+	 * @param m           the material the item should be
+	 * @param name        the name of the item
 	 * @param description the description of the item, the description is split into multiple lines depending on length
-	 * @param mod the modifier that is applied to the item
+	 * @param mod         the modifier that is applied to the item
 	 * @return the created ItemStack
 	 */
 	public @NotNull ItemStack createModifierItem(@NotNull final Material m, @NotNull final String name,
-												 @NotNull final String description, @NotNull final Modifier mod) {
+	                                             @NotNull final String description, @NotNull final Modifier mod) {
 		final ItemStack is = new ItemStack(m, 1);
 		final ItemMeta meta = is.getItemMeta();
 
@@ -1152,18 +1161,18 @@ public class ModManager {
 
 		final ItemMeta meta = tool.getItemMeta();
 
-        if (!(meta instanceof Damageable damageable) || tool.getType().getMaxDurability() - damageable.getDamage() > 2)
-            return true;
+		if (!(meta instanceof Damageable damageable) || tool.getType().getMaxDurability() - damageable.getDamage() > 2)
+			return true;
 
-        if (changeState) {
-            cancellable.setCancelled(true);
+		if (changeState) {
+			cancellable.setCancelled(true);
 
-            if (config.getBoolean("Sound.OnBreaking", true)) {
-                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
-            }
-        }
-        return false;
-    }
+			if (config.getBoolean("Sound.OnBreaking", true)) {
+				player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * removes all recipes that are registered by MineTinker

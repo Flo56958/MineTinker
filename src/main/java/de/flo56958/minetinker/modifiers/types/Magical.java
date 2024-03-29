@@ -162,7 +162,7 @@ public class Magical extends Modifier implements Listener {
 		double newDamage = oldDamage * Math.pow(this.multiplierDamagePerLevel, modLevel);
 		event.getEvent().setDamage(newDamage);
 		ChatWriter.logModifier(event.getPlayer(), event, this, event.getTool(),
-				String.format("Damage(%.2f -> %.2f [%.4f])", oldDamage, newDamage, newDamage/oldDamage));
+				String.format("Damage(%.2f -> %.2f [%.4f])", oldDamage, newDamage, newDamage / oldDamage));
 		if (this.hasKnockback) event.getEntity().setVelocity(arrow.getVelocity().normalize().multiply(modLevel));
 	}
 }

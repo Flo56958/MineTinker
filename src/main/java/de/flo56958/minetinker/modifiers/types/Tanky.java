@@ -150,7 +150,7 @@ public class Tanky extends Modifier implements Listener {
 				Bukkit.getScheduler().runTaskLater(this.getSource(), () -> {
 					try {
 						event.getPlayer().setHealth(health);
-					} catch(IllegalArgumentException ignored) {}
+					} catch (IllegalArgumentException ignored) {}
 				}, 10L);
 				DataHandler.removeTag(chest, "modifier_tanky_health_save");
 			} else {

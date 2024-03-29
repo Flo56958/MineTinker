@@ -42,7 +42,7 @@ public class CraftItemListener implements Listener {
 			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 0.5F);
 
 		ChatWriter.log(false, player.getName() + " crafted " + ChatWriter.getDisplayName(tool)
-					+ "! It is now a MineTinker-Item!");
+				+ "! It is now a MineTinker-Item!");
 	}
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -51,10 +51,10 @@ public class CraftItemListener implements Listener {
 		final CraftingInventory inv = event.getInventory();
 		for (final ItemStack is : inv.getMatrix()) {
 			if (is == null) continue;
-            if (!modManager.isModifierItem(is)) continue;
+			if (!modManager.isModifierItem(is)) continue;
 
 			inv.setResult(null);
 			break;
-        }
+		}
 	}
 }

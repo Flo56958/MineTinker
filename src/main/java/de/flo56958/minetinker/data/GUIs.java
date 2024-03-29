@@ -168,7 +168,7 @@ public class GUIs {
 					final StringBuilder e = new StringBuilder();
 					enchants.forEach(enchant ->
 							e.append(LanguageManager.getString("Enchantment." + enchant.getKey().getKey())).append(", "));
-					lore.addAll(ChatWriter.splitString(e.substring(0, e.length() - 2),30));
+					lore.addAll(ChatWriter.splitString(e.substring(0, e.length() - 2), 30));
 				}
 
 				// Allowed Tools
@@ -179,7 +179,7 @@ public class GUIs {
 				final List<ToolType> types = m.getAllowedTools();
 				types.sort(Comparator.comparing(t -> LanguageManager.getString("ToolType." + t.name())));
 				types.forEach(type -> builder.append(LanguageManager.getString("ToolType." + type.name())).append(", "));
-				lore.addAll(ChatWriter.splitString(builder.substring(0, builder.length() - 2),30));
+				lore.addAll(ChatWriter.splitString(builder.substring(0, builder.length() - 2), 30));
 
 				// Apply lore changes
 				meta.setLore(lore);
@@ -247,6 +247,7 @@ public class GUIs {
 								final Runnable runnable = new Runnable() {
 									private final HashMap<GUI.Window.Button, RecipeChoice.MaterialChoice> map = choices;
 									private int counter = 0;
+
 									@Override
 									public void run() {
 										for (Map.Entry<GUI.Window.Button, RecipeChoice.MaterialChoice> entry : map.entrySet()) {
@@ -283,7 +284,7 @@ public class GUIs {
 
 		if (i == 0) modifierGUI.removeWindow(currentPage);
 
-		while(i % 28 != 0) {
+		while (i % 28 != 0) {
 			currentPage.addButton((i % 7) + 1, (i / 7) + 1, new ItemStack(Material.AIR));
 			i++;
 		}
@@ -340,7 +341,7 @@ public class GUIs {
 			toolmap.put(ToolType.CROSSBOW, new ItemStack(Material.CROSSBOW, 1));
 			toolmap.put(ToolType.TRIDENT, new ItemStack(Material.TRIDENT, 1));
 
-            toolmap.put(ToolType.ELYTRA, new ItemStack(Material.ELYTRA, 1));
+			toolmap.put(ToolType.ELYTRA, new ItemStack(Material.ELYTRA, 1));
 			toolmap.put(ToolType.HELMET, new ItemStack(Material.DIAMOND_HELMET, 1));
 			toolmap.put(ToolType.CHESTPLATE, new ItemStack(Material.DIAMOND_CHESTPLATE, 1));
 			toolmap.put(ToolType.LEGGINGS, new ItemStack(Material.DIAMOND_LEGGINGS, 1));
@@ -356,53 +357,53 @@ public class GUIs {
 
 			final GUI filterGUI = new GUI(MineTinker.getPlugin());
 			final GUI.Window filterPage = filterGUI.addWindow(6, LanguageManager.getString("GUIs.Modifiers.FilterButton"));
-            for (final ToolType type : toolTypes) {
-                final List<Material> materials = Arrays.asList(type.getToolMaterials().toArray(new Material[0]));
-                materials.sort(Comparator.comparing(Material::getMaxDurability));
-                final ItemStack item = toolmap.get(type);
-                final ItemMeta itemMeta = item.getItemMeta();
-                int slot = switch (type) {
-                    case ALL -> 5 * 9 + 4;
-                    case ARMOR -> 5 * 9 + 5;
-                    case TOOLS -> 5 * 9 + 3;
-                    case AXE -> 2 * 9 + 0;
-                    case HOE -> 4 * 9 + 0;
-                    case PICKAXE -> 1 * 9 + 0;
-                    case SHOVEL -> 3 * 9 + 0;
-                    case SWORD -> 0 * 9 + 0;
-                    case BOW -> 1 * 9 + 2;
-                    case CROSSBOW -> 2 * 9 + 2;
-                    case TRIDENT -> 3 * 9 + 2;
-                    case ELYTRA -> 1 * 9 + 6;
-                    case HELMET -> 0 * 9 + 5;
-                    case CHESTPLATE -> 1 * 9 + 5;
-                    case LEGGINGS -> 2 * 9 + 5;
-                    case BOOTS -> 3 * 9 + 5;
-                    case SHIELD -> 1 * 9 + 4;
-                    case FISHINGROD -> 1 * 9 + 8;
-                    case SHEARS -> 2 * 9 + 8;
-                    default -> -1;
-                };
-                final List<Modifier> mods = ModManager.instance().getAllowedMods();
-                mods.removeIf(mod -> mod.getAllowedTools().stream().map(ToolType::getToolMaterials)
-                        .flatMap(HashSet::stream).noneMatch(type.getToolMaterials()::contains));
+			for (final ToolType type : toolTypes) {
+				final List<Material> materials = Arrays.asList(type.getToolMaterials().toArray(new Material[0]));
+				materials.sort(Comparator.comparing(Material::getMaxDurability));
+				final ItemStack item = toolmap.get(type);
+				final ItemMeta itemMeta = item.getItemMeta();
+				int slot = switch (type) {
+					case ALL -> 5 * 9 + 4;
+					case ARMOR -> 5 * 9 + 5;
+					case TOOLS -> 5 * 9 + 3;
+					case AXE -> 2 * 9 + 0;
+					case HOE -> 4 * 9 + 0;
+					case PICKAXE -> 1 * 9 + 0;
+					case SHOVEL -> 3 * 9 + 0;
+					case SWORD -> 0 * 9 + 0;
+					case BOW -> 1 * 9 + 2;
+					case CROSSBOW -> 2 * 9 + 2;
+					case TRIDENT -> 3 * 9 + 2;
+					case ELYTRA -> 1 * 9 + 6;
+					case HELMET -> 0 * 9 + 5;
+					case CHESTPLATE -> 1 * 9 + 5;
+					case LEGGINGS -> 2 * 9 + 5;
+					case BOOTS -> 3 * 9 + 5;
+					case SHIELD -> 1 * 9 + 4;
+					case FISHINGROD -> 1 * 9 + 8;
+					case SHEARS -> 2 * 9 + 8;
+					default -> -1;
+				};
+				final List<Modifier> mods = ModManager.instance().getAllowedMods();
+				mods.removeIf(mod -> mod.getAllowedTools().stream().map(ToolType::getToolMaterials)
+						.flatMap(HashSet::stream).noneMatch(type.getToolMaterials()::contains));
 
-                if (itemMeta != null) {
-                    itemMeta.setDisplayName(ChatColor.WHITE + LanguageManager.getString("ToolType." + type.name()));
-                    itemMeta.setLore(List.of(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.FilterLore")
-                            .replace("%amount", String.valueOf(mods.size()))));
-                    item.setItemMeta(itemMeta);
-                }
+				if (itemMeta != null) {
+					itemMeta.setDisplayName(ChatColor.WHITE + LanguageManager.getString("ToolType." + type.name()));
+					itemMeta.setLore(List.of(ChatColor.WHITE + LanguageManager.getString("GUIs.Modifiers.FilterLore")
+							.replace("%amount", String.valueOf(mods.size()))));
+					item.setItemMeta(itemMeta);
+				}
 
-                final GUI.Window.Button button = filterPage.addButton(slot, item);
+				final GUI.Window.Button button = filterPage.addButton(slot, item);
 
-                if (mods.isEmpty()) continue;
+				if (mods.isEmpty()) continue;
 
-                final GUI filteredGUI = (type == ToolType.ALL)
-                        ? modGUI : createModGUI(mods, LanguageManager.getString("ToolType." + type.name()) + ": ");
-                if (filteredGUI != modGUI) guis.add(filteredGUI);
-                button.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(button, filteredGUI.getWindow(0)));
-            }
+				final GUI filteredGUI = (type == ToolType.ALL)
+						? modGUI : createModGUI(mods, LanguageManager.getString("ToolType." + type.name()) + ": ");
+				if (filteredGUI != modGUI) guis.add(filteredGUI);
+				button.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(button, filteredGUI.getWindow(0)));
+			}
 
 			final ItemStack filler = new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1);
 			final ItemMeta fillerMeta = filler.getItemMeta();
@@ -433,7 +434,7 @@ public class GUIs {
 			int pageNo = 1;
 			GUI.Window currentPage = configurationsGUI.addWindow(6,
 					LanguageManager.getString("GUIs.ConfigurationEditor.Title")
-					.replace("%pageNo", String.valueOf(pageNo++)));
+							.replace("%pageNo", String.valueOf(pageNo++)));
 			addNavigationButtons(currentPage);
 			ItemStack reload = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
 			ItemMeta meta = reload.getItemMeta();
@@ -655,9 +656,9 @@ public class GUIs {
 						helper.setAmount(buttonStack, (int) value);
 
 						currentButton.addAction(ClickType.LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, helper.getRunnable(1)))
-							.addAction(ClickType.RIGHT, new ButtonAction.RUN_RUNNABLE(currentButton, helper.getRunnable(-1)))
-							.addAction(ClickType.SHIFT_LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, helper.getRunnable(10)))
-							.addAction(ClickType.SHIFT_RIGHT, new ButtonAction.RUN_RUNNABLE(currentButton, helper.getRunnable(-10)));
+								.addAction(ClickType.RIGHT, new ButtonAction.RUN_RUNNABLE(currentButton, helper.getRunnable(-1)))
+								.addAction(ClickType.SHIFT_LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, helper.getRunnable(10)))
+								.addAction(ClickType.SHIFT_RIGHT, new ButtonAction.RUN_RUNNABLE(currentButton, helper.getRunnable(-10)));
 
 						ButtonAction.REQUEST_INPUT.PlayerRunnable pRun = (player, input) -> {
 							try {

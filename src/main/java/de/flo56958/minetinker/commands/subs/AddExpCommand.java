@@ -17,11 +17,11 @@ import java.util.*;
 
 /**
  * Syntax of /mt addexp:
- * 		/mt addexp {Player} [Amount]
+ * /mt addexp {Player} [Amount]
  * <p>
  * Legend:
- * 		{ }: not necessary
- * 		[ ]: necessary
+ * { }: not necessary
+ * [ ]: necessary
  */
 public class AddExpCommand implements SubCommand {
 
@@ -100,26 +100,26 @@ public class AddExpCommand implements SubCommand {
 	}
 
 
-	@Override @NotNull
-	public String getName() {
+	@Override
+	public @NotNull String getName() {
 		return "addexp";
 	}
 
-	@Override @NotNull
-	public List<String> getAliases(boolean withName) {
+	@Override
+	public @NotNull List<String> getAliases(boolean withName) {
 		ArrayList<String> aliases = new ArrayList<>();
 		if (withName) aliases.add(getName());
 		aliases.add("ae");
 		return aliases;
 	}
 
-	@Override @NotNull
-	public String getPermission() {
+	@Override
+	public @NotNull String getPermission() {
 		return "minetinker.commands.addexp";
 	}
 
-	@Override @NotNull
-	public Map<Integer, List<ArgumentType>> getArgumentsToParse() {
+	@Override
+	public @NotNull Map<Integer, List<ArgumentType>> getArgumentsToParse() {
 		Map<Integer, List<ArgumentType>> argumentsToParse = new HashMap<>();
 		argumentsToParse.put(1, Arrays.asList(ArgumentType.PLAYER, ArgumentType.RANDOM_NUMBER));
 		argumentsToParse.put(2, Collections.singletonList(ArgumentType.RANDOM_NUMBER));

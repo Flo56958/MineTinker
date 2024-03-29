@@ -99,7 +99,7 @@ public class Melting extends Modifier implements Listener {
 			final double newDamage = oldDamage * (1 - this.bonusMultiplier * level);
 
 			event.getEvent().setDamage(newDamage);
-			ChatWriter.logModifier(player, event, this, tool, String.format("Damage(%.2f -> %.2f [x%.4f])", oldDamage, newDamage, newDamage/oldDamage));
+			ChatWriter.logModifier(player, event, this, tool, String.format("Damage(%.2f -> %.2f [x%.4f])", oldDamage, newDamage, newDamage / oldDamage));
 		} else {
             /*
             The melting effect, if the Player is the Damager
@@ -113,7 +113,7 @@ public class Melting extends Modifier implements Listener {
 				final double newDamage = oldDamage * (1 + this.bonusMultiplier * level);
 
 				event.getEvent().setDamage(newDamage);
-				ChatWriter.logModifier(player, event, this, tool, String.format("Damage(%.2f -> %.2f [x%.4f])", oldDamage, newDamage, newDamage/oldDamage));
+				ChatWriter.logModifier(player, event, this, tool, String.format("Damage(%.2f -> %.2f [x%.4f])", oldDamage, newDamage, newDamage / oldDamage));
 			}
 		}
 	}

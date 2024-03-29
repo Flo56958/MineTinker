@@ -25,7 +25,7 @@ public class ActionBarListener implements Listener {
 				final int xpamount = xpbuffer.get(p.getUniqueId()).getAndSet(0);
 				if (xpamount > 0)
 					ChatWriter.sendActionBar(p, LanguageManager.getString("ActionBar.ExpGain", p)
-						.replaceAll("%amount", "+" + xpamount));
+							.replaceAll("%amount", "+" + xpamount));
 			});
 			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), this, 20);
 		}

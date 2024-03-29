@@ -177,21 +177,21 @@ public class GrindstoneListener implements Listener {
 				return;
 
 			// Works fine even if the getItem method returns null.
-            final ItemStack slot1 = grindstoneInventory.getItem(0);
-            final ItemStack slot2 = grindstoneInventory.getItem(1);
+			final ItemStack slot1 = grindstoneInventory.getItem(0);
+			final ItemStack slot2 = grindstoneInventory.getItem(1);
 
-            if (!(modManager.isToolViable(slot1) || modManager.isArmorViable(slot1)
-                    || modManager.isToolViable(slot2) || modManager.isArmorViable(slot2)))
-                return;
+			if (!(modManager.isToolViable(slot1) || modManager.isArmorViable(slot1)
+					|| modManager.isToolViable(slot2) || modManager.isArmorViable(slot2)))
+				return;
 
-            if (event.getSlotType() != InventoryType.SlotType.RESULT) return;
+			if (event.getSlotType() != InventoryType.SlotType.RESULT) return;
 
-            event.setResult(Event.Result.DENY);
-            event.setCancelled(true);
+			event.setResult(Event.Result.DENY);
+			event.setCancelled(true);
 
-            ChatWriter.sendActionBar(player, LanguageManager.getString("Alert.OnItemGrind", player));
-            if (config.getBoolean("Sound.OnFail"))
-                player.playSound(player.getLocation(), Sound.BLOCK_CHEST_LOCKED, 1.0F, 2F);
-        }
+			ChatWriter.sendActionBar(player, LanguageManager.getString("Alert.OnItemGrind", player));
+			if (config.getBoolean("Sound.OnFail"))
+				player.playSound(player.getLocation(), Sound.BLOCK_CHEST_LOCKED, 1.0F, 2F);
+		}
 	}
 }

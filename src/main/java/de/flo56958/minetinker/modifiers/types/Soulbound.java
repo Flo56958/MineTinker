@@ -28,8 +28,8 @@ public class Soulbound extends Modifier implements Listener {
 
 	private static Soulbound instance;
 	//Must be UUID as if the Player reconnects the Player-Object gets recreated and is not the same anymore
- 	private final HashMap<UUID, ArrayList<ItemStack>> storedItemStacks = new HashMap<>();		//saves ItemStacks until respawn
-	private final HashMap<UUID, ArrayList<Integer>> storedItemStacksLocation = new HashMap<>();	//saves ItemStack slot until respawn
+	private final HashMap<UUID, ArrayList<ItemStack>> storedItemStacks = new HashMap<>();        //saves ItemStacks until respawn
+	private final HashMap<UUID, ArrayList<Integer>> storedItemStacksLocation = new HashMap<>();    //saves ItemStack slot until respawn
 	private boolean toolDroppable;
 	private boolean decrementModLevelOnUse;
 	private int percentagePerLevel;

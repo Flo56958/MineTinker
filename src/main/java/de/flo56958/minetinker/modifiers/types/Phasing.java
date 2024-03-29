@@ -104,8 +104,8 @@ public class Phasing extends Modifier implements Listener {
 		// TODO: Implement DDA for better traversal
 		loop:
 		for (BoundingBox dist = arrow.getBoundingBox().clone();
-			 arrow.getLocation().distance(vector.toLocation(arrow.getWorld())) <= level * 1.5;
-			 dist.shift(direction)) {
+		     arrow.getLocation().distance(vector.toLocation(arrow.getWorld())) <= level * 1.5;
+		     dist.shift(direction)) {
 			vector = dist.getCenter();
 			final Block block = arrow.getLocation().getWorld().getBlockAt(vector.toLocation(arrow.getWorld()));
 			if (block.isPassable()) {

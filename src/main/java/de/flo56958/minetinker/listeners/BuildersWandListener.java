@@ -125,7 +125,7 @@ public class BuildersWandListener implements Listener {
 	private static @NotNull ItemStack buildersWandCreator(@NotNull final Material m, @NotNull final String name) {
 		//TODO: Modify to implement Modifiers
 		final ItemStack wand = new ItemStack(m, 1);
-		final ItemMeta  meta = wand.getItemMeta();
+		final ItemMeta meta = wand.getItemMeta();
 
 		if (meta != null) {
 			final ArrayList<String> lore = new ArrayList<>();
@@ -492,7 +492,7 @@ public class BuildersWandListener implements Listener {
 	}
 
 	private boolean placeBlock(@NotNull final Block b, @NotNull final Player player, @NotNull final Location l,
-							   @NotNull final Location loc, @NotNull final ItemStack item, @NotNull final Vector vector) {
+	                           @NotNull final Location loc, @NotNull final ItemStack item, @NotNull final Vector vector) {
 		if (!b.getWorld().getBlockAt(l).getType().equals(b.getType())) {
 			return false;
 		}

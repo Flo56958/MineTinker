@@ -28,6 +28,7 @@ public class Sunblazer extends Modifier implements Listener {
 
 	private static Sunblazer instance;
 	private double damageMultiplierPerLevel;
+
 	private Sunblazer() {
 		super(MineTinker.getPlugin());
 		customModelData = 10_050;

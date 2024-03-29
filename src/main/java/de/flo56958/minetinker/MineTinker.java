@@ -34,7 +34,7 @@ public class MineTinker extends JavaPlugin {
 
 	private void parseMCVersion() {
 		try {
-			final String version = Bukkit.getVersion().split("MC: ")[1].replaceAll("\\)","");
+			final String version = Bukkit.getVersion().split("MC: ")[1].replaceAll("\\)", "");
 			final String[] ver = version.split("\\.");
 
 			int mayor = Integer.parseInt(ver[0]);
@@ -128,7 +128,7 @@ public class MineTinker extends JavaPlugin {
 		ChatWriter.log(false, LanguageManager.getString("StartUp.Events"));
 
 		if (getConfig().getBoolean("logging.metrics", true)) {
-			final Metrics met = new Metrics(this, 	2833);
+			final Metrics met = new Metrics(this, 2833);
 			met.addCustomChart(new SimplePie("used_language", () -> getConfig().getString("Language", "en_US")));
 		}
 

@@ -133,7 +133,7 @@ public class ItemStatisticsHandler implements Listener {
 					GUI.Window currentPage = blockStats.addWindow(6,
 							LanguageManager.getString("GUIs.Statistics.Blocks.TitlePage")
 									.replace("%tool", ChatWriter.getDisplayName(item))
-							.replaceFirst("%pageNo", String.valueOf(++pageNo)));
+									.replaceFirst("%pageNo", String.valueOf(++pageNo)));
 
 					int i = 0;
 
@@ -165,7 +165,7 @@ public class ItemStatisticsHandler implements Listener {
 							currentPage = blockStats.addWindow(6,
 									LanguageManager.getString("GUIs.Statistics.Blocks.TitlePage")
 											.replace("%tool", ChatWriter.getDisplayName(item))
-									.replace("%pageNo", String.valueOf(++pageNo)));
+											.replace("%pageNo", String.valueOf(++pageNo)));
 
 							GUIs.addNavigationButtons(currentPage);
 							backbutton = currentPage.addButton(4, 5, backStack);
@@ -222,7 +222,7 @@ public class ItemStatisticsHandler implements Listener {
 					GUI.Window currentPage = combatStats.addWindow(6,
 							LanguageManager.getString("GUIs.Statistics.Combat.TitlePage")
 									.replace("%tool", ChatWriter.getDisplayName(item))
-							.replace("%pageNo", String.valueOf(++pageNo)));
+									.replace("%pageNo", String.valueOf(++pageNo)));
 
 					int i = 0;
 
@@ -253,7 +253,7 @@ public class ItemStatisticsHandler implements Listener {
 							currentPage = combatStats.addWindow(6,
 									LanguageManager.getString("GUIs.Statistics.Combat.TitlePage")
 											.replace("%tool", ChatWriter.getDisplayName(item))
-									.replace("%pageNo", String.valueOf(++pageNo)));
+											.replace("%pageNo", String.valueOf(++pageNo)));
 
 							GUIs.addNavigationButtons(currentPage);
 							backbutton = currentPage.addButton(4, 5, backStack);

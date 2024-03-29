@@ -132,7 +132,7 @@ public class Contributor {
 				languages.forEach(o -> this.languages.add(o.getAsString()));
 				this.languages.sort(String::compareToIgnoreCase);
 				StringBuilder sb = new StringBuilder();
-				for(String s : this.languages) {
+				for (String s : this.languages) {
 					sb.append(s).append(", ");
 				}
 				lore.add(ChatColor.GOLD + "Translating Languages: " + ChatColor.WHITE + sb.substring(0, sb.length() - 2));

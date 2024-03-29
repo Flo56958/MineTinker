@@ -47,7 +47,7 @@ public class Knockback extends Modifier implements Listener {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-			return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.SHIELD, ToolType.TRIDENT);
+		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.SWORD, ToolType.SHIELD, ToolType.TRIDENT);
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package de.flo56958.minetinker.commands.subs;
 
 import de.flo56958.minetinker.api.SubCommand;
-import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.utils.LanguageManager;
@@ -11,9 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class EditConfigurationCommand implements SubCommand {
 	@Override
@@ -49,11 +46,6 @@ public class EditConfigurationCommand implements SubCommand {
 	@Override
 	public @NotNull String getPermission() {
 		return "minetinker.commands.editconfig";
-	}
-
-	@Override
-	public @NotNull Map<Integer, List<ArgumentType>> getArgumentsToParse() {
-		return new HashMap<>();
 	}
 
 	@Override

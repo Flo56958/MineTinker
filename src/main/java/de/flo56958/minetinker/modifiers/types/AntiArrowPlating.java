@@ -93,7 +93,7 @@ public class AntiArrowPlating extends Modifier {
 
 			tool.setItemMeta(meta);
 		}
-		
+
 		return true;
 	}
 }

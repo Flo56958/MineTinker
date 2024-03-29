@@ -103,7 +103,7 @@ public class Timber extends Modifier implements Listener {
 			this.grasses.add(Material.MUD);
 	}
 
-    @EventHandler(ignoreCancelled = true)
+	@EventHandler(ignoreCancelled = true)
 	public void effect(WorldSaveEvent e) {
 		if (Bukkit.getOnlinePlayers().isEmpty())
 			events.clear();
@@ -118,7 +118,7 @@ public class Timber extends Modifier implements Listener {
 		if (!modManager.hasMod(tool, this)) return;
 		if (!player.hasPermission(getUsePermission())) return;
 
-        final HashSet<Material> allowed = new HashSet<>(Tag.LOGS.getValues());
+		final HashSet<Material> allowed = new HashSet<>(Tag.LOGS.getValues());
 		allowed.add(Material.MANGROVE_ROOTS); // Not in the material tag
 
 		if (ToolType.SHEARS.contains(tool.getType()) && Tag.LEAVES.isTagged(block.getType())) {
@@ -136,7 +136,8 @@ public class Timber extends Modifier implements Listener {
 		Bukkit.getScheduler().runTaskAsynchronously(this.getSource(), () -> {
 			final HashSet<Block> trunkBlocks = new HashSet<>();
 			final ArrayList<Block> groundBlocks = new ArrayList<>();
-			if (!parseTree(block, trunkBlocks, groundBlocks, allowed) && !ToolType.SHEARS.contains(tool.getType())) return;
+			if (!parseTree(block, trunkBlocks, groundBlocks, allowed) && !ToolType.SHEARS.contains(tool.getType()))
+				return;
 			final List<Block> trunkBlocksList = new ArrayList<>(trunkBlocks);
 			// Sort blocks by distance to the original block (closest first) and break them in that order
 			trunkBlocksList.sort(Comparator.comparingDouble(o -> (o.getLocation().distance(block.getLocation()))));
@@ -198,8 +199,8 @@ public class Timber extends Modifier implements Listener {
 	}
 
 	private boolean parseTree(@NotNull Block block,
-									 @NotNull final HashSet<Block> trunkBlocks, @NotNull final List<Block> groundBlocks,
-							  		 @NotNull @Unmodifiable final HashSet<Material> allowed) {
+	                          @NotNull final HashSet<Block> trunkBlocks, @NotNull final List<Block> groundBlocks,
+	                          @NotNull @Unmodifiable final HashSet<Material> allowed) {
 		final Stack<Block> stack = new Stack<>();
 		boolean hasGround = false, hasLeaves = false;
 		stack.push(block);

@@ -28,6 +28,7 @@ public class Nightseeker extends Modifier implements Listener {
 
 	private static Nightseeker instance;
 	private double damageMultiplierPerLevel;
+
 	private Nightseeker() {
 		super(MineTinker.getPlugin());
 		customModelData = 10_051;

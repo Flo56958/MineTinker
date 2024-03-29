@@ -43,8 +43,8 @@ public class MTEntityDamageEvent extends Event implements Cancellable {
 	 * Event constructor (used for the Armor-Effects as the Player and the Entity are the same)
 	 *
 	 * @param player The Player
-	 * @param tool The ItemStack (MUST be a MineTinker-Tool)
-	 * @param event The BlockBreakEvent from which it was called
+	 * @param tool   The ItemStack (MUST be a MineTinker-Tool)
+	 * @param event  The BlockBreakEvent from which it was called
 	 */
 	public MTEntityDamageEvent(@NotNull Player player, @NotNull ItemStack tool, @NotNull EntityDamageEvent event) {
 		this.player = player;

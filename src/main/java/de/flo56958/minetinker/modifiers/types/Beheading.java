@@ -105,11 +105,11 @@ public class Beheading extends Modifier implements Listener {
 			int n = rand.nextInt(100);
 			int i = this.dropSpawneggChancePerLevel * modManager.getModLevel(tool, this);
 			if (n <= i) {
-					Material mat = Material.getMaterial(mob.getType().toString().toUpperCase() + "_SPAWN_EGG");
-					if (mat != null) {
-						ItemStack egg = new ItemStack(mat, 1);
-						event.getEvent().getDrops().add(egg);
-					}
+				Material mat = Material.getMaterial(mob.getType().toString().toUpperCase() + "_SPAWN_EGG");
+				if (mat != null) {
+					ItemStack egg = new ItemStack(mat, 1);
+					event.getEvent().getDrops().add(egg);
+				}
 			}
 			ChatWriter.logModifier(player, event, this, tool,
 					String.format("DropEggChance(%d/%d)", n, i), "Entity(" + mob.getType() + ")");

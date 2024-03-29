@@ -60,7 +60,7 @@ public enum ToolType {
 		tools.put(ToolType.TRIDENT, new HashSet<>(Collections.singletonList(Material.TRIDENT)));
 		tools.put(ToolType.OTHER, new HashSet<>(Arrays.asList(Material.FLINT_AND_STEEL, Material.CARROT_ON_A_STICK)));
 		tools.put(ToolType.SHEARS, new HashSet<>(Collections.singletonList(Material.SHEARS)));
-		
+
 		tools.put(ToolType.INVALID, new HashSet<>());
 
 		final HashSet<Material> all = new HashSet<>();

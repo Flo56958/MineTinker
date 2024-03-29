@@ -85,7 +85,7 @@ public class Hardened extends Modifier implements Listener {
 
 			if (amount > 0) {
 				meta.removeAttributeModifier(Attribute.GENERIC_ARMOR);
-				AttributeModifier armorAM = switch(ToolType.get(armor.getType())) {
+				AttributeModifier armorAM = switch (ToolType.get(armor.getType())) {
 					case BOOTS -> new AttributeModifier(UUID.randomUUID(), "generic.armor", amount,
 							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
 					case CHESTPLATE, ELYTRA -> new AttributeModifier(UUID.randomUUID(), "generic.armor", amount,
@@ -113,7 +113,7 @@ public class Hardened extends Modifier implements Listener {
 			amount += toughnessPerLevel * level;
 			if (amount > 0) {
 				meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);
-				AttributeModifier toughnessAM = switch(ToolType.get(armor.getType())) {
+				AttributeModifier toughnessAM = switch (ToolType.get(armor.getType())) {
 					case BOOTS -> new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", amount,
 							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
 					case CHESTPLATE, ELYTRA -> new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", amount,

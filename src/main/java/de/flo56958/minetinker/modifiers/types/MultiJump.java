@@ -145,9 +145,9 @@ public class MultiJump extends Modifier implements Listener {
 		final int level = modManager.getModLevel(boots, this);
 		if (level == 0) return;
 
-        final AtomicInteger jumpcharge = this.jumpcharge.computeIfAbsent(e.getPlayer(), k -> new AtomicInteger(0));
+		final AtomicInteger jumpcharge = this.jumpcharge.computeIfAbsent(e.getPlayer(), k -> new AtomicInteger(0));
 
-        //Check if the player is on the ground for a recharge
+		//Check if the player is on the ground for a recharge
 		final Block below = p.getLocation().getWorld().getBlockAt(p.getLocation().add(0, -0.1, 0));
 		if (!below.isPassable()) {
 			if (jumpcharge.get() > 0) {
@@ -161,7 +161,7 @@ public class MultiJump extends Modifier implements Listener {
 		//This will surely get flagged by anti cheat plugins
 		//FIXME: Find a better solution for MultiJump so it does not trigger AntiCheat or can easily be exploited
 		else if (below.getType().isAir()) {
-			if(jumpcharge.get() < level)
+			if (jumpcharge.get() < level)
 				enableFlight(p);
 			else
 				disableFlight(p);
@@ -193,19 +193,19 @@ public class MultiJump extends Modifier implements Listener {
 		final int level = modManager.getModLevel(boots, this);
 		if (level == 0) return;
 
-        final AtomicInteger jumpcharge = this.jumpcharge.computeIfAbsent(e.getPlayer(), k -> new AtomicInteger(0));
+		final AtomicInteger jumpcharge = this.jumpcharge.computeIfAbsent(e.getPlayer(), k -> new AtomicInteger(0));
 
-        //check if the player has enough jumps remaining
-        if (jumpcharge.get() < level) {
-            e.setCancelled(true);
-            jumpcharge.incrementAndGet();
-            //Reset the upwards Motion as if it was a real "new" jump
-            p.setVelocity(p.getVelocity().setY(0.42F));
-        }
+		//check if the player has enough jumps remaining
+		if (jumpcharge.get() < level) {
+			e.setCancelled(true);
+			jumpcharge.incrementAndGet();
+			//Reset the upwards Motion as if it was a real "new" jump
+			p.setVelocity(p.getVelocity().setY(0.42F));
+		}
 
-        //This will remove flight if the player uses a fly command
-        disableFlight(p);
-    }
+		//This will remove flight if the player uses a fly command
+		disableFlight(p);
+	}
 
 	//To avoid that you can have flight without the boots
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)

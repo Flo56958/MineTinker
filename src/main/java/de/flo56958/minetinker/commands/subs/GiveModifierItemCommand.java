@@ -18,11 +18,11 @@ import java.util.*;
 
 /**
  * Syntax of /mt givemodifieritem:
- * 		/mt givemodifieritem {Player} [Modifier] {Amount}
+ * /mt givemodifieritem {Player} [Modifier] {Amount}
  * <p>
  * Legend:
- * 		{ }: not necessary
- * 		[ ]: necessary
+ * { }: not necessary
+ * [ ]: necessary
  */
 public class GiveModifierItemCommand implements SubCommand {
 	@Override

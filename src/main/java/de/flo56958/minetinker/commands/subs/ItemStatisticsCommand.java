@@ -135,7 +135,8 @@ public class ItemStatisticsCommand implements SubCommand {
 	public @NotNull Map<Integer, List<ArgumentType>> getArgumentsToParse() {
 		Map<Integer, List<ArgumentType>> argumentsToParse = new HashMap<>();
 		argumentsToParse.put(1, Collections.singletonList(ArgumentType.PLAYER));
-		return argumentsToParse;	}
+		return argumentsToParse;
+	}
 
 	@Override
 	public @NotNull String syntax() {

@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Lists {
 
 	public static final ConcurrentHashMap<Player, BlockFace> BLOCKFACE = new ConcurrentHashMap<>();
-    public static List<String> DROPLOOT;
+	public static List<String> DROPLOOT;
 	public static List<String> WORLDS;
 	public static List<String> WORLDS_BUILDERSWANDS;
 	public static List<String> NAME_COMMAND_BLACKLIST;
@@ -25,7 +25,7 @@ public class Lists {
 	}
 
 	public static void reload() {
-        final FileConfiguration config = MineTinker.getPlugin().getConfig();
+		final FileConfiguration config = MineTinker.getPlugin().getConfig();
 		WORLDS = config.getStringList("BannedWorlds");
 		WORLDS_BUILDERSWANDS = ConfigurationManager.getConfig("BuildersWand.yml").getStringList("BannedWorlds");
 		NAME_COMMAND_BLACKLIST = config.getStringList("NameCommandBlacklist");

@@ -1,7 +1,6 @@
 package de.flo56958.minetinker.commands.subs;
 
 import de.flo56958.minetinker.api.SubCommand;
-import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
@@ -13,18 +12,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Syntax of /mt modifiers:
- * 		/mt modifiers {-t}
- *  -t will paste information in the chat instead of using the GUI
+ * /mt modifiers {-t}
+ * -t will paste information in the chat instead of using the GUI
  * <p>
  * Legend:
- * 		{ }: not necessary
- * 		[ ]: necessary
+ * { }: not necessary
+ * [ ]: necessary
  */
 public class ModifierListCommand implements SubCommand {
 	@Override
@@ -72,11 +69,6 @@ public class ModifierListCommand implements SubCommand {
 	@Override
 	public @NotNull String getPermission() {
 		return "minetinker.commands.modifiers";
-	}
-
-	@Override
-	public @NotNull Map<Integer, List<ArgumentType>> getArgumentsToParse() {
-		return new HashMap<>();
 	}
 
 	@Override

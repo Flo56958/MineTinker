@@ -37,6 +37,7 @@ public class ShadowDive extends Modifier implements Listener {
 	private final ConcurrentHashMap<Player, Integer> activePlayers = new ConcurrentHashMap<>();
 
 	private BukkitTask task;
+
 	private ShadowDive() {
 		super(MineTinker.getPlugin());
 		customModelData = 10_052;
@@ -128,7 +129,7 @@ public class ShadowDive extends Modifier implements Listener {
 		this.requiredLightLevel = config.getInt("RequiredLightLevel", 3);
 		this.description = this.description.replaceAll("%level", String.valueOf(this.requiredLightLevel));
 
-		if (this.isAllowed()) task = Bukkit.getScheduler().runTaskTimer(this.getSource(), runnable, 0,5);
+		if (this.isAllowed()) task = Bukkit.getScheduler().runTaskTimer(this.getSource(), runnable, 0, 5);
 	}
 
 	private void hidePlayer(Player p, int level) {
@@ -136,9 +137,9 @@ public class ShadowDive extends Modifier implements Listener {
 
 		//Clear all mob targets
 		p.getWorld().getNearbyEntities(p.getLocation(), 64, 64, 64).stream()
-			.filter(entity -> entity instanceof Creature)
-			.filter(entity -> p.equals(((Creature) entity).getTarget()))
-			.forEach(entity -> ((Creature) entity).setTarget(null));
+				.filter(entity -> entity instanceof Creature)
+				.filter(entity -> p.equals(((Creature) entity).getTarget()))
+				.forEach(entity -> ((Creature) entity).setTarget(null));
 
 		//Hide from all players
 		Bukkit.getServer().getOnlinePlayers().forEach(player -> {
@@ -158,14 +159,14 @@ public class ShadowDive extends Modifier implements Listener {
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onJoin(PlayerJoinEvent event) {
-		for(final Player p : activePlayers.keySet()) {
+		for (final Player p : activePlayers.keySet()) {
 			event.getPlayer().hidePlayer(MineTinker.getPlugin(), p);
 		}
 	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onLeave(PlayerQuitEvent event) {
-		for(final Player p : activePlayers.keySet()) {
+		for (final Player p : activePlayers.keySet()) {
 			event.getPlayer().showPlayer(MineTinker.getPlugin(), p);
 		}
 	}

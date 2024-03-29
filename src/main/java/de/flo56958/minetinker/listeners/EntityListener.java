@@ -175,7 +175,7 @@ public class EntityListener implements Listener {
 			tool = player.getInventory().getItemInOffHand(); // Fishing rods can also be thrown in offhand
 
 		// get reference from bow shoot
-		if(event.getEntity().hasMetadata(MineTinker.getPlugin().getName() + "item")) {
+		if (event.getEntity().hasMetadata(MineTinker.getPlugin().getName() + "item")) {
 			List<MetadataValue> tools = event.getEntity().getMetadata(MineTinker.getPlugin().getName() + "item");
 			if (tools.isEmpty()) return;
 			FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
@@ -204,7 +204,7 @@ public class EntityListener implements Listener {
 			modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerArrowShot"), true);
 
 		// add item reference to arrow
-		if(!event.getEntity().hasMetadata(MineTinker.getPlugin().getName() + "item"))
+		if (!event.getEntity().hasMetadata(MineTinker.getPlugin().getName() + "item"))
 			event.getEntity().setMetadata(MineTinker.getPlugin().getName() + "item",
 					new FixedMetadataValue(MineTinker.getPlugin(), tool));
 
@@ -243,10 +243,10 @@ public class EntityListener implements Listener {
 
 	private boolean playSound(final EntityShootBowEvent event, final Player player, final ItemStack offHand) {
 		final Modifier mod = modManager.getModifierFromItem(offHand);
-        if (mod == null || mod.getModItem().getType() != Material.ARROW) return false;
+		if (mod == null || mod.getModItem().getType() != Material.ARROW) return false;
 
-        event.setCancelled(true);
-        player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
-        return true;
-    }
+		event.setCancelled(true);
+		player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
+		return true;
+	}
 }

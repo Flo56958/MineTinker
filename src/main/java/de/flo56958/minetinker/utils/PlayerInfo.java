@@ -80,7 +80,7 @@ public class PlayerInfo implements Listener {
 			default:
 				fishingRodTracker.remove(event.getPlayer().getUniqueId());
 				break;
-        }
+		}
 	}
 
 	private void setCombatTag(@Nullable final Entity entity) {
@@ -140,14 +140,15 @@ public class PlayerInfo implements Listener {
 	 * @param rot The rotation in degrees
 	 * @return The compass facing direction
 	 */
-	private @Nullable static Direction getDirection(final double rot) {
-        return switch ((int) (rot / 45)) {
-            case 0, 7 -> Direction.WEST;
-            case 1, 2 -> Direction.NORTH;
-            case 3, 4 -> Direction.EAST;
-            case 5, 6 -> Direction.SOUTH;
-            default -> null;
-        };
+	private @Nullable
+	static Direction getDirection(final double rot) {
+		return switch ((int) (rot / 45)) {
+			case 0, 7 -> Direction.WEST;
+			case 1, 2 -> Direction.NORTH;
+			case 3, 4 -> Direction.EAST;
+			case 5, 6 -> Direction.SOUTH;
+			default -> null;
+		};
 	}
 
 	// Calculate amount of EXP needed to level up
@@ -164,14 +165,14 @@ public class PlayerInfo implements Listener {
 
 	// Calculate total experience up to a level
 	private static int getExpAtLevel(final int level) {
-    	return switch (level) {
-    	    case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ->
+		return switch (level) {
+			case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ->
 					(int) (Math.pow(level, 2) + 6 * level);
-    	    case 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ->
-    	            (int) (2.5 * Math.pow(level, 2) - 40.5 * level + 360.0);
-    	    default ->
+			case 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ->
+					(int) (2.5 * Math.pow(level, 2) - 40.5 * level + 360.0);
+			default ->
 					(int) (4.5 * Math.pow(level, 2) - 162.5 * level + 2220.0);
-    	};
+		};
 	}
 
 	/**

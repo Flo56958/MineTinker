@@ -48,19 +48,19 @@ public class ConvertToolListener implements Listener {
 			}
 		}
 
-        if (recipeItems != 1) return;
-        if (modManager.isArmorViable(lastItem) || modManager.isToolViable(lastItem) || modManager.isWandViable(lastItem)) {
-            inv.setResult(new ItemStack(Material.AIR, 1));
-            return;
-        }
+		if (recipeItems != 1) return;
+		if (modManager.isArmorViable(lastItem) || modManager.isToolViable(lastItem) || modManager.isWandViable(lastItem)) {
+			inv.setResult(new ItemStack(Material.AIR, 1));
+			return;
+		}
 
-        if (ToolType.isMaterialCompatible(lastItem.getType())) {
-            inv.setResult(lastItem);
-            modManager.convertItemStack(event.getInventory().getResult(), humanEntity);
+		if (ToolType.isMaterialCompatible(lastItem.getType())) {
+			inv.setResult(lastItem);
+			modManager.convertItemStack(event.getInventory().getResult(), humanEntity);
 
-            // Tools should always be a stack of one if not some other plugin does something,
-            // and we do not want to interfere
-            //inv.getResult().setAmount(1);
-        }
-    }
+			// Tools should always be a stack of one if not some other plugin does something,
+			// and we do not want to interfere
+			//inv.getResult().setAmount(1);
+		}
+	}
 }

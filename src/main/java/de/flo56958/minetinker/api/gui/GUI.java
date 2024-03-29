@@ -111,7 +111,7 @@ public class GUI implements Listener {
 	 * shows the [page] page of the GUI to the specified Player
 	 *
 	 * @param player the Player
-	 * @param page the Page shown to the Player
+	 * @param page   the Page shown to the Player
 	 * @throws IllegalStateException when show() was called as the GUI was closed
 	 */
 	public void show(@NotNull final Player player, final int page) {
@@ -292,18 +292,18 @@ public class GUI implements Listener {
 			return addButton(getSlot(x, y), item);
 		}
 
-        /**
-         * Get the button at the given coordinates
+		/**
+		 * Get the button at the given coordinates
 		 *
-         * @param x x-Coordinate
-         * @param y y-Coordinate
-         * @return the Button or null if there is no Button
+		 * @param x x-Coordinate
+		 * @param y y-Coordinate
+		 * @return the Button or null if there is no Button
 		 * @throws IllegalArgumentException when Coordinates less than zero or bigger than the Inventory
-         */
-        @Nullable
-        public Button getButton(final int x, final int y) throws IllegalArgumentException {
-            return buttonMap[getSlot(x, y)];
-        }
+		 */
+		@Nullable
+		public Button getButton(final int x, final int y) throws IllegalArgumentException {
+			return buttonMap[getSlot(x, y)];
+		}
 
 		/**
 		 * Get the button at the given slot
@@ -312,11 +312,11 @@ public class GUI implements Listener {
 		 * @return the Button or null if there is no Button
 		 * @throws IllegalArgumentException when slot is out of bounds
 		 */
-        @Nullable
-        public Button getButton(final int slot) throws IllegalArgumentException {
+		@Nullable
+		public Button getButton(final int slot) throws IllegalArgumentException {
 			if (slot < 0 || slot >= buttonMap.length) throw new IllegalArgumentException("Slot is out of bounds!");
-            return buttonMap[slot];
-        }
+			return buttonMap[slot];
+		}
 
 		/**
 		 * Adds a new Button to the Window

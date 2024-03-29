@@ -83,18 +83,18 @@ public class TinkerListener implements Listener {
 
 		if (MineTinker.getPlugin().getConfig().getBoolean("Sound.OnFail"))
 			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1.0F, 0.5F);
-        if (event.isCommand()) return;
+		if (event.isCommand()) return;
 
-        ChatWriter.sendActionBar(player,
-                LanguageManager.getString("TinkerListener.ModifierFail", player)
-                        .replace("%mod", mod.getColor() + mod.getName() + ChatColor.WHITE)
-                        .replace("%tool", ChatWriter.getDisplayName(tool) + ChatColor.WHITE)
-                        .replace("%cause", event.getFailCause().toString(player)));
-        ChatWriter.log(false, player.getDisplayName() + " failed to apply " + mod.getColor()
-                + mod.getName() + ChatColor.GRAY + " " + (modManager.getModLevel(tool, mod) + 1) + " on "
-                + ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType() + ") ("
-                + event.getFailCause().toString() + ")");
-    }
+		ChatWriter.sendActionBar(player,
+				LanguageManager.getString("TinkerListener.ModifierFail", player)
+						.replace("%mod", mod.getColor() + mod.getName() + ChatColor.WHITE)
+						.replace("%tool", ChatWriter.getDisplayName(tool) + ChatColor.WHITE)
+						.replace("%cause", event.getFailCause().toString(player)));
+		ChatWriter.log(false, player.getDisplayName() + " failed to apply " + mod.getColor()
+				+ mod.getName() + ChatColor.GRAY + " " + (modManager.getModLevel(tool, mod) + 1) + " on "
+				+ ChatWriter.getDisplayName(tool) + ChatColor.GRAY + " (" + tool.getType() + ") ("
+				+ event.getFailCause().toString() + ")");
+	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onToolLevelUp(@NotNull final ToolLevelUpEvent event) {
@@ -178,5 +178,5 @@ public class TinkerListener implements Listener {
 		}
 
 		event.setNewSlots(event.getNewSlots() + config.getInt("AddModifierSlotsPerLevel"));
-    }
+	}
 }

@@ -15,11 +15,11 @@ import java.util.*;
 
 /**
  * Syntax of /mt addmodifier:
- * 		/mt addmodifier [Modifier] {Level}
+ * /mt addmodifier [Modifier] {Level}
  * <p>
  * Legend:
- * 		{ }: not necessary
- * 		[ ]: necessary
+ * { }: not necessary
+ * [ ]: necessary
  */
 public class AddModifierCommand implements SubCommand {
 	@Override

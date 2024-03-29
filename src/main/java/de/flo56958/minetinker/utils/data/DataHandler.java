@@ -35,27 +35,29 @@ public class DataHandler {
 
 	/**
 	 * Checks if the ItemStack has a Tag with the given key and the given dataType.
-	 * @param item The ItemStack to check
-	 * @param key The key of the Tag
+	 *
+	 * @param item     The ItemStack to check
+	 * @param key      The key of the Tag
 	 * @param dataType The dataType of the Tag
+	 * @param <T>      The type of the Tag
+	 * @param <Z>      The type of the value of the Tag
 	 * @return true if the ItemStack has a Tag with the given key and the given dataType, false otherwise
-	 * @param <T> The type of the Tag
-	 * @param <Z> The type of the value of the Tag
 	 */
 	public static <T, Z> boolean hasTag(@NotNull ItemStack item, @NotNull String key, PersistentDataType<T, Z> dataType) {
 		return hasTag(item, key, dataType, false);
 	}
 
 	/**
-     * Checks if the ItemStack has a Tag with the given key and the given dataType.
-     * @param item The ItemStack to check
-     * @param key The key of the Tag
-     * @param dataType The dataType of the Tag
-     * @param useMinecraft If the key should be the Minecraft-Namespace or the Plugin-Namespace
-     * @return true if the ItemStack has a Tag with the given key and the given dataType, false otherwise
-     * @param <T> The type of the Tag
-     * @param <Z> The type of the value of the Tag
-     */
+	 * Checks if the ItemStack has a Tag with the given key and the given dataType.
+	 *
+	 * @param item         The ItemStack to check
+	 * @param key          The key of the Tag
+	 * @param dataType     The dataType of the Tag
+	 * @param useMinecraft If the key should be the Minecraft-Namespace or the Plugin-Namespace
+	 * @param <T>          The type of the Tag
+	 * @param <Z>          The type of the value of the Tag
+	 * @return true if the ItemStack has a Tag with the given key and the given dataType, false otherwise
+	 */
 	public static <T, Z> boolean hasTag(@NotNull ItemStack item, @NotNull String key, PersistentDataType<T, Z> dataType, boolean useMinecraft) {
 		final ItemMeta meta = item.getItemMeta();
 		if (meta == null) return false;
@@ -66,12 +68,13 @@ public class DataHandler {
 
 	/**
 	 * Sets a Tag with the given key and the given value and dataType.
-	 * @param item The ItemStack to set the Tag on
-	 * @param key The key of the Tag
-	 * @param value The value of the Tag
+	 *
+	 * @param item     The ItemStack to set the Tag on
+	 * @param key      The key of the Tag
+	 * @param value    The value of the Tag
 	 * @param dataType The dataType of the Tag
-	 * @param <T> The type of the Tag
-	 * @param <Z> The type of the value of the Tag
+	 * @param <T>      The type of the Tag
+	 * @param <Z>      The type of the value of the Tag
 	 */
 	public static <T, Z> void setTag(@NotNull ItemStack item, @NotNull String key, Z value, PersistentDataType<T, Z> dataType) {
 		setTag(item, key, value, dataType, false);
@@ -79,13 +82,14 @@ public class DataHandler {
 
 	/**
 	 * Sets a Tag with the given key and the given value and dataType.
-	 * @param item The ItemStack to set the Tag on
-	 * @param key The key of the Tag
-	 * @param value The value of the Tag
-	 * @param dataType The dataType of the Tag
+	 *
+	 * @param item         The ItemStack to set the Tag on
+	 * @param key          The key of the Tag
+	 * @param value        The value of the Tag
+	 * @param dataType     The dataType of the Tag
 	 * @param useMinecraft If the key should be the Minecraft-Namespace or the Plugin-Namespace
-	 * @param <T> The type of the Tag
-	 * @param <Z> The type of the value of the Tag
+	 * @param <T>          The type of the Tag
+	 * @param <Z>          The type of the value of the Tag
 	 */
 	public static <T, Z> void setTag(@NotNull ItemStack item, @NotNull String key, Z value, PersistentDataType<T, Z> dataType, boolean useMinecraft) {
 		final ItemMeta meta = item.getItemMeta();
@@ -98,13 +102,14 @@ public class DataHandler {
 
 	/**
 	 * Gets a Tag with the given key and the given dataType.
-	 * @param item The ItemStack to get the Tag from
-	 * @param key The key of the Tag
-	 * @param dataType The dataType of the Tag
+	 *
+	 * @param item         The ItemStack to get the Tag from
+	 * @param key          The key of the Tag
+	 * @param dataType     The dataType of the Tag
 	 * @param defaultValue The value to return if the ItemStack does not have a Tag with the given key and the given dataType
+	 * @param <T>          The type of the Tag
+	 * @param <Z>          The type of the value of the Tag
 	 * @return The value of the Tag or defaultValue if the ItemStack does not have a Tag with the given key and the given dataType
-	 * @param <T> The type of the Tag
-	 * @param <Z> The type of the value of the Tag
 	 */
 	public static <T, Z> @NotNull Z getTagOrDefault(@NotNull ItemStack item, @NotNull String key, PersistentDataType<T, Z> dataType, @NotNull Z defaultValue) {
 		final Z value = getTag(item, key, dataType, false);
@@ -113,12 +118,13 @@ public class DataHandler {
 
 	/**
 	 * Gets a Tag with the given key and the given dataType.
-	 * @param item The ItemStack to get the Tag from
-	 * @param key The key of the Tag
+	 *
+	 * @param item     The ItemStack to get the Tag from
+	 * @param key      The key of the Tag
 	 * @param dataType The dataType of the Tag
+	 * @param <T>      The type of the Tag
+	 * @param <Z>      The type of the value of the Tag
 	 * @return The value of the Tag or null if the ItemStack does not have a Tag with the given key and the given dataType
-	 * @param <T> The type of the Tag
-	 * @param <Z> The type of the value of the Tag
 	 */
 	public static <T, Z> @Nullable Z getTag(@NotNull ItemStack item, @NotNull String key, PersistentDataType<T, Z> dataType) {
 		return getTag(item, key, dataType, false);
@@ -126,13 +132,14 @@ public class DataHandler {
 
 	/**
 	 * Gets a Tag with the given key and the given dataType.
-	 * @param item The ItemStack to get the Tag from
-	 * @param key The key of the Tag
-	 * @param dataType The dataType of the Tag
+	 *
+	 * @param item         The ItemStack to get the Tag from
+	 * @param key          The key of the Tag
+	 * @param dataType     The dataType of the Tag
 	 * @param useMinecraft If the key should be the Minecraft-Namespace or the Plugin-Namespace
+	 * @param <T>          The type of the Tag
+	 * @param <Z>          The type of the value of the Tag
 	 * @return The value of the Tag or null if the ItemStack does not have a Tag with the given key and the given dataType
-	 * @param <T> The type of the Tag
-	 * @param <Z> The type of the value of the Tag
 	 */
 	public static <T, Z> @Nullable Z getTag(@NotNull ItemStack item, @NotNull String key, PersistentDataType<T, Z> dataType, boolean useMinecraft) {
 		final ItemMeta meta = item.getItemMeta();
@@ -144,8 +151,9 @@ public class DataHandler {
 
 	/**
 	 * Removes a Tag with the given key.
+	 *
 	 * @param item The ItemStack to remove the Tag from
-	 * @param key The key of the Tag
+	 * @param key  The key of the Tag
 	 */
 	public static void removeTag(@NotNull ItemStack item, @NotNull String key) {
 		removeTag(item, key, false);
@@ -153,15 +161,16 @@ public class DataHandler {
 
 	/**
 	 * Removes a Tag with the given key.
-	 * @param item The ItemStack to remove the Tag from
-	 * @param key The key of the Tag
+	 *
+	 * @param item         The ItemStack to remove the Tag from
+	 * @param key          The key of the Tag
 	 * @param useMinecraft If the key should be the Minecraft-Namespace or the Plugin-Namespace
 	 */
 	public static void removeTag(@NotNull ItemStack item, @NotNull String key, boolean useMinecraft) {
 		ItemMeta meta = item.getItemMeta();
 		if (meta == null) return;
 		PersistentDataContainer container = meta.getPersistentDataContainer();
-		
+
 		container.remove((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)));
 		item.setItemMeta(meta);
 	}
@@ -169,12 +178,12 @@ public class DataHandler {
 	public static boolean triggerItemDamage(@NotNull Player player, @NotNull ItemStack itemStack, int damage) {
 		ItemMeta meta = itemStack.getItemMeta();
 		if (meta == null) return true;
-        if (meta.isUnbreakable()) return true;
+		if (meta.isUnbreakable()) return true;
 
-        //Call damage event
-        final PlayerItemDamageEvent damageEvent = new PlayerItemDamageEvent(player, itemStack, damage);
-        Bukkit.getPluginManager().callEvent(damageEvent);
-        if (damageEvent.isCancelled()) return false;
+		//Call damage event
+		final PlayerItemDamageEvent damageEvent = new PlayerItemDamageEvent(player, itemStack, damage);
+		Bukkit.getPluginManager().callEvent(damageEvent);
+		if (damageEvent.isCancelled()) return false;
 
 		meta = itemStack.getItemMeta();
 		if (meta instanceof Damageable damageable) {
@@ -184,13 +193,14 @@ public class DataHandler {
 			damageable.setDamage(damageable.getDamage() + damageEvent.getDamage());
 			itemStack.setItemMeta(meta);
 		}
-        return true;
+		return true;
 	}
 
 	/**
 	 * Let the player break a block with the given itemStack through the plugin.
-	 * @param player The player that should break the block
-	 * @param block The block that should be broken
+	 *
+	 * @param player    The player that should break the block
+	 * @param block     The block that should be broken
 	 * @param itemStack The itemStack that is used to break the block
 	 * @return true if the player successfully broke the block, false otherwise
 	 * @throws IllegalArgumentException
@@ -230,7 +240,7 @@ public class DataHandler {
 			}
 			return true;
 		}
-		
+
 		//
 		//Trigger BlockBreakEvent
 		//For interactions with MT itself and other Plugins
@@ -239,39 +249,40 @@ public class DataHandler {
 		//No itemdrops for creative players, but can be changed by other plugins in the event
 		breakEvent.setDropItems(player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR);
 		ItemMeta meta = itemStack.getItemMeta();
-		if (meta != null && !meta.hasEnchant(Enchantment.SILK_TOUCH)) breakEvent.setExpToDrop(calculateExp(block.getType()));
+		if (meta != null && !meta.hasEnchant(Enchantment.SILK_TOUCH))
+			breakEvent.setExpToDrop(calculateExp(block.getType()));
 		Bukkit.getPluginManager().callEvent(breakEvent);
-		
+
 		//Check if Event got cancelled and if not destroy the block and check if the player can successfully break the blocks (incl. drops)
 		//Block#breakNaturally(ItemStack itemStack) can not be used as it drops Items itself (without Event, and we don't want that)
 		if (!breakEvent.isCancelled()) {
 			//Get all drops to drop
 			Collection<ItemStack> items = block.getDrops(itemStack);
-			
+
 			//If the Block is a Container it needs to drop the items inside as well
 			if (block.getState() instanceof Container container && !(block.getState() instanceof ShulkerBox)) {
 				// Check for chests as chest inventories can be spread out over 2 blocks (Chest::getBlockInventory())
 				for (ItemStack stack :
 						container instanceof Chest c
-							? c.getBlockInventory().getContents() : container.getInventory().getContents()) {
+								? c.getBlockInventory().getContents() : container.getInventory().getContents()) {
 					if (stack != null) items.add(stack); //Null items can not be dropped
 				}
 			}
-			
+
 			//Set Block to Material.AIR (effectively breaks the Block)
 			block.setType(Material.AIR);
 			//TODO: Play Sound? - Not needed
-			
+
 			//Check if items need to be dropped
 			if (breakEvent.isDropItems()) {
 				List<Item> itemEntities = items.stream()
-				.map(entry -> player.getWorld().dropItemNaturally(block.getLocation(), entry)) //World#spawnEntity() does not work for Items
-				.collect(Collectors.toList());
-				
+						.map(entry -> player.getWorld().dropItemNaturally(block.getLocation(), entry)) //World#spawnEntity() does not work for Items
+						.collect(Collectors.toList());
+
 				//Trigger BlockDropItemEvent (internally also used for Directing)
 				BlockDropItemEvent event = new BlockDropItemEvent(block, block.getState(), player, new ArrayList<>(itemEntities));
 				Bukkit.getPluginManager().callEvent(event);
-				
+
 				//check if Event got cancelled
 				if (!event.isCancelled()) {
 					//Remove all drops that should be dropped
@@ -279,14 +290,14 @@ public class DataHandler {
 				}
 				itemEntities.forEach(Item::remove);
 			}
-			
+
 			//Check if Exp needs to be dropped, Player should be in survival
 			if (breakEvent.getExpToDrop() > 0 && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
 				//Spawn Experience Orb
 				ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
 				orb.setExperience(breakEvent.getExpToDrop());
 			}
-			
+
 			//Calculate Damage for itemStack
 			meta = itemStack.getItemMeta();
 			//No Damage for creative players
@@ -307,12 +318,13 @@ public class DataHandler {
 			}
 			return true;
 		}
-		
+
 		return false;
 	}
 
 	/**
 	 * Calculates the amount of experience that should be dropped when breaking a block.
+	 *
 	 * @param type The type of the block that should be broken.
 	 * @return The amount of experience that should be dropped when breaking a block.
 	 */

@@ -63,7 +63,8 @@ public class PlayerListener implements Listener {
 		//TODO: Remove if paper/spigot/minecraft bug is resolved
 		//The feature is therefore disabled for creative, should be very low priority to fix as if you are in creative
 		//you should be able to execute a few commands as well
-		if (event.getWhoClicked().getGameMode() == GameMode.CREATIVE || event.getWhoClicked().getGameMode() == GameMode.SPECTATOR) return;
+		if (event.getWhoClicked().getGameMode() == GameMode.CREATIVE || event.getWhoClicked().getGameMode() == GameMode.SPECTATOR)
+			return;
 
 		final ItemStack repair = event.getCursor();
 		if (repair == null) return;
@@ -75,7 +76,7 @@ public class PlayerListener implements Listener {
 
 			final Modifier mod = modManager.getModifierFromItem(repair);
 			if (mod != null) { //shouldn't be necessary
-				while(repair.getAmount() > 0) {
+				while (repair.getAmount() > 0) {
 					if (modManager.addMod((Player) event.getWhoClicked(), tool, mod,
 							false, false, false, true)) {
 						//Mod was successful
@@ -169,45 +170,45 @@ public class PlayerListener implements Listener {
 			}
 		}
 
-        if (!eligible) return;
+		if (!eligible) return;
 
-        final Damageable meta = (Damageable) tool.getItemMeta();
+		final Damageable meta = (Damageable) tool.getItemMeta();
 
-        if (meta == null) return;
+		if (meta == null) return;
 
-        int dura = meta.getDamage();
-        final short maxDura = tool.getType().getMaxDurability();
-        int amount = event.getWhoClicked().getItemOnCursor().getAmount();
+		int dura = meta.getDamage();
+		final short maxDura = tool.getType().getMaxDurability();
+		int amount = event.getWhoClicked().getItemOnCursor().getAmount();
 
-        //Calculate the maximum required Materials to restore to full
-        int requiredMaterial;
-        switch (ToolType.get(tool.getType())) {
-            case AXE, PICKAXE, FISHINGROD, CROSSBOW, BOW -> requiredMaterial = 3;
-            case BOOTS -> requiredMaterial = 4;
-            case CHESTPLATE, ELYTRA -> requiredMaterial = 8;
-            case HELMET -> requiredMaterial = 5;
-            case HOE, TRIDENT, SWORD, SHEARS, OTHER -> requiredMaterial = 2;
-            case LEGGINGS -> requiredMaterial = 7;
-            case SHIELD -> requiredMaterial = 6;
-            case SHOVEL -> requiredMaterial = 1;
-            default -> {
-                return;
-            }
-        }
+		//Calculate the maximum required Materials to restore to full
+		int requiredMaterial;
+		switch (ToolType.get(tool.getType())) {
+			case AXE, PICKAXE, FISHINGROD, CROSSBOW, BOW -> requiredMaterial = 3;
+			case BOOTS -> requiredMaterial = 4;
+			case CHESTPLATE, ELYTRA -> requiredMaterial = 8;
+			case HELMET -> requiredMaterial = 5;
+			case HOE, TRIDENT, SWORD, SHEARS, OTHER -> requiredMaterial = 2;
+			case LEGGINGS -> requiredMaterial = 7;
+			case SHIELD -> requiredMaterial = 6;
+			case SHOVEL -> requiredMaterial = 1;
+			default -> {
+				return;
+			}
+		}
 
-        final float percent = 1.0f / requiredMaterial;
+		final float percent = 1.0f / requiredMaterial;
 
-        while (amount > 0 && dura > 0) {
-            dura = Math.max(Math.round(dura - (maxDura * percent)), 0);
-            amount--;
-        }
+		while (amount > 0 && dura > 0) {
+			dura = Math.max(Math.round(dura - (maxDura * percent)), 0);
+			amount--;
+		}
 
-        meta.setDamage(dura);
-        tool.setItemMeta(meta);
+		meta.setDamage(dura);
+		tool.setItemMeta(meta);
 
-        repair.setAmount(amount);
-        event.setCancelled(true);
-    }
+		repair.setAmount(amount);
+		event.setCancelled(true);
+	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onLootGenerate(@NotNull LootGenerateEvent event) {
@@ -235,10 +236,10 @@ public class PlayerListener implements Listener {
 							LanguageManager.getString("Updater.UpdateAvailable", player));
 					ChatWriter.sendMessage(player, ChatColor.WHITE,
 							LanguageManager.getString("Updater.YourVersion", player)
-							.replace("%ver", MineTinker.getPlugin().getDescription().getVersion()));
+									.replace("%ver", MineTinker.getPlugin().getDescription().getVersion()));
 					ChatWriter.sendMessage(player, ChatColor.WHITE,
 							LanguageManager.getString("Updater.OnlineVersion", player)
-							.replace("%ver", Updater.getOnlineVersion()));
+									.replace("%ver", Updater.getOnlineVersion()));
 				}
 			}
 		}
@@ -307,19 +308,19 @@ public class PlayerListener implements Listener {
 			meta.removeStoredEnchant(entry.getKey());
 		}
 
-        if (!meta.getStoredEnchants().isEmpty()) {
+		if (!meta.getStoredEnchants().isEmpty()) {
 			event.getItem().setItemMeta(meta);
 			return;
 		}
 
-        // This seems not to work when the item is in the offhand, and can lead to bugs when nbt data is involved
-        //event.getPlayer().getInventory().removeItem(event.getItem());
+		// This seems not to work when the item is in the offhand, and can lead to bugs when nbt data is involved
+		//event.getPlayer().getInventory().removeItem(event.getItem());
 
-        if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
-            if (event.getPlayer().getInventory().getItemInMainHand().equals(event.getItem()))
-                event.getPlayer().getInventory().setItemInMainHand(null);
-            else
-                event.getPlayer().getInventory().setItemInOffHand(null);
-        }
-    }
+		if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+			if (event.getPlayer().getInventory().getItemInMainHand().equals(event.getItem()))
+				event.getPlayer().getInventory().setItemInMainHand(null);
+			else
+				event.getPlayer().getInventory().setItemInOffHand(null);
+		}
+	}
 }

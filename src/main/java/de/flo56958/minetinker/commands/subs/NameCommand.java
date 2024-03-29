@@ -1,7 +1,6 @@
 package de.flo56958.minetinker.commands.subs;
 
 import de.flo56958.minetinker.api.SubCommand;
-import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.utils.ChatWriter;
@@ -14,18 +13,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
  * Syntax of /mt convert:
- * 		/mt convert [name]
+ * /mt convert [name]
  * <p>
  * Legend:
- * 		{ }: not necessary
- * 		[ ]: necessary
+ * { }: not necessary
+ * [ ]: necessary
  */
 public class NameCommand implements SubCommand {
 
@@ -78,27 +75,22 @@ public class NameCommand implements SubCommand {
 	}
 
 
-	@Override @NotNull
-	public String getName() {
+	@Override
+	public @NotNull String getName() {
 		return "name";
 	}
 
-	@Override @NotNull
-	public List<String> getAliases(boolean withName) {
+	@Override
+	public @NotNull List<String> getAliases(boolean withName) {
 		ArrayList<String> aliases = new ArrayList<>();
 		if (withName) aliases.add(getName());
 		aliases.add("n");
 		return aliases;
 	}
 
-	@Override @NotNull
-	public String getPermission() {
+	@Override
+	public @NotNull String getPermission() {
 		return "minetinker.commands.name";
-	}
-
-	@Override @NotNull
-	public Map<Integer, List<ArgumentType>> getArgumentsToParse() {
-		return new HashMap<>();
 	}
 
 	@Override

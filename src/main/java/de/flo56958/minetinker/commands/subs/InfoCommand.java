@@ -6,7 +6,6 @@ import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.api.gui.ButtonAction;
 import de.flo56958.minetinker.api.gui.GUI;
-import de.flo56958.minetinker.commands.ArgumentType;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.data.contributor.Contributor;
 import de.flo56958.minetinker.utils.ChatWriter;
@@ -135,11 +134,6 @@ public class InfoCommand implements SubCommand {
 	@Override
 	public @NotNull String getPermission() {
 		return "minetinker.commands.info";
-	}
-
-	@Override
-	public @NotNull Map<Integer, List<ArgumentType>> getArgumentsToParse() {
-		return new HashMap<>();
 	}
 
 	@Override

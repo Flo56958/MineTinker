@@ -15,11 +15,11 @@ import java.util.*;
 
 /**
  * Syntax of /mt removemodifier:
- * 		/mt removemodifier [Modifier] {Amount}
+ * /mt removemodifier [Modifier] {Amount}
  * <p>
  * Legend:
- * 		{ }: not necessary
- * 		[ ]: necessary
+ * { }: not necessary
+ * [ ]: necessary
  */
 public class RemoveModifierCommand implements SubCommand {
 	@Override
