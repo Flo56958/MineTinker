@@ -113,7 +113,8 @@ public class BlockListener implements Listener {
 		if (norm == null) return;
 
 		if (modManager.isModifierItem(norm)) {
-			event.setCancelled(true);
+			if (!isUIBlock(event.getClickedBlock()))
+				event.setCancelled(true);
 			return;
 		}
 
