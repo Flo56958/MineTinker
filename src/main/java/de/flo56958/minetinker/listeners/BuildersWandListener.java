@@ -18,10 +18,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.Damageable;
@@ -540,5 +543,29 @@ public class BuildersWandListener implements Listener {
 
 		nb.setBlockData(bd, true); //incl. physics update but does not work on torches
 		return true;
+	}
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
+	public void onEnchant(@NotNull final PrepareItemEnchantEvent event) {
+		if (Lists.WORLDS_BUILDERSWANDS.contains(event.getEnchanter().getWorld().getName())) {
+			return;
+		}
+
+		final ItemStack wand = event.getItem();
+
+		if (!modManager.isWandViable(wand)) {
+			return;
+		}
+
+		event.setCancelled(true);
+	}
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
+	public void onBookEnchant(@NotNull final PrepareAnvilEvent event) {
+		if (!modManager.isWandViable(event.getResult())) {
+			return;
+		}
+
+		event.setResult(null);
 	}
 }
