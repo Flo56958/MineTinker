@@ -6,7 +6,9 @@ import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -89,14 +91,25 @@ public class Undead extends Modifier implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onAttack(@NotNull EntityDamageByEntityEvent event) {
 		if (!this.disableAttacks) return;
-		if (!(event.getDamager() instanceof Player player)) return;
+		Entity damager = event.getDamager();
+		if (damager instanceof Projectile projectile) {
+			if (projectile.getShooter() instanceof Entity shooter) {
+				damager = shooter;
+			}
+		}
+
+		if (!(damager instanceof Player player)) return;
 		if (event.getEntity() instanceof Player) return;
 		if (!player.hasPermission(getUsePermission())) return;
 
-		ItemStack helmet = player.getInventory().getHelmet();
+		final ItemStack helmet = player.getInventory().getHelmet();
 		if (!modManager.isArmorViable(helmet)) return;
 		if (!modManager.hasMod(helmet, this)) return;
 
 		event.setCancelled(true);
+
+		if (event.getDamager() instanceof Projectile projectile) {
+			projectile.remove();
+		}
 	}
 }
