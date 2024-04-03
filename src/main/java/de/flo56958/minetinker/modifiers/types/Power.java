@@ -289,7 +289,8 @@ public class Power extends Modifier implements Listener {
 
 		ChatWriter.logModifier(player, event, this, tool);
 
-		if (!DataHandler.triggerItemDamage(player, tool, 1)) return;
+		if (player.getGameMode() != org.bukkit.GameMode.CREATIVE)
+			if (!DataHandler.triggerItemDamage(player, tool, 1)) return;
 
 		block.setType(Material.FARMLAND); // Event only does Plugin event (no vanilla conversion to Farmland and Tool-Damage)
 	}
@@ -320,7 +321,8 @@ public class Power extends Modifier implements Listener {
 
 		ChatWriter.logModifier(player, event, this, tool);
 
-		if (!DataHandler.triggerItemDamage(player, tool, 1)) return;
+		if (player.getGameMode() != org.bukkit.GameMode.CREATIVE)
+			if (!DataHandler.triggerItemDamage(player, tool, 1)) return;
 
 		block.setType(Material.DIRT_PATH); // Event only does Plugin event (no vanilla conversion to Pathway and Tool-Damage)
 	}
@@ -342,7 +344,8 @@ public class Power extends Modifier implements Listener {
 			final Material log = Material.getMaterial("STRIPPED_" + block.getType().name());
 			if (log == null) return;
 
-			if (!DataHandler.triggerItemDamage(player, tool, 1)) return;
+			if (player.getGameMode() != org.bukkit.GameMode.CREATIVE)
+				if (!DataHandler.triggerItemDamage(player, tool, 1)) return;
 
 			block.setType(log); // Event only does Plugin event (no vanilla conversion to stripped and Tool-Damage)
 		}

@@ -126,6 +126,8 @@ public class Farming extends Modifier implements Listener {
 		// check if block is bone meal-able
 		if (!block.applyBoneMeal(event.getEvent().getBlockFace())) return;
 
+		if (player.getGameMode() == GameMode.CREATIVE) return;
+
 		final int damage = boneMealDurabilityCost - (boneMealDurabilityCostReductionPerLevel * (modManager.getModLevel(tool, this) - 1));
 		DataHandler.triggerItemDamage(player, tool, damage);
 	}

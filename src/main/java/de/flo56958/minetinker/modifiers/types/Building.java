@@ -61,7 +61,7 @@ public class Building extends Modifier implements Listener {
 
 		config.addDefault("Allowed", true);
 		config.addDefault("MaxLevel", 1);
-		config.addDefault("SlotCost", 0);
+		config.addDefault("SlotCost", 1);
 		config.addDefault("Color", "%GREEN%");
 		config.addDefault("ModifierItemMaterial", Material.GRASS_BLOCK.name());
 		config.addDefault("UseDurability", true);
