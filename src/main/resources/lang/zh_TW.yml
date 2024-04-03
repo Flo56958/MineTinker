@@ -5,8 +5,6 @@ Alert.InternalError: "%RED%發生內部錯誤!"
 Alert.OnCooldown: "%RED%技能尚在冷卻!"
 
 StartUp.Commands: "指令已註冊!"
-StartUp.BuildersWands: "已啟用建造工具杖!"
-StartUp.EasyHarvest: "簡易農作物收割已啟用!"
 StartUp.Events: "事件已註冊!"
 StartUp.GUIs: "正在加載用戶界面!"
 StartUp.StdLogging: "標准信息日誌已啟用. 你可以在配置文件中的Logging.Standard一欄禁用!"

@@ -1,8 +1,6 @@
 Alert.OnItemBreak: "%RED%Görünüşe göre aletin kırılmış! 1 sağlamlıkla geri veriyorum."
 
 StartUp.Commands: "Kayıtlı komutlar!"
-StartUp.BuildersWands: "İnşaatçı Asaları etkinleştirildi!"
-StartUp.EasyHarvest: "KolayHasat etkinleştirildi!"
 StartUp.Events: "Kayıtlı Etkinlikler!"
 StartUp.GUIs: "GUIler yükleniyor!"
 StartUp.StdLogging: "Standart Günlükleme etkin. Günlükleme'nin içindeki ayardan bunu devre dışı bırakabilirsiniz. Standart!"
@@ -10,18 +8,6 @@ StartUp.DebugLogging: "Hata Ayıklama Günlüklemesi etkin. Günlükleme'nin iç
 StartUp.Incompatible:
   Start: "Uyuşmayan eklentiler için arama başlatılıyor... Bunu Ana Ayarlar'dan kapatabilirsiniz."
   Found: "%plugin bulundu. En iyi uyumluluk için MineTinker'a ince ayarlar yapılıyor!"
-
-Builderswand.NameWood: "Tahta İnşaatçı Asası"
-Builderswand.NameStone: "Taş İnşaatçı Asası"
-Builderswand.NameIron: "Demir İnşaatçı Asası"
-Builderswand.NameGold: "Altın İnşaatçı Asası"
-Builderswand.NameDiamond: "Elmas İnşaatçı Asası"
-Builderswand.Description: "%WHITE%Mine-Tinker-İnşaatçıAsası"
-Builderswand.Error.CraftWood: "Tahta İnşaatçı Asası için tarif kaydedilemedi!"
-Builderswand.Error.CraftStone: "Taş İnşaatçı Asası için tarif kaydedilemedi!"
-Builderswand.Error.CraftIron: "Demir İnşaatçı Asası için tarif kaydedilemedi!"
-Builderswand.Error.CraftGold: "Altın İnşaatçı Asası için tarif kaydedilemedi!"
-Builderswand.Error.CraftDiamond: "Elmas İnşaatçı Asası için tarif kaydedilemedi!"
 
 Commands.Info.Line1: "MineTinker (%ver) Flo56958 tarafından yapılan bir plugindir."
 Commands.Info.Line2: "MineTinker başka modlardan esinlenerek yapılmıştır. (örn. TinkersConstruct)"
@@ -32,7 +18,6 @@ Commands.Reload.Note1: "NOT: Yeniden yükledikten sonra eklenti düzgün çalı�
 Commands.Reload.Recipes: "Tarifler temizleniyor!"
 Commands.Reload.Configs: "Ayarlar yeniden yükleniyor!"
 Commands.Reload.ModManager: "ModYöneticisi yeniden yükleniyor!"
-Commands.Reload.Builderswands: "İnşaatçı Asaları yeniden yükleniyor!"
 Commands.Reload.GUIs: "GUIler yeniden yükleniyor!"
 Commands.Reload.Finish: "Yeniden yükleme bitti!"
 Commands.ModList: "Kullanılabilir Modifikasyonlar:"

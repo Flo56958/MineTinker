@@ -1,8 +1,6 @@
 Alert.OnItemBreak: "%RED%ツールが壊れかけています!耐久値 1 で戻しました"
 
 StartUp.Commands: "コマンドが登録されました!"
-StartUp.BuildersWands: "Builderswandsが有効になりました!"
-StartUp.EasyHarvest: "EasyHarvestが有効になりました!"
 StartUp.Events: "イベントが登録されました!"
 StartUp.GUIs: "GUIsを読み込み中です!"
 StartUp.StdLogging: "Standard Loggingが有効になっています。 Logging.Standardの設定で無効にできます！"
@@ -10,18 +8,6 @@ StartUp.DebugLogging: "Debug Loggingが有効になっています。 Logging.De
 StartUp.Incompatible:
   Start: "互換性のないプラグインの検索を開始しています...mainの設定でこの機能を無効にできます！"
   Found: "%pluginが見つかりました。 MineTinkerを調整して最高の互換性を実現！"
-
-Builderswand.NameWood: "Wooden Builderswand"
-Builderswand.NameStone: "Stone Builderswand"
-Builderswand.NameIron: "Iron Builderswand"
-Builderswand.NameGold: "Golden Builderswand"
-Builderswand.NameDiamond: "Diamond Builderswand"
-Builderswand.Description: "%WHITE%MineTinker-Builderswand"
-Builderswand.Error.CraftWood: "Wooden Builderswandのレシピを登録できませんでした！"
-Builderswand.Error.CraftStone: "Stone Builderswandのレシピを登録できませんでした！"
-Builderswand.Error.CraftIron: "Iron Builderswandのレシピを登録できませんでした！"
-Builderswand.Error.CraftGold: "Golden Builderswandのレシピを登録できませんでした！"
-Builderswand.Error.CraftDiamond: "Diamond Builderswandのレシピを登録できませんでした！"
 
 Commands.Info.Line1: "MineTinker (%ver) は、Flo56958によって作成されたプラグインです。"
 Commands.Info.Line2: "さまざまなmodに触発されています（例：TinkersConstruct）"
@@ -32,7 +18,6 @@ Commands.Reload.Note1: "注：リロード後にプラグインが正しく機�
 Commands.Reload.Recipes: "レシピをクリア！"
 Commands.Reload.Configs: "設定をリロード！"
 Commands.Reload.ModManager: "ModManagerをリロードしています！"
-Commands.Reload.Builderswands: "Builderswandsをリロードしています！"
 Commands.Reload.GUIs: "GUIsをリロードしています！"
 Commands.Reload.Finish: "リロード完了！"
 Commands.ModList: "使用可能なModifiers："

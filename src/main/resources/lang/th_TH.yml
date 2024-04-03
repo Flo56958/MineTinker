@@ -1,14 +1,6 @@
 Alert.OnItemBreak: "%RED%ดูเหมือนว่าเครื่องมือของคุณพัง! เพิ่มความคงทนให้ 1 ค่า"
 
-StartUp.BuildersWands: "ได้เปิด Builderswands แล้ว!"
-StartUp.EasyHarvest: "ได้เปิด EasyHarvest แล้ว!"
 StartUp.GUIs: "กำลังโหลด GUIs!"
-
-Builderswand.NameWood: "คฑาก่อสร้างไม้"
-Builderswand.NameStone: "คฑาก่อสร้างหิน"
-Builderswand.NameIron: "คฑาก่อสร้างเหล็ก"
-Builderswand.NameGold: "คฑาก่อสร้างทอง"
-Builderswand.NameDiamond: "คฑาก่อสร้างเพชร"
 
 Commands.Info.Line1: "MineTinker (%ver) คือปลั๊กอินที่สร้างขึ้นโดย Flo56958"
 Commands.Info.Line2: "ได้รับแรงบัลดานใจ จากมอดต่างๆ (เช่น TinkerConstruct)"

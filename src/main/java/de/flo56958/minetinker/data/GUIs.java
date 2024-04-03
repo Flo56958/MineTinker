@@ -458,7 +458,6 @@ public class GUIs {
 				switch (name) {
 					case "config.yml" -> buttonStack.setType(Material.DIAMOND_PICKAXE);
 					case "Elytra.yml" -> buttonStack.setType(Material.ELYTRA);
-					case "BuildersWand.yml" -> buttonStack.setType(Material.DIAMOND_SHOVEL);
 					default -> {
 						for (Modifier mod : ModManager.instance().getAllMods()) {
 							if (mod.getKey().equals(name.replace(".yml", ""))) {

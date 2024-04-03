@@ -45,8 +45,6 @@ public class ConfigurationManager {
 	public static void reload() {
 		loadConfig("", "layout.yml");
 
-		loadConfig("", "BuildersWand.yml");
-
 		loadConfig("", "Elytra.yml");
 
 		loadConfig("", "Modifiers.yml");

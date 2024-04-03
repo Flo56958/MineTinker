@@ -1,8 +1,6 @@
 Alert.OnItemBreak: "%RED%Sembra che il tuo strumento si sia rotto! Te l'ho ridato in dietro con durabilità 1."
 
 StartUp.Commands: "Comandi Registrati!"
-StartUp.BuildersWands: "Abilitata la bacchetta dei costruttori!"
-StartUp.EasyHarvest: "Abilitata la mietitura facile"
 StartUp.Events: "Eventi Registrati!"
 StartUp.GUIs: "Caricamento delle interfacce utente"
 StartUp.StdLogging: "Le log sandard sono abilitate, Puoi disabilitarle nelle configurazioni sotto la voce Logging.Standard"
@@ -10,18 +8,6 @@ StartUp.DebugLogging: "Le log debug sono abilitate, Puoi disabilitarle nelle con
 StartUp.Incompatible:
   Start: "Inizio della ricerca di plugin non compatibili, Puoi disabilitare questa funzione nelle configurazioni principali!"
   Found: "%plugin trovato. Ottimizzo MineTinker per la migliore compatibilità!"
-
-Builderswand.NameWood: "Bacchetta dei costruttori in legno"
-Builderswand.NameStone: "Bacchetta dei costruttori  in pietra"
-Builderswand.NameIron: "Bacchetta dei costruttori  in ferro"
-Builderswand.NameGold: "Bacchetta dei costruttori  in oro"
-Builderswand.NameDiamond: "Bacchetta dei costruttori  in diamante"
-Builderswand.Description: "%WHITE%MineTinker-Bacchetta dei costruttori "
-Builderswand.Error.CraftWood: "Impossibile registrare la ricetta per la bacchetta dei costruttori in legno!"
-Builderswand.Error.CraftStone: "Impossibile registrare la ricetta per la bacchetta dei costruttori in pietra!"
-Builderswand.Error.CraftIron: "Impossibile registrare la ricetta per la bacchetta dei costruttori in ferro!"
-Builderswand.Error.CraftGold: "Impossibile registrare la ricetta per la bacchetta dei costruttori in oro!"
-Builderswand.Error.CraftDiamond: "Impossibile registrare la ricetta per la bacchetta dei costruttori in diamante!"
 
 Commands.Info.Line1: "MineTinker (%ver) è un Plugin fatto con amore da Flo56958"
 Commands.Info.Line2: "è ispirata da differenti mods come: (TinkerConstruct)"
@@ -32,7 +18,6 @@ Commands.Reload.Note1: "NOTA: è possibile che dopo un reload il plugin non funz
 Commands.Reload.Recipes: "Eliminazione ricette!"
 Commands.Reload.Configs: "Reload delle configurazioni!"
 Commands.Reload.ModManager: "Reload del ModManager!"
-Commands.Reload.Builderswands: "Reload della Bacchetta dei costruttori!"
 Commands.Reload.GUIs: "Reload delle interfacce utente"
 Commands.Reload.Finish: "il reload è terminato"
 Commands.ModList: "Modifiche Possibili:"

@@ -7,8 +7,6 @@ Alert:
 MinecraftAPI: '%RED%Não foi possível conectar à API do Minecraft!'
 StartUp:
 StartUp.Commands: "Comandos registrados!"
-StartUp.BuildersWands: "Ativado Varinhas do Construtor!"
-StartUp.EasyHarvest: "Ativado Colheita Fácil!"
 StartUp.Events: "Registrando eventos!"
 StartUp.GUIs: "Carregando GUIs!"
 StartUp.StdLogging: "O Logging Padrão está habilitado. Você pode desativá-lo nas configurações, em Logging.Standard! "
@@ -16,16 +14,6 @@ StartUp.DebugLogging: "O Logging de Depuração está habilitado. Você pode des
 StartUp.Incompatible:
   Start: "Iniciando busca por plugins incompatíveis... Você pode desabilitar este recurso nas configurações principais!"
   Found: "%plugin encontrado. Ajustando o MineTinker para uma melhor compatibilidade!"
-Builderswand:
-  Name:
-    Wood: 'Varinha do Construtor de Madeira'
-    Stone: 'Varinha do Construtor de Pedra'
-    Iron: 'Varinha do Construtor de Ferro'
-    Gold: 'Varinha do Construtor de Ouro'
-    Diamond: 'Varinha do Construtor de Diamante'
-    Netherite: 'Varinha do Construtor de Netherite'
-  Description: '%WHITE%Varinha do Construtor - MineTinker'
-  Error: 'Não foi possível registrar a receita para %wand!'
 Commands:
   Info:
     Line1: 'MineTinker (%ver) é um Plugin feito por Flo56958.'
@@ -38,7 +26,6 @@ Commands:
     Recipes: 'Limpando Receitas'
     Configs: 'Recarregando Configurações!'
     ModManager: 'Recarregando o Gerenciador de Mods (ModManager)!'
-    Builderswands: 'Recarregando Varinhas do Construtor!'
     GUIs: 'Recarregando Interfáces Gráficas de Usuário (GUI)!'
     Finish: 'Recarregamento concluido!'
   ModList: 'Modificadores Possíveis:'

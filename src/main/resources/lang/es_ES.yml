@@ -6,8 +6,6 @@ Alert.OnCooldown: "%RED%Esta habilidad aun tiene cooldown!"
 Alert.MinecraftAPI: ""
 
 StartUp.Commands: "¡Comandos registrados!"
-StartUp.BuildersWands: "¡Se han activado las varitas de construcción!"
-StartUp.EasyHarvest: "¡Se ha habilitado EasyHarvest!"
 StartUp.Events: "¡Eventos registrados!"
 StartUp.GUIs: "¡Cargando Interfaces de usuario!"
 StartUp.StdLogging: "¡El registro estándar ha sido activado. Puede deshabilitarlo en la configuración en Logging.Standard!"
@@ -15,15 +13,6 @@ StartUp.DebugLogging: "¡El registro de depuración está habilitado. Usted pued
 StartUp.Incompatible:
   Start: "Iniciando la busqueda de Plugins incompatibles... ¡Puedes desactivar esta función en la configuración principal!"
   Found: "Se encontró %plugin. ¡Ajustando MineTinker con la mejor compatibilidad!"
-
-Builderswand.Name.Wood: "Bastón constructor de Madera"
-Builderswand.Name.Stone: "Bastón constructor de Piedra"
-Builderswand.Name.Iron: "Bastón constructor de Hierro"
-Builderswand.Name.Gold: "Bastón constructor de Oro"
-Builderswand.Name.Diamond: "Bastón constructor de Diamante"
-Builderswand.Name.Netherite: ""
-Builderswand.Description: "%WHITE%Bastón constructor del MineTinker"
-Builderswand.Error: ""
 
 Commands.Info.Line1: "MineTinker (%ver) es un plugin hecho por Flo56958."
 Commands.Info.Line2: "Está inspirado en diferentes mods (e.j. Tinkers Construct)"
@@ -34,7 +23,6 @@ Commands.Reload.Note1: "NOTA: ¡Es posible que el plugin no funcione correctamen
 Commands.Reload.Recipes: "¡Limpiando recetas!"
 Commands.Reload.Configs: "¡Recargando configuraciones!"
 Commands.Reload.ModManager: "¡Recargando el ModManager!"
-Commands.Reload.Builderswands: "¡Recargando Builderwands!"
 Commands.Reload.GUIs: "¡Recargando las interfaces de usuario!"
 Commands.Reload.Finish: "¡Recarga terminada!"
 Commands.ModList: "Modificadores posibles:"
