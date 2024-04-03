@@ -32,7 +32,7 @@ public class CraftItemListener implements Listener {
 
 		final ItemStack tool = event.getInventory().getResult();
 
-		if (!(modManager.isToolViable(tool) || modManager.isArmorViable(tool) || modManager.isWandViable(tool)))
+		if (!modManager.isToolViable(tool) && !modManager.isArmorViable(tool))
 			return;
 
 		// If the tools are stacked because of a different plugin we do not want to interfere with that plugin

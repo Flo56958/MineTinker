@@ -75,8 +75,6 @@ public class MineTinker extends JavaPlugin {
 		ModManager.instance();
 		addCoreMods();
 
-		BuildersWandListener.init();
-
 		ChatWriter.reload();
 
 		final TabExecutor cmd = new CommandManager();
@@ -113,12 +111,6 @@ public class MineTinker extends JavaPlugin {
 		elytraConf.addDefault("ExpChanceWhileFlying", 10);
 		ConfigurationManager.saveConfig(elytraConf);
 
-		if (ConfigurationManager.getConfig("BuildersWand.yml").getBoolean("enabled")) {
-			Bukkit.getPluginManager().registerEvents(new BuildersWandListener(), this);
-			BuildersWandListener.reload();
-			ChatWriter.log(false, LanguageManager.getString("StartUp.BuildersWands"));
-		}
-
 		if (getConfig().getBoolean("actionbar-on-exp-gain", false))
 			Bukkit.getPluginManager().registerEvents(new ActionBarListener(), this);
 
@@ -149,13 +141,14 @@ public class MineTinker extends JavaPlugin {
 	}
 
 	private void addCoreMods() {
-		ModManager modManager = ModManager.instance();
+		final ModManager modManager = ModManager.instance();
 		modManager.register(AntiArrowPlating.instance());
 		modManager.register(AntiBlastPlating.instance());
 		modManager.register(Aquaphilic.instance());
 		modManager.register(AutoSmelt.instance());
 		modManager.register(Beheading.instance());
 		modManager.register(Berserk.instance());
+		modManager.register(Building.instance());
 		modManager.register(Channeling.instance());
 		modManager.register(Directing.instance());
 		modManager.register(Drilling.instance());

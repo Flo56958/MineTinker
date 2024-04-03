@@ -178,6 +178,11 @@ Modifier:
     ModifierItemName: "Bloody Redstone"
     DescriptionModifierItem: "Modifier-Item for the Berserk-Modifier"
     Statistic_Used: "Times activated: %amount"
+  Building:
+    Name: "Building"
+    Description: "Right-clicking a block places the same block next to it if you have it in your inventory!"
+    ModifierItemName: "Builder's Block"
+    DescriptionModifierItem: "Modifier-Item for the Building-Modifier"
   Channeling:
     Name: "Channeling"
     Description: "Summon lightning with a chance of %amount per level!"

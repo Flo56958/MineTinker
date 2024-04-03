@@ -31,8 +31,7 @@ public class EnchantingListener implements Listener {
 	public void onTableEnchant(@NotNull final EnchantItemEvent event) {
 		if (!MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantmentsOnEnchant", true)) return;
 		if (!ToolType.ALL.contains(event.getItem().getType())) return; //Something different (like a book)
-		if (!(modManager.isToolViable(event.getItem()) || modManager.isWandViable(event.getItem())
-				|| modManager.isArmorViable(event.getItem()))) //not a MineTinker Tool
+		if (!modManager.isToolViable(event.getItem()) && !modManager.isArmorViable(event.getItem())) //not a MineTinker Tool
 			return;
 
 		final boolean free = !MineTinker.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true);
@@ -77,8 +76,7 @@ public class EnchantingListener implements Listener {
 		final ItemStack book = inv.getItem(1);
 		final ItemStack newTool = inv.getItem(2);
 
-		if (!(modManager.isToolViable(tool) || modManager.isWandViable(tool)
-				|| modManager.isArmorViable(tool))) //not a MineTinker Tool
+		if (!modManager.isToolViable(tool) && !modManager.isArmorViable(tool)) //not a MineTinker Tool
 			return;
 
 		if (book == null || newTool == null) return;
@@ -122,7 +120,7 @@ public class EnchantingListener implements Listener {
 		if (Lists.WORLDS.contains(event.getEnchanter().getWorld().getName())) return;
 
 		final ItemStack tool = event.getItem();
-		if (!modManager.isToolViable(tool) && !modManager.isWandViable(tool) && !modManager.isArmorViable(tool)) return;
+		if (!modManager.isToolViable(tool) && !modManager.isArmorViable(tool)) return;
 
 		if (!MineTinker.getPlugin().getConfig().getBoolean("AllowEnchanting"))
 			event.setCancelled(true);

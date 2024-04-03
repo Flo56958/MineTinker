@@ -69,7 +69,7 @@ public class Power extends Modifier implements Listener {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.AXE, ToolType.HOE, ToolType.PICKAXE, ToolType.SHOVEL);
+		return Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.HOE, ToolType.SHEARS);
 	}
 
 	@Override
@@ -238,7 +238,8 @@ public class Power extends Modifier implements Listener {
 		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType() + ")");
 	}
 
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+	// No ignoreCancelled as Building will cancel Power
+	@EventHandler(priority = EventPriority.HIGH) // High so it is called after the interactions below
 	public void onInteract(@NotNull MTPlayerInteractEvent event) {
 		final Player player = event.getPlayer();
 		final ItemStack tool = event.getTool();
@@ -279,12 +280,12 @@ public class Power extends Modifier implements Listener {
 			//Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
 			return;
 
-		// Also handles central block exp (if Power is disabled this won't be called TODO: fix)
-		modManager.addExp(player, tool,
-				MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
-
 		if (!canUsePower(player, tool)) return;
 		if (!events.containsKey(block.getLocation())) return;
+
+		// central block exp does not give exp TODO: fix
+		modManager.addExp(player, tool,
+				MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
 
 		ChatWriter.logModifier(player, event, this, tool);
 
@@ -311,11 +312,11 @@ public class Power extends Modifier implements Listener {
 			//Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
 			return;
 
-		// Also handles central block exp (if Power is disabled this won't be called TODO: fix)
-		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
-
 		if (!canUsePower(player, tool)) return;
 		if (!events.containsKey(block.getLocation())) return;
+
+		// central block exp does not give exp TODO: fix
+		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
 
 		ChatWriter.logModifier(player, event, this, tool);
 

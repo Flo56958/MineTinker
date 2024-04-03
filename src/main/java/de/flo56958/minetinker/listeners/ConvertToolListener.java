@@ -49,7 +49,7 @@ public class ConvertToolListener implements Listener {
 		}
 
 		if (recipeItems != 1) return;
-		if (modManager.isArmorViable(lastItem) || modManager.isToolViable(lastItem) || modManager.isWandViable(lastItem)) {
+		if (modManager.isArmorViable(lastItem) || modManager.isToolViable(lastItem)) {
 			inv.setResult(new ItemStack(Material.AIR, 1));
 			return;
 		}

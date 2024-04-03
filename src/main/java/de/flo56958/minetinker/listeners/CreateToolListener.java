@@ -66,9 +66,6 @@ public class CreateToolListener implements Listener {
 
 		if (lastItem == null) return;
 
-		final ItemMeta m = currentItem.getItemMeta();
-		if (m != null && modManager.isWandViable(currentItem)) return;
-
 		// Check for converting as we do not do this here
 		if (totalItems == 1 && lastItem.getType() == currentItem.getType()) return;
 

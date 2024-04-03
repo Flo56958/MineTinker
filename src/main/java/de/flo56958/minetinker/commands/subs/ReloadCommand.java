@@ -4,7 +4,6 @@ import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.data.Lists;
-import de.flo56958.minetinker.listeners.BuildersWandListener;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
@@ -43,10 +42,6 @@ public class ReloadCommand implements SubCommand {
 		ChatWriter.sendMessage(sender, ChatColor.WHITE,
 				LanguageManager.getString("Commands.Reload.ModManager", player));
 		modManager.reload();
-
-		ChatWriter.sendMessage(sender, ChatColor.WHITE,
-				LanguageManager.getString("Commands.Reload.Builderswands", player));
-		BuildersWandListener.reload();
 
 		ChatWriter.sendMessage(sender, ChatColor.WHITE,
 				LanguageManager.getString("Commands.Reload.GUIs", player));

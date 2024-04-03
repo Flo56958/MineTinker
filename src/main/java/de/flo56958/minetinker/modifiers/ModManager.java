@@ -645,15 +645,6 @@ public class ModManager {
 	}
 
 	/**
-	 * @param wand the ItemStack
-	 * @return if the ItemStack is viable as MineTinker-Builderswand
-	 */
-	@Contract("null -> false")
-	public boolean isWandViable(@Nullable final ItemStack wand) {
-		return wand != null && DataHandler.hasTag(wand, "identifier_builderswand", PersistentDataType.INTEGER);
-	}
-
-	/**
 	 * Updates the lore of the Item as everything is stored in the NBT-Data
 	 *
 	 * @param is The Itemstack to rewrite the Lore
@@ -781,7 +772,7 @@ public class ModManager {
 		int damage = 0;
 
 		// Don't convert already converted items
-		if (isArmorViable(is) || isToolViable(is) || isWandViable(is)) return false;
+		if (isArmorViable(is) || isToolViable(is)) return false;
 
 		if (is.getItemMeta() instanceof Damageable)
 			damage = ((Damageable) is.getItemMeta()).getDamage();
@@ -799,7 +790,7 @@ public class ModManager {
 		}
 
 		boolean eligible = false;
-		if ((ToolType.AXE.contains(m)
+		if (ToolType.AXE.contains(m)
 				|| ToolType.BOW.contains(m)
 				|| ToolType.CROSSBOW.contains(m)
 				|| ToolType.HOE.contains(m)
@@ -809,7 +800,7 @@ public class ModManager {
 				|| ToolType.TRIDENT.contains(m)
 				|| ToolType.SHEARS.contains(m)
 				|| ToolType.SHIELD.contains(m)
-				|| ToolType.FISHINGROD.contains(m)) && !isWandViable(is)) {
+				|| ToolType.FISHINGROD.contains(m)) {
 			DataHandler.setTag(is, this.ToolIdentifier, 56958, PersistentDataType.INTEGER);
 			eligible = true;
 		}

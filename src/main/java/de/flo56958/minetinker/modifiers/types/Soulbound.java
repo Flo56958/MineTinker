@@ -8,7 +8,6 @@ import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -102,42 +101,41 @@ public class Soulbound extends Modifier implements Listener {
 	public void effect(PlayerDeathEvent event) {
 		if (event.getKeepInventory()) return;
 
-		Player player = event.getEntity();
+		final Player player = event.getEntity();
 		if (!player.hasPermission(getUsePermission())) return;
-		Inventory inventory = player.getInventory();
+		final Inventory inventory = player.getInventory();
 		for (int index = 0; index < inventory.getContents().length; index++) {
 			ItemStack itemStack = inventory.getItem(index);
 			if (itemStack == null) continue; // More consistent nullability in NotNull fields
 
-			if (modManager.isArmorViable(itemStack) || modManager.isToolViable(itemStack) || modManager.isWandViable(itemStack)) {
-				if (!modManager.hasMod(itemStack, this)) continue;
+			if (!modManager.isArmorViable(itemStack) && !modManager.isToolViable(itemStack)) continue;
+			if (!modManager.hasMod(itemStack, this)) continue;
 
-				Random rand = new Random();
-				int n = rand.nextInt(100);
-				int c = modManager.getModLevel(itemStack, this) * percentagePerLevel;
-				ChatWriter.logModifier(player, event, this, itemStack, String.format("Chance(%d/%d)", n, c));
-				if (n > c) continue;
+			Random rand = new Random();
+			int n = rand.nextInt(100);
+			int c = modManager.getModLevel(itemStack, this) * percentagePerLevel;
+			ChatWriter.logModifier(player, event, this, itemStack, String.format("Chance(%d/%d)", n, c));
+			if (n > c) continue;
 
-				storedItemStacks.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>()); // ?
-				storedItemStacksLocation.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>());
+			storedItemStacks.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>()); // ?
+			storedItemStacksLocation.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>());
 
-				ArrayList<ItemStack> stored = storedItemStacks.get(player.getUniqueId());
-				ArrayList<Integer> storedLocation = storedItemStacksLocation.get(player.getUniqueId());
+			ArrayList<ItemStack> stored = storedItemStacks.get(player.getUniqueId());
+			ArrayList<Integer> storedLocation = storedItemStacksLocation.get(player.getUniqueId());
 
-				if (stored.contains(itemStack)) continue;
+			if (stored.contains(itemStack)) continue;
 
-				if (decrementModLevelOnUse) {
-					int newLevel = modManager.getModLevel(itemStack, this) - 1;
+			if (decrementModLevelOnUse) {
+				int newLevel = modManager.getModLevel(itemStack, this) - 1;
 
-					if (newLevel == 0) modManager.removeMod(itemStack, this);
-					else DataHandler.setTag(itemStack, getKey(), modManager.getModLevel(itemStack, this) - 1,
-							PersistentDataType.INTEGER);
-				}
-
-				stored.add(itemStack.clone());
-				storedLocation.add(index);
-				itemStack.setAmount(0);
+				if (newLevel == 0) modManager.removeMod(itemStack, this);
+				else DataHandler.setTag(itemStack, getKey(), modManager.getModLevel(itemStack, this) - 1,
+						PersistentDataType.INTEGER);
 			}
+
+			stored.add(itemStack.clone());
+			storedLocation.add(index);
+			itemStack.setAmount(0);
 		}
 	}
 
@@ -175,9 +173,8 @@ public class Soulbound extends Modifier implements Listener {
 	public void effect(PlayerDropItemEvent event) {
 		if (toolDroppable) return;
 
-		Item item = event.getItemDrop();
-		ItemStack tool = item.getItemStack();
-		if (!(modManager.isArmorViable(tool) || modManager.isToolViable(tool) || modManager.isWandViable(tool))) return;
+		final ItemStack tool = event.getItemDrop().getItemStack();
+		if (!modManager.isArmorViable(tool) && !modManager.isToolViable(tool)) return;
 		if (!modManager.hasMod(tool, this)) return;
 
 		ChatWriter.logModifier(event.getPlayer(), event, this, tool, "Tool not droppable");

@@ -5,10 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
-import org.bukkit.block.Container;
-import org.bukkit.block.ShulkerBox;
+import org.bukkit.block.*;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
@@ -16,7 +14,9 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -175,6 +175,13 @@ public class DataHandler {
 		item.setItemMeta(meta);
 	}
 
+	/**
+	 * Triggers the item damage event for the given player and itemStack and sets the damage.
+	 * @param player    The player that should trigger the item damage event
+	 * @param itemStack The itemStack that should be damaged
+	 * @param damage    The amount of damage that should be dealt
+	 * @return          true if the event was successful, false otherwise
+	 */
 	public static boolean triggerItemDamage(@NotNull Player player, @NotNull ItemStack itemStack, int damage) {
 		ItemMeta meta = itemStack.getItemMeta();
 		if (meta == null) return true;
@@ -193,6 +200,23 @@ public class DataHandler {
 			damageable.setDamage(damageable.getDamage() + damageEvent.getDamage());
 			itemStack.setItemMeta(meta);
 		}
+		return true;
+	}
+
+	public static boolean playerPlaceBlock(@NotNull final Player player, @NotNull final ItemStack itemInHand,
+	                                       @NotNull final Block toPlace, @NotNull final Block placedAgainst,
+	                                       @NotNull final BlockState blockState, @Nullable final BlockData blockData) {
+		//triggers a pseudoevent to find out if the Player can build here
+		final BlockPlaceEvent placeEvent =
+				new BlockPlaceEvent(toPlace, blockState, placedAgainst, itemInHand, player, true, EquipmentSlot.HAND);
+		Bukkit.getPluginManager().callEvent(placeEvent);
+
+		//check the pseudoevent
+		if (!placeEvent.canBuild() || placeEvent.isCancelled())
+			return false;
+
+		toPlace.setType(itemInHand.getType(), true); //incl. physics update
+		if (blockData != null) toPlace.setBlockData(blockData, true); //incl. physics update
 		return true;
 	}
 

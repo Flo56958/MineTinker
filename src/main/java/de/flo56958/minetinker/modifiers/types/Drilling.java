@@ -2,6 +2,7 @@ package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTBlockBreakEvent;
+import de.flo56958.minetinker.api.events.MTPlayerInteractEvent;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
@@ -17,8 +18,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.*;
@@ -53,7 +57,7 @@ public class Drilling extends Modifier implements Listener {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL);
+		return Arrays.asList(ToolType.AXE, ToolType.PICKAXE, ToolType.SHOVEL, ToolType.HOE, ToolType.SHEARS);
 	}
 
 	@Override
@@ -123,16 +127,39 @@ public class Drilling extends Modifier implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true)
-	public void effect(WorldSaveEvent e) {
+	public void effect(@NotNull final WorldSaveEvent event) {
 		if (Bukkit.getOnlinePlayers().isEmpty())
 			events.clear();
 	}
 
-	/**
-	 * The effect when a Block was brocken
-	 *
-	 * @param event The Event
-	 */
+	// No ignoreCancelled as Building will cancel Drilling
+	@EventHandler
+	public void effect(@NotNull final MTPlayerInteractEvent event) {
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getTool();
+		final Block block = event.getEvent().getClickedBlock();
+		if (block == null) return;
+		if (!canUseDrilling(player, tool, block.getLocation())) return;
+
+		BlockFace face = event.getEvent().getBlockFace();
+		if (event.getEvent().getAction() == Action.RIGHT_CLICK_BLOCK && modManager.hasMod(tool, Building.instance()))
+			face = face.getOppositeFace();
+
+		final int level = modManager.getModLevel(tool, this);
+		for (int i = 1; i <= level; i++) {
+			final Block b = block.getRelative(face.getOppositeFace(), i);
+			if (block.getType().isAir()) break;
+			if (events.putIfAbsent(b.getLocation(), 0) != null) break;
+
+			if (modManager.hasMod(tool, Power.instance()))
+				Power.events.put(b.getLocation(), 0);
+
+			Bukkit.getScheduler().runTaskLater(this.getSource(),
+					() -> Bukkit.getPluginManager().callEvent(
+							new PlayerInteractEvent(player, event.getEvent().getAction(), tool, b, event.getEvent().getBlockFace())), 1);
+		}
+	}
+
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTBlockBreakEvent event) {
 		final Player player = event.getPlayer();

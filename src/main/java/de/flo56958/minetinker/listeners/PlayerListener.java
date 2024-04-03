@@ -56,7 +56,7 @@ public class PlayerListener implements Listener {
 		final ItemStack tool = event.getCurrentItem();
 		if (tool == null) return;
 
-		if (!(modManager.isToolViable(tool) || modManager.isWandViable(tool) || modManager.isArmorViable(tool))) return;
+		if (!modManager.isToolViable(tool) && !modManager.isArmorViable(tool)) return;
 		if (!(event.getWhoClicked() instanceof Player)) return;
 
 		//There is a duplication bug in creative, the event does not get executed correctly somehow
