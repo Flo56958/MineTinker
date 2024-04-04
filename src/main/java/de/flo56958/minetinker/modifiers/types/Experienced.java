@@ -4,7 +4,6 @@ import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.api.events.MTEntityDamageByEntityEvent;
 import de.flo56958.minetinker.api.events.MTEntityDamageEvent;
-import de.flo56958.minetinker.api.events.MTPlayerInteractEvent;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
@@ -113,11 +112,6 @@ public class Experienced extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(MTEntityDamageEvent event) {
-		effect(event.getPlayer(), event.getTool(), event);
-	}
-
-	@EventHandler(ignoreCancelled = true)
-	public void effect(MTPlayerInteractEvent event) {
 		effect(event.getPlayer(), event.getTool(), event);
 	}
 
