@@ -121,7 +121,10 @@ public class Farming extends Modifier implements Listener {
 
 		if (event.getEvent().getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
-		if (block.getBlockData() instanceof Ageable ageable && ageable.getAge() == ageable.getMaximumAge()) return;
+		if (block.getBlockData() instanceof Ageable ageable && ageable.getAge() == ageable.getMaximumAge()) {
+			DataHandler.playerBreakBlock(player, block, tool); // old easy harvest crop farming
+			return;
+		}
 
 		// check if block is bone meal-able
 		if (!block.applyBoneMeal(event.getEvent().getBlockFace())) return;
