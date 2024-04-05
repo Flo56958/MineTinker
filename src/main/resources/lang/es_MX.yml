@@ -13,6 +13,10 @@ StartUp.DebugLogging: "Debug Logging is enabled. You should disable it in the co
 
 Commands.Info.Line1: "MineTinker (%ver) is a Plugin made by Flo56958."
 Commands.Info.Line2: "It is inspired by different mods (e.g. TinkersConstruct)"
+Commands.Info.Title: ""
+Commands.Info.Contributors: ""
+Commands.Info.ContributorsAction: ""
+Commands.Info.Failure: ""
 Commands.InvalidArguments: "You have entered invalid command arguments!"
 Commands.InvalidTool: "You need to hold a valid tool in your main hand in order to perform this command!"
 Commands.NoPermission: "You do not have the permission to perform that action!"
@@ -59,6 +63,8 @@ GUIs.Modifiers.ClickToRecipe: "%key to show crafting recipe."
 GUIs.Modifiers.BlockToEnchant: "%key with %mat on %block to enchant item."
 GUIs.Modifiers.SlotCost: "Free slots needed per level: %WHITE%%amount"
 GUIs.Modifiers.MinimumToolLevel: "Minimum Tool Level: %WHITE%%level"
+GUIs.Modifiers.FilterButton: ""
+GUIs.Modifiers.FilterLore: ""
 GUIs.ConfigurationEditor.ReloadPlugin: "Reload MineTinker"
 GUIs.ConfigurationEditor.Change: "Changed %key from %old to %new!"
 GUIs.ConfigurationEditor.Type: "Type: %type"
@@ -76,8 +82,10 @@ GUIs.Statistics.General.Title: "General Statistics"
 GUIs.Statistics.General.Creator: "Creator: %player"
 GUIs.Statistics.General.Created: "Created: %date"
 GUIs.Statistics.Blocks.Title: "Block Statistics"
+GUIs.Statistics.Blocks.TotalAmount: ""
 GUIs.Statistics.Blocks.TitlePage: "Block Statistics for %tool - %pageNo"
 GUIs.Statistics.Blocks.AmountBroken: "%amount times broken"
+GUIs.Statistics.Modifiers.TitlePage: ""
 GUIs.Statistics.Combat.Title: "Combat Statistics"
 GUIs.Statistics.Combat.TitlePage: "Combat Statistics for %tool - %pageNo"
 GUIs.Statistics.Combat.AmountKilled: "%amount times killed"
@@ -144,19 +152,29 @@ Modifier:
     Description: "Smelt ores and other blocks while mining! %chance% chance to activate per level."
     ModifierItemName: "Enhanced Furnace"
     DescriptionModifierItem: "Modifier-Item for the Auto-Smelt-Modifier"
+    Statistic_Used: ""
+    Statistic_Luck: ""
   Beheading:
     Name: "Beheading"
     Description: "%chance% chance to drop the head of the killed mob per level."
     ModifierItemName: "Enchanted Wither-Skull"
     DescriptionModifierItem: "Modifier-Item for the Beheading-Modifier"
+    Statistic_Used: ""
   Berserk:
     Name: "Berserk"
     Description: "Gain an extra strength boost for %duration seconds when your health drops below %percent%!"
     ModifierItemName: "Bloody Redstone"
     DescriptionModifierItem: "Modifier-Item for the Berserk-Modifier"
+    Statistic_Used: ""
+  Building:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Channeling:
     Name: "Channeling"
-    Description: "Summon lightning!"
+    Description: ""
+    Description_OnlyStorms: ""
     ModifierItemName: "Lightning Infused Shard"
     DescriptionModifierItem: "Modifier-Item for the Channeling-Modifier"
   Directing:
@@ -164,17 +182,26 @@ Modifier:
     Description: "Loot from killed mobs or broken Blocks goes directly into your Inventory!"
     ModifierItemName: "Enhanced Compass"
     DescriptionModifierItem: "Modifier-Item for the Directing-Modifier"
+    Statistic_Used: ""
   Drilling:
     Name: "Drilling"
     Description: "Drill one block deeper into the earth per level!"
     ModifierItemName: "Reinforced Drill"
     DescriptionModifierItem: "Modifier-Item for the Drilling-Modifier"
+  Echoing:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Ender:
     Name: "Ender"
     Description: "Teleports you while sneaking to the arrows landing location!"
     ModifierItemName: "Special Endereye"
     DescriptionModifierItem: "Modifier-Item for the Ender-Modifier"
     TeleportationProhibited: "You can't swap places with this Player!"
+    Statistic_Used: ""
+    Statistic_Distance: ""
+    Statistic_Swapped: ""
   Evasive:
     Name: "Evasive"
     Description: "Chance to dodge incoming attacks (%chance per Level) - %sneakX when sneaking, %sprintX when sprinting, %pvpX when in PvP"
@@ -182,14 +209,25 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Evasive-Modifier"
   Experienced:
     Name: "Experienced"
-    Description: "Tool has the %chance% chance per level to drop %amount XP while using it!"
+    Description: ""
     ModifierItemName: "Essence of Experience"
     DescriptionModifierItem: "Modifier-Item for the Experienced-Modifier"
+    Statistic_Amount: ""
+  Explosive:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Extra-Modifier:
     Name: "Extra-Modifier"
-    Description: "Adds %amount additional Modifier-Slots to the tool!"
+    Description: ""
     ModifierItemName: "Refined Netherstar"
     DescriptionModifierItem: "Modifier-Item for the Extra-Modifier"
+  Farming:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Fiery:
     Name: "Fiery"
     Description: "One modifier to burn them all!"
@@ -215,9 +253,14 @@ Modifier:
     Description: "Destroy blocks and shoot crossbows faster!"
     ModifierItemName: "Compressed Redstoneblock"
     DescriptionModifierItem: "Modifier-Item for the Haste-Modifier"
+  Homing:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Infinity:
     Name: "Infinity"
-    Description: "You only need one Arrow to shoot a bow and the Trident comes back to you!"
+    Description: ""
     ModifierItemName: "Enchanted Arrow"
     DescriptionModifierItem: "Modifier-Item for the Infinity-Modifier"
   Insulating:
@@ -252,7 +295,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Luck-Modifier"
   Magical:
     Name: "Magical"
-    Description: "Shoot a magic orb that is not affected by gravity but flies %amount% slower! If the orb hits a target it does %min% to %max% more damage (depending on level)! Costs %xp XP to shoot!"
+    Description: ""
     ModifierItemName: "Magic Arrow"
     DescriptionModifierItem: "Modifier-Item for the Magical-Modifier"
   Melting:
@@ -262,7 +305,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Melting-Modifier"
   Multishot:
     Name: "Multishot"
-    Description: "Shoot one more Arrow per Level per shot!"
+    Description: ""
     ModifierItemName: "Multi-Arrow"
     DescriptionModifierItem: "Modifier-Item for the Multishot-Modifier"
   Multijump:
@@ -275,11 +318,18 @@ Modifier:
     Description: "Deal more or receive less damage (%amountmin% to %amountmax%) when the moon is shining (depends on level and moon position). This effect gets inverted at daytime and in the Nether but has the full strength in the End!"
     ModifierItemName: "Dark Daylight Detector"
     DescriptionModifierItem: "Modifier-Item for the Nightseeker-Modifier"
+  Phasing:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Photosynthesis:
     Name: "Photosynthesis"
-    Description: "Repair your item with %amount durability per level every %ticks Ticks when standing still while the sun shines. The longer you stand still the faster it repairs. (%multiplier%)"
+    Description: ""
     ModifierItemName: "Extracted Chlorophyll"
     DescriptionModifierItem: "Modifier-Item for the Photosynthesis-Modifier"
+    NotifyWhenActive: ""
+    Statistic_Healed: ""
   Piercing:
     Name: "Piercing"
     Description: "Arrows pass through multiple enemies!"
@@ -317,11 +367,12 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Scotopic-Modifier"
   Shadow-Dive:
     Name: "Shadow Dive"
-    Description: "Vanish completely from sight when sneaking in dark places! (Lightlevel <= %level)"
+    Description: ""
     ModifierItemName: "Vanishing Crystal"
     DescriptionModifierItem: "Modifier-Item for the Shadow-Dive-Modifier"
     LightToHigh: "The lightlevel is to high!"
     InCombat: "You are in combat!"
+    Active: ""
   Self-Repair:
     Name: "Self-Repair"
     Description: "%chance% chance per level to repair the tool / armor with %amount durability while using it!"
@@ -382,6 +433,11 @@ Modifier:
     Description: "Deal more damage over a greater area!"
     ModifierItemName: "Enchanted Iron Ingot"
     DescriptionModifierItem: "Modifier-Item for the Sweeping-Modifier"
+  Swift-Sneaking:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Tanky:
     Name: "Tanky"
     Description: "Make yourself extra tanky with %amount extra hearts per level!"
@@ -397,6 +453,23 @@ Modifier:
     Description: "Chop down trees in an instant!"
     ModifierItemName: "Wooden Emerald"
     DescriptionModifierItem: "Modifier-Item for the Timber-Modifier"
+    Statistic_Used: ""
+  Mutating:
+    Name: ""
+    Description: ""
+    Description_Level0: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
+  Undead:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
+  Vigilant:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Void-Netting:
     Name: "Void Netting"
     Description: "Teleports you to a safe place in a radius of %radius blocks per level when you fall into the void. Cooldown: %cmax to %cmin seconds (depends on level)"
@@ -408,11 +481,24 @@ Modifier:
     Description: "Slow down enemies when you hit them or they hit you for %duration Ticks * %multiplier per level!"
     ModifierItemName: "Compressed Cobweb"
     DescriptionModifierItem: "Modifier-Item for the Webbed-Modifier"
+  Wild-Hunt:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
+    Statistic_Used: ""
   Withered:
     Name: "Withered"
     Description: "Withers the target for %duration Ticks * %multiplier per level!"
     ModifierItemName: "Withered Wither Skeleton Skull"
     DescriptionModifierItem: "Modifier-Item for the Withered-Modifier"
+  Zealous:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
+    Statistic_Damage: ""
+    Statistic_Time: ""
 
 DataType.Boolean: "Boolean (true/false)"
 DataType.String: "String"
@@ -421,6 +507,8 @@ DataType.Integer: "Integer"
 DataType.Double: "Floating point number (Double)"
 
 ToolType.ALL: "All"
+ToolType.ARMOR: ""
+ToolType.TOOLS: ""
 ToolType.AXE: "Axes"
 ToolType.BOOTS: "Boots"
 ToolType.BOW: "Bows"
@@ -479,6 +567,7 @@ Enchantment:
   vanishing_curse: "Curse of Vanishing"
   aqua_affinity: "Aqua Affinity"
   soul_speed: "Soul Speed"
+  swift_sneak: ""
 
 Updater.Unable: "Unable to check for updates!"
 Updater.UpdateAvailable: "There is an update available on spigotmc.org!"
