@@ -13,10 +13,6 @@ StartUp.DebugLogging: "Hata Ayıklama Günlüklemesi etkin. Günlükleme'nin iç
 
 Commands.Info.Line1: "MineTinker (%ver) Flo56958 tarafından yapılan bir plugindir."
 Commands.Info.Line2: "MineTinker başka modlardan esinlenerek yapılmıştır. (örn. TinkersConstruct)"
-Commands.Info.Title: ""
-Commands.Info.Contributors: ""
-Commands.Info.ContributorsAction: ""
-Commands.Info.Failure: ""
 Commands.InvalidArguments: "Geçersiz komut argümanları girdiniz!"
 Commands.InvalidTool: "Bu komutu gerçekleştirebilmek için ana elinizde geçerli bir alet tutmanız gerekiyor!"
 Commands.NoPermission: "Onu yapmak için yetkin yok!"
@@ -63,8 +59,6 @@ GUIs.Modifiers.ClickToRecipe: "Üretim tarifini göstermek için %key tuşuna ba
 GUIs.Modifiers.BlockToEnchant: "%mat eşyasını %block bloğunun üzerine %key tuşuyla yerleştirin ve efsunlayın."
 GUIs.Modifiers.SlotCost: "Her seviye için gereken boş yuva sayısı: %WHITE%%amount"
 GUIs.Modifiers.MinimumToolLevel: "Minimum Alet Seviyesi: %WHITE%%level"
-GUIs.Modifiers.FilterButton: ""
-GUIs.Modifiers.FilterLore: ""
 GUIs.ConfigurationEditor.ReloadPlugin: "MineTinker'ı yeniden yükle"
 GUIs.ConfigurationEditor.Change: "%key artık %old değil, %new!"
 GUIs.ConfigurationEditor.Type: "Çeşit: %type"
@@ -166,15 +160,9 @@ Modifier:
     ModifierItemName: "Kan Taşı"
     DescriptionModifierItem: "Barbar-Modifikasyonu için Modifikasyon-Eşyası"
     Statistic_Used: "Aktifleştirme sayısı: %amount"
-  Building:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Channeling:
     Name: "İyonlaşma"
     Description: "Seviye başına %amount ihtimalle bir yıldırım çağır!"
-    Description_OnlyStorms: ""
     ModifierItemName: "Elektrikle Kaynaşmış Kristal"
     DescriptionModifierItem: "İyonlaşma-Modifikasyonu için Modifikasyon-Eşyası"
   Directing:
@@ -209,25 +197,13 @@ Modifier:
     DescriptionModifierItem: "Çevik Modifikasyonu için Modifikasyon Eşyası"
   Experienced:
     Name: "Deneyimli"
-    Description: ""
     ModifierItemName: "Deneyim Özü"
     DescriptionModifierItem: "Deneyimli-Modifikasyonu için Modifikasyon Eşyası"
     Statistic_Amount: "Düşürülen deneyim puanı: %amount"
-  Explosive:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Extra-Modifier:
     Name: "Ekstra-Modifikasyo"
-    Description: ""
     ModifierItemName: "İşlenmiş Nether Yıldızı"
     DescriptionModifierItem: "Fazladan Yuva Modifikasyonu için Modifikasyon Eşyası"
-  Farming:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Fiery:
     Name: "Ateşli"
     Description: "Hepsini yakmak için tek modifikasyon!"
@@ -260,7 +236,6 @@ Modifier:
     DescriptionModifierItem: "Güdümlü Modifikasyonu için Modifikasyon Eşyası"
   Infinity:
     Name: "Sonsuzluk"
-    Description: ""
     ModifierItemName: "Büyülü Ok"
     DescriptionModifierItem: "Sonsuzluk-Modifikasyonu için Modifikasyon-Eşyası"
   Insulating:
@@ -305,7 +280,6 @@ Modifier:
     DescriptionModifierItem: "Erime-Modifikasyonu için Modifikasyon-Eşyası"
   Multishot:
     Name: "Çoklu-Sıkım"
-    Description: ""
     ModifierItemName: "Çoklu-Ok"
     DescriptionModifierItem: "Çoklu-Sıkım-Modifikasyonu için Modifikasyon-Eşyası"
   Multijump:
@@ -318,11 +292,6 @@ Modifier:
     Description: "Ay ışıldarken daha fazla hasar ver veya daha az hasar al (%%amountmin ile %%amountmax arası) . Bu efekt gündüzken ve Nether'da iken tersine çevrilir ancak End'de tam güçte çalışır!"
     ModifierItemName: "Siyah Günışığı Sensörü"
     DescriptionModifierItem: "Gece Avcısı Modifikasyonu için Modifikasyon Eşyası"
-  Phasing:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Photosynthesis:
     Name: "Fotosentez"
     Description: "Gün ışığı altındayken, her %ticks tikte bir, eşyanın %amount hasarını tamir et! Ne kadar gün ışığında kalırısan o kadar hızlı tamir edersin. (%%multiplier)"
@@ -367,12 +336,10 @@ Modifier:
     DescriptionModifierItem: "Gece Görüşü Modifikasyonu için Modifikasyon Eşyası"
   Shadow-Dive:
     Name: "Gölge Dalışı"
-    Description: ""
     ModifierItemName: "Kaybolma Kristali"
     DescriptionModifierItem: "Gölge Dalışı Modifikasyonu için Modifikasyon Eşyası"
     LightToHigh: "Burası çok parlak!"
     InCombat: "Savaşın içindesin!"
-    Active: ""
   Self-Repair:
     Name: "Kendini-Tamir-Etme"
     Description: "Seviye başına %%chance şans ile eşyanı kullanırken eşyanın %amount hasarını tamir et!"
@@ -434,10 +401,8 @@ Modifier:
     ModifierItemName: "Büyülü Demir Külçesi"
     DescriptionModifierItem: "Süpürücü-Kenar-Modifikasyonu için Modifikasyon-Eşyası"
   Swift-Sneaking:
-    Name: ""
     Description: "Eğilirken daha hızlı hareket et!"
     ModifierItemName: "Çeviklik Tüyü"
-    DescriptionModifierItem: ""
   Tanky:
     Name: "Tankçı"
     Description: "Seviye başına %amount fazladan kalp alarak kendini tanka çevir!"
@@ -453,23 +418,13 @@ Modifier:
     Description: "Ağaçları göz açıp kapayıncaya kadar devir!"
     ModifierItemName: "Tahta Zümrüt"
     DescriptionModifierItem: "Oduncu-Modifikasyonu için Modifikasyon-Eşyası"
-    Statistic_Used: ""
-  Mutating:
-    Name: ""
-    Description: ""
-    Description_Level0: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Undead:
     Name: "Yürüyen Ölü"
     Description: "Canavarlar artık seni hedef almayacak ama artık sen de onlara saldıramayacaksın!"
     ModifierItemName: "Zombi serumu"
     DescriptionModifierItem: "Yürüyen Ölü Modifikasyonu için Modifikasyon Eşyası"
   Vigilant:
-    Name: ""
-    Description: ""
     ModifierItemName: "Yasaklı elma"
-    DescriptionModifierItem: ""
   Void-Netting:
     Name: "Cankurtaran"
     Description: "Boşluğa düştüğünde seviye başına %radius blok artan bir menzilde güvenli bir yere ışınlan! Bekleme Süresi: Seviyene bağlı olarak %cmax ile %cmin saniye arası "
@@ -481,24 +436,11 @@ Modifier:
     Description: "Düşmanlar sana vurduğunda ya da sen onlara vurduğunda onları seviye başına %multiplier * %duration tik boyunca yavaşlat!"
     ModifierItemName: "Sıkılaştırılmış Örümcek Ağı"
     DescriptionModifierItem: "Ağlı-Modifikasyonu için Modifikasyon-Eşyası"
-  Wild-Hunt:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    Statistic_Used: ""
   Withered:
     Name: "Çürütücü"
     Description: "Hedefinize seviye başına %multiplier katlayıcı * %duration tik boyunca Wither efekti verir!"
     ModifierItemName: "Çürük Wither İskeleti Kafası"
     DescriptionModifierItem: "Çürütücü Modifikasyonu için Modifikasyon Eşyası"
-  Zealous:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    Statistic_Damage: ""
-    Statistic_Time: ""
 
 DataType.Boolean: "Doğruluk (true/false)"
 DataType.String: "Yazı/Dizge"
@@ -507,8 +449,6 @@ DataType.Integer: "Sayı"
 DataType.Double: "Küsüratlı sayı (Double)"
 
 ToolType.ALL: "Hepsi"
-ToolType.ARMOR: ""
-ToolType.TOOLS: ""
 ToolType.AXE: "Baltalar"
 ToolType.BOOTS: "Botlar"
 ToolType.BOW: "Yaylar"
@@ -542,32 +482,24 @@ Enchantment:
   efficiency: "Verimlilik"
   unbreaking: "Kırılmazlık"
   fire_aspect: "Alevden Çehre"
-  frost_walker: ""
   impaling: "Şişleme"
   knockback: "Geri-Tepme"
   fortune: "Servet"
   looting: "Ganimet"
   loyalty: "Sadakat"
-  luck_of_the_sea: ""
-  lure: ""
   mending: "Tamir"
   multishot: "Çoklu-Sıkım"
-  respiration: ""
   piercing: "Delici"
   protection: "Koruma"
   blast_protection: "Patlama Koruması"
   feather_falling: "Tüy Düşüşü"
   fire_protection: "Ateş Koruması"
-  projectile_protection: ""
-  quick_charge: ""
-  riptide: ""
   silk_touch: "İpeksi Dokunuş"
   sweeping: "Savurma"
   thorns: "Dikenler"
   vanishing_curse: "Kaybolma Laneti"
   aqua_affinity: "Su Adaptasyonu"
   soul_speed: "Ruh Hızı"
-  swift_sneak: ""
 
 Updater.Unable: "Güncellemeler kontrol edilemedi!"
 Updater.UpdateAvailable: "spigotmc.org'da bir güncelleme var!"

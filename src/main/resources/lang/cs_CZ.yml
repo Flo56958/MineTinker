@@ -13,10 +13,6 @@ StartUp.DebugLogging: "Protokolování ladění je povoleno. Měli byste to zak�
 
 Commands.Info.Line1: "MineTinker (%ver) je plugin vytvořen od Flo56958"
 Commands.Info.Line2: "inspirováno modem (e.g. TinkersConstruct)"
-Commands.Info.Title: ""
-Commands.Info.Contributors: ""
-Commands.Info.ContributorsAction: ""
-Commands.Info.Failure: ""
 Commands.InvalidArguments: "vadný zadaný příkaz"
 Commands.InvalidTool: "musíš držet hůlku v ruce abys mohl použít tento příkaz"
 Commands.NoPermission: "Nemáš povolení na použití této akce"
@@ -63,8 +59,6 @@ GUIs.Modifiers.ClickToRecipe: "%key pro zobrazení crafting receptu."
 GUIs.Modifiers.BlockToEnchant: "%key s %mat na %bloku pro enchantování itemu"
 GUIs.Modifiers.SlotCost: "Zdarma sloty potřebné za level: %WHITE%%amount"
 GUIs.Modifiers.MinimumToolLevel: "Minimální nástrojová úroveň: %WHITE%%level"
-GUIs.Modifiers.FilterButton: ""
-GUIs.Modifiers.FilterLore: ""
 GUIs.ConfigurationEditor.ReloadPlugin: "Znovu načtěte MineTinker"
 GUIs.ConfigurationEditor.Change: "Změněn %key z %old na %new!"
 GUIs.ConfigurationEditor.Type: "Typ: %type"
@@ -166,15 +160,9 @@ Modifier:
     ModifierItemName: "krvavý redstone "
     DescriptionModifierItem: "Modifier-Item for the Berserk-Modifier"
     Statistic_Used: "Times activated: %amount"
-  Building:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Channeling:
     Name: "Channeling"
     Description: "Přivolání blesku s šancí %amount za úroveň!"
-    Description_OnlyStorms: ""
     ModifierItemName: "Lightning Infused Shard"
     DescriptionModifierItem: "Modifier-Item for the Channeling-Modifier"
   Directing:
@@ -209,25 +197,17 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Evasive-Modifier"
   Experienced:
     Name: "Experienced"
-    Description: ""
     ModifierItemName: "Essence of Experience"
     DescriptionModifierItem: "Modifier-Item for the Experienced-Modifier"
     Statistic_Amount: "Exp-Amount dropped: %amount"
   Explosive:
     Name: "Výbušný"
     Description: "Tvůj útok vybouchne se silou %power za úrověň."
-    ModifierItemName: ""
     DescriptionModifierItem: "Modifikační předmět pro výbušný modifikátor"
   Extra-Modifier:
     Name: "Extra-Modifier"
-    Description: ""
     ModifierItemName: "Refined Netherstar"
     DescriptionModifierItem: "Modifier-Item for the Extra-Modifier"
-  Farming:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Fiery:
     Name: "Fiery"
     Description: "One modifier to burn them all!"
@@ -295,7 +275,6 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Luck-Modifier"
   Magical:
     Name: "Magical"
-    Description: ""
     ModifierItemName: "Magic Arrow"
     DescriptionModifierItem: "Modifier-Item for the Magical-Modifier"
   Melting:
@@ -319,9 +298,7 @@ Modifier:
     ModifierItemName: "Dark Daylight Detector"
     DescriptionModifierItem: "Modifier-Item for the Nightseeker-Modifier"
   Phasing:
-    Name: ""
     Description: "Šípy mohou procházet zdmi!"
-    ModifierItemName: ""
     DescriptionModifierItem: "Modifikační předmět pro modifikátor fázování"
   Photosynthesis:
     Name: "Photosynthesis"
@@ -367,12 +344,10 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Scotopic-Modifier"
   Shadow-Dive:
     Name: "Shadow Dive"
-    Description: ""
     ModifierItemName: "Vanishing Crystal"
     DescriptionModifierItem: "Modifier-Item for the Shadow-Dive-Modifier"
     LightToHigh: "The lightlevel is to high!"
     InCombat: "jsi v boji!"
-    Active: ""
   Self-Repair:
     Name: "Self-Repair"
     Description: "%chance% chance per level to repair the tool / armor with %amount durability while using it!"
@@ -453,13 +428,6 @@ Modifier:
     Description: "Chop down trees in an instant!"
     ModifierItemName: "Wooden Emerald"
     DescriptionModifierItem: "Modifier-Item for the Timber-Modifier"
-    Statistic_Used: ""
-  Mutating:
-    Name: ""
-    Description: ""
-    Description_Level0: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Undead:
     Name: "nemrtví "
     Description: "Monster will not target you anymore but you also can not attack anyone!"
@@ -467,7 +435,6 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Undead-Modifier"
   Vigilant:
     Name: "Vigilant"
-    Description: ""
     ModifierItemName: "Forbidden Apple"
     DescriptionModifierItem: "Modifier-Item for the Vigilant-Modifier"
   Void-Netting:
@@ -492,13 +459,6 @@ Modifier:
     Description: "Withers the target for %duration Ticks * %multiplier per level!"
     ModifierItemName: "Withered Wither Skeleton Skull"
     DescriptionModifierItem: "Modifier-Item for the Withered-Modifier"
-  Zealous:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    Statistic_Damage: ""
-    Statistic_Time: ""
 
 DataType.Boolean: "Boolean (true/false)"
 DataType.String: "String"
@@ -507,8 +467,6 @@ DataType.Integer: "Integer"
 DataType.Double: "Floating point number (Double)"
 
 ToolType.ALL: "Vše"
-ToolType.ARMOR: ""
-ToolType.TOOLS: ""
 ToolType.AXE: "Sekery"
 ToolType.BOOTS: "Boty"
 ToolType.BOW: "Luky"

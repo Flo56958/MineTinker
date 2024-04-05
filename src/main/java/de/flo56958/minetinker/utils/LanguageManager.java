@@ -94,8 +94,8 @@ public class LanguageManager {
 	 */
 	@NotNull
 	public static String getString(@NotNull String path) {
-		String ret = langFile.getString(path);
-		if (ret == null || ret.isEmpty())
+		String ret = langFile.getString(path, "");
+		if (ret.isEmpty())
 			ret = langBackup.getString(path, "");
 
 		return ChatWriter.addColors(ret);

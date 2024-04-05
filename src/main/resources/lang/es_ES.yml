@@ -13,10 +13,6 @@ StartUp.DebugLogging: "¡El registro de depuración está habilitado. Usted pued
 
 Commands.Info.Line1: "MineTinker (%ver) es un plugin hecho por Flo56958."
 Commands.Info.Line2: "Está inspirado en diferentes mods (e.j. Tinkers Construct)"
-Commands.Info.Title: ""
-Commands.Info.Contributors: ""
-Commands.Info.ContributorsAction: ""
-Commands.Info.Failure: ""
 Commands.InvalidArguments: "¡Has ingresado argumentos de comando inválidos!"
 Commands.InvalidTool: "¡Necesitas tener una herramienta válida en tu mano principal para ejecutar este comando!"
 Commands.NoPermission: "¡No tienes los permisos para realizar esta acción!"
@@ -63,8 +59,6 @@ GUIs.Modifiers.ClickToRecipe: "%key para mostrar la receta de elaboración."
 GUIs.Modifiers.BlockToEnchant: "%key con %mat sobre %block para encantar el objeto."
 GUIs.Modifiers.SlotCost: "Free slots needed per level: %WHITE%%amount"
 GUIs.Modifiers.MinimumToolLevel: "Minimum Tool Level: %WHITE%%level"
-GUIs.Modifiers.FilterButton: ""
-GUIs.Modifiers.FilterLore: ""
 GUIs.ConfigurationEditor.ReloadPlugin: "Recargando MineTinker"
 GUIs.ConfigurationEditor.Change: "¡Cambiado %key de %old a %new!"
 GUIs.ConfigurationEditor.Type: "Tipo: %type"
@@ -82,10 +76,8 @@ GUIs.Statistics.General.Title: "Estadisticas generales"
 GUIs.Statistics.General.Creator: "Creador: %player"
 GUIs.Statistics.General.Created: "Creado:%date"
 GUIs.Statistics.Blocks.Title: "Estadísticas del bloque"
-GUIs.Statistics.Blocks.TotalAmount: ""
 GUIs.Statistics.Blocks.TitlePage: "Estadisticas de bloque de %tool - %pageNo"
 GUIs.Statistics.Blocks.AmountBroken: "%amount veces rota"
-GUIs.Statistics.Modifiers.TitlePage: ""
 GUIs.Statistics.Combat.Title: "Estadisticas de combate"
 GUIs.Statistics.Combat.TitlePage: "Estadísticas de combate de %tool - %pageNo"
 GUIs.Statistics.Combat.AmountKilled: "%amount veces asesinado"
@@ -152,29 +144,18 @@ Modifier:
     Description: "¡Fundir minerales y otros bloques mientras se extrae! Se activa en una probabilidad de %chance% por nivel."
     ModifierItemName: "Horno Mejorado"
     DescriptionModifierItem: "Item para el modificador Fundición-automática"
-    Statistic_Used: ""
-    Statistic_Luck: ""
   Beheading:
     Name: "Decapitación"
     Description: "%chance% posibilidad de soltar la cabeza de la mafia asesinada por nivel."
     ModifierItemName: "Calavera de Wither encantada"
     DescriptionModifierItem: "Item para el modificador Decapitación"
-    Statistic_Used: ""
   Berserk:
     Name: "Demente"
     Description: "¡Obtienes un aumento de fuerza por %duration segundos cuando tu vida está debajo del %percent%!"
     ModifierItemName: "Redstone Sangriento"
     DescriptionModifierItem: "Item para el modificador Demente"
-    Statistic_Used: ""
-  Building:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Channeling:
     Name: "Canalización"
-    Description: ""
-    Description_OnlyStorms: ""
     ModifierItemName: "Fragmento infundido de relámpagos"
     DescriptionModifierItem: "Item para el modificador Canalización"
   Directing:
@@ -182,26 +163,17 @@ Modifier:
     Description: "Las recompensas por matar mobs o romper bloques iran directas a tu inventario!"
     ModifierItemName: "Brújula mejorada"
     DescriptionModifierItem: "Item para el modificador Dirigente"
-    Statistic_Used: ""
   Drilling:
     Name: "Talador"
     Description: "Taladra 1 bloque mas por nivel!"
     ModifierItemName: "Taladro reforzado"
     DescriptionModifierItem: "Item para el modificador Taladro"
-  Echoing:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Ender:
     Name: "Ender"
     Description: "¡Te teletransporta mientras te escabullas al lugar de aterrizaje de las flechas!"
     ModifierItemName: "Ojo de ender especial"
     DescriptionModifierItem: "Item para el modificador Ender"
     TeleportationProhibited: "No puedes intercambiar posicion con ese Jugador!"
-    Statistic_Used: ""
-    Statistic_Distance: ""
-    Statistic_Swapped: ""
   Evasive:
     Name: "Esquiva"
     Description: "Probabilidad de esquivar ataques (%chance por nivel) - %sneakX cuando esta agachado, %sprintX cuando corres, %pvpX estando en PvP"
@@ -209,25 +181,12 @@ Modifier:
     DescriptionModifierItem: "Item para el modificador Esquiva"
   Experienced:
     Name: "Experimentado"
-    Description: ""
     ModifierItemName: "Esencia de Experiencia"
     DescriptionModifierItem: "Item para el modificador Experimentado"
-    Statistic_Amount: ""
-  Explosive:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Extra-Modifier:
     Name: "Modificador-Extra"
-    Description: ""
     ModifierItemName: "Estrella del Nether Refinada"
     DescriptionModifierItem: "Item para el modificador Modificador Extra"
-  Farming:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Fiery:
     Name: "Fiery"
     Description: "¡Un modificador para quemarlos a todos!"
@@ -253,14 +212,8 @@ Modifier:
     Description: "¡Destruye bloques y dispara ballestas más rápido!"
     ModifierItemName: "Bloque de redstone comprimida"
     DescriptionModifierItem: "Item para el modificador Prisa"
-  Homing:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Infinity:
     Name: "Infinidad"
-    Description: ""
     ModifierItemName: "Flecha encantada"
     DescriptionModifierItem: "Item para el modificador Infinidad"
   Insulating:
@@ -295,7 +248,6 @@ Modifier:
     DescriptionModifierItem: "Item para el modificador Suerte"
   Magical:
     Name: "Mágico"
-    Description: ""
     ModifierItemName: "Flecha mágica"
     DescriptionModifierItem: "Item para el modificador Mágico"
   Melting:
@@ -305,7 +257,6 @@ Modifier:
     DescriptionModifierItem: "Item para el modificador Derretir"
   Multishot:
     Name: "Multi-disparo"
-    Description: ""
     ModifierItemName: "Múlti-Flecha"
     DescriptionModifierItem: "Item para el modificador Disparo múltiple"
   Multijump:
@@ -318,18 +269,10 @@ Modifier:
     Description: "Hace más daño o recibe menos (%amountmin% hasta %amountmax%) cuando la luna se alza (esto depende de su posición en el cielo). Esto se invierte durante el día y en el Nether, pero se activa al máximo en el End!"
     ModifierItemName: "Sensor de luz lunar"
     DescriptionModifierItem: "Item para el modificador Nocturno"
-  Phasing:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Photosynthesis:
     Name: "Fotosíntesis"
-    Description: ""
     ModifierItemName: "Clorofila Extraída"
     DescriptionModifierItem: "Item para el modificador Fotosíntesis"
-    NotifyWhenActive: ""
-    Statistic_Healed: ""
   Piercing:
     Name: "Perforación"
     Description: "¡Las flechas atraviesan múltiples enemigos!"
@@ -367,12 +310,10 @@ Modifier:
     DescriptionModifierItem: "Item para el modificador Escotópico"
   Shadow-Dive:
     Name: "Buceo en las Sombras"
-    Description: ""
     ModifierItemName: "Cristal de la desaparición"
     DescriptionModifierItem: "Item para el modificador Cristal de la desaparición"
     LightToHigh: "El nivel de luz es demasiado alto!"
     InCombat: "Estás en combate!"
-    Active: ""
   Self-Repair:
     Name: "Auto-reparación"
     Description: "%chance% extra de probabilidad por cada nivel de reparar %amount la durabilidad de un arma o armadura cuando la usas!"
@@ -433,11 +374,6 @@ Modifier:
     Description: "¡Inflige más daño en un área mayor!"
     ModifierItemName: "Lingote de hierro encantado"
     DescriptionModifierItem: "Item para el modificador Barrido"
-  Swift-Sneaking:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Tanky:
     Name: "Tanky"
     Description: "¡Te hace más tanque con %amount corazones extras por nivel!"
@@ -453,23 +389,6 @@ Modifier:
     Description: "¡Corta árboles en un instante!"
     ModifierItemName: "Esmeralda de madera"
     DescriptionModifierItem: "Item para el modificador Enmaderar"
-    Statistic_Used: ""
-  Mutating:
-    Name: ""
-    Description: ""
-    Description_Level0: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-  Undead:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-  Vigilant:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Void-Netting:
     Name: "Enredado en el Vacio"
     Description: "Te teletransporta a una posicion segura en un radio de %radius bloques por nivel cuando caes al vacio. Enfriamiento: %cmax a %cmin segundos (depende del nivel)"
@@ -481,24 +400,11 @@ Modifier:
     Description: "¡Disminuye la velocidad de los enemigos cuando los golpeas o te golpean por %duration Ticks * %multiplier por nivel!"
     ModifierItemName: "Telaraña comprimida"
     DescriptionModifierItem: "Item para el modificador Entelerañado"
-  Wild-Hunt:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    Statistic_Used: ""
   Withered:
     Name: "Maldito"
     Description: "Aplica Wither al enemigo durante  %duration Ticks * %multiplier por nivel!"
     ModifierItemName: "Calabera de Wither Maldita"
     DescriptionModifierItem: "Item para el modificador Maldito"
-  Zealous:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    Statistic_Damage: ""
-    Statistic_Time: ""
 
 DataType.Boolean: "Booleano (verdadero / falso)"
 DataType.String: "Cadena"
@@ -507,8 +413,6 @@ DataType.Integer: "Entero"
 DataType.Double: "Número de punto flotante (Doble)"
 
 ToolType.ALL: "Todos"
-ToolType.ARMOR: ""
-ToolType.TOOLS: ""
 ToolType.AXE: "Hachas"
 ToolType.BOOTS: "Botas"
 ToolType.BOW: "Arcos"
@@ -567,7 +471,6 @@ Enchantment:
   vanishing_curse: "Maldición de desaparición"
   aqua_affinity: "Afinidad Acuática "
   soul_speed: "Velocidad del alma"
-  swift_sneak: ""
 
 Updater.Unable: "¡Incapaz de verificar actualizaciones!"
 Updater.UpdateAvailable: "¡Hay una actualización disponible en Spigot.org!"

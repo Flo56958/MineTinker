@@ -166,15 +166,9 @@ Modifier:
     ModifierItemName: "Blutiges Redstone"
     DescriptionModifierItem: "Modifizierungs-Item für die Berserker-Modifikation"
     Statistic_Used: "Anzahl Aktivierungen: %amount"
-  Building:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Channeling:
     Name: "Kanalisierend "
     Description: "Werde zum Gott des Donners und beschwöre Blitze mit jedem Angriff! (%amount Wahrscheinlichkeit pro Level)"
-    Description_OnlyStorms: ""
     ModifierItemName: "Blitzende Scherbe"
     DescriptionModifierItem: "Modifizierungs-Item für die Kanalisierend-Modifizierung"
   Directing:
@@ -223,11 +217,6 @@ Modifier:
     Description: "Fügt %amount zusätzliche Modifizierungsplätze und %xpamount XP auf dein Werkzeug hinzu!"
     ModifierItemName: "Rafinierter Netherstern"
     DescriptionModifierItem: "Modifizierungs-Item für einen zusätzlichen Modifizierungsplatz"
-  Farming:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Fiery:
     Name: "Feurig"
     Description: "Eine Modifizierung sie alle zu verbrennen!"
@@ -453,13 +442,6 @@ Modifier:
     Description: "Fälle Bäume durch nur einen abgebauten Block!"
     ModifierItemName: "Hölzerner Smaragd"
     DescriptionModifierItem: "Modifizierungs-Item für die Holzfäller-Modifizierung"
-    Statistic_Used: ""
-  Mutating:
-    Name: ""
-    Description: ""
-    Description_Level0: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Undead:
     Name: "Untot"
     Description: "Monster werden dich nicht mehr angreifen, aber du kannst auch keinen angreifen!"
@@ -492,13 +474,6 @@ Modifier:
     Description: "Macht zusätzlichen Witherschaden für %duration Ticks * %multiplier pro Level!"
     ModifierItemName: "Verwelkender Witherskelettschädel"
     DescriptionModifierItem: "Modifizierungs-Item für die Verwelkend-Modifizierung"
-  Zealous:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    Statistic_Damage: ""
-    Statistic_Time: ""
 
 DataType.Boolean: "Boolean (wahr/falsch)"
 DataType.String: "String (Zeichenkette)"

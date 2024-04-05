@@ -13,10 +13,6 @@ StartUp.DebugLogging: "調試信息日誌已啟用. 你應該在在配置文件�
 
 Commands.Info.Line1: "MineTinker (%ver) 是Flo56958製作的插件"
 Commands.Info.Line2: "它受到不同Mod的啟發(例如TinkersConstruct)"
-Commands.Info.Title: ""
-Commands.Info.Contributors: ""
-Commands.Info.ContributorsAction: ""
-Commands.Info.Failure: ""
 Commands.InvalidArguments: "您輸入了無效的命令參數！"
 Commands.InvalidTool: "您需要用一隻手握住有效工具才能執行此命令！"
 Commands.NoPermission: "您無權執行該操作！"
@@ -63,8 +59,6 @@ GUIs.Modifiers.ClickToRecipe: "按%key 顯示配方"
 GUIs.Modifiers.BlockToEnchant: "％block上帶有％mat的％key附魔物品。"
 GUIs.Modifiers.SlotCost: "每級所需的槽位：%WHITE%%amount"
 GUIs.Modifiers.MinimumToolLevel: "最低工具等級：%WHITE%%level"
-GUIs.Modifiers.FilterButton: ""
-GUIs.Modifiers.FilterLore: ""
 GUIs.ConfigurationEditor.ReloadPlugin: "重新加載 Minetinker"
 GUIs.ConfigurationEditor.Change: "已將％key從％old更改為％new！"
 GUIs.ConfigurationEditor.Type: "類型: %type"
@@ -152,29 +146,19 @@ Modifier:
     Description: "在采掘的时候自动烧炼矿物! 每一级增加%chance%的激活几率."
     ModifierItemName: "强化熔炉"
     DescriptionModifierItem: "自动烧炼模块"
-    Statistic_Used: ""
-    Statistic_Luck: ""
   Beheading:
     Name: "斩首"
     Description: "有几率斩下生物的头颅!"
     ModifierItemName: "附魔凋灵骷髅头颅"
     DescriptionModifierItem: "斩首模块"
-    Statistic_Used: ""
   Berserk:
     Name: "狂暴"
     Description: "当生命值降至%percent%以下时获得%duration秒的力量加成!"
     ModifierItemName: "浸血红石块"
     DescriptionModifierItem: "狂暴模块"
-    Statistic_Used: ""
-  Building:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Channeling:
     Name: "引雷"
     Description: "召唤闪电的机率每级增加 %amount!"
-    Description_OnlyStorms: ""
     ModifierItemName: "雷霆碎片"
     DescriptionModifierItem: "引雷模块"
   Directing:
@@ -182,26 +166,17 @@ Modifier:
     Description: "被杀死的生物或被破坏的方块的掉落物将会直接进入背包!"
     ModifierItemName: "强化指南针"
     DescriptionModifierItem: "导向模块"
-    Statistic_Used: ""
   Drilling:
     Name: "打钻"
     Description: "每级增加一格方块的挖掘深度!"
     ModifierItemName: "强化钻头"
     DescriptionModifierItem: "打钻模块"
-  Echoing:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Ender:
     Name: "末影"
     Description: "箭矢落地时按住潜行将传送你至其落点!"
     ModifierItemName: "特化末影之眼"
     DescriptionModifierItem: "末影模块"
     TeleportationProhibited: "你无法与该玩家交换位置!"
-    Statistic_Used: ""
-    Statistic_Distance: ""
-    Statistic_Swapped: ""
   Evasive:
     Name: "逃脱"
     Description: "有几率躲避当前攻击(%chance/级) -- 潜行时为%sneakX, 疾跑时为%sprintX, PvP时为%pvpX."
@@ -209,25 +184,12 @@ Modifier:
     DescriptionModifierItem: "逃脱模块"
   Experienced:
     Name: "经验加成"
-    Description: ""
     ModifierItemName: "人生经验"
     DescriptionModifierItem: "人生经验模块"
-    Statistic_Amount: ""
-  Explosive:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Extra-Modifier:
     Name: "附加模块槽位"
-    Description: ""
     ModifierItemName: "精制下界之星"
     DescriptionModifierItem: "升级模块"
-  Farming:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Fiery:
     Name: "炎上"
     Description: "点燃敌人!"
@@ -253,14 +215,8 @@ Modifier:
     Description: "工具可以更快速地破坏方块!"
     ModifierItemName: "压缩红石块"
     DescriptionModifierItem: "急迫模块"
-  Homing:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Infinity:
     Name: "无限"
-    Description: ""
     ModifierItemName: "附魔箭矢"
     DescriptionModifierItem: "无限模块"
   Insulating:
@@ -295,7 +251,6 @@ Modifier:
     DescriptionModifierItem: "好运模块"
   Magical:
     Name: "魔能"
-    Description: ""
     ModifierItemName: "魔法箭矢"
     DescriptionModifierItem: "魔能模块"
   Melting:
@@ -305,7 +260,6 @@ Modifier:
     DescriptionModifierItem: "炽融模块"
   Multishot:
     Name: "多重射击"
-    Description: ""
     ModifierItemName: "集束箭矢"
     DescriptionModifierItem: "多重射击模块"
   Multijump:
@@ -318,18 +272,11 @@ Modifier:
     Description: "当月亮照耀时（取决于月相与等级），产生治疗或减免伤害效果（%amountmin% 到 %amountmax%）。这个效果在白天或在下界会反转，同时在末地可以得到最高能量。"
     ModifierItemName: "暗黑日光探测器"
     DescriptionModifierItem: "夜行者模块"
-  Phasing:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Photosynthesis:
     Name: "光合作用"
     Description: "站在阳光下修复你的物品，每%ticks游戲刻恢复%amount耐久，站越久恢复越快(%multiplier%)"
     ModifierItemName: "提纯叶绿素"
     DescriptionModifierItem: "光合作用模块"
-    NotifyWhenActive: ""
-    Statistic_Healed: ""
   Piercing:
     Name: "穿透"
     Description: "穿刺并透过敌人!"
@@ -367,12 +314,10 @@ Modifier:
     DescriptionModifierItem: "暗视模块"
   Shadow-Dive:
     Name: "夜行靴"
-    Description: ""
     ModifierItemName: "隐身水晶"
     DescriptionModifierItem: "夜行靴模块"
     LightToHigh: "亮度太高了！"
     InCombat: "你正处于战斗中！"
-    Active: ""
   Self-Repair:
     Name: "自我修复"
     Description: "使用时有%chance%的几率/级会恢复工具/盔甲%amount点耐久!"
@@ -437,7 +382,6 @@ Modifier:
     Name: "迅捷潛行"
     Description: "迅捷潛行：提高潛行時的速度"
     ModifierItemName: "迅捷之羽"
-    DescriptionModifierItem: ""
   Tanky:
     Name: "肉盾"
     Description: "每一级增加%amount心的血量上限!"
@@ -453,23 +397,6 @@ Modifier:
     Description: "瞬间伐倒树木!"
     ModifierItemName: "镶木绿宝石"
     DescriptionModifierItem: "伐木模块"
-    Statistic_Used: ""
-  Mutating:
-    Name: ""
-    Description: ""
-    Description_Level0: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-  Undead:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-  Vigilant:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Void-Netting:
     Name: "虚空之网"
     Description: "当你掉入虚空时，自动将你传送到半径%radius方块的安全区。冷却时间：%cmax到%cmin秒。（取决于模块等级）"
@@ -481,24 +408,11 @@ Modifier:
     Description: "当敌人击中你/你击中敌人时, 他们将被施予每级%duration刻的缓慢效果."
     ModifierItemName: "压缩蛛网"
     DescriptionModifierItem: "缠网模块"
-  Wild-Hunt:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    Statistic_Used: ""
   Withered:
     Name: "凋零"
     Description: "给你的攻击目标给予每级%duration Ticks * %multiplier的凋零效果！"
     ModifierItemName: "复合凋零骷髅头"
     DescriptionModifierItem: "凋零模块"
-  Zealous:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    Statistic_Damage: ""
-    Statistic_Time: ""
 
 DataType.Boolean: "布尔值(真(true)/假(false))"
 DataType.String: "字符串"
@@ -507,8 +421,6 @@ DataType.Integer: "整型数值(整数)"
 DataType.Double: "浮点数(双精度)"
 
 ToolType.ALL: "所有物品"
-ToolType.ARMOR: ""
-ToolType.TOOLS: ""
 ToolType.AXE: "斧子"
 ToolType.BOOTS: "靴子"
 ToolType.BOW: "弓"

@@ -13,10 +13,6 @@ StartUp.DebugLogging: "Debug Logging включён. Лучше отключит
 
 Commands.Info.Line1: "MineTinker (%ver) автор плагина Flo56958. Перевод на русский Timotei~."
 Commands.Info.Line2: "За основу плагина взяты различные моды (например, TinkersConstruct)"
-Commands.Info.Title: ""
-Commands.Info.Contributors: ""
-Commands.Info.ContributorsAction: ""
-Commands.Info.Failure: ""
 Commands.InvalidArguments: "Вы ввели неверные аргументы команды!"
 Commands.InvalidTool: "Вам нужно держать правильный инструмент в основной руке, чтобы выполнить эту команду!"
 Commands.NoPermission: "Вы не можете выполнить это действие!"
@@ -63,8 +59,6 @@ GUIs.Modifiers.ClickToRecipe: "%key показать рецепты крафта
 GUIs.Modifiers.BlockToEnchant: "%key с %mat на %block, чтобы зачаровать."
 GUIs.Modifiers.SlotCost: "Требуется свободных слотов за уровень: %WHITE%%amount"
 GUIs.Modifiers.MinimumToolLevel: "Минимальный уровень предмета: %WHITE%%level"
-GUIs.Modifiers.FilterButton: ""
-GUIs.Modifiers.FilterLore: ""
 GUIs.ConfigurationEditor.ReloadPlugin: "Перезагрузка MineTinker"
 GUIs.ConfigurationEditor.Change: "Изменено %key с %old на %new!"
 GUIs.ConfigurationEditor.Type: "Тип: %type"
@@ -166,15 +160,9 @@ Modifier:
     ModifierItemName: "Кровянистый Редстоун"
     DescriptionModifierItem: "Модификатор Берсерка"
     Statistic_Used: "Раз активировано: %amount"
-  Building:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Channeling:
     Name: "Громовержец"
     Description: "Призыв молнии с шансом %amount за уровень!"
-    Description_OnlyStorms: ""
     ModifierItemName: "Осколок молнии"
     DescriptionModifierItem: "Модификатор Громовержца"
   Directing:
@@ -209,25 +197,13 @@ Modifier:
     DescriptionModifierItem: "Модификатор Уклонения"
   Experienced:
     Name: "Опыт"
-    Description: ""
     ModifierItemName: " Эссенция Опыта"
     DescriptionModifierItem: "Модификатор Эссенции Опыта"
     Statistic_Amount: "Опыта выпадает: %amount"
-  Explosive:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Extra-Modifier:
     Name: "Дополнительный-Модификатор"
-    Description: ""
     ModifierItemName: "Совершенная Звезда Ада"
     DescriptionModifierItem: "Дополнительный модификатор"
-  Farming:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Fiery:
     Name: "Пламя"
     Description: "Один модификатор спалит их всех!"
@@ -260,7 +236,6 @@ Modifier:
     DescriptionModifierItem: "Модификатор Самонаведения"
   Infinity:
     Name: "Бесконечность"
-    Description: ""
     ModifierItemName: "Зачарованная Стрела"
     DescriptionModifierItem: "Модификатор Бесконечности"
   Insulating:
@@ -295,7 +270,6 @@ Modifier:
     DescriptionModifierItem: "Модификатор Удачи"
   Magical:
     Name: "Магия"
-    Description: ""
     ModifierItemName: "Магическая Стрела"
     DescriptionModifierItem: "Модификатор Магии"
   Melting:
@@ -305,7 +279,6 @@ Modifier:
     DescriptionModifierItem: "Модификатор Плавильни"
   Multishot:
     Name: "Мультивыстрел"
-    Description: ""
     ModifierItemName: "Мультистрела"
     DescriptionModifierItem: "Модификатор Мультивыстрела"
   Multijump:
@@ -318,11 +291,6 @@ Modifier:
     Description: "Наносит больше или получает меньше урона (от %amountmin% до %amountmax%) когда луна сияет (в зависимости от позиции луны и уровня). Этот эффект инвертируется в дневное время и в Аду, но имеет максимальную силу в Крае!"
     ModifierItemName: "Темный датчик света"
     DescriptionModifierItem: "Предмет-модификатор Ночного охотника"
-  Phasing:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Photosynthesis:
     Name: "Фотосинтез"
     Description: "Чинит предмет на %amount прочности за уровень каждые %ticks Тиков, если Вы стоите под солнцем. Чем дольше Вы стоите, тем быстрее идёт починка. (%multiplier%)"
@@ -367,12 +335,10 @@ Modifier:
     DescriptionModifierItem: "Предмет-модификатор Ночного зрения"
   Shadow-Dive:
     Name: "Теневое погружение"
-    Description: ""
     ModifierItemName: "Кристалл исчезновения"
     DescriptionModifierItem: "Предмет-модификатор Теневого погружения"
     LightToHigh: "Уровень света слишком высокий!"
     InCombat: "Вы в бою!"
-    Active: ""
   Self-Repair:
     Name: "Авто-Починка"
     Description: "Шанс %chance% починки предмета / брони за каждый уровень на %amount прочности, во время использования."
@@ -453,13 +419,6 @@ Modifier:
     Description: "Мгновенно рубит деревья!"
     ModifierItemName: "Деревянный изумруд"
     DescriptionModifierItem: "Модификатор Дровосека"
-    Statistic_Used: ""
-  Mutating:
-    Name: ""
-    Description: ""
-    Description_Level0: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Undead:
     Name: "Нежить"
     Description: "Монстры более не будут нападать на Вас, однако и игрок не сможет атаковать!"
@@ -467,7 +426,6 @@ Modifier:
     DescriptionModifierItem: "Модификатор Нежити"
   Vigilant:
     Name: "Бдительность"
-    Description: ""
     ModifierItemName: "Запретный плод"
     DescriptionModifierItem: "Модификатор бдительности"
   Void-Netting:
@@ -481,24 +439,11 @@ Modifier:
     Description: "Удары оружия или удары по броне замедляют противников на %duration Тиков * %multiplier за уровень!"
     ModifierItemName: "Сжатая Паутина"
     DescriptionModifierItem: "Модификатор Замедления"
-  Wild-Hunt:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    Statistic_Used: ""
   Withered:
     Name: "Иссушение"
     Description: "Накладывает иссушение на оппонента на %duration тиков * %multiplier за уровень!"
     ModifierItemName: "Иссушенный череп Иссушителя"
     DescriptionModifierItem: "Предмет-модификатор для Иссушения"
-  Zealous:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    Statistic_Damage: ""
-    Statistic_Time: ""
 
 DataType.Boolean: "Логический тип (Да/Нет)"
 DataType.String: "Строка"
@@ -507,8 +452,6 @@ DataType.Integer: "Целое число"
 DataType.Double: "Число с плавающей запятой  (двойной точности)"
 
 ToolType.ALL: "Все"
-ToolType.ARMOR: ""
-ToolType.TOOLS: ""
 ToolType.AXE: "Топоры"
 ToolType.BOOTS: "Ботинки"
 ToolType.BOW: "Луки"

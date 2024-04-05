@@ -13,10 +13,6 @@ StartUp.DebugLogging: "디버그 로깅이 활성화 되었습니다. Logging.De
 
 Commands.Info.Line1: "MineTinker (%ver)는 Flo56958에 의해 만들어진 플러그인입니다."
 Commands.Info.Line2: "이것은 다른 모드의 영향을 받았습니다. (e.g. TinkersConstruct)"
-Commands.Info.Title: ""
-Commands.Info.Contributors: ""
-Commands.Info.ContributorsAction: ""
-Commands.Info.Failure: ""
 Commands.InvalidArguments: "사용 불가능한 명령어를 입력했습니다!"
 Commands.InvalidTool: "이 명령어를 사용하기 위해서 사용 가능한 툴을 메인이 되는 손에 잡고 있어야 합니다!"
 Commands.NoPermission: "이 행동을 수행할 권한을 갖고 있지 않습니다!"
@@ -61,10 +57,6 @@ GUIs.Modifiers.IncompatibleWith: "다음과 동시에 사용할 수 없습니다
 GUIs.Modifiers.EnchantCost: "마법 부여 비용: %WHITE%%enchantCost"
 GUIs.Modifiers.ClickToRecipe: "조합 레시피를 보기 위한 %key"
 GUIs.Modifiers.BlockToEnchant: "마법 부여를 위한 %block위의 %mat와 %key"
-GUIs.Modifiers.SlotCost: ""
-GUIs.Modifiers.MinimumToolLevel: ""
-GUIs.Modifiers.FilterButton: ""
-GUIs.Modifiers.FilterLore: ""
 GUIs.ConfigurationEditor.ReloadPlugin: "MineTinker를 다시 불러옵니다."
 GUIs.ConfigurationEditor.Change: "%key가 %old에서 %new로 바뀌었습니다!"
 GUIs.ConfigurationEditor.Type: "타입: %type"
@@ -82,10 +74,8 @@ GUIs.Statistics.General.Title: "기본 통계"
 GUIs.Statistics.General.Creator: "생성자: %player"
 GUIs.Statistics.General.Created: "생성됨: %date"
 GUIs.Statistics.Blocks.Title: "블록 통계"
-GUIs.Statistics.Blocks.TotalAmount: ""
 GUIs.Statistics.Blocks.TitlePage: "%tool에 대한 블록 통계 - %pageNo"
 GUIs.Statistics.Blocks.AmountBroken: "%amount번 부숴짐"
-GUIs.Statistics.Modifiers.TitlePage: ""
 GUIs.Statistics.Combat.Title: "전투 통계"
 GUIs.Statistics.Combat.TitlePage: "%tool에 대한 전투 통계 - %pageNo"
 GUIs.Statistics.Combat.AmountKilled: "%amount 번 죽음"
@@ -152,29 +142,19 @@ Modifier:
     Description: "광석을 채굴하는 동안 광석을 비롯한 다른 블럭을 제련합니다! 레벨 당 %chance 퍼센트의 확률로 활성화뇝니다."
     ModifierItemName: "향상된 화로"
     DescriptionModifierItem: "자동 제련 수식어를 위한 수식어 아이템"
-    Statistic_Used: ""
-    Statistic_Luck: ""
   Beheading:
     Name: "목 베기"
     Description: "레벨 당 %chance 퍼센트의 확률로 몹을 죽일 때 머리를 떨어뜨립니다."
     ModifierItemName: "인챈트 된 약해진 두개골"
     DescriptionModifierItem: "목 베기 수식어를 위한 수식어 아이템"
-    Statistic_Used: ""
   Berserk:
     Name: "미쳐 날뛰는"
     Description: " 건강이 %percent 퍼센트 밑으로 떨어질 때 %duration 초 동안 남은 힘이 부스트됩니다."
     ModifierItemName: "피묻은 레드스톤"
     DescriptionModifierItem: "미쳐 날뛰는 수식어를 위한 수식어 아이템"
-    Statistic_Used: ""
-  Building:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Channeling:
     Name: "투과력"
     Description: "레벨 당 %amount 확률로 뇌격을 소환 합니다!"
-    Description_OnlyStorms: ""
     ModifierItemName: "번개 속성 샤드"
     DescriptionModifierItem: "투과력 수식어를 위한 수식어 아이템"
   Directing:
@@ -182,26 +162,17 @@ Modifier:
     Description: "죽은 몹이나 부서진 블록에서의 전리품들이 당신의 인벤토리로 바로 옮겨집니다!"
     ModifierItemName: "향상된 나침반"
     DescriptionModifierItem: "직접성 수식어를 위한 수식어 아이템"
-    Statistic_Used: ""
   Drilling:
     Name: "뚫기"
     Description: "레벨 당 하나의 블럭이 더 깊게 뚫립니다."
     ModifierItemName: "강화된 드릴"
     DescriptionModifierItem: "드릴 수식어를 위한 수식어 아이템"
-  Echoing:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Ender:
     Name: "엔더"
     Description: "화살이 착륙할 위치로 몰래 가면서 텔레포트 하십시오!"
     ModifierItemName: "특별한 엔더눈"
     DescriptionModifierItem: "엔더 수식어를 위한 수식어 아이템"
     TeleportationProhibited: "이 플레이어와 장소를 바꿀 수 없습니다."
-    Statistic_Used: ""
-    Statistic_Distance: ""
-    Statistic_Swapped: ""
   Evasive:
     Name: "포착하기 어려운"
     Description: "공격이 들어올 때 피할 기회(레벨 당 %chance) - 살금살금 갈 때 %sneakX, 전력질주할 때 %sprintX, PvP일 때 %pvpX"
@@ -209,25 +180,12 @@ Modifier:
     DescriptionModifierItem: "포착하기 어려움 수식어를 위한 수식어 아이템"
   Experienced:
     Name: "능숙함"
-    Description: ""
     ModifierItemName: "경험의 본질"
     DescriptionModifierItem: "능숙함 수식어를 위한 수식어 아이템"
-    Statistic_Amount: ""
-  Explosive:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Extra-Modifier:
     Name: "그 외 수식어"
-    Description: ""
     ModifierItemName: "제련된 네더스타"
     DescriptionModifierItem: "그 외 수식어를 위한 수식어 아이템"
-  Farming:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Fiery:
     Name: "불타는"
     Description: "모두 태우기 위한 하나의 수식어!"
@@ -253,14 +211,8 @@ Modifier:
     Description: "더 빨리 블록을 파괴하고 석궁을 발사합니다!"
     ModifierItemName: "압축된 레드스톤블럭"
     DescriptionModifierItem: "서두름 수식어를 위한 수식어 아이템"
-  Homing:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Infinity:
     Name: "무한성"
-    Description: ""
     ModifierItemName: "인채드된 화살"
     DescriptionModifierItem: "무한성 수식어를 위한 수식어 아이템"
   Insulating:
@@ -295,7 +247,6 @@ Modifier:
     DescriptionModifierItem: "운 수식어를 위한 수식어 아이템"
   Magical:
     Name: "마법의"
-    Description: ""
     ModifierItemName: "마법 화살"
     DescriptionModifierItem: "마법 수식어를 위한 수식어 아이템"
   Melting:
@@ -305,31 +256,20 @@ Modifier:
     DescriptionModifierItem: "융해 수식어를 위한 수식어 아이템"
   Multishot:
     Name: "다중 발사"
-    Description: ""
     ModifierItemName: "다중 화살"
     DescriptionModifierItem: "다중 화살 아이템을 위한 수식어 아이템"
   Multijump:
     Name: "다중점프"
     Description: "레벨 당 점프 횟수가 늘어 납니다!"
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Nightseeker:
     Name: "야행성수색자"
     Description: "달이 빛날때(레벨과 달의 위치에 따라 달라집니다), 더 많거나 적은 데미지를 입힙니다(%amountmin 퍼센트에서  %amountmax 퍼센트). 이 효과는 낮과 지옥에서는 반대가 되지만, 결국 최대 힘을 가집니다."
     ModifierItemName: "어둠 햇빛 탐지기"
     DescriptionModifierItem: "야행성 수색자 수식어를 위한 수식어 아이템"
-  Phasing:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Photosynthesis:
     Name: "광합성"
-    Description: ""
     ModifierItemName: "추출한 엽록소"
     DescriptionModifierItem: "광합성 수식어를 위한 수식어 아이템"
-    NotifyWhenActive: ""
-    Statistic_Healed: ""
   Piercing:
     Name: "날카로운"
     Description: "화살이 다수의 적들을 관통합니다!"
@@ -367,12 +307,10 @@ Modifier:
     DescriptionModifierItem: "어둠에 적응된 시야 수식어를 위한 수식어 아이템"
   Shadow-Dive:
     Name: "야간 수영"
-    Description: ""
     ModifierItemName: "사라지는 수정"
     DescriptionModifierItem: "야간 수영 수식어를 위한 수식어 아이템"
     LightToHigh: "빛 레벨이 너무 높습니다!"
     InCombat: "전투중입니다!"
-    Active: ""
   Self-Repair:
     Name: "자가수리"
     Description: "도구나 갑옷을 사용할 때 레벨 당 %chance 퍼센트의 확률로  %amount 내구도가 증가합니다!"
@@ -433,11 +371,6 @@ Modifier:
     Description: "더 많은 영역에 더 많은 데미지를 가합니다!"
     ModifierItemName: "마법 부여된 철괴"
     DescriptionModifierItem: "스위핑-속성의 속성-아이템"
-  Swift-Sneaking:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Tanky:
     Name: "탱키"
     Description: "레벨 당 %amount 추가 생명으로 더 강해집니다!"
@@ -453,23 +386,6 @@ Modifier:
     Description: "순식간에 나무를 벨 수 있습니다!"
     ModifierItemName: "목조 에메랄드"
     DescriptionModifierItem: "목재-속성의 속성-아이템"
-    Statistic_Used: ""
-  Mutating:
-    Name: ""
-    Description: ""
-    Description_Level0: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-  Undead:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-  Vigilant:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
   Void-Netting:
     Name: "공허 넷팅"
     Description: "공허에 빠졌을 때, 레벨 당 %radius 반경의 안전한 위치로 텔레포트 합니다.\n쿨 다운: : %cmax 에서 %cmin 초(레벨에 의해 결정됨)"
@@ -481,24 +397,11 @@ Modifier:
     Description: "적을 때리거나 적에게 맞았을 때, 레벨 당 %duration 틱 * %multiplier만큼 그들의 속도가 느려집니다!"
     ModifierItemName: "압착된 거미줄"
     DescriptionModifierItem: "물갈퀴-속성의 속성-아이템"
-  Wild-Hunt:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    Statistic_Used: ""
   Withered:
     Name: "위더드"
     Description: "레벨 당 %duration 틱 * %multiplier per level만큼 타겟을 약해지게 합니다!"
     ModifierItemName: "약해진 시든 해골"
     DescriptionModifierItem: "위더드-속성의 속성-아이템"
-  Zealous:
-    Name: ""
-    Description: ""
-    ModifierItemName: ""
-    DescriptionModifierItem: ""
-    Statistic_Damage: ""
-    Statistic_Time: ""
 
 DataType.Boolean: "부울 (참/거짓)"
 DataType.String: "문장"
@@ -507,8 +410,6 @@ DataType.Integer: "정수"
 DataType.Double: "부동 소수점(더블)"
 
 ToolType.ALL: "전부"
-ToolType.ARMOR: ""
-ToolType.TOOLS: ""
 ToolType.AXE: "도끼"
 ToolType.BOOTS: "부츠"
 ToolType.BOW: "활"
@@ -567,7 +468,6 @@ Enchantment:
   vanishing_curse: "소실 저주"
   aqua_affinity: "친수성"
   soul_speed: "영혼 가속"
-  swift_sneak: ""
 
 Updater.Unable: "업데이트 확인 불가!"
 Updater.UpdateAvailable: "spigotmc.org에서 가능한 업데이트가 있습니다!"
