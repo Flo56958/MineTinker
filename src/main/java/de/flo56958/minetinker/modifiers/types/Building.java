@@ -17,6 +17,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -29,6 +31,7 @@ public class Building extends Modifier implements Listener {
 	private boolean useDurability;
 	private boolean giveExpOnUse;
 	private int expAmount;
+	private boolean solvePlayerOverlap;
 
 	private Building() {
 		super(MineTinker.getPlugin());
@@ -66,6 +69,7 @@ public class Building extends Modifier implements Listener {
 		config.addDefault("ModifierItemMaterial", Material.GRASS_BLOCK.name());
 		config.addDefault("UseDurability", true);
 		config.addDefault("GiveExpOnUse", true);
+		config.addDefault("SolvePlayerOverlap", true);
 		config.addDefault("ExpAmount", 1);
 
 		config.addDefault("EnchantCost", 15);
@@ -82,6 +86,7 @@ public class Building extends Modifier implements Listener {
 		this.useDurability = config.getBoolean("UseDurability", true);
 		this.giveExpOnUse = config.getBoolean("GiveExpOnUse", true);
 		this.expAmount = config.getInt("ExpAmount", 1);
+		this.solvePlayerOverlap = config.getBoolean("SolvePlayerOverlap", true);
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -126,6 +131,21 @@ public class Building extends Modifier implements Listener {
 
 		if (this.giveExpOnUse)
 			modManager.addExp(player, tool, this.expAmount, true);
+
+		if (this.solvePlayerOverlap) {
+			// Teleport player one block up if he is inside the block
+			final BoundingBox blockBB = toFill.getBoundingBox();
+			final BoundingBox playerBB = player.getBoundingBox();
+			if (blockBB.overlaps(playerBB)) {
+				final BoundingBox intersection = blockBB.intersection(playerBB);
+
+				// Intersection size * block diff = push vector
+				final Vector diff = toFill.getLocation().subtract(block.getLocation()).toVector();
+				final Vector intersectionSize = intersection.getMax().subtract(intersection.getMin());
+				final Vector push = intersectionSize.multiply(diff);
+				player.teleport(player.getLocation().add(push));
+			}
+		}
 
 		event.getEvent().setUseInteractedBlock(Event.Result.DENY); // prevent vanilla behavior by cancelling the event
 		toPlace.setAmount(toPlace.getAmount() - ((isDoubleSlab) ? 2 : 1));
