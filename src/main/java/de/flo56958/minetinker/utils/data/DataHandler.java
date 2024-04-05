@@ -25,10 +25,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DataHandler {
@@ -43,7 +40,7 @@ public class DataHandler {
 	 * @param <Z>      The type of the value of the Tag
 	 * @return true if the ItemStack has a Tag with the given key and the given dataType, false otherwise
 	 */
-	public static <T, Z> boolean hasTag(@NotNull ItemStack item, @NotNull String key, PersistentDataType<T, Z> dataType) {
+	public static <T, Z> boolean hasTag(@NotNull final ItemStack item, @NotNull final String key, final PersistentDataType<T, Z> dataType) {
 		return hasTag(item, key, dataType, false);
 	}
 
@@ -58,7 +55,7 @@ public class DataHandler {
 	 * @param <Z>          The type of the value of the Tag
 	 * @return true if the ItemStack has a Tag with the given key and the given dataType, false otherwise
 	 */
-	public static <T, Z> boolean hasTag(@NotNull ItemStack item, @NotNull String key, PersistentDataType<T, Z> dataType, boolean useMinecraft) {
+	public static <T, Z> boolean hasTag(@NotNull final ItemStack item, @NotNull final String key, final PersistentDataType<T, Z> dataType, final boolean useMinecraft) {
 		final ItemMeta meta = item.getItemMeta();
 		if (meta == null) return false;
 		final PersistentDataContainer container = meta.getPersistentDataContainer();
@@ -76,7 +73,7 @@ public class DataHandler {
 	 * @param <T>      The type of the Tag
 	 * @param <Z>      The type of the value of the Tag
 	 */
-	public static <T, Z> void setTag(@NotNull ItemStack item, @NotNull String key, Z value, PersistentDataType<T, Z> dataType) {
+	public static <T, Z> void setTag(@NotNull final ItemStack item, @NotNull final String key, final Z value, final PersistentDataType<T, Z> dataType) {
 		setTag(item, key, value, dataType, false);
 	}
 
@@ -91,7 +88,8 @@ public class DataHandler {
 	 * @param <T>          The type of the Tag
 	 * @param <Z>          The type of the value of the Tag
 	 */
-	public static <T, Z> void setTag(@NotNull ItemStack item, @NotNull String key, Z value, PersistentDataType<T, Z> dataType, boolean useMinecraft) {
+	public static <T, Z> void setTag(@NotNull final ItemStack item, @NotNull final String key, final Z value,
+	                                 final PersistentDataType<T, Z> dataType, final boolean useMinecraft) {
 		final ItemMeta meta = item.getItemMeta();
 		if (meta == null) return;
 
@@ -111,7 +109,8 @@ public class DataHandler {
 	 * @param <Z>          The type of the value of the Tag
 	 * @return The value of the Tag or defaultValue if the ItemStack does not have a Tag with the given key and the given dataType
 	 */
-	public static <T, Z> @NotNull Z getTagOrDefault(@NotNull ItemStack item, @NotNull String key, PersistentDataType<T, Z> dataType, @NotNull Z defaultValue) {
+	public static <T, Z> @NotNull Z getTagOrDefault(@NotNull final ItemStack item, @NotNull final String key,
+	                                                final PersistentDataType<T, Z> dataType, @NotNull final Z defaultValue) {
 		final Z value = getTag(item, key, dataType, false);
 		return value != null ? value : defaultValue;
 	}
@@ -126,7 +125,7 @@ public class DataHandler {
 	 * @param <Z>      The type of the value of the Tag
 	 * @return The value of the Tag or null if the ItemStack does not have a Tag with the given key and the given dataType
 	 */
-	public static <T, Z> @Nullable Z getTag(@NotNull ItemStack item, @NotNull String key, PersistentDataType<T, Z> dataType) {
+	public static <T, Z> @Nullable Z getTag(@NotNull final ItemStack item, @NotNull final String key, final PersistentDataType<T, Z> dataType) {
 		return getTag(item, key, dataType, false);
 	}
 
@@ -141,7 +140,7 @@ public class DataHandler {
 	 * @param <Z>          The type of the value of the Tag
 	 * @return The value of the Tag or null if the ItemStack does not have a Tag with the given key and the given dataType
 	 */
-	public static <T, Z> @Nullable Z getTag(@NotNull ItemStack item, @NotNull String key, PersistentDataType<T, Z> dataType, boolean useMinecraft) {
+	public static <T, Z> @Nullable Z getTag(@NotNull final ItemStack item, @NotNull final String key, final PersistentDataType<T, Z> dataType, final boolean useMinecraft) {
 		final ItemMeta meta = item.getItemMeta();
 		if (meta == null) return null;
 
@@ -155,7 +154,7 @@ public class DataHandler {
 	 * @param item The ItemStack to remove the Tag from
 	 * @param key  The key of the Tag
 	 */
-	public static void removeTag(@NotNull ItemStack item, @NotNull String key) {
+	public static void removeTag(@NotNull final ItemStack item, @NotNull final String key) {
 		removeTag(item, key, false);
 	}
 
@@ -166,7 +165,7 @@ public class DataHandler {
 	 * @param key          The key of the Tag
 	 * @param useMinecraft If the key should be the Minecraft-Namespace or the Plugin-Namespace
 	 */
-	public static void removeTag(@NotNull ItemStack item, @NotNull String key, boolean useMinecraft) {
+	public static void removeTag(@NotNull final ItemStack item, @NotNull final String key, final boolean useMinecraft) {
 		ItemMeta meta = item.getItemMeta();
 		if (meta == null) return;
 		PersistentDataContainer container = meta.getPersistentDataContainer();
@@ -182,7 +181,7 @@ public class DataHandler {
 	 * @param damage    The amount of damage that should be dealt
 	 * @return          true if the event was successful, false otherwise
 	 */
-	public static boolean triggerItemDamage(@NotNull Player player, @NotNull ItemStack itemStack, int damage) {
+	public static boolean triggerItemDamage(@NotNull final Player player, @NotNull final ItemStack itemStack, final int damage) {
 		ItemMeta meta = itemStack.getItemMeta();
 		if (meta == null) return true;
 		if (meta.isUnbreakable()) return true;
@@ -206,17 +205,21 @@ public class DataHandler {
 	public static boolean playerPlaceBlock(@NotNull final Player player, @NotNull final ItemStack itemInHand,
 	                                       @NotNull final Block toPlace, @NotNull final Block placedAgainst,
 	                                       @NotNull final BlockState blockState, @Nullable final BlockData blockData) {
-		//triggers a pseudoevent to find out if the Player can build here
+		// Triggers a pseudoevent to find out if the Player can build here
 		final BlockPlaceEvent placeEvent =
 				new BlockPlaceEvent(toPlace, blockState, placedAgainst, itemInHand, player, true, EquipmentSlot.HAND);
 		Bukkit.getPluginManager().callEvent(placeEvent);
 
-		//check the pseudoevent
+		// Check the pseudoevent
 		if (!placeEvent.canBuild() || placeEvent.isCancelled())
 			return false;
 
 		toPlace.setType(itemInHand.getType(), true); //incl. physics update
 		if (blockData != null) toPlace.setBlockData(blockData, true); //incl. physics update
+		toPlace.getState().update();
+
+		// Play sound
+		toPlace.getWorld().playSound(toPlace.getLocation(), toPlace.getBlockData().getSoundGroup().getPlaceSound(), 1.0f, 1.0f);
 		return true;
 	}
 
@@ -229,34 +232,33 @@ public class DataHandler {
 	 * @return true if the player successfully broke the block, false otherwise
 	 * @throws IllegalArgumentException
 	 */
-	public static boolean playerBreakBlock(@NotNull Player player, @NotNull Block block, @NotNull ItemStack itemStack)
+	public static boolean playerBreakBlock(@NotNull final Player player, @NotNull final Block block, @NotNull final ItemStack itemStack)
 			throws IllegalArgumentException {
-		//
-		//This skips all interactions and synergies with MT and other Plugins but is way less performance heavy
-		//
+		// This skips all interactions and synergies with MT and other Plugins but is way less performance heavy
 		if (MineTinker.getPlugin().getConfig().getBoolean("LowSpecMode")) {
-			//Container handling is done by .breakNaturally()
+			// Container handling is done by .breakNaturally()
 
 			if (!block.breakNaturally(itemStack)) return false;
 
-			//Spawn Experience Orb, if Player is not in Survival
+			// Spawn Experience Orb, if Player is not in Survival
 			int exp = calculateExp(block.getType());
 			if (exp > 0 && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
-				ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
+				final ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
 				orb.setExperience(exp);
 			}
 
-			//Calculate Damage for itemStack
-			//No Damage for Creative Players
+			// Calculate Damage for itemStack
+			// No Damage for Creative Players
 			if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
-				ItemMeta meta = itemStack.getItemMeta();
+				final ItemMeta meta = itemStack.getItemMeta();
+				if (meta == null) return true;
 				if (!meta.isUnbreakable()) {
-					if (meta instanceof Damageable) {
-						//Consider Unbreaking enchant
+					if (meta instanceof Damageable damageable) {
+						// Consider Unbreaking enchant
 						int lvl = meta.getEnchantLevel(Enchantment.DURABILITY);
 						int r = new Random().nextInt(100);
 						if (!(r > 100 / (lvl + 1))) {
-							((Damageable) meta).setDamage(((Damageable) meta).getDamage() + 1);
+							damageable.setDamage(damageable.getDamage() + 1);
 							itemStack.setItemMeta(meta);
 						}
 					}
@@ -265,81 +267,74 @@ public class DataHandler {
 			return true;
 		}
 
-		//
-		//Trigger BlockBreakEvent
-		//For interactions with MT itself and other Plugins
-		//
-		BlockBreakEvent breakEvent = new BlockBreakEvent(block, player);
-		//No itemdrops for creative players, but can be changed by other plugins in the event
+		// Trigger BlockBreakEvent
+		// For interactions with MT itself and other Plugins
+		final BlockBreakEvent breakEvent = new BlockBreakEvent(block, player);
+		// No itemdrops for creative players, but can be changed by other plugins in the event
 		breakEvent.setDropItems(player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR);
 		ItemMeta meta = itemStack.getItemMeta();
 		if (meta != null && !meta.hasEnchant(Enchantment.SILK_TOUCH))
 			breakEvent.setExpToDrop(calculateExp(block.getType()));
 		Bukkit.getPluginManager().callEvent(breakEvent);
 
-		//Check if Event got cancelled and if not destroy the block and check if the player can successfully break the blocks (incl. drops)
-		//Block#breakNaturally(ItemStack itemStack) can not be used as it drops Items itself (without Event, and we don't want that)
+		// Check if Event got cancelled and if not destroy the block and check if the player can successfully break the blocks (incl. drops)
+		// Block#breakNaturally(ItemStack itemStack) can not be used as it drops Items itself (without Event, and we don't want that)
 		if (!breakEvent.isCancelled()) {
-			//Get all drops to drop
-			Collection<ItemStack> items = block.getDrops(itemStack);
+			// Get all drops to drop
+			final Collection<ItemStack> items = block.getDrops(itemStack, player);
 
-			//If the Block is a Container it needs to drop the items inside as well
+			// If the Block is a Container it needs to drop the items inside as well
 			if (block.getState() instanceof Container container && !(block.getState() instanceof ShulkerBox)) {
 				// Check for chests as chest inventories can be spread out over 2 blocks (Chest::getBlockInventory())
-				for (ItemStack stack :
-						container instanceof Chest c
-								? c.getBlockInventory().getContents() : container.getInventory().getContents()) {
-					if (stack != null) items.add(stack); //Null items can not be dropped
-				}
+				final ItemStack[] contents = container instanceof Chest c
+						? c.getBlockInventory().getContents() : container.getInventory().getContents();
+				Collections.addAll(items, contents);
+				items.removeIf(Objects::isNull);
 			}
 
-			//Set Block to Material.AIR (effectively breaks the Block)
+			// Play sound before breaking the block as AIR has the wrong sound
+			block.getWorld().playSound(block.getLocation(), block.getBlockData().getSoundGroup().getBreakSound(), 1.0f, 1.0f);
+			// Set Block to Material.AIR (effectively breaks the Block)
 			block.setType(Material.AIR);
-			//TODO: Play Sound? - Not needed
 
-			//Check if items need to be dropped
+			// Check if items need to be dropped
 			if (breakEvent.isDropItems()) {
-				List<Item> itemEntities = items.stream()
+				final List<Item> itemEntities = items.stream()
 						.map(entry -> player.getWorld().dropItemNaturally(block.getLocation(), entry)) //World#spawnEntity() does not work for Items
 						.collect(Collectors.toList());
 
-				//Trigger BlockDropItemEvent (internally also used for Directing)
-				BlockDropItemEvent event = new BlockDropItemEvent(block, block.getState(), player, new ArrayList<>(itemEntities));
+				// Trigger BlockDropItemEvent (internally also used for Directing)
+				final BlockDropItemEvent event = new BlockDropItemEvent(block, block.getState(), player, new ArrayList<>(itemEntities));
 				Bukkit.getPluginManager().callEvent(event);
 
-				//check if Event got cancelled
+				// Check if Event got cancelled
 				if (!event.isCancelled()) {
-					//Remove all drops that should be dropped
-					itemEntities.removeIf(element -> event.getItems().contains(element));
+					// Remove all drops that should be dropped
+					itemEntities.removeAll(event.getItems());
 				}
-				itemEntities.forEach(Item::remove);
+				itemEntities.forEach(Item::remove); // Delete all items that should not be dropped
+				// if the event spawns additional items, they will still exist in the world
 			}
 
-			//Check if Exp needs to be dropped, Player should be in survival
+			// Check if Exp needs to be dropped, Player should be in survival
 			if (breakEvent.getExpToDrop() > 0 && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
 				//Spawn Experience Orb
-				ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
+				final ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
 				orb.setExperience(breakEvent.getExpToDrop());
 			}
 
-			//Calculate Damage for itemStack
+			// Calculate Damage for itemStack
 			meta = itemStack.getItemMeta();
-			//No Damage for creative players
+			// No Damage for creative players
 			if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
-				if (!meta.isUnbreakable()) {
-					if (meta instanceof Damageable) {
-						//Consider Unbreaking Enchant
-						int lvl = meta.getEnchantLevel(Enchantment.DURABILITY);
-						int damage = 1;
-						int r = new Random().nextInt(100);
-						if (r > 100 / (lvl + 1)) {
-							damage = 0;
-						}
+				// Consider Unbreaking Enchant
+				final int lvl = meta.getEnchantLevel(Enchantment.DURABILITY);
 
-						triggerItemDamage(player, itemStack, damage);
-					}
-				}
+				// Check if the item should be damaged
+				if (new Random().nextInt(100) > 100 / (lvl + 1))
+					triggerItemDamage(player, itemStack, 1);
 			}
+
 			return true;
 		}
 
@@ -352,7 +347,7 @@ public class DataHandler {
 	 * @param type The type of the block that should be broken.
 	 * @return The amount of experience that should be dropped when breaking a block.
 	 */
-	private static int calculateExp(Material type) {
+	private static int calculateExp(final Material type) {
 		//TODO: Find better method then hardcoded values
 		if (MineTinker.is19compatible) {
 			int amount = switch (type) {
