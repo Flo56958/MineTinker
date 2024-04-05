@@ -13,6 +13,10 @@ StartUp.DebugLogging: "Rejestrowanie debugowania jest włączone. Powinieneś wy
 
 Commands.Info.Line1: "MineTinker (%ver) jest pluginem stworzonym przez Flo56958."
 Commands.Info.Line2: "Jest inspirowany różnymi modami (np. TinkersConstruct)"
+Commands.Info.Title: ""
+Commands.Info.Contributors: ""
+Commands.Info.ContributorsAction: ""
+Commands.Info.Failure: ""
 Commands.InvalidArguments: "Wprowadziłeś nieprawidłowe argumenty polecenia!"
 Commands.InvalidTool: "Aby wykonać to polecenie, musisz trzymać prawidłowe narzędzie w ręce!"
 Commands.NoPermission: "Nie masz uprawnień do wykonania tej akcji!"
@@ -59,6 +63,8 @@ GUIs.Modifiers.ClickToRecipe: "%key aby pokazać przepis rzemieślniczy."
 GUIs.Modifiers.BlockToEnchant: "%key z %mat na %block by zakląć przedmiot."
 GUIs.Modifiers.SlotCost: "Wymagane wolne sloty na poziom: %WHITE%%amount"
 GUIs.Modifiers.MinimumToolLevel: "Minimalny Poziom Narzędzia: %WHITE%%level"
+GUIs.Modifiers.FilterButton: ""
+GUIs.Modifiers.FilterLore: ""
 GUIs.ConfigurationEditor.ReloadPlugin: "Załaduj ponownie MineTinker"
 GUIs.ConfigurationEditor.Change: "Zmieniono %key z %old na %new!"
 GUIs.ConfigurationEditor.Type: "Wpisz: %type"
@@ -160,9 +166,15 @@ Modifier:
     ModifierItemName: "Krwawy Redstone"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Berserk\""
     Statistic_Used: "Aktywowane %amount razy"
+  Building:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Channeling:
     Name: "Wyładowanie"
     Description: "Masz %amount szans na poziom by przywołać błyskawicę!"
+    Description_OnlyStorms: ""
     ModifierItemName: "Odłamek Błyskawicy"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Wyładowanie\""
   Directing:
@@ -197,15 +209,25 @@ Modifier:
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Unik\""
   Experienced:
     Name: "Doświadczenie"
-    Description: "Narzędzie ma %chance% szans na poziom, aby wydropić %amount XP podczas używania!"
+    Description: ""
     ModifierItemName: "Esencja Doświadczenia"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Doświadczenie\""
     Statistic_Amount: "Wyrzucona ilość doświadczenia: %amount"
+  Explosive:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Extra-Modifier:
     Name: "Extra-Modyfikator"
-    Description: "Dodaje %amount dodatkowe sloty modyfikatora do narzędzia!"
+    Description: ""
     ModifierItemName: "Udoskonalona Netherowa Gwiazda"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Extra\""
+  Farming:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Fiery:
     Name: "Ogień"
     Description: "Jeden modyfikator, by wszystkich spalić! Jeden, by wszystkich w popiół zamienić!"
@@ -238,7 +260,7 @@ Modifier:
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Procesor Balistyczny\""
   Infinity:
     Name: "Bezgraniczność"
-    Description: "Potrzebujesz tylko jednej strzały, aby wystrzelić z łuku/kuszy! Również twój trójząb wróci do ciebie!"
+    Description: ""
     ModifierItemName: "Zaklęta Strzała"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Bezgraniczność\""
   Insulating:
@@ -273,7 +295,7 @@ Modifier:
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Szczęście\""
   Magical:
     Name: "Pocisk"
-    Description: "Wystrzel magiczny pocisk, na którą nie ma wpływu grawitacja, ale leci do %amount% wolniej! Jeśli pocisk trafi w cel, zadaje od %min% do %max% dodatkowych obrażeń (w zależności od poziomu)! Strzelanie kosztuje %xp XP!"
+    Description: ""
     ModifierItemName: "Magiczna Strzała"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Pocisk\""
   Melting:
@@ -283,7 +305,7 @@ Modifier:
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Topienie\""
   Multishot:
     Name: "Wielostrzał"
-    Description: "Wystrzel jeszcze jedną strzałę na poziom podczas strzału!"
+    Description: ""
     ModifierItemName: "Wielo-Strzała"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Wielostrzał\""
   Multijump:
@@ -296,6 +318,11 @@ Modifier:
     Description: "Zadawaj więcej lub otrzymuj mniej obrażeń (od %amountmin% do %amountmax%), gdy świeci księżyc (zależy od poziomu i pozycji księżyca). Ten efekt zostaje odwrócony w ciągu dnia i w Netherze, ale ma pełną moc w Endzie!"
     ModifierItemName: "Ciemny Detektor Światła Dziennego"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Poszukiwacz Nocy\""
+  Phasing:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Photosynthesis:
     Name: "Fotosynteza"
     Description: "Napraw swój przedmiot z wytrzymałością %amount na poziom co %ticks Tików, gdy świeci słońce. Im dłużej stoisz, tym szybciej przedmiot się naprawia. (%multiplier%)"
@@ -340,11 +367,12 @@ Modifier:
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Kocie Oczy\""
   Shadow-Dive:
     Name: "Kamuflaż Cienia"
-    Description: "Zniknij całkowicie z pola widzenia, skradając się w ciemnych miejscach! (Poziom światła <= %level)"
+    Description: ""
     ModifierItemName: "Znikający Kryształ"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Kamuflaż Cienia\""
     LightToHigh: "Poziom światła jest zbyt wysoki!"
     InCombat: "Jesteś w walce!"
+    Active: ""
   Self-Repair:
     Name: "Samo-Naprawa"
     Description: "%chance% szans na poziom do naprawy narzędzia/zbroi o wytrzymałości %amount podczas używania!"
@@ -425,6 +453,13 @@ Modifier:
     Description: "Ścinaj drzewa w mgnieniu oka!"
     ModifierItemName: "Drewniany Szmaragd"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Rębacz\""
+    Statistic_Used: ""
+  Mutating:
+    Name: ""
+    Description: ""
+    Description_Level0: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
   Undead:
     Name: "Nieumarły"
     Description: "Potwór nie będzie cię już atakował, ale ty nie możesz też nikogo atakować!"
@@ -432,7 +467,7 @@ Modifier:
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Nieumarły\""
   Vigilant:
     Name: "Strażnik"
-    Description: "Zyskujesz tymczasową tarczę równą %amount otrzymanych obrażeń. Tarcza utrzymuje się przez %duration sekund na poziom."
+    Description: ""
     ModifierItemName: "Zapomniane Jabłko"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Strażnik\""
   Void-Netting:
@@ -446,11 +481,24 @@ Modifier:
     Description: "Spowolnij wrogów, gdy ich trafisz lub trafią cię oni na %duration Tików * %multiplier na poziom!"
     ModifierItemName: "Skompresowana Pajęczyna"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Płetwonogi\""
+  Wild-Hunt:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
+    Statistic_Used: ""
   Withered:
     Name: "Obumarcie"
     Description: "Cel obumiera przez %duration Tików * %multiplier na poziom!"
     ModifierItemName: "Czaszka Mrocznego Szkieleta"
     DescriptionModifierItem: "Element modyfikujący dla modyfikatora \"Obumarcie\""
+  Zealous:
+    Name: ""
+    Description: ""
+    ModifierItemName: ""
+    DescriptionModifierItem: ""
+    Statistic_Damage: ""
+    Statistic_Time: ""
 
 DataType.Boolean: "Boolean (prawda/fałsz)"
 DataType.String: "Sznur"
@@ -459,6 +507,8 @@ DataType.Integer: "Liczba całkowita"
 DataType.Double: "Liczba zmiennoprzecinkowa (podwójna)"
 
 ToolType.ALL: "Wszystko"
+ToolType.ARMOR: ""
+ToolType.TOOLS: ""
 ToolType.AXE: "Siekiery"
 ToolType.BOOTS: "Buty"
 ToolType.BOW: "Łuki"
