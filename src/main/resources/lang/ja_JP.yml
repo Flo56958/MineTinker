@@ -112,8 +112,8 @@ GrindStone.PossibleSlotsAfterGrind: "研磨後の最大空きスロット: %amou
 ActionBar.ExpGain: "%amount 経験値を獲得"
 
 TinkerListener.ToolUpgrade: "%tool を %type にアップグレードしました"
-TinkerListener.ModifierApply: "%tool に %mod を付与しました （残りの空きスロット数: %slots）"
-TinkerListener.ModifierFail: "%tool への %mod の適用に失敗しました (%cause)"
+TinkerListener.ModifierApply: "%tool に %mod を付与しました （残りの空きスロット数: %slots)"
+TinkerListener.ModifierFail: "%tool への %mod の適用に失敗しました (%cause)!"
 TinkerListener.ToolLevelUp: "%tool のレベルが %level に上がりました"
 
 Modifier.MaterialEntryNotFound: "材料のエントリが存在しないため、レシピを登録できません"
@@ -166,7 +166,7 @@ Modifier:
     DescriptionModifierItem: "転送のエンチャント用アイテム"
     Statistic_Used: "転送したアイテムの数: %amount"
   Drilling:
-    Name: "掘削"
+    Name: "掘削モジュール"
     Description: "ブロックの破壊が1レベル毎に1ブロック先まで及ぶようになります"
     ModifierItemName: "ドリルモジュール"
     DescriptionModifierItem: "掘削のエンチャント用アイテム"
@@ -181,7 +181,7 @@ Modifier:
     Statistic_Swapped: "場所を入れ替えた数: %amount"
   Evasive:
     Name: "回避"
-    Description: "一定の確率で攻撃をかわします (1レベルあたり %chance％、スニーク中は%sneak倍、ダッシュ中は%sprint倍、PvPでは%pvp倍)"
+    Description: "一定の確率で攻撃をかわします (1レベルあたり %chance%、スニーク中は%sneak倍、ダッシュ中は%sprint倍、PvPでは%pvp倍)"
   Multishot:
     Name: "拡散 "
   Piercing:
