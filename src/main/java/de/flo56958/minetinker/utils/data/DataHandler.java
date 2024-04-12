@@ -279,66 +279,64 @@ public class DataHandler {
 
 		// Check if Event got cancelled and if not destroy the block and check if the player can successfully break the blocks (incl. drops)
 		// Block#breakNaturally(ItemStack itemStack) can not be used as it drops Items itself (without Event, and we don't want that)
-		if (!breakEvent.isCancelled()) {
-			// Get all drops to drop
-			final Collection<ItemStack> items = block.getDrops(itemStack, player);
+		if (breakEvent.isCancelled()) return false;
 
-			// If the Block is a Container it needs to drop the items inside as well
-			if (block.getState() instanceof Container container && !(block.getState() instanceof ShulkerBox)) {
-				// Check for chests as chest inventories can be spread out over 2 blocks (Chest::getBlockInventory())
-				final ItemStack[] contents = container instanceof Chest c
-						? c.getBlockInventory().getContents() : container.getInventory().getContents();
-				Collections.addAll(items, contents);
-				items.removeIf(Objects::isNull);
-			}
+		// Get all drops to drop
+		final Collection<ItemStack> items = block.getDrops(itemStack, player);
 
-			// Play sound before breaking the block as AIR has the wrong sound
-			block.getWorld().playSound(block.getLocation(), block.getBlockData().getSoundGroup().getBreakSound(), 1.0f, 1.0f);
-			// Set Block to Material.AIR (effectively breaks the Block)
-			block.setType(Material.AIR);
-
-			// Check if items need to be dropped
-			if (breakEvent.isDropItems()) {
-				final List<Item> itemEntities = items.stream()
-						.map(entry -> player.getWorld().dropItemNaturally(block.getLocation(), entry)) //World#spawnEntity() does not work for Items
-						.collect(Collectors.toList());
-
-				// Trigger BlockDropItemEvent (internally also used for Directing)
-				final BlockDropItemEvent event = new BlockDropItemEvent(block, block.getState(), player, new ArrayList<>(itemEntities));
-				Bukkit.getPluginManager().callEvent(event);
-
-				// Check if Event got cancelled
-				if (!event.isCancelled()) {
-					// Remove all drops that should be dropped
-					itemEntities.removeAll(event.getItems());
-				}
-				itemEntities.forEach(Item::remove); // Delete all items that should not be dropped
-				// if the event spawns additional items, they will still exist in the world
-			}
-
-			// Check if Exp needs to be dropped, Player should be in survival
-			if (breakEvent.getExpToDrop() > 0 && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
-				//Spawn Experience Orb
-				final ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
-				orb.setExperience(breakEvent.getExpToDrop());
-			}
-
-			// Calculate Damage for itemStack
-			meta = itemStack.getItemMeta();
-			// No Damage for creative players
-			if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
-				// Consider Unbreaking Enchant
-				final int lvl = meta.getEnchantLevel(Enchantment.DURABILITY);
-
-				// Check if the item should be damaged
-				if (new Random().nextInt(100) > 100 / (lvl + 1))
-					triggerItemDamage(player, itemStack, 1);
-			}
-
-			return true;
+		// If the Block is a Container it needs to drop the items inside as well
+		if (block.getState() instanceof Container container && !(block.getState() instanceof ShulkerBox)) {
+			// Check for chests as chest inventories can be spread out over 2 blocks (Chest::getBlockInventory())
+			final ItemStack[] contents = container instanceof Chest c
+					? c.getBlockInventory().getContents() : container.getInventory().getContents();
+			Collections.addAll(items, contents);
+			items.removeIf(Objects::isNull);
 		}
 
-		return false;
+		// Play sound before breaking the block as AIR has the wrong sound
+		block.getWorld().playSound(block.getLocation(), block.getBlockData().getSoundGroup().getBreakSound(), 1.0f, 1.0f);
+		// Set Block to Material.AIR (effectively breaks the Block)
+		block.setType(Material.AIR);
+
+		// Check if items need to be dropped
+		if (breakEvent.isDropItems()) {
+			final List<Item> itemEntities = items.stream()
+					.map(entry -> player.getWorld().dropItemNaturally(block.getLocation(), entry)) //World#spawnEntity() does not work for Items
+					.collect(Collectors.toList());
+
+			// Trigger BlockDropItemEvent (internally also used for Directing)
+			final BlockDropItemEvent event = new BlockDropItemEvent(block, block.getState(), player, new ArrayList<>(itemEntities));
+			Bukkit.getPluginManager().callEvent(event);
+
+			// Check if Event got cancelled
+			if (!event.isCancelled()) {
+				// Remove all drops that should be dropped
+				itemEntities.removeAll(event.getItems());
+			}
+			itemEntities.forEach(Item::remove); // Delete all items that should not be dropped
+			// if the event spawns additional items, they will still exist in the world
+		}
+
+		// Check if Exp needs to be dropped, Player should be in survival
+		if (breakEvent.getExpToDrop() > 0 && player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
+			//Spawn Experience Orb
+			final ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
+			orb.setExperience(breakEvent.getExpToDrop());
+		}
+
+		// Calculate Damage for itemStack
+		meta = itemStack.getItemMeta();
+		// No Damage for creative players
+		if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
+			// Consider Unbreaking Enchant
+			final int lvl = meta.getEnchantLevel(Enchantment.DURABILITY);
+
+			// Check if the item should be damaged
+			if (new Random().nextInt(100) < 100 / (lvl + 1))
+				triggerItemDamage(player, itemStack, 1);
+		}
+
+		return true;
 	}
 
 	/**
