@@ -1,10 +1,7 @@
 package de.flo56958.minetinker.utils.data;
 
 import de.flo56958.minetinker.MineTinker;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
@@ -219,8 +216,19 @@ public class DataHandler {
 		toPlace.getState().update();
 
 		// Play sound
-		toPlace.getWorld().playSound(toPlace.getLocation(), toPlace.getBlockData().getSoundGroup().getPlaceSound(), 1.0f, 1.0f);
+		final Sound placeSound = toPlace.getBlockData().getSoundGroup().getPlaceSound();
+		if (!placeSound.equals(lastSound.getOrDefault(player, null))) {
+			toPlace.getWorld().playSound(toPlace.getLocation(), placeSound, 1.0f, 1.0f);
+			lastSound.put(player, placeSound);
+		}
 		return true;
+	}
+
+	// Decrease the amount of duplicate Sounds
+	private static final HashMap<Player, Sound> lastSound = new HashMap<>();
+
+	public static void removeLastSound(@NotNull final Player player) {
+		lastSound.remove(player);
 	}
 
 	/**
@@ -294,7 +302,11 @@ public class DataHandler {
 		}
 
 		// Play sound before breaking the block as AIR has the wrong sound
-		block.getWorld().playSound(block.getLocation(), block.getBlockData().getSoundGroup().getBreakSound(), 1.0f, 1.0f);
+		final Sound breakSound = block.getBlockData().getSoundGroup().getBreakSound();
+		if (!breakSound.equals(lastSound.getOrDefault(player, null))) {
+			block.getWorld().playSound(block.getLocation(), breakSound, 1.0f, 1.0f);
+			lastSound.put(player, breakSound);
+		}
 		// Set Block to Material.AIR (effectively breaks the Block)
 		block.setType(Material.AIR);
 

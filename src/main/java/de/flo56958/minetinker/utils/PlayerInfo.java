@@ -3,6 +3,7 @@ package de.flo56958.minetinker.utils;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.modifiers.ModManager;
+import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -120,6 +121,8 @@ public class PlayerInfo implements Listener {
 		combatTagTimeTracker.remove(event.getPlayer().getUniqueId());
 
 		fishingRodTracker.remove(event.getPlayer().getUniqueId());
+
+		DataHandler.removeLastSound(event.getPlayer());
 	}
 
 	/**
