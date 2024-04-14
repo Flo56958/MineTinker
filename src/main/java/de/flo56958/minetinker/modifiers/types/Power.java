@@ -3,7 +3,6 @@ package de.flo56958.minetinker.modifiers.types;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.api.events.MTPlayerInteractEvent;
-import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
@@ -27,15 +26,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Power extends Modifier implements Listener {
 
-	public static final ConcurrentHashMap<Location, Integer> events = new ConcurrentHashMap<>();
+	public static final ConcurrentHashMap<Location, Integer> events_break = new ConcurrentHashMap<>();
+	public static final ConcurrentHashMap<Location, Integer> events_interact = new ConcurrentHashMap<>();
 
 	//Communicates the used BlockFace to the Drilling Modifier
 	public static final ConcurrentHashMap<Location, BlockFace> drillingCommunication = new ConcurrentHashMap<>();
@@ -88,9 +85,12 @@ public class Power extends Modifier implements Listener {
 
 		config.addDefault("Recipe.Enabled", false);
 
-		final List<String> blacklistTemp = new ArrayList<>();
+		final Set<String> blacklistTemp = new HashSet<>();
 
-		blacklistTemp.add(Material.AIR.name());
+		for (Material value : Material.values()) {
+			if (value.isAir())
+				blacklistTemp.add(value.name());
+		}
 		blacklistTemp.add(Material.BEDROCK.name());
 		blacklistTemp.add(Material.WATER.name());
 		blacklistTemp.add(Material.BUBBLE_COLUMN.name());
@@ -100,7 +100,7 @@ public class Power extends Modifier implements Listener {
 		blacklistTemp.add(Material.END_PORTAL_FRAME.name());
 		blacklistTemp.add(Material.NETHER_PORTAL.name());
 
-		config.addDefault("Blacklist", blacklistTemp);
+		config.addDefault("Blacklist", new ArrayList<>(blacklistTemp));
 		config.addDefault("TreatAsWhitelist", false);
 
 		ConfigurationManager.saveConfig(config);
@@ -201,9 +201,8 @@ public class Power extends Modifier implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void effect(WorldSaveEvent e) {
-		if (!Bukkit.getOnlinePlayers().isEmpty()) return;
-
-		events.clear();
+		events_break.clear();
+		events_interact.clear();
 		drillingCommunication.clear();
 	}
 
@@ -213,13 +212,15 @@ public class Power extends Modifier implements Listener {
 	 * @param event The Event
 	 */
 	@EventHandler(ignoreCancelled = true)
-	public void effect(@NotNull MTBlockBreakEvent event) {
+	public void effect(@NotNull final MTBlockBreakEvent event) {
 		final Player player = event.getPlayer();
 		final ItemStack tool = event.getTool();
 		final Block block = event.getBlock();
 
 		//Was the block broken by Power or Drilling, blocks unwanted recursion
-		if (events.remove(block.getLocation(), 0)) return;
+		if (events_break.remove(block.getLocation(), 0)) return; // check first to clear map
+		if (block.getType().isAir()) return; // does not work with air
+		if (block.isLiquid()) return; // does not work with liquids
 
 		if (!canUsePower(player, tool)) return;
 
@@ -228,8 +229,13 @@ public class Power extends Modifier implements Listener {
 
 		final float hardness = block.getType().getHardness();
 
+		final boolean drilling = modManager.hasMod(tool, Drilling.instance());
+
 		for (final Block b : getPowerBlocks(tool, block, face, direction)) {
-			powerBlockBreak(b, hardness, player, tool, face);
+			if (b.getType().isAir()) continue;
+			if (b.isLiquid()) continue;
+
+			powerBlockBreak(b, hardness, player, tool, face, drilling);
 		}
 
 		ChatWriter.logModifier(player, event, this, tool, "Block(" + block.getType() + ")");
@@ -237,25 +243,30 @@ public class Power extends Modifier implements Listener {
 
 	// No ignoreCancelled as Building will cancel Power
 	@EventHandler(priority = EventPriority.HIGH) // High so it is called after the interactions below
-	public void onInteract(@NotNull MTPlayerInteractEvent event) {
+	public void onInteract(@NotNull final MTPlayerInteractEvent event) {
 		final Player player = event.getPlayer();
 		final ItemStack tool = event.getTool();
 
 		final Block block = event.getEvent().getClickedBlock();
 		if (block == null) return;
-		if (events.remove(block.getLocation(), 0)) return;
+		if (events_interact.remove(block.getLocation(), 0)) return; // check first to clear map
+		if (block.getType().isAir()) return; // does not work with air
+		if (block.isLiquid()) return; // does not work with liquids
 
 		if (!canUsePower(player, tool)) return;
 
-		// Broadcast InteractEvent to other Blocks
-		for (final Block b : getPowerBlocks(tool, block, Lists.BLOCKFACE.getOrDefault(player, event.getEvent().getBlockFace()), PlayerInfo.getFacingDirection(player))) {
-			if (b.getType().isAir()) continue;
-			if (events.putIfAbsent(b.getLocation(), 0) != null) continue;
+		final BlockFace face = event.getEvent().getBlockFace();
 
-			// do not use runTaskLater with 1 tick delay! This will cause tps instability!
-			Bukkit.getScheduler().runTask(this.getSource(),
-					() -> Bukkit.getPluginManager().callEvent(
-							new PlayerInteractEvent(player, event.getEvent().getAction(), tool, b, event.getEvent().getBlockFace())));
+		// Broadcast InteractEvent to other Blocks
+		final HashSet<Block> blocks = getPowerBlocks(tool, block, face, PlayerInfo.getFacingDirection(player));
+		blocks.remove(block); // Remove the central block (already handled in the BlockBreakEvent)
+		for (final Block b : blocks) {
+			if (b.getType().isAir()) continue;
+			if (b.isLiquid()) continue;
+			if (events_interact.putIfAbsent(b.getLocation(), 0) != null) continue;
+
+			Bukkit.getPluginManager().callEvent(
+							new PlayerInteractEvent(player, event.getEvent().getAction(), tool, b, event.getEvent().getBlockFace()));
 		}
 	}
 
@@ -278,7 +289,7 @@ public class Power extends Modifier implements Listener {
 			//Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
 			return;
 
-		if (!events.containsKey(block.getLocation())) return;
+		if (!events_interact.containsKey(block.getLocation())) return;
 		if (!canUsePower(player, tool)) return;
 
 		// central block exp does not give exp TODO: fix
@@ -311,7 +322,7 @@ public class Power extends Modifier implements Listener {
 			//Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
 			return;
 
-		if (!events.containsKey(block.getLocation())) return;
+		if (!events_interact.containsKey(block.getLocation())) return;
 		if (!canUsePower(player, tool)) return;
 
 		// central block exp does not give exp TODO: fix
@@ -336,7 +347,7 @@ public class Power extends Modifier implements Listener {
 				&& (Tag.LOGS.isTagged(block.getType()) && !block.getType().name().contains("STRIPPED_"))))
 			return;
 
-		if (events.containsKey(block.getLocation()) && canUsePower(player, tool)) {
+		if (events_interact.containsKey(block.getLocation()) && canUsePower(player, tool)) {
 			ChatWriter.logModifier(player, event, this, tool);
 
 			final Material log = Material.getMaterial("STRIPPED_" + block.getType().name());
@@ -352,25 +363,23 @@ public class Power extends Modifier implements Listener {
 		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
 	}
 
-	private void powerBlockBreak(@Nullable final Block block, final float centralBlockHardness, final Player player, final ItemStack tool, final BlockFace face) {
+	private void powerBlockBreak(@Nullable final Block block, final float centralBlockHardness, final Player player, final ItemStack tool, final BlockFace face, final boolean drilling) {
 		if (block == null) return;
 
-		Bukkit.getScheduler().runTask(this.getSource(), () -> {
-			if (treatAsWhitelist ^ blacklist.contains(block.getType())) return;
-			if (block.getDrops(tool).isEmpty()) return;
-			if (player.getGameMode() != GameMode.CREATIVE && block.getType().getHardness() > centralBlockHardness + 2) // + 2 so you can mine ore as well
-				return; //So Obsidian can not be mined using Cobblestone and Power
-			if (block.getBlockData() instanceof Ageable ageable && ageable.getAge() != ageable.getMaximumAge()) return;
-			if (!(block.getBlockData() instanceof Ageable) && ToolType.HOE.contains(tool.getType())) return;
+		if (treatAsWhitelist ^ blacklist.contains(block.getType())) return;
+		if (block.getDrops(tool).isEmpty()) return;
+		if (player.getGameMode() != GameMode.CREATIVE && block.getType().getHardness() > centralBlockHardness + 2) // + 2 so you can mine ore as well
+			return; //So Obsidian can not be mined using Cobblestone and Power
+		if (block.getBlockData() instanceof Ageable ageable && ageable.getAge() != ageable.getMaximumAge()) return;
+		if (!(block.getBlockData() instanceof Ageable) && ToolType.HOE.contains(tool.getType())) return;
 
-			events.put(block.getLocation(), 0);
+		// Save BlockFace so Drilling can use the 'old' information
+		if (drilling) drillingCommunication.put(block.getLocation(), face);
 
-			// Save BlockFace so Drilling can use the 'old' information
-			if (modManager.hasMod(tool, Drilling.instance())) drillingCommunication.put(block.getLocation(), face);
+		if (events_break.putIfAbsent(block.getLocation(), 0) != null) return;
 
-			try {
-				DataHandler.playerBreakBlock(player, block, tool);
-			} catch (IllegalArgumentException ignored) {}
-		});
+		try {
+			DataHandler.playerBreakBlock(player, block, tool);
+		} catch (IllegalArgumentException ignored) {}
 	}
 }
