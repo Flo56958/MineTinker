@@ -10,10 +10,7 @@ import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.PlayerInfo;
 import de.flo56958.minetinker.utils.data.DataHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Tag;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
@@ -361,7 +358,7 @@ public class Power extends Modifier implements Listener {
 		Bukkit.getScheduler().runTask(this.getSource(), () -> {
 			if (treatAsWhitelist ^ blacklist.contains(block.getType())) return;
 			if (block.getDrops(tool).isEmpty()) return;
-			if (block.getType().getHardness() > centralBlockHardness + 2) // + 2 so you can mine ore as well
+			if (player.getGameMode() != GameMode.CREATIVE && block.getType().getHardness() > centralBlockHardness + 2) // + 2 so you can mine ore as well
 				return; //So Obsidian can not be mined using Cobblestone and Power
 			if (block.getBlockData() instanceof Ageable ageable && ageable.getAge() != ageable.getMaximumAge()) return;
 			if (!(block.getBlockData() instanceof Ageable) && ToolType.HOE.contains(tool.getType())) return;

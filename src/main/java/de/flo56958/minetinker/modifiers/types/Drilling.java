@@ -9,6 +9,7 @@ import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -196,7 +197,7 @@ public class Drilling extends Modifier implements Listener {
 		if (treatAsWhitelist ^ blacklist.contains(block.getType())) return false;
 		if (block.getDrops(player.getInventory().getItemInMainHand()).isEmpty()) return false;
 		//So Obsidian can not be mined using Cobblestone and Drilling
-		if (block.getType().getHardness() > centralBlockHardness + 2) return false;
+		if (player.getGameMode() != GameMode.CREATIVE && block.getType().getHardness() > centralBlockHardness + 2) return false;
 
 		try {
 			events.put(block.getLocation(), 0);
