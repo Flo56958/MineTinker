@@ -3,7 +3,6 @@ package de.flo56958.minetinker.modifiers.types;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.api.events.MTPlayerInteractEvent;
-import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
@@ -119,8 +118,8 @@ public class Drilling extends Modifier implements Listener {
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public boolean canUseDrilling(Player player, ItemStack tool, Location loc) {
-		if (!player.hasPermission(getUsePermission())) return false;
 		if (events.remove(loc, 0)) return false;
+		if (!player.hasPermission(getUsePermission())) return false;
 		if (toggleable && player.isSneaking()) return false;
 
 		return modManager.hasMod(tool, this);
@@ -154,9 +153,10 @@ public class Drilling extends Modifier implements Listener {
 			if (modManager.hasMod(tool, Power.instance()))
 				Power.events.put(b.getLocation(), 0);
 
-			Bukkit.getScheduler().runTaskLater(this.getSource(),
+			// do not use runTaskLater with 1 tick delay! This will cause tps instability!
+			Bukkit.getScheduler().runTask(this.getSource(),
 					() -> Bukkit.getPluginManager().callEvent(
-							new PlayerInteractEvent(player, event.getEvent().getAction(), tool, b, event.getEvent().getBlockFace())), 1);
+							new PlayerInteractEvent(player, event.getEvent().getAction(), tool, b, event.getEvent().getBlockFace())));
 		}
 	}
 
@@ -173,7 +173,7 @@ public class Drilling extends Modifier implements Listener {
 		BlockFace face = Power.drillingCommunication.remove(block.getLocation());
 		boolean usedPowerCommunication = true;
 		if (!(modManager.hasMod(tool, Power.instance()) && face != null)) {
-			face = Lists.BLOCKFACE.get(player);
+			face = event.getBlockFace();
 			usedPowerCommunication = false;
 		}
 

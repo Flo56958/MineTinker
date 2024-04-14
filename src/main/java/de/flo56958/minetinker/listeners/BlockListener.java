@@ -95,7 +95,7 @@ public class BlockListener implements Listener {
 			modManager.addExp(player, tool, expAmount, true);
 		}
 
-		Bukkit.getPluginManager().callEvent(new MTBlockBreakEvent(tool, event));
+		Bukkit.getPluginManager().callEvent(new MTBlockBreakEvent(tool, event, Lists.BLOCKFACE.get(player)));
 		//Event-Trigger for Modifiers
 	}
 

@@ -221,13 +221,13 @@ public class Power extends Modifier implements Listener {
 		final ItemStack tool = event.getTool();
 		final Block block = event.getBlock();
 
-		if (!canUsePower(player, tool)) return;
-
 		//Was the block broken by Power or Drilling, blocks unwanted recursion
 		if (events.remove(block.getLocation(), 0)) return;
 
+		if (!canUsePower(player, tool)) return;
+
 		final PlayerInfo.Direction direction = PlayerInfo.getFacingDirection(player);
-		final BlockFace face = Lists.BLOCKFACE.get(player);
+		final BlockFace face = event.getBlockFace();
 
 		final float hardness = block.getType().getHardness();
 
@@ -243,21 +243,22 @@ public class Power extends Modifier implements Listener {
 	public void onInteract(@NotNull MTPlayerInteractEvent event) {
 		final Player player = event.getPlayer();
 		final ItemStack tool = event.getTool();
-		if (!canUsePower(player, tool)) return;
 
-		// Broadcast InteractEvent to other Blocks
 		final Block block = event.getEvent().getClickedBlock();
 		if (block == null) return;
 		if (events.remove(block.getLocation(), 0)) return;
 
+		if (!canUsePower(player, tool)) return;
+
+		// Broadcast InteractEvent to other Blocks
 		for (final Block b : getPowerBlocks(tool, block, Lists.BLOCKFACE.getOrDefault(player, event.getEvent().getBlockFace()), PlayerInfo.getFacingDirection(player))) {
 			if (b.getType().isAir()) continue;
 			if (events.putIfAbsent(b.getLocation(), 0) != null) continue;
 
-			Bukkit.getScheduler().runTaskLater(this.getSource(),
+			// do not use runTaskLater with 1 tick delay! This will cause tps instability!
+			Bukkit.getScheduler().runTask(this.getSource(),
 					() -> Bukkit.getPluginManager().callEvent(
-							new PlayerInteractEvent(player, event.getEvent().getAction(), tool, b, event.getEvent().getBlockFace())),
-					1);
+							new PlayerInteractEvent(player, event.getEvent().getAction(), tool, b, event.getEvent().getBlockFace())));
 		}
 	}
 
@@ -280,8 +281,8 @@ public class Power extends Modifier implements Listener {
 			//Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
 			return;
 
-		if (!canUsePower(player, tool)) return;
 		if (!events.containsKey(block.getLocation())) return;
+		if (!canUsePower(player, tool)) return;
 
 		// central block exp does not give exp TODO: fix
 		modManager.addExp(player, tool,
@@ -313,8 +314,8 @@ public class Power extends Modifier implements Listener {
 			//Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
 			return;
 
-		if (!canUsePower(player, tool)) return;
 		if (!events.containsKey(block.getLocation())) return;
+		if (!canUsePower(player, tool)) return;
 
 		// central block exp does not give exp TODO: fix
 		modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak"), true);
@@ -338,7 +339,7 @@ public class Power extends Modifier implements Listener {
 				&& (Tag.LOGS.isTagged(block.getType()) && !block.getType().name().contains("STRIPPED_"))))
 			return;
 
-		if (canUsePower(player, tool) && events.containsKey(block.getLocation())) {
+		if (events.containsKey(block.getLocation()) && canUsePower(player, tool)) {
 			ChatWriter.logModifier(player, event, this, tool);
 
 			final Material log = Material.getMaterial("STRIPPED_" + block.getType().name());

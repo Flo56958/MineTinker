@@ -1,6 +1,7 @@
 package de.flo56958.minetinker.api.events;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -19,7 +20,7 @@ public class MTBlockBreakEvent extends Event implements Cancellable {
 
 	private final Player player;
 	private final ItemStack tool;
-
+	private final BlockFace blockFace;
 	private final BlockBreakEvent event;
 
 	/**
@@ -28,14 +29,19 @@ public class MTBlockBreakEvent extends Event implements Cancellable {
 	 * @param tool  The ItemStack (MUST be a MineTinker-Tool)
 	 * @param event The BlockBreakEvent from which it was called
 	 */
-	public MTBlockBreakEvent(@NotNull ItemStack tool, @NotNull BlockBreakEvent event) {
+	public MTBlockBreakEvent(@NotNull ItemStack tool, @NotNull BlockBreakEvent event, @NotNull BlockFace blockFace) {
 		this.player = event.getPlayer();
 		this.tool = tool;
 		this.event = event;
+		this.blockFace = blockFace;
 	}
 
 	public static HandlerList getHandlerList() {
 		return handlers;
+	}
+
+	public BlockFace getBlockFace() {
+		return blockFace;
 	}
 
 	public Player getPlayer() {
