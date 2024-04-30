@@ -52,7 +52,7 @@ public class Sharpness extends Modifier {
 
 	@Override
 	public @NotNull List<Enchantment> getAppliedEnchantments() {
-		return Arrays.asList(Enchantment.DAMAGE_ALL, Enchantment.ARROW_DAMAGE, Enchantment.IMPALING);
+		return Arrays.asList(Enchantment.SHARPNESS, Enchantment.POWER, Enchantment.IMPALING);
 	}
 
 	@Override
@@ -96,11 +96,11 @@ public class Sharpness extends Modifier {
 
 		if (meta != null) {
 			if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType())) {
-				meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
+				meta.addEnchant(Enchantment.SHARPNESS, modManager.getModLevel(tool, this), true);
 			} else if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType())) {
-				meta.addEnchant(Enchantment.ARROW_DAMAGE, modManager.getModLevel(tool, this), true);
+				meta.addEnchant(Enchantment.POWER, modManager.getModLevel(tool, this), true);
 			} else if (ToolType.TRIDENT.contains(tool.getType())) {
-				meta.addEnchant(Enchantment.DAMAGE_ALL, modManager.getModLevel(tool, this), true);
+				meta.addEnchant(Enchantment.SHARPNESS, modManager.getModLevel(tool, this), true);
 				meta.addEnchant(Enchantment.IMPALING, modManager.getModLevel(tool, this), true);
 			}
 

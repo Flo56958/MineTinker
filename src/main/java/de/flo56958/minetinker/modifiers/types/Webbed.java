@@ -126,8 +126,8 @@ public class Webbed extends Modifier implements Listener {
 		}
 
 		if (!hasWebbed) return;
-		if (player.hasPotionEffect(PotionEffectType.SLOW)) {
-			player.removePotionEffect(PotionEffectType.SLOW);
+		if (player.hasPotionEffect(PotionEffectType.SLOWNESS)) {
+			player.removePotionEffect(PotionEffectType.SLOWNESS);
 			ChatWriter.logModifier(player, event, this, armor, "RemoveEffect");
 		}
 	}
@@ -189,6 +189,6 @@ public class Webbed extends Modifier implements Listener {
 					"Entity(" + entity.getType() + ")");
 		}
 
-		return new PotionEffect(PotionEffectType.SLOW, duration, amplifier, false, false);
+		return new PotionEffect(PotionEffectType.SLOWNESS, duration, amplifier, false, false);
 	}
 }

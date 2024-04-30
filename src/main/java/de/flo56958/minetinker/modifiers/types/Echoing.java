@@ -38,18 +38,11 @@ public class Echoing extends Modifier implements Listener {
 	private int radiusPerLevel;
 
 	private void sendPacket(@NotNull final Player player, @NotNull final Entity entity, final byte value) {
-		PacketContainer packet = protocolManager.createPacket(PacketType.Play.Server.ENTITY_METADATA);
+		final PacketContainer packet = protocolManager.createPacket(PacketType.Play.Server.ENTITY_METADATA);
 		packet.getIntegers().write(0, entity.getEntityId());
+		packet.getDataValueCollectionModifier().write(0, List.of(
+				new WrappedDataValue(0, WrappedDataWatcher.Registry.get(Byte.class), value)));
 
-		if (!MineTinker.is19compatible) {
-			WrappedDataWatcher watcher = new WrappedDataWatcher();
-			watcher.setEntity(entity);
-			watcher.setObject(0, WrappedDataWatcher.Registry.get(Byte.class), value);
-			packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
-		} else {
-			packet.getDataValueCollectionModifier().write(0, List.of(
-					new WrappedDataValue(0, WrappedDataWatcher.Registry.get(Byte.class), value)));
-		}
 		try {
 			protocolManager.sendServerPacket(player, packet);
 		} catch (Exception e) {

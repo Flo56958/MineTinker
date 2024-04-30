@@ -49,7 +49,7 @@ public class Haste extends Modifier {
 
 	@Override
 	public @NotNull List<Enchantment> getAppliedEnchantments() {
-		return Arrays.asList(Enchantment.LURE, Enchantment.DIG_SPEED, Enchantment.QUICK_CHARGE);
+		return Arrays.asList(Enchantment.LURE, Enchantment.EFFICIENCY, Enchantment.QUICK_CHARGE);
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class Haste extends Modifier {
 			else if (ToolType.CROSSBOW.contains(tool.getType()))
 				meta.addEnchant(Enchantment.QUICK_CHARGE, modManager.getModLevel(tool, this), true);
 			else
-				meta.addEnchant(Enchantment.DIG_SPEED, modManager.getModLevel(tool, this), true);
+				meta.addEnchant(Enchantment.EFFICIENCY, modManager.getModLevel(tool, this), true);
 
 			tool.setItemMeta(meta);
 		}

@@ -12,7 +12,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -118,28 +117,23 @@ public class Beheading extends Modifier implements Listener {
 		int i = this.percentagePerLevel * modManager.getModLevel(tool, this);
 
 		if (n <= i) {
-			if (mob.getType() == EntityType.CREEPER) {
-				loot = new ItemStack(Material.CREEPER_HEAD, 1);
-			} else if (mob.getType() == EntityType.SKELETON) {
-				loot = new ItemStack(Material.SKELETON_SKULL, 1);
-			} else if (mob.getType() == EntityType.WITHER_SKELETON) {
-				loot = new ItemStack(Material.WITHER_SKELETON_SKULL, 1);
-			} else if (mob.getType() == EntityType.ZOMBIE) {
-				loot = new ItemStack(Material.ZOMBIE_HEAD, 1);
-			} else if (mob.getType() == EntityType.ZOMBIE_VILLAGER) {
-				loot = new ItemStack(Material.ZOMBIE_HEAD, 1);
-			} else if (mob.getType() == EntityType.PLAYER) {
-				ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
+			switch (mob.getType()) {
+				case CREEPER -> loot = new ItemStack(Material.CREEPER_HEAD, 1);
+				case SKELETON -> loot = new ItemStack(Material.SKELETON_SKULL, 1);
+				case WITHER_SKELETON -> loot = new ItemStack(Material.WITHER_SKELETON_SKULL, 1);
+				case ZOMBIE, ZOMBIE_VILLAGER -> loot = new ItemStack(Material.ZOMBIE_HEAD, 1);
+				case PLAYER -> {
+					ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
 
-				if (head.getItemMeta() != null) {
-					SkullMeta headMeta = (SkullMeta) head.getItemMeta();
-					headMeta.setOwningPlayer((OfflinePlayer) mob);
-					head.setItemMeta(headMeta);
+					if (head.getItemMeta() != null) {
+						SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+						headMeta.setOwningPlayer((OfflinePlayer) mob);
+						head.setItemMeta(headMeta);
+					}
+
+					loot = head;
 				}
-
-				loot = head;
-			} else if (MineTinker.is20compatible && mob.getType() == EntityType.PIGLIN) {
-				loot = new ItemStack(Material.PIGLIN_HEAD, 1);
+				case PIGLIN -> loot = new ItemStack(Material.PIGLIN_HEAD, 1);
 			}
 
 			if (loot != null) {

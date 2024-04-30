@@ -176,8 +176,8 @@ public class Ender extends Modifier implements Listener {
 		spawnParticles(player, oldLoc);
 
 		if (this.giveNauseaOnUse) {
-			player.removePotionEffect(PotionEffectType.CONFUSION);
-			player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, this.nauseaDuration, 0, false, false));
+			player.removePotionEffect(PotionEffectType.NAUSEA);
+			player.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, this.nauseaDuration, 0, false, false));
 		}
 		if (this.giveBlindnessOnUse) {
 			player.removePotionEffect(PotionEffectType.BLINDNESS);
@@ -246,12 +246,12 @@ public class Ender extends Modifier implements Listener {
 		}
 
 		if (this.giveNauseaOnUse) {
-			player.removePotionEffect(PotionEffectType.CONFUSION);
-			player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, this.nauseaDuration, 0, false, false));
+			player.removePotionEffect(PotionEffectType.NAUSEA);
+			player.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, this.nauseaDuration, 0, false, false));
 
 			if (entity instanceof LivingEntity) {
-				((LivingEntity) entity).removePotionEffect(PotionEffectType.CONFUSION);
-				((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, this.nauseaDuration, 0, false, false));
+				((LivingEntity) entity).removePotionEffect(PotionEffectType.NAUSEA);
+				((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, this.nauseaDuration, 0, false, false));
 			}
 		}
 
@@ -259,9 +259,9 @@ public class Ender extends Modifier implements Listener {
 			player.removePotionEffect(PotionEffectType.BLINDNESS);
 			player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, this.blindnessDuration, 0, false, false));
 
-			if (entity instanceof LivingEntity) {
-				((LivingEntity) entity).removePotionEffect(PotionEffectType.BLINDNESS);
-				((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, this.blindnessDuration, 0, false, false));
+			if (entity instanceof LivingEntity livent) {
+				livent.removePotionEffect(PotionEffectType.BLINDNESS);
+				livent.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, this.blindnessDuration, 0, false, false));
 			}
 		}
 

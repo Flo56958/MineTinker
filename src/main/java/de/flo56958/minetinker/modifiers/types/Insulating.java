@@ -45,7 +45,7 @@ public class Insulating extends Modifier {
 
 	@Override
 	public @NotNull List<Enchantment> getAppliedEnchantments() {
-		return Collections.singletonList(Enchantment.PROTECTION_FIRE);
+		return Collections.singletonList(Enchantment.FIRE_PROTECTION);
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class Insulating extends Modifier {
 		if (meta != null) {
 			if (ToolType.HELMET.contains(tool.getType()) || ToolType.CHESTPLATE.contains(tool.getType())
 					|| ToolType.LEGGINGS.contains(tool.getType()) || ToolType.BOOTS.contains(tool.getType()))
-				meta.addEnchant(Enchantment.PROTECTION_FIRE, modManager.getModLevel(tool, this), true);
+				meta.addEnchant(Enchantment.FIRE_PROTECTION, modManager.getModLevel(tool, this), true);
 
 			tool.setItemMeta(meta);
 		}

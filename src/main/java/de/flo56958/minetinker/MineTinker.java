@@ -23,9 +23,6 @@ import org.jetbrains.annotations.NotNull;
 public class MineTinker extends JavaPlugin {
 
 	private static JavaPlugin plugin;
-	public static boolean is18compatible;
-	public static boolean is19compatible;
-	public static boolean is20compatible;
 
 	@Contract(pure = true)
 	public static JavaPlugin getPlugin() { // necessary to do getConfig() in other classes
@@ -42,22 +39,11 @@ public class MineTinker extends JavaPlugin {
 
 			int minor = Integer.parseInt(ver[1]);
 			ChatWriter.log(true, "Minecraft Minor Version: " + minor);
-
-			is18compatible = mayor >= 1 && minor >= 18;
-			is19compatible = mayor >= 1 && minor >= 19;
-			is20compatible = mayor >= 1 && minor >= 20;
 		} catch (Exception e) {
 			e.printStackTrace();
 			ChatWriter.logError("Could not parse the Minecraft Version! Running 1.17 feature set. " +
 					"If you are running a higher Version, please report this as an error.");
-			return;
 		}
-		if (is18compatible)
-			ChatWriter.log(false, "1.18 enhanced features activated!");
-		if (is19compatible)
-			ChatWriter.log(false, "1.19 enhanced features activated!");
-		if (is20compatible)
-			ChatWriter.log(false, "1.20 enhanced features activated!");
 	}
 
 	@Override
@@ -199,7 +185,7 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(SpidersBane.instance());
 		modManager.register(Sunblazer.instance());
 		modManager.register(Sweeping.instance());
-		if (is19compatible) modManager.register(SwiftSneaking.instance());
+		modManager.register(SwiftSneaking.instance());
 		modManager.register(Tanky.instance());
 		modManager.register(Thorned.instance());
 		modManager.register(Timber.instance());

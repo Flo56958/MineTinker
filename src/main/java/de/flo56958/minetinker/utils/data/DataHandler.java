@@ -263,7 +263,7 @@ public class DataHandler {
 				if (!meta.isUnbreakable()) {
 					if (meta instanceof Damageable damageable) {
 						// Consider Unbreaking enchant
-						int lvl = meta.getEnchantLevel(Enchantment.DURABILITY);
+						int lvl = meta.getEnchantLevel(Enchantment.UNBREAKING);
 						int r = new Random().nextInt(100);
 						if (!(r > 100 / (lvl + 1))) {
 							damageable.setDamage(damageable.getDamage() + 1);
@@ -341,7 +341,7 @@ public class DataHandler {
 		// No Damage for creative players
 		if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
 			// Consider Unbreaking Enchant
-			final int lvl = meta.getEnchantLevel(Enchantment.DURABILITY);
+			final int lvl = meta.getEnchantLevel(Enchantment.UNBREAKING);
 
 			// Check if the item should be damaged
 			if (new Random().nextInt(100) < 100 / (lvl + 1))
@@ -359,18 +359,11 @@ public class DataHandler {
 	 */
 	private static int calculateExp(final Material type) {
 		//TODO: Find better method then hardcoded values
-		if (MineTinker.is19compatible) {
-			int amount = switch (type) {
-				//1
-				case SCULK -> 1;
-				//5
-				case SCULK_CATALYST, SCULK_SENSOR, SCULK_SHRIEKER -> 5;
-				default -> 0;
-			};
-			if (amount != 0) return amount;
-		}
-
 		return switch (type) {
+			//1
+			case SCULK -> 1;
+			//5
+			case SCULK_CATALYST, SCULK_SENSOR, SCULK_SHRIEKER -> 5;
 			//0-2
 			case COAL_ORE -> new Random().nextInt(3);
 			//0-1

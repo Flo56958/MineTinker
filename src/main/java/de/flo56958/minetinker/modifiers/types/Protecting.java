@@ -45,7 +45,7 @@ public class Protecting extends Modifier {
 
 	@Override
 	public @NotNull List<Enchantment> getAppliedEnchantments() {
-		return Collections.singletonList(Enchantment.PROTECTION_ENVIRONMENTAL);
+		return Collections.singletonList(Enchantment.PROTECTION);
 
 	}
 
@@ -87,7 +87,7 @@ public class Protecting extends Modifier {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
-			meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, modManager.getModLevel(tool, this), true);
+			meta.addEnchant(Enchantment.PROTECTION, modManager.getModLevel(tool, this), true);
 			tool.setItemMeta(meta);
 		}
 

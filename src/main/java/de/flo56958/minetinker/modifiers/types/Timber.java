@@ -98,9 +98,7 @@ public class Timber extends Modifier implements Listener {
 
 		this.grasses.clear();
 		this.grasses.addAll(Arrays.asList(Material.GRASS_BLOCK, Material.DIRT, Material.PODZOL, Material.COARSE_DIRT,
-				Material.NETHERRACK, Material.CRIMSON_NYLIUM, Material.WARPED_NYLIUM));
-		if (MineTinker.is19compatible)
-			this.grasses.add(Material.MUD);
+				Material.NETHERRACK, Material.CRIMSON_NYLIUM, Material.WARPED_NYLIUM, Material.MUD));
 	}
 
 	@EventHandler(ignoreCancelled = true)

@@ -164,7 +164,7 @@ public class PlayerListener implements Listener {
 				}
 			}
 			case "turtle" -> {
-				if (repair.getType() == Material.SCUTE) {
+				if (repair.getType() == Material.TURTLE_SCUTE) {
 					eligible = true;
 				}
 			}

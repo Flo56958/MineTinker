@@ -46,7 +46,7 @@ public class LightWeight extends Modifier {
 
 	@Override
 	public @NotNull List<Enchantment> getAppliedEnchantments() {
-		return Collections.singletonList(Enchantment.PROTECTION_FALL);
+		return Collections.singletonList(Enchantment.FEATHER_FALLING);
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class LightWeight extends Modifier {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
-			meta.addEnchant(Enchantment.PROTECTION_FALL, modManager.getModLevel(tool, this), true);
+			meta.addEnchant(Enchantment.FEATHER_FALLING, modManager.getModLevel(tool, this), true);
 			tool.setItemMeta(meta);
 		}
 

@@ -202,7 +202,7 @@ public class ModManager {
 				|| name.equals("gold") && material == Material.GOLD_INGOT
 				|| name.equals("diamond") && material == Material.DIAMOND
 				|| name.equals("leather") && material == Material.LEATHER
-				|| name.equals("turtle") && material == Material.SCUTE
+				|| name.equals("turtle") && material == Material.TURTLE_SCUTE
 				|| name.equals("chainmail") && material == Material.IRON_BARS
 				|| name.equals("netherite") && material == Material.NETHERITE_INGOT)
 			return null;
