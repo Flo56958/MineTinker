@@ -55,7 +55,7 @@ public class Infinity extends Modifier implements Listener {
 
 	@Override
 	public @NotNull List<Enchantment> getAppliedEnchantments() {
-		return Arrays.asList(Enchantment.ARROW_INFINITE, Enchantment.LOYALTY);
+		return Arrays.asList(Enchantment.INFINITY, Enchantment.LOYALTY);
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class Infinity extends Modifier implements Listener {
 
 		if (meta != null) {
 			if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType()))
-				meta.addEnchant(Enchantment.ARROW_INFINITE, modManager.getModLevel(tool, this), true);
+				meta.addEnchant(Enchantment.INFINITY, modManager.getModLevel(tool, this), true);
 			else if (ToolType.TRIDENT.contains(tool.getType()))
 				meta.addEnchant(Enchantment.LOYALTY, modManager.getModLevel(tool, this), true);
 

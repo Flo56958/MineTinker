@@ -45,7 +45,7 @@ public class SpidersBane extends Modifier {
 
 	@Override
 	public @NotNull List<Enchantment> getAppliedEnchantments() {
-		return Collections.singletonList(Enchantment.DAMAGE_ARTHROPODS);
+		return Collections.singletonList(Enchantment.BANE_OF_ARTHROPODS);
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class SpidersBane extends Modifier {
 
 		if (meta != null) {
 			if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType()))
-				meta.addEnchant(Enchantment.DAMAGE_ARTHROPODS, modManager.getModLevel(tool, this), true);
+				meta.addEnchant(Enchantment.BANE_OF_ARTHROPODS, modManager.getModLevel(tool, this), true);
 			tool.setItemMeta(meta);
 		} else return false;
 

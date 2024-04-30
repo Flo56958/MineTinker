@@ -21,11 +21,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up JDK 16
+    - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
-        java-version: '16'
-        distribution: 'adopt'
+        java-version: '21'
+        distribution: 'microsoft'
 
     - name: Preparing build.gradle # <- Only necessary for publishing - changes the version number dependent on the commit sha
       if: github.event_name == 'push' && github.ref == 'refs/heads/master'

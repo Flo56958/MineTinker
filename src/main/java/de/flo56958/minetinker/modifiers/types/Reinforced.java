@@ -51,7 +51,7 @@ public class Reinforced extends Modifier {
 
 	@Override
 	public @NotNull List<Enchantment> getAppliedEnchantments() {
-		return Collections.singletonList(Enchantment.DURABILITY);
+		return Collections.singletonList(Enchantment.UNBREAKING);
 
 	}
 
@@ -98,7 +98,7 @@ public class Reinforced extends Modifier {
 		final ItemMeta meta = tool.getItemMeta();
 		if (meta == null) return false;
 
-		meta.addEnchant(Enchantment.DURABILITY, modManager.getModLevel(tool, this), true);
+		meta.addEnchant(Enchantment.UNBREAKING, modManager.getModLevel(tool, this), true);
 		meta.setUnbreakable(this.applyUnbreakableOnMaxLevel && modManager.getModLevel(tool, this) == this.getMaxLvl());
 		if (hideUnbreakableFlag) meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
 
@@ -112,7 +112,7 @@ public class Reinforced extends Modifier {
 
 		if (meta == null) return;
 
-		meta.removeEnchant(Enchantment.DURABILITY);
+		meta.removeEnchant(Enchantment.UNBREAKING);
 		meta.removeItemFlags(ItemFlag.HIDE_UNBREAKABLE);
 		if (this.applyUnbreakableOnMaxLevel) meta.setUnbreakable(false);
 

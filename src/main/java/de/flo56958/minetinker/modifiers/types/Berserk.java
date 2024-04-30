@@ -116,7 +116,7 @@ public class Berserk extends Modifier implements Listener {
 		if (healthAttr != null) maxHealth = healthAttr.getValue();
 
 		if (player.getHealth() / maxHealth > trigger / 100.0 && lifeAfterDamage / maxHealth <= trigger / 100.0) {
-			player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, boostTime,
+			player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, boostTime,
 					modifierLevel - 1));
 			ChatWriter.logModifier(player, event, this, chest,
 					"Time(" + boostTime + ")", "Amplifier(" + (modifierLevel - 1) + ")");

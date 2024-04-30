@@ -146,16 +146,12 @@ public class AutoSmelt extends Modifier implements Listener {
 		conversions.put(Material.RAW_IRON_BLOCK, new Triplet(Material.IRON_INGOT, 9));
 		conversions.put(Material.COPPER_ORE, new Triplet(Material.COPPER_INGOT, 1, true));
 
-		if (MineTinker.is19compatible) {
-			// No muddy roots
-			conversions.put(Material.MANGROVE_ROOTS, new Triplet(Material.CHARCOAL, 1));
-			conversions.put(Material.MUD, new Triplet(Material.CLAY, 1));
-		}
+		// No muddy roots
+		conversions.put(Material.MANGROVE_ROOTS, new Triplet(Material.CHARCOAL, 1));
+		conversions.put(Material.MUD, new Triplet(Material.CLAY, 1));
 
-		if (MineTinker.is20compatible) {
-			conversions.put(Material.BAMBOO_BLOCK, new Triplet(Material.CHARCOAL, 1));
-			conversions.put(Material.SUSPICIOUS_SAND, new Triplet(Material.GLASS, 1));
-		}
+		conversions.put(Material.BAMBOO_BLOCK, new Triplet(Material.CHARCOAL, 1));
+		conversions.put(Material.SUSPICIOUS_SAND, new Triplet(Material.GLASS, 1));
 
 		for (Material m : Material.values()) {
 			if (m.isBurnable() && m.isBlock()) {

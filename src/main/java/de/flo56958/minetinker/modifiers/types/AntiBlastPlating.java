@@ -45,7 +45,7 @@ public class AntiBlastPlating extends Modifier {
 
 	@Override
 	public @NotNull List<Enchantment> getAppliedEnchantments() {
-		return Collections.singletonList(Enchantment.PROTECTION_EXPLOSIONS);
+		return Collections.singletonList(Enchantment.BLAST_PROTECTION);
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class AntiBlastPlating extends Modifier {
 
 		if (meta != null) {
 			if (ToolType.ARMOR.contains(tool.getType()))
-				meta.addEnchant(Enchantment.PROTECTION_EXPLOSIONS, modManager.getModLevel(tool, this), true);
+				meta.addEnchant(Enchantment.BLAST_PROTECTION, modManager.getModLevel(tool, this), true);
 
 			tool.setItemMeta(meta);
 		}

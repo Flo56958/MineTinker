@@ -48,7 +48,7 @@ public class Aquaphilic extends Modifier {
 
 	@Override
 	public @NotNull List<Enchantment> getAppliedEnchantments() {
-		return Arrays.asList(Enchantment.DEPTH_STRIDER, Enchantment.OXYGEN, Enchantment.WATER_WORKER);
+		return Arrays.asList(Enchantment.DEPTH_STRIDER, Enchantment.AQUA_AFFINITY, Enchantment.RESPIRATION);
 	}
 
 	@Override
@@ -92,8 +92,8 @@ public class Aquaphilic extends Modifier {
 			if (ToolType.BOOTS.contains(tool.getType())) {
 				meta.addEnchant(Enchantment.DEPTH_STRIDER, modManager.getModLevel(tool, this), true);
 			} else if (ToolType.HELMET.contains(tool.getType())) {
-				meta.addEnchant(Enchantment.OXYGEN, modManager.getModLevel(tool, this), true);
-				meta.addEnchant(Enchantment.WATER_WORKER, modManager.getModLevel(tool, this), true);
+				meta.addEnchant(Enchantment.RESPIRATION, modManager.getModLevel(tool, this), true);
+				meta.addEnchant(Enchantment.AQUA_AFFINITY, modManager.getModLevel(tool, this), true);
 			}
 
 			tool.setItemMeta(meta);

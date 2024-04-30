@@ -54,7 +54,7 @@ public class Fiery extends Modifier implements Listener {
 
 	@Override
 	public @NotNull List<Enchantment> getAppliedEnchantments() {
-		return Arrays.asList(Enchantment.ARROW_FIRE, Enchantment.FIRE_ASPECT);
+		return Arrays.asList(Enchantment.FLAME, Enchantment.FIRE_ASPECT);
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class Fiery extends Modifier implements Listener {
 
 		if (meta != null) {
 			if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType()))
-				meta.addEnchant(Enchantment.ARROW_FIRE, modManager.getModLevel(tool, this), true);
+				meta.addEnchant(Enchantment.FLAME, modManager.getModLevel(tool, this), true);
 			else if (ToolType.SWORD.contains(tool.getType()) || ToolType.AXE.contains(tool.getType()))
 				meta.addEnchant(Enchantment.FIRE_ASPECT, modManager.getModLevel(tool, this), true);
 
