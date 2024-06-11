@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -64,8 +65,8 @@ public class EnchantingListener implements Listener {
 		toremove.forEach(enchants::remove);
 	}
 
-	@EventHandler(priority = EventPriority.HIGH)
-	public void onAnvilPrepare(@NotNull final InventoryClickEvent event) {
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void onBookEnchant(@NotNull final InventoryClickEvent event) {
 		if (!MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantmentsOnEnchant", true)) return;
 		final HumanEntity entity = event.getWhoClicked();
 
@@ -81,6 +82,8 @@ public class EnchantingListener implements Listener {
 
 		if (book == null || newTool == null) return;
 		if (book.getType() != Material.ENCHANTED_BOOK) return;
+		if (event.getResult() != Event.Result.ALLOW) return;
+		if (player.getLevel() < inv.getRepairCost()) return; // Player does not have enough levels
 
 		final boolean free = !MineTinker.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true);
 
