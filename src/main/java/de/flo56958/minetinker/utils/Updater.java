@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Contract;
 
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Scanner;
@@ -53,7 +54,7 @@ public class Updater {
 		if (hasUpdate()) return;
 
 		try {
-			final URL url = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + 58940);
+			final URL url = new URI("https://api.spigotmc.org/legacy/update.php?resource=" + 58940).toURL();
 			final URLConnection connection = url.openConnection();
 			final Scanner scan = new Scanner(connection.getInputStream());
 

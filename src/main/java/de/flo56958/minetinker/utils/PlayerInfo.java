@@ -154,47 +154,6 @@ public class PlayerInfo implements Listener {
 		};
 	}
 
-	// Calculate amount of EXP needed to level up
-	private static int getExpToLevelUp(final int level) {
-		return switch (level) {
-			case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ->
-					2 * level + 7;
-			case 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 ->
-					5 * level - 38;
-			default ->
-					9 * level - 158;
-		};
-	}
-
-	// Calculate total experience up to a level
-	private static int getExpAtLevel(final int level) {
-		return switch (level) {
-			case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ->
-					(int) (Math.pow(level, 2) + 6 * level);
-			case 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ->
-					(int) (2.5 * Math.pow(level, 2) - 40.5 * level + 360.0);
-			default ->
-					(int) (4.5 * Math.pow(level, 2) - 162.5 * level + 2220.0);
-		};
-	}
-
-	/**
-	 * @param player The player
-	 * @return the players current total exp amount
-	 */
-	public static int getPlayerExp(@NotNull final Player player) {
-		int exp = 0;
-		final int level = player.getLevel();
-
-		// Get the amount of XP in past levels
-		exp += getExpAtLevel(level);
-
-		// Get amount of XP towards next level
-		exp += Math.round(getExpToLevelUp(level) * player.getExp());
-
-		return exp;
-	}
-
 	public enum Direction {
 		NORTH,
 		WEST,

@@ -24,7 +24,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -46,7 +47,7 @@ public class InfoCommand implements SubCommand {
 					+ ((Updater.hasUpdate()) ? ChatColor.RED : ChatColor.WHITE) + Updater.getOnlineVersion());
 			//Obtain Information over GitHub API
 			try {
-				String cons = new Scanner(new URL("https://api.github.com/repos/Flo56958/MineTinker").openStream(),
+				String cons = new Scanner(new URI("https://api.github.com/repos/Flo56958/MineTinker").toURL().openStream(),
 						StandardCharsets.UTF_8).useDelimiter("\\A").next();
 				JsonObject json = JsonParser.parseString(cons).getAsJsonObject();
 				lore.add(ChatColor.GOLD + "Repository Owner: " + ChatColor.WHITE + json.get("owner").getAsJsonObject().get("login").getAsString());
@@ -55,7 +56,7 @@ public class InfoCommand implements SubCommand {
 				lore.add(ChatColor.GOLD + "Watchers: " + ChatColor.WHITE + json.get("subscribers_count").getAsInt());
 				lore.add(ChatColor.GOLD + "Open Issues: " + ChatColor.WHITE + json.get("open_issues_count").getAsInt());
 				lore.add(ChatColor.GOLD + "License: " + ChatColor.WHITE + json.get("license").getAsJsonObject().get("name").getAsString());
-			} catch (IOException e) {
+			} catch (IOException | URISyntaxException e) {
 				lore.add(ChatColor.RED + LanguageManager.getString("Commands.Info.Failure"));
 			}
 			meta.setLore(lore);
