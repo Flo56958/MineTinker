@@ -7,7 +7,6 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
-import de.flo56958.minetinker.utils.PlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
@@ -123,7 +122,11 @@ public class Magical extends Modifier implements Listener {
 		if (modLevel <= 0) return;
 
 		if (player.getGameMode() != GameMode.CREATIVE) {
-			if (PlayerInfo.getPlayerExp(player) < this.experienceCost) {
+			if (player.getTotalExperience() <= this.experienceCost) {
+				if (arrow.getPickupStatus() != AbstractArrow.PickupStatus.CREATIVE_ONLY) {
+					// return arrow to player
+					player.getInventory().addItem(arrow.getItem());
+				}
 				event.setCancelled(true);
 				return;
 			}
