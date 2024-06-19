@@ -223,6 +223,8 @@ public class AnvilListener implements Listener {
 				}
 
 				modManager.addExp(player, newTool, modManager.getExp(item2), false);
+			} else {
+				return new ItemStack(Material.AIR, 0); //sets ghostitem by client
 			}
 		} else {
 			if (MineTinker.getPlugin().getConfig().getBoolean("Upgradeable")
