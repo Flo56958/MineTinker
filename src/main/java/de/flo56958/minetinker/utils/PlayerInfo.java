@@ -50,37 +50,36 @@ public class PlayerInfo implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	private void onFish(@NotNull final PlayerFishEvent event) {
-		switch (event.getState()) {
-			case FISHING:
-				if (event.getHand() == null) return;
-				fishingRodTracker.put(event.getPlayer().getUniqueId(),
-						event.getPlayer().getInventory().getItem(event.getHand()));
-				break;
-			case CAUGHT_FISH:
-				final Player player = event.getPlayer();
-				if (Lists.WORLDS.contains(player.getWorld().getName())) return;
+		final Player player = event.getPlayer();
+		if (Lists.WORLDS.contains(player.getWorld().getName())) return;
 
+		switch (event.getState()) {
+			case FISHING -> {
+				if (event.getHand() == null) return;
+				final ItemStack rod = player.getInventory().getItem(event.getHand());
+				if (!modManager.isToolViable(rod)) return;
+				fishingRodTracker.put(player.getUniqueId(), rod);
+			}
+			case CAUGHT_FISH -> {
 				// event.getHand() is null in State.CAUGHT_FISH
 				// looking for fishing rod
-				ItemStack rod = fishingRodTracker.get(player.getUniqueId());
-				if (!modManager.isToolViable(rod)) return;
-				// rod needs to be updated if the slot changed because of a hand swap
-				for (final ItemStack item : new ItemStack[]{player.getInventory().getItemInMainHand(),
-						player.getInventory().getItemInOffHand()}) {
-					if (rod.equals(item)) {
-						rod = item;
-						break;
+				ItemStack rod = fishingRodTracker.remove(player.getUniqueId());
+				if (event.getHand() == null) {
+					// rod needs to be updated if the slot changed because of a hand swap
+					for (final ItemStack item : new ItemStack[]{player.getInventory().getItemInMainHand(),
+							player.getInventory().getItemInOffHand()}) {
+						if (rod.equals(item)) {
+							rod = item;
+							break;
+						}
 					}
+				} else {
+					rod = player.getInventory().getItem(event.getHand());
 				}
+				if (!modManager.isToolViable(rod)) return;
 
 				modManager.addExp(player, rod, event.getExpToDrop(), true);
-			case CAUGHT_ENTITY:
-			case IN_GROUND:
-			case FAILED_ATTEMPT:
-			case REEL_IN:
-			default:
-				fishingRodTracker.remove(event.getPlayer().getUniqueId());
-				break;
+			}
 		}
 	}
 

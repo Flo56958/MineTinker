@@ -85,14 +85,12 @@ public class GrindstoneListener implements Listener {
 
 				// Remove spawned exp orbs
 				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
-						() -> {
-							player.getWorld().getEntitiesByClass(org.bukkit.entity.ExperienceOrb.class)
-									.forEach(orb -> {
-								if (orb.getLocation().distance(player.getLocation()) < 6.5) {
-									orb.setExperience(0);
-								}
-							});
-						}, 1);
+						() -> player.getWorld().getEntitiesByClass(org.bukkit.entity.ExperienceOrb.class)
+								.forEach(orb -> {
+							if (orb.getLocation().distance(player.getLocation()) < 6.5) {
+								orb.setExperience(0);
+							}
+						}), 1);
 
 				return;
 			}
