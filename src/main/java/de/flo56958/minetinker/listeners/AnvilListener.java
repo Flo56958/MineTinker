@@ -18,11 +18,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
-import org.bukkit.event.inventory.PrepareSmithingEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.SmithingInventory;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -39,9 +37,7 @@ public class AnvilListener implements Listener {
 	public void onInventoryClick(@NotNull final InventoryClickEvent event) {
 		final HumanEntity he = event.getWhoClicked();
 
-		if (!(he instanceof final Player player &&
-				((!MineTinker.getPlugin().getConfig().getBoolean("UseSmithingTable", false) && event.getClickedInventory() instanceof AnvilInventory)
-						|| (MineTinker.getPlugin().getConfig().getBoolean("UseSmithingTable", false) && event.getClickedInventory() instanceof SmithingInventory)))) {
+		if (!(he instanceof final Player player && event.getClickedInventory() instanceof AnvilInventory)) {
 			return;
 		}
 
@@ -183,8 +179,7 @@ public class AnvilListener implements Listener {
 		ItemStack newTool = null;
 
 		if (mod != null) {
-			if (!MineTinker.getPlugin().getConfig().getBoolean("UseSmithingTable", false) && inventory instanceof AnvilInventory
-					|| MineTinker.getPlugin().getConfig().getBoolean("UseSmithingTable", false) && inventory instanceof SmithingInventory) {
+			if (inventory instanceof AnvilInventory) {
 				newTool = item1.clone();
 				if (!modManager.addMod(player, newTool, mod, false, false, true, true)) {
 					return null;
@@ -229,8 +224,7 @@ public class AnvilListener implements Listener {
 		} else {
 			if (MineTinker.getPlugin().getConfig().getBoolean("Upgradeable")
 					&& player.hasPermission("minetinker.tool.upgrade")) {
-				if (!MineTinker.getPlugin().getConfig().getBoolean("UseSmithingTable", false) && inventory instanceof AnvilInventory
-						|| MineTinker.getPlugin().getConfig().getBoolean("UseSmithingTable", false) && inventory instanceof SmithingInventory) {
+				if (inventory instanceof AnvilInventory) {
 					final ItemStack item = inventory.getItem(1);
 
 					if (item != null) {
@@ -261,19 +255,5 @@ public class AnvilListener implements Listener {
 			event.setResult(newTool);
 			event.getInventory().setRepairCost(0);
 		}
-	}
-
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onSmithPrepare(PrepareSmithingEvent event) {
-		if (ModManager.instance().isArmorViable(event.getResult()))
-			//The attributes need to be reapplied
-			ModManager.instance().addArmorAttributes(event.getResult());
-
-		if (!MineTinker.getPlugin().getConfig().getBoolean("UseSmithingTable", false)) return;
-
-		final ItemStack newTool = onPrepare(event.getInventory(), event.getViewers());
-		if (newTool == null) return;
-
-		event.setResult(newTool);
 	}
 }

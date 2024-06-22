@@ -97,7 +97,6 @@ Grindstone:
   Enabled: true                       #Due to problems with grindstone and it's breaking mechanics you can disable it.
   ChanceToGetSlotsBack: 100           #Percentage; Should the tool get free slots back for every removed Modifier?
   ChanceToGetModifierItemBack: 100    #Percentage; Should the player get the possible used modification items back?
-UseSmithingTable: false               #Should players be able to modify and upgrade using the smithing table instead of the anvil?
 AllowEnchanting: false                #When enabled you can enchant the tools with vanilla methods (not recommended!)
 EnchantingCostsSlots: true            #When enchanted through the enchanting table or anvil (the vanilla way) should the tool need free slots
 AllowCrafting: true                   #Only recommended if used in combination with other Plugins that use the crafting grid for tools. If false: Tools are only acquired with give command

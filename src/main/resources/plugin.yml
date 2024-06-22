@@ -7,7 +7,7 @@ prefix: MineTinker
 description: @project.description@
 website: @project.url@
 database: false
-api-version: "1.14"
+api-version: "1.21"
 
 softdepend: [ProtocolLib]
 
