@@ -37,7 +37,7 @@ public class GrindstoneListener implements Listener {
 		int slots;
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onGrind(@NotNull final InventoryClickEvent event) {
 		final FileConfiguration config = MineTinker.getPlugin().getConfig();
 
@@ -52,9 +52,9 @@ public class GrindstoneListener implements Listener {
 				final ItemStack slot1 = grindstoneInventory.getItem(0);
 				final ItemStack slot2 = grindstoneInventory.getItem(1);
 
-				final GrindstoneSave gs = save.remove(player);
+				final GrindstoneSave gs = save.get(player);
 				//Check for bugged state
-				if (gs == null || !gs.tool.equals(result)
+				if (gs == null || !gs.tool.equals(result) || (event.getCursor() != null && event.getCursor().getAmount() != 0)
 						|| (slot1 == null && slot2 == null) || (slot1 != null && !gs.tool.getType().equals(slot1.getType()))
 						|| (slot2 != null && !gs.tool.getType().equals(slot2.getType()))) {
 					event.setCancelled(true);
@@ -80,6 +80,19 @@ public class GrindstoneListener implements Listener {
 						player.getWorld().dropItem(player.getLocation(), stack);
 					} // no else as it gets added in if-clause
 				}
+
+				save.remove(player);
+
+				// Remove spawned exp orbs
+				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
+						() -> {
+							player.getWorld().getEntitiesByClass(org.bukkit.entity.ExperienceOrb.class)
+									.forEach(orb -> {
+								if (orb.getLocation().distance(player.getLocation()) < 6.5) {
+									orb.setExperience(0);
+								}
+							});
+						}, 1);
 
 				return;
 			}
