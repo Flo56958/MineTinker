@@ -124,6 +124,15 @@ public class PlayerInfo implements Listener {
 		DataHandler.removeLastSound(event.getPlayer());
 	}
 
+	public static int getEmptyInventorySlots(final Player player) {
+		int counter = 0;
+		for (final ItemStack stack : player.getInventory().getStorageContents()) {
+			if (stack == null || stack.getType().isAir())
+				counter++;
+		}
+		return counter;
+	}
+
 	/**
 	 * @param player The player to get the facing direction of as a single character
 	 * @return The facing direction of the player in Degrees
