@@ -128,8 +128,9 @@ public class Timber extends Modifier implements Listener {
 
 		final int level = modManager.getModLevel(tool, this);
 
-		final int sap_idx = block.getType().toString().lastIndexOf('_');
-		final Material saplingType = Material.getMaterial(block.getType().toString().substring(0, sap_idx) + "_SAPLING");
+		final String sap_mat = block.getType().toString().replace("STRIPPED_", "");
+		final int sap_idx = sap_mat.lastIndexOf('_');
+		final Material saplingType = Material.getMaterial(sap_mat.substring(0, sap_idx) + "_SAPLING");
 
 		Bukkit.getScheduler().runTaskAsynchronously(this.getSource(), () -> {
 			final HashSet<Block> trunkBlocks = new HashSet<>();
