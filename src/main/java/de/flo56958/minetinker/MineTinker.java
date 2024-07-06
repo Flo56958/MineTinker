@@ -41,7 +41,7 @@ public class MineTinker extends JavaPlugin {
 			ChatWriter.log(true, "Minecraft Minor Version: " + minor);
 		} catch (Exception e) {
 			e.printStackTrace();
-			ChatWriter.logError("Could not parse the Minecraft Version! Running 1.17 feature set. " +
+			ChatWriter.logError("Could not parse the Minecraft Version! Running 1.21 feature set. " +
 					"If you are running a higher Version, please report this as an error.");
 		}
 	}
