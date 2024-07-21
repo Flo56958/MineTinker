@@ -137,6 +137,12 @@ public class ModManager {
 		incompatibilityList.add(Phasing.instance().getKey() + ":" + Ender.instance().getKey());
 		incompatibilityList.add(Phasing.instance().getKey() + ":" + Magical.instance().getKey());
 		incompatibilityList.add(Phasing.instance().getKey() + ":" + Homing.instance().getKey());
+		incompatibilityList.add(Dense.instance().getKey() + ":" + Smite.instance().getKey());
+		incompatibilityList.add(Dense.instance().getKey() + ":" + SpidersBane.instance().getKey());
+		incompatibilityList.add(Dense.instance().getKey() + ":" + Piercing.instance().getKey());
+		incompatibilityList.add(Piercing.instance().getKey() + ":" + Smite.instance().getKey());
+		incompatibilityList.add(Piercing.instance().getKey() + ":" + SpidersBane.instance().getKey());
+
 
 		Plugin plugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
 		if (plugin != null && plugin.isEnabled())

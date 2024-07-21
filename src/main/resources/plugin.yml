@@ -191,6 +191,7 @@ permissions:
       minetinker.modifiers.berserk.*: true
       minetinker.modifiers.building.*: true
       minetinker.modifiers.channeling.*: true
+      minetinker.modifiers.dense.*: true
       minetinker.modifiers.directing.*: true
       minetinker.modifiers.drilling.*: true
       minetinker.modifiers.echoing.*: true
@@ -441,6 +442,13 @@ permissions:
     default: true
   minetinker.modifiers.directing.use:
     description: Allows to use Directing on a MineTinker-Tool
+    default: true
+
+  minetinker.modifiers.dense.*:
+    children:
+      minetinker.modifiers.dense.apply: true
+  minetinker.modifiers.dense.apply:
+    description: Allows to apply Dense to a MineTinker-Tool
     default: true
 
   minetinker.modifiers.drilling.*:

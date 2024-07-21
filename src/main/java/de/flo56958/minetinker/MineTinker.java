@@ -136,6 +136,7 @@ public class MineTinker extends JavaPlugin {
 		modManager.register(Berserk.instance());
 		modManager.register(Building.instance());
 		modManager.register(Channeling.instance());
+		modManager.register(Dense.instance());
 		modManager.register(Directing.instance());
 		modManager.register(Drilling.instance());
 		modManager.register(Ender.instance());

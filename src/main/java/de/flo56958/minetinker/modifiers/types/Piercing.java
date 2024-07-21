@@ -15,10 +15,14 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Piercing extends Modifier implements Listener {
 
@@ -47,15 +51,15 @@ public class Piercing extends Modifier implements Listener {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		if (allowBow) return Arrays.asList(ToolType.CROSSBOW, ToolType.BOW);
-		return Collections.singletonList(ToolType.CROSSBOW);
+		if (allowBow) return Arrays.asList(ToolType.CROSSBOW, ToolType.BOW, ToolType.MACE);
+		return Arrays.asList(ToolType.CROSSBOW, ToolType.MACE);
 	}
 
 	@Override
 	public @NotNull List<Enchantment> getAppliedEnchantments() {
-		return Collections.singletonList(Enchantment.PIERCING);
+		return Arrays.asList(Enchantment.BREACH, Enchantment.PIERCING);
 	}
-	//The mod does not apply the enchantment anymore
+	//The mod does not apply the enchantment anymore (only the Mace enchant is still active)
 
 	@Override
 	public void reload() {
@@ -92,6 +96,20 @@ public class Piercing extends Modifier implements Listener {
 		init();
 
 		this.allowBow = config.getBoolean("AllowBow", true);
+	}
+
+	@Override
+	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
+		final ItemMeta meta = tool.getItemMeta();
+
+		if (meta != null && ToolType.MACE.contains(tool.getType())) {
+			meta.addEnchant(Enchantment.BREACH, modManager.getModLevel(tool, this), true);
+			tool.setItemMeta(meta);
+		}
+
+		// No enchant for Bow and Crossbow
+
+		return true;
 	}
 
 	@EventHandler

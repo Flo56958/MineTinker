@@ -177,6 +177,11 @@ Modifier:
     Description_OnlyStorms: "This only works during thunderstorms!"
     ModifierItemName: "Lightning Infused Shard"
     DescriptionModifierItem: "Modifier-Item for the Channeling-Modifier"
+  Dense:
+    Name: "Dense"
+    Description: "Increases damage dealt per block fallen before the melee attack!"
+    ModifierItemName: "Dense Iron"
+    DescriptionModifierItem: "Modifier-Item for the Dense-Modifier"
   Directing:
     Name: "Directing"
     Description: "Loot from killed mobs or broken Blocks goes directly into your Inventory!"
@@ -332,7 +337,7 @@ Modifier:
     Statistic_Healed: "Total Durability Restored: %amount"
   Piercing:
     Name: "Piercing"
-    Description: "Arrows pass through multiple enemies!"
+    Description: "Arrows pass through multiple enemies and melee hit penetrate armor!"
     ModifierItemName: "Bodkin Point"
     DescriptionModifierItem: "Modifier-Item for the Piercing-Modifier"
   Poisonous:
@@ -347,7 +352,7 @@ Modifier:
     DescriptionModifierItem: "Modifier-Item for the Power-Modifier"
   Propelling:
     Name: "Propelling"
-    Description: "Propel yourself through the air with sneaking while gliding with the elytra or standing in water with the trident!"
+    Description: "Propel yourself through the air with sneaking while gliding with the elytra, standing in water with the trident or attacking from above while falling with a melee weapon!"
     ModifierItemName: "Enchanted Fireworkstar"
     DescriptionModifierItem: "Modifier-Item for the Propelling-Modifier"
   Protecting:
@@ -569,6 +574,9 @@ Enchantment:
   aqua_affinity: "Aqua Affinity"
   soul_speed: "Soul Speed"
   swift_sneak: "Swift Sneak"
+  density: "Density"
+  wind_burst: "Wind Burst"
+  breach: "Breach"
 
 Updater.Unable: "Unable to check for updates!"
 Updater.UpdateAvailable: "There is an update available on spigotmc.org!"

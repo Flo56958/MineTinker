@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -55,12 +54,12 @@ public class Propelling extends CooldownModifier implements Listener {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.ELYTRA, ToolType.TRIDENT);
+	return Arrays.asList(ToolType.ELYTRA, ToolType.TRIDENT, ToolType.MACE, ToolType.SWORD, ToolType.AXE);
 	}
 
 	@Override
 	public @NotNull List<Enchantment> getAppliedEnchantments() {
-		return Collections.singletonList(Enchantment.RIPTIDE);
+		return Arrays.asList(Enchantment.RIPTIDE, Enchantment.WIND_BURST);
 	}
 
 	@Override
@@ -109,6 +108,8 @@ public class Propelling extends CooldownModifier implements Listener {
 		if (meta != null) {
 			if (ToolType.TRIDENT.contains(tool.getType()))
 				meta.addEnchant(Enchantment.RIPTIDE, modManager.getModLevel(tool, this), true);
+			else if (!ToolType.ELYTRA.contains(tool.getType()))
+				meta.addEnchant(Enchantment.WIND_BURST, modManager.getModLevel(tool, this), true);
 			//Elytra does not get an enchantment
 
 			tool.setItemMeta(meta);
