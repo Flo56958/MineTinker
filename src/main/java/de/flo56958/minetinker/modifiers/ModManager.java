@@ -800,7 +800,8 @@ public class ModManager {
 				|| ToolType.TRIDENT.contains(m)
 				|| ToolType.SHEARS.contains(m)
 				|| ToolType.SHIELD.contains(m)
-				|| ToolType.FISHINGROD.contains(m)) {
+				|| ToolType.FISHINGROD.contains(m)
+				|| ToolType.MACE.contains(m)) {
 			DataHandler.setTag(is, this.ToolIdentifier, 56958, PersistentDataType.INTEGER);
 			eligible = true;
 		}

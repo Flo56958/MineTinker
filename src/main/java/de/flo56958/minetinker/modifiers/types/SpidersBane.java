@@ -40,7 +40,7 @@ public class SpidersBane extends Modifier {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.AXE, ToolType.SWORD);
+		return Arrays.asList(ToolType.AXE, ToolType.SWORD, ToolType.MACE);
 	}
 
 	@Override
@@ -86,8 +86,7 @@ public class SpidersBane extends Modifier {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
-			if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType()))
-				meta.addEnchant(Enchantment.BANE_OF_ARTHROPODS, modManager.getModLevel(tool, this), true);
+			meta.addEnchant(Enchantment.BANE_OF_ARTHROPODS, modManager.getModLevel(tool, this), true);
 			tool.setItemMeta(meta);
 		} else return false;
 

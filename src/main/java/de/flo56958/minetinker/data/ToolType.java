@@ -25,6 +25,7 @@ public enum ToolType {
 	HELMET,
 	HOE,
 	INVALID,
+	MACE,
 	LEGGINGS,
 	OTHER,
 	PICKAXE,
@@ -58,6 +59,7 @@ public enum ToolType {
 		tools.put(ToolType.SHOVEL, new HashSet<>(Tag.ITEMS_SHOVELS.getValues()));
 		tools.put(ToolType.SWORD, new HashSet<>(Tag.ITEMS_SWORDS.getValues()));
 		tools.put(ToolType.TRIDENT, new HashSet<>(Collections.singletonList(Material.TRIDENT)));
+		tools.put(ToolType.MACE, new HashSet<>(Collections.singletonList(Material.MACE)));
 		tools.put(ToolType.OTHER, new HashSet<>(Arrays.asList(Material.FLINT_AND_STEEL, Material.CARROT_ON_A_STICK)));
 		tools.put(ToolType.SHEARS, new HashSet<>(Collections.singletonList(Material.SHEARS)));
 
@@ -86,6 +88,7 @@ public enum ToolType {
 		tools.get(ToolType.TOOLS).addAll(ToolType.SHIELD.getToolMaterials());
 		tools.get(ToolType.TOOLS).addAll(ToolType.AXE.getToolMaterials());
 		tools.get(ToolType.TOOLS).addAll(ToolType.PICKAXE.getToolMaterials());
+		tools.get(ToolType.TOOLS).addAll(ToolType.MACE.getToolMaterials());
 
 		tools.put(ToolType.ALL, all);
 	}

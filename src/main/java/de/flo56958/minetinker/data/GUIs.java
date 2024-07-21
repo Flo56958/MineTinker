@@ -351,6 +351,8 @@ public class GUIs {
 			toolmap.put(ToolType.FISHINGROD, new ItemStack(Material.FISHING_ROD, 1));
 			toolmap.put(ToolType.SHEARS, new ItemStack(Material.SHEARS, 1));
 
+			toolmap.put(ToolType.MACE, new ItemStack(Material.MACE, 1));
+
 			List<ToolType> toolTypes = new ArrayList<>(List.of(ToolType.values()));
 			toolTypes.remove(ToolType.INVALID);
 			toolTypes.remove(ToolType.OTHER);
@@ -358,15 +360,14 @@ public class GUIs {
 			final GUI filterGUI = new GUI(MineTinker.getPlugin());
 			final GUI.Window filterPage = filterGUI.addWindow(6, LanguageManager.getString("GUIs.Modifiers.FilterButton"));
 			for (final ToolType type : toolTypes) {
-				final List<Material> materials = Arrays.asList(type.getToolMaterials().toArray(new Material[0]));
-				materials.sort(Comparator.comparing(Material::getMaxDurability));
 				final ItemStack item = toolmap.get(type);
 				final ItemMeta itemMeta = item.getItemMeta();
-				int slot = switch (type) {
+				final int slot = switch (type) {
 					case ALL -> 5 * 9 + 4;
 					case ARMOR -> 5 * 9 + 5;
 					case TOOLS -> 5 * 9 + 3;
 					case AXE -> 2 * 9 + 0;
+					case MACE -> 2 * 9 + 1;
 					case HOE -> 4 * 9 + 0;
 					case PICKAXE -> 1 * 9 + 0;
 					case SHOVEL -> 3 * 9 + 0;
@@ -384,6 +385,9 @@ public class GUIs {
 					case SHEARS -> 2 * 9 + 8;
 					default -> -1;
 				};
+
+				if (slot == -1) continue;
+
 				final List<Modifier> mods = ModManager.instance().getAllowedMods();
 				mods.removeIf(mod -> mod.getAllowedTools().stream().map(ToolType::getToolMaterials)
 						.flatMap(HashSet::stream).noneMatch(type.getToolMaterials()::contains));

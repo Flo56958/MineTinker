@@ -54,8 +54,8 @@ public class Zealous extends Modifier implements Listener {
 	@Override
 	public List<ToolType> getAllowedTools() {
 		if (allowHelmet) // this makes pvp battles infinite again
-			return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.HELMET);
-		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT);
+			return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.HELMET, ToolType.MACE);
+		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.MACE);
 	}
 
 	@Override
