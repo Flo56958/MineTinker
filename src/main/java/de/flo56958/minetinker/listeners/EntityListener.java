@@ -18,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
@@ -248,5 +249,16 @@ public class EntityListener implements Listener {
 		event.setCancelled(true);
 		player.playSound(player.getLocation(), Sound.ITEM_CROSSBOW_LOADING_END, 1.0f, 1.0f);
 		return true;
+	}
+
+	@EventHandler(ignoreCancelled = true)
+	public void onShear(@NotNull final PlayerShearEntityEvent event) {
+		final Player player = event.getPlayer();
+		// event.getItem() seems to be a copy of the item and not the real item
+		final ItemStack shears = player.getInventory().getItem(event.getHand());
+
+		if (!modManager.isToolViable(shears)) return;
+
+		modManager.addExp(player, shears, MineTinker.getPlugin().getConfig().getInt("ExpPerBlockBreak", 1), true);
 	}
 }
