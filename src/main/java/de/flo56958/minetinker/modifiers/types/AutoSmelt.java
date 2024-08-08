@@ -153,6 +153,8 @@ public class AutoSmelt extends Modifier implements Listener {
 		conversions.put(Material.BAMBOO_BLOCK, new Triplet(Material.CHARCOAL, 1));
 		conversions.put(Material.SUSPICIOUS_SAND, new Triplet(Material.GLASS, 1));
 
+		conversions.put(Material.TUFF, new Triplet(Material.TUFF_BRICKS, 1));
+
 		for (Material m : Material.values()) {
 			if (m.isBurnable() && m.isBlock()) {
 				conversions.putIfAbsent(m, new Triplet(Material.AIR, 1));
