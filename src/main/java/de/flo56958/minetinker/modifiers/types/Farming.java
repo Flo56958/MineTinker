@@ -76,7 +76,7 @@ public class Farming extends Modifier implements Listener {
 
 		config.addDefault("Allowed", true);
 		config.addDefault("Color", "%GREEN%");
-		config.addDefault("MaxLevel", 5);
+		config.addDefault("MaxLevel", 3);
 		config.addDefault("SlotCost", 1);
 		config.addDefault("ModifierItemMaterial", Material.WHEAT.name());
 
@@ -86,7 +86,7 @@ public class Farming extends Modifier implements Listener {
 
 		config.addDefault("Recipe.Enabled", false);
 
-		config.addDefault("BoneMealDurabilityCost", 10);
+		config.addDefault("BoneMealDurabilityCost", 5);
 		config.addDefault("BoneMealDurabilityCostReductionPerLevel", 2);
 		config.addDefault("RequireSeeds", true);
 
@@ -131,7 +131,8 @@ public class Farming extends Modifier implements Listener {
 
 		if (player.getGameMode() == GameMode.CREATIVE) return;
 
-		final int damage = boneMealDurabilityCost - (boneMealDurabilityCostReductionPerLevel * (modManager.getModLevel(tool, this) - 1));
+		final int damage = Math.max(0,
+				boneMealDurabilityCost - (boneMealDurabilityCostReductionPerLevel * (modManager.getModLevel(tool, this) - 1)));
 		DataHandler.triggerItemDamage(player, tool, damage);
 	}
 
