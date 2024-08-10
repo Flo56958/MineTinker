@@ -31,6 +31,7 @@ ResetAtVarOverflow: true              #Resets Level and Exp at Integer.MAX_VALUE
 ExpPerBlockBreak: 1                   #How much XP will the tool get when you break a block
 ExpPerEntityHit: 1                    #How much XP will the tool get when you hit a Entity with Sword / Bow
 ExpPerArrowShot: 1                    #How much XP will the tool get when you shoot with the bow
+ExpChanceWhileFlying: 30              #Chance to get Exp while flying in percent
 DisableNonPvPDamageExpArmor: false    #Should Armor get Exp from non combat damage sources (Block breaking excluded)
 DisableNonPvPDamageExpWeapons: false  #Should Weapons get Exp from non combat damage sources (Block breaking excluded)
 ExtraExpPerBlock:                     #Extra Exp for block break

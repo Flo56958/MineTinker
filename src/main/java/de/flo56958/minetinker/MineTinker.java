@@ -13,7 +13,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -91,11 +90,6 @@ public class MineTinker extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new PlayerInfo(), this);
 		Bukkit.getPluginManager().registerEvents(new EnchantingListener(), this);
 		Bukkit.getPluginManager().registerEvents(new GrindstoneListener(), this);
-
-		final FileConfiguration elytraConf = ConfigurationManager.getConfig("Elytra.yml");
-		elytraConf.options().copyDefaults(true);
-		elytraConf.addDefault("ExpChanceWhileFlying", 10);
-		ConfigurationManager.saveConfig(elytraConf);
 
 		if (getConfig().getBoolean("actionbar-on-exp-gain", false))
 			Bukkit.getPluginManager().registerEvents(new ActionBarListener(), this);

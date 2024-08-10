@@ -6,7 +6,6 @@ import de.flo56958.minetinker.api.events.MTEntityDamageEvent;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.ModManager;
-import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -111,7 +110,7 @@ public class ArmorListener implements Listener {
 		if (isBlocking && !ToolType.SHIELD.contains(tool.getType()) && ToolType.ARMOR.contains(tool.getType())) return;
 		// Shield should not get Exp when not successfully blocking when getting attacked
 		if (!isBlocking && player.equals(event.getEntity()) && ToolType.SHIELD.contains(tool.getType())) return;
-		FileConfiguration config = MineTinker.getPlugin().getConfig();
+		final FileConfiguration config = MineTinker.getPlugin().getConfig();
 		int amount = config.getInt("ExpPerEntityHit", 1);
 
 		if (config.getBoolean("EnableDamageExp", true))
@@ -127,9 +126,11 @@ public class ArmorListener implements Listener {
 		if (event.getItem().getType() != Material.ELYTRA) return;
 		if (!modManager.isArmorViable(event.getItem())) return;
 
-		final int chance = new Random().nextInt(100);
-		if (chance >= ConfigurationManager.getConfig("Elytra.yml").getInt("ExpChanceWhileFlying")) return;
+		final FileConfiguration config = MineTinker.getPlugin().getConfig();
 
-		modManager.addExp(event.getPlayer(), event.getItem(), MineTinker.getPlugin().getConfig().getInt("ExpPerEntityHit"), true);
+		final int chance = new Random().nextInt(100);
+		if (chance >= config.getInt("ExpChanceWhileFlying", 30)) return;
+
+		modManager.addExp(event.getPlayer(), event.getItem(), config.getInt("ExpPerEntityHit"), true);
 	}
 }
