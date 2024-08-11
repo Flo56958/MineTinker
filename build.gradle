@@ -3,6 +3,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 plugins {
     id 'java'
     id 'com.gradleup.shadow' version '8.3.0'
+    id 'net.ltgt.errorprone' version '4.0.1'
 }
 
 repositories {
@@ -36,6 +37,8 @@ dependencies {
     implementation 'org.bstats:bstats-bukkit:3.0.2'
 
     compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "5.1.0"
+
+    errorprone("com.google.errorprone:error_prone_core:2.30.0")
 }
 
 group = 'de.flo56958'
@@ -53,7 +56,13 @@ shadowJar {
 
 compileJava {
 	options.encoding = 'UTF-8'
-    options.compilerArgs << '-Xlint:deprecation'
+
+    options.deprecation = true
+
+    options.errorprone.disable('MissingSummary')
+    options.errorprone.error(
+            'NonCanonicalType', 'JdkObsolete', 'MissingOverride',
+            'UnnecessaryParentheses', 'OperatorPrecedence')
 }
 
 processResources {

@@ -43,7 +43,7 @@ public abstract class CooldownModifier extends Modifier {
 		final Long cd = DataHandler.getTag(tool, this.getKey() + "cooldown", PersistentDataType.LONG);
 		if (cd == null) return false; // was never on cooldown
 
-		if (!(time - cd < Math.round(cooldownTime) && player.getGameMode() != GameMode.CREATIVE)) return false;
+		if (!(time - cd < cooldownTime && player.getGameMode() != GameMode.CREATIVE)) return false;
 
 		ChatWriter.logModifier(player, event, this, tool, "Cooldown");
 		if (sendAlert)

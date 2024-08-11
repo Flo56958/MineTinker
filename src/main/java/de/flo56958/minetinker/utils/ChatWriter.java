@@ -114,7 +114,7 @@ public class ChatWriter {
 	}
 
 	public static void logModifier(final @NotNull Player p, final @Nullable Event event, final @NotNull Modifier mod, final @NotNull ItemStack tool, String... args) {
-		if (!(MineTinker.getPlugin().getConfig().getBoolean("logging.modifiers"))) return;
+		if (!MineTinker.getPlugin().getConfig().getBoolean("logging.modifiers")) return;
 
 		//Example: 0x00FF: Flo56958/Melting - DIAMOND_CHESTPLATE - Damage(30 -> 20)
 		final StringBuilder sb = new StringBuilder();

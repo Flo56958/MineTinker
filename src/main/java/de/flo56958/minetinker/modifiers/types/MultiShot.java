@@ -160,7 +160,7 @@ public class MultiShot extends Modifier implements Listener {
 
 		ChatWriter.logModifier(player, event, this, tool);
 
-		final int amount = (ToolType.CROSSBOW.contains(tool.getType())) ? 1 : 2;
+		final int amount = ToolType.CROSSBOW.contains(tool.getType()) ? 1 : 2;
 
 		for (int i = 1; i <= modLevel; i++) {
 			if (!player.getGameMode().equals(GameMode.CREATIVE) && arrow.getPickupStatus() != AbstractArrow.PickupStatus.CREATIVE_ONLY) {

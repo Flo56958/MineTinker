@@ -102,7 +102,6 @@ public class TinkerListener implements Listener {
 		final ItemStack tool = event.getTool();
 
 		final FileConfiguration config = ConfigurationManager.getConfig("config.yml");
-		boolean appliedRandomMod = false;
 
 		if (player != null) {
 			if (config.getBoolean("LevelUpEvents.enabled")) {

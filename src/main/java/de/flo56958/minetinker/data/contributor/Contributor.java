@@ -51,11 +51,11 @@ public class Contributor {
 					JsonElement discord = o.get("discord");
 					JsonElement other = o.get("other");
 					contributors.add(
-							new Contributor((minecraft.isJsonNull()) ? null : UUID.fromString(minecraft.getAsString()), g,
-									(transifex.isJsonNull()) ? null : transifex.getAsString(),
+							new Contributor(minecraft.isJsonNull() ? null : UUID.fromString(minecraft.getAsString()), g,
+									transifex.isJsonNull() ? null : transifex.getAsString(),
 									o.getAsJsonArray("transifex_languages"),
-									(discord.isJsonNull()) ? null : discord.getAsString(),
-									(other.isJsonNull()) ? null : other.getAsJsonArray()));
+									discord.isJsonNull() ? null : discord.getAsString(),
+									other.isJsonNull() ? null : other.getAsJsonArray()));
 				});
 			}
 			contributorList.removeIf(o -> o.get("login").getAsString().contains("[bot]")); //filter out bots
@@ -68,7 +68,7 @@ public class Contributor {
 		}
 	}
 
-	public static ArrayList<Contributor> getContributors() {
+	public static List<Contributor> getContributors() {
 		return contributors;
 	}
 

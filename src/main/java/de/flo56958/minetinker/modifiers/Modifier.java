@@ -360,11 +360,17 @@ public abstract class Modifier {
 		}
 	}
 
+	@Override
 	@Contract(value = "null -> false", pure = true)
 	public final boolean equals(@Nullable Object o) {
 		if (o instanceof Modifier mod)
 			return mod.getKey().equals(this.getKey());
 		return false;
+	}
+
+	@Override
+	public final int hashCode() {
+		return Objects.hash(getKey());
 	}
 
 	// ---------------------- Enchantable Stuff ----------------------

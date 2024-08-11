@@ -118,7 +118,7 @@ public class WildHunt extends Modifier implements Listener {
 			final HashSet<Tupel> set = new HashSet<>(strings.stream().map(Tupel::fromString).toList());
 			set.remove(null);
 			if (set.isEmpty()) continue;
-			conversions.put(entity, new LinkedList<>(set));
+			conversions.put(entity, new ArrayList<>(set));
 		}
 	}
 
@@ -144,7 +144,7 @@ public class WildHunt extends Modifier implements Listener {
 			final Material replaces = q.replaces;
 			if (loot == null || replaces == null) continue;
 
-			final LinkedList<ItemStack> items = new LinkedList<>(drops);
+			final ArrayList<ItemStack> items = new ArrayList<>(drops);
 			items.removeIf(k -> k == null || k.getType() != replaces);
 
 			if (items.isEmpty()) continue;
@@ -212,6 +212,7 @@ public class WildHunt extends Modifier implements Listener {
 		}
 
 		@NotNull
+		@Override
 		public String toString() {
 			return material.toString() + regex + replaces;
 		}

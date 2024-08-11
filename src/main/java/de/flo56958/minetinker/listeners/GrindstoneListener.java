@@ -107,7 +107,7 @@ public class GrindstoneListener implements Listener {
 			// Avoid handling clicks outside the grindstone inventory
 			if (grindstoneInventory.equals(event.getClickedInventory()) == event.isShiftClick()) return;
 
-			final ItemStack item = (event.isShiftClick()) ? event.getCurrentItem() : event.getCursor();
+			final ItemStack item = event.isShiftClick() ? event.getCurrentItem() : event.getCursor();
 			//check for MT item
 			if (!modManager.isToolViable(item) && !modManager.isArmorViable(item)) return;
 

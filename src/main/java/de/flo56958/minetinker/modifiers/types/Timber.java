@@ -139,7 +139,7 @@ public class Timber extends Modifier implements Listener {
 				return;
 			final List<Block> trunkBlocksList = new ArrayList<>(trunkBlocks);
 			// Sort blocks by distance to the original block (closest first) and break them in that order
-			trunkBlocksList.sort(Comparator.comparingDouble(o -> (o.getLocation().distance(block.getLocation()))));
+			trunkBlocksList.sort(Comparator.comparingDouble(o -> o.getLocation().distance(block.getLocation())));
 			for (final Block trunkBlock : trunkBlocksList) {
 				Bukkit.getScheduler().runTask(this.getSource(), () -> {
 					events.put(trunkBlock.getLocation(), 0);
@@ -198,9 +198,9 @@ public class Timber extends Modifier implements Listener {
 	}
 
 	private boolean parseTree(@NotNull Block block,
-	                          @NotNull final HashSet<Block> trunkBlocks, @NotNull final List<Block> groundBlocks,
-	                          @NotNull @Unmodifiable final HashSet<Material> allowed) {
-		final Stack<Block> stack = new Stack<>();
+	                          @NotNull final Set<Block> trunkBlocks, @NotNull final List<Block> groundBlocks,
+	                          @NotNull @Unmodifiable final Set<Material> allowed) {
+		final ArrayDeque<Block> stack = new ArrayDeque<>();
 		boolean hasGround = false, hasLeaves = false;
 		stack.push(block);
 		while (trunkBlocks.size() < maxBlocks && !stack.isEmpty()) {

@@ -58,7 +58,7 @@ public class CommandManager implements TabExecutor {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s,
 	                         @NotNull String[] args) {
-		if (!(sender.hasPermission("minetinker.commands.main"))) {
+		if (!sender.hasPermission("minetinker.commands.main")) {
 			sendError(sender, LanguageManager.getString("Commands.Failure.Cause.NoPermission"));
 			return true;
 		}

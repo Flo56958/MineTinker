@@ -217,7 +217,8 @@ public class GUIs {
 									slot++;
 								}
 
-								for (final char c : s.toCharArray()) {
+								for (int ci = 0; ci < s.length(); ci++) {
+									char c = s.charAt(ci);
 									slot++;
 
 									try {
@@ -390,7 +391,7 @@ public class GUIs {
 
 				final List<Modifier> mods = ModManager.instance().getAllowedMods();
 				mods.removeIf(mod -> mod.getAllowedTools().stream().map(ToolType::getToolMaterials)
-						.flatMap(HashSet::stream).noneMatch(type.getToolMaterials()::contains));
+						.flatMap(Set::stream).noneMatch(type.getToolMaterials()::contains));
 
 				if (itemMeta != null) {
 					itemMeta.setDisplayName(ChatColor.WHITE + LanguageManager.getString("ToolType." + type.name()));
@@ -535,7 +536,7 @@ public class GUIs {
 			ArrayList<String> keys = new ArrayList<>(config.getKeys(true));
 			keys.sort(String::compareToIgnoreCase);
 
-			HashMap<String, String> explanations = getExplanations(config, configName.replace(".yml", ""));
+			Map<String, String> explanations = getExplanations(config, configName.replace(".yml", ""));
 			int i = 0;
 			for (String key : keys) {
 				ItemStack buttonStack = new ItemStack(Material.DIRT, 1);
@@ -587,7 +588,7 @@ public class GUIs {
 							if (meta.hasLore()) {
 								lore = meta.getLore();
 							} else {
-								lore = new LinkedList<>();
+								lore = new ArrayList<>();
 							}
 
 							lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
@@ -634,7 +635,7 @@ public class GUIs {
 								if (meta.hasLore()) {
 									lore = meta.getLore();
 								} else {
-									lore = new LinkedList<>();
+									lore = new ArrayList<>();
 								}
 
 								lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
@@ -663,7 +664,7 @@ public class GUIs {
 								.addAction(ClickType.SHIFT_LEFT, new ButtonAction.RUN_RUNNABLE(currentButton, helper.getRunnable(10)))
 								.addAction(ClickType.SHIFT_RIGHT, new ButtonAction.RUN_RUNNABLE(currentButton, helper.getRunnable(-10)));
 
-						ButtonAction.REQUEST_INPUT.PlayerRunnable pRun = (player, input) -> {
+						ButtonAction.PlayerRunnable pRun = (player, input) -> {
 							try {
 								int in = Integer.parseInt(input);
 								int oldValue = config.getInt(key);
@@ -692,7 +693,7 @@ public class GUIs {
 
 						buttonStack.setType(Material.STONE);
 
-						ButtonAction.REQUEST_INPUT.PlayerRunnable pRun = (player, input) -> {
+						ButtonAction.PlayerRunnable pRun = (player, input) -> {
 							try {
 								ItemMeta meta = buttonStackForRunnable.getItemMeta();
 								if (meta == null) return;
@@ -707,7 +708,7 @@ public class GUIs {
 								if (meta.hasLore()) {
 									lore = meta.getLore();
 								} else {
-									lore = new LinkedList<>();
+									lore = new ArrayList<>();
 								}
 
 								lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
@@ -735,7 +736,7 @@ public class GUIs {
 
 						buttonStack.setType(Material.WHITE_WOOL);
 
-						ButtonAction.REQUEST_INPUT.PlayerRunnable pRun = (player, input) -> {
+						ButtonAction.PlayerRunnable pRun = (player, input) -> {
 							ItemMeta meta = buttonStackForRunnable.getItemMeta();
 							if (meta == null) return;
 
@@ -750,7 +751,7 @@ public class GUIs {
 							if (meta.hasLore()) {
 								lore = meta.getLore();
 							} else {
-								lore = new LinkedList<>();
+								lore = new ArrayList<>();
 							}
 							lore.set(1, ChatColor.WHITE + LanguageManager.getString("GUIs.ConfigurationEditor.Value")
 									.replace("%value", String.valueOf(input)));
@@ -816,7 +817,7 @@ public class GUIs {
 		}
 	}
 
-	private static HashMap<String, String> getExplanations(FileConfiguration root, String config) {
+	private static Map<String, String> getExplanations(FileConfiguration root, String config) {
 		HashMap<String, String> explanations = new HashMap<>();
 		String start = "GUIs.ConfigurationEditor." + config + ".";
 

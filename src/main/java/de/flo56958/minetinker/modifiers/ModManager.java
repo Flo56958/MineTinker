@@ -202,15 +202,15 @@ public class ModManager {
 	public static @Nullable Pair<@Nullable Material, @NotNull Integer> itemUpgrader(@NotNull final Material tool, @NotNull final Material material) {
 		String name = tool.name().split("_")[0].toLowerCase();
 
-		if (name.equals("wooden") && material.name().contains("PLANKS")
-				|| name.equals("stone") && material == Material.COBBLESTONE
-				|| name.equals("iron") && material == Material.IRON_INGOT
-				|| name.equals("gold") && material == Material.GOLD_INGOT
-				|| name.equals("diamond") && material == Material.DIAMOND
-				|| name.equals("leather") && material == Material.LEATHER
-				|| name.equals("turtle") && material == Material.TURTLE_SCUTE
-				|| name.equals("chainmail") && material == Material.IRON_BARS
-				|| name.equals("netherite") && material == Material.NETHERITE_INGOT)
+		if ((name.equals("wooden") && material.name().contains("PLANKS"))
+				|| (name.equals("stone") && material == Material.COBBLESTONE)
+				|| (name.equals("iron") && material == Material.IRON_INGOT)
+				|| (name.equals("gold") && material == Material.GOLD_INGOT)
+				|| (name.equals("diamond") && material == Material.DIAMOND)
+				|| (name.equals("leather") && material == Material.LEATHER)
+				|| (name.equals("turtle") && material == Material.TURTLE_SCUTE)
+				|| (name.equals("chainmail") && material == Material.IRON_BARS)
+				|| (name.equals("netherite") && material == Material.NETHERITE_INGOT))
 			return null;
 
 		// upgrading from diamond to netherrite should only require one material
@@ -444,7 +444,7 @@ public class ModManager {
 	 *
 	 * @return the modifier list which is copied and can be modified
 	 */
-	public @NotNull HashSet<Modifier> getAllMods() {
+	public @NotNull Set<Modifier> getAllMods() {
 		return new HashSet<>(this.allMods);
 	}
 

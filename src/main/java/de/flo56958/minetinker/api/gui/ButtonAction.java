@@ -38,6 +38,7 @@ public abstract class ButtonAction {
 			super(button);
 		}
 
+		@Override
 		public void run(Player player) {
 			final GUI gui = this.button.getWindow().getGUI();
 			final int pageNo = gui.getWindowNumber(this.button.getWindow()) + 1;
@@ -51,6 +52,7 @@ public abstract class ButtonAction {
 			super(button);
 		}
 
+		@Override
 		public void run(Player player) {
 			final GUI gui = this.button.getWindow().getGUI();
 			int pageNo = gui.getWindowNumber(this.button.getWindow()) - 1;
@@ -79,6 +81,7 @@ public abstract class ButtonAction {
 			this.page = -1;
 		}
 
+		@Override
 		public void run(@NotNull final Player player) {
 			final GUI gui = (window != null) ? window.getGUI() : button.getWindow().getGUI();
 			final int pageNo = (window != null) ? gui.getWindowNumber(window) : page;

@@ -315,6 +315,7 @@ public class AutoSmelt extends Modifier implements Listener {
 		}
 
 		@NotNull
+		@Override
 		public String toString() {
 			return material.toString() + regex + amount + regex + luckable;
 		}

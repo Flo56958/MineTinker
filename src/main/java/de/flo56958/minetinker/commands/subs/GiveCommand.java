@@ -79,6 +79,7 @@ public class GiveCommand implements SubCommand {
 					result.add("@p");
 					result.add("@rw");
 				}
+				// fall through
 			case 3:
 				// rewrite this
 				result.addAll(ToolType.ALL.getToolMaterials().stream().map(Material::toString).toList());

@@ -203,6 +203,7 @@ public class MineTinker extends JavaPlugin {
 		GUIs.reload();
 	}
 
+	@Override
 	public void onDisable() {
 		ChatWriter.logInfo("Shutting down!");
 		LanguageManager.cleanup(); //TODO: Replace with PluginDisableEvent

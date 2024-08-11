@@ -238,7 +238,7 @@ public class DataHandler {
 	 * @param block     The block that should be broken
 	 * @param itemStack The itemStack that is used to break the block
 	 * @return true if the player successfully broke the block, false otherwise
-	 * @throws IllegalArgumentException
+	 * @throws IllegalArgumentException on wrong input
 	 */
 	public static boolean playerBreakBlock(@NotNull final Player player, @NotNull final Block block, @NotNull final ItemStack itemStack)
 			throws IllegalArgumentException {

@@ -148,6 +148,6 @@ public class Building extends Modifier implements Listener {
 		}
 
 		event.getEvent().setUseInteractedBlock(Event.Result.DENY); // prevent vanilla behavior by cancelling the event
-		toPlace.setAmount(toPlace.getAmount() - ((isDoubleSlab) ? 2 : 1));
+		toPlace.setAmount(toPlace.getAmount() - (isDoubleSlab ? 2 : 1));
 	}
 }

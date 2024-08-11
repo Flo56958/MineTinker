@@ -44,7 +44,7 @@ public class InfoCommand implements SubCommand {
 			Updater.checkOnline();
 			lore.add(ChatColor.GOLD + "Current Version: " + ChatColor.WHITE + MineTinker.getPlugin().getDescription().getVersion());
 			lore.add(ChatColor.GOLD + "Latest Version: "
-					+ ((Updater.hasUpdate()) ? ChatColor.RED : ChatColor.WHITE) + Updater.getOnlineVersion());
+					+ (Updater.hasUpdate() ? ChatColor.RED : ChatColor.WHITE) + Updater.getOnlineVersion());
 			//Obtain Information over GitHub API
 			try {
 				String cons = new Scanner(new URI("https://api.github.com/repos/Flo56958/MineTinker").toURL().openStream(),
@@ -77,7 +77,7 @@ public class InfoCommand implements SubCommand {
 				GUI contributorGUI = new GUI(MineTinker.getPlugin());
 				{
 					int pageNo = 1;
-					ArrayList<Contributor> conlist = Contributor.getContributors();
+					List<Contributor> conlist = Contributor.getContributors();
 					GUI.Window contributors = contributorGUI.addWindow(Math.min(6, conlist.size() / 9 + 1),
 							LanguageManager.getString("Commands.Info.Contributors") + " #" + pageNo);
 					int i = 0;

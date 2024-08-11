@@ -29,7 +29,7 @@ public class Lists {
 		DROPLOOT = config.getStringList("LevelUpEvents.DropLoot.Items");
 	}
 
-	public static ArrayList<Material> getLeatherArmor() {
+	public static List<Material> getLeatherArmor() {
 		final ArrayList<Material> mats = new ArrayList<>();
 
 		mats.add(Material.LEATHER_CHESTPLATE);

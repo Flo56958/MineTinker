@@ -126,7 +126,7 @@ public class Power extends Modifier implements Listener {
 		return modManager.hasMod(tool, this);
 	}
 
-	private HashSet<Block> getPowerBlocks(@NotNull ItemStack tool, @NotNull Block block, @NotNull BlockFace face, @NotNull PlayerInfo.Direction direction) {
+	private Set<Block> getPowerBlocks(@NotNull ItemStack tool, @NotNull Block block, @NotNull BlockFace face, @NotNull PlayerInfo.Direction direction) {
 		final int level = modManager.getModLevel(tool, this);
 
 		final HashSet<Block> blocks = new HashSet<>();
@@ -258,7 +258,7 @@ public class Power extends Modifier implements Listener {
 		final BlockFace face = event.getEvent().getBlockFace();
 
 		// Broadcast InteractEvent to other Blocks
-		final HashSet<Block> blocks = getPowerBlocks(tool, block, face, PlayerInfo.getFacingDirection(player));
+		final Set<Block> blocks = getPowerBlocks(tool, block, face, PlayerInfo.getFacingDirection(player));
 		blocks.remove(block); // Remove the central block (already handled in the BlockBreakEvent)
 		for (final Block b : blocks) {
 			if (b.getType().isAir()) continue;

@@ -5,10 +5,7 @@ import org.bukkit.Tag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.HashSet;
+import java.util.*;
 
 public enum ToolType {
 
@@ -35,7 +32,7 @@ public enum ToolType {
 	SWORD,
 	TRIDENT;
 
-	private static final EnumMap<ToolType, HashSet<Material>> tools = new EnumMap<>(ToolType.class);
+	private static final EnumMap<ToolType, Set<Material>> tools = new EnumMap<>(ToolType.class);
 
 	private static final EnumMap<Material, ToolType> materialMap = new EnumMap<>(Material.class);
 
@@ -93,7 +90,7 @@ public enum ToolType {
 		tools.put(ToolType.ALL, all);
 	}
 
-	private static @NotNull EnumMap<ToolType, HashSet<Material>> getTools() {
+	private static @NotNull EnumMap<ToolType, Set<Material>> getTools() {
 		return tools;
 	}
 
@@ -122,7 +119,7 @@ public enum ToolType {
 		return materialMap.getOrDefault(material, INVALID);
 	}
 
-	public HashSet<Material> getToolMaterials() {
+	public Set<Material> getToolMaterials() {
 		return getTools().get(this);
 	}
 

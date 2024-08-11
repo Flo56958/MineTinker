@@ -91,7 +91,7 @@ public class Photosynthesis extends Modifier {
 				continue;
 			}
 
-			final double daytimeMultiplier = (fullEffectAtNoon) ? Math.abs(6 - worldTime) / 6.0 : 1.0;
+			final double daytimeMultiplier = fullEffectAtNoon ? Math.abs(6 - worldTime) / 6.0 : 1.0;
 			final long timeDif = time - tupel.time - (tickTime * 50L); //to make effect faster with time (first tick period does not count)
 			final double timeAdvantage = multiplierPerTick * ((timeDif / 50.0) / tickTime);
 
