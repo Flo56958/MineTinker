@@ -2,7 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id 'java'
-    id "com.github.johnrengelman.shadow" version "8.1.1"
+    id 'com.gradleup.shadow' version '8.3.0'
 }
 
 repositories {
@@ -41,7 +41,7 @@ dependencies {
 group = 'de.flo56958'
 version = '2.0'
 description = 'A TinkersConstruct (and other mods) inspired spigot server plugin'
-java.sourceCompatibility = JavaVersion.VERSION_20 // TODO: Switch to Java 21 when shadow supports it
+java.sourceCompatibility = JavaVersion.VERSION_21
 
 jar.dependsOn(processResources)
 assemble.dependsOn(shadowJar)
