@@ -183,6 +183,14 @@ public class DataHandler {
 		if (meta == null) return true;
 		if (meta.isUnbreakable()) return true;
 
+		// No damage if the Player is in Creative
+		if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return true;
+
+		// Consider Unbreaking Enchant
+		final int lvl = meta.getEnchantLevel(Enchantment.UNBREAKING);
+		// Check if the item should be damaged
+		if (new Random().nextInt(100) >= (100 / (lvl + 1))) return true;
+
 		//Call damage event
 		final PlayerItemDamageEvent damageEvent = new PlayerItemDamageEvent(player, itemStack, damage);
 		Bukkit.getPluginManager().callEvent(damageEvent);
@@ -336,17 +344,7 @@ public class DataHandler {
 			orb.setExperience(breakEvent.getExpToDrop());
 		}
 
-		// Calculate Damage for itemStack
-		meta = itemStack.getItemMeta();
-		// No Damage for creative players
-		if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
-			// Consider Unbreaking Enchant
-			final int lvl = meta.getEnchantLevel(Enchantment.UNBREAKING);
-
-			// Check if the item should be damaged
-			if (new Random().nextInt(100) < 100 / (lvl + 1))
-				triggerItemDamage(player, itemStack, 1);
-		}
+		triggerItemDamage(player, itemStack, 1); // Unbreaking and Creative is considered in the method
 
 		return true;
 	}

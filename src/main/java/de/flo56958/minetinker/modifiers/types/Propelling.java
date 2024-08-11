@@ -6,7 +6,10 @@ import de.flo56958.minetinker.modifiers.CooldownModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -21,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class Propelling extends CooldownModifier implements Listener {
 
@@ -30,8 +32,6 @@ public class Propelling extends CooldownModifier implements Listener {
 	private double speedPerLevel;
 	private boolean sound;
 	private boolean particles;
-	private boolean considerReinforced;
-	private boolean useLessDurability;
 
 	private Propelling() {
 		super(MineTinker.getPlugin());
@@ -77,8 +77,6 @@ public class Propelling extends CooldownModifier implements Listener {
 		config.addDefault("Elytra.SpeedPerLevel", 0.15);
 		config.addDefault("Elytra.Sound", true);
 		config.addDefault("Elytra.Particles", true);
-		config.addDefault("ConsiderReinforced", true); //should Reinforced (Unbreaking) be considered
-		config.addDefault("ReinforcedUseLessDurability", true); //should Reinforced lessen the durability damage or if false chance to don't use durability at all
 
 		config.addDefault("EnchantCost", 25);
 		config.addDefault("Enchantable", true);
@@ -93,8 +91,6 @@ public class Propelling extends CooldownModifier implements Listener {
 
 		this.durabilityLoss = config.getInt("Elytra.DurabilityLoss", 10);
 		this.speedPerLevel = config.getDouble("Elytra.SpeedPerLevel", 0.05);
-		this.considerReinforced = config.getBoolean("ConsiderReinforced", true);
-		this.useLessDurability = config.getBoolean("ReinforcedUseLessDurability", true);
 		this.cooldownInSeconds = config.getDouble("CooldownInSeconds", 5.0);
 
 		this.sound = config.getBoolean("Elytra.Sound", true);
@@ -132,23 +128,9 @@ public class Propelling extends CooldownModifier implements Listener {
 		if (!modManager.hasMod(elytra, this)) return;
 		if (onCooldown(player, elytra, true, event)) return;
 
-		if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
-			int loss = durabilityLoss;
-
-			if (considerReinforced) {
-				int level = modManager.getModLevel(elytra, Reinforced.instance());
-				if (useLessDurability)
-					loss = (int) Math.round(durabilityLoss * (1.0 / (level + 1)));
-				else {
-					final int durabilityChance = 60 + (40 / (level + 1));
-					if (new Random().nextInt(100) > durabilityChance) loss = 0;
-				}
-			}
-
-			if (!DataHandler.triggerItemDamage(player, elytra, loss)) {
-				player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
-				return;
-			}
+		if (!DataHandler.triggerItemDamage(player, elytra, this.durabilityLoss)) {
+			player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.5F, 0.5F);
+			return;
 		}
 
 		final int level = modManager.getModLevel(elytra, this);
