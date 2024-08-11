@@ -261,7 +261,8 @@ public abstract class Modifier {
 
 		if (meta != null) {
 			getAppliedEnchantments().forEach(meta::removeEnchant);
-			getAppliedAttributes().forEach(meta::removeAttributeModifier);
+			//getAppliedAttributes().forEach(meta::removeAttributeModifier);
+			// Attributes are handled by the respective mods
 
 			tool.setItemMeta(meta);
 		}

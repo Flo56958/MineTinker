@@ -6,6 +6,7 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 public class Vigilant extends Modifier implements Listener {
 
@@ -97,9 +97,9 @@ public class Vigilant extends Modifier implements Listener {
 		final ItemMeta meta = chestplate.getItemMeta();
 		if (meta == null) return;
 		meta.removeAttributeModifier(Attribute.GENERIC_MAX_ABSORPTION); // Overwrite the old values
-		meta.addAttributeModifier(Attribute.GENERIC_MAX_ABSORPTION, new AttributeModifier(UUID.randomUUID(),
-				"generic.max_absorption", absorption,
-				AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
+		meta.addAttributeModifier(Attribute.GENERIC_MAX_ABSORPTION, new AttributeModifier(
+				new NamespacedKey(MineTinker.getPlugin(), "generic.max_absorption"), absorption,
+				AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST));
 		chestplate.setItemMeta(meta);
 
 		// Add absorption

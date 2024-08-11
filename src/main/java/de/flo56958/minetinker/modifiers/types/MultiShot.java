@@ -197,7 +197,7 @@ public class MultiShot extends Modifier implements Listener {
 			Bukkit.getScheduler().runTaskLater(this.getSource(), () -> {
 				final Arrow arr = loc.getWorld().spawnArrow(loc, vel, (float) vel.length(), (float) spread);
 				arr.setShooter(player);
-				arr.setShotFromCrossbow(arrow.isShotFromCrossbow());
+				arr.setWeapon(tool);
 
 				if (player.getGameMode().equals(GameMode.CREATIVE) || arrow.getPickupStatus() == AbstractArrow.PickupStatus.CREATIVE_ONLY)
 					arr.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);

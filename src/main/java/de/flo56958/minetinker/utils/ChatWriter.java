@@ -167,7 +167,7 @@ public class ChatWriter {
 
 		try {
 			player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-					TextComponent.fromLegacyText(message));
+					TextComponent.fromLegacy(message));
 		} catch (NoSuchMethodError e) {
 			ChatWriter.logError("You have Spigot features enabled but don't use Spigot." +
 					"Please turn off actionbar-messages in the main config.");

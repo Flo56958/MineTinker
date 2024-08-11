@@ -22,7 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -945,48 +945,55 @@ public class ModManager {
 		AttributeModifier toughnessAM = null;
 		AttributeModifier knockbackResAM = null;
 
+		final NamespacedKey nkArmor = new NamespacedKey(MineTinker.getPlugin(), "generic.armor");
+		final NamespacedKey nkArmorToughness = new NamespacedKey(MineTinker.getPlugin(), "generic.armor_toughness");
+		final NamespacedKey nkKnockbackRes = new NamespacedKey(MineTinker.getPlugin(), "generic.knockback_resistance");
+
 		if (ToolType.BOOTS.contains(is.getType())) {
-			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor,
-					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
-			toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness,
-					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
-			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res,
-					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET);
+			armorAM = new AttributeModifier(nkArmor, armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET);
+			toughnessAM = new AttributeModifier(nkArmorToughness, toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET);
+			knockbackResAM = new AttributeModifier(nkKnockbackRes, knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET);
 		} else if (ToolType.CHESTPLATE.contains(is.getType())) {
-			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor,
-					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
-			toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness,
-					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
-			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res,
-					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST);
+			armorAM = new AttributeModifier(nkArmor, armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST);
+			toughnessAM = new AttributeModifier(nkArmorToughness, toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST);
+			knockbackResAM = new AttributeModifier(nkKnockbackRes, knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST);
 		} else if (ToolType.HELMET.contains(is.getType())) {
-			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor,
-					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
-			toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness,
-					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
-			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res,
-					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD);
+			armorAM = new AttributeModifier(nkArmor, armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD);
+			toughnessAM = new AttributeModifier(nkArmorToughness, toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD);
+			knockbackResAM = new AttributeModifier(nkKnockbackRes, knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD);
 		} else if (ToolType.LEGGINGS.contains(is.getType())) {
-			armorAM = new AttributeModifier(UUID.randomUUID(), "generic.armor", armor,
-					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
-			toughnessAM = new AttributeModifier(UUID.randomUUID(), "generic.armor_toughness", toughness,
-					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
-			knockbackResAM = new AttributeModifier(UUID.randomUUID(), "generic.knockback_resistance", knockback_res,
-					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS);
+			armorAM = new AttributeModifier(nkArmor, armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS);
+			toughnessAM = new AttributeModifier(nkArmorToughness, toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS);
+			knockbackResAM = new AttributeModifier(nkKnockbackRes, knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS);
 		} else if (!ToolType.ELYTRA.contains(is.getType())) return;
 
 		if (armor > 0.0d && armorAM != null) {
-			meta.removeAttributeModifier(Attribute.GENERIC_ARMOR);
+			Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR);
+			if (list != null) {
+				list = new ArrayList<>(list); // Collection is immutable
+				list.removeIf(am -> !am.getKey().equals(nkArmor));
+				list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_ARMOR, am));
+			}
 			meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
 		}
 
 		if (toughness > 0.0d && toughnessAM != null) {
-			meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);
+			Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR_TOUGHNESS);
+			if (list != null) {
+				list = new ArrayList<>(list); // Collection is immutable
+				list.removeIf(am -> !am.getKey().equals(nkArmorToughness));
+				list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, am));
+			}
 			meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
 		}
 
 		if (knockback_res > 0.0d && knockbackResAM != null) {
-			meta.removeAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+			Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+			if (list != null) {
+				list = new ArrayList<>(list); // Collection is immutable
+				list.removeIf(am -> !am.getKey().equals(nkKnockbackRes));
+				list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, am));
+			}
 			meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResAM);
 		}
 
@@ -997,8 +1004,6 @@ public class ModManager {
 		}
 
 		is.setItemMeta(meta);
-
-		Hardened.instance().reapplyAttributes(is);
 	}
 
 	/**

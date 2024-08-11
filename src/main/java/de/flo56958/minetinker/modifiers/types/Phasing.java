@@ -143,7 +143,7 @@ public class Phasing extends Modifier implements Listener {
 		phaser.setCritical(arrow.isCritical());
 		phaser.setDamage(arrow.getDamage());
 		phaser.setShooter(arrow.getShooter());
-		phaser.setShotFromCrossbow(arrow.isShotFromCrossbow());
+		phaser.setWeapon(tool);
 		phaser.setFireTicks(arrow.getFireTicks());
 
 		phaser.setMetadata(this.getKey(), new FixedMetadataValue(MineTinker.getPlugin(), true));

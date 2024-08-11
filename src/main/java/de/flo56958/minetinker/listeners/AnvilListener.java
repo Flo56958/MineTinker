@@ -253,7 +253,7 @@ public class AnvilListener implements Listener {
 		ItemStack newTool = onPrepare(event.getInventory(), event.getViewers());
 		if (newTool != null) {
 			event.setResult(newTool);
-			event.getInventory().setRepairCost(0);
+			event.getView().setRepairCost(0);
 		}
 	}
 }

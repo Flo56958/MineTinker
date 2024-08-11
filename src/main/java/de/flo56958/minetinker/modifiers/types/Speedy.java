@@ -5,11 +5,12 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -52,39 +53,40 @@ public class Speedy extends Modifier {
 		return Collections.singletonList(Attribute.GENERIC_MOVEMENT_SPEED);
 	}
 
+	private final NamespacedKey nkMovementSpeed = new NamespacedKey(MineTinker.getPlugin(), this.getKey() + ".movement_speed");
+
+	@Override
+	public void removeMod(ItemStack tool) {
+		ItemMeta meta = tool.getItemMeta();
+		if (meta == null) return;
+
+		Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.GENERIC_MOVEMENT_SPEED);
+		if (list != null) {
+			list = new ArrayList<>(list); // Collection is immutable
+			list.removeIf(am -> !am.getKey().equals(nkMovementSpeed));
+			list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, am));
+		}
+
+		tool.setItemMeta(meta);
+	}
+
 	@Override
 	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
-		ItemMeta meta = tool.getItemMeta();
+		this.removeMod(tool); // Remove old attributes
 
+		ItemMeta meta = tool.getItemMeta();
 		if (meta == null) return false;
 
-		//To check if armor modifiers are on the armor
-		Collection<AttributeModifier> attributeModifiers = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR);
+		final int level = modManager.getModLevel(tool, this);
 
-		if (attributeModifiers == null || attributeModifiers.isEmpty()) {
-			modManager.addArmorAttributes(tool);
-			meta = tool.getItemMeta();
-		}
-
-		Collection<AttributeModifier> speedModifiers = meta.getAttributeModifiers(Attribute.GENERIC_MOVEMENT_SPEED);
-		double speedOnItem = 0.0D;
-
-		if (!(speedModifiers == null || speedModifiers.isEmpty())) {
-			HashSet<String> names = new HashSet<>();
-
-			for (AttributeModifier am : speedModifiers)
-				if (names.add(am.getName())) speedOnItem += am.getAmount();
-		}
-
-		meta.removeAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED);
-		meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED,
-				new AttributeModifier(UUID.randomUUID(), "generic.movement_speed",
-						speedOnItem + this.speedPerLevel,
-						AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
-		meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED,
-				new AttributeModifier(UUID.randomUUID(), "generic.movement_speed",
-						speedOnItem + this.speedPerLevel,
-						AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
+		if (ToolType.LEGGINGS.contains(tool.getType()))
+			meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED,
+				new AttributeModifier(nkMovementSpeed, level * this.speedPerLevel,
+						AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS));
+		else
+			meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED,
+				new AttributeModifier(nkMovementSpeed, level * this.speedPerLevel,
+						AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET));
 
 		tool.setItemMeta(meta);
 		return true;

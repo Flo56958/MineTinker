@@ -19,6 +19,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.view.AnvilView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -70,8 +71,12 @@ public class EnchantingListener implements Listener {
 		if (!MineTinker.getPlugin().getConfig().getBoolean("ConvertEnchantmentsOnEnchant", true)) return;
 		final HumanEntity entity = event.getWhoClicked();
 
-		if (!(entity instanceof final Player player && event.getClickedInventory() instanceof final AnvilInventory inv))
+		if (!(entity instanceof final Player player))
 			return;
+
+		if (!(event.getClickedInventory() instanceof final AnvilInventory inv && event.getView() instanceof AnvilView view))
+			return;
+
 
 		final ItemStack tool = inv.getItem(0);
 		final ItemStack book = inv.getItem(1);
@@ -83,7 +88,7 @@ public class EnchantingListener implements Listener {
 		if (book == null || newTool == null) return;
 		if (book.getType() != Material.ENCHANTED_BOOK) return;
 		if (event.getResult() != Event.Result.ALLOW) return;
-		if (player.getLevel() < inv.getRepairCost()) return; // Player does not have enough levels
+		if (player.getLevel() < view.getRepairCost()) return; // Player does not have enough levels
 
 		final boolean free = !MineTinker.getPlugin().getConfig().getBoolean("EnchantingCostsSlots", true);
 

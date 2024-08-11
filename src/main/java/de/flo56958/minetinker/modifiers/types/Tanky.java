@@ -8,6 +8,7 @@ import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,7 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -63,38 +64,38 @@ public class Tanky extends Modifier implements Listener {
 		return Collections.singletonList(Attribute.GENERIC_MAX_HEALTH);
 	}
 
+	private final NamespacedKey nkHealth = new NamespacedKey(MineTinker.getPlugin(), this.getKey() + ".max_health");
+
+	@Override
+	public void removeMod(ItemStack tool) {
+		ItemMeta meta = tool.getItemMeta();
+		if (meta == null) return;
+
+		Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.GENERIC_MAX_HEALTH);
+		if (list != null) {
+			list = new ArrayList<>(list); // Collection is immutable
+			list.removeIf(am -> !am.getKey().equals(nkHealth));
+			list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_MAX_HEALTH, am));
+		}
+
+		tool.setItemMeta(meta);
+	}
+
 	@Override
 	public boolean applyMod(Player player, ItemStack tool, boolean isCommand) {
-		ItemMeta meta = tool.getItemMeta();
+		this.removeMod(tool); // remove old attributes
 
+		ItemMeta meta = tool.getItemMeta();
 		if (meta == null) return false;
 
-		//To check if armor modifiers are on the armor
-		Collection<AttributeModifier> attributeModifiers = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR);
+		final int level = modManager.getModLevel(tool, this);
 
-		if (attributeModifiers == null || attributeModifiers.isEmpty()) {
-			modManager.addArmorAttributes(tool);
-			meta = tool.getItemMeta();
-		}
-
-		Collection<AttributeModifier> healthModifiers = meta.getAttributeModifiers(Attribute.GENERIC_MAX_HEALTH);
-
-		double healthOnItem = 0.0D;
-		if (!(healthModifiers == null || healthModifiers.isEmpty())) {
-			HashSet<String> names = new HashSet<>();
-			for (AttributeModifier am : healthModifiers)
-				if (names.add(am.getName())) healthOnItem += am.getAmount();
-		}
-		meta.removeAttributeModifier(Attribute.GENERIC_MAX_HEALTH);
-		modManager.addArmorAttributes(tool);
 		if (ToolType.LEGGINGS.contains(tool.getType()))
-			meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(),
-					"generic.max_health", healthOnItem + this.healthPerLevel,
-					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
+			meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(nkHealth, level * this.healthPerLevel,
+					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS));
 		else //Chestplate and Elytra
-			meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(UUID.randomUUID(),
-					"generic.max_health", healthOnItem + this.healthPerLevel,
-					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
+			meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(nkHealth, level * this.healthPerLevel,
+					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST));
 
 		tool.setItemMeta(meta);
 		return true;
