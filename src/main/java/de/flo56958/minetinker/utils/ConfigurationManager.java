@@ -47,6 +47,18 @@ public class ConfigurationManager {
 
 		loadConfig("", "Modifiers.yml");
 
+		// reload all other configs
+		for (final String config : configs.keySet()) {
+			if (config.equals("config.yml")) continue;
+			final FileConfiguration fileConfiguration = configs.get(config);
+
+			try {
+				fileConfiguration.load(configsFolder.get(fileConfiguration));
+			} catch (IOException | InvalidConfigurationException e) {
+				e.printStackTrace();
+			}
+		}
+
 		//importing Main configuration into system
 		configs.put("config.yml", MineTinker.getPlugin().getConfig());
 		configsFolder.put(MineTinker.getPlugin().getConfig(), new File(MineTinker.getPlugin().getDataFolder(), "config.yml"));
