@@ -33,6 +33,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.Collator;
 import java.util.*;
 
 public class ModManager {
@@ -265,27 +266,29 @@ public class ModManager {
 		layout = ConfigurationManager.getConfig("layout.yml");
 
 		removeRecipes();
-		mods.forEach(mod -> {
+		this.mods.forEach(mod -> {
 			if (mod instanceof Listener listener) //Disable Events
 				HandlerList.unregisterAll(listener);
 		});
-		mods.clear();
-		mods.addAll(allMods);
-		mods.removeIf(mod -> !mod.isAllowed());
-
-		mods.sort(Comparator.comparing(Modifier::getName));
+		this.mods.clear();
+		this.mods.addAll(allMods);
 
 		this.ToolIdentifier = config.getString("ToolIdentifier");
 		this.ArmorIdentifier = config.getString("ArmorIdentifier");
 
-		removeRecipes();
-		this.allMods.forEach(Modifier::reload);
+		this.mods.forEach(Modifier::reload);
+		this.mods.removeIf(mod -> !mod.isAllowed());
 		this.mods.forEach(Modifier::registerCraftingRecipe);
+
+		// Sort the modifiers by name with Language support
+		final Collator collator = Collator.getInstance(Locale.forLanguageTag(LanguageManager.getLang()));
+		collator.setStrength(Collator.PRIMARY);
+		this.mods.sort(Comparator.comparing(Modifier::getName, collator));
 
 		//get Modifier incompatibilities
 		this.reloadIncompatibilities();
 
-		mods.forEach(mod -> {
+		this.mods.forEach(mod -> {
 			if (mod instanceof Listener listener) //Enable Events
 				Bukkit.getPluginManager().registerEvents(listener, mod.getSource());
 		});
@@ -293,7 +296,7 @@ public class ModManager {
 		if (layout.getBoolean("OverrideLanguagesystem", false)) {
 			this.loreScheme = layout.getStringList("LoreLayout");
 
-			loreScheme.replaceAll(ChatWriter::addColors);
+			this.loreScheme.replaceAll(ChatWriter::addColors);
 		} else {
 			this.loreScheme = new ArrayList<>();
 			this.loreScheme.add(LanguageManager.getString("Commands.ItemStatistics.Level")
@@ -319,7 +322,7 @@ public class ModManager {
 		final List<String> possibleKeys = new ArrayList<>();
 		this.allMods.forEach(m -> possibleKeys.add(m.getKey()));
 		possibleKeys.sort(String::compareToIgnoreCase);
-		possibleKeys.add(0, "Do not edit this list; just for documentation of what Keys can be used under Incompatibilities");
+		possibleKeys.addFirst("Do not edit this list; just for documentation of what Keys can be used under Incompatibilities");
 		modifierconfig.set("PossibleKeys", possibleKeys);
 		ConfigurationManager.saveConfig(modifierconfig);
 		ConfigurationManager.loadConfig("", "Modifiers.yml");

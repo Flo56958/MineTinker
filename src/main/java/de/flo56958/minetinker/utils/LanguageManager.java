@@ -21,6 +21,11 @@ public class LanguageManager {
 	private static YamlConfiguration langFile;
 	private static YamlConfiguration langBackup;
 
+	public static String getLang() {
+		return lang;
+	}
+
+	private static String lang = "en_US";
 	private static boolean usingFallback = false;
 	private static long completenessPercent = 10_000;
 
@@ -49,10 +54,12 @@ public class LanguageManager {
 	}
 
 	public static void reload() {
-		String lang = MineTinker.getPlugin().getConfig().getString("Language", "en_US");
+		lang = MineTinker.getPlugin().getConfig().getString("Language", "en_US");
+
+		final String backup = "en_US";
 
 		langFile = loadLanguage(lang);
-		langBackup = loadLanguage("en_US");
+		langBackup = loadLanguage(backup);
 
 		if (langFile == null && langBackup == null) {
 			ChatWriter.logError("Can not load any language! Shutting down...");
@@ -66,6 +73,7 @@ public class LanguageManager {
 			usingFallback = true;
 			ChatWriter.logError(lang + " is currently not supported. If you want MineTinker to support this language you" +
 					" can help translating on Transifex!");
+			lang = backup;
 		} else {
 			if (!lang.equals("en_US") && !lang.equals("de_DE"))
 				ChatWriter.logInfo("You are using a community translation. Therefore the translation is not 100% reviewed" +
