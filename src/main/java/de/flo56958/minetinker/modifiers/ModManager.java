@@ -944,13 +944,15 @@ public class ModManager {
 			}
 		}
 
+		final String additional = "_" + ToolType.get(is.getType()).name();
+
 		AttributeModifier armorAM = null;
 		AttributeModifier toughnessAM = null;
 		AttributeModifier knockbackResAM = null;
 
-		final NamespacedKey nkArmor = new NamespacedKey(MineTinker.getPlugin(), "generic.armor");
-		final NamespacedKey nkArmorToughness = new NamespacedKey(MineTinker.getPlugin(), "generic.armor_toughness");
-		final NamespacedKey nkKnockbackRes = new NamespacedKey(MineTinker.getPlugin(), "generic.knockback_resistance");
+		final NamespacedKey nkArmor = new NamespacedKey(MineTinker.getPlugin(), "generic.armor" + additional);
+		final NamespacedKey nkArmorToughness = new NamespacedKey(MineTinker.getPlugin(), "generic.armor_toughness" + additional);
+		final NamespacedKey nkKnockbackRes = new NamespacedKey(MineTinker.getPlugin(), "generic.knockback_resistance" + additional);
 
 		if (ToolType.BOOTS.contains(is.getType())) {
 			armorAM = new AttributeModifier(nkArmor, armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET);
@@ -970,33 +972,36 @@ public class ModManager {
 			knockbackResAM = new AttributeModifier(nkKnockbackRes, knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS);
 		} else if (!ToolType.ELYTRA.contains(is.getType())) return;
 
+		Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR);
+		if (list != null) {
+			list = new ArrayList<>(list); // Collection is immutable
+			list.removeIf(am -> !nkArmor.getNamespace().equals(am.getKey().getNamespace()));
+			list.removeIf(am -> !nkArmor.getKey().contains(am.getKey().getKey()));
+			list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_ARMOR, am));
+		}
 		if (armor > 0.0d && armorAM != null) {
-			Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR);
-			if (list != null) {
-				list = new ArrayList<>(list); // Collection is immutable
-				list.removeIf(am -> !am.getKey().equals(nkArmor));
-				list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_ARMOR, am));
-			}
 			meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
 		}
 
+		list = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR_TOUGHNESS);
+		if (list != null) {
+			list = new ArrayList<>(list); // Collection is immutable
+			list.removeIf(am -> !nkArmorToughness.getNamespace().equals(am.getKey().getNamespace()));
+			list.removeIf(am -> !nkArmorToughness.getKey().contains(am.getKey().getKey()));
+			list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, am));
+		}
 		if (toughness > 0.0d && toughnessAM != null) {
-			Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR_TOUGHNESS);
-			if (list != null) {
-				list = new ArrayList<>(list); // Collection is immutable
-				list.removeIf(am -> !am.getKey().equals(nkArmorToughness));
-				list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, am));
-			}
 			meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
 		}
 
+		list = meta.getAttributeModifiers(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+		if (list != null) {
+			list = new ArrayList<>(list); // Collection is immutable
+			list.removeIf(am -> !nkKnockbackRes.getNamespace().equals(am.getKey().getNamespace()));
+			list.removeIf(am -> !nkKnockbackRes.getKey().contains(am.getKey().getKey()));
+			list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, am));
+		}
 		if (knockback_res > 0.0d && knockbackResAM != null) {
-			Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
-			if (list != null) {
-				list = new ArrayList<>(list); // Collection is immutable
-				list.removeIf(am -> !am.getKey().equals(nkKnockbackRes));
-				list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, am));
-			}
 			meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResAM);
 		}
 

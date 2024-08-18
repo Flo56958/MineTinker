@@ -62,11 +62,14 @@ public class Hardened extends Modifier implements Listener {
 		ItemMeta meta = tool.getItemMeta();
 		if (meta == null) return false;
 
+		final ToolType toolType = ToolType.get(tool.getType());
+
 		{
 			final double amount = armorPerLevel * level;
 
 			if (amount > 0) {
-				final AttributeModifier armorAM = switch (ToolType.get(tool.getType())) {
+				final NamespacedKey nkArmor = new NamespacedKey(MineTinker.getPlugin(), this.sArmor + toolType.name());
+				final AttributeModifier armorAM = switch (toolType) {
 					case BOOTS -> new AttributeModifier(nkArmor, amount,
 							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET);
 					case CHESTPLATE, ELYTRA -> new AttributeModifier(nkArmor, amount,
@@ -86,7 +89,8 @@ public class Hardened extends Modifier implements Listener {
 			final double amount = toughnessPerLevel * level;
 
 			if (amount > 0) {
-				AttributeModifier toughnessAM = switch (ToolType.get(tool.getType())) {
+				final NamespacedKey nkArmorToughness = new NamespacedKey(MineTinker.getPlugin(), this.sArmorToughness + toolType.name());
+				AttributeModifier toughnessAM = switch (toolType) {
 					case BOOTS -> new AttributeModifier(nkArmorToughness, amount,
 							AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET);
 					case CHESTPLATE, ELYTRA -> new AttributeModifier(nkArmorToughness, amount,
@@ -105,25 +109,31 @@ public class Hardened extends Modifier implements Listener {
 		return true;
 	}
 
-	private final NamespacedKey nkArmor = new NamespacedKey(MineTinker.getPlugin(), this.getKey() + ".armor");
-	private final NamespacedKey nkArmorToughness = new NamespacedKey(MineTinker.getPlugin(), this.getKey() + ".armor_toughness");
+	private final String sArmor = this.getKey() + ".armor_";
+	private final String sArmorToughness = this.getKey() + ".armor_toughness_";
 
 	@Override
 	public void removeMod(ItemStack tool) {
 		final ItemMeta meta = tool.getItemMeta();
 		if (meta == null) return;
 
+		final ToolType toolType = ToolType.get(tool.getType());
+
+		final NamespacedKey nkArmor = new NamespacedKey(MineTinker.getPlugin(), this.sArmor + toolType.name());
 		Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR);
 		if (list != null) {
 			list = new ArrayList<>(list); // Collection is immutable
-			list.removeIf(am -> !am.getKey().equals(nkArmor));
+			list.removeIf(am -> !nkArmor.getNamespace().equals(am.getKey().getNamespace()));
+			list.removeIf(am -> !nkArmor.getKey().contains(am.getKey().getKey()));
 			list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_ARMOR, am));
 		}
 
+		final NamespacedKey nkArmorToughness = new NamespacedKey(MineTinker.getPlugin(), this.sArmorToughness + toolType.name());
 		list = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR_TOUGHNESS);
 		if (list != null) {
 			list = new ArrayList<>(list); // Collection is immutable
-			list.removeIf(am -> !am.getKey().equals(nkArmorToughness));
+			list.removeIf(am -> !nkArmorToughness.getNamespace().equals(am.getKey().getNamespace()));
+			list.removeIf(am -> !nkArmorToughness.getKey().contains(am.getKey().getKey()));
 			list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, am));
 		}
 		tool.setItemMeta(meta);

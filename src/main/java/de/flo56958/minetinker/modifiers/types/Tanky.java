@@ -64,17 +64,21 @@ public class Tanky extends Modifier implements Listener {
 		return Collections.singletonList(Attribute.GENERIC_MAX_HEALTH);
 	}
 
-	private final NamespacedKey nkHealth = new NamespacedKey(MineTinker.getPlugin(), this.getKey() + ".max_health");
+	private final String sHealth = this.getKey() + ".max_health_";
 
 	@Override
 	public void removeMod(ItemStack tool) {
 		ItemMeta meta = tool.getItemMeta();
 		if (meta == null) return;
 
+		final ToolType toolType = ToolType.get(tool.getType());
+		final NamespacedKey nkHealth = new NamespacedKey(MineTinker.getPlugin(), sHealth + toolType.name());
+
 		Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.GENERIC_MAX_HEALTH);
 		if (list != null) {
 			list = new ArrayList<>(list); // Collection is immutable
-			list.removeIf(am -> !am.getKey().equals(nkHealth));
+			list.removeIf(am -> !nkHealth.getNamespace().equals(am.getKey().getNamespace()));
+			list.removeIf(am -> !nkHealth.getKey().contains(am.getKey().getKey()));
 			list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_MAX_HEALTH, am));
 		}
 
@@ -89,6 +93,9 @@ public class Tanky extends Modifier implements Listener {
 		if (meta == null) return false;
 
 		final int level = modManager.getModLevel(tool, this);
+
+		final ToolType toolType = ToolType.get(tool.getType());
+		final NamespacedKey nkHealth = new NamespacedKey(MineTinker.getPlugin(), sHealth + toolType.name());
 
 		if (ToolType.LEGGINGS.contains(tool.getType()))
 			meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(nkHealth, level * this.healthPerLevel,

@@ -53,17 +53,21 @@ public class Speedy extends Modifier {
 		return Collections.singletonList(Attribute.GENERIC_MOVEMENT_SPEED);
 	}
 
-	private final NamespacedKey nkMovementSpeed = new NamespacedKey(MineTinker.getPlugin(), this.getKey() + ".movement_speed");
+	private final String sMovementSpeed = this.getKey() + ".movement_speed_";
 
 	@Override
 	public void removeMod(ItemStack tool) {
 		ItemMeta meta = tool.getItemMeta();
 		if (meta == null) return;
 
+		final ToolType toolType = ToolType.get(tool.getType());
+		final NamespacedKey nkMovementSpeed = new NamespacedKey(MineTinker.getPlugin(), sMovementSpeed + toolType.name());
+
 		Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.GENERIC_MOVEMENT_SPEED);
 		if (list != null) {
 			list = new ArrayList<>(list); // Collection is immutable
-			list.removeIf(am -> !am.getKey().equals(nkMovementSpeed));
+			list.removeIf(am -> !nkMovementSpeed.getNamespace().equals(am.getKey().getNamespace()));
+			list.removeIf(am -> !nkMovementSpeed.getKey().contains(am.getKey().getKey()));
 			list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, am));
 		}
 
@@ -78,6 +82,8 @@ public class Speedy extends Modifier {
 		if (meta == null) return false;
 
 		final int level = modManager.getModLevel(tool, this);
+		final ToolType toolType = ToolType.get(tool.getType());
+		final NamespacedKey nkMovementSpeed = new NamespacedKey(MineTinker.getPlugin(), sMovementSpeed + toolType.name());
 
 		if (ToolType.LEGGINGS.contains(tool.getType()))
 			meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED,
