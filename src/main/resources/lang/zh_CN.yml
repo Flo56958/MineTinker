@@ -99,10 +99,10 @@ GUIs.ConfigurationEditor.config.CheckForUpdates: "插件启动/重载时检查�
 GUIs.ConfigurationEditor.config.chat-messages: "启用聊天栏信息 (如命令输出提示)"
 GUIs.ConfigurationEditor.config.LevelStep: "初始值 * (等级因数^工具等级) [指数式升级]; *(等级因数*工具等级) [线性式升级]"
 GUIs.ConfigurationEditor.config.ProgressionIsLinear: "false 为指数式, true 则为线性式"
-GUIs.ConfigurationEditor.config.ResetAtVarOverflow: "在等级和经验达到整型数值最大值 (2147483647) 或长整型数值最大值 (9223372036854775807) 时重置为初始等级. 设置为 false 则不进行重置, 锁定在最大值."
-GUIs.ConfigurationEditor.config.logging.standard: "记录重要的玩家活动."
+GUIs.ConfigurationEditor.config.ResetAtVarOverflow: "在等级和经验达到整型数值最大值 (2147483647) 或长整型数值最大值 (9223372036854775807) 时重置为初始等级. 设置为 false 则不进行重置, 锁定在最大值"
+GUIs.ConfigurationEditor.config.logging.standard: "记录重要的玩家活动"
 GUIs.ConfigurationEditor.config.logging.debug: "在控制台中输出更多信息"
-GUIs.ConfigurationEditor.config.logging.metrics: "使用 bStats 进行匿名统计, 以收集 MineTinker 相关数据."
+GUIs.ConfigurationEditor.config.logging.metrics: "使用 bStats 进行匿名统计, 以收集 MineTinker 相关数据"
 
 ModManager.RegisterModifier: "%GREEN%已从 %plugin 插件注册了 %mod %GREEN%模块."
 ModManager.UnregisterModifier: "%GREEN%已从 %plugin 插件注销了 %mod %GREEN%模块."
@@ -125,7 +125,7 @@ LanguageManager.LoadedLanguage: "语言管理器已成功加载 %lang 语言!"
 
 TinkerListener.ToolUpgrade: "%tool 已被升级到了 %type!"
 TinkerListener.ModifierApply: "%tool 现在被镶嵌了 %mod 模块, 剩余 %slots 槽位!"
-TinkerListener.ModifierFail: "无法在 %tool 上镶嵌 %mod 模块 (%cause)!"
+TinkerListener.ModifierFail: "无法在 %tool 上添加 %mod 模块 (%cause)!"
 TinkerListener.ToolLevelUp: "%tool 升级到 %level 级!"
 
 Modifier.MaterialEntryNotFound: "模块材料未定义! 当前模块的合成配方已被取消注册."
@@ -168,15 +168,15 @@ Modifier:
     Statistic_Used: "使用次数: %amount"
   Building:
     Name: "建筑"
-    Description: "右键目标方块，如果有背包相同物品，则会进行建造"
+    Description: "右键目标方块，如果背包内有相同物品，则会进行建造."
     ModifierItemName: "建筑方块"
     DescriptionModifierItem: "特性: 建筑"
   Channeling:
-    Name: "引雷"
+    Name: "雷闪"
     Description: "每级增加 %amount 召唤闪电的机率!"
-    Description_OnlyStorms: "此模块仅在雷雨天有效"
+    Description_OnlyStorms: "此模块仅在雷雨天有效！"
     ModifierItemName: "雷霆碎片"
-    DescriptionModifierItem: "引雷模块"
+    DescriptionModifierItem: "雷闪模块"
   Dense:
     Name: "致密"
     Description: "增加重锤在近战攻击前每个下落高度造成的伤害!"
@@ -219,10 +219,10 @@ Modifier:
     DescriptionModifierItem: "智慧模块"
     Statistic_Amount: "获得经验: %amount"
   Explosive:
-    Name: "火药"
+    Name: "炸药"
     Description: "你的攻击每级增加 %power 点力量！"
     ModifierItemName: "MoaB-TNT"
-    DescriptionModifierItem: "特性: 火药"
+    DescriptionModifierItem: "特性: 炸药"
   Extra-Modifier:
     Name: "额外模块槽位"
     Description: "为此物品添加 %amount 额外槽位和 %xpamount 经验!"
@@ -330,7 +330,7 @@ Modifier:
     DescriptionModifierItem: "特性: 穿墙术"
   Photosynthesis:
     Name: "光合作用"
-    Description: "站在阳光下修复你的物品，每% ticks 游戏刻恢复 %amount 耐久，站越久恢复越快 (%multiplier%)"
+    Description: "站在阳光下修复你的物品，每% ticks 游戏刻恢复 %amount 耐久，站越久恢复越快. (%multiplier%)"
     ModifierItemName: "提纯叶绿素"
     DescriptionModifierItem: "光合作用模块"
     NotifyWhenActive: "正在进行光合作用..."
@@ -352,7 +352,7 @@ Modifier:
     DescriptionModifierItem: "扩散模块"
   Propelling:
     Name: "推进"
-    Description: "在使用鞘翅滑翔时潜行、在水里站立时使用三叉戟或在下落时用近战武器攻击上方，都可以获得推进效果"
+    Description: "在使用鞘翅滑翔时潜行、在水里站立时使用三叉戟或在下落时用近战武器攻击上方，都可以获得推进效果."
     ModifierItemName: "附魔烟火之星"
     DescriptionModifierItem: "推进模块"
   Protecting:
@@ -367,7 +367,7 @@ Modifier:
     DescriptionModifierItem: "强化模块"
   Scotopic:
     Name: "夜视"
-    Description: "在亮度低于 %light 的时候给予 %amount 秒/级的夜视效果！冷却事件: %cmax 到 %cmin 秒 (取决于等级)"
+    Description: "在亮度低于 %light 的时候给予 %amount 秒/级的夜视效果！冷却事件: %cmax 到 %cmin 秒. (取决于等级)"
     ModifierItemName: "猫眼"
     DescriptionModifierItem: "夜视模块"
   Shadow-Dive:
@@ -400,7 +400,7 @@ Modifier:
     DescriptionModifierItem: "飘浮模块"
   Silk-Touch:
     Name: "精准采集"
-    Description: "在你想获得碎石的时候自动赋予?!"
+    Description: "在你想获得燧石的时候自动赋予?!"
     ModifierItemName: "附魔蛛网"
     DescriptionModifierItem: "精准采集模块"
   Smite:
@@ -440,7 +440,7 @@ Modifier:
     DescriptionModifierItem: "横扫之刃模块"
   Swift-Sneaking:
     Name: "迅捷潛行"
-    Description: "提高潜行时的移动速度"
+    Description: "提高潜行时的移动速度."
     ModifierItemName: "迅捷之羽"
     DescriptionModifierItem: "特性: 迅捷潜行"
   Tanky:
@@ -461,13 +461,13 @@ Modifier:
     Statistic_Used: "砍伐树木: %amount"
   Mutating:
     Name: "突变"
-    Description: "每级增加 %chance% 概率，在物品升级时获得 %amount 个随机模块"
-    Description_Level0: "该效果在工具没有此模块时也有一定概率发生"
+    Description: "每级增加 %chance% 概率，在物品升级时获得 %amount 个随机模块."
+    Description_Level0: "该效果在工具没有此模块时也有一定概率发生."
     ModifierItemName: "%ITALIC%Un%UNDERLINE%st%MAGIC%ab%RESET%%DARK_GRAY%%ITALIC%le C%MAGIC%o%STRIKE%re"
     DescriptionModifierItem: "特性: 突变"
   Undead:
     Name: "游魂"
-    Description: "怪物不会再以你为目标，但你也无法攻击任何人"
+    Description: "怪物不会再以你为目标，但你也无法攻击任何人."
     ModifierItemName: "僵尸血清"
     DescriptionModifierItem: "特性: 游魂"
   Vigilant:
@@ -480,7 +480,7 @@ Modifier:
     Description: "当你掉入虚空时，自动将你传送到半径 %radius 方块的安全区。冷却时间：%cmax到%cmin秒.(取决于模块等级)."
     ModifierItemName: "虚空之网"
     DescriptionModifierItem: "虚空之网模块"
-    CouldNotFindBlock: "附近没有安全区，无法传送。"
+    CouldNotFindBlock: "附近没有安全区，无法传送."
   Webbed:
     Name: "缠网"
     Description: "当敌人击中你/你击中敌人时, 他们将被施予每级 %duration 刻的缓慢效果."
@@ -488,7 +488,7 @@ Modifier:
     DescriptionModifierItem: "缠网模块"
   Wild-Hunt:
     Name: "狂獵"
-    Description: "提高击杀怪物后的掉落物！每级有 %chance% 的几率激活"
+    Description: "提高击杀怪物后的掉落物！每级有 %chance% 的几率激活."
     ModifierItemName: "强化骨头"
     DescriptionModifierItem: "特性: 猎人"
     Statistic_Used: "掉落数量: %amount"
@@ -556,7 +556,7 @@ Enchantment:
   loyalty: "忠诚"
   luck_of_the_sea: "海之眷顾"
   lure: "饵钓"
-  mending: "经验修复"
+  mending: "经验修补"
   multishot: "多重射击"
   respiration: "水下呼吸"
   piercing: "穿透"
