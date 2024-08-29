@@ -581,5 +581,5 @@ Enchantment:
 Updater.Unable: "检查更新出错!"
 Updater.UpdateAvailable: "Spigotmc.org 上有可用更新!"
 Updater.YourVersion: "目前安装版本: %ver"
-Updater.OnlineVersion: "在线版本: %ver"
-Updater.UpToDate: "你已安装了最新版本的MineTinker!"
+Updater.OnlineVersion: "最新版本: %ver"
+Updater.UpToDate: "你已安装了最新版本的 MineTinker!"
