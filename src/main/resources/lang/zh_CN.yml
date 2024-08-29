@@ -93,7 +93,7 @@ GUIs.Statistics.Combat.DamageDealt: "造成了 %amount 伤害"
 GUIs.Statistics.Combat.DamageReceived: "受到了 %amount 伤害"
 GUIs.Enchantable.Title: "选择模块添加到工具:"
 
-GUIs.ConfigurationEditor.config.PluginIncompatibility.Check: "开启 MineTinker 搜索不兼容插件功能并尝试主动应对 (如: 自动更改配置文件设定.)"
+GUIs.ConfigurationEditor.config.PluginIncompatibility.Check: "开启 MineTinker 搜索不兼容插件功能并尝试主动应对 (如: 自动更改配置文件设定)."
 GUIs.ConfigurationEditor.config.PluginIncompatibility.SkippedPlugins: "禁用对该列表内插件的搜索"
 GUIs.ConfigurationEditor.config.CheckForUpdates: "插件启动/重载时检查更新"
 GUIs.ConfigurationEditor.config.chat-messages: "启用聊天栏信息 (如命令输出提示)"
