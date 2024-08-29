@@ -12,7 +12,7 @@ StartUp.StdLogging: "已启用标准信息日志. 你可以在配置文件中的
 StartUp.DebugLogging: "已启用调试信息日志. 你可以在配置文件中的Logging.Debug一栏禁用!"
 
 Commands.Info.Line1: "MineTinker (%ver) 由 Flo56958 制作!"
-Commands.Info.Line2: "本插件受到多个模组的启发! (如: TinkersConstruct 匠魂工艺)"
+Commands.Info.Line2: "本插件受到多个模组的启发! (如: TinkersConstruct 匠魂工艺)."
 Commands.Info.Title: "MineTinker - 信息"
 Commands.Info.Contributors: "贡献者"
 Commands.Info.ContributorsAction: "点此查看所有贡献者！"
