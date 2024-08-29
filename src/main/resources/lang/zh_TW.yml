@@ -13,6 +13,10 @@ StartUp.DebugLogging: "調試信息日誌已啟用. 你應該在在配置文件�
 
 Commands.Info.Line1: "MineTinker (%ver) 是Flo56958製作的插件"
 Commands.Info.Line2: "它受到不同Mod的啟發(例如TinkersConstruct)"
+Commands.Info.Title: "MineTinker - 信息"
+Commands.Info.Contributors: "贡献者"
+Commands.Info.ContributorsAction: "点击此处查看所有贡献者！"
+Commands.Info.Failure: "无法从 Github 接收信息！"
 Commands.InvalidArguments: "您輸入了無效的指令參數！"
 Commands.InvalidTool: "您需要用一隻手握住有效工具才能執行此命令！"
 Commands.NoPermission: "您無權執行該操作！"
@@ -59,6 +63,8 @@ GUIs.Modifiers.ClickToRecipe: "按%key 顯示配方"
 GUIs.Modifiers.BlockToEnchant: "％block上帶有％mat的％key附魔物品。"
 GUIs.Modifiers.SlotCost: "每級所需的槽位：%WHITE%%amount"
 GUIs.Modifiers.MinimumToolLevel: "最低工具等級：%WHITE%%level"
+GUIs.Modifiers.FilterButton: "分类视图"
+GUIs.Modifiers.FilterLore: "%amount 个模块"
 GUIs.ConfigurationEditor.ReloadPlugin: "重新加載 Minetinker"
 GUIs.ConfigurationEditor.Change: "已將％key從％old更改為％new！"
 GUIs.ConfigurationEditor.Type: "類型: %type"
@@ -146,37 +152,61 @@ Modifier:
     Description: "在采掘的时候自动烧炼矿物! 每一级增加%chance%的激活几率."
     ModifierItemName: "强化熔炉"
     DescriptionModifierItem: "自动烧炼模块"
+    Statistic_Used: "耗时：%amount"
+    Statistic_Luck: "由於 %modifier 產生的額外資源:%amount"
   Beheading:
     Name: "斩首"
     Description: "有几率斩下生物的头颅!"
     ModifierItemName: "附魔凋灵骷髅头颅"
     DescriptionModifierItem: "斩首模块"
+    Statistic_Used: "斬首成功: %amount"
   Berserk:
     Name: "狂暴"
     Description: "当生命值降至%percent%以下时获得%duration秒的力量加成!"
     ModifierItemName: "浸血红石块"
     DescriptionModifierItem: "狂暴模块"
+    Statistic_Used: "使用次數: %amount"
+  Building:
+    Name: "建築"
+    Description: "右鍵方塊目標 如果有背包相同物品則會建造上去"
+    ModifierItemName: "建築方塊"
+    DescriptionModifierItem: "特性:建築"
   Channeling:
     Name: "引雷"
     Description: "召唤闪电的机率每级增加 %amount!"
+    Description_OnlyStorms: "這只有在雷雨天有效"
     ModifierItemName: "雷霆碎片"
     DescriptionModifierItem: "引雷模块"
+  Dense:
+    Name: "致密"
+    Description: "增加在近战攻击前每个下落高度造成的伤害!"
+    ModifierItemName: "致密铁锭"
+    DescriptionModifierItem: "致密模块"
   Directing:
     Name: "磁吸"
     Description: "被杀死的生物或被破坏的方块的掉落物将会直接进入背包!"
     ModifierItemName: "强化指南针"
     DescriptionModifierItem: "导向模块"
+    Statistic_Used: "磁吸次數: %amount"
   Drilling:
     Name: "打钻"
     Description: "每级增加一格方块的挖掘深度!"
     ModifierItemName: "强化鑽頭"
     DescriptionModifierItem: "打钻模块"
+  Echoing:
+    Name: "感知"
+    Description: "查看附近的實體，每級增加 %amount 塊的範圍!"
+    ModifierItemName: "全視之眼"
+    DescriptionModifierItem: "特性:感知"
   Ender:
     Name: "末影"
     Description: "箭矢落地时按住潜行将传送你至其落点!"
     ModifierItemName: "特化末影之眼"
     DescriptionModifierItem: "末影模块"
     TeleportationProhibited: "你無法與該玩家交換位置！"
+    Statistic_Used: "瞬移次數: %amount"
+    Statistic_Distance: "瞬移的總距離:%amount 塊"
+    Statistic_Swapped: "交換實體次數: %amount"
   Evasive:
     Name: "逃脱"
     Description: "有几率躲避当前攻击(%chance/级) -- 潜行时为%sneakX, 疾跑时为%sprintX, PvP时为%pvpX."
@@ -184,12 +214,25 @@ Modifier:
     DescriptionModifierItem: "逃脱模块"
   Experienced:
     Name: "经验加成"
+    Description: "使用時每升一級 %chance% 機會掉落 %mount XP!"
     ModifierItemName: "人生经验"
     DescriptionModifierItem: "人生经验模块"
+    Statistic_Amount: "獲得經驗: %amount"
+  Explosive:
+    Name: "炸藥"
+    Description: "你的攻擊會以每等級增加 %power 爆炸！"
+    ModifierItemName: "MoaB-TNT"
+    DescriptionModifierItem: "特性:炸藥"
   Extra-Modifier:
     Name: "附加模块槽位"
+    Description: "為此工具添加 %amount 額外插槽和 %xpamount 經驗!"
     ModifierItemName: "精制下界之星"
     DescriptionModifierItem: "升级模块"
+  Farming:
+    Name: "農耕"
+    Description: "收割時重新種植農作物 右鍵單擊農作物可以讓它們生長得更快(從此不用骨粉發家致富)"
+    ModifierItemName: "魔法小麥"
+    DescriptionModifierItem: "特性:農耕"
   Fiery:
     Name: "炎上"
     Description: "点燃敌人!"
@@ -215,8 +258,14 @@ Modifier:
     Description: "工具可以更快速地破坏方块!"
     ModifierItemName: "压缩红石块"
     DescriptionModifierItem: "挖掘加速模块"
+  Homing:
+    Name: "導向"
+    Description: "箭頭指向 %radius 塊半徑內的目標 更高的等級可提高準確性."
+    ModifierItemName: "彈道瞄準器"
+    DescriptionModifierItem: "特性:導向"
   Infinity:
     Name: "無限"
+    Description: "無限彈藥庫 不香嗎"
     ModifierItemName: "附魔箭矢"
     DescriptionModifierItem: "无限模块"
   Insulating:
@@ -251,6 +300,7 @@ Modifier:
     DescriptionModifierItem: "好运模块"
   Magical:
     Name: "魔能"
+    Description: "射出不受重力影響且飛行速度為正常速度 %amount% 的無重力箭 如果箭擊中目標 它會造成 %min% 到 %max% 的額外傷害（取決於等級） 射擊需要 %xp XP！"
     ModifierItemName: "魔法箭矢"
     DescriptionModifierItem: "魔能模块"
   Melting:
@@ -260,6 +310,7 @@ Modifier:
     DescriptionModifierItem: "炽融模块"
   Multishot:
     Name: "多重射击"
+    Description: "每級每射擊多射一支箭!"
     ModifierItemName: "集束箭矢"
     DescriptionModifierItem: "多重射击模块"
   Multijump:
@@ -272,14 +323,21 @@ Modifier:
     Description: "当月亮照耀时（取决于月相与等级），产生治疗或减免伤害效果（%amountmin% 到 %amountmax%）。这个效果在白天或在下界会反转，同时在末地可以得到最高能量。"
     ModifierItemName: "暗黑日光探测器"
     DescriptionModifierItem: "夜行者模块"
+  Phasing:
+    Name: "穿透"
+    Description: "箭可以穿牆!"
+    ModifierItemName: "紫頌果定相"
+    DescriptionModifierItem: "特性:穿透"
   Photosynthesis:
     Name: "光合作用"
     Description: "站在阳光下修复你的物品，每%ticks游戲刻恢复%amount耐久，站越久恢复越快(%multiplier%)"
     ModifierItemName: "提纯叶绿素"
     DescriptionModifierItem: "光合作用模块"
+    NotifyWhenActive: "光合作用啟用..."
+    Statistic_Healed: "恢復總耐久度: %amount"
   Piercing:
     Name: "穿透"
-    Description: "穿刺并透过敌人!"
+    Description: "箭矢能够穿透多个敌人，近战攻击时能够穿透护甲！"
     ModifierItemName: "钉头箭"
     DescriptionModifierItem: "穿透模块"
   Poisonous:
@@ -294,7 +352,7 @@ Modifier:
     DescriptionModifierItem: "强力模块"
   Propelling:
     Name: "推进"
-    Description: "在空中用鞘翅滑翔时, 或是在水中手持三叉戟时, 按下潜行键以获得推进效果."
+    Description: "在使用鞘翅滑翔时潜行、在水里站立时使用三叉戟或在下落时用近战武器攻击上方，都可以获得推进效果"
     ModifierItemName: "附魔烟火之星"
     DescriptionModifierItem: "推进模块"
   Protecting:
@@ -314,10 +372,12 @@ Modifier:
     DescriptionModifierItem: "暗视模块"
   Shadow-Dive:
     Name: "夜行靴"
+    Description: "在黑暗地方潛行時完全從視線中消失! (光照等級 <= %level + 模塊等級)"
     ModifierItemName: "隐身水晶"
     DescriptionModifierItem: "夜行靴模块"
     LightToHigh: "亮度太高了！"
     InCombat: "你正处于战斗中！"
+    Active: "潛行..."
   Self-Repair:
     Name: "自我修复"
     Description: "使用时有%chance%的几率/级会恢复工具/盔甲%amount点耐久!"
@@ -382,6 +442,7 @@ Modifier:
     Name: "迅捷潛行"
     Description: "迅捷潛行：提高潛行時的速度"
     ModifierItemName: "迅捷之羽"
+    DescriptionModifierItem: "特性:迅捷潛行"
   Tanky:
     Name: "肉盾"
     Description: "每一级增加%amount心的血量上限!"
@@ -397,6 +458,23 @@ Modifier:
     Description: "瞬间伐倒树木!"
     ModifierItemName: "镶木绿宝石"
     DescriptionModifierItem: "伐木模块"
+    Statistic_Used: "砍伐树木: %amount"
+  Mutating:
+    Name: "變異"
+    Description: "每级增加 %chance% 概率 在物品升級時獲得 %amount 个随机模塊"
+    Description_Level0: "這個效果在工具沒有這個 模塊 時也有一個基礎機率發生"
+    ModifierItemName: "%ITALIC%Un%UNDERLINE%st%MAGIC%ab%RESET%%DARK_GRAY%%ITALIC%le C%MAGIC%o%STRIKE%re"
+    DescriptionModifierItem: "特性:變異"
+  Undead:
+    Name: "亡靈"
+    Description: "怪物不會再以你為目標 但你也無法攻擊任何人"
+    ModifierItemName: "殭屍血清"
+    DescriptionModifierItem: "特性:亡靈"
+  Vigilant:
+    Name: "警惕"
+    Description: "如果您沒有吸收 則會獲得臨時護盾 其數值等於每等級受到的傷害百分比"
+    ModifierItemName: "紫禁蘋果"
+    DescriptionModifierItem: "特性:警惕"
   Void-Netting:
     Name: "虚空之网"
     Description: "当你掉入虚空时，自动将你传送到半径%radius方块的安全区。冷却时间：%cmax到%cmin秒。（取决于模块等级）"
@@ -408,11 +486,24 @@ Modifier:
     Description: "当敌人击中你/你击中敌人时, 他们将被施予每级%duration刻的缓慢效果."
     ModifierItemName: "压缩蛛网"
     DescriptionModifierItem: "缠网模块"
+  Wild-Hunt:
+    Name: "狂獵"
+    Description: "提高被殺死的小怪的掉落率 每級增加 %chance% 機率"
+    ModifierItemName: "增強骨"
+    DescriptionModifierItem: "特性:狂獵"
+    Statistic_Used: "掉落數量: %amount"
   Withered:
     Name: "凋零"
     Description: "给你的攻击目标给予每级%duration Ticks * %multiplier的凋零效果！"
     ModifierItemName: "复合凋零骷髅头"
     DescriptionModifierItem: "凋零模块"
+  Zealous:
+    Name: "熱血"
+    Description: "每級 戰鬥中每一秒都會造成更多 %percent% 傷害 此效果無限疊加並在戰鬥結束後重置 (僅對玩家有效)"
+    ModifierItemName: "地獄熾盛"
+    DescriptionModifierItem: "特性:熱血"
+    Statistic_Damage: "造成額外傷害: %amount"
+    Statistic_Time: "最長的戰鬥: %amount seconds"
 
 DataType.Boolean: "布尔值(真(true)/假(false))"
 DataType.String: "字符串"
@@ -421,6 +512,8 @@ DataType.Integer: "整型数值(整数)"
 DataType.Double: "浮点数(双精度)"
 
 ToolType.ALL: "所有物品"
+ToolType.ARMOR: "护甲"
+ToolType.TOOLS: "工具"
 ToolType.AXE: "斧子"
 ToolType.BOOTS: "靴子"
 ToolType.BOW: "弓"
@@ -431,6 +524,7 @@ ToolType.FISHINGROD: "钓竿"
 ToolType.HELMET: "头盔"
 ToolType.HOE: "锄头"
 ToolType.INVALID: "无效工具"
+ToolType.MACE: "重锤"
 ToolType.LEGGINGS: "护腿"
 ToolType.OTHER: "其他"
 ToolType.PICKAXE: "镐子"
@@ -480,6 +574,9 @@ Enchantment:
   aqua_affinity: "水下速掘"
   soul_speed: "灵魂疾走"
   swift_sneak: "迅捷潛行"
+  density: "致密"
+  wind_burst: "风暴"
+  breach: "破甲"
 
 Updater.Unable: "检查更新出错!"
 Updater.UpdateAvailable: "spigotmc.org 上有可用更新!"
