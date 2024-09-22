@@ -157,6 +157,7 @@ public class ModManager {
 		modifierconfig.addDefault("CommandIgnoresToolTypes", false);
 		modifierconfig.addDefault("CommandIgnoresMaxLevel", false);
 		modifierconfig.addDefault("IgnoreIncompatibilityIfModifierAlreadyApplied", true);
+		modifierconfig.addDefault("EnchantableRequiresLevels", true);
 		ConfigurationManager.saveConfig(modifierconfig);
 	}
 

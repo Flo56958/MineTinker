@@ -9,6 +9,7 @@ import de.flo56958.minetinker.modifiers.types.ExtraModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
+import de.flo56958.minetinker.utils.PlayerInfo;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
@@ -401,7 +402,10 @@ public abstract class Modifier {
 			return;
 		}
 
-		if (player.getLevel() < getEnchantCost()) {
+		final boolean needsLevels = ConfigurationManager.getConfig("Modifiers.yml").getBoolean("EnchantableRequiresLevels", true);
+
+		final int exp = needsLevels ? player.getLevel() : PlayerInfo.getPlayerExp(player);
+		if (exp < getEnchantCost()) {
 			ChatWriter.sendActionBar(player, ChatColor.RED
 					+ LanguageManager.getString("Modifier.Enchantable.LevelsRequired", player)
 					.replace("%amount", String.valueOf(getEnchantCost())));
@@ -410,10 +414,10 @@ public abstract class Modifier {
 			return;
 		}
 
-		int amount = item.getAmount();
-		int newLevel = player.getLevel() - getEnchantCost();
+		final int amount = item.getAmount();
 
-		player.setLevel(newLevel);
+		if (needsLevels) player.setLevel(exp - getEnchantCost());
+		else player.giveExp(- getEnchantCost());
 		item.setAmount(amount - 1);
 
 		if (!inventory.addItem(getModItem()).isEmpty()) { //adds items to (full) inventory
