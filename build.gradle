@@ -38,7 +38,7 @@ dependencies {
 
     compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "5.1.0"
 
-    errorprone("com.google.errorprone:error_prone_core:2.34.0")
+    errorprone("com.google.errorprone:error_prone_core:2.35.1")
 }
 
 group = 'de.flo56958'
