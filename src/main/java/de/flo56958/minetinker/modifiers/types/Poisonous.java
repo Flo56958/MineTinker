@@ -141,7 +141,7 @@ public class Poisonous extends Modifier implements Listener {
 		if (damage > 0) {
 			event.setDamage(0);
 			double health = player.getHealth();
-			player.setHealth(Math.min(health + damage, player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()));
+			player.setHealth(Math.min(health + damage, player.getAttribute(Attribute.MAX_HEALTH).getValue()));
 			ChatWriter.logModifier(player, event, this, armor, String.format("Health(%.2f -> %.2f)", health, player.getHealth()));
 		}
 	}

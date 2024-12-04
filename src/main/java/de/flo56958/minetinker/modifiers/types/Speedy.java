@@ -50,7 +50,7 @@ public class Speedy extends Modifier {
 
 	@Override
 	public @NotNull List<Attribute> getAppliedAttributes() {
-		return Collections.singletonList(Attribute.GENERIC_MOVEMENT_SPEED);
+		return Collections.singletonList(Attribute.MOVEMENT_SPEED);
 	}
 
 	private final String sMovementSpeed = this.getKey() + ".movement_speed_";
@@ -63,12 +63,12 @@ public class Speedy extends Modifier {
 		final ToolType toolType = ToolType.get(tool.getType());
 		final NamespacedKey nkMovementSpeed = new NamespacedKey(MineTinker.getPlugin(), sMovementSpeed + toolType.name());
 
-		Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.GENERIC_MOVEMENT_SPEED);
+		Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.MOVEMENT_SPEED);
 		if (list != null) {
 			list = new ArrayList<>(list); // Collection is immutable
 			list.removeIf(am -> !nkMovementSpeed.getNamespace().equals(am.getKey().getNamespace()));
 			list.removeIf(am -> !nkMovementSpeed.getKey().contains(am.getKey().getKey()));
-			list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, am));
+			list.forEach(am -> meta.removeAttributeModifier(Attribute.MOVEMENT_SPEED, am));
 		}
 
 		tool.setItemMeta(meta);
@@ -86,11 +86,11 @@ public class Speedy extends Modifier {
 		final NamespacedKey nkMovementSpeed = new NamespacedKey(MineTinker.getPlugin(), sMovementSpeed + toolType.name());
 
 		if (ToolType.LEGGINGS.contains(tool.getType()))
-			meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED,
+			meta.addAttributeModifier(Attribute.MOVEMENT_SPEED,
 				new AttributeModifier(nkMovementSpeed, level * this.speedPerLevel,
 						AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS));
 		else
-			meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED,
+			meta.addAttributeModifier(Attribute.MOVEMENT_SPEED,
 				new AttributeModifier(nkMovementSpeed, level * this.speedPerLevel,
 						AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET));
 

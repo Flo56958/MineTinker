@@ -110,7 +110,7 @@ public class Berserk extends Modifier implements Listener {
 		if (modifierLevel <= 0) return;
 
 		final double lifeAfterDamage = player.getHealth() - event.getFinalDamage();
-		AttributeInstance healthAttr = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+		AttributeInstance healthAttr = player.getAttribute(Attribute.MAX_HEALTH);
 
 		double maxHealth = 20;
 		if (healthAttr != null) maxHealth = healthAttr.getValue();

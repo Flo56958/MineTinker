@@ -973,37 +973,37 @@ public class ModManager {
 			knockbackResAM = new AttributeModifier(nkKnockbackRes, knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS);
 		} else if (!ToolType.ELYTRA.contains(is.getType())) return;
 
-		Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR);
+		Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.ARMOR);
 		if (list != null) {
 			list = new ArrayList<>(list); // Collection is immutable
 			list.removeIf(am -> !nkArmor.getNamespace().equals(am.getKey().getNamespace()));
 			list.removeIf(am -> !nkArmor.getKey().contains(am.getKey().getKey()));
-			list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_ARMOR, am));
+			list.forEach(am -> meta.removeAttributeModifier(Attribute.ARMOR, am));
 		}
 		if (armor > 0.0d && armorAM != null) {
-			meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
+			meta.addAttributeModifier(Attribute.ARMOR, armorAM);
 		}
 
-		list = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR_TOUGHNESS);
+		list = meta.getAttributeModifiers(Attribute.ARMOR_TOUGHNESS);
 		if (list != null) {
 			list = new ArrayList<>(list); // Collection is immutable
 			list.removeIf(am -> !nkArmorToughness.getNamespace().equals(am.getKey().getNamespace()));
 			list.removeIf(am -> !nkArmorToughness.getKey().contains(am.getKey().getKey()));
-			list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, am));
+			list.forEach(am -> meta.removeAttributeModifier(Attribute.ARMOR_TOUGHNESS, am));
 		}
 		if (toughness > 0.0d && toughnessAM != null) {
-			meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
+			meta.addAttributeModifier(Attribute.ARMOR_TOUGHNESS, toughnessAM);
 		}
 
-		list = meta.getAttributeModifiers(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+		list = meta.getAttributeModifiers(Attribute.KNOCKBACK_RESISTANCE);
 		if (list != null) {
 			list = new ArrayList<>(list); // Collection is immutable
 			list.removeIf(am -> !nkKnockbackRes.getNamespace().equals(am.getKey().getNamespace()));
 			list.removeIf(am -> !nkKnockbackRes.getKey().contains(am.getKey().getKey()));
-			list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, am));
+			list.forEach(am -> meta.removeAttributeModifier(Attribute.KNOCKBACK_RESISTANCE, am));
 		}
 		if (knockback_res > 0.0d && knockbackResAM != null) {
-			meta.addAttributeModifier(Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResAM);
+			meta.addAttributeModifier(Attribute.KNOCKBACK_RESISTANCE, knockbackResAM);
 		}
 
 		if (config.getBoolean("HideAttributes")) {

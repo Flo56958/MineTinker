@@ -52,7 +52,7 @@ public class Hardened extends Modifier implements Listener {
 
 	@Override
 	public @NotNull List<Attribute> getAppliedAttributes() {
-		return Arrays.asList(Attribute.GENERIC_ARMOR, Attribute.GENERIC_ARMOR_TOUGHNESS);
+		return Arrays.asList(Attribute.ARMOR, Attribute.ARMOR_TOUGHNESS);
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class Hardened extends Modifier implements Listener {
 					default -> null;
 				};
 				assert armorAM != null;
-				meta.addAttributeModifier(Attribute.GENERIC_ARMOR, armorAM);
+				meta.addAttributeModifier(Attribute.ARMOR, armorAM);
 			}
 		}
 
@@ -102,7 +102,7 @@ public class Hardened extends Modifier implements Listener {
 					default -> null;
 				};
 				assert toughnessAM != null;
-				meta.addAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, toughnessAM);
+				meta.addAttributeModifier(Attribute.ARMOR_TOUGHNESS, toughnessAM);
 			}
 		}
 		tool.setItemMeta(meta);
@@ -120,21 +120,21 @@ public class Hardened extends Modifier implements Listener {
 		final ToolType toolType = ToolType.get(tool.getType());
 
 		final NamespacedKey nkArmor = new NamespacedKey(MineTinker.getPlugin(), this.sArmor + toolType.name());
-		Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR);
+		Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.ARMOR);
 		if (list != null) {
 			list = new ArrayList<>(list); // Collection is immutable
 			list.removeIf(am -> !nkArmor.getNamespace().equals(am.getKey().getNamespace()));
 			list.removeIf(am -> !nkArmor.getKey().contains(am.getKey().getKey()));
-			list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_ARMOR, am));
+			list.forEach(am -> meta.removeAttributeModifier(Attribute.ARMOR, am));
 		}
 
 		final NamespacedKey nkArmorToughness = new NamespacedKey(MineTinker.getPlugin(), this.sArmorToughness + toolType.name());
-		list = meta.getAttributeModifiers(Attribute.GENERIC_ARMOR_TOUGHNESS);
+		list = meta.getAttributeModifiers(Attribute.ARMOR_TOUGHNESS);
 		if (list != null) {
 			list = new ArrayList<>(list); // Collection is immutable
 			list.removeIf(am -> !nkArmorToughness.getNamespace().equals(am.getKey().getNamespace()));
 			list.removeIf(am -> !nkArmorToughness.getKey().contains(am.getKey().getKey()));
-			list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS, am));
+			list.forEach(am -> meta.removeAttributeModifier(Attribute.ARMOR_TOUGHNESS, am));
 		}
 		tool.setItemMeta(meta);
 	}
