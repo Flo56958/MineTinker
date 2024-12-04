@@ -96,8 +96,8 @@ public class Vigilant extends Modifier implements Listener {
 		// Make sure the player can receive the absorption
 		final ItemMeta meta = chestplate.getItemMeta();
 		if (meta == null) return;
-		meta.removeAttributeModifier(Attribute.GENERIC_MAX_ABSORPTION); // Overwrite the old values
-		meta.addAttributeModifier(Attribute.GENERIC_MAX_ABSORPTION, new AttributeModifier(
+		meta.removeAttributeModifier(Attribute.MAX_ABSORPTION); // Overwrite the old values
+		meta.addAttributeModifier(Attribute.MAX_ABSORPTION, new AttributeModifier(
 				new NamespacedKey(MineTinker.getPlugin(), "generic.max_absorption"), absorption,
 				AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST));
 		chestplate.setItemMeta(meta);

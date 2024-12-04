@@ -61,7 +61,7 @@ public class Tanky extends Modifier implements Listener {
 
 	@Override
 	public @NotNull List<Attribute> getAppliedAttributes() {
-		return Collections.singletonList(Attribute.GENERIC_MAX_HEALTH);
+		return Collections.singletonList(Attribute.MAX_HEALTH);
 	}
 
 	private final String sHealth = this.getKey() + ".max_health_";
@@ -74,12 +74,12 @@ public class Tanky extends Modifier implements Listener {
 		final ToolType toolType = ToolType.get(tool.getType());
 		final NamespacedKey nkHealth = new NamespacedKey(MineTinker.getPlugin(), sHealth + toolType.name());
 
-		Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.GENERIC_MAX_HEALTH);
+		Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.MAX_HEALTH);
 		if (list != null) {
 			list = new ArrayList<>(list); // Collection is immutable
 			list.removeIf(am -> !nkHealth.getNamespace().equals(am.getKey().getNamespace()));
 			list.removeIf(am -> !nkHealth.getKey().contains(am.getKey().getKey()));
-			list.forEach(am -> meta.removeAttributeModifier(Attribute.GENERIC_MAX_HEALTH, am));
+			list.forEach(am -> meta.removeAttributeModifier(Attribute.MAX_HEALTH, am));
 		}
 
 		tool.setItemMeta(meta);
@@ -98,10 +98,10 @@ public class Tanky extends Modifier implements Listener {
 		final NamespacedKey nkHealth = new NamespacedKey(MineTinker.getPlugin(), sHealth + toolType.name());
 
 		if (ToolType.LEGGINGS.contains(tool.getType()))
-			meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(nkHealth, level * this.healthPerLevel,
+			meta.addAttributeModifier(Attribute.MAX_HEALTH, new AttributeModifier(nkHealth, level * this.healthPerLevel,
 					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS));
 		else //Chestplate and Elytra
-			meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier(nkHealth, level * this.healthPerLevel,
+			meta.addAttributeModifier(Attribute.MAX_HEALTH, new AttributeModifier(nkHealth, level * this.healthPerLevel,
 					AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST));
 
 		tool.setItemMeta(meta);
