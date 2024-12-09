@@ -134,6 +134,9 @@ public class Beheading extends Modifier implements Listener {
 					loot = head;
 				}
 				case PIGLIN -> loot = new ItemStack(Material.PIGLIN_HEAD, 1);
+				default -> {
+					return;
+				}
 			}
 
 			if (loot != null) {

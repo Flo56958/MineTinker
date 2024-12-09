@@ -1,5 +1,7 @@
 package de.flo56958.minetinker.modifiers;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.ToolLevelUpEvent;
 import de.flo56958.minetinker.data.GUIs;
@@ -202,7 +204,7 @@ public class ModManager {
 	}
 
 	public static @Nullable Pair<@Nullable Material, @NotNull Integer> itemUpgrader(@NotNull final Material tool, @NotNull final Material material) {
-		String name = tool.name().split("_")[0].toLowerCase();
+		String name = Iterables.get(Splitter.on('_').split(tool.name()), 0).toLowerCase();
 
 		if ((name.equals("wooden") && material.name().contains("PLANKS"))
 				|| (name.equals("stone") && material == Material.COBBLESTONE)
@@ -332,15 +334,15 @@ public class ModManager {
 		modifierconfig = ConfigurationManager.getConfig("Modifiers.yml");
 		final List<String> incompatibilityList = modifierconfig.getStringList("Incompatibilities");
 		incompatibilityList.forEach(s -> {
-			final String[] splits = s.split(":");
-			if (splits.length != 2) return;
+			final List<String> splits = Splitter.on(':').splitToList(s);
+			if (splits.size() != 2) return;
 			final Modifier mod1 = this.mods.stream()
-					.filter(m -> m.getKey().equals(splits[0]))
+					.filter(m -> m.getKey().equals(splits.getFirst()))
 					.findFirst()
 					.orElse(null);
 
 			final Modifier mod2 = this.mods.stream()
-					.filter(m -> m.getKey().equals(splits[1]))
+					.filter(m -> m.getKey().equals(splits.get(1)))
 					.findFirst()
 					.orElse(null);
 

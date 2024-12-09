@@ -1,5 +1,6 @@
 package de.flo56958.minetinker.modifiers;
 
+import com.google.common.base.Splitter;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.ModifierApplyEvent;
 import de.flo56958.minetinker.api.events.ModifierFailEvent;
@@ -336,7 +337,7 @@ public abstract class Modifier {
 				}
 
 				final HashSet<Material> mats = new HashSet<>();
-				for (final String mat : materialName.split(",")) {
+				for (final String mat : Splitter.on(',').split(materialName)) {
 					if (mat.isEmpty()) continue;
 					final Material m = Material.getMaterial(mat);
 					if (m == null) continue;

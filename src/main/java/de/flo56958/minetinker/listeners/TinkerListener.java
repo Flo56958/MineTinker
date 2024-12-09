@@ -1,5 +1,6 @@
 package de.flo56958.minetinker.listeners;
 
+import com.google.common.base.Splitter;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.ModifierApplyEvent;
 import de.flo56958.minetinker.api.events.ModifierFailEvent;
@@ -45,7 +46,8 @@ public class TinkerListener implements Listener {
 			ChatWriter.sendActionBar(player,
 					LanguageManager.getString("TinkerListener.ToolUpgrade", player)
 							.replace("%tool", ChatWriter.getDisplayName(tool) + ChatColor.WHITE)
-							.replace("%type", tool.getType().toString().split("_")[0]));
+							.replace("%type", ChatWriter.toCamel(Splitter.on('_')
+									.splitToStream(tool.getType().toString()).findFirst().orElse(""))));
 			ChatWriter.log(false, player.getDisplayName() + " upgraded " + ChatWriter.getDisplayName(tool)
 					+ ChatColor.WHITE + " (" + tool.getType() + ") to " + tool.getType() + "!");
 		} else {

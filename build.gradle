@@ -59,7 +59,7 @@ compileJava {
 
     options.deprecation = true
 
-    options.errorprone.disable('MissingSummary')
+    options.errorprone.disable('MissingSummary', 'UnusedMethod')
     options.errorprone.error(
             'NonCanonicalType', 'JdkObsolete', 'MissingOverride',
             'UnnecessaryParentheses', 'OperatorPrecedence')

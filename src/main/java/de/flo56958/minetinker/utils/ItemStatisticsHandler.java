@@ -26,7 +26,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ItemStatisticsHandler implements Listener {
@@ -58,12 +60,13 @@ public class ItemStatisticsHandler implements Listener {
 				if (player != null) lore.add(ChatColor.WHITE
 						+ LanguageManager.getString("GUIs.Statistics.General.Creator")
 						.replace("%player", player.getName()));
-				Long date = DataHandler.getTag(item, "creation_date", PersistentDataType.LONG);
+				final Long date = DataHandler.getTag(item, "creation_date", PersistentDataType.LONG);
 				if (date != null) {
-					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
-					Date date_ = new Date(date);
+					final Instant instant = Instant.ofEpochMilli(date);
+					final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm")
+							.withZone(ZoneId.systemDefault());
 					lore.add(ChatColor.WHITE + LanguageManager.getString("GUIs.Statistics.General.Created")
-							.replace("%date", formatter.format(date_)));
+							.replace("%date", formatter.format(instant)));
 				}
 				itemMeta.setLore(lore);
 				itemMeta.setDisplayName(ChatColor.GOLD + LanguageManager.getString("GUIs.Statistics.General.Title"));

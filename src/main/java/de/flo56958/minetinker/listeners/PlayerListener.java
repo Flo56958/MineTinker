@@ -1,5 +1,6 @@
 package de.flo56958.minetinker.listeners;
 
+import com.google.common.base.Splitter;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ToolType;
@@ -104,7 +105,7 @@ public class PlayerListener implements Listener {
 
 		boolean eligible = false;
 
-		final String beginning = tool.getType().toString().split("_")[0].toLowerCase();
+		final String beginning = Splitter.on('_').splitToStream(tool.getType().toString()).findFirst().orElse("");
 
 		//check if correct material is used
 		switch (beginning) {
@@ -167,6 +168,9 @@ public class PlayerListener implements Listener {
 				if (repair.getType() == Material.TURTLE_SCUTE) {
 					eligible = true;
 				}
+			}
+			default -> {
+				return;
 			}
 		}
 

@@ -1,5 +1,6 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import com.google.common.base.Splitter;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTEntityDeathEvent;
 import de.flo56958.minetinker.data.ToolType;
@@ -197,9 +198,9 @@ public class WildHunt extends Modifier implements Listener {
 
 		@Nullable
 		static WildHunt.Tupel fromString(@NotNull String input) {
-			final String[] tok = input.split(regex);
+			final List<String> tok = Splitter.on(regex).splitToList(input);
 			try {
-				if (tok.length == 2) return new Tupel(Material.valueOf(tok[0]), Material.valueOf(tok[1]));
+				if (tok.size() == 2) return new Tupel(Material.valueOf(tok.get(0)), Material.valueOf(tok.get(1)));
 				else return null;
 			} catch (IllegalArgumentException e) {
 				return null;

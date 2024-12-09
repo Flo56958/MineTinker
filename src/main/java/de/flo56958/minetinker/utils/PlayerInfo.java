@@ -80,6 +80,7 @@ public class PlayerInfo implements Listener {
 
 				modManager.addExp(player, rod, event.getExpToDrop(), true);
 			}
+			default -> {}
 		}
 	}
 

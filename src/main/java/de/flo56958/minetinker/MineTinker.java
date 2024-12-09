@@ -1,5 +1,7 @@
 package de.flo56958.minetinker;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import de.flo56958.minetinker.commands.CommandManager;
 import de.flo56958.minetinker.data.GUIs;
 import de.flo56958.minetinker.data.Lists;
@@ -19,6 +21,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class MineTinker extends JavaPlugin {
 
 	private static JavaPlugin plugin;
@@ -30,13 +34,13 @@ public class MineTinker extends JavaPlugin {
 
 	private void parseMCVersion() {
 		try {
-			final String version = Bukkit.getVersion().split("MC: ")[1].replaceAll("\\)", "");
-			final String[] ver = version.split("\\.");
+			final String version = Iterables.get(Splitter.on("MC: ").split(Bukkit.getVersion()), 1).replaceAll("\\)", "");
+			final List<String> ver = Splitter.on('.').splitToList(version);
 
-			int mayor = Integer.parseInt(ver[0]);
+			int mayor = Integer.parseInt(ver.getFirst());
 			ChatWriter.log(true, "Minecraft Mayor Version: " + mayor);
 
-			int minor = Integer.parseInt(ver[1]);
+			int minor = Integer.parseInt(ver.get(1));
 			ChatWriter.log(true, "Minecraft Minor Version: " + minor);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -34,103 +34,6 @@ public class Photosynthesis extends Modifier {
 	private boolean allowOffhand;
 	private boolean mustStandStill;
 	private boolean notifyWhenActive;
-	private final Runnable runnable = () -> {
-		final long time = System.currentTimeMillis();
-		data.entrySet().removeIf(entry -> entry.getKey() == null || !entry.getKey().isOnline());
-
-		for (final Player player : Bukkit.getOnlinePlayers()) {
-			if (player == null) continue;
-			if (!player.isOnline()) {
-				data.remove(player);
-				continue;
-			}
-			if (!player.hasPermission(getUsePermission())) continue;
-
-			final PlayerInventory inv = player.getInventory();
-			final ArrayList<ItemStack> items = new ArrayList<>(6);
-			Collections.addAll(items, inv.getArmorContents());
-			items.add(inv.getItemInMainHand());
-			if (allowOffhand) items.add(inv.getItemInOffHand());
-			items.removeIf(item -> !modManager.isToolViable(item) && !modManager.isArmorViable(item));
-			items.removeIf(item -> !modManager.hasMod(item, this));
-			if (items.isEmpty()) { // no photosynthesis items
-				data.remove(player);
-				continue;
-			}
-
-			final Tupel tupel = data.getOrDefault(player, new Tupel(player.getLocation(), System.currentTimeMillis(), false));
-			data.put(player, tupel);
-
-			final Location pLoc = player.getLocation();
-			if (mustStandStill && !pLoc.equals(tupel.loc)) {
-				tupel.loc = pLoc;
-				tupel.time = time;
-				continue;
-			}
-
-			tupel.isAboveGround = false; // rechecking is required as world could have changed
-			tupel.loc = pLoc;
-
-			if (pLoc.getWorld().getEnvironment() == World.Environment.NORMAL) { //check for overworld
-				final Block start = pLoc.getBlock();
-				for (int i = 1; i < pLoc.getWorld().getMaxHeight() - pLoc.getBlockY(); i++) {
-					final Block b = start.getRelative(0, i, 0);
-					if (!b.isPassable() && !allowedMaterials.contains(b.getType())) {
-						tupel.isAboveGround = false;
-						break;
-					}
-					tupel.isAboveGround = true;
-				}
-			}
-
-			final long worldTime = tupel.loc.getWorld().getTime() / 1000; //to get hours; 0 -> 6am
-
-			if (!tupel.isAboveGround || tupel.loc.getWorld().hasStorm() || worldTime > 12) {
-				// reset time
-				tupel.time = time;
-				continue;
-			}
-
-			final double daytimeMultiplier = fullEffectAtNoon ? Math.abs(6 - worldTime) / 6.0 : 1.0;
-			final long timeDif = time - tupel.time - (tickTime * 50L); //to make effect faster with time (first tick period does not count)
-			final double timeAdvantage = multiplierPerTick * ((timeDif / 50.0) / tickTime);
-
-			boolean triggered = false;
-			for (final ItemStack item : items) {
-				final int level = modManager.getModLevel(item, this);
-
-				if (!(item.getItemMeta() instanceof Damageable meta)) continue;
-
-				final int oldDamage = meta.getDamage();
-				if (oldDamage <= 0) continue; //no repair needed
-
-				final int repair = (int) Math.round(healthRepair * timeAdvantage * level * daytimeMultiplier);
-				if (repair <= 0) continue;
-
-				final int newDamage = Math.max(0, oldDamage - repair);
-
-				ChatWriter.logModifier(player, null, this, item,
-						String.format("ItemDamage(%d -> %d [%d])", oldDamage, newDamage, repair),
-						"DaytimeMultiplier(" + daytimeMultiplier + ")",
-						String.format("TimeAdvantage(%.2f * (%d / %d) = %.2f)", multiplierPerTick, timeDif / 50,
-								tickTime, timeAdvantage));
-
-				meta.setDamage(newDamage);
-				item.setItemMeta(meta);
-
-				// Track statistic
-				int stat = DataHandler.getTagOrDefault(item, getKey() + "_stat_healed", PersistentDataType.INTEGER, 0);
-				stat += oldDamage - newDamage;
-				DataHandler.setTag(item, getKey() + "_stat_healed", stat, PersistentDataType.INTEGER);
-
-				triggered = true;
-			}
-
-			if (triggered && notifyWhenActive)
-				ChatWriter.sendActionBar(player, this.getColor()
-						+ LanguageManager.getString("Modifier.Photosynthesis.NotifyWhenActive", player));
-		}
-	};
 
 	private Photosynthesis() {
 		super(MineTinker.getPlugin());
@@ -223,7 +126,103 @@ public class Photosynthesis extends Modifier {
 				.filter(mat -> mat.isAir() || !mat.isOccluding() || !mat.isSolid()).toList());
 
 		if (isAllowed())
-			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(this.getSource(), this.runnable, 5 * 20L, this.tickTime);
+			this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(this.getSource(), () -> {
+				final long time = System.currentTimeMillis();
+				data.entrySet().removeIf(entry -> entry.getKey() == null || !entry.getKey().isOnline());
+
+				for (final Player player : Bukkit.getOnlinePlayers()) {
+					if (player == null) continue;
+					if (!player.isOnline()) {
+						data.remove(player);
+						continue;
+					}
+					if (!player.hasPermission(getUsePermission())) continue;
+
+					final PlayerInventory inv = player.getInventory();
+					final ArrayList<ItemStack> items = new ArrayList<>(6);
+					Collections.addAll(items, inv.getArmorContents());
+					items.add(inv.getItemInMainHand());
+					if (allowOffhand) items.add(inv.getItemInOffHand());
+					items.removeIf(item -> !modManager.isToolViable(item) && !modManager.isArmorViable(item));
+					items.removeIf(item -> !modManager.hasMod(item, this));
+					if (items.isEmpty()) { // no photosynthesis items
+						data.remove(player);
+						continue;
+					}
+
+					final Tupel tupel = data.getOrDefault(player, new Tupel(player.getLocation(), System.currentTimeMillis(), false));
+					data.put(player, tupel);
+
+					final Location pLoc = player.getLocation();
+					if (mustStandStill && !pLoc.equals(tupel.loc)) {
+						tupel.loc = pLoc;
+						tupel.time = time;
+						continue;
+					}
+
+					tupel.isAboveGround = false; // rechecking is required as world could have changed
+					tupel.loc = pLoc;
+
+					if (pLoc.getWorld().getEnvironment() == World.Environment.NORMAL) { //check for overworld
+						final Block start = pLoc.getBlock();
+						for (int i = 1; i < pLoc.getWorld().getMaxHeight() - pLoc.getBlockY(); i++) {
+							final Block b = start.getRelative(0, i, 0);
+							if (!b.isPassable() && !allowedMaterials.contains(b.getType())) {
+								tupel.isAboveGround = false;
+								break;
+							}
+							tupel.isAboveGround = true;
+						}
+					}
+
+					final long worldTime = tupel.loc.getWorld().getTime() / 1000; //to get hours; 0 -> 6am
+
+					if (!tupel.isAboveGround || tupel.loc.getWorld().hasStorm() || worldTime > 12) {
+						// reset time
+						tupel.time = time;
+						continue;
+					}
+
+					final double daytimeMultiplier = fullEffectAtNoon ? Math.abs(6 - worldTime) / 6.0 : 1.0;
+					final long timeDif = time - tupel.time - (tickTime * 50L); //to make effect faster with time (first tick period does not count)
+					final double timeAdvantage = multiplierPerTick * ((timeDif / 50.0) / tickTime);
+
+					boolean triggered = false;
+					for (final ItemStack item : items) {
+						final int level = modManager.getModLevel(item, this);
+
+						if (!(item.getItemMeta() instanceof Damageable meta)) continue;
+
+						final int oldDamage = meta.getDamage();
+						if (oldDamage <= 0) continue; //no repair needed
+
+						final int repair = (int) Math.round(healthRepair * timeAdvantage * level * daytimeMultiplier);
+						if (repair <= 0) continue;
+
+						final int newDamage = Math.max(0, oldDamage - repair);
+
+						ChatWriter.logModifier(player, null, this, item,
+								String.format("ItemDamage(%d -> %d [%d])", oldDamage, newDamage, repair),
+								"DaytimeMultiplier(" + daytimeMultiplier + ")",
+								String.format("TimeAdvantage(%.2f * (%d / %d) = %.2f)", multiplierPerTick, timeDif / 50,
+										tickTime, timeAdvantage));
+
+						meta.setDamage(newDamage);
+						item.setItemMeta(meta);
+
+						// Track statistic
+						int stat = DataHandler.getTagOrDefault(item, getKey() + "_stat_healed", PersistentDataType.INTEGER, 0);
+						stat += oldDamage - newDamage;
+						DataHandler.setTag(item, getKey() + "_stat_healed", stat, PersistentDataType.INTEGER);
+
+						triggered = true;
+					}
+
+					if (triggered && notifyWhenActive)
+						ChatWriter.sendActionBar(player, this.getColor()
+								+ LanguageManager.getString("Modifier.Photosynthesis.NotifyWhenActive", player));
+				}
+			}, 5 * 20L, this.tickTime);
 		else
 			this.taskID = -1;
 	}

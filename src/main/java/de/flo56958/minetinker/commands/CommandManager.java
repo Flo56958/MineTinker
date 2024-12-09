@@ -1,5 +1,6 @@
 package de.flo56958.minetinker.commands;
 
+import com.google.common.base.Splitter;
 import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.subs.*;
 import de.flo56958.minetinker.modifiers.ModManager;
@@ -190,6 +191,7 @@ public class CommandManager implements TabExecutor {
 	}
 
 	private void parseArguments(@NotNull CommandSender sender, @NotNull SubCommand sub, String[] args) {
+		final Random random = new Random();
 		for (int i = 1; i < args.length; i++) {
 			List<ArgumentType> atypes = sub.getArgumentsToParse().get(i);
 			if (atypes == null) continue;
@@ -227,11 +229,11 @@ public class CommandManager implements TabExecutor {
 							if (world == null) continue;
 
 							List<Player> players = world.getPlayers();
-							args[i] = players.get(new Random().nextInt(players.size())).getName();
+							args[i] = players.get(random.nextInt(players.size())).getName();
 						} else if (args[i].startsWith("@r")) {
 							Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
 							args[i] = onlinePlayers.toArray(new Player[0])
-									[new Random().nextInt(onlinePlayers.size())].getName();
+									[random.nextInt(onlinePlayers.size())].getName();
 						} else {
 							try {
 								UUID uuid = UUID.fromString(args[i]);
@@ -248,17 +250,17 @@ public class CommandManager implements TabExecutor {
 					}
 					case RANDOM_NUMBER -> {
 						//like range 1-5 (inclusive), or from 1,2,3,6,7,8, or all of them combined like 1-5,7-9,11,13
-						String[] rules = args[i].split(",");
-						int index = new Random().nextInt(rules.length);
+						final List<String> rules = Splitter.on(',').splitToList(args[i]);
+						final String current = rules.get(random.nextInt(rules.size()));
 						boolean isMod = false;
 						for (Modifier mod : ModManager.instance().getAllowedMods()) {
-							if (mod.getName().replace(" ", "_").equals(rules[index])) {
+							if (mod.getName().replace(" ", "_").equals(current)) {
 								isMod = true;
 								break;
 							}
 						}
-						if (!isMod && rules[index].indexOf('-') != -1) {
-							String[] nums = rules[index].split("-");
+						if (!isMod && current.indexOf('-') != -1) {
+							String[] nums = current.split("-");
 							if (nums.length != 2) {
 								sendError(sender,
 										LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
@@ -267,14 +269,14 @@ public class CommandManager implements TabExecutor {
 							try {
 								int min = Integer.parseInt(nums[0]);
 								int max = Integer.parseInt(nums[1]);
-								int rand = new Random().nextInt(max - min) + min;
+								int rand = random.nextInt(max - min) + min;
 								args[i] = String.valueOf(rand);
 							} catch (NumberFormatException e) {
 								sendError(sender,
 										LanguageManager.getString("Commands.Failure.Cause.NumberFormatException"));
 							}
 						} else {
-							args[i] = rules[index];
+							args[i] = current;
 						}
 					}
 					default -> {

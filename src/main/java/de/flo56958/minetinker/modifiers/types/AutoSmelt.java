@@ -1,5 +1,6 @@
 package de.flo56958.minetinker.modifiers.types;
 
+import com.google.common.base.Splitter;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.data.ToolType;
@@ -24,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class AutoSmelt extends Modifier implements Listener {
 
@@ -300,12 +302,12 @@ public class AutoSmelt extends Modifier implements Listener {
 
 		@Nullable
 		static Triplet fromString(@NotNull String input) {
-			String[] tok = input.split(regex);
+			final List<String> tok = Splitter.on(Pattern.compile(regex)).splitToList(input);
 			try {
-				if (tok.length == 2)
-					return new Triplet(Material.valueOf(tok[0]), Integer.parseInt(tok[1]));
-				else if (tok.length == 3)
-					return new Triplet(Material.valueOf(tok[0]), Integer.parseInt(tok[1]), Boolean.parseBoolean(tok[2]));
+				if (tok.size() == 2)
+					return new Triplet(Material.valueOf(tok.get(0)), Integer.parseInt(tok.get(1)));
+				else if (tok.size() == 3)
+					return new Triplet(Material.valueOf(tok.get(0)), Integer.parseInt(tok.get(1)), Boolean.parseBoolean(tok.get(2)));
 				else
 					return null;
 			} catch (IllegalArgumentException e) {
