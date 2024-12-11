@@ -70,6 +70,7 @@ permissions:
       minetinker.commands.editconfig: true
       minetinker.commands.editconfigbroadcast: true
       minetinker.commands.reload: true
+      minetinker.commands.playerconfiguration: true
 
   minetinker.commands.main:
     description: Allows to access MineTinker Commands entirely. Is necessary for every command.
@@ -179,6 +180,10 @@ permissions:
   minetinker.update.notify:
     description: Notifies player about updates when they login
     default: op
+
+  minetinker.commands.playerconfiguration:
+    description: Allows to access the player configuration
+    default: true
 
   #Modifiers:
   minetinker.modifiers.*:

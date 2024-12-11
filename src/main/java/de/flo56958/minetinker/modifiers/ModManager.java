@@ -14,6 +14,8 @@ import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
 import de.flo56958.minetinker.utils.data.UUIDTagType;
 import de.flo56958.minetinker.utils.datatypes.Pair;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationInterface;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -272,6 +274,8 @@ public class ModManager {
 		this.mods.forEach(mod -> {
 			if (mod instanceof Listener listener) //Disable Events
 				HandlerList.unregisterAll(listener);
+			if (mod instanceof PlayerConfigurationInterface pci)
+				PlayerConfigurationManager.getInstance().unregisterPlayerConfigInterface(pci);
 		});
 		this.mods.clear();
 		this.mods.addAll(allMods);
@@ -294,6 +298,8 @@ public class ModManager {
 		this.mods.forEach(mod -> {
 			if (mod instanceof Listener listener) //Enable Events
 				Bukkit.getPluginManager().registerEvents(listener, mod.getSource());
+			if (mod instanceof PlayerConfigurationInterface pci)
+				PlayerConfigurationManager.getInstance().registerPlayerConfigInterface(pci);
 		});
 
 		if (layout.getBoolean("OverrideLanguagesystem", false)) {
@@ -396,6 +402,8 @@ public class ModManager {
 			mod.registerCraftingRecipe();
 			if (mod instanceof Listener listener) //Enable Events
 				Bukkit.getPluginManager().registerEvents(listener, mod.getSource());
+			if (mod instanceof PlayerConfigurationInterface pci)
+				PlayerConfigurationManager.getInstance().registerPlayerConfigInterface(pci);
 		}
 		reloadIncompatibilities();
 		if (!mod.getSource().equals(MineTinker.getPlugin())) GUIs.reload();
@@ -631,8 +639,8 @@ public class ModManager {
 			}
 		}
 
-		if (player != null && config.getBoolean("actionbar-on-exp-gain"))
-			ActionBarListener.addXP(player, (int) amount);
+		if (player != null)
+			ActionBarListener.addEXP(player, (int) amount);
 
 		setExp(tool, exp);
 		rewriteLore(tool);

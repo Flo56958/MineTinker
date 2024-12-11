@@ -9,6 +9,8 @@ import de.flo56958.minetinker.listeners.*;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.types.*;
 import de.flo56958.minetinker.utils.*;
+import de.flo56958.minetinker.utils.playerconfig.GeneralPCOptions;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
@@ -61,6 +63,8 @@ public class MineTinker extends JavaPlugin {
 
 		ConfigurationManager.reload();
 
+		PlayerConfigurationManager.getInstance().registerPlayerConfigInterface(GeneralPCOptions.INSTANCE);
+
 		ModManager.instance();
 		addCoreMods();
 
@@ -94,9 +98,8 @@ public class MineTinker extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new PlayerInfo(), this);
 		Bukkit.getPluginManager().registerEvents(new EnchantingListener(), this);
 		Bukkit.getPluginManager().registerEvents(new GrindstoneListener(), this);
-
-		if (getConfig().getBoolean("actionbar-on-exp-gain", false))
-			Bukkit.getPluginManager().registerEvents(new ActionBarListener(), this);
+		Bukkit.getPluginManager().registerEvents(new ActionBarListener(), this);
+		Bukkit.getPluginManager().registerEvents(PlayerConfigurationManager.getInstance(), this);
 
 		if (getConfig().getBoolean("ItemBehaviour.TrackStatistics", true))
 			Bukkit.getPluginManager().registerEvents(new ItemStatisticsHandler(), this);

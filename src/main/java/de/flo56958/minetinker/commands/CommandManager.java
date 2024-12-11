@@ -41,6 +41,7 @@ public class CommandManager implements TabExecutor {
 		commands.add(new RemoveModifierCommand());
 		commands.add(new EditConfigurationCommand());
 		commands.add(new ItemStatisticsCommand());
+		commands.add(new PlayerConfigurationCommand());
 
 		commands.forEach(this::registerSubcommand);
 

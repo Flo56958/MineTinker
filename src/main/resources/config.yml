@@ -13,8 +13,6 @@ logging:
 
 #--MESSAGES--
 chat-messages: true                   #Will turn off command output
-actionbar-messages: true              #Will enable/disable actionbar messages
-actionbar-on-exp-gain: false
 BroadcastConfigChanges: true          #Broadcast config changes via /mt ec to players with same privileges
 LanguageManagerNotifyOP: true         #Should the LanguageManager notify the server operators if the language settings might be wrong or incomplete
 

@@ -5,6 +5,8 @@ import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.*;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
+import de.flo56958.minetinker.utils.playerconfig.GeneralPCOptions;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -157,21 +159,18 @@ public class ChatWriter {
 	 */
 	public static void sendActionBar(final Player player, final String message) {
 		//Extract from the source code of the Actionbar-API (altered)
-		if (!MineTinker.getPlugin().getConfig().getBoolean("actionbar-messages")) {
-			return;
-		}
-
 		if (player == null || !player.isOnline()) {
 			return; // Player may have logged out, unlikely but possible?
+		}
+
+		if (!PlayerConfigurationManager.getInstance().getBoolean(player, GeneralPCOptions.INSTANCE.ACTIONBAR_MESSAGES)) {
+			return;
 		}
 
 		try {
 			player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
 					TextComponent.fromLegacy(message));
-		} catch (NoSuchMethodError e) {
-			ChatWriter.logError("You have Spigot features enabled but don't use Spigot." +
-					"Please turn off actionbar-messages in the main config.");
-		}
+		} catch (NoSuchMethodError ignored) {}
 	}
 
 	@NotNull
