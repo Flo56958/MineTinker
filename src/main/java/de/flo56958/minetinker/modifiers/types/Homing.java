@@ -3,9 +3,12 @@ package de.flo56958.minetinker.modifiers.types;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTProjectileLaunchEvent;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.modifiers.Modifier;
+import de.flo56958.minetinker.modifiers.PlayerConfigurableModifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationOption;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
@@ -17,7 +20,7 @@ import org.bukkit.util.Vector;
 import java.io.File;
 import java.util.*;
 
-public class Homing extends Modifier implements Listener {
+public class Homing extends PlayerConfigurableModifier implements Listener {
 
 	private static Homing instance;
 	private int radius;
@@ -108,6 +111,10 @@ public class Homing extends Modifier implements Listener {
 		final int modLevel = modManager.getModLevel(tool, this);
 		if (modLevel <= 0) return;
 
+		if (!PlayerConfigurationManager.getInstance().getBoolean(player, ENABLED)) return;
+
+		arrow.setColor(Color.BLACK);
+
 		final long start = System.currentTimeMillis();
 		final double accuracy = modLevel * this.accuracy;
 		final Runnable runnable = new Runnable() {
@@ -146,5 +153,12 @@ public class Homing extends Modifier implements Listener {
 		};
 
 		Bukkit.getServer().getScheduler().runTaskLater(this.getSource(), runnable, 3);
+	}
+
+	private final PlayerConfigurationOption ENABLED = new PlayerConfigurationOption(this, "enabled", PlayerConfigurationOption.Type.BOOLEAN, "enabled", true);
+
+	@Override
+	public List<PlayerConfigurationOption> getPCIOptions() {
+		return List.of(ENABLED);
 	}
 }

@@ -4,11 +4,13 @@ import com.google.common.base.Splitter;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.modifiers.Modifier;
+import de.flo56958.minetinker.modifiers.PlayerConfigurableModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationOption;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -27,14 +29,12 @@ import java.io.File;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class AutoSmelt extends Modifier implements Listener {
+public class AutoSmelt extends PlayerConfigurableModifier implements Listener {
 
 	private static AutoSmelt instance;
 	private final EnumMap<Material, @NotNull Triplet> conversions = new EnumMap<>(Material.class);
 
 	private int percentagePerLevel;
-	private boolean hasSound;
-	private boolean hasParticles;
 	private boolean worksUnderWater;
 	private boolean toggleable;
 
@@ -73,8 +73,6 @@ public class AutoSmelt extends Modifier implements Listener {
 		config.addDefault("SlotCost", 1);
 		config.addDefault("ModifierItemMaterial", Material.FURNACE.name());
 		config.addDefault("PercentagePerLevel", 100);
-		config.addDefault("Sound", true); //Auto-Smelt makes a sound
-		config.addDefault("Particles", true); //Auto-Smelt will create a particle effect when triggered
 		config.addDefault("WorksUnderWater", true);
 		config.addDefault("Toggleable", false);
 
@@ -175,8 +173,6 @@ public class AutoSmelt extends Modifier implements Listener {
 		init();
 
 		this.percentagePerLevel = config.getInt("PercentagePerLevel", 100);
-		this.hasSound = config.getBoolean("Sound", true);
-		this.hasParticles = config.getBoolean("Particles", true);
 		this.worksUnderWater = config.getBoolean("WorksUnderWater", true);
 		this.toggleable = config.getBoolean("Toggleable", false);
 
@@ -252,10 +248,11 @@ public class AutoSmelt extends Modifier implements Listener {
 
 		breakEvent.setDropItems(false);
 
-		if (this.hasParticles) block.getLocation().getWorld().spawnParticle(Particle.FLAME, block.getLocation(), 5);
+		if (PlayerConfigurationManager.getInstance().getBoolean(player, PARTICLES))
+			block.getLocation().getWorld().spawnParticle(Particle.FLAME, block.getLocation(), 5);
 
-		if (this.hasSound) block.getLocation().getWorld().playSound(block.getLocation(),
-				Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
+		if (PlayerConfigurationManager.getInstance().getBoolean(player, SOUND))
+			block.getLocation().getWorld().playSound(block.getLocation(), Sound.ENTITY_GENERIC_BURN, 0.2F, 0.5F);
 
 		//Track stats
 		final int stat = DataHandler.getTagOrDefault(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, 0);
@@ -321,5 +318,20 @@ public class AutoSmelt extends Modifier implements Listener {
 		public String toString() {
 			return material.toString() + regex + amount + regex + luckable;
 		}
+	}
+
+	private final PlayerConfigurationOption PARTICLES =
+			new PlayerConfigurationOption(this,"particles", PlayerConfigurationOption.Type.BOOLEAN,
+					"particles", true);
+
+	private final PlayerConfigurationOption SOUND =
+			new PlayerConfigurationOption(this,"sound", PlayerConfigurationOption.Type.BOOLEAN,
+					"sound", true);
+
+	@Override
+	public List<PlayerConfigurationOption> getPCIOptions() {
+		final ArrayList<PlayerConfigurationOption> playerConfigurationOptions = new ArrayList<>(List.of(PARTICLES, SOUND));
+		playerConfigurationOptions.sort(Comparator.comparing(PlayerConfigurationOption::displayName));
+		return playerConfigurationOptions;
 	}
 }

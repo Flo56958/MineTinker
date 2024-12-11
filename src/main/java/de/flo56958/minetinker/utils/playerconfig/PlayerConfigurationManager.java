@@ -181,7 +181,7 @@ public class PlayerConfigurationManager implements Listener {
 				final GUI.Window.Button currentButton = indexHelper.currentPage.addButton(indexHelper.xIndex, indexHelper.yIndex, buttonStack);
 				buttonStack = currentButton.getItemStack(); //needs to be updated as it gets changed when added to the inventory
 				final ItemMeta buttonMeta = buttonStack.getItemMeta();
-				buttonMeta.setDisplayName(pci.getPCIDisplayColor() + pci.getPCIDisplayName() + ": " + option.displayName());
+				buttonMeta.setDisplayName(pci.getPCIDisplayColor() + pci.getPCIDisplayName() + ": " + ChatColor.WHITE + option.displayName());
 
 				ItemStack buttonStackForRunnable = buttonStack;
 				switch (option.type()) {

@@ -64,7 +64,7 @@ public abstract class CooldownModifier extends PlayerConfigurableModifier {
 	protected final void setCooldown(@NotNull final Player player, @NotNull final ItemStack tool) {
 		if (this.cooldownInSeconds > 1 / 20.0)
 			DataHandler.setTag(tool, this.getKey() + "cooldown", System.currentTimeMillis(), PersistentDataType.LONG);
-		if (PlayerConfigurationManager.getInstance().getBoolean(player, OFF_COOLDOWN_SOUND))
+		if (PlayerConfigurationManager.getInstance().getBoolean(player, OFF_COOLDOWN_ALERT))
 			planOffCooldownAlert(player, tool);
 	}
 
@@ -107,9 +107,9 @@ public abstract class CooldownModifier extends PlayerConfigurableModifier {
 				getCooldown(modManager.getModLevel(tool, this)) / 50);
 	}
 
-	protected final PlayerConfigurationOption OFF_COOLDOWN_SOUND =
-			new PlayerConfigurationOption(this, "off-cooldown-sound", PlayerConfigurationOption.Type.BOOLEAN,
-					"off-cooldown-sound", false);
+	protected final PlayerConfigurationOption OFF_COOLDOWN_ALERT =
+			new PlayerConfigurationOption(this, "off-cooldown-alert", PlayerConfigurationOption.Type.BOOLEAN,
+					"off-cooldown-alert", false);
 
 	protected final PlayerConfigurationOption OFF_COOLDOWN_NOTE =
 			new PlayerConfigurationOption(this, "off-cooldown-note", PlayerConfigurationOption.Type.INTEGER,
@@ -121,7 +121,7 @@ public abstract class CooldownModifier extends PlayerConfigurableModifier {
 
 	@Override
 	public List<PlayerConfigurationOption> getPCIOptions() {
-		final ArrayList<PlayerConfigurationOption> playerConfigurationOptions = new ArrayList<>(List.of(OFF_COOLDOWN_SOUND, OFF_COOLDOWN_NOTE, OFF_COOLDOWN_INSTRUMENT));
+		final ArrayList<PlayerConfigurationOption> playerConfigurationOptions = new ArrayList<>(List.of(OFF_COOLDOWN_ALERT, OFF_COOLDOWN_NOTE, OFF_COOLDOWN_INSTRUMENT));
 		playerConfigurationOptions.sort(Comparator.comparing(PlayerConfigurationOption::displayName));
 		return playerConfigurationOptions;
 	}

@@ -6,6 +6,8 @@ import de.flo56958.minetinker.modifiers.CooldownModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationOption;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -23,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class Propelling extends CooldownModifier implements Listener {
@@ -30,8 +33,6 @@ public class Propelling extends CooldownModifier implements Listener {
 	private static Propelling instance;
 	private int durabilityLoss;
 	private double speedPerLevel;
-	private boolean sound;
-	private boolean particles;
 
 	private Propelling() {
 		super(MineTinker.getPlugin());
@@ -75,8 +76,6 @@ public class Propelling extends CooldownModifier implements Listener {
 		config.addDefault("CooldownInSeconds", 5.0);
 		config.addDefault("Elytra.DurabilityLoss", 10);
 		config.addDefault("Elytra.SpeedPerLevel", 0.15);
-		config.addDefault("Elytra.Sound", true);
-		config.addDefault("Elytra.Particles", true);
 
 		config.addDefault("EnchantCost", 25);
 		config.addDefault("Enchantable", true);
@@ -92,9 +91,6 @@ public class Propelling extends CooldownModifier implements Listener {
 		this.durabilityLoss = config.getInt("Elytra.DurabilityLoss", 10);
 		this.speedPerLevel = config.getDouble("Elytra.SpeedPerLevel", 0.05);
 		this.cooldownInSeconds = config.getDouble("CooldownInSeconds", 5.0);
-
-		this.sound = config.getBoolean("Elytra.Sound", true);
-		this.particles = config.getBoolean("Elytra.Particles", true);
 	}
 
 	@Override
@@ -143,14 +139,33 @@ public class Propelling extends CooldownModifier implements Listener {
 			player.setVelocity(player.getVelocity().add(dir));
 		}
 
+		if (loc.getWorld() != null) {
+			if (PlayerConfigurationManager.getInstance().getBoolean(player, PARTICLES))
+				loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
 
-
-		if (particles && loc.getWorld() != null)
-			loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
-
-		if (sound) player.getWorld().playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
+			if (PlayerConfigurationManager.getInstance().getBoolean(player, SOUND))
+				loc.getWorld().playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
+		}
 
 		setCooldown(player, elytra);
 		ChatWriter.logModifier(player, event, this, elytra);
+	}
+
+	private final PlayerConfigurationOption PARTICLES =
+			new PlayerConfigurationOption(this,"particles", PlayerConfigurationOption.Type.BOOLEAN,
+					"particles", true);
+
+	private final PlayerConfigurationOption SOUND =
+			new PlayerConfigurationOption(this,"sound", PlayerConfigurationOption.Type.BOOLEAN,
+					"sound", true);
+
+	@Override
+	public List<PlayerConfigurationOption> getPCIOptions() {
+		List<PlayerConfigurationOption> playerConfigurationOptions = super.getPCIOptions();
+		playerConfigurationOptions.add(PARTICLES);
+		playerConfigurationOptions.add(SOUND);
+
+		playerConfigurationOptions.sort(Comparator.comparing(PlayerConfigurationOption::displayName));
+		return playerConfigurationOptions;
 	}
 }
