@@ -135,9 +135,15 @@ public class Propelling extends CooldownModifier implements Listener {
 
 		final int level = modManager.getModLevel(elytra, this);
 		final Location loc = player.getLocation();
-		final Vector dir = loc.getDirection().normalize();
+		final Vector dir = loc.getDirection().normalize().multiply(1 + speedPerLevel * level);
 
-		player.setVelocity(dir.multiply(1 + speedPerLevel * level).add(player.getVelocity().multiply(0.1f)));
+		if (dir.dot(player.getVelocity()) <= 0) {
+			player.setVelocity(dir);
+		} else {
+			player.setVelocity(player.getVelocity().add(dir));
+		}
+
+
 
 		if (particles && loc.getWorld() != null)
 			loc.getWorld().spawnParticle(Particle.CLOUD, loc, 30, 0.5F, 0.5F, 0.5F, 0.0F);
