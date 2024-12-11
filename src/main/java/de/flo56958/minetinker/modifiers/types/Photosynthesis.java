@@ -2,11 +2,13 @@ package de.flo56958.minetinker.modifiers.types;
 
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.modifiers.Modifier;
+import de.flo56958.minetinker.modifiers.PlayerConfigurableModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationOption;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,7 +23,7 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Photosynthesis extends Modifier {
+public class Photosynthesis extends PlayerConfigurableModifier {
 
 	private static Photosynthesis instance;
 	private final ConcurrentHashMap<Player, Tupel> data = new ConcurrentHashMap<>();
@@ -33,7 +35,6 @@ public class Photosynthesis extends Modifier {
 	private boolean fullEffectAtNoon;
 	private boolean allowOffhand;
 	private boolean mustStandStill;
-	private boolean notifyWhenActive;
 
 	private Photosynthesis() {
 		super(MineTinker.getPlugin());
@@ -86,7 +87,6 @@ public class Photosynthesis extends Modifier {
 		config.addDefault("FullEffectAtNoon", true); //if false: full effect always in daylight
 		config.addDefault("AllowOffHand", true); //if false: only main hand
 		config.addDefault("MustStandStill", false); //if true: Players need to stand still
-		config.addDefault("NotifyWhenActive", false); //Notifies the Player via Actionbar
 
 		config.addDefault("EnchantCost", 10);
 		config.addDefault("Enchantable", false);
@@ -114,7 +114,6 @@ public class Photosynthesis extends Modifier {
 		this.fullEffectAtNoon = config.getBoolean("FullEffectAtNoon", true);
 		this.allowOffhand = config.getBoolean("AllowOffHand", true);
 		this.mustStandStill = config.getBoolean("MustStandStill", false);
-		this.notifyWhenActive = config.getBoolean("NotifyWhenActive", false);
 
 		this.description = this.description
 				.replace("%amount", String.valueOf(healthRepair))
@@ -218,13 +217,22 @@ public class Photosynthesis extends Modifier {
 						triggered = true;
 					}
 
-					if (triggered && notifyWhenActive)
+					if (triggered && PlayerConfigurationManager.getInstance().getBoolean(player, NOTIFY_WHEN_ACTIVE))
 						ChatWriter.sendActionBar(player, this.getColor()
 								+ LanguageManager.getString("Modifier.Photosynthesis.NotifyWhenActive", player));
 				}
 			}, 5 * 20L, this.tickTime);
 		else
 			this.taskID = -1;
+	}
+
+	private PlayerConfigurationOption NOTIFY_WHEN_ACTIVE =
+			new PlayerConfigurationOption(this, "notify-when-active", PlayerConfigurationOption.Type.BOOLEAN,
+					"notify-when-active", false);
+
+	@Override
+	public List<PlayerConfigurationOption> getPCIOptions() {
+		return List.of(NOTIFY_WHEN_ACTIVE);
 	}
 
 	//------------------------------------------------------

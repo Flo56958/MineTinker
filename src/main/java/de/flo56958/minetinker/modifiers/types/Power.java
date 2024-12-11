@@ -4,11 +4,13 @@ import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.api.events.MTPlayerInteractEvent;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.modifiers.Modifier;
+import de.flo56958.minetinker.modifiers.PlayerConfigurableModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.PlayerInfo;
 import de.flo56958.minetinker.utils.data.DataHandler;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationOption;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -29,7 +31,7 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Power extends Modifier implements Listener {
+public class Power extends PlayerConfigurableModifier implements Listener {
 
 	public static final ConcurrentHashMap<Location, Integer> events_break = new ConcurrentHashMap<>();
 	public static final ConcurrentHashMap<Location, Integer> events_interact = new ConcurrentHashMap<>();
@@ -39,7 +41,6 @@ public class Power extends Modifier implements Listener {
 	private static Power instance;
 	private HashSet<Material> blacklist = new HashSet<>();
 	private boolean treatAsWhitelist;
-	private boolean lv1_vertical;
 	private boolean toggleable;
 
 	private Power() {
@@ -73,7 +74,6 @@ public class Power extends Modifier implements Listener {
 
 		config.addDefault("Allowed", true);
 		config.addDefault("Color", "%GREEN%");
-		config.addDefault("Lv1Vertical", false); // Should the 3x1 at level 1 be horizontal (false) or vertical (true)
 		config.addDefault("Toggleable", true);
 		config.addDefault("MaxLevel", 2); // Algorithm for area of effect (except for level 1): (level * 2) - 1 x
 		config.addDefault("SlotCost", 2);
@@ -108,7 +108,6 @@ public class Power extends Modifier implements Listener {
 
 		init();
 
-		this.lv1_vertical = config.getBoolean("Lv1Vertical", false);
 		this.toggleable = config.getBoolean("Toggleable", true);
 		this.treatAsWhitelist = config.getBoolean("TreatAsWhitelist", false);
 
@@ -116,6 +115,9 @@ public class Power extends Modifier implements Listener {
 
 		final List<String> blacklistConfig = config.getStringList("Blacklist");
 		blacklist.addAll(blacklistConfig.stream().map(Material::getMaterial).toList());
+
+		CLAMP_LEVEL = new PlayerConfigurationOption(this, "clamp-to-level", PlayerConfigurationOption.Type.INTEGER,
+				"clamp-to-level", this.getMaxLvl());
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -126,8 +128,8 @@ public class Power extends Modifier implements Listener {
 		return modManager.hasMod(tool, this);
 	}
 
-	private Set<Block> getPowerBlocks(@NotNull ItemStack tool, @NotNull Block block, @NotNull BlockFace face, @NotNull PlayerInfo.Direction direction) {
-		final int level = modManager.getModLevel(tool, this);
+	private Set<Block> getPowerBlocks(@NotNull final Player player, @NotNull final ItemStack tool, @NotNull final Block block, @NotNull final BlockFace face, @NotNull final PlayerInfo.Direction direction) {
+		final int level = Math.min(modManager.getModLevel(tool, this), PlayerConfigurationManager.getInstance().getInteger(player, CLAMP_LEVEL));
 
 		final HashSet<Block> blocks = new HashSet<>();
 
@@ -135,7 +137,7 @@ public class Power extends Modifier implements Listener {
 		final boolean north_south = face.equals(BlockFace.NORTH) || face.equals(BlockFace.SOUTH);
 		if (level == 1) {
 			Block b1 = null, b2 = null;
-			if (lv1_vertical) {
+			if (PlayerConfigurationManager.getInstance().getBoolean(player, LEVEL_1_VERTICAL)) {
 				if (down_up) {
 					if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
 						b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
@@ -165,7 +167,7 @@ public class Power extends Modifier implements Listener {
 			}
 			blocks.add(b1);
 			blocks.add(b2);
-		} else {
+		} else if (level > 1) {
 			if (down_up) {
 				for (int x = -(level - 1); x <= (level - 1); x++) {
 					for (int z = -(level - 1); z <= (level - 1); z++) {
@@ -231,7 +233,7 @@ public class Power extends Modifier implements Listener {
 
 		final boolean drilling = modManager.hasMod(tool, Drilling.instance());
 
-		for (final Block b : getPowerBlocks(tool, block, face, direction)) {
+		for (final Block b : getPowerBlocks(player, tool, block, face, direction)) {
 			if (b.getType().isAir()) continue;
 			if (b.isLiquid()) continue;
 
@@ -258,7 +260,7 @@ public class Power extends Modifier implements Listener {
 		final BlockFace face = event.getEvent().getBlockFace();
 
 		// Broadcast InteractEvent to other Blocks
-		final Set<Block> blocks = getPowerBlocks(tool, block, face, PlayerInfo.getFacingDirection(player));
+		final Set<Block> blocks = getPowerBlocks(player, tool, block, face, PlayerInfo.getFacingDirection(player));
 		blocks.remove(block); // Remove the central block (already handled in the BlockBreakEvent)
 		for (final Block b : blocks) {
 			if (b.getType().isAir()) continue;
@@ -378,5 +380,18 @@ public class Power extends Modifier implements Listener {
 		try {
 			DataHandler.playerBreakBlock(player, block, tool);
 		} catch (IllegalArgumentException ignored) {}
+	}
+
+	private PlayerConfigurationOption LEVEL_1_VERTICAL =
+			new PlayerConfigurationOption(this, "level-1-vertical", PlayerConfigurationOption.Type.BOOLEAN,
+					"level-1-vertical", false);
+
+	private PlayerConfigurationOption CLAMP_LEVEL;
+
+	@Override
+	public List<PlayerConfigurationOption> getPCIOptions() {
+		final ArrayList<PlayerConfigurationOption> playerConfigurationOptions = new ArrayList<>(List.of(LEVEL_1_VERTICAL, CLAMP_LEVEL));
+		playerConfigurationOptions.sort(Comparator.comparing(PlayerConfigurationOption::displayName));
+		return playerConfigurationOptions;
 	}
 }

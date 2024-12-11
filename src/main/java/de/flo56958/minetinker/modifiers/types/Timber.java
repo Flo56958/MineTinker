@@ -3,11 +3,13 @@ package de.flo56958.minetinker.modifiers.types;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.modifiers.Modifier;
+import de.flo56958.minetinker.modifiers.PlayerConfigurableModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationOption;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -27,7 +29,7 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Timber extends Modifier implements Listener {
+public class Timber extends PlayerConfigurableModifier implements Listener {
 
 	private static Timber instance;
 	private int maxBlocks;
@@ -158,7 +160,7 @@ public class Timber extends Modifier implements Listener {
 			});
 
 			// Place sapling on all ground blocks if applicable
-			if (saplingType == null || level < 2 || groundBlocks.isEmpty()) return;
+			if (saplingType == null || level < 2 || groundBlocks.isEmpty() || !PlayerConfigurationManager.getInstance().getBoolean(player, PLANT_SAMPLINGS)) return;
 			// sort ground blocks by distance to the original block (closest first)
 			groundBlocks.sort(Comparator.comparing(b -> {
 				final Location l = b.getLocation();
@@ -236,5 +238,14 @@ public class Timber extends Modifier implements Listener {
 		lore.add(ChatColor.WHITE + LanguageManager.getString("Modifier.Timber.Statistic_Used")
 				.replaceAll("%amount", String.valueOf(stat)));
 		return lore;
+	}
+
+	private final PlayerConfigurationOption PLANT_SAMPLINGS =
+			new PlayerConfigurationOption(this, "plant-samplings", PlayerConfigurationOption.Type.BOOLEAN,
+			"plant-saplings", true);
+
+	@Override
+	public List<PlayerConfigurationOption> getPCIOptions() {
+		return List.of(PLANT_SAMPLINGS);
 	}
 }

@@ -4,10 +4,12 @@ import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTBlockBreakEvent;
 import de.flo56958.minetinker.api.events.MTPlayerInteractEvent;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.modifiers.Modifier;
+import de.flo56958.minetinker.modifiers.PlayerConfigurableModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationOption;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -28,7 +30,7 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Drilling extends Modifier implements Listener {
+public class Drilling extends PlayerConfigurableModifier implements Listener {
 
 	public static final ConcurrentHashMap<Location, Integer> events_break = new ConcurrentHashMap<>();
 	public static final ConcurrentHashMap<Location, Integer> events_interact = new ConcurrentHashMap<>();
@@ -120,6 +122,9 @@ public class Drilling extends Modifier implements Listener {
 
 		final List<String> blacklistConfig = config.getStringList("Blacklist");
 		blacklist.addAll(blacklistConfig.stream().map(Material::getMaterial).toList());
+
+		CLAMP_LEVEL = new PlayerConfigurationOption(this, "clamp-to-level", PlayerConfigurationOption.Type.INTEGER,
+				"clamp-to-level", this.getMaxLvl());
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -155,7 +160,7 @@ public class Drilling extends Modifier implements Listener {
 
 		final boolean power = modManager.hasMod(tool, Power.instance());
 
-		final int level = modManager.getModLevel(tool, this);
+		final int level = Math.min(modManager.getModLevel(tool, this), PlayerConfigurationManager.getInstance().getInteger(player, CLAMP_LEVEL));
 		final BlockFace finalFace = face.getOppositeFace();
 		for (int i = 1; i <= level; i++) {
 			final Block b = block.getRelative(finalFace, i);
@@ -182,7 +187,7 @@ public class Drilling extends Modifier implements Listener {
 		if (block.isLiquid()) return; // does not work with liquids
 		if (!canUseDrilling(player, tool, block.getLocation())) return;
 
-		final int level = modManager.getModLevel(tool, this);
+		final int level = Math.min(modManager.getModLevel(tool, this), PlayerConfigurationManager.getInstance().getInteger(player, CLAMP_LEVEL));
 
 		// Check if power save the old correct blockface
 		BlockFace face = Power.drillingCommunication.remove(block.getLocation());
@@ -221,5 +226,12 @@ public class Drilling extends Modifier implements Listener {
 		} catch (IllegalArgumentException ignored) {
 			return false;
 		}
+	}
+
+	private PlayerConfigurationOption CLAMP_LEVEL;
+
+	@Override
+	public List<PlayerConfigurationOption> getPCIOptions() {
+		return List.of(CLAMP_LEVEL);
 	}
 }
