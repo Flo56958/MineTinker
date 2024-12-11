@@ -132,7 +132,7 @@ public class Scotopic extends CooldownModifier implements Listener {
 		int level = modManager.getModLevel(helmet, this);
 		if (level <= 0) return;
 
-		if (onCooldown(player, helmet, true, event)) return;
+		if (onCooldown(player, helmet, false, event)) return;
 
 		final Location loc = event.getTo();
 		if (loc == null) return;
@@ -144,7 +144,7 @@ public class Scotopic extends CooldownModifier implements Listener {
 		player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,
 				duration + 10 * 20, // To disable the flickering below 10 seconds
 				level - 1, false, false, false));
-		setCooldown(helmet);
+		setCooldown(player, helmet);
 		ChatWriter.logModifier(player, event, this, helmet,
 				String.format("Cooldown(%ds)", getCooldown(level) / 1000),
 				String.format("LightLevel(%d/%d)", lightlevel, this.requiredLightLevel),

@@ -144,7 +144,7 @@ public class Evasive extends CooldownModifier implements Listener {
 			return;
 		}
 
-		setCooldown(tool);
+		setCooldown(player, tool);
 
 		event.setCancelled(true);
 		if (getConfig().getBoolean("Sound", true))

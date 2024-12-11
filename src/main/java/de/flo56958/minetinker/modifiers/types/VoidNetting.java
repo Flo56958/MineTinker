@@ -161,7 +161,7 @@ public class VoidNetting extends CooldownModifier implements Listener {
 				player.teleport(finalLoc);
 				player.setVelocity(new Vector(0, 0, 0));
 
-				setCooldown(armor);
+				setCooldown(player, armor);
 
 				if (this.particles) {
 					world.spawnParticle(Particle.PORTAL, finalLoc, 20);

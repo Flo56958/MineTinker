@@ -150,7 +150,7 @@ public class Propelling extends CooldownModifier implements Listener {
 
 		if (sound) player.getWorld().playSound(loc, Sound.ENTITY_ENDER_DRAGON_FLAP, 0.5F, 0.5F);
 
-		setCooldown(elytra);
+		setCooldown(player, elytra);
 		ChatWriter.logModifier(player, event, this, elytra);
 	}
 }

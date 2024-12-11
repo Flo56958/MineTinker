@@ -3,7 +3,12 @@ package de.flo56958.minetinker.modifiers;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationOption;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Instrument;
+import org.bukkit.Note;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
@@ -12,7 +17,11 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class CooldownModifier extends Modifier {
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+public abstract class CooldownModifier extends PlayerConfigurableModifier {
 	protected double cooldownInSeconds;
 	protected double cooldownReductionPerLevel = 0.0;
 
@@ -52,9 +61,11 @@ public abstract class CooldownModifier extends Modifier {
 		return true; //still on cooldown
 	}
 
-	protected final void setCooldown(@NotNull final ItemStack tool) {
+	protected final void setCooldown(@NotNull final Player player, @NotNull final ItemStack tool) {
 		if (this.cooldownInSeconds > 1 / 20.0)
 			DataHandler.setTag(tool, this.getKey() + "cooldown", System.currentTimeMillis(), PersistentDataType.LONG);
+		if (PlayerConfigurationManager.getInstance().getBoolean(player, OFF_COOLDOWN_SOUND))
+			planOffCooldownAlert(player, tool);
 	}
 
 	/**
@@ -81,5 +92,37 @@ public abstract class CooldownModifier extends Modifier {
 		if (this.cooldownReductionPerLevel > 1e-7)
 			cooldownTime *= Math.pow(1.0 - this.cooldownReductionPerLevel, level - 1);
 		return Math.round(cooldownTime);
+	}
+
+	private void planOffCooldownAlert(@NotNull final Player player, @NotNull final ItemStack tool) {
+		Bukkit.getScheduler().runTaskLater(this.getSource(),
+				() -> {
+					int note = PlayerConfigurationManager.getInstance().getInteger(player, OFF_COOLDOWN_NOTE);
+					note = Math.min(24, Math.max(0, note));
+
+					int instrument = PlayerConfigurationManager.getInstance().getInteger(player, OFF_COOLDOWN_INSTRUMENT);
+					instrument = Math.min(Instrument.values().length, Math.max(0, instrument));
+
+					player.playNote(player.getLocation(), Instrument.values()[instrument], new Note(note)); },
+				getCooldown(modManager.getModLevel(tool, this)) / 50);
+	}
+
+	protected final PlayerConfigurationOption OFF_COOLDOWN_SOUND =
+			new PlayerConfigurationOption(this, "off-cooldown-sound", PlayerConfigurationOption.Type.BOOLEAN,
+					"off-cooldown-sound", false);
+
+	protected final PlayerConfigurationOption OFF_COOLDOWN_NOTE =
+			new PlayerConfigurationOption(this, "off-cooldown-note", PlayerConfigurationOption.Type.INTEGER,
+					"off-cooldown-note", 0);
+
+	protected final PlayerConfigurationOption OFF_COOLDOWN_INSTRUMENT =
+			new PlayerConfigurationOption(this, "off-cooldown-instrument", PlayerConfigurationOption.Type.INTEGER,
+					"off-cooldown-instrument", Instrument.CHIME.ordinal());
+
+	@Override
+	public List<PlayerConfigurationOption> getPCIOptions() {
+		final ArrayList<PlayerConfigurationOption> playerConfigurationOptions = new ArrayList<>(List.of(OFF_COOLDOWN_SOUND, OFF_COOLDOWN_NOTE, OFF_COOLDOWN_INSTRUMENT));
+		playerConfigurationOptions.sort(Comparator.comparing(PlayerConfigurationOption::displayName));
+		return playerConfigurationOptions;
 	}
 }
