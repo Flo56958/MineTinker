@@ -23,10 +23,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static de.flo56958.minetinker.data.GUIs.addNavigationButtons;
 
@@ -167,6 +164,15 @@ public class PlayerConfigurationManager implements Listener {
 					}
 				}
 			}
+
+			void newLine() {
+				xIndex = 0;
+				yIndex++;
+				if (yIndex >= 5) {
+					yIndex = 0;
+					addPage();
+				}
+			}
 		}
 
 		final IndexHelper indexHelper = new IndexHelper();
@@ -175,6 +181,14 @@ public class PlayerConfigurationManager implements Listener {
 		for (PlayerConfigurationInterface pci : playerConfigInterfaces) {
 			final List<PlayerConfigurationOption> pciOptions = pci.getPCIOptions();
 			if (pciOptions.isEmpty()) continue;
+
+			final ItemStack titleItem = pci.getPCIDisplayItem();
+			final ItemMeta titleMeta = titleItem.getItemMeta();
+			titleMeta.setDisplayName(pci.getPCIDisplayColor() + pci.getPCIDisplayName());
+			titleMeta.setLore(Collections.emptyList());
+			titleItem.setItemMeta(titleMeta);
+			indexHelper.currentPage.addButton(indexHelper.xIndex, indexHelper.yIndex, titleItem);
+			indexHelper.nextIndex();
 
 			for (final PlayerConfigurationOption option : pciOptions) {
 				ItemStack buttonStack = new ItemStack(Material.DIRT, 1);
@@ -316,7 +330,7 @@ public class PlayerConfigurationManager implements Listener {
 			}
 
 			if (indexHelper.xIndex != 0)
-				indexHelper.nextIndex(); // add a space between the different PCI
+				indexHelper.newLine(); // add a space between the different PCI
 		}
 
 		return gui;

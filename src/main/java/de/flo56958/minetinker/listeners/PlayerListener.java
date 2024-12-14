@@ -105,7 +105,7 @@ public class PlayerListener implements Listener {
 
 		boolean eligible = false;
 
-		final String beginning = Splitter.on('_').splitToStream(tool.getType().toString()).findFirst().orElse("");
+		final String beginning = Splitter.on('_').splitToStream(tool.getType().toString()).findFirst().orElse("").toLowerCase();
 
 		//check if correct material is used
 		switch (beginning) {

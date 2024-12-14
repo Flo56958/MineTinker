@@ -3,6 +3,7 @@ package de.flo56958.minetinker.modifiers;
 import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationInterface;
 import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationOption;
 import org.bukkit.ChatColor;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
@@ -31,5 +32,10 @@ public abstract class PlayerConfigurableModifier extends Modifier implements Pla
 	@Override
 	public String getPCIKey() {
 		return this.getKey();
+	}
+
+	@Override
+	public ItemStack getPCIDisplayItem() {
+		return this.getModItem().clone();
 	}
 }
