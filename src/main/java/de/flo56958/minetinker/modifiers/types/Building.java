@@ -3,9 +3,11 @@ package de.flo56958.minetinker.modifiers.types;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTPlayerInteractEvent;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.modifiers.Modifier;
+import de.flo56958.minetinker.modifiers.PlayerConfigurableModifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
+import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationOption;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -22,16 +24,17 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
-public class Building extends Modifier implements Listener {
+public class Building extends PlayerConfigurableModifier implements Listener {
 
 	private static Building instance;
 	private boolean useDurability;
 	private boolean giveExpOnUse;
 	private int expAmount;
-	private boolean solvePlayerOverlap;
 
 	private Building() {
 		super(MineTinker.getPlugin());
@@ -69,7 +72,6 @@ public class Building extends Modifier implements Listener {
 		config.addDefault("ModifierItemMaterial", Material.GRASS_BLOCK.name());
 		config.addDefault("UseDurability", true);
 		config.addDefault("GiveExpOnUse", true);
-		config.addDefault("SolvePlayerOverlap", true);
 		config.addDefault("ExpAmount", 1);
 
 		config.addDefault("EnchantCost", 15);
@@ -86,18 +88,19 @@ public class Building extends Modifier implements Listener {
 		this.useDurability = config.getBoolean("UseDurability", true);
 		this.giveExpOnUse = config.getBoolean("GiveExpOnUse", true);
 		this.expAmount = config.getInt("ExpAmount", 1);
-		this.solvePlayerOverlap = config.getBoolean("SolvePlayerOverlap", true);
 	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void onPlace(@NotNull final MTPlayerInteractEvent event) {
+		if (event.getEvent().getAction() != Action.RIGHT_CLICK_BLOCK) return;
+
 		final Player player = event.getPlayer();
 		if (!player.hasPermission(getUsePermission())) return;
 
 		final ItemStack tool = event.getTool();
 		if (!modManager.hasMod(tool, this)) return;
 
-		if (event.getEvent().getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		if (!PlayerConfigurationManager.getInstance().getBoolean(player, ENABLED)) return;
 
 		final Block block = event.getEvent().getClickedBlock();
 		if (block == null) return;
@@ -132,7 +135,7 @@ public class Building extends Modifier implements Listener {
 		if (this.giveExpOnUse)
 			modManager.addExp(player, tool, this.expAmount, true);
 
-		if (this.solvePlayerOverlap) {
+		if (PlayerConfigurationManager.getInstance().getBoolean(player, SOLVE_PLAYER_OVERLAP)) {
 			// Teleport player one block up if he is inside the block
 			final BoundingBox blockBB = toFill.getBoundingBox();
 			final BoundingBox playerBB = player.getBoundingBox();
@@ -149,5 +152,20 @@ public class Building extends Modifier implements Listener {
 
 		event.getEvent().setUseInteractedBlock(Event.Result.DENY); // prevent vanilla behavior by cancelling the event
 		toPlace.setAmount(toPlace.getAmount() - (isDoubleSlab ? 2 : 1));
+	}
+
+	private final PlayerConfigurationOption ENABLED =
+			new PlayerConfigurationOption(this, "enabled", PlayerConfigurationOption.Type.BOOLEAN,
+					"enabled", true);
+
+	private final PlayerConfigurationOption SOLVE_PLAYER_OVERLAP =
+			new PlayerConfigurationOption(this, "solve-player-overlap", PlayerConfigurationOption.Type.BOOLEAN,
+					"solve-player-overlap", true);
+
+	@Override
+	public List<PlayerConfigurationOption> getPCIOptions() {
+		final ArrayList<PlayerConfigurationOption> playerConfigurationOptions = new ArrayList<>(List.of(ENABLED, SOLVE_PLAYER_OVERLAP));
+		playerConfigurationOptions.sort(Comparator.comparing(PlayerConfigurationOption::displayName));
+		return playerConfigurationOptions;
 	}
 }
