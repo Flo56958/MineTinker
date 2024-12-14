@@ -32,9 +32,9 @@ import static de.flo56958.minetinker.data.GUIs.addNavigationButtons;
 
 public class PlayerConfigurationManager implements Listener {
 
-	private ArrayList<PlayerConfigurationInterface> playerConfigInterfaces = new ArrayList<>();
+	private final ArrayList<PlayerConfigurationInterface> playerConfigInterfaces = new ArrayList<>();
 
-	private HashMap<Player, PlayerConfigurationHandle> playerConfigs = new HashMap<>();
+	private final HashMap<Player, PlayerConfigurationHandle> playerConfigs = new HashMap<>();
 
 	private static PlayerConfigurationManager instance;
 
@@ -341,7 +341,11 @@ public class PlayerConfigurationManager implements Listener {
 
 	@EventHandler
 	private void onWorldSave(final WorldSaveEvent e) {
-		for (PlayerConfigurationHandle handle : playerConfigs.values()) {
+		saveAllPlayerConfigs();
+	}
+
+	public void saveAllPlayerConfigs() {
+		for (final PlayerConfigurationHandle handle : playerConfigs.values()) {
 			try {
 				handle.config.save(handle.configFile);
 			} catch (IOException exception) {

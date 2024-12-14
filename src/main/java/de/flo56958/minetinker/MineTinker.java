@@ -214,6 +214,7 @@ public class MineTinker extends JavaPlugin {
 	public void onDisable() {
 		ChatWriter.logInfo("Shutting down!");
 		LanguageManager.cleanup(); //TODO: Replace with PluginDisableEvent
+		PlayerConfigurationManager.getInstance().saveAllPlayerConfigs();
 	}
 
 	/**
