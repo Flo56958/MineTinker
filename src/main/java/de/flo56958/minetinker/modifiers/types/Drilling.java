@@ -7,6 +7,7 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.PlayerConfigurableModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
 import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
 import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationOption;
@@ -124,7 +125,7 @@ public class Drilling extends PlayerConfigurableModifier implements Listener {
 		blacklist.addAll(blacklistConfig.stream().map(Material::getMaterial).toList());
 
 		CLAMP_LEVEL = new PlayerConfigurationOption(this, "clamp-to-level", PlayerConfigurationOption.Type.INTEGER,
-				"clamp-to-level", this.getMaxLvl());
+				LanguageManager.getString("Modifier.Power.PCO_clamp_level"), this.getMaxLvl());
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")

@@ -228,7 +228,7 @@ public class Photosynthesis extends PlayerConfigurableModifier {
 
 	private PlayerConfigurationOption NOTIFY_WHEN_ACTIVE =
 			new PlayerConfigurationOption(this, "notify-when-active", PlayerConfigurationOption.Type.BOOLEAN,
-					"notify-when-active", false);
+					LanguageManager.getString("Modifier.Photosynthesis.PCO_notify_when_active"), false);
 
 	@Override
 	public List<PlayerConfigurationOption> getPCIOptions() {

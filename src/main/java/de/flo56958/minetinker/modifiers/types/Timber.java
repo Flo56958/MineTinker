@@ -244,7 +244,7 @@ public class Timber extends PlayerConfigurableModifier implements Listener {
 
 	private final PlayerConfigurationOption PLANT_SAMPLINGS =
 			new PlayerConfigurationOption(this, "plant-samplings", PlayerConfigurationOption.Type.BOOLEAN,
-			"plant-saplings", true);
+			LanguageManager.getString("Modifier.Timber.PCO_plant_sapling"), true);
 
 	@Override
 	public List<PlayerConfigurationOption> getPCIOptions() {

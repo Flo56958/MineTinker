@@ -1,5 +1,6 @@
 package de.flo56958.minetinker.utils.playerconfig;
 
+import de.flo56958.minetinker.utils.LanguageManager;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -13,10 +14,10 @@ public class GeneralPCOptions implements PlayerConfigurationInterface {
 
 	public final PlayerConfigurationOption ACTIONBAR_MESSAGES =
 			new PlayerConfigurationOption(this, "actionbar-messages", PlayerConfigurationOption.Type.BOOLEAN,
-					"Actionbar Messages", true);
+					LanguageManager.getString("PCO_ActionBar_Messages"), true);
 	public final PlayerConfigurationOption ACTIONBAR_ON_EXP_GAIN =
 			new PlayerConfigurationOption(this, "actionbar-on-exp-gain", PlayerConfigurationOption.Type.BOOLEAN,
-					"Actionbar on EXP Gain", false);
+					LanguageManager.getString("PCO_ActionBar_ExpGain"), false);
 
 	@Override
 	public String getPCIKey() {

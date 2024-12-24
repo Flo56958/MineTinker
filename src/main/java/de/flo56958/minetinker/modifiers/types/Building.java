@@ -5,6 +5,7 @@ import de.flo56958.minetinker.api.events.MTPlayerInteractEvent;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.PlayerConfigurableModifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
 import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
 import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationOption;
@@ -156,11 +157,11 @@ public class Building extends PlayerConfigurableModifier implements Listener {
 
 	private final PlayerConfigurationOption ENABLED =
 			new PlayerConfigurationOption(this, "enabled", PlayerConfigurationOption.Type.BOOLEAN,
-					"enabled", true);
+					LanguageManager.getString("Modifier.Homing.PCO_enabled"), true);
 
 	private final PlayerConfigurationOption SOLVE_PLAYER_OVERLAP =
 			new PlayerConfigurationOption(this, "solve-player-overlap", PlayerConfigurationOption.Type.BOOLEAN,
-					"solve-player-overlap", true);
+					LanguageManager.getString("Modifier.Building.PCO_solve_player_overlap"), true);
 
 	@Override
 	public List<PlayerConfigurationOption> getPCIOptions() {

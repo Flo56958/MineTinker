@@ -5,6 +5,7 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.CooldownModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
 import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
 import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationOption;
@@ -153,11 +154,11 @@ public class Propelling extends CooldownModifier implements Listener {
 
 	private final PlayerConfigurationOption PARTICLES =
 			new PlayerConfigurationOption(this,"particles", PlayerConfigurationOption.Type.BOOLEAN,
-					"particles", true);
+					LanguageManager.getString("Modifier.Propelling.PCO_particle"), true);
 
 	private final PlayerConfigurationOption SOUND =
 			new PlayerConfigurationOption(this,"sound", PlayerConfigurationOption.Type.BOOLEAN,
-					"sound", true);
+					LanguageManager.getString("Modifier.Propelling.PCO_sound"), true);
 
 	@Override
 	public List<PlayerConfigurationOption> getPCIOptions() {

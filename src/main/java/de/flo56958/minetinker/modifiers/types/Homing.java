@@ -5,6 +5,7 @@ import de.flo56958.minetinker.api.events.MTProjectileLaunchEvent;
 import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.PlayerConfigurableModifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
 import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationOption;
 import org.bukkit.Bukkit;
@@ -155,7 +156,8 @@ public class Homing extends PlayerConfigurableModifier implements Listener {
 		Bukkit.getServer().getScheduler().runTaskLater(this.getSource(), runnable, 3);
 	}
 
-	private final PlayerConfigurationOption ENABLED = new PlayerConfigurationOption(this, "enabled", PlayerConfigurationOption.Type.BOOLEAN, "enabled", true);
+	private final PlayerConfigurationOption ENABLED = new PlayerConfigurationOption(this, "enabled", PlayerConfigurationOption.Type.BOOLEAN,
+			LanguageManager.getString("Modifier.Homing.PCO_enabled"), true);
 
 	@Override
 	public List<PlayerConfigurationOption> getPCIOptions() {

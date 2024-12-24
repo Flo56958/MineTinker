@@ -307,7 +307,7 @@ public class Ender extends PlayerConfigurableModifier implements Listener {
 
 	private final PlayerConfigurationOption REQUIRE_SNEAKING =
 			new PlayerConfigurationOption(this, "require-sneaking", PlayerConfigurationOption.Type.BOOLEAN,
-					"require-sneaking", true);
+					LanguageManager.getString("Modifier.Ender.PCO_require_sneaking"), true);
 
 	@Override
 	public List<PlayerConfigurationOption> getPCIOptions() {

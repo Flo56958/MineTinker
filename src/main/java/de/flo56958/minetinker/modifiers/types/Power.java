@@ -7,6 +7,7 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.PlayerConfigurableModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
+import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.PlayerInfo;
 import de.flo56958.minetinker.utils.data.DataHandler;
 import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
@@ -117,7 +118,7 @@ public class Power extends PlayerConfigurableModifier implements Listener {
 		blacklist.addAll(blacklistConfig.stream().map(Material::getMaterial).toList());
 
 		CLAMP_LEVEL = new PlayerConfigurationOption(this, "clamp-to-level", PlayerConfigurationOption.Type.INTEGER,
-				"clamp-to-level", this.getMaxLvl());
+				LanguageManager.getString("Modifier.Power.PCO_clamp_level"), this.getMaxLvl());
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -384,7 +385,7 @@ public class Power extends PlayerConfigurableModifier implements Listener {
 
 	private PlayerConfigurationOption LEVEL_1_VERTICAL =
 			new PlayerConfigurationOption(this, "level-1-vertical", PlayerConfigurationOption.Type.BOOLEAN,
-					"level-1-vertical", false);
+					LanguageManager.getString("Modifier.Power.PCO_level_1_vertical"), false);
 
 	private PlayerConfigurationOption CLAMP_LEVEL;
 

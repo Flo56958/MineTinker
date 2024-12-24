@@ -322,11 +322,11 @@ public class AutoSmelt extends PlayerConfigurableModifier implements Listener {
 
 	private final PlayerConfigurationOption PARTICLES =
 			new PlayerConfigurationOption(this,"particles", PlayerConfigurationOption.Type.BOOLEAN,
-					"particles", true);
+					LanguageManager.getString("Modifier.Propelling.PCO_particle"), true);
 
 	private final PlayerConfigurationOption SOUND =
 			new PlayerConfigurationOption(this,"sound", PlayerConfigurationOption.Type.BOOLEAN,
-					"sound", true);
+					LanguageManager.getString("Modifier.Propelling.PCO_sound"), true);
 
 	@Override
 	public List<PlayerConfigurationOption> getPCIOptions() {

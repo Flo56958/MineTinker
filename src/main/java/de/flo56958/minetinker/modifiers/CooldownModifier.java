@@ -109,15 +109,15 @@ public abstract class CooldownModifier extends PlayerConfigurableModifier {
 
 	protected final PlayerConfigurationOption OFF_COOLDOWN_ALERT =
 			new PlayerConfigurationOption(this, "off-cooldown-alert", PlayerConfigurationOption.Type.BOOLEAN,
-					"off-cooldown-alert", false);
+					LanguageManager.getString("Modifier.Cooldown.PCO_off_cooldown_alert"), false);
 
 	protected final PlayerConfigurationOption OFF_COOLDOWN_NOTE =
 			new PlayerConfigurationOption(this, "off-cooldown-note", PlayerConfigurationOption.Type.INTEGER,
-					"off-cooldown-note", 0);
+					LanguageManager.getString("Modifier.Cooldown.PCO_off_cooldown_note"), 0);
 
 	protected final PlayerConfigurationOption OFF_COOLDOWN_INSTRUMENT =
 			new PlayerConfigurationOption(this, "off-cooldown-instrument", PlayerConfigurationOption.Type.INTEGER,
-					"off-cooldown-instrument", Instrument.CHIME.ordinal());
+					LanguageManager.getString("Modifier.Cooldown.PCO_off_cooldown_instrument"), Instrument.CHIME.ordinal());
 
 	@Override
 	public List<PlayerConfigurationOption> getPCIOptions() {
