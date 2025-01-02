@@ -7,10 +7,8 @@ import de.flo56958.minetinker.data.ToolType;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
+import de.flo56958.minetinker.utils.LanguageManager;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Arrow;
@@ -128,6 +126,7 @@ public class Magical extends Modifier implements Listener {
 					player.getInventory().addItem(arrow.getItem());
 				}
 				event.setCancelled(true);
+				ChatWriter.sendActionBar(player, ChatColor.RED + LanguageManager.getString("Modifier.Magical.NotEnoughXP", player));
 				return;
 			}
 
