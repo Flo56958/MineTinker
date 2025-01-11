@@ -7,6 +7,7 @@ import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Hanging;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -100,6 +101,7 @@ public class Undead extends Modifier implements Listener {
 
 		if (!(damager instanceof Player player)) return;
 		if (event.getEntity() instanceof Player) return;
+		if (event.getEntity() instanceof Hanging) return; // item frames, paintings, etc.
 		if (!player.hasPermission(getUsePermission())) return;
 
 		final ItemStack helmet = player.getInventory().getHelmet();
