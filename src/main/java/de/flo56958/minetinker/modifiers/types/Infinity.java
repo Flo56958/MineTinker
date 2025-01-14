@@ -29,6 +29,8 @@ public class Infinity extends Modifier implements Listener {
 
 	private static Infinity instance;
 
+	private boolean worksOnCustomArrows;
+
 	private Infinity() {
 		super(MineTinker.getPlugin());
 		customModelData = 10_014;
@@ -68,6 +70,7 @@ public class Infinity extends Modifier implements Listener {
 		config.addDefault("SlotCost", 2);
 		config.addDefault("Color", "%WHITE%");
 		config.addDefault("ModifierItemMaterial", Material.ARROW.name());
+		config.addDefault("WorksOnCustomArrows", true);
 
 		config.addDefault("EnchantCost", 15);
 		config.addDefault("Enchantable", true);
@@ -79,6 +82,8 @@ public class Infinity extends Modifier implements Listener {
 		ConfigurationManager.loadConfig("Modifiers" + File.separator, getFileName());
 
 		init();
+
+		this.worksOnCustomArrows = config.getBoolean("WorksOnCustomArrows", true);
 	}
 
 	@Override
@@ -100,7 +105,7 @@ public class Infinity extends Modifier implements Listener {
 	public void onShoot(final MTProjectileLaunchEvent event) {
 		Projectile projectile = event.getEvent().getEntity();
 		if (!(projectile instanceof Arrow arrow)) return;
-		if (arrow.hasCustomEffects()) return;
+		if (arrow.hasCustomEffects() && !this.worksOnCustomArrows) return;
 		if (arrow.getPickupStatus() == AbstractArrow.PickupStatus.CREATIVE_ONLY) return;
 
 		final Player player = event.getPlayer();
@@ -110,8 +115,8 @@ public class Infinity extends Modifier implements Listener {
 		final ItemStack tool = event.getTool();
 		if (!modManager.hasMod(tool, this)) return;
 
-		if (!player.getInventory().addItem(new ItemStack(Material.ARROW, 1)).isEmpty()) { //adds items to (full) inventory
-			player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.ARROW, 1)); //drops item when inventory is full
+		if (!player.getInventory().addItem(arrow.getItem()).isEmpty()) { //adds items to (full) inventory
+			player.getWorld().dropItem(player.getLocation(), arrow.getItem()); //drops item when inventory is full
 		} // no else as it gets added in if
 
 		arrow.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
