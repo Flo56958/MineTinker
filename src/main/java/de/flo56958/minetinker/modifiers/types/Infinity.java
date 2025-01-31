@@ -10,10 +10,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.AbstractArrow;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -106,6 +103,7 @@ public class Infinity extends Modifier implements Listener {
 		Projectile projectile = event.getEvent().getEntity();
 		if (!(projectile instanceof Arrow arrow)) return;
 		if (arrow.hasCustomEffects() && !this.worksOnCustomArrows) return;
+		if (arrow instanceof SpectralArrow && !this.worksOnCustomArrows) return;
 		if (arrow.getPickupStatus() == AbstractArrow.PickupStatus.CREATIVE_ONLY) return;
 
 		final Player player = event.getPlayer();
