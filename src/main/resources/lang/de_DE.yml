@@ -120,6 +120,8 @@ ModifierFailCause.ToolLevelToLow: "Werkzeug ist nicht hoch genug gelevelt!"
 GrindStone.PossibleSlotsAfterGrind: "Mögliche freie Modifizierungsplätze nach dem Schleifen: %amount"
 
 ActionBar.ExpGain: "%amount Exp hinzugewonnen!"
+PCO_ActionBar_Messages: "Erlaube Actionbar Nachrichten vom Plugin"
+PCO_ActionBar_ExpGain: "Item-XP wird auf der Actionbar angezeigt."
 
 LanguageManager.LoadedLanguage: "Sprachmanager hat Sprache %lang erfolgreich geladen!"
 
@@ -166,11 +168,27 @@ Modifier:
     ModifierItemName: "Blutiges Redstone"
     DescriptionModifierItem: "Modifizierungs-Item für die Berserker-Modifikation"
     Statistic_Used: "Anzahl Aktivierungen: %amount"
+  Building:
+    Name: "Erbauend"
+    Description: "Beim rechts-klicken eines Blockes wird derselbe Block daneben platziert, sollte er sich im Inventar befinden."
+    ModifierItemName: "Block des Erbauers"
+    DescriptionModifierItem: "Modifizierungs-Item für die Erbauend-Modifikation"
+    PCO_solve_player_overlap: "Spielerüberschneidungen beim Platzieren von Blöcken lösen"
   Channeling:
     Name: "Kanalisierend "
     Description: "Werde zum Gott des Donners und beschwöre Blitze mit jedem Angriff! (%amount Wahrscheinlichkeit pro Level)"
+    Description_OnlyStorms: "Diese Aktion funktioniert nur während Gewittern!"
     ModifierItemName: "Blitzende Scherbe"
     DescriptionModifierItem: "Modifizierungs-Item für die Kanalisierend-Modifizierung"
+  Cooldown:
+    PCO_off_cooldown_alert: "Soll ein Ton abgespielt werden, wenn die Abklingzeit des Modifikators abgelaufen ist"
+    PCO_off_cooldown_note: "Die Note, die gespielt wird, wenn die Abklingzeit des Modifikators abgelaufen ist (von 0 bis 24)"
+    PCO_off_cooldown_instrument: "Das Instrument, das gespielt wird, wenn die Abklingzeit des Modifikators abgelaufen ist (von 0 bis 24)"
+  Dense:
+    Name: "Dicht"
+    Description: "Erhöht den verursachten Schaden pro gefallenem Block!"
+    ModifierItemName: "Dichtes Eisen"
+    DescriptionModifierItem: "Modifizierungs-Item für die Dicht-Modifikation"
   Directing:
     Name: "Direkt"
     Description: "Drops von getöteten Mobs oder zerstörten Blöcken wird automatisch dem Inventar hinzugefügt."
@@ -196,6 +214,7 @@ Modifier:
     Statistic_Used: "Anzahl Enderman verkörpert: %amount"
     Statistic_Distance: "Distanz überwunden: %amount Blöcke"
     Statistic_Swapped: "Anzahl Mobs teleportiert: %amount"
+    PCO_require_sneaking: "Schleichen ist eine Voraussetzung zum Teleportieren"
   Evasive:
     Name: "Ausweichend"
     Description: "%chance Wahrscheinlichkeit pro Level Angriffen auszuweichen (Modifikatoren: %sneakX wenn schleichend, %sprintX wenn sprintend, %pvpX wenn in PvP)"
@@ -217,6 +236,11 @@ Modifier:
     Description: "Fügt %amount zusätzliche Modifizierungsplätze und %xpamount XP auf dein Werkzeug hinzu!"
     ModifierItemName: "Rafinierter Netherstern"
     DescriptionModifierItem: "Modifizierungs-Item für einen zusätzlichen Modifizierungsplatz"
+  Farming:
+    Name: "Landwirtschaft"
+    Description: "Pflanzen werden beim Ernten neu gepflanzt! Pflanzen rechts-klicken lässt sie schneller wachsen!"
+    ModifierItemName: "Verzaubertes Weizen"
+    DescriptionModifierItem: "Modifizierungs-Item für die Landwirtschaft-Modifikation"
   Fiery:
     Name: "Feurig"
     Description: "Eine Modifizierung sie alle zu verbrennen!"
@@ -247,6 +271,7 @@ Modifier:
     Description: "Pfeile erkennen Ziele im Radius von %radius Blöcken und visieren diese an! Höhere Level erhöhen die Genauigkeit."
     ModifierItemName: "Ballistik-Prozessor"
     DescriptionModifierItem: "Modifizierungs-Item für die Zielsuchend-Modifizierung"
+    PCO_enabled: "Aktiviert"
   Infinity:
     Name: "Unendlich"
     Description: "Du benötigst nur einen Pfeil zum Bogenschießen und der Dreizack kommt zurück!"
@@ -287,6 +312,7 @@ Modifier:
     Description: "Schieße einen magischen Pfeil, welcher nicht von Gravitation beeinflusst wird und mit %amount% normaler Geschwindigkeit fliegt! Wenn der Pfeil ein Ziel trifft, macht es %min% bis %max% zusätzlichen Schaden (abhängig vom Level)! Kostet %xp XP zum Schießen!"
     ModifierItemName: "Magischer Pfeil"
     DescriptionModifierItem: "Modifizierungs-Item für die Magisch-Modifikation"
+    NotEnoughXP: "Nicht genug XP zum Schießen!"
   Melting:
     Name: "Schmelzend"
     Description: "%amount% zusätzlicher Schaden gegen brennende Gegner und %amount% weniger erlittener Schaden während du brennst!"
@@ -319,9 +345,10 @@ Modifier:
     DescriptionModifierItem: "Modifizierungs-Item für die Photosynthese-Modifikation"
     NotifyWhenActive: "Photosynthese aktiv..."
     Statistic_Healed: "Haltbarkeit zurückgewonnen: %amount"
+    PCO_notify_when_active: "Benachrichtigung, wenn der Modifikator in der Aktionsleiste aktiv ist"
   Piercing:
     Name: "Durchbohrend"
-    Description: "Pfeile durchbohren mehrere Gegner!"
+    Description: "Pfeile gehen durch mehrere Gegner hindurch und Nahkampftreffer durchdringen Rüstungen!"
     ModifierItemName: "Bodkin-Spitze"
     DescriptionModifierItem: "Modifizierungs-Item für die Durchbohrend-Modifikation"
   Poisonous:
@@ -334,11 +361,15 @@ Modifier:
     Description: "Zerstöre mehr Blöcke pro Schlag mit deinem Werkzeug!"
     ModifierItemName: "Verzauberter Smaragd"
     DescriptionModifierItem: "Modifizierungs-Item für die Kräftig-Modifikation"
+    PCO_level_1_vertical: "Wenden Sie den Effekt vertikal auf Level 1 an"
+    PCO_clamp_level: "Begrenzung des Modifikators auf ein bestimmtes Level"
   Propelling:
     Name: "Antreibend"
-    Description: "Treibe dich in der Luft an wenn du Schleichst während du gleitest mit einer Elytra oder im Wasser stehst mit einem Dreizack!"
+    Description: "Bewege dich durch die Luft, indem du mit dem Elytren schleichend gleitest, mit dem Dreizack im Wasser stehst oder mit einer Nahkampfwaffe im Fallen von oben angreifst!"
     ModifierItemName: "Verzauberter Feuerwerksstern"
     DescriptionModifierItem: "Modifizierungs-Item für die Antreibend-Modifizierung"
+    PCO_particle: "Spawne Partikel bei der Benutzung der Modifizierung"
+    PCO_sound: "Spielt einen Ton wenn die Modifizierung aktiviert wird"
   Protecting:
     Name: "Beschützend"
     Description: "Rüstung schütz besser gegen Schaden!"
@@ -442,6 +473,14 @@ Modifier:
     Description: "Fälle Bäume durch nur einen abgebauten Block!"
     ModifierItemName: "Hölzerner Smaragd"
     DescriptionModifierItem: "Modifizierungs-Item für die Holzfäller-Modifizierung"
+    Statistic_Used: "Bäume gefällt: %amount"
+    PCO_plant_sapling: "Pflanze einen Setzling nach dem Fällen"
+  Mutating:
+    Name: "Mutierend"
+    Description: "Erhöht die Chance um %chance% pro Level, %amount zufällige Modifikatoren bei einem Stufenaufstieg zu erhalten!"
+    Description_Level0: "Dieser Effekt funktioniert auch mit einer Basischance, wenn das Werkzeug diesen Modifikator nicht hat!"
+    ModifierItemName: "%ITALIC%In%UNDERLINE%st%MAGIC%abi%RESET%%DARK_GRAY%%ITALIC%ler K%MAGIC%e%STRIKE%rn"
+    DescriptionModifierItem: "Modifizierungs-Item für die Mutierend-Modifikation"
   Undead:
     Name: "Untot"
     Description: "Monster werden dich nicht mehr angreifen, aber du kannst auch keinen angreifen!"
@@ -474,6 +513,13 @@ Modifier:
     Description: "Macht zusätzlichen Witherschaden für %duration Ticks * %multiplier pro Level!"
     ModifierItemName: "Verwelkender Witherskelettschädel"
     DescriptionModifierItem: "Modifizierungs-Item für die Verwelkend-Modifizierung"
+  Zealous:
+    Name: "Eifrig"
+    Description: "Verursache pro Stufe und Sekunde, die du im Kampf bist, %percent% mehr Schaden! Dieser Effekt lässt sich unendlich oft stapeln und wird außerhalb des Kampfes zurückgesetzt."
+    ModifierItemName: "Höllischer Eifer"
+    DescriptionModifierItem: "Modifizierungs-Item für die Eifrig-Modifikation"
+    Statistic_Damage: "Zusätzlicher Schaden: %amount"
+    Statistic_Time: "Längster Kampf: %amount Sekunden"
 
 DataType.Boolean: "Boolean (wahr/falsch)"
 DataType.String: "String (Zeichenkette)"
@@ -494,6 +540,7 @@ ToolType.FISHINGROD: "Angeln"
 ToolType.HELMET: "Helme"
 ToolType.HOE: "Hacken"
 ToolType.INVALID: "Ungültig"
+ToolType.MACE: "Streitkolben"
 ToolType.LEGGINGS: "Hosen"
 ToolType.OTHER: "Andere"
 ToolType.PICKAXE: "Spitzhacken"
@@ -543,6 +590,9 @@ Enchantment:
   aqua_affinity: "Wasseraffinität"
   soul_speed: "Seelengeschwindigkeit"
   swift_sneak: "Huschen"
+  density: "Dichte"
+  wind_burst: "Windstoß"
+  breach: "Durchbruch"
 
 Updater.Unable: "Suche nach Updates fehlgeschlagen!"
 Updater.UpdateAvailable: "Es ist ein Update verfügbar auf spigotmc.org!"
