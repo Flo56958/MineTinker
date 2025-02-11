@@ -120,6 +120,8 @@ ModifierFailCause.ToolLevelToLow: "工具沒有足夠的等級！"
 GrindStone.PossibleSlotsAfterGrind: "砂磨後可能的空餘槽位: %amount"
 
 ActionBar.ExpGain: "已獲取 %amount 經驗!"
+PCO_ActionBar_Messages: "允许显示来自插件的 actionbar 消息"
+PCO_ActionBar_ExpGain: "在操作栏中显示项目的经验增益"
 
 LanguageManager.LoadedLanguage: "語言管理器已成功加載 %lang 語言"
 
@@ -171,12 +173,17 @@ Modifier:
     Description: "右鍵方塊目標 如果有背包相同物品則會建造上去"
     ModifierItemName: "建築方塊"
     DescriptionModifierItem: "特性:建築"
+    PCO_solve_player_overlap: "解决放置方块时玩家重叠的问题"
   Channeling:
     Name: "換雷"
     Description: "每等級增加 %amount 召喚閃電幾率"
     Description_OnlyStorms: "這只有在雷雨天有效"
     ModifierItemName: "閃電碎片"
     DescriptionModifierItem: "特性:換雷"
+  Cooldown:
+    PCO_off_cooldown_alert: "当修改器关闭冷却时发送声音警报"
+    PCO_off_cooldown_note: "修改器关闭冷却时播放的音符（0~24）"
+    PCO_off_cooldown_instrument: "模块冷却结束时播放音效的乐器类型（0~24）"
   Dense:
     Name: "致密"
     Description: "增加在近战攻击前每个下落高度造成的伤害!"
@@ -207,6 +214,7 @@ Modifier:
     Statistic_Used: "瞬移次數: %amount"
     Statistic_Distance: "瞬移的總距離:%amount 塊"
     Statistic_Swapped: "交換實體次數: %amount"
+    PCO_require_sneaking: "需要潜行才能传送"
   Evasive:
     Name: "迴避"
     Description: "躲避攻擊的幾率（每等級%chance） - 潛行 %sneakX，衝刺 %sprintX PvP %pvpX"
@@ -263,6 +271,7 @@ Modifier:
     Description: "箭頭指向 %radius 塊半徑內的目標 更高的等級可提高準確性."
     ModifierItemName: "彈道瞄準器"
     DescriptionModifierItem: "特性:導向"
+    PCO_enabled: "已开启"
   Infinity:
     Name: "無限"
     Description: "無限彈藥庫 不香嗎"
@@ -303,6 +312,7 @@ Modifier:
     Description: "射出不受重力影響且飛行速度為正常速度 %amount% 的無重力箭 如果箭擊中目標 它會造成 %min% 到 %max% 的額外傷害（取決於等級） 射擊需要 %xp XP！"
     ModifierItemName: "無重力箭"
     DescriptionModifierItem: "特性:魔能"
+    NotEnoughXP: "身上没有足够的经验来发射"
   Melting:
     Name: "融化"
     Description: "對燃燒的敵人造成 %amount% 額外傷害 著火時受到的傷害減少 %amount%！"
@@ -335,6 +345,7 @@ Modifier:
     DescriptionModifierItem: "特性:光合作用"
     NotifyWhenActive: "光合作用啟用..."
     Statistic_Healed: "恢復總耐久度: %amount"
+    PCO_notify_when_active: "当模块激活时在物品栏上方进行提醒"
   Piercing:
     Name: "貫穿"
     Description: "箭矢能够穿透多个敌人，近战攻击时能够穿透护甲！"
@@ -350,11 +361,15 @@ Modifier:
     Description: "使用你的工具每次挖掘可破壞更多方塊!"
     ModifierItemName: "魔法祖母綠"
     DescriptionModifierItem: "特性:擴散"
+    PCO_level_1_vertical: "允许在1级时效果垂直（需修改）"
+    PCO_clamp_level: "锁定模块至指定的等级"
   Propelling:
     Name: "推進"
     Description: "在使用鞘翅滑翔时潜行、在水里站立时使用三叉戟或在下落时用近战武器攻击上方，都可以获得推进效果"
     ModifierItemName: "魔法煙火之星"
     DescriptionModifierItem: "特性:推進"
+    PCO_particle: "当使用模块时显示粒子特效"
+    PCO_sound: "当使用模块时播放音效"
   Protecting:
     Name: "保護"
     Description: "可以更好保護免受傷害!"
@@ -459,6 +474,7 @@ Modifier:
     ModifierItemName: "木元素綠寶石"
     DescriptionModifierItem: "特性:伐木"
     Statistic_Used: "砍伐树木: %amount"
+    PCO_plant_sapling: "在砍倒树后重新种植树苗"
   Mutating:
     Name: "變異"
     Description: "每级增加 %chance% 概率 在物品升級時獲得 %amount 个随机模塊"
