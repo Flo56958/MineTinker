@@ -120,6 +120,8 @@ ModifierFailCause.ToolLevelToLow: "工具等级不足!"
 GrindStone.PossibleSlotsAfterGrind: "升级后可能获得的槽位数: %amount"
 
 ActionBar.ExpGain: "已获取 %amount 经验!"
+PCO_ActionBar_Messages: "允许将来自插件的消息显示在物品栏上方"
+PCO_ActionBar_ExpGain: "在物品栏上方显示项目的经验增益"
 
 LanguageManager.LoadedLanguage: "语言管理器已成功加载 %lang 语言!"
 
@@ -171,12 +173,17 @@ Modifier:
     Description: "右键目标方块，如果背包内有相同物品，则会进行建造."
     ModifierItemName: "建筑方块"
     DescriptionModifierItem: "特性: 建筑"
+    PCO_solve_player_overlap: "解决放置方块时玩家重叠的问题"
   Channeling:
     Name: "雷闪"
     Description: "每级增加 %amount 召唤闪电的机率!"
     Description_OnlyStorms: "此模块仅在雷雨天有效！"
     ModifierItemName: "雷霆碎片"
     DescriptionModifierItem: "雷闪模块"
+  Cooldown:
+    PCO_off_cooldown_alert: "当模块冷却结束时发送声音提醒"
+    PCO_off_cooldown_note: "模块冷却结束时播放的音符（0~24）"
+    PCO_off_cooldown_instrument: "模块冷却结束时播放音效的乐器类型（0~24）"
   Dense:
     Name: "致密"
     Description: "增加重锤在近战攻击前每个下落高度造成的伤害!"
@@ -207,6 +214,7 @@ Modifier:
     Statistic_Used: "瞬移次数: %amount"
     Statistic_Distance: "瞬移距离: %amount 块"
     Statistic_Swapped: "交换实体次数: %amount"
+    PCO_require_sneaking: "需要潜行才能传送"
   Evasive:
     Name: "闪避"
     Description: "有几率躲避当前攻击 (%chance/级) -- 潜行时为 %sneakX, 疾跑时为 %sprintX, PvP时为 %pvpX."
@@ -263,6 +271,7 @@ Modifier:
     Description: "箭矢指向 %radius 半径内的目标，每级可提高准确性."
     ModifierItemName: "自动瞄准器"
     DescriptionModifierItem: "特性: 寻向"
+    PCO_enabled: "已开启"
   Infinity:
     Name: "无限"
     Description: "你获得无限的弓箭, 或是令三叉戟自动回到手中!"
@@ -303,6 +312,7 @@ Modifier:
     Description: "射出不受重力影响但速度为正常速度 %amount% 的反重力箭，如果箭击中目标，它会造成 %min% 到 %max% 的额外伤害.（取决于等级， 每发箭矢需要 %xp XP！)"
     ModifierItemName: "魔法箭矢"
     DescriptionModifierItem: "魔能模块"
+    NotEnoughXP: "身上没有足够的经验来发射"
   Melting:
     Name: "炽融"
     Description: "对着火的敌人增加 %amount% 的伤害, 并且自身着火时伤害减免 %amount%."
@@ -335,6 +345,7 @@ Modifier:
     DescriptionModifierItem: "光合作用模块"
     NotifyWhenActive: "正在进行光合作用..."
     Statistic_Healed: "恢复耐久度: %amount"
+    PCO_notify_when_active: "当模块激活时在物品栏上方进行提醒"
   Piercing:
     Name: "穿透"
     Description: "箭矢能够穿透多个敌人，近战攻击时能够穿透护甲！"
@@ -350,11 +361,15 @@ Modifier:
     Description: "工具可以一次性采掘更多方块!"
     ModifierItemName: "附魔绿宝石"
     DescriptionModifierItem: "扩散模块"
+    PCO_level_1_vertical: "允许在1级时效果垂直（需修改）"
+    PCO_clamp_level: "锁定模块至指定的等级"
   Propelling:
     Name: "推进"
     Description: "在使用鞘翅滑翔时潜行、在水里站立时使用三叉戟或在下落时用近战武器攻击上方，都可以获得推进效果."
     ModifierItemName: "附魔烟火之星"
     DescriptionModifierItem: "推进模块"
+    PCO_particle: "当使用模块时显示粒子特效"
+    PCO_sound: "当使用模块时播放音效"
   Protecting:
     Name: "保护"
     Description: "护甲将削弱所有类型的伤害!"
@@ -459,6 +474,7 @@ Modifier:
     ModifierItemName: "镶木绿宝石"
     DescriptionModifierItem: "伐木模块"
     Statistic_Used: "砍伐树木: %amount"
+    PCO_plant_sapling: "在砍倒树后重新种植树苗"
   Mutating:
     Name: "突变"
     Description: "每级增加 %chance% 概率，在物品升级时获得 %amount 个随机模块."
