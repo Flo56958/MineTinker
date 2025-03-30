@@ -1,444 +1,526 @@
 Alert:
-  OnItemBreak: '%RED%Sua ferramenta quebrou! Devolvendo ela com 1 de durabilidade.'
-  OnItemGrind: '%RED%Você não pode usar Rebolo para itens do MineTinker.'
-  ToolUpgradeFailure: '%RED%O aprimoramento falhou!'
+  OnItemBreak: '%RED%Parece que sua ferramenta quebrou! Devolvendo com 1 de durabilidade.'
+  OnItemGrind: '%RED%Você não pode usar o Rebolo em itens do MineTinker.'
+  ToolUpgradeFailure: '%RED%Falha ao aprimorar a ferramenta!'
   InternalError: '%RED%Ocorreu um erro interno!'
-  OnCooldown: '%RED%Esta habilidade ainda não foi carregada!'
-MinecraftAPI: '%RED%Não foi possível conectar à API do Minecraft!'
+  OnCooldown: '%RED%Esta habilidade ainda está em recarga!'
+  MinecraftAPI: '%RED%Não foi possível conectar à API do Minecraft!'
 StartUp:
-StartUp.Commands: "Comandos registrados!"
-StartUp.Events: "Registrando eventos!"
-StartUp.GUIs: "Carregando GUIs!"
-StartUp.StdLogging: "O Logging Padrão está habilitado. Você pode desativá-lo nas configurações, em Logging.Standard! "
-StartUp.DebugLogging: "O Logging de Depuração está habilitado. Você pode desativá-lo nas configurações, em Logging.Debug!"
-StartUp.Incompatible:
-  Start: "Iniciando busca por plugins incompatíveis... Você pode desabilitar este recurso nas configurações principais!"
-  Found: "%plugin encontrado. Ajustando o MineTinker para uma melhor compatibilidade!"
+  Commands: Comandos registrados!
+  BuildersWands: Varinhas do Construtor ativadas!
+  EasyHarvest: Colheita Fácil ativada!
+  Events: Eventos registrados!
+  GUIs: Carregando interfaces gráficas!
+  StdLogging: Log padrão ativado. Você pode desativar nas configurações em Logging.Standard!
+  DebugLogging: Log de depuração ativado. Você deve desativar nas configurações em Logging.Debug!
+Builderswand:
+  Name:
+    Wood: Varinha do Construtor de Madeira
+    Stone: Varinha do Construtor de Pedra
+    Iron: Varinha do Construtor de Ferro
+    Gold: Varinha do Construtor de Ouro
+    Diamond: Varinha do Construtor de Diamante
+    Netherite: Varinha do Construtor de Netherite
+  Description: '%WHITE%Varinha do Construtor do MineTinker'
+  Error: Não foi possível registrar a receita para %wand!
 Commands:
   Info:
-    Line1: 'MineTinker (%ver) é um Plugin feito por Flo56958.'
-    Line2: 'É inspirado em diferentes mods (Ex. TinkersConstruct)'
-  InvalidArguments: 'Os argumentos do comando inserido são inválidos!'
-  InvalidTool: 'É necessário que você equipe a ferramenta adequada em sua mão principal, para poder executar esse comando!'
-  NoPermission: 'Você não possui permissões para realizar essa ação!'
+    Line1: MineTinker (%ver) é um plugin criado por Flo56958.
+    Line2: Inspirado em diferentes mods (Ex. TinkersConstruct)
+    Title: Informações do MineTinker
+    Contributors: Contribuidores
+    ContributorsAction: Clique para ver todos os contribuidores!
+    Failure: Não foi possível obter informações do Github!
+  InvalidArguments: Argumentos de comando inválidos!
+  InvalidTool: Você precisa segurar uma ferramenta válida na mão principal para usar este comando!
+  NoPermission: Você não tem permissão para executar esta ação!
   Reload:
-    Note1: 'NOTA: É possível que o plugin não funcione corretamente após recarregar! É recomendável que o servidor seja reiniciado!'
-    Recipes: 'Limpando Receitas'
-    Configs: 'Recarregando Configurações!'
-    ModManager: 'Recarregando o Gerenciador de Mods (ModManager)!'
-    GUIs: 'Recarregando Interfáces Gráficas de Usuário (GUI)!'
-    Finish: 'Recarregamento concluido!'
-  ModList: 'Modificadores Possíveis:'
+    Note1: 'NOTA: O plugin pode não funcionar corretamente após recarregar! Recomenda-se reiniciar o servidor!'
+    Recipes: Limpando receitas!
+    Configs: Recarregando configurações!
+    ModManager: Recarregando ModManager!
+    Builderswands: Recarregando Builderswands!
+    GUIs: Recarregando interfaces gráficas!
+    Finish: Recarregamento concluído!
+  ModList: 'Modificadores disponíveis:'
   CheckUpdate:
-    Start: 'Procurando Atualizações...'
-    Disabled: 'A busca por atualizações está desabilitada pelo administrador do server!'
+    Start: Verificando atualizações...
+    Disabled: A verificação de atualizações está desativada pelo administrador!
   ItemStatistics:
-    Head: 'Estatísticas de Item para %toolname'
-    Level: '%GOLD%Nivel: %WHITE%%level'
+    Head: Estatísticas do item %toolname
+    Level: '%GOLD%Nível: %WHITE%%level'
     Exp: '%GOLD%Exp: %WHITE%%current / %nextlevel'
     FreeSlots: '%GOLD%Espaços Livres para Modificadores: %WHITE%%slots'
     Modifiers: '%WHITE%Modificadores:'
   Failure:
-    Main: 'Falha no comando: %cause'
+    Main: 'Comando falhou: %cause'
     Cause:
-      PlayerNotFound: 'Jogador %p não encontrado!'
-      PlayerMissing: 'Não foram encontradas Informações Necessárias do Jogador!'
-      InvalidArguments: 'Parâmetros/Argumentos inválidos!'
-      NumberFormatException: 'NumberFormatException!'
-      PlayerOnlyCommand: 'Comando exclusivo para Jogadores!'
-      UnknownCommand: 'Comando desconhecido!'
-      NoPermission: 'Permissão Negada!'
-      InvalidItem: 'Item inválido!'
-      NameNotAllowed: 'Nome não permitido!'
+      PlayerNotFound: Jogador %p não encontrado!
+      PlayerMissing: Informações do jogador faltando!
+      InvalidArguments: Argumentos inválidos!
+      NumberFormatException: Erro de formato numérico!
+      PlayerOnlyCommand: Comando apenas para jogadores!
+      UnknownCommand: Comando desconhecido!
+      NoPermission: Sem permissão!
+      InvalidItem: Item inválido!
+      NameNotAllowed: Nome não permitido!
 GUI:
   ButtonAction:
-    REQUEST_INPUT: 'Sua entrada é necessária para %data. A próxima mensagem de chat que você enviar será capturada pelo MineTinker e será sua entrada'
+    REQUEST_INPUT: Sua entrada é necessária para %data. Sua próxima mensagem no chat será capturada pelo MineTinker.
 GUIs:
-  Forward: 'Frente'
-  Back: 'Trás'
-  LeftClick: 'Clique esquerdo'
-  RightClick: 'Clique direito'
-  MiddleClick: 'Clique meio'
-  BackOtherMenu: 'Voltar ao Menu anterior'
+  Forward: Avançar
+  Back: Voltar
+  LeftClick: Clique esquerdo
+  RightClick: Clique direito
+  MiddleClick: Clique do meio
+  BackOtherMenu: Voltar ao menu anterior
   Modifiers:
-    Title: 'Modificadores MineTinker %pageNo'
-    MaxLevel: 'Nivel Máximo: %maxLevel'
+    Title: Modificadores do MineTinker, %pageNo
+    MaxLevel: 'Nível máximo: %maxLevel'
     WorksOn: 'Funciona em:'
-    CanApply: 'Aplica-se em:'
-    IncompatibleWith: 'Imcompatível com:'
-    EnchantCost: 'Custo de Encantamento: %WHITE%%enchantCost'
-    ClickToRecipe: '%key para mostrar a receita.'
-    BlockToEnchant: '%key e %mat em %block para encantar o item.'
-    SlotCost: 'Slots livres necessários por nível: %amount'
+    CanApply: 'Pode aplicar em:'
+    IncompatibleWith: 'Incompatível com:'
+    EnchantCost: 'Custo de encantamento: %WHITE%%enchantCost'
+    ClickToRecipe: '%key para mostrar receita de craft.'
+    BlockToEnchant: '%key com %mat em %block para encantar item.'
+    SlotCost: 'Slots livres necessários por nível: %WHITE%%amount'
+    MinimumToolLevel: 'Nível mínimo da ferramenta: %WHITE%%level'
+    FilterButton: Filtro
+    FilterLore: '%amount Modificadores'
   ConfigurationEditor:
-    ReloadPlugin: 'Recarregar MineTinker'
-    Change: 'Mudou %key de %old para %new!'
+    ReloadPlugin: Recarregar MineTinker
+    Change: Alterado %key de %old para %new!
     Type: 'Tipo: %type'
     Value: 'Valor: %GOLD%%value'
-    UnsupportedType: 'Este tipo não é compatível e não pode ser editado!'
-    WrongInput: 'Sua entrada não foi correta! Esperado %type, recebeu %input!'
-    Title: 'Gerenciador de configuração, Página %pageNo'
+    UnsupportedType: Este tipo não é suportado e não pode ser editado!
+    WrongInput: Entrada incorreta! Esperado %type, recebido %input!
+    Title: Gerenciador de Configurações, Página %pageNo
     TitleConfigs: '%config, Página %pageNo'
-    IncrementValueClick: '%key para incrementar por p%amount!'
-    DecrementValueClick: '%key para diminuir por %amount!'
-    InsertValue: '%key inserir novo valor!'
-    ToggleValue: '%key para alternar o valor!'
+    IncrementValueClick: '%key para incrementar em %amount!'
+    DecrementValueClick: '%key para decrementar em %amount!'
+    InsertValue: '%key para inserir novo valor!'
+    ToggleValue: '%key para alternar valor!'
     config:
       PluginIncompatibility:
-        Check: 'Habilita buscar por plug-ins incompatíveis, o MineTinker tentara reagir de acordo (por exemplo, alterar as configurações)'
-        SkippedPlugins: 'Desativa a pesquisa de plugins especificados nesta lista'
-      CheckForUpdates: 'Verifica se há atualizações na inicialização e na renicialização'
-      chat-messages: 'Ativa ChatMessages (como Saída de Comando)'
-      LevelStep: 'Valor *(LevelFactor^LevelOfTool) [EXPONENCIAL]; *(LevelFactor*LevelOfTool) [LINEAR]'
-      ProgressionIsLinear: 'falso: exponencial, verdadeiro: linear'
-      ResetAtVarOverflow: 'Reseta o nível e exp em Integer.MAX_VALUE ou Long.MAX_VALUE with 1 and 0. false: não há mais ganho de experiência'
+        Check: Ativa a busca por plugins incompatíveis e o MineTinker tenta reagir adequadamente
+        SkippedPlugins: Desativa a busca pelos plugins especificados nesta lista
+      CheckForUpdates: Verifica atualizações ao iniciar e recarregar
+      chat-messages: Ativar mensagens no chat (como saída de comandos)
+      LevelStep: valor *(LevelFactor^LevelOfTool) [EXPONENCIAL]; *(LevelFactor*LevelOfTool) [LINEAR]
+      ProgressionIsLinear: 'false: exponencial, true: linear'
+      ResetAtVarOverflow: 'Reinicia Nível e Exp em Integer.MAX_VALUE ou Long.MAX_VALUE para 1 e 0. false: sem ganho de Exp'
       logging:
-        standard: 'registra atividades importantes do jogador com MineTinker'
-        debug: 'ainda mais informações são impressas no console'
-        metrics: 'bStats-Metrics para estatísticas anônimas sobre o uso do MineTinker'
+        standard: registra atividades importantes dos jogadores com MineTinker
+        debug: imprime ainda mais informações no console
+        metrics: Métricas bStats para estatísticas anônimas sobre o uso do MineTinker
   Statistics:
-    Title: 'Estatística do Item para %tool'
+    Title: Estatísticas do item %tool
     General:
-      Title: 'Estatísticas Gerais'
+      Title: Estatísticas Gerais
       Creator: 'Criador: %player'
-      Created: 'Criado: %date'
+      Created: 'Criado em: %date'
     Blocks:
-      Title: 'Estatísticas de Bloco'
-      TitlePage: 'Estatísticas de bloco para %tool - %pageNo'
-      AmountBroken: '%amount vezes quebrado'
+      Title: Estatísticas de Blocos
+      TotalAmount: 'Total de blocos quebrados: %amount'
+      TitlePage: Estatísticas de Blocos para %tool - %pageNo
+      AmountBroken: 'Quebrado %amount vezes'
+    Modifiers:
+      TitlePage: Estatísticas de Modificadores para %tool - %pageNo
     Combat:
-      Title: 'Estatísticas de Combate'
-      TitlePage: 'Estatísticas de combate para %tool - %pageNo'
+      Title: Estatísticas de Combate
+      TitlePage: Estatísticas de Combate para %tool - %pageNo
       AmountKilled: '%amount vezes morto'
-      DamageDealt: '%amount Dano causado'
-      DamageReceived: '%amount dano recebido'
+      DamageDealt: '%amount de dano causado'
+      DamageReceived: '%amount de dano recebido'
+  Enchantable:
+    Title: 'Escolha o modificador para encantar:'
 ModManager:
-  RegisterModifier: '%GREEN%Registrou o %mod %GREEN%modifier em %plugin.'
-  UnregisterModifier: '%GREEN%Não registrou o %mod %GREEN%modifier em %plugin.'
-  IncompatibilityWrongSyntax: 'Sintaxe de linha incorreta ou nome de modificador incorreto encontrado nas Incompatibilidades do modificador na linha "%line".'
+  RegisterModifier: '%GREEN%Registrado o modificador %mod %GREEN%do plugin %plugin.'
+  UnregisterModifier: '%GREEN%Modificador %mod %GREEN%do plugin %plugin foi desregistrado.'
+  IncompatibilityWrongSyntax: Sintaxe incorreta ou nome de modificador inválido encontrado nas incompatibilidades na linha '%line'.
 ModifierFailCause:
-  IncompatibleModifiers: 'Modificadores Imcompatíveis!'
-  InvalidToolType: 'Tipo de ferramenta inválida!'
-  MaximumSlotsReached: 'Quantidade máxima de slots alcançada!'
-  ModMaxLevel: 'O modificador já está no nível máximo!'
-  NoFreeSlots: 'Não há slots livres suficientes no item!'
-  NoPermission: 'Sem Permissão!'
-  PlayerFailure: 'O jogador falhou ao aplicar a modificação!'
+  IncompatibleModifiers: Modificadores incompatíveis!
+  InvalidToolType: Tipo de ferramenta inválido!
+  MaximumSlotsReached: Número máximo de slots atingido!
+  ModMaxLevel: Modificador já está no nível máximo!
+  NoFreeSlots: Slots insuficientes no item!
+  NoPermission: Sem permissão!
+  PlayerFailure: O jogador falhou ao aplicar a modificação!
+  ToolLevelToLow: Ferramenta com nível insuficiente!
 GrindStone:
-  PossibleSlotsAfterGrind: 'Possíveis slots livres após moagem: %amount'
+  PossibleSlotsAfterGrind: 'Slots livres possíveis após usar rebolo: %amount'
 ActionBar:
-  ExpGain: '%amount exp ganha!'
+  ExpGain: '%amount de experiência obtida!'
 LanguageManager:
-  LoadedLanguage: 'Gerenciador de Idiomas carregado %lang successfully!'
+  LoadedLanguage: LanguageManager carregou %lang com sucesso!
 TinkerListener:
-  ToolUpgrade: '%tool foi melhorada para %type!'
+  ToolUpgrade: '%tool foi aprimorada para %type!'
   ModifierApply: '%tool agora tem %mod e %slots slots livres restantes!'
-  ModifierFail: 'Falha ao aplicar %mod e %tool (%cause)!'
-  ToolLevelUp: '%tool subiu de nível para o nível %level!'
+  ModifierFail: Falha ao aplicar %mod em %tool (%cause)!'
+  ToolLevelUp: '%tool subiu de nível e agora é Nível %level!'
 Modifier:
   Enchantable:
-    LevelsRequired: '%amount Níveis necessários!'
+    LevelsRequired: '%amount níveis necessários!'
   Anti-Arrow-Plating:
-    Name: 'Revestimento anti flecha'
-    Description: 'A armadura reduz os danos de projéteis!'
-    ModifierItemName: 'Metal resistente a perfurações'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Anti Flecha'
+    Name: Blindagem Anti-Flecha
+    Description: Armadura reduz dano de projéteis!
+    ModifierItemName: Metal Resistente a Perfurações
+    DescriptionModifierItem: Item de modificador para Blindagem Anti-Flecha
   Anti-Blast-Plating:
-    Name: 'Revestimento Anti Explosão'
-    Description: 'A armadura reduz os danos da explosão!'
-    ModifierItemName: 'Metal Resistente à Explosão'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Revestimento Anti Explosão'
+    Name: Blindagem Anti-Explosão
+    Description: Armadura reduz dano de explosões!
+    ModifierItemName: Metal Resistente a Explosões
+    DescriptionModifierItem: Item de modificador para Blindagem Anti-Explosão
   Aquaphilic:
-    Name: 'Aquafílico'
-    Description: "Nade mais rápido, mergulhe mais e pare embaixo d'água de forma mais eficiente"
-    ModifierItemName: 'Pérola do oceano'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Aquafílico'
+    Name: Aquafílico
+    Description: Nade mais rápido, mergulhe por mais tempo e quebre blocos subaquáticos com mais eficiência
+    ModifierItemName: Pérola do Oceano
+    DescriptionModifierItem: Item de modificador para Aquafílico
   Auto-Smelt:
-    Name: 'Auto Fundição'
-    Description: 'funda minérios e outros blocos durante a mineração! %chance% de chance de ativar por nível.'
-    ModifierItemName: 'Fornalha Encantada'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Auto Fundição'
+    Name: Auto-Fusão
+    Description: Funde minérios e outros blocos ao minerar! %chance% de chance de ativar por nível.
+    ModifierItemName: Forno Avançado
+    DescriptionModifierItem: Item de modificador para Auto-Fusão
+    Statistic_Used: 'Vezes usado: %amount'
+    Statistic_Luck: 'Recursos extras devido a %modifier: %amount'
   Beheading:
-    Name: 'Decapitação'
-    Description: '%chance% chance de derrubar a cabeça do mob morto por nível.'
-    ModifierItemName: 'Wither Skull Encantado'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Decapitação'
+    Name: Decapitação
+    Description: '%chance% de chance por nível de dropar a cabeça do mob morto.'
+    ModifierItemName: Crânio do Wither Encantado
+    DescriptionModifierItem: Item de modificador para Decapitação
+    Statistic_Used: 'Decapitações bem-sucedidas: %amount'
   Berserk:
-    Name: 'Berserk'
-    Description: 'Ganhe um impulso extra de força por %duration segundos quando sua saúde cair abaixo de %percent%!'
-    ModifierItemName: 'Redstone Sangrento'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Berserk'
+    Name: Berserk
+    Description: Ganha um impulso de força extra por %duration segundos quando sua vida cai abaixo de %percent%!
+    ModifierItemName: Redstone Sangrenta
+    DescriptionModifierItem: Item de modificador para Berserk
+    Statistic_Used: 'Vezes ativado: %amount'
   Channeling:
-    Name: 'Canalização'
-    Description: 'Invoca raios quando o tridente atinge seus inimigos!'
-    ModifierItemName: 'Fragmento de Raio Infundido'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Canalização'
+    Name: Canalização
+    Description: Invoca um raio com %amount de chance por nível!
+    ModifierItemName: Fragmento Infundido por Raios
+    DescriptionModifierItem: Item de modificador para Canalização
   Directing:
-    Name: 'Direcionado'
-    Description: 'Os saques de mobs mortos ou blocos quebrados vão diretamente para o seu inventário!'
-    ModifierItemName: 'Bússola Aprimorada'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Direcionado'
+    Name: Direcionado
+    Description: Saques de mobs mortos ou blocos quebrados vão diretamente para seu inventário!
+    ModifierItemName: Bússola Avançada
+    DescriptionModifierItem: Item de modificador para Direcionado
+    Statistic_Used: 'Itens redirecionados: %amount'
   Drilling:
-    Name: 'Perfuração'
-    Description: 'Perfure um bloco de profundidade a mais na terra por nível!'
-    ModifierItemName: 'Broca Reforçada'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Perfuração'
+    Name: Perfuração
+    Description: Perfura um bloco mais fundo na terra por nível!
+    ModifierItemName: Broca Reforçada
+    DescriptionModifierItem: Item de modificador para Perfuração
+  Echoing:
+    Name: Eco
+    Description: Vê entidades próximas com alcance de %amount blocos por nível!
+    ModifierItemName: Olho Onividente
+    DescriptionModifierItem: Item de modificador para Eco
   Ender:
-    Name: 'Ender'
-    Description: 'Teleporta você enquanto se esgueira para o local seguro das flechas!'
-    ModifierItemName: 'O Olho Ender Especial'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Ender'
-    TeleportationProhibited: 'Você não pode trocar de lugar com este jogador!'
+    Name: Ender
+    Description: Teleporta você enquanto agacha para o local onde a flecha atingiu!
+    ModifierItemName: Olho de Ender Especial
+    DescriptionModifierItem: Item de modificador para Ender
+    TeleportationProhibited: Você não pode trocar de lugar com este jogador!
+    Statistic_Used: 'Imitações de Enderman: %amount'
+    Statistic_Distance: 'Distância total pulada: %amount blocos'
+    Statistic_Swapped: 'Entidades trocadas: %amount'
   Evasive:
-    Name: 'Evasivo'
-    Description: 'Chance de esquivar de ataques recebidos (%chance por nível) - %sneakX quando esgueirando, %sprintX ao correr, %pvpX quando em PvP'
-    ModifierItemName: 'Pena Rápida'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Evasivo'
+    Name: Evasivo
+    Description: Chance de esquivar de ataques (%chance por Nível) - %sneakX ao agachar, %sprintX ao correr, %pvpX em PvP
+    ModifierItemName: Pena Rápida
+    DescriptionModifierItem: Item de modificador para Evasivo
   Experienced:
-    Name: 'Experiente'
-    Description: 'A ferramenta tem %chance% de chance por nível para dropar %amount XP Enquanto estiver usando isto!'
-    ModifierItemName: 'essência da Experiência'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Experiente'
+    Name: Experiente
+    Description: Sua ferramenta tem %chance% de chance por nível de dropar %amount de XP ao usá-la!
+    ModifierItemName: Essência de Experiência
+    DescriptionModifierItem: Item de modificador para Experiente
+    Statistic_Amount: 'Quantidade de XP dropada: %amount'
+  Explosive:
+    Name: Explosivo
+    Description: Seu ataque explode com %power de poder por nível!
+    ModifierItemName: TNT MoaB
+    DescriptionModifierItem: Item de modificador para Explosivo
   Extra-Modifier:
-    Name: 'Modificação Extra'
-    Description: 'Add %amount Slots modificadores adicionais para a ferramenta!'
-    ModifierItemName: 'Estrela Nether Refinada'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Extra'
+    Name: Modificador-Extra
+    Description: Adiciona %amount slots de modificadores extras e %xpamount de experiência à ferramenta!
+    ModifierItemName: Estrela do Nether Refinada
+    DescriptionModifierItem: Item de modificador para Modificador-Extra
   Fiery:
-    Name: 'Fogoso'
-    Description: 'Um modificador para queimar todos eles!'
-    ModifierItemName: 'Blaze Rod Encantada'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Fogoso'
+    Name: Fogoso
+    Description: Um modificador para queimá-los todos!
+    ModifierItemName: Vara de Blaze Encantada
+    DescriptionModifierItem: Item de modificador para Fogoso
   Freezing:
-    Name: 'Congelando'
-    Description: 'Congele a água ao seu redor!'
-    ModifierItemName: 'Cristal de Gelo'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Congelando'
+    Name: Congelante
+    Description: Congela a água ao seu redor!
+    ModifierItemName: Cristal Gelado
+    DescriptionModifierItem: Item de modificador para Congelante
   Glowing:
-    Name: 'Brilhante'
-    Description: 'Faça os inimigos brilharem por %durationmin até %durationmax segundos! (depdendendo do nível)'
-    ModifierItemName: 'Ender Glowstone'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Brilhante'
+    Name: Brilhante
+    Description: Faz inimigos brilharem por %durationmin a %durationmax segundos! (depende do nível)
+    ModifierItemName: Pedra-do-fim Luminosa
+    DescriptionModifierItem: Item de modificador para Brilhante
   Hardened:
-    Name: 'Fortalecido'
-    Description: 'Fortaleça sua armadura em %aamount  e a resistência em %tamount pontos por nível!'
-    ModifierItemName: 'Diamante de ferro refinado'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Fortalecido'
+    Name: Reforçado
+    Description: Reforça sua armadura em %aamount e resistência em %tamount pontos por nível!
+    ModifierItemName: Ferro Refinado com Diamante
+    DescriptionModifierItem: Item de modificador para Reforçado
   Haste:
-    Name: 'Pressa'
-    Description: 'Destrua blocos e atire com bestas mais rápido!'
-    ModifierItemName: 'Bloco de Redstone comprimido'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Pressa'
+    Name: Pressa
+    Description: Destrói blocos e dispara bestas mais rapidamente!
+    ModifierItemName: Bloco de Redstone Comprimido
+    DescriptionModifierItem: Item de modificador para Pressa
+  Homing:
+    Name: Mira
+    Description: Flechas seguem alvos em um raio de %radius blocos! Níveis maiores aumentam a precisão.
+    ModifierItemName: Processador Balístico
+    DescriptionModifierItem: Item de modificador para Mira
   Infinity:
-    Name: 'Infinidade'
-    Description: 'Você só precisa de apenas flecha para disparar um arco e um tridente para disparar, pois a flecha e o tridente volta para você'
-    ModifierItemName: 'Flecha Encantada'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Infinidade'
+    Name: Infinidade
+    Description: Você só precisa de uma flecha para atirar e o tridente volta para você!
+    ModifierItemName: Flecha Encantada
+    DescriptionModifierItem: Item de modificador para Infinidade
   Insulating:
-    Name: 'Isolante'
-    Description: 'Armadura resistente ao dano de calor!'
-    ModifierItemName: 'Liga Resistente ao Calor'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Isolante'
+    Name: Isolante
+    Description: Armadura reduz dano de calor!
+    ModifierItemName: Liga Resistente ao Calor
+    DescriptionModifierItem: Item de modificador para Isolante
   KineticPlating:
-    Name: 'Chapeamento Cinético'
-    Description: 'Reduz o dano recebido ao colidir com um Elytra por %amount% por Nível.'
-    ModifierItemName: 'Placa Cinética'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Chapeamento Cinético'
+    Name: Blindagem Cinética
+    Description: Reduz o dano recebido ao colidir com Elytra em %amount% por Nível.
+    ModifierItemName: Placa Cinética
+    DescriptionModifierItem: Item de modificador para Blindagem Cinética
   Knockback:
-    Name: 'Repulsão'
-    Description: 'Empurre os inimigos para trás com um hit!'
-    ModifierItemName: 'TNT Encantada'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Repulsão'
+    Name: Repulsão
+    Description: Empurra inimigos mais longe com cada golpe!
+    ModifierItemName: TNT Encantada
+    DescriptionModifierItem: Item de modificador para Repulsão
   Lifesteal:
-    Name: 'Roubo de Vida'
-    Description: 'Cura você em %amount% por nível de dano causado. %chance% de ativar.'
-    ModifierItemName: 'Netherrack infundido de sangue'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Roubo de Vida'
+    Name: Roubo de Vida
+    Description: Cura você em %amount% do dano causado por nível. %chance% de chance de ativar.
+    ModifierItemName: Netherrack Infundido com Sangue
+    DescriptionModifierItem: Item de modificador para Roubo de Vida
   Light-Weight:
-    Name: 'Peso leve'
-    Description: 'Você cairá como uma pena - mais ou menos ...'
-    ModifierItemName: 'Pena Encantada'
-    DescriptionModifierItem: 'Item Modificado para o Modificador Peso leve'
+    Name: Peso Leve
+    Description: Você cai como uma pena - mais ou menos...
+    ModifierItemName: Pena Avançada
+    DescriptionModifierItem: Item de modificador para Peso Leve
   Luck:
     Name: Sorte
-    Description: Obtenha mais itens de blocos e de mobs!
-    ModifierItemName: Bloco de Lápis lazúli Comprimido
-    DescriptionModifierItem: Item Modificado para o Modificador Sorte
+    Description: Obtém mais saques de mobs e blocos!
+    ModifierItemName: Bloco de Lápis-Lazúli Comprimido
+    DescriptionModifierItem: Item de modificador para Sorte
   Magical:
     Name: Mágico
-    Description: Atire um orbe mágico que não é afetado pela gravidade, mas voa %amount% mais lento! Se o orbe atingir um alvo, ele causa de %min% até %max% de dano (depdendendo do nível)! Custa %xp de EXP por tiro!
+    Description: Dispara uma flecha mágica não afetada pela gravidade e voa %amount% da velocidade normal! Se acertar, causa %min% a %max% de dano extra (depende do nível)! Custa %xp de XP para atirar!
     ModifierItemName: Flecha Mágica
-    DescriptionModifierItem: Item Modificado para o Modificador Mágico
+    DescriptionModifierItem: Item de modificador para Mágico
   Melting:
     Name: Derretendo
-    Description: '%amount%  de dano extra contra inimigos em chamas e %amount% de dano 
-      a menos sofrido durante o fogo!'
-    ModifierItemName: Bloco de Mágma Encantado
-    DescriptionModifierItem: Item Modificado para o Modificador Derretendo
+    Description: '%amount% de dano extra contra inimigos em chamas e %amount% menos dano recebido enquanto estiver queimando!'
+    ModifierItemName: Bloco de Magma Encantado
+    DescriptionModifierItem: Item de modificador para Derretendo
   Multishot:
     Name: Rajada
-    Description: Atire uma flecha a mais por nível por tiro!
-    ModifierItemName: Multi Flechas
-    DescriptionModifierItem: Item Modificado para o Modificador Rajada
+    Description: Dispara mais uma flecha por nível por disparo!
+    ModifierItemName: Flecha Múltipla
+    DescriptionModifierItem: Item de modificador para Rajada
+  Multijump:
+    Name: Multissalto
+    Description: Pula uma vez extra por nível!
+    ModifierItemName: Pé de Coelho Mágico
+    DescriptionModifierItem: Item de modificador para Multissalto
   Nightseeker:
     Name: Caçador Noturno
-    Description: Distribua mais ou receba menos danos (%amountmin% até %amountmax%) quando a lua está brilhando (depende do nível e da posição da lua). Este efeito é invertido durante o dia e no Nether, mas tem força total no The End!
-    ModifierItemName: Detector de luz diurna escura
-    DescriptionModifierItem: Item Modificado para o Modificador Caçador Noturno
+    Description: Causa mais ou recebe menos dano (%amountmin% a %amountmax%) quando a lua está brilhando (depende do nível e posição da lua). Efeito invertido de dia e no Nether, mas com força total no End!
+    ModifierItemName: Sensor de Luz Noturno
+    DescriptionModifierItem: Item de modificador para Caçador Noturno
+  Phasing:
+    Name: Faseamento
+    Description: Flechas podem atravessar paredes!
+    ModifierItemName: Fruta do Coro em Fase
+    DescriptionModifierItem: Item de modificador para Faseamento
   Photosynthesis:
     Name: Fotossíntese
-    Description: Repare seu item com %amount de durabilidade por nível a cada %ticks Ticks quando parado enquanto o sol brilha. Quanto mais você fica parado, mais rápido é reparado. (%multiplier%)
+    Description: Repara seu item com %amount de durabilidade por nível a cada %ticks ticks enquanto o sol brilha. Quanto mais tempo, mais rápido repara. (%multiplier%)
     ModifierItemName: Clorofila Extraída
-    DescriptionModifierItem: Item Modificado para o Modificador Fotossíntese
+    DescriptionModifierItem: Item de modificador para Fotossíntese
+    NotifyWhenActive: Fotossíntese ativa...
+    Statistic_Healed: 'Durabilidade total restaurada: %amount'
   Piercing:
     Name: Perfuração
-    Description: As flechas passam por vários inimigos!
-    ModifierItemName: Ponta Perfurante
-    DescriptionModifierItem: Item Modificado para o Modificador Perfuração
+    Description: Flechas atravessam múltiplos inimigos!
+    ModifierItemName: Ponta Bodkin
+    DescriptionModifierItem: Item de modificador para Perfuração
   Poisonous:
     Name: Venenoso
-    Description: Envenena o alvo por %duration Ticks * %multiplier por nível!
+    Description: Envenena o alvo por %duration ticks * %multiplier por nível!
     ModifierItemName: Carne Podre Encantada
-    DescriptionModifierItem: Item Modificado para o Modificador Venenoso
+    DescriptionModifierItem: Item de modificador para Venenoso
   Power:
     Name: Força
-    Description: Destrua mais blocos por golpe com sua ferramenta!
+    Description: Destrói mais blocos por golpe com sua ferramenta!
     ModifierItemName: Esmeralda Encantada
-    DescriptionModifierItem: Item Modificado para o Modificador Força
+    DescriptionModifierItem: Item de modificador para Força
   Propelling:
-    Name: Impulsionando
-    Description: Impulsione-se no ar esgueirando-se enquanto desliza com o elytra ou você se impulsiona na água com o tridente
-    ModifierItemName: Fogos de Artifício encantado
-    DescriptionModifierItem: Item Modificado para o Modificador Impulsionando
+    Name: Propulsão
+    Description: Impulsiona-se pelo ar ao agachar enquanto plana com elytra ou na água com tridente!
+    ModifierItemName: Estrela de Foguete Encantada
+    DescriptionModifierItem: Item de modificador para Propulsão
   Protecting:
-    Name: Protegendo
-    Description: Sua armadura o protege melhor contra danos!
+    Name: Proteção
+    Description: Sua armadura protege melhor contra dano!
     ModifierItemName: Obsidiana Enriquecida
-    DescriptionModifierItem: Item Modificado para o Modificador Protegendo
+    DescriptionModifierItem: Item de modificador para Proteção
   Reinforced:
     Name: Reforçado
-    Description: Chance de não gastar durabilidade ao usar a ferramenta/armadura! torna a ferramenta mais durável!
+    Description: Chance de não usar durabilidade ao usar a ferramenta/armadura! Torna a ferramenta mais durável!
     ModifierItemName: Obsidiana Comprimida
-    DescriptionModifierItem: Item Modificado para o Modificador Reforçado
+    DescriptionModifierItem: Item de modificador para Reforçado
   Scotopic:
     Name: Escotópico
-    Description: 'Concede %amount segundos de visão noturna por nível se o nível de luz cair abaixo de %light! Cooldown: %cmax até %cmin segundos (dependendo do nível)'
+    Description: 'Concede %amount segundos de Visão Noturna por nível se o nível de luz cair abaixo de %light! Recarga: %cmax a %cmin segundos (depende do nível)'
     ModifierItemName: Olho Noturno
-    DescriptionModifierItem: Item Modificado para o Modificador Escotópico
+    DescriptionModifierItem: Item de modificador para Escotópico
   Shadow-Dive:
     Name: Mergulho Sombrio
-    Description: Desapareça completamente quando se esgueira em locais escuros! (Nível da luz <= %level)
-    ModifierItemName: Cristal desaparecendo
-    DescriptionModifierItem: Item Modificado para o Modificador Mergulho Sombrio
-    LightToHigh: O nível de luz esta muito alto!
-    InCombat: Voce esta em combate!
+    Description: Desaparece completamente da visão ao agachar em lugares escuros! (Nível de luz <= %level + nível do modificador)
+    ModifierItemName: Cristal de Desaparecimento
+    DescriptionModifierItem: Item de modificador para Mergulho Sombrio
+    LightToHigh: O nível de luz está muito alto!
+    InCombat: Você está em combate!
+    Active: Invisível...
   Self-Repair:
     Name: Autorreparação
-    Description: '%chance% de chance de reparar %amount de durabilidade em uma ferramenta ou armadura ao usá-lo por nível!'
-    ModifierItemName: Paralelepípedo musgoso encantado
-    DescriptionModifierItem: Item Modificado para o Modificador Autorreparação
+    Description: '%chance% de chance por nível de reparar a ferramenta/armadura com %amount de durabilidade ao usá-la!'
+    ModifierItemName: Pedregulho com Musgo Encantado
+    DescriptionModifierItem: Item de modificador para Autorreparação
   Sharpness:
     Name: Julgamento
-    Description: A arma causa dano adicional em qualquer um!
+    Description: Arma causa dano adicional a todos!
     ModifierItemName: Bloco de Quartzo Comprimido
-    DescriptionModifierItem: Item Modificado para o Modificador Julgamento
+    DescriptionModifierItem: Item de modificador para Julgamento
   Shrouded:
     Name: Encoberto
-    Description: Gera uma nuvem de partículas que cega de %durationmin até %durationmax segundos onde a flecha cai! Sinergiza com outro modificador de efeito de poção.
-    ModifierItemName: Poção de fumaça
-    DescriptionModifierItem: Item Modificado para o Modificador Encoberto
+    Description: Cria uma nuvem de partículas que cega por %durationmin a %durationmax segundos onde a flecha atingir! Sinergiza com outros modificadores de efeito.
+    ModifierItemName: Frasco de Fumaça
+    DescriptionModifierItem: Item de modificador para Encoberto
   Shulking:
     Name: Shulking
-    Description: Faça os inimigos levitarem e ficarem imóveis por %duration Ticks! O efeito fica mais forte a cada nível.
-    ModifierItemName: Casco de Shulker Encantado
-    DescriptionModifierItem: Item Modificado para o Modificador Shulking
+    Description: Faz inimigos levitarem e imóveis por %duration ticks! O efeito fica mais forte a cada nível.
+    ModifierItemName: Casca de Shulk Avançada
+    DescriptionModifierItem: Item de modificador para Shulking
   Silk-Touch:
-    Name: Toque suave
-    Description: Aplica o encantamento Toque Suave!
-    ModifierItemName: Teia de Aranha Aprimorada
-    DescriptionModifierItem: Item Modificado para o Modificador Toque Suave
+    Name: Toque Suave
+    Description: Aplica Toque Suave!
+    ModifierItemName: Teia de Aranha Avançada
+    DescriptionModifierItem: Item de modificador para Toque Suave
   Smite:
     Name: Punição
-    Description: Sua arma causa danos adicionais aos mortos-vivos!
+    Description: Sua arma causa dano adicional aos mortos-vivos!
     ModifierItemName: Osso Sagrado
-    DescriptionModifierItem: Item Modificado para o Modificador Punição
+    DescriptionModifierItem: Item de modificador para Punição
   Soul-Speed:
-    Name: Velocidade da Alma
-    Description: Ande mais rápido na areia da alma!
-    ModifierItemName: Areia da Alma Antiga
-    DescriptionModifierItem: Item Modificado para o Modificador Velocidade da Alma
+    Name: Velocidade das Almas
+    Description: Anda mais rápido em areia das almas!
+    ModifierItemName: Areia das Almas Antiga
+    DescriptionModifierItem: Item de modificador para Velocidade das Almas
   Soulbound:
     Name: Alma Gemea
-    Description: Não perca seus itens ao morrer.
-    ModifierItemName: Beacon Energizado
-    DescriptionModifierItem: Item Modificado para o Modificador Alma Gemea
+    Description: Não perde itens ao morrer.
+    ModifierItemName: Sinalizador Infundido com Poder
+    DescriptionModifierItem: Item de modificador para Alma Gemea
   Speedy:
     Name: Veloz
-    Description: Mais rápido! Faz você andar e correr %amount% mais rápido por nível!
-    ModifierItemName: Pele de Coelho Encantada
-    DescriptionModifierItem: Item Modificado para o Modificador Veloz
+    Description: Preciso ir rápido! Faz você andar e correr %amount% mais rápido por nível!
+    ModifierItemName: Pele de Coelho Avançada
+    DescriptionModifierItem: Item de modificador para Veloz
   Spiders-Bane:
-    Name: Anti Aranha
-    Description: A arma causa danos adicionais às aranhas!
-    ModifierItemName: Olho Limpo de Aranha
-    DescriptionModifierItem: Item Modificado para o Modificador Anti Aranha
+    Name: Flagelo das Aranhas
+    Description: Arma causa dano adicional a aranhas!
+    ModifierItemName: Olho de Aranha Purificado
+    DescriptionModifierItem: Item de modificador para Flagelo das Aranhas
   Sunblazer:
     Name: Poder do Sol
-    Description: Dar mais ou receber menos dano (%amountmin% to %amountmax%) enquanto o sol estiver brilhando(depende do nível e da posição do sol). Este efeito é invertido à noite, e no the End. No Nether tem sua força no máximo!!
-    ModifierItemName: Detector Solar Dourado
-    DescriptionModifierItem: Item Modificado para o Modificador Poder do Sol
+    Description: Causa mais ou recebe menos dano (%amountmin% a %amountmax%) quando o sol está brilhando (depende do nível e posição do sol). Efeito invertido à noite e no End, mas com força total no Nether!
+    ModifierItemName: Sensor de Luz Solar Dourado
+    DescriptionModifierItem: Item de modificador para Poder do Sol
   Sweeping:
     Name: Varrendo
     Description: Causa mais dano em uma área maior!
-    ModifierItemName: Lingote de Ferro Encantado
-    DescriptionModifierItem: Item Modificado para o Modificador Varrendo
+    ModifierItemName: Barra de Ferro Encantada
+    DescriptionModifierItem: Item de modificador para Varrendo
+  Swift-Sneaking:
+    Name: Agilidade Furtiva
+    Description: Move-se mais rápido enquanto agacha!
+    ModifierItemName: Pena da Rapidez
+    DescriptionModifierItem: Item de modificador para Agilidade Furtiva
   Tanky:
     Name: Tanque
-    Description: Deixa você extra forte  com %amount corações extras por nível!
-    ModifierItemName: Obsidiana de Sangue Infundida
-    DescriptionModifierItem: Item Modificado para o Modificador Tanque
+    Description: Torna-se mais resistente com %amount corações extras por nível!
+    ModifierItemName: Obsidiana Infundida com Sangue
+    DescriptionModifierItem: Item de modificador para Tanque
   Thorned:
     Name: Espinhoso
-    Description: Sua armadura causa dano quando danificado!
-    ModifierItemName: Couraça de Espinho
-    DescriptionModifierItem: Item Modificado para o Modificador Espinhoso
+    Description: Sua armadura fere outros quando você é atingido!
+    ModifierItemName: Blindagem Espinhosa
+    DescriptionModifierItem: Item de modificador para Espinhoso
   Timber:
     Name: Lenhador
-    Description: Derruba árvores em um instante!
+    Description: Derruba árvores instantaneamente!
     ModifierItemName: Esmeralda de Madeira
-    DescriptionModifierItem: Item Modificado para o Modificador Lenhador
+    DescriptionModifierItem: Item de modificador para Lenhador
+  Undead:
+    Name: Morto-vivo
+    Description: Monstros não te atacam mais, mas você também não pode atacar ninguém!
+    ModifierItemName: Soro Zumbi
+    DescriptionModifierItem: Item de modificador para Morto-vivo
+  Vigilant:
+    Name: Vigilante
+    Description: Se não tiver corações de absorção, ganha um escudo temporário igual a %amount do dano recebido por nível.
+    ModifierItemName: Maçã Proibida
+    DescriptionModifierItem: Item de modificador para Vigilante
   Void-Netting:
-    Name: Rede Vazia
-    Description: 'Teleporta você para um local seguro em um raio de %radius blocos por nível quando você cai no vazio. Cooldown: %cmax de %cmin segundos (dependendo do nível)'
-    ModifierItemName: Rede do Vazio
-    DescriptionModifierItem: Item Modificado para o Modificador Rede do Vazio
-    CouldNotFindBlock: Não foi possível encontrar um lugar seguro para se teletransportar!
+    Name: Rede do Vácuo
+    Description: 'Teleporta você para um lugar seguro em um raio de %radius blocos por nível quando cair no vácuo. Recarga: %cmax a %cmin segundos (depende do nível)'
+    ModifierItemName: Rede do Vácuo
+    DescriptionModifierItem: Item de modificador para Rede do Vácuo
+    CouldNotFindBlock: Não foi possível encontrar um local seguro para teleportar!
   Webbed:
     Name: Entrelaçado
-    Description: Diminua a velocidade dos inimigos quando você os acerta ou eles te acertam por %duration Ticks * %multiplier por nível!
+    Description: Retarda inimigos ao atingi-los ou serem atingidos por %duration ticks * %multiplier por nível!
     ModifierItemName: Teia de Aranha Comprimida
-    DescriptionModifierItem: Item Modificado para o Modificador Entrelaçado
+    DescriptionModifierItem: Item de modificador para Entrelaçado
+  Wild-Hunt:
+    Name: Caça Selvagem
+    Description: Melhora saques de mobs mortos! %chance% de chance de ativar por nível.
+    ModifierItemName: Osso Avançado
+    DescriptionModifierItem: Item de modificador para Caça Selvagem
+    Statistic_Used: 'Saques melhorados: %amount'
   Withered:
-    Name: "Maldito"
-    Description: "Aplicar Wither ao inimigo por %duration Ticks * %multiplier por nivel!"
-    ModifierItemName: "Cabeça Maldita de Whiter"
-    DescriptionModifierItem: Item Modificado para o Modificador Maldito
+    Name: Maldito
+    Description: Aplica Wither ao alvo por %duration ticks * %multiplier por nível!
+    ModifierItemName: Cabeça Maldita de Whiter
+    DescriptionModifierItem: Item de modificador para Maldito
 DataType:
-  Boolean: Boolean (true/false)
-  String: String
-  List: List
-  Integer: Integer
-  Double: Floating point number (Double)
+  Boolean: Booleano (verdadeiro/falso)
+  String: Texto (String)
+  List: Lista
+  Integer: Número inteiro
+  Double: Número decimal (Double)
 ToolType:
   ALL: Todos
+  ARMOR: Armadura
+  TOOLS: Ferramentas
   AXE: Machados
   BOOTS: Botas
   BOW: Arcos
-  CHESTPLATE: Armaduras
+  CHESTPLATE: Peitorais
   CROSSBOW: Bestas
   ELYTRA: Elytras
-  FISHINGROD: Varas de pescar
-  HELMET: Elmos
+  FISHINGROD: Varas de pesca
+  HELMET: Capacetes
   HOE: Enxadas
   INVALID: Inválido
   LEGGINGS: Calças
@@ -454,43 +536,44 @@ Enchantment:
   flame: Chama
   infinity: Infinidade
   punch: Impacto
-  binding_curse: Maldição do desaparecimento
+  binding_curse: Maldição da Ligação
   channeling: Condutividade
   sharpness: Afiação
   bane_of_arthropods: Ruína dos Artrópodes
   smite: Julgamento
-  depth_strider: Passos profundos
+  depth_strider: Passos Profundos
   efficiency: Eficiência
-  unbreaking: Durabilidade
+  unbreaking: Inquebrável
   fire_aspect: Aspecto Flamejante
   frost_walker: Passos gelados
-  impaling: Penetração
+  impaling: Impalamento
   knockback: Repulsão
   fortune: Fortuna
   looting: Saque
-  loyalty: Leldade
-  luck_of_the_sea: Sorte no Mar
+  loyalty: Lealdade
+  luck_of_the_sea: Sorte do Mar
   lure: Isca
   mending: Remendo
   multishot: Rajada
   respiration: Respiração
-  piercing: Perfuração 
-  protection: Proteção 
-  blast_protection: Proteção contra explosões
-  feather_falling: Peso pena
-  fire_protection: Proteção contra fogo
-  projectile_protection: Proteção contra projéteis
-  quick_charge: Carga rápida
+  piercing: Perfuração
+  protection: Proteção
+  blast_protection: Proteção contra Explosões
+  feather_falling: Peso Pena
+  fire_protection: Proteção contra Fogo
+  projectile_protection: Proteção contra Projéteis
+  quick_charge: Carga Rápida
   riptide: Correnteza
   silk_touch: Toque Suave
   sweeping: Alcance
   thorns: Espinhos
-  vanishing_curse: Maldição do Desaparecimento 
+  vanishing_curse: Maldição do Desaparecimento
   aqua_affinity: Afinidade Aquática
-  soul_speed: Velocidade das almas
+  soul_speed: Velocidade das Almas
+  swift_sneak: Agilidade Furtiva
 Updater:
-  Unable: Não é possível verificar se há atualizações!
-  UpdateAvailable: Há uma atualização disponível em spigotmc.org!
+  Unable: Não foi possível verificar atualizações!
+  UpdateAvailable: Há uma atualização disponível no spigotmc.org!
   YourVersion: 'Sua versão: %ver'
-  OnlineVersion: 'Version Online: %ver'
-  UpToDate: 'Você tem a última versão do MineTinker instalada!'
+  OnlineVersion: 'Versão online: %ver'
+  UpToDate: Você tem a versão mais recente do MineTinker instalada!
