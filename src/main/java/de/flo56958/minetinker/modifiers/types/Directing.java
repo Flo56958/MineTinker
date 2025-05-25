@@ -14,15 +14,14 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDropItemEvent;
+import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -196,6 +195,53 @@ public class Directing extends Modifier implements Listener {
 			orb.setExperience(orb.getExperience() + event.getEvent().getDroppedExp());
 			event.getEvent().setDroppedExp(0);
 		}
+	}
+
+	private static HashMap<Sheep, Player> sheepSheared = new HashMap<>();
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+	public void sheepShear(PlayerShearEntityEvent event) {
+		final Player player = event.getPlayer();
+		final ItemStack tool = event.getItem();
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.isToolViable(tool) || !modManager.hasMod(tool, this)) return;
+
+		if (!(event.getEntity() instanceof Sheep sheep)) return;
+		sheepSheared.put(sheep, player); // Store the player who sheared the sheep
+
+		// there is no item access here
+	}
+
+	@EventHandler(ignoreCancelled = true)
+	public void afterSheepShear(EntityDropItemEvent event) {
+		if (!(event.getEntity() instanceof Sheep sheep)) return;
+		if (!sheepSheared.containsKey(sheep)) return; // Only process if the sheep was sheared by a player with Directing
+
+		Player player = sheepSheared.get(sheep);
+		// wait 5 ticks as multiple items could drop
+		MineTinker.getPlugin().getServer().getScheduler().runTaskLater(MineTinker.getPlugin(), () -> {
+			sheepSheared.remove(sheep); // Remove the entry after processing
+		}, 5L);
+
+		ItemStack tool = player.getInventory().getItemInMainHand();
+		if (!player.hasPermission(getUsePermission())) return;
+		if (!modManager.isToolViable(tool) || !modManager.hasMod(tool, this)) return;
+
+		event.setCancelled(true); // Prevent default drop
+
+		// Add wool to player's inventory
+		ItemStack wool = event.getItemDrop().getItemStack();
+		if (!player.getInventory().addItem(wool).isEmpty()) {
+			player.getWorld().dropItem(player.getLocation(), wool);
+		}
+
+		//Track stats
+		int stat = DataHandler.getTagOrDefault(tool, getKey() + "_stat_used", PersistentDataType.INTEGER, 0);
+		stat += wool.getAmount(); //1 for each sheared entity
+		DataHandler.setTag(tool, getKey() + "_stat_used", stat, PersistentDataType.INTEGER);
+
+		ChatWriter.logModifier(player, event, this, tool,
+				String.format("Entity(%s)", event.getEntity().getType()), String.format("Item(%s)", wool.getType()));
 	}
 
 	@Override
