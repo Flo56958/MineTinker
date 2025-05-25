@@ -17,6 +17,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -325,7 +326,8 @@ public class ItemStatisticsHandler implements Listener {
 					PersistentDataType.DOUBLE, 0.0D);
 			DataHandler.setTag(tool, keyStart + "damage_received", old + finalDamage,
 					PersistentDataType.DOUBLE);
-		} else if (event.getPlayer().equals(event.getEvent().getDamager())) { //Player attacked
+		} else if (event.getPlayer().equals(event.getEvent().getDamager())
+				|| (event.getEvent().getDamager() instanceof Projectile projectile && event.getPlayer().equals(projectile.getShooter()))) { //Player attacked
 			final double finalDamage = event.getEvent().getFinalDamage();
 			final double old = DataHandler.getTagOrDefault(tool, keyStart + "damage_dealt",
 					PersistentDataType.DOUBLE, 0.0D);
