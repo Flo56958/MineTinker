@@ -148,7 +148,9 @@ public class ItemStatisticsHandler implements Listener {
 					ArrayList<Material> materials = new ArrayList<>(map.keySet());
 					materials.sort(Comparator.comparing(map::get));
 					Collections.reverse(materials);
-					for (Material m : materials) {
+					for (final Material m : materials) {
+						if (m == null || m.isAir()) continue; // Skip null or air materials
+						if (!m.isItem()) continue; // Skip non-item materials
 						ItemStack is = new ItemStack(m);
 						ItemMeta meta = is.getItemMeta();
 
