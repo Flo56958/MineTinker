@@ -452,8 +452,12 @@ permissions:
   minetinker.modifiers.dense.*:
     children:
       minetinker.modifiers.dense.apply: true
+      minetinker.modifiers.dense.craft: true
   minetinker.modifiers.dense.apply:
     description: Allows to apply Dense to a MineTinker-Tool
+    default: true
+  minetinker.modifiers.dense.craft:
+    description: Allows to craft a Dense-Modifier
     default: true
 
   minetinker.modifiers.drilling.*:
