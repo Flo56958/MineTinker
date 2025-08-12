@@ -29,8 +29,8 @@ public class AddExpCommand implements SubCommand {
 		boolean callLevelUpEvents = false;
 
 		if (args.length >= 2) {
-			if (sender instanceof Player) {
-				player = (Player) sender;
+			if (sender instanceof Player p) {
+				player = p;
 			} else {
 				CommandManager.sendError(sender,
 						LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));

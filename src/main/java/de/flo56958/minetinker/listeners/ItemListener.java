@@ -118,8 +118,8 @@ public class ItemListener implements Listener {
 
 		final ItemMeta meta = item.getItemMeta();
 
-		if (meta instanceof Damageable)
-			((Damageable) meta).setDamage(item.getType().getMaxDurability() - 1);
+		if (meta instanceof Damageable damageable)
+			damageable.setDamage(item.getType().getMaxDurability() - 1);
 
 		if (meta instanceof CrossbowMeta crossbowMeta) //TODO: Crossbow will still shoot arrow
 			crossbowMeta.setChargedProjectiles(new ArrayList<>());

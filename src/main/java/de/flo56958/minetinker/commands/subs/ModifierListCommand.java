@@ -26,9 +26,9 @@ import java.util.List;
 public class ModifierListCommand implements SubCommand {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
-		if (sender instanceof Player) {
+		if (sender instanceof Player p) {
 			if (!(args.length >= 2 && args[1].equalsIgnoreCase("-t"))) {
-				GUIs.getModGUI().show((Player) sender);
+				GUIs.getModGUI().show(p);
 				return true;
 			}
 		}

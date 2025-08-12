@@ -23,8 +23,8 @@ public class ReloadCommand implements SubCommand {
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
 		Player player = null;
 
-		if (sender instanceof Player) {
-			player = (Player) sender;
+		if (sender instanceof Player p) {
+			player = p;
 		}
 
 		ChatWriter.sendMessage(sender, ChatColor.RED,

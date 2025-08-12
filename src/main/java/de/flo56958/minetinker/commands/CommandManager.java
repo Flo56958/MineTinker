@@ -106,10 +106,10 @@ public class CommandManager implements TabExecutor {
 				Collection<? extends Player> players;
 				if (worldOnly) {
 					World world = null;
-					if (sender instanceof BlockCommandSender) {
-						world = ((BlockCommandSender) sender).getBlock().getWorld();
-					} else if (sender instanceof Entity) {
-						world = ((Entity) sender).getWorld();
+					if (sender instanceof BlockCommandSender bcs) {
+						world = bcs.getBlock().getWorld();
+					} else if (sender instanceof Entity entity) {
+						world = entity.getWorld();
 					}
 
 					if (world == null) return true;
@@ -205,14 +205,13 @@ public class CommandManager implements TabExecutor {
 						if (args[i].startsWith("@p")) {
 							if (sender instanceof Player) {
 								args[i] = sender.getName();
-							} else if (sender instanceof BlockCommandSender) {
-								List<Player> players = ((BlockCommandSender) sender).getBlock()
+							} else if (sender instanceof BlockCommandSender bcs) {
+								List<Player> players = bcs.getBlock()
 										.getWorld().getPlayers();
 								double distance = Double.POSITIVE_INFINITY;
 
 								for (Player player : players) {
-									double newDist = player.getLocation().distance(((BlockCommandSender) sender)
-											.getBlock().getLocation());
+									double newDist = player.getLocation().distance(bcs.getBlock().getLocation());
 									if (newDist < distance) {
 										distance = newDist;
 										args[i] = player.getName();
@@ -221,10 +220,10 @@ public class CommandManager implements TabExecutor {
 							}
 						} else if (args[i].startsWith("@rw")) { //random Player in World
 							World world = null;
-							if (sender instanceof BlockCommandSender) {
-								world = ((BlockCommandSender) sender).getBlock().getWorld();
-							} else if (sender instanceof Entity) {
-								world = ((Entity) sender).getWorld();
+							if (sender instanceof BlockCommandSender bcs) {
+								world = bcs.getBlock().getWorld();
+							} else if (sender instanceof Entity entity) {
+								world = entity.getWorld();
 							}
 
 							if (world == null) continue;

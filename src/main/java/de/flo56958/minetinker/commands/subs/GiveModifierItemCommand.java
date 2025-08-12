@@ -38,8 +38,8 @@ public class GiveModifierItemCommand implements SubCommand {
 			case 2 -> {
 				args[1] = args[1].replaceAll("_", " ");
 				mod = modManager.getModifierFromKey(args[1]);
-				if (sender instanceof Player) {
-					player = (Player) sender;
+				if (sender instanceof Player p) {
+					player = p;
 				} else {
 					CommandManager.sendError(sender,
 							LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));

@@ -30,8 +30,8 @@ public class CreateToolListener implements Listener {
 
 			final ItemMeta gridMeta = item.getItemMeta();
 			final ItemMeta resultMeta = event.getInventory().getResult().getItemMeta();
-			if (gridMeta instanceof LeatherArmorMeta && resultMeta instanceof LeatherArmorMeta) {
-				if (!((LeatherArmorMeta) gridMeta).getColor().equals(((LeatherArmorMeta) resultMeta).getColor()))
+			if (gridMeta instanceof LeatherArmorMeta gridlam && resultMeta instanceof LeatherArmorMeta resultlam) {
+				if (!gridlam.getColor().equals(resultlam.getColor()))
 					return; //dye process - abort converting
 			}
 			break;
@@ -40,8 +40,8 @@ public class CreateToolListener implements Listener {
 		Player player = null;
 
 		for (HumanEntity human : event.getViewers()) {
-			if (human instanceof Player) {
-				player = (Player) human;
+			if (human instanceof Player p) {
+				player = p;
 				break;
 			}
 		}

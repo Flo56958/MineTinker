@@ -103,14 +103,14 @@ public class Contributor {
 		final ArrayList<String> lore = new ArrayList<>();
 		String displayName = "";
 		if (mcUUID != null) {
-			if (itemMeta instanceof SkullMeta) {
+			if (itemMeta instanceof SkullMeta skullMeta) {
 				try {
 					JsonObject mcLookup = JsonParser.parseString(new Scanner(new URI("https://sessionserver.mojang.com/session/minecraft/profile/" + mcUUID).toURL().openStream(),
 							StandardCharsets.UTF_8).useDelimiter("\\A").next()).getAsJsonObject();
 					String name = mcLookup.get("name").getAsString();
 					displayName += name + "/";
 					try {
-						((SkullMeta) itemMeta).setOwningPlayer(Bukkit.getOfflinePlayer(mcUUID));
+						skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(mcUUID));
 					} catch (NullPointerException ignored) {}
 				} catch (IOException | NoSuchElementException | URISyntaxException e) {
 					ChatWriter.logError(LanguageManager.getString("Alert.MinecraftAPI"));

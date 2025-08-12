@@ -15,12 +15,12 @@ import java.util.List;
 public class EditConfigurationCommand implements SubCommand {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
-		if (!(sender instanceof Player)) {
+		if (sender instanceof Player player) {
+			GUIs.getConfigurationsGUI().show(player);
+		} else {
 			CommandManager.sendError(sender,
 					LanguageManager.getString("Commands.Failure.Cause.PlayerOnlyCommand"));
-			return true;
 		}
-		GUIs.getConfigurationsGUI().show((Player) sender);
 		return true;
 	}
 

@@ -30,8 +30,8 @@ public class ConvertCommand implements SubCommand {
 		Player player = null;
 
 		if (args.length == 1) {
-			if (sender instanceof Player) {
-				player = (Player) sender;
+			if (sender instanceof Player p) {
+				player = p;
 			} else {
 				CommandManager.sendError(sender,
 						LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));

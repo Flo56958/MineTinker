@@ -128,11 +128,11 @@ public class Ender extends PlayerConfigurableModifier implements Listener {
 	// for tridents
 	@EventHandler(ignoreCancelled = true)
 	public void effect(final MTProjectileLaunchEvent event) {
-		final Projectile trident = event.getEvent().getEntity();
-		if (!(trident instanceof Trident)) return;
+		final Projectile projectile = event.getEvent().getEntity();
+		if (!(projectile instanceof Trident trident)) return;
 
 		final Player player = event.getPlayer();
-		final ItemStack tool = ((Trident) trident).getItem();
+		final ItemStack tool = trident.getItem();
 
 		if (!player.hasPermission(getUsePermission())) return;
 		if (!modManager.hasMod(tool, this)) return;
@@ -249,9 +249,9 @@ public class Ender extends PlayerConfigurableModifier implements Listener {
 			player.removePotionEffect(PotionEffectType.NAUSEA);
 			player.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, this.nauseaDuration, 0, false, false));
 
-			if (entity instanceof LivingEntity) {
-				((LivingEntity) entity).removePotionEffect(PotionEffectType.NAUSEA);
-				((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, this.nauseaDuration, 0, false, false));
+			if (entity instanceof LivingEntity livent) {
+				livent.removePotionEffect(PotionEffectType.NAUSEA);
+				livent.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, this.nauseaDuration, 0, false, false));
 			}
 		}
 

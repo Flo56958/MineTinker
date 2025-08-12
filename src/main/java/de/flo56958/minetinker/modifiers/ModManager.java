@@ -953,6 +953,9 @@ public class ModManager {
 				toughness = 3.0d;
 				knockback_res = 0.1d; //Knockback Resistance of 1.0d would be Resistance 10
 			}
+			default -> {
+				return; // Not an armor item
+			}
 		}
 
 		final String additional = "_" + ToolType.get(is.getType()).name();

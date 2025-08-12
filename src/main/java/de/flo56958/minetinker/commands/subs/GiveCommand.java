@@ -34,8 +34,8 @@ public class GiveCommand implements SubCommand {
 
 		if (args.length == 2) {
 			material = Material.getMaterial(args[1].toUpperCase());
-			if (sender instanceof Player) {
-				player = (Player) sender;
+			if (sender instanceof Player p) {
+				player = p;
 			} else {
 				CommandManager.sendError(sender,
 						LanguageManager.getString("Commands.Failure.Cause.InvalidArguments"));

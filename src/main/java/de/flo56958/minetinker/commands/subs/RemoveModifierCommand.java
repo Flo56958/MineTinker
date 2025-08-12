@@ -65,8 +65,8 @@ public class RemoveModifierCommand implements SubCommand {
 	@Override
 	public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String[] args) {
 		List<String> result = new ArrayList<>();
-		if (sender instanceof Player) {
-			ItemStack item = ((Player) sender).getInventory().getItemInMainHand();
+		if (sender instanceof Player player) {
+			ItemStack item = player.getInventory().getItemInMainHand();
 			if (args.length == 2) {
 				for (Modifier mod : modManager.getAllowedMods()) {
 					if (modManager.hasMod(item, mod))

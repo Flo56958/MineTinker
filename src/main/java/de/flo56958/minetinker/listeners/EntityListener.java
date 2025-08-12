@@ -77,12 +77,12 @@ public class EntityListener implements Listener {
 
 		if (event.getDamager() instanceof final Arrow arrow && !(event.getDamager() instanceof Trident)) {
 			final ProjectileSource source = arrow.getShooter();
-			if (source instanceof Player) player = (Player) source;
+			if (source instanceof Player p) player = p;
 		} else if (event.getDamager() instanceof final Trident trident) {
 			final ProjectileSource source = trident.getShooter();
-			if (source instanceof Player) player = (Player) source;
-		} else if (event.getDamager() instanceof Player)
-			player = (Player) event.getDamager();
+			if (source instanceof Player p) player = p;
+		} else if (event.getDamager() instanceof Player p)
+			player = p;
 		return player;
 	}
 

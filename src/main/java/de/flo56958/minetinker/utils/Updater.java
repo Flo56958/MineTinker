@@ -76,8 +76,9 @@ public class Updater {
 		checkOnline();
 
 		Player player = null;
-		if (sender instanceof Player)
-			player = (Player) sender;
+		if (sender instanceof Player p) {
+			player = p;
+		}
 
 		if (onlineVersion == null) {
 			ChatWriter.sendMessage(sender, ChatColor.RED, LanguageManager.getString("Updater.Unable", player));

@@ -27,8 +27,8 @@ public class CheckUpdateCommand implements SubCommand {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
 		Player player = null;
-		if (sender instanceof Player) {
-			player = (Player) sender;
+		if (sender instanceof Player p) {
+			player = p;
 		}
 		if (MineTinker.getPlugin().getConfig().getBoolean("CheckForUpdates")) {
 			ChatWriter.sendMessage(sender, ChatColor.WHITE,

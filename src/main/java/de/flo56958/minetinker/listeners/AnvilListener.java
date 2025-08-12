@@ -147,8 +147,8 @@ public class AnvilListener implements Listener {
 		Player player = null;
 
 		for (HumanEntity he : listHumans) {
-			if (he instanceof Player) {
-				player = (Player) he;
+			if (he instanceof Player p) {
+				player = p;
 				break;
 			}
 		}
@@ -235,8 +235,8 @@ public class AnvilListener implements Listener {
 								newTool.setType(materialIntegerPair.x());
 								modManager.addArmorAttributes(newTool); //The Attributes need to be reapplied
 								final ItemMeta meta = newTool.getItemMeta();
-								if (meta instanceof Damageable) {
-									((Damageable) meta).setDamage(0);
+								if (meta instanceof Damageable damageable) {
+									damageable.setDamage(0);
 								}
 								newTool.setItemMeta(meta);
 							}

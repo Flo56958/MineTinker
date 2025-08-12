@@ -29,11 +29,11 @@ public class ItemStatisticsCommand implements SubCommand {
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull String[] args) {
 		Player player;
 		if (args.length < 2) {
-			if (!(sender instanceof Player)) {
+			if (!(sender instanceof Player p)) {
 				CommandManager.sendError(sender, LanguageManager.getString("Commands.Failure.Cause.PlayerMissing"));
 				return true;
 			}
-			player = (Player) sender;
+			player = p;
 		} else {
 			player = Bukkit.getPlayer(args[1]);
 		}
@@ -55,7 +55,7 @@ public class ItemStatisticsCommand implements SubCommand {
 		}
 		items.sort(Comparator.comparing(modManager::getExp)); //Sorting
 
-		if (sender instanceof Player && MineTinker.getPlugin().getConfig().getBoolean("EnableLore", true)) { //GUI instead of Wall of Text through chat
+		if (sender instanceof Player p && MineTinker.getPlugin().getConfig().getBoolean("EnableLore", true)) { //GUI instead of Wall of Text through chat
 			int amount = items.size();
 			GUI gui = new GUI(MineTinker.getPlugin());
 			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(), gui::close, 5 * 60 * 20);
@@ -67,7 +67,7 @@ public class ItemStatisticsCommand implements SubCommand {
 				GUI.Window.Button backButton = statisticGUI.getWindow(0).addButton(8, GUIs.backStack);
 				backButton.addAction(ClickType.LEFT, new ButtonAction.PAGE_GOTO(backButton, window));
 			}
-			gui.show((Player) sender);
+			gui.show(p);
 		} else {
 			for (final ItemStack stack : items) {
 				ChatWriter.sendMessage(sender, ChatColor.WHITE, LanguageManager.getString("Commands.ItemStatistics.Head")
