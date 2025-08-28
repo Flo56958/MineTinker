@@ -11,6 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -59,6 +60,8 @@ public class GrindstoneListener implements Listener {
 				if (event.isShiftClick() && PlayerInfo.getEmptyInventorySlots(player) < 1)
 					return;
 
+				save.remove(player);
+
 				// check for bugged state
 				if (gs == null || !gs.tool.equals(result) || (event.getCursor() != null && event.getCursor().getAmount() != 0)
 						|| (slot1 == null && slot2 == null) || (slot1 != null && !gs.tool.getType().equals(slot1.getType()))
@@ -82,15 +85,9 @@ public class GrindstoneListener implements Listener {
 				}
 
 				for (final ItemStack stack : gs.itemStacks) {
-					// do not fill up the inventory when shift-clicking
-					if ((event.isShiftClick() && PlayerInfo.getEmptyInventorySlots(player) <= 1)
-							// this drops the items even if the player would have a non-full stack for it
-							|| !player.getInventory().addItem(stack).isEmpty()) { //adds items to (full) inventory
-						player.getWorld().dropItem(player.getLocation(), stack);
-					} // no else as it gets added in if-clause
+					final Item item = player.getWorld().dropItem(player.getLocation(), stack);
+					item.setOwner(player.getUniqueId()); // Only the player can pick up the modifier items
 				}
-
-				save.remove(player);
 
 				// Remove spawned exp orbs
 				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
@@ -139,7 +136,7 @@ public class GrindstoneListener implements Listener {
 					}
 					//Test for getting modifier item back
 					if (rand.nextInt(100) < config.getInt("Grindstone.ChanceToGetModifierItemBack")) {
-						gs.itemStacks.add(mod.getModItem());
+						gs.itemStacks.add(mod.getModItem().clone());
 					}
 				}
 				ModManager.instance().removeMod(result, mod);
