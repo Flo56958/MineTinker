@@ -101,6 +101,7 @@ public class WildHunt extends Modifier implements Listener {
 													new Tupel(Material.BREWING_STAND, Material.GLASS_BOTTLE)));
 		conversions.put(EntityType.WITHER, List.of(new Tupel(Material.BEACON, Material.NETHER_STAR)));
 		conversions.put(EntityType.RABBIT, List.of(new Tupel(Material.RABBIT_FOOT, Material.RABBIT_HIDE)));
+		conversions.put(EntityType.SKELETON, List.of(new Tupel(Material.SPECTRAL_ARROW, Material.ARROW)));
 
 		conversions.forEach((k, v) -> config.addDefault("Conversions." + k.toString(), v.stream().map(Tupel::toString).toList()));
 		conversions.clear();
