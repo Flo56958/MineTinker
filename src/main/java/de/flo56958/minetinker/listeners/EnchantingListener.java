@@ -63,7 +63,7 @@ public class EnchantingListener implements Listener {
 			toremove.add(entry.getKey());
 		}
 
-		toremove.forEach(enchants::remove);
+		toremove.forEach(v -> enchants.put(v, 0));
 	}
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
