@@ -108,9 +108,5 @@ public class Undead extends Modifier implements Listener {
 		if (!modManager.hasMod(helmet, this)) return;
 
 		event.setCancelled(true);
-
-		if (event.getDamager() instanceof Projectile projectile) {
-			projectile.remove();
-		}
 	}
 }
