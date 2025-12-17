@@ -36,6 +36,7 @@ public class Timber extends PlayerConfigurableModifier implements Listener {
 
 	private static final ConcurrentHashMap<Location, Integer> events = new ConcurrentHashMap<>();
 	private final HashSet<Material> grasses = new HashSet<>();
+	private final HashSet<Material> leaves = new HashSet<>();
 
 	private Timber() {
 		super(MineTinker.getPlugin());
@@ -103,6 +104,12 @@ public class Timber extends PlayerConfigurableModifier implements Listener {
 				Material.NETHERRACK, Material.CRIMSON_NYLIUM, Material.WARPED_NYLIUM, Material.MUD,
 				// world generation edge cases
 				Material.SAND, Material.RED_SAND, Material.GRAVEL));
+
+		this.leaves.clear();
+		this.leaves.addAll(Tag.LEAVES.getValues());
+
+		// nether leaves
+		this.leaves.addAll(Tag.WART_BLOCKS.getValues());
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -123,7 +130,11 @@ public class Timber extends PlayerConfigurableModifier implements Listener {
 		final HashSet<Material> allowed = new HashSet<>(Tag.LOGS.getValues());
 		allowed.add(Material.MANGROVE_ROOTS); // Not in the material tag
 
-		if (ToolType.SHEARS.contains(tool.getType()) && Tag.LEAVES.isTagged(block.getType())) {
+		// nether logs
+		allowed.addAll(Tag.CRIMSON_STEMS.getValues());
+		allowed.addAll(Tag.WARPED_STEMS.getValues());
+
+		if (ToolType.SHEARS.contains(tool.getType()) && leaves.contains(block.getType())) {
 			allowed.clear();
 			allowed.add(block.getType());
 		}
@@ -213,7 +224,7 @@ public class Timber extends PlayerConfigurableModifier implements Listener {
 				hasGround = true;
 				groundBlocks.add(block.getRelative(BlockFace.DOWN));
 			}
-			if (!hasLeaves && Tag.LEAVES.isTagged(block.getRelative(BlockFace.UP).getType()))
+			if (!hasLeaves && this.leaves.contains(block.getRelative(BlockFace.UP).getType()))
 				hasLeaves = true;
 
 			for (int dx = -1; dx <= 1; dx++) {
