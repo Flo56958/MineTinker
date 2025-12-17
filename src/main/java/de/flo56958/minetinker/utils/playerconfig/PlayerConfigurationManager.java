@@ -19,7 +19,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,7 +53,7 @@ public class PlayerConfigurationManager implements Listener {
 		playerConfigInterfaces.remove(pci);
 	}
 
-	@NonNull
+	@NotNull
 	private PlayerConfigurationHandle loadConfig(final Player player) {
 		final File playerConfigFile = new File(MineTinker.getPlugin().getDataFolder(), "PlayerConfigs" + File.separator + player.getUniqueId() + ".yml");
 		final FileConfiguration fileConfiguration = new YamlConfiguration();
