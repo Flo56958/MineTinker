@@ -40,7 +40,7 @@ public class SpidersBane extends Modifier {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.AXE, ToolType.SWORD, ToolType.MACE);
+		return Arrays.asList(ToolType.AXE, ToolType.SWORD, ToolType.MACE, ToolType.SPEAR, ToolType.TRIDENT);
 	}
 
 	@Override

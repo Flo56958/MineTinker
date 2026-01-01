@@ -337,6 +337,7 @@ public class GUIs {
 			toolmap.put(ToolType.PICKAXE, new ItemStack(Material.DIAMOND_PICKAXE, 1));
 			toolmap.put(ToolType.SHOVEL, new ItemStack(Material.DIAMOND_SHOVEL, 1));
 			toolmap.put(ToolType.SWORD, new ItemStack(Material.DIAMOND_SWORD, 1));
+			toolmap.put(ToolType.SPEAR, new ItemStack(Material.DIAMOND_SPEAR, 1));
 
 			toolmap.put(ToolType.BOW, new ItemStack(Material.BOW, 1));
 			toolmap.put(ToolType.CROSSBOW, new ItemStack(Material.CROSSBOW, 1));
@@ -375,6 +376,7 @@ public class GUIs {
 					case SWORD -> 0 * 9 + 0;
 					case BOW -> 1 * 9 + 2;
 					case CROSSBOW -> 2 * 9 + 2;
+					case SPEAR -> 2 * 9 + 3;
 					case TRIDENT -> 3 * 9 + 2;
 					case ELYTRA -> 1 * 9 + 6;
 					case HELMET -> 0 * 9 + 5;

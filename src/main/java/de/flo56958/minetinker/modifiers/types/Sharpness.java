@@ -46,8 +46,8 @@ public class Sharpness extends Modifier {
 	@Override
 	public List<ToolType> getAllowedTools() {
 		if (allowAxes)
-			return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT);
-		return Arrays.asList(ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT);
+			return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.SPEAR);
+		return Arrays.asList(ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT, ToolType.SPEAR);
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class Sharpness extends Modifier {
 		ItemMeta meta = tool.getItemMeta();
 
 		if (meta != null) {
-			if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType())) {
+			if (ToolType.AXE.contains(tool.getType()) || ToolType.SWORD.contains(tool.getType()) || ToolType.SPEAR.contains(tool.getType())) {
 				meta.addEnchant(Enchantment.SHARPNESS, modManager.getModLevel(tool, this), true);
 			} else if (ToolType.BOW.contains(tool.getType()) || ToolType.CROSSBOW.contains(tool.getType())) {
 				meta.addEnchant(Enchantment.POWER, modManager.getModLevel(tool, this), true);

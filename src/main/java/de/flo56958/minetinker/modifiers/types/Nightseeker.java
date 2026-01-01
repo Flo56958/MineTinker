@@ -50,7 +50,7 @@ public class Nightseeker extends Modifier implements Listener {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.SWORD, ToolType.AXE, ToolType.TRIDENT, ToolType.ELYTRA, ToolType.BOOTS, ToolType.CHESTPLATE, ToolType.CROSSBOW, ToolType.BOW, ToolType.HELMET, ToolType.LEGGINGS, ToolType.MACE);
+		return Arrays.asList(ToolType.SWORD, ToolType.SPEAR, ToolType.AXE, ToolType.TRIDENT, ToolType.ELYTRA, ToolType.BOOTS, ToolType.CHESTPLATE, ToolType.CROSSBOW, ToolType.BOW, ToolType.HELMET, ToolType.LEGGINGS, ToolType.MACE);
 	}
 
 	@Override

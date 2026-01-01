@@ -821,7 +821,8 @@ public class ModManager {
 				|| ToolType.SHEARS.contains(m)
 				|| ToolType.SHIELD.contains(m)
 				|| ToolType.FISHINGROD.contains(m)
-				|| ToolType.MACE.contains(m)) {
+				|| ToolType.MACE.contains(m)
+				|| ToolType.SPEAR.contains(m)) {
 			DataHandler.setTag(is, this.ToolIdentifier, 56958, PersistentDataType.INTEGER);
 			eligible = true;
 		}

@@ -30,6 +30,7 @@ public class Luck extends Modifier {
 		applicableEnchants.put(ToolType.PICKAXE, Collections.singletonList(Enchantment.FORTUNE));
 		applicableEnchants.put(ToolType.SHOVEL, Collections.singletonList(Enchantment.FORTUNE));
 		applicableEnchants.put(ToolType.SWORD, Collections.singletonList(Enchantment.LOOTING));
+		applicableEnchants.put(ToolType.SPEAR, Collections.singletonList(Enchantment.LOOTING));
 		applicableEnchants.put(ToolType.SHEARS, Collections.singletonList(Enchantment.FORTUNE));
 		applicableEnchants.put(ToolType.MACE, Collections.singletonList(Enchantment.LOOTING));
 		applicableEnchants.put(ToolType.FISHINGROD, Collections.singletonList(Enchantment.LUCK_OF_THE_SEA));
@@ -57,7 +58,7 @@ public class Luck extends Modifier {
 	@Override
 	public List<ToolType> getAllowedTools() {
 		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.HOE, ToolType.PICKAXE, ToolType.SHEARS,
-				ToolType.FISHINGROD, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT, ToolType.MACE);
+				ToolType.FISHINGROD, ToolType.SHOVEL, ToolType.SWORD, ToolType.TRIDENT, ToolType.MACE, ToolType.SPEAR);
 	}
 
 	@Override

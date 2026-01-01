@@ -50,7 +50,7 @@ public class Channeling extends Modifier implements Listener {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.TRIDENT, ToolType.BOW, ToolType.AXE, ToolType.CROSSBOW, ToolType.SWORD, ToolType.MACE);
+		return Arrays.asList(ToolType.TRIDENT, ToolType.BOW, ToolType.AXE, ToolType.CROSSBOW, ToolType.SWORD, ToolType.MACE, ToolType.SPEAR);
 	}
 
 	@Override

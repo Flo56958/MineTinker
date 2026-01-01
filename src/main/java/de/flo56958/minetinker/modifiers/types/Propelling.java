@@ -56,12 +56,12 @@ public class Propelling extends CooldownModifier implements Listener {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-	return Arrays.asList(ToolType.ELYTRA, ToolType.TRIDENT, ToolType.MACE, ToolType.SWORD, ToolType.AXE);
+	return Arrays.asList(ToolType.ELYTRA, ToolType.TRIDENT, ToolType.MACE, ToolType.SWORD, ToolType.AXE, ToolType.SPEAR);
 	}
 
 	@Override
 	public @NotNull List<Enchantment> getAppliedEnchantments() {
-		return Arrays.asList(Enchantment.RIPTIDE, Enchantment.WIND_BURST);
+		return Arrays.asList(Enchantment.RIPTIDE, Enchantment.WIND_BURST, Enchantment.LUNGE);
 	}
 
 	@Override
@@ -101,6 +101,8 @@ public class Propelling extends CooldownModifier implements Listener {
 		if (meta != null) {
 			if (ToolType.TRIDENT.contains(tool.getType()))
 				meta.addEnchant(Enchantment.RIPTIDE, modManager.getModLevel(tool, this), true);
+			else if (ToolType.SPEAR.contains(tool.getType()))
+				meta.addEnchant(Enchantment.LUNGE, modManager.getModLevel(tool, this), true);
 			else if (!ToolType.ELYTRA.contains(tool.getType()))
 				meta.addEnchant(Enchantment.WIND_BURST, modManager.getModLevel(tool, this), true);
 			//Elytra does not get an enchantment

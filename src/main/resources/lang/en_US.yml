@@ -548,6 +548,7 @@ ToolType.SHEARS: "Shears"
 ToolType.SHIELD: "Shields"
 ToolType.SHOVEL: "Shovels"
 ToolType.SWORD: "Swords"
+ToolType.SPEAR: "Spears"
 ToolType.TRIDENT: "Tridents"
 
 Enchantment:
@@ -572,6 +573,7 @@ Enchantment:
   loyalty: "Loyalty"
   luck_of_the_sea: "Luck of the Sea"
   lure: "Lure"
+  lunge: "Lunge"
   mending: "Mending"
   multishot: "Multishot"
   respiration: "Respiration"

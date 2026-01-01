@@ -40,7 +40,7 @@ public class Smite extends Modifier {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.SWORD, ToolType.AXE, ToolType.MACE);
+		return Arrays.asList(ToolType.SWORD, ToolType.AXE, ToolType.MACE, ToolType.SPEAR, ToolType.TRIDENT);
 	}
 
 	@Override

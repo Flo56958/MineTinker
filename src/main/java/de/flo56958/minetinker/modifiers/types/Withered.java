@@ -59,7 +59,7 @@ public class Withered extends Modifier implements Listener {
 	@Override
 	public List<ToolType> getAllowedTools() {
 		return Arrays.asList(ToolType.AXE, ToolType.BOW, ToolType.CROSSBOW, ToolType.SWORD, ToolType.TRIDENT,
-				ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA, ToolType.MACE);
+				ToolType.HELMET, ToolType.CHESTPLATE, ToolType.LEGGINGS, ToolType.BOOTS, ToolType.ELYTRA, ToolType.MACE, ToolType.SPEAR);
 	}
 
 	@Override

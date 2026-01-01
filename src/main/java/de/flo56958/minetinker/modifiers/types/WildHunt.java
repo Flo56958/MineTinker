@@ -55,7 +55,7 @@ public class WildHunt extends Modifier implements Listener {
 
 	@Override
 	public List<ToolType> getAllowedTools() {
-		return Arrays.asList(ToolType.AXE, ToolType.SWORD, ToolType.BOW, ToolType.CROSSBOW, ToolType.MACE);
+		return Arrays.asList(ToolType.AXE, ToolType.SWORD, ToolType.BOW, ToolType.CROSSBOW, ToolType.MACE, ToolType.SPEAR);
 	}
 
 	@Override

@@ -29,6 +29,7 @@ public enum ToolType {
 	SHEARS,
 	SHIELD,
 	SHOVEL,
+	SPEAR,
 	SWORD,
 	TRIDENT;
 
@@ -54,6 +55,7 @@ public enum ToolType {
 		tools.put(ToolType.FISHINGROD, new HashSet<>(Collections.singletonList(Material.FISHING_ROD)));
 		tools.put(ToolType.SHIELD, new HashSet<>(Collections.singletonList(Material.SHIELD)));
 		tools.put(ToolType.SHOVEL, new HashSet<>(Tag.ITEMS_SHOVELS.getValues()));
+		tools.put(ToolType.SPEAR, new HashSet<>(Tag.ITEMS_SPEARS.getValues()));
 		tools.put(ToolType.SWORD, new HashSet<>(Tag.ITEMS_SWORDS.getValues()));
 		tools.put(ToolType.TRIDENT, new HashSet<>(Collections.singletonList(Material.TRIDENT)));
 		tools.put(ToolType.MACE, new HashSet<>(Collections.singletonList(Material.MACE)));
@@ -76,6 +78,7 @@ public enum ToolType {
 		tools.put(ToolType.TOOLS, new HashSet<>(ToolType.SWORD.getToolMaterials()));
 		tools.get(ToolType.TOOLS).addAll(ToolType.SHEARS.getToolMaterials());
 		tools.get(ToolType.TOOLS).addAll(ToolType.SHOVEL.getToolMaterials());
+		tools.get(ToolType.TOOLS).addAll(ToolType.SPEAR.getToolMaterials());
 		tools.get(ToolType.TOOLS).addAll(ToolType.HOE.getToolMaterials());
 		tools.get(ToolType.TOOLS).addAll(ToolType.TRIDENT.getToolMaterials());
 		tools.get(ToolType.TOOLS).addAll(ToolType.FISHINGROD.getToolMaterials());
