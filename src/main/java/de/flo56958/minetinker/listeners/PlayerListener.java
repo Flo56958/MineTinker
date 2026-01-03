@@ -194,7 +194,7 @@ public class PlayerListener implements Listener {
 			case HOE, TRIDENT, SWORD, SHEARS, OTHER -> requiredMaterial = 2;
 			case LEGGINGS -> requiredMaterial = 7;
 			case SHIELD -> requiredMaterial = 6;
-			case SHOVEL -> requiredMaterial = 1;
+			case SHOVEL, SPEAR -> requiredMaterial = 1;
 			default -> {
 				return;
 			}
