@@ -39,18 +39,14 @@ public enum ToolType {
 
 	static {
 		tools.put(ToolType.AXE, new HashSet<>(Tag.ITEMS_AXES.getValues()));
-		tools.put(ToolType.BOOTS, new HashSet<>(Arrays.asList(Material.LEATHER_BOOTS, Material.CHAINMAIL_BOOTS,
-				Material.IRON_BOOTS, Material.GOLDEN_BOOTS, Material.DIAMOND_BOOTS, Material.NETHERITE_BOOTS)));
+		tools.put(ToolType.BOOTS, new HashSet<>(Tag.ITEMS_FOOT_ARMOR.getValues()));
 		tools.put(ToolType.BOW, new HashSet<>(Collections.singletonList(Material.BOW)));
-		tools.put(ToolType.CHESTPLATE, new HashSet<>(Arrays.asList(Material.LEATHER_CHESTPLATE, Material.CHAINMAIL_CHESTPLATE,
-				Material.IRON_CHESTPLATE, Material.GOLDEN_CHESTPLATE, Material.DIAMOND_CHESTPLATE, Material.NETHERITE_CHESTPLATE)));
+		tools.put(ToolType.CHESTPLATE, new HashSet<>(Tag.ITEMS_CHEST_ARMOR.getValues()));
 		tools.put(ToolType.CROSSBOW, new HashSet<>(Collections.singletonList(Material.CROSSBOW)));
 		tools.put(ToolType.ELYTRA, new HashSet<>(Collections.singletonList(Material.ELYTRA)));
-		tools.put(ToolType.HELMET, new HashSet<>(Arrays.asList(Material.LEATHER_HELMET, Material.CHAINMAIL_HELMET,
-				Material.IRON_HELMET, Material.GOLDEN_HELMET, Material.DIAMOND_HELMET, Material.TURTLE_HELMET, Material.NETHERITE_HELMET)));
+		tools.put(ToolType.HELMET, new HashSet<>(Tag.ITEMS_HEAD_ARMOR.getValues()));
 		tools.put(ToolType.HOE, new HashSet<>(Tag.ITEMS_HOES.getValues()));
-		tools.put(ToolType.LEGGINGS, new HashSet<>(Arrays.asList(Material.LEATHER_LEGGINGS, Material.CHAINMAIL_LEGGINGS,
-				Material.IRON_LEGGINGS, Material.GOLDEN_LEGGINGS, Material.DIAMOND_LEGGINGS, Material.NETHERITE_LEGGINGS)));
+		tools.put(ToolType.LEGGINGS, new HashSet<>(Tag.ITEMS_LEG_ARMOR.getValues()));
 		tools.put(ToolType.PICKAXE, new HashSet<>(Tag.ITEMS_PICKAXES.getValues()));
 		tools.put(ToolType.FISHINGROD, new HashSet<>(Collections.singletonList(Material.FISHING_ROD)));
 		tools.put(ToolType.SHIELD, new HashSet<>(Collections.singletonList(Material.SHIELD)));
