@@ -33,7 +33,7 @@ dependencies {
 
     compileOnly group: "net.dmulloy2", name: "ProtocolLib", version: "5.4.0"
 
-    errorprone("com.google.errorprone:error_prone_core:2.48.0")
+    errorprone("com.google.errorprone:error_prone_core:2.49.0")
 }
 
 group = 'de.flo56958'
