@@ -204,6 +204,9 @@ public class BlockListener implements Listener {
 	@EventHandler(ignoreCancelled = true)
 	public void onInteract(@NotNull final PlayerInteractEvent event) {
 		final Player player = event.getPlayer();
+		final Block clickedBlock = event.getClickedBlock();
+		// Prevent recursion from synthetic Power events
+		if (clickedBlock != null && clickedBlock.hasMetadata("syntheticPowerEvent")) return;
 		if (Lists.WORLDS.contains(player.getWorld().getName())) return;
 
 		final ItemStack tool = player.getInventory().getItemInMainHand();

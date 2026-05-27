@@ -268,8 +268,12 @@ public class Power extends PlayerConfigurableModifier implements Listener {
 			if (b.isLiquid()) continue;
 			if (events_interact.putIfAbsent(b.getLocation(), 0) != null) continue;
 
-			Bukkit.getPluginManager().callEvent(
-							new PlayerInteractEvent(player, event.getEvent().getAction(), tool, b, event.getEvent().getBlockFace()));
+			PlayerInteractEvent synthetic = new PlayerInteractEvent(player, event.getEvent().getAction(), tool, b, event.getEvent().getBlockFace());
+			// Mark as synthetic to prevent recursion
+			synthetic.setCancelled(event.getEvent().isCancelled());
+			b.setMetadata("syntheticPowerEvent", new org.bukkit.metadata.FixedMetadataValue(MineTinker.getPlugin(), true));
+			Bukkit.getPluginManager().callEvent(synthetic);
+			b.removeMetadata("syntheticPowerEvent", MineTinker.getPlugin());
 		}
 	}
 
