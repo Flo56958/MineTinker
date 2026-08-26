@@ -38,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.text.Collator;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ModManager {
 
@@ -691,11 +692,11 @@ public class ModManager {
 		final String creator_ = (creator != null) ? creator.getName() : "null";
 
 		lore.replaceAll(s -> ChatColor.WHITE + s
-				.replaceAll("%EXP%", exp_)
-				.replaceAll("%LEVEL%", level_)
-				.replaceAll("%NEXT_LEVEL_EXP%", nextLevelReq_)
-				.replaceAll("%FREE_SLOTS%", freeSlots_)
-				.replaceAll("%CREATOR%", creator_ != null ? creator_ : "null"));
+				.replace("%EXP%", exp_)
+				.replace("%LEVEL%", level_)
+				.replace("%NEXT_LEVEL_EXP%", nextLevelReq_)
+				.replace("%FREE_SLOTS%", freeSlots_)
+				.replace("%CREATOR%", creator_ != null ? creator_ : "null"));
 
 		int index = -1;
 		for (int i = 0; i < lore.size(); i++) {
@@ -718,8 +719,8 @@ public class ModManager {
 					? ChatWriter.toRomanNumerals(modLevel) : String.valueOf(modLevel);
 
 			String s = this.modifierLayout;
-			s = s.replaceAll("%MODIFIER%", m.getColor() + m.getName());
-			s = s.replaceAll("%MODLEVEL%", modLevel_);
+			s = s.replace("%MODIFIER%", m.getColor() + m.getName());
+			s = s.replace("%MODLEVEL%", modLevel_);
 
 			lore.add(index++, s);
 		}
@@ -870,7 +871,7 @@ public class ModManager {
 		for (final Map.Entry<Attribute, Collection<AttributeModifier>> entry : meta.getAttributeModifiers().asMap().entrySet()) {
 			final Modifier modifier = getModifierFromAttribute(entry.getKey());
 
-			if (modifier == null || modifier.equals(Hardened.instance())) {
+			if (modifier == null || modifier.managesOwnAttributeConversion()) {
 				continue;
 			}
 
@@ -960,64 +961,28 @@ public class ModManager {
 
 		final String additional = "_" + ToolType.get(is.getType()).name();
 
-		AttributeModifier armorAM = null;
-		AttributeModifier toughnessAM = null;
-		AttributeModifier knockbackResAM = null;
-
 		final NamespacedKey nkArmor = new NamespacedKey(MineTinker.getPlugin(), "generic.armor" + additional);
 		final NamespacedKey nkArmorToughness = new NamespacedKey(MineTinker.getPlugin(), "generic.armor_toughness" + additional);
 		final NamespacedKey nkKnockbackRes = new NamespacedKey(MineTinker.getPlugin(), "generic.knockback_resistance" + additional);
 
-		if (ToolType.BOOTS.contains(is.getType())) {
-			armorAM = new AttributeModifier(nkArmor, armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET);
-			toughnessAM = new AttributeModifier(nkArmorToughness, toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET);
-			knockbackResAM = new AttributeModifier(nkKnockbackRes, knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET);
-		} else if (ToolType.CHESTPLATE.contains(is.getType())) {
-			armorAM = new AttributeModifier(nkArmor, armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST);
-			toughnessAM = new AttributeModifier(nkArmorToughness, toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST);
-			knockbackResAM = new AttributeModifier(nkKnockbackRes, knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST);
-		} else if (ToolType.HELMET.contains(is.getType())) {
-			armorAM = new AttributeModifier(nkArmor, armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD);
-			toughnessAM = new AttributeModifier(nkArmorToughness, toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD);
-			knockbackResAM = new AttributeModifier(nkKnockbackRes, knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD);
-		} else if (ToolType.LEGGINGS.contains(is.getType())) {
-			armorAM = new AttributeModifier(nkArmor, armor, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS);
-			toughnessAM = new AttributeModifier(nkArmorToughness, toughness, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS);
-			knockbackResAM = new AttributeModifier(nkKnockbackRes, knockback_res, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS);
-		} else if (!ToolType.ELYTRA.contains(is.getType())) return;
+		final EquipmentSlotGroup slotGroup;
+		if (ToolType.BOOTS.contains(is.getType())) slotGroup = EquipmentSlotGroup.FEET;
+		else if (ToolType.CHESTPLATE.contains(is.getType())) slotGroup = EquipmentSlotGroup.CHEST;
+		else if (ToolType.HELMET.contains(is.getType())) slotGroup = EquipmentSlotGroup.HEAD;
+		else if (ToolType.LEGGINGS.contains(is.getType())) slotGroup = EquipmentSlotGroup.LEGS;
+		else if (!ToolType.ELYTRA.contains(is.getType())) return;
+		else slotGroup = null;
 
-		Collection<AttributeModifier> list = meta.getAttributeModifiers(Attribute.ARMOR);
-		if (list != null) {
-			list = new ArrayList<>(list); // Collection is immutable
-			list.removeIf(am -> !nkArmor.getNamespace().equals(am.getKey().getNamespace()));
-			list.removeIf(am -> !nkArmor.getKey().contains(am.getKey().getKey()));
-			list.forEach(am -> meta.removeAttributeModifier(Attribute.ARMOR, am));
-		}
-		if (armor > 0.0d && armorAM != null) {
-			meta.addAttributeModifier(Attribute.ARMOR, armorAM);
-		}
+		final AttributeModifier armorAM = slotGroup != null
+				? new AttributeModifier(nkArmor, armor, AttributeModifier.Operation.ADD_NUMBER, slotGroup) : null;
+		final AttributeModifier toughnessAM = slotGroup != null
+				? new AttributeModifier(nkArmorToughness, toughness, AttributeModifier.Operation.ADD_NUMBER, slotGroup) : null;
+		final AttributeModifier knockbackResAM = slotGroup != null
+				? new AttributeModifier(nkKnockbackRes, knockback_res, AttributeModifier.Operation.ADD_NUMBER, slotGroup) : null;
 
-		list = meta.getAttributeModifiers(Attribute.ARMOR_TOUGHNESS);
-		if (list != null) {
-			list = new ArrayList<>(list); // Collection is immutable
-			list.removeIf(am -> !nkArmorToughness.getNamespace().equals(am.getKey().getNamespace()));
-			list.removeIf(am -> !nkArmorToughness.getKey().contains(am.getKey().getKey()));
-			list.forEach(am -> meta.removeAttributeModifier(Attribute.ARMOR_TOUGHNESS, am));
-		}
-		if (toughness > 0.0d && toughnessAM != null) {
-			meta.addAttributeModifier(Attribute.ARMOR_TOUGHNESS, toughnessAM);
-		}
-
-		list = meta.getAttributeModifiers(Attribute.KNOCKBACK_RESISTANCE);
-		if (list != null) {
-			list = new ArrayList<>(list); // Collection is immutable
-			list.removeIf(am -> !nkKnockbackRes.getNamespace().equals(am.getKey().getNamespace()));
-			list.removeIf(am -> !nkKnockbackRes.getKey().contains(am.getKey().getKey()));
-			list.forEach(am -> meta.removeAttributeModifier(Attribute.KNOCKBACK_RESISTANCE, am));
-		}
-		if (knockback_res > 0.0d && knockbackResAM != null) {
-			meta.addAttributeModifier(Attribute.KNOCKBACK_RESISTANCE, knockbackResAM);
-		}
+		applyArmorAttribute(meta, Attribute.ARMOR, nkArmor, armor, armorAM);
+		applyArmorAttribute(meta, Attribute.ARMOR_TOUGHNESS, nkArmorToughness, toughness, toughnessAM);
+		applyArmorAttribute(meta, Attribute.KNOCKBACK_RESISTANCE, nkKnockbackRes, knockback_res, knockbackResAM);
 
 		if (config.getBoolean("HideAttributes")) {
 			meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -1026,6 +991,25 @@ public class ModManager {
 		}
 
 		is.setItemMeta(meta);
+	}
+
+	/**
+	 * Removes any previously applied MineTinker attribute modifier under the given key from the given
+	 * attribute, then re-adds the supplied modifier if its value is positive.
+	 */
+	private void applyArmorAttribute(@NotNull final ItemMeta meta, @NotNull final Attribute attribute,
+	                                 @NotNull final NamespacedKey key, final double value,
+	                                 @Nullable final AttributeModifier am) {
+		Collection<AttributeModifier> list = meta.getAttributeModifiers(attribute);
+		if (list != null) {
+			list = new ArrayList<>(list); // Collection is immutable
+			list.removeIf(m -> !key.getNamespace().equals(m.getKey().getNamespace()));
+			list.removeIf(m -> !key.getKey().contains(m.getKey().getKey()));
+			list.forEach(m -> meta.removeAttributeModifier(attribute, m));
+		}
+		if (value > 0.0d && am != null) {
+			meta.addAttributeModifier(attribute, am);
+		}
 	}
 
 	/**
@@ -1139,7 +1123,7 @@ public class ModManager {
 	}
 
 	public void convertLoot(@Nullable ItemStack item, @Nullable Player player) {
-		final Random rand = new Random();
+		final Random rand = ThreadLocalRandom.current();
 		if (rand.nextInt(100) >= config.getInt("ConvertLoot.Chance", 100)) return;
 		if (!convertItemStack(item, null)) return;
 		//Item is now MT
@@ -1156,7 +1140,7 @@ public class ModManager {
 			//Remove all enchants if modifiers will get added
 			allMods.forEach(mod -> removeMod(item, mod));
 			final List<Modifier> mods = getAllowedMods();
-			mods.remove(ExtraModifier.instance());
+			mods.removeIf(mod -> !mod.isRandomlyApplicable());
 			int amount = rand.nextInt(config.getInt("ConvertLoot.MaximumNumberOfModifiers") + 1);
 			while (!mods.isEmpty() && amount > 0) {
 				final int index = rand.nextInt(mods.size());

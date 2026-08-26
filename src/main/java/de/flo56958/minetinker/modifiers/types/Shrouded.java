@@ -145,11 +145,7 @@ public class Shrouded extends Modifier implements Listener {
 			extras.add(Withered.instance().getKey());
 			cloud.addCustomEffect(Withered.instance().getPotionEffect(event, cloud, player, tool), true);
 		}
-		StringBuilder ex = new StringBuilder();
-		for (String s : extras) {
-			ex.append(s).append("/");
-		}
-		if (!extras.isEmpty()) ex.deleteCharAt(ex.length() - 1);
+		String ex = String.join("/", extras);
 		ChatWriter.logModifier(player, event, this, tool,
 				String.format("Radius(%.2f)", radius),
 				"Duration(" + duration + ")",

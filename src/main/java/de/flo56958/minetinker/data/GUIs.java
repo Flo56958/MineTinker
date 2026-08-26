@@ -27,6 +27,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GUIs {
 
@@ -149,14 +150,14 @@ public class GUIs {
 				incomp.removeIf(mod -> !mod.isAllowed());
 				if (!incomp.isEmpty()) {
 					incomp.sort(Comparator.comparing(Modifier::getName));
-					final StringBuilder incompatibilities = new StringBuilder();
-					incomp.forEach(mod -> incompatibilities.append(mod.getName()).append(ChatColor.WHITE).append(", "));
+					final String incompatibilities = incomp.stream()
+							.map(mod -> mod.getName() + ChatColor.WHITE)
+							.collect(Collectors.joining(", "));
 
 					lore.add(ChatColor.DARK_RED + "" + ChatColor.BOLD
 							+ LanguageManager.getString("GUIs.Modifiers.IncompatibleWith"));
 
-					lore.addAll(ChatWriter.splitString(incompatibilities
-							.substring(0, incompatibilities.length() - 2), 30));
+					lore.addAll(ChatWriter.splitString(incompatibilities, 30));
 				}
 
 				// Applied Enchantments
@@ -165,21 +166,21 @@ public class GUIs {
 					enchants.sort(Comparator.comparing(e -> LanguageManager.getString("Enchantment." + e.getKey().getKey())));
 					lore.add(ChatColor.BLUE + "" + ChatColor.BOLD + LanguageManager.getString("GUIs.Modifiers.CanApply"));
 
-					final StringBuilder e = new StringBuilder();
-					enchants.forEach(enchant ->
-							e.append(LanguageManager.getString("Enchantment." + enchant.getKey().getKey())).append(", "));
-					lore.addAll(ChatWriter.splitString(e.substring(0, e.length() - 2), 30));
+					final String enchantNames = enchants.stream()
+							.map(enchant -> LanguageManager.getString("Enchantment." + enchant.getKey().getKey()))
+							.collect(Collectors.joining(", "));
+					lore.addAll(ChatWriter.splitString(enchantNames, 30));
 				}
 
 				// Allowed Tools
 				lore.add(ChatColor.BLUE + "" + ChatColor.BOLD + LanguageManager.getString("GUIs.Modifiers.WorksOn"));
 
-				final StringBuilder builder = new StringBuilder();
-				builder.append(ChatColor.WHITE);
 				final List<ToolType> types = m.getAllowedTools();
 				types.sort(Comparator.comparing(t -> LanguageManager.getString("ToolType." + t.name())));
-				types.forEach(type -> builder.append(LanguageManager.getString("ToolType." + type.name())).append(", "));
-				lore.addAll(ChatWriter.splitString(builder.substring(0, builder.length() - 2), 30));
+				final String toolTypes = ChatColor.WHITE + types.stream()
+						.map(type -> LanguageManager.getString("ToolType." + type.name()))
+						.collect(Collectors.joining(", "));
+				lore.addAll(ChatWriter.splitString(toolTypes, 30));
 
 				// Apply lore changes
 				meta.setLore(lore);

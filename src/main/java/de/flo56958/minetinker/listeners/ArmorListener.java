@@ -22,9 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ArmorListener implements Listener {
 
@@ -51,20 +49,29 @@ public class ArmorListener implements Listener {
 			}
 		}
 
-		final ArrayList<ItemStack> armor = new ArrayList<>(Arrays.asList(player.getInventory().getArmorContents()));
-		if (ToolType.SHIELD.contains(player.getInventory().getItemInMainHand().getType()))
-			armor.add(player.getInventory().getItemInMainHand());
-		else if (ToolType.SHIELD.contains(player.getInventory().getItemInOffHand().getType()))
-			armor.add(player.getInventory().getItemInOffHand());
-
 		final boolean isBlocking = player.isBlocking() && event.getFinalDamage() == 0.0d;
-		for (final ItemStack piece : armor) {
+		for (final ItemStack piece : player.getInventory().getArmorContents()) {
 			if (!modManager.isArmorViable(piece)) continue;
 
 			if (byEntityEvent != null)
 				Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(player, piece, entity, byEntityEvent, isBlocking));
 			else
 				Bukkit.getPluginManager().callEvent(new MTEntityDamageEvent(player, piece, event, isBlocking));
+		}
+
+		final ItemStack shield;
+		if (ToolType.SHIELD.contains(player.getInventory().getItemInMainHand().getType()))
+			shield = player.getInventory().getItemInMainHand();
+		else if (ToolType.SHIELD.contains(player.getInventory().getItemInOffHand().getType()))
+			shield = player.getInventory().getItemInOffHand();
+		else
+			shield = null;
+
+		if (shield != null && modManager.isArmorViable(shield)) {
+			if (byEntityEvent != null)
+				Bukkit.getPluginManager().callEvent(new MTEntityDamageByEntityEvent(player, shield, entity, byEntityEvent, isBlocking));
+			else
+				Bukkit.getPluginManager().callEvent(new MTEntityDamageEvent(player, shield, event, isBlocking));
 		}
 	}
 
@@ -79,8 +86,7 @@ public class ArmorListener implements Listener {
 				&& !ToolType.TOOLS.contains(event.getTool().getType()))
 			return;
 
-		if (MineTinker.getPlugin().getConfig().getStringList("DisableExpFromDamageCause")
-				.contains(event.getEvent().getCause().toString()))
+		if (Lists.DISABLE_EXP_FROM_DAMAGE_CAUSE.contains(event.getEvent().getCause().toString()))
 			return;
 
 		expCalculation(event.isBlocking(), event.getTool(), event.getEvent(), event.getPlayer());
@@ -98,8 +104,7 @@ public class ArmorListener implements Listener {
 				&& !(event.getEntity() instanceof Player))
 			return;
 
-		if (MineTinker.getPlugin().getConfig().getStringList("DisableExpFromEntity")
-				.contains(event.getEntity().getType().toString()))
+		if (Lists.DISABLE_EXP_FROM_ENTITY.contains(event.getEntity().getType().toString()))
 			return;
 
 		expCalculation(event.isBlocking(), event.getTool(), event.getEvent(), event.getPlayer());
@@ -128,7 +133,7 @@ public class ArmorListener implements Listener {
 
 		final FileConfiguration config = MineTinker.getPlugin().getConfig();
 
-		final int chance = new Random().nextInt(100);
+		final int chance = ThreadLocalRandom.current().nextInt(100);
 		if (chance >= config.getInt("ExpChanceWhileFlying", 30)) return;
 
 		modManager.addExp(event.getPlayer(), event.getItem(), config.getInt("ExpPerEntityHit"), true);

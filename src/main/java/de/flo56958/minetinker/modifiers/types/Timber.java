@@ -28,6 +28,7 @@ import org.jetbrains.annotations.Unmodifiable;
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class Timber extends PlayerConfigurableModifier implements Listener {
 
@@ -84,9 +85,8 @@ public class Timber extends PlayerConfigurableModifier implements Listener {
 		config.addDefault("Recipe.Bottom", "LLL");
 
 		Map<String, String> recipeMaterials = new HashMap<>();
-		StringBuilder mats = new StringBuilder();
-		Tag.LOGS.getValues().stream().map(Material::name).forEach(mat -> mats.append(mat).append(","));
-		recipeMaterials.put("L", mats.substring(0, mats.length() - 1));
+		String mats = Tag.LOGS.getValues().stream().map(Material::name).collect(Collectors.joining(","));
+		recipeMaterials.put("L", mats);
 		recipeMaterials.put("E", Material.EMERALD.name());
 
 		config.addDefault("Recipe.Materials", recipeMaterials);

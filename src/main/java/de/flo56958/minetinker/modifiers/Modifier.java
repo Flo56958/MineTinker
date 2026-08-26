@@ -5,7 +5,6 @@ import de.flo56958.minetinker.api.events.ModifierApplyEvent;
 import de.flo56958.minetinker.api.events.ModifierFailEvent;
 import de.flo56958.minetinker.data.ModifierFailCause;
 import de.flo56958.minetinker.data.ToolType;
-import de.flo56958.minetinker.modifiers.types.ExtraModifier;
 import de.flo56958.minetinker.utils.ChatWriter;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
@@ -60,46 +59,63 @@ public abstract class Modifier {
 		this.name = getKey(); // default name is the key
 	}
 
+	private boolean fail(final Player player, final ItemStack tool, final ModifierFailCause cause,
+	                     final boolean isCommand, final boolean silent) {
+		if (!silent)
+			pluginManager.callEvent(new ModifierFailEvent(player, tool, this, cause, isCommand));
+		return false;
+	}
+
+	/**
+	 * @return whether this modifier consumes a free slot on the tool when applied
+	 */
+	protected boolean requiresFreeSlot() {
+		return true;
+	}
+
+	/**
+	 * @return whether this modifier may be picked when randomly applying modifiers (e.g. loot conversion)
+	 */
+	protected boolean isRandomlyApplicable() {
+		return true;
+	}
+
+	/**
+	 * @return true if this modifier manages its own attribute modifiers and should be excluded from
+	 * the generic vanilla-attribute-to-modifier conversion
+	 */
+	public boolean managesOwnAttributeConversion() {
+		return false;
+	}
+
 	final boolean checkAndAdd(final Player player, final ItemStack tool, final boolean isCommand,
 	                          final boolean fromRandom, final boolean silent, final boolean modifySlotCount) {
 		if (modifySlotCount) {
 			// Check for free Slots
-			if ((modManager.getFreeSlots(tool) < this.getSlotCost() && !this.equals(ExtraModifier.instance())) && !isCommand) {
-				if (!silent)
-					pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.NO_FREE_SLOTS, false));
-				return false;
+			if (modManager.getFreeSlots(tool) < this.getSlotCost() && this.requiresFreeSlot() && !isCommand) {
+				return fail(player, tool, ModifierFailCause.NO_FREE_SLOTS, false, silent);
 			}
 		}
 
 		// Check for Permission
-		if (player != null) {
-			if (!player.hasPermission(getApplyPermission())) {
-				if (!silent)
-					pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.NO_PERMISSION, isCommand));
-				return false;
-			}
+		if (player != null && !player.hasPermission(getApplyPermission())) {
+			return fail(player, tool, ModifierFailCause.NO_PERMISSION, isCommand, silent);
 		}
 
 		// Check for ToolType
 		FileConfiguration modifiersconfig = ConfigurationManager.getConfig("Modifiers.yml");
 		if (!(modifiersconfig.getBoolean("CommandIgnoresToolTypes") && isCommand && !fromRandom) && !this.isMaterialCompatible(tool.getType())) {
-			if (!silent)
-				pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INVALID_TOOLTYPE, isCommand));
-			return false;
+			return fail(player, tool, ModifierFailCause.INVALID_TOOLTYPE, isCommand, silent);
 		}
 
 		// Check for Tool Level
 		if (modManager.getLevel(tool) < this.minimumLevelRequirement) {
-			if (!silent)
-				pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.TOOL_LEVEL_TO_LOW, isCommand));
-			return false;
+			return fail(player, tool, ModifierFailCause.TOOL_LEVEL_TO_LOW, isCommand, silent);
 		}
 
 		// Check for Max Level
 		if (!(modifiersconfig.getBoolean("CommandIgnoresMaxLevel") && isCommand && !fromRandom) && modManager.getModLevel(tool, this) >= this.getMaxLvl()) {
-			if (!silent)
-				pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.MOD_MAXLEVEL, isCommand));
-			return false;
+			return fail(player, tool, ModifierFailCause.MOD_MAXLEVEL, isCommand, silent);
 		}
 
 		// Check for Incompatibilities
@@ -109,9 +125,7 @@ public abstract class Modifier {
 
 				for (final Modifier m : incompatibility) {
 					if (modManager.hasMod(tool, m)) {
-						if (!silent)
-							pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-						return false;
+						return fail(player, tool, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand, silent);
 					}
 
 					if (!modifiersconfig.getBoolean("IncompatibilitiesConsiderEnchants")) continue;
@@ -119,9 +133,7 @@ public abstract class Modifier {
 					if (meta == null) continue;
 					for (final Enchantment e : m.getAppliedEnchantments()) {
 						if (!meta.hasEnchant(e)) continue;
-						if (!silent)
-							pluginManager.callEvent(new ModifierFailEvent(player, tool, this, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand));
-						return false;
+						return fail(player, tool, ModifierFailCause.INCOMPATIBLE_MODIFIERS, isCommand, silent);
 					}
 				}
 			}

@@ -22,6 +22,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Experienced extends Modifier implements Listener {
 
@@ -120,7 +121,7 @@ public class Experienced extends Modifier implements Listener {
 		if (!modManager.hasMod(tool, this)) return;
 		int level = modManager.getModLevel(tool, this);
 
-		Random rand = new Random();
+		Random rand = ThreadLocalRandom.current();
 		int n = rand.nextInt(100);
 		int c = this.percentagePerLevel * level;
 

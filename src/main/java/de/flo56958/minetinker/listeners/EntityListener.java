@@ -28,10 +28,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class EntityListener implements Listener {
 
 	private static final ModManager modManager = ModManager.instance();
+	public static final String ITEM_METADATA_KEY = MineTinker.getPlugin().getName() + "item";
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onDamage(@NotNull final EntityDamageByEntityEvent event) {
@@ -46,7 +48,7 @@ public class EntityListener implements Listener {
 
 		ItemStack tool = player.getInventory().getItemInMainHand();
 		if (event.getDamager() instanceof Arrow || event.getDamager() instanceof Trident) {
-			List<MetadataValue> tools = event.getDamager().getMetadata(MineTinker.getPlugin().getName() + "item");
+			List<MetadataValue> tools = event.getDamager().getMetadata(ITEM_METADATA_KEY);
 			if (tools.isEmpty()) return;
 			FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
 			if (obj == null || !(obj.value() instanceof ItemStack t)) return;
@@ -102,7 +104,7 @@ public class EntityListener implements Listener {
 			if (config.getBoolean("MobDropModifierItems.Enabled", true)) {
 				if (config.getBoolean("MobDropModifierItems.ConsiderIncludedMobs") ==
 						config.getStringList("MobDropModifierItems.IncludedMobs").contains(mob.getType().name())) {
-					Random rand = new Random();
+					Random rand = ThreadLocalRandom.current();
 					if (rand.nextInt(100) < config.getInt("MobDropModifierItems.Chance", 50)) {
 						int amount = rand.nextInt(config.getInt("MobDropModifierItems.MaximumAmount", 2) + 1);
 						final List<Modifier> mods = modManager.getAllowedMods();
@@ -122,7 +124,7 @@ public class EntityListener implements Listener {
 		ItemStack tool = player.getInventory().getItemInMainHand();
 		if (mob.getLastDamageCause() instanceof EntityDamageByEntityEvent lastevent) {
 			if (lastevent.getDamager() instanceof Arrow || lastevent.getDamager() instanceof Trident) {
-				List<MetadataValue> tools = lastevent.getDamager().getMetadata(MineTinker.getPlugin().getName() + "item");
+				List<MetadataValue> tools = lastevent.getDamager().getMetadata(ITEM_METADATA_KEY);
 				if (tools.isEmpty()) return;
 				FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
 				if (obj == null || !(obj.value() instanceof ItemStack t)) return;
@@ -152,7 +154,7 @@ public class EntityListener implements Listener {
 			modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerArrowShot"), true);
 
 		if (event.getEntity() instanceof Trident || event.getEntity() instanceof Arrow) {
-			List<MetadataValue> tools = event.getEntity().getMetadata(MineTinker.getPlugin().getName() + "item");
+			List<MetadataValue> tools = event.getEntity().getMetadata(ITEM_METADATA_KEY);
 			if (tools.isEmpty()) return;
 			FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
 			if (obj == null || !(obj.value() instanceof ItemStack t)) return;
@@ -176,8 +178,8 @@ public class EntityListener implements Listener {
 			tool = player.getInventory().getItemInOffHand(); // Fishing rods can also be thrown in offhand
 
 		// get reference from bow shoot
-		if (event.getEntity().hasMetadata(MineTinker.getPlugin().getName() + "item")) {
-			List<MetadataValue> tools = event.getEntity().getMetadata(MineTinker.getPlugin().getName() + "item");
+		if (event.getEntity().hasMetadata(ITEM_METADATA_KEY)) {
+			List<MetadataValue> tools = event.getEntity().getMetadata(ITEM_METADATA_KEY);
 			if (tools.isEmpty()) return;
 			FixedMetadataValue obj = (FixedMetadataValue) tools.get(0);
 			if (obj == null || !(obj.value() instanceof ItemStack t)) return;
@@ -205,8 +207,8 @@ public class EntityListener implements Listener {
 			modManager.addExp(player, tool, MineTinker.getPlugin().getConfig().getInt("ExpPerArrowShot"), true);
 
 		// add item reference to arrow
-		if (!event.getEntity().hasMetadata(MineTinker.getPlugin().getName() + "item"))
-			event.getEntity().setMetadata(MineTinker.getPlugin().getName() + "item",
+		if (!event.getEntity().hasMetadata(ITEM_METADATA_KEY))
+			event.getEntity().setMetadata(ITEM_METADATA_KEY,
 					new FixedMetadataValue(MineTinker.getPlugin(), tool));
 
 		Bukkit.getPluginManager().callEvent(new MTProjectileLaunchEvent(player, tool, event));
@@ -226,7 +228,7 @@ public class EntityListener implements Listener {
 		final ItemStack bow = event.getBow();
 		if (bow != null) {
 			// add item reference to arrow
-			event.getProjectile().setMetadata(MineTinker.getPlugin().getName() + "item",
+			event.getProjectile().setMetadata(ITEM_METADATA_KEY,
 					new FixedMetadataValue(MineTinker.getPlugin(), bow));
 		}
 

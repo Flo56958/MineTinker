@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class CommandManager implements TabExecutor {
 
@@ -141,34 +142,12 @@ public class CommandManager implements TabExecutor {
 		if (args.length == 0) {
 			return result;
 		} else if (args.length == 1) {
-			result.addAll(cmds);
-			ArrayList<String> toRemove = new ArrayList<>();
-			for (String st : result) {
-				SubCommand sub = map.get(st);
-				if (sub != null) {
-					if (!commandSender.hasPermission(sub.getPermission())) {
-						toRemove.add(st);
-					}
-				} else
-					toRemove.add(st);
-			}
-			result.removeAll(toRemove);
+			result = allowedCommands(commandSender);
 		} else {
 			SubCommand sub = map.get(args[0].toLowerCase());
 			if (sub == null) {
 				if (args.length == 2 && args[0].equalsIgnoreCase("help")) { //help auto-complete
-					result.addAll(cmds);
-					ArrayList<String> toRemove = new ArrayList<>();
-					for (String st : result) {
-						sub = map.get(st);
-						if (sub != null) {
-							if (!commandSender.hasPermission(sub.getPermission())) {
-								toRemove.add(st);
-							}
-						} else
-							toRemove.add(st);
-					}
-					result.removeAll(toRemove);
+					result = allowedCommands(commandSender);
 				}
 				return result;
 			}
@@ -190,8 +169,19 @@ public class CommandManager implements TabExecutor {
 		return result;
 	}
 
+	private List<String> allowedCommands(@NotNull CommandSender sender) {
+		List<String> allowed = new ArrayList<>();
+		for (String name : cmds) {
+			SubCommand sub = map.get(name);
+			if (sub != null && sender.hasPermission(sub.getPermission())) {
+				allowed.add(name);
+			}
+		}
+		return allowed;
+	}
+
 	private void parseArguments(@NotNull CommandSender sender, @NotNull SubCommand sub, String[] args) {
-		final Random random = new Random();
+		final Random random = ThreadLocalRandom.current();
 		for (int i = 1; i < args.length; i++) {
 			List<ArgumentType> atypes = sub.getArgumentsToParse().get(i);
 			if (atypes == null) continue;

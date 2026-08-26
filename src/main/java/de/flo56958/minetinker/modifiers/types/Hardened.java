@@ -26,6 +26,11 @@ public class Hardened extends Modifier implements Listener {
 	private double armorPerLevel;
 	private double toughnessPerLevel;
 
+	@Override
+	public boolean managesOwnAttributeConversion() {
+		return true;
+	}
+
 	private Hardened() {
 		super(MineTinker.getPlugin());
 		customModelData = 10_046;

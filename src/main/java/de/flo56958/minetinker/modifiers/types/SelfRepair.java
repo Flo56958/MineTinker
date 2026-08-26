@@ -21,6 +21,7 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class SelfRepair extends Modifier implements Listener {
 
@@ -118,7 +119,7 @@ public class SelfRepair extends Modifier implements Listener {
 		if (!modManager.hasMod(tool, this)) return;
 
 		final int level = modManager.getModLevel(tool, this);
-		final Random rand = new Random();
+		final Random rand = ThreadLocalRandom.current();
 		final int n = rand.nextInt(100);
 		final int c = this.percentagePerLevel * level;
 

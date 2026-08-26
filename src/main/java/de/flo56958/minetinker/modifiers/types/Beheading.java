@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Beheading extends Modifier implements Listener {
 
@@ -99,7 +100,7 @@ public class Beheading extends Modifier implements Listener {
 		if (!player.hasPermission(getUsePermission())) return;
 		if (!modManager.hasMod(tool, this)) return;
 
-		Random rand = new Random();
+		Random rand = ThreadLocalRandom.current();
 		if (this.dropSpawneggChancePerLevel > 0) {
 			int n = rand.nextInt(100);
 			int i = this.dropSpawneggChancePerLevel * modManager.getModLevel(tool, this);

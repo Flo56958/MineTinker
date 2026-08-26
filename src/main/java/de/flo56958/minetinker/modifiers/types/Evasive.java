@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Evasive extends CooldownModifier implements Listener {
 
@@ -113,7 +114,7 @@ public class Evasive extends CooldownModifier implements Listener {
 		if (onCooldown(player, tool, true, event)) return;
 
 		//calculating chance
-		Random rand = new Random();
+		Random rand = ThreadLocalRandom.current();
 		int level = modManager.getModLevel(tool, this);
 
 		double chance = this.percentPerLevel * level;

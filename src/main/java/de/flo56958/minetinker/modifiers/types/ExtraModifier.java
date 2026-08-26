@@ -44,6 +44,16 @@ public class ExtraModifier extends Modifier {
 	}
 
 	@Override
+	protected boolean requiresFreeSlot() {
+		return false;
+	}
+
+	@Override
+	protected boolean isRandomlyApplicable() {
+		return false;
+	}
+
+	@Override
 	public List<ToolType> getAllowedTools() {
 		return Collections.singletonList(ToolType.ALL);
 	}

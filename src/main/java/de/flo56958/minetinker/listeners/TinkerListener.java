@@ -26,6 +26,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class TinkerListener implements Listener {
 
@@ -107,7 +108,7 @@ public class TinkerListener implements Listener {
 
 		if (player != null) {
 			if (config.getBoolean("LevelUpEvents.enabled")) {
-				final Random rand = new Random();
+				final Random rand = ThreadLocalRandom.current();
 
 				if (config.getBoolean("LevelUpEvents.DurabilityRepair.enabled")) {
 					final int n = rand.nextInt(100);

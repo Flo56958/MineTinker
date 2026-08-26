@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Channeling extends Modifier implements Listener {
 
@@ -121,7 +122,7 @@ public class Channeling extends Modifier implements Listener {
 		if (!event.getPlayer().hasPermission(getUsePermission())) return;
 		if (event.getEvent().getHitEntity() != null) return;
 		if (!modManager.hasMod(tool, this)) return;
-		if (new Random().nextInt(100) >= modManager.getModLevel(tool, this) * chancePerLevel) return;
+		if (ThreadLocalRandom.current().nextInt(100) >= modManager.getModLevel(tool, this) * chancePerLevel) return;
 
 		final Location loc = event.getEvent().getEntity().getLocation();
 		if (!loc.getWorld().hasStorm() && worksOnlyInStorms) return;
@@ -135,7 +136,7 @@ public class Channeling extends Modifier implements Listener {
 		final ItemStack tool = event.getTool();
 		if (!event.getPlayer().hasPermission(getUsePermission())) return;
 		if (!modManager.hasMod(tool, this)) return;
-		if (new Random().nextInt(100) >= modManager.getModLevel(tool, this) * chancePerLevel) return;
+		if (ThreadLocalRandom.current().nextInt(100) >= modManager.getModLevel(tool, this) * chancePerLevel) return;
 
 		final Location loc = event.getEntity().getLocation();
 		if (!loc.getWorld().hasStorm() && worksOnlyInStorms) return;

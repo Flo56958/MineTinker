@@ -3,6 +3,7 @@ package de.flo56958.minetinker.modifiers.types;
 import de.flo56958.minetinker.MineTinker;
 import de.flo56958.minetinker.api.events.MTProjectileHitEvent;
 import de.flo56958.minetinker.data.ToolType;
+import de.flo56958.minetinker.listeners.EntityListener;
 import de.flo56958.minetinker.modifiers.Modifier;
 import de.flo56958.minetinker.utils.ConfigurationManager;
 import org.bukkit.Location;
@@ -148,7 +149,7 @@ public class Phasing extends Modifier implements Listener {
 
 		phaser.setMetadata(this.getKey(), new FixedMetadataValue(MineTinker.getPlugin(), true));
 		// add item reference to arrow
-		phaser.setMetadata(MineTinker.getPlugin().getName() + "item",
+		phaser.setMetadata(EntityListener.ITEM_METADATA_KEY,
 				new FixedMetadataValue(MineTinker.getPlugin(), tool));
 
 		// reenable ender if the arrow was an ender arrow

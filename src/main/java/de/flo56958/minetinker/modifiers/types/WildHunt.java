@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class WildHunt extends Modifier implements Listener {
 
@@ -137,7 +138,7 @@ public class WildHunt extends Modifier implements Listener {
 		if (!player.hasPermission(getUsePermission())) return;
 		if (!modManager.hasMod(tool, this)) return;
 
-		final Random rand = new Random();
+		final Random rand = ThreadLocalRandom.current();
 		final List<Tupel> conv = conversions.get(event.getEvent().getEntity().getType());
 		if (conv == null) return;
 

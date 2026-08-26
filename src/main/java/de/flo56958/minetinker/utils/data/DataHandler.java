@@ -23,9 +23,20 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class DataHandler {
+
+	private static final Map<String, NamespacedKey> KEY_CACHE = new ConcurrentHashMap<>();
+
+	/**
+	 * @return the plugin-namespaced key for the given tag key, cached after first creation
+	 */
+	private static NamespacedKey pluginKey(@NotNull final String key) {
+		return KEY_CACHE.computeIfAbsent(key, k -> new NamespacedKey(MineTinker.getPlugin(), k));
+	}
 
 	/**
 	 * Checks if the ItemStack has a Tag with the given key and the given dataType.
@@ -57,7 +68,7 @@ public class DataHandler {
 		if (meta == null) return false;
 		final PersistentDataContainer container = meta.getPersistentDataContainer();
 
-		return container.has((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)), dataType);
+		return container.has((useMinecraft ? NamespacedKey.minecraft(key) : pluginKey(key)), dataType);
 	}
 
 	/**
@@ -91,7 +102,7 @@ public class DataHandler {
 		if (meta == null) return;
 
 		final PersistentDataContainer container = meta.getPersistentDataContainer();
-		container.set((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)), dataType, value);
+		container.set((useMinecraft ? NamespacedKey.minecraft(key) : pluginKey(key)), dataType, value);
 		item.setItemMeta(meta);
 	}
 
@@ -142,7 +153,7 @@ public class DataHandler {
 		if (meta == null) return null;
 
 		final PersistentDataContainer container = meta.getPersistentDataContainer();
-		return container.get((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)), dataType);
+		return container.get((useMinecraft ? NamespacedKey.minecraft(key) : pluginKey(key)), dataType);
 	}
 
 	/**
@@ -167,7 +178,7 @@ public class DataHandler {
 		if (meta == null) return;
 		PersistentDataContainer container = meta.getPersistentDataContainer();
 
-		container.remove((useMinecraft ? NamespacedKey.minecraft(key) : new NamespacedKey(MineTinker.getPlugin(), key)));
+		container.remove((useMinecraft ? NamespacedKey.minecraft(key) : pluginKey(key)));
 		item.setItemMeta(meta);
 	}
 
@@ -189,7 +200,7 @@ public class DataHandler {
 		// Consider Unbreaking Enchant
 		final int lvl = meta.getEnchantLevel(Enchantment.UNBREAKING);
 		// Check if the item should be damaged
-		if (new Random().nextInt(100) >= (100 / (lvl + 1))) return true;
+		if (ThreadLocalRandom.current().nextInt(100) >= (100 / (lvl + 1))) return true;
 
 		//Call damage event
 		final PlayerItemDamageEvent damageEvent = new PlayerItemDamageEvent(player, itemStack, damage);
@@ -272,7 +283,7 @@ public class DataHandler {
 					if (meta instanceof Damageable damageable) {
 						// Consider Unbreaking enchant
 						int lvl = meta.getEnchantLevel(Enchantment.UNBREAKING);
-						int r = new Random().nextInt(100);
+						int r = ThreadLocalRandom.current().nextInt(100);
 						if (!(r > 100 / (lvl + 1))) {
 							damageable.setDamage(damageable.getDamage() + 1);
 							itemStack.setItemMeta(meta);
@@ -363,17 +374,17 @@ public class DataHandler {
 			//5
 			case SCULK_CATALYST, SCULK_SENSOR, SCULK_SHRIEKER -> 5;
 			//0-2
-			case COAL_ORE -> new Random().nextInt(3);
+			case COAL_ORE -> ThreadLocalRandom.current().nextInt(3);
 			//0-1
-			case NETHER_GOLD_ORE -> new Random().nextInt(2);
+			case NETHER_GOLD_ORE -> ThreadLocalRandom.current().nextInt(2);
 			//3-7
-			case DIAMOND_ORE, EMERALD_ORE -> new Random().nextInt(5) + 3;
+			case DIAMOND_ORE, EMERALD_ORE -> ThreadLocalRandom.current().nextInt(5) + 3;
 			//2-5
-			case NETHER_QUARTZ_ORE, LAPIS_ORE -> new Random().nextInt(4) + 2;
+			case NETHER_QUARTZ_ORE, LAPIS_ORE -> ThreadLocalRandom.current().nextInt(4) + 2;
 			//1-5
-			case REDSTONE_ORE -> new Random().nextInt(4) + 1;
+			case REDSTONE_ORE -> ThreadLocalRandom.current().nextInt(4) + 1;
 			//15-43
-			case SPAWNER -> new Random().nextInt(29) + 15;
+			case SPAWNER -> ThreadLocalRandom.current().nextInt(29) + 15;
 			default -> 0;
 		};
 	}

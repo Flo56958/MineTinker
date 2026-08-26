@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
 public class AutoSmelt extends PlayerConfigurableModifier implements Listener {
@@ -212,7 +213,7 @@ public class AutoSmelt extends PlayerConfigurableModifier implements Listener {
 			return;
 		if (toggleable && player.isSneaking()) return;
 
-		if (!(new Random().nextInt(100) <= this.percentagePerLevel * modManager.getModLevel(tool, this)
+		if (!(ThreadLocalRandom.current().nextInt(100) <= this.percentagePerLevel * modManager.getModLevel(tool, this)
 				&& block.getLocation().getWorld() != null)) return;
 
 		Triplet conv = conversions.get(block.getType());
@@ -226,7 +227,7 @@ public class AutoSmelt extends PlayerConfigurableModifier implements Listener {
 			int level = modManager.getModLevel(tool, Luck.instance());
 
 			if (level > 0) {
-				int extra = new Random().nextInt(level + 1) * amount; // Times amount is for clay as it drops 4 per block
+				int extra = ThreadLocalRandom.current().nextInt(level + 1) * amount; // Times amount is for clay as it drops 4 per block
 				amount += extra;
 
 				int luckstat = DataHandler.getTagOrDefault(tool, getKey() + "_stat_luck", PersistentDataType.INTEGER, 0);

@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.AbstractMap;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
 public class AnvilListener implements Listener {
@@ -74,7 +74,7 @@ public class AnvilListener implements Listener {
 				if (item1.getType() == newTool.getType()) { // Vanilla repair
 					return;
 				}
-				if (new Random().nextInt(100) < MineTinker.getPlugin().getConfig().getInt("ChanceToFailToolUpgrade")) {
+				if (ThreadLocalRandom.current().nextInt(100) < MineTinker.getPlugin().getConfig().getInt("ChanceToFailToolUpgrade")) {
 					newTool = item1;
 					Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, false));
 				} else {
@@ -109,7 +109,7 @@ public class AnvilListener implements Listener {
 
 			item2.setAmount(item2.getAmount() - 1);
 
-			if (new Random().nextInt(100) < MineTinker.getPlugin().getConfig().getInt("ChanceToFailModifierApply")) {
+			if (ThreadLocalRandom.current().nextInt(100) < MineTinker.getPlugin().getConfig().getInt("ChanceToFailModifierApply")) {
 				newTool = item1;
 				Bukkit.getPluginManager().callEvent(new ModifierFailEvent(player, item1, mod, ModifierFailCause.PLAYER_FAILURE, false));
 			} else {

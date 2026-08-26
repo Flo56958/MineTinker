@@ -22,6 +22,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Soulbound extends Modifier implements Listener {
 
@@ -111,7 +112,7 @@ public class Soulbound extends Modifier implements Listener {
 			if (!modManager.isArmorViable(itemStack) && !modManager.isToolViable(itemStack)) continue;
 			if (!modManager.hasMod(itemStack, this)) continue;
 
-			Random rand = new Random();
+			Random rand = ThreadLocalRandom.current();
 			int n = rand.nextInt(100);
 			int c = modManager.getModLevel(itemStack, this) * percentagePerLevel;
 			ChatWriter.logModifier(player, event, this, itemStack, String.format("Chance(%d/%d)", n, c));

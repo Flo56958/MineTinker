@@ -25,6 +25,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GrindstoneListener implements Listener {
 
@@ -46,171 +47,171 @@ public class GrindstoneListener implements Listener {
 		if (!(event.getInventory() instanceof GrindstoneInventory grindstoneInventory)) return;
 		if (!(event.getWhoClicked() instanceof final Player player)) return;
 
-		if (config.getBoolean("Grindstone.Enabled")) {
-			if (event.getSlotType() == InventoryType.SlotType.RESULT) { //on Gridstone use
-				final ItemStack result = event.getCurrentItem();
-				if (!modManager.isArmorViable(result) && !modManager.isToolViable(result)) return;
-
-				final ItemStack slot1 = grindstoneInventory.getItem(0);
-				final ItemStack slot2 = grindstoneInventory.getItem(1);
-
-				final GrindstoneSave gs = save.get(player);
-
-				// check for invalid shift-click when inventory is full
-				if (event.isShiftClick() && PlayerInfo.getEmptyInventorySlots(player) < 1)
-					return;
-
-				save.remove(player);
-
-				// check for bugged state
-				if (gs == null || !gs.tool.equals(result) || (event.getCursor() != null && event.getCursor().getAmount() != 0)
-						|| (slot1 == null && slot2 == null) || (slot1 != null && !gs.tool.getType().equals(slot1.getType()))
-						|| (slot2 != null && !gs.tool.getType().equals(slot2.getType()))) {
-					event.setCancelled(true);
-					ChatWriter.sendActionBar(player,
-							LanguageManager.getString("Alert.InternalError", player));
-					if (config.getBoolean("Sound.OnFail"))
-						player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 2F);
-
-					return;
-				}
-
-				if (config.getInt("Grindstone.ChanceToGetSlotsBack") > 0 && config.getInt("Grindstone.ChanceToGetSlotsBack") < 100) {
-					final ItemMeta meta = result.getItemMeta();
-					final List<String> lore = meta.getLore();
-					lore.remove(0);
-					meta.setLore(lore);
-					result.setItemMeta(meta);
-					modManager.setFreeSlots(result, modManager.getFreeSlots(result) + gs.slots);
-				}
-
-				for (final ItemStack stack : gs.itemStacks) {
-					final Item item = player.getWorld().dropItem(player.getLocation(), stack);
-					item.setOwner(player.getUniqueId()); // Only the player can pick up the modifier items
-				}
-
-				// Remove spawned exp orbs
-				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
-						() -> player.getWorld().getEntitiesByClass(org.bukkit.entity.ExperienceOrb.class)
-								.forEach(orb -> {
-							if (orb.getLocation().distance(player.getLocation()) < 6.5) {
-								orb.setExperience(0);
-							}
-						}), 1);
-
+		if (!config.getBoolean("Grindstone.Enabled")) {
+			// Avoid handling the clicks inside the inventory.
+			if (event.getSlotType() != InventoryType.SlotType.RESULT
+					&& event.getSlotType() != InventoryType.SlotType.CRAFTING)
 				return;
-			}
 
-			// Avoid handling clicks outside the grindstone inventory
-			if (grindstoneInventory.equals(event.getClickedInventory()) == event.isShiftClick()) return;
-
-			final ItemStack item = event.isShiftClick() ? event.getCurrentItem() : event.getCursor();
-			//check for MT item
-			if (!modManager.isToolViable(item) && !modManager.isArmorViable(item)) return;
-
-			//Both slots should be null as the one item is on Cursor
+			// Works fine even if the getItem method returns null.
 			final ItemStack slot1 = grindstoneInventory.getItem(0);
 			final ItemStack slot2 = grindstoneInventory.getItem(1);
-			if (slot1 != null || slot2 != null) {
-				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
-						() -> grindstoneInventory.setItem(2, null), 1);
+
+			if (!(modManager.isToolViable(slot1) || modManager.isArmorViable(slot1)
+					|| modManager.isToolViable(slot2) || modManager.isArmorViable(slot2)))
 				return;
-			}
 
-			final ItemStack result = item.clone();
-			final GrindstoneSave gs = new GrindstoneSave();
-			final Random rand = new Random();
-			int amount = 0;
-			boolean hadMods = false;
+			if (event.getSlotType() != InventoryType.SlotType.RESULT) return;
 
-			gs.tool = result;
+			event.setResult(Event.Result.DENY);
+			event.setCancelled(true);
 
-			for (final Modifier mod : ModManager.instance().getAllowedMods()) {
-				final int level = ModManager.instance().getModLevel(result, mod);
-				amount += level * mod.getSlotCost();
-				for (int i = 0; i < level; i++) {
-					hadMods = true;
-					//Test for getting slot back
-					if (rand.nextInt(100) < config.getInt("Grindstone.ChanceToGetSlotsBack")) {
-						gs.slots += mod.getSlotCost();
-					}
-					//Test for getting modifier item back
-					if (rand.nextInt(100) < config.getInt("Grindstone.ChanceToGetModifierItemBack")) {
-						gs.itemStacks.add(mod.getModItem().clone());
-					}
-				}
-				ModManager.instance().removeMod(result, mod);
-			}
+			ChatWriter.sendActionBar(player, LanguageManager.getString("Alert.OnItemGrind", player));
+			if (config.getBoolean("Sound.OnFail"))
+				player.playSound(player.getLocation(), Sound.BLOCK_CHEST_LOCKED, 1.0F, 2F);
 
-			//Remove remaining non-modifier enchants
-			final ItemMeta resultMeta = result.getItemMeta();
-			if (resultMeta != null) {
-				final Map<Enchantment, Integer> enchants = resultMeta.getEnchants();
-				hadMods |= !enchants.isEmpty();
-				for (final Enchantment enchant : enchants.keySet()) {
-					resultMeta.removeEnchant(enchant);
-				}
-				result.setItemMeta(resultMeta);
-			}
+			return;
+		}
 
-			if (!hadMods) {
-				Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
-						() -> grindstoneInventory.setItem( /*Resultslot*/ 2, null), 1);
+		if (event.getSlotType() == InventoryType.SlotType.RESULT) { //on Gridstone use
+			final ItemStack result = event.getCurrentItem();
+			if (!modManager.isArmorViable(result) && !modManager.isToolViable(result)) return;
+
+			final ItemStack slot1 = grindstoneInventory.getItem(0);
+			final ItemStack slot2 = grindstoneInventory.getItem(1);
+
+			final GrindstoneSave gs = save.get(player);
+
+			// check for invalid shift-click when inventory is full
+			if (event.isShiftClick() && PlayerInfo.getEmptyInventorySlots(player) < 1)
+				return;
+
+			save.remove(player);
+
+			// check for bugged state
+			if (gs == null || !gs.tool.equals(result) || (event.getCursor() != null && event.getCursor().getAmount() != 0)
+					|| (slot1 == null && slot2 == null) || (slot1 != null && !gs.tool.getType().equals(slot1.getType()))
+					|| (slot2 != null && !gs.tool.getType().equals(slot2.getType()))) {
+				event.setCancelled(true);
+				ChatWriter.sendActionBar(player,
+						LanguageManager.getString("Alert.InternalError", player));
+				if (config.getBoolean("Sound.OnFail"))
+					player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 2F);
+
 				return;
 			}
 
 			if (config.getInt("Grindstone.ChanceToGetSlotsBack") > 0 && config.getInt("Grindstone.ChanceToGetSlotsBack") < 100) {
 				final ItemMeta meta = result.getItemMeta();
 				final List<String> lore = meta.getLore();
-				if (lore != null) {
-					lore.add(0, ChatColor.WHITE +
-							LanguageManager.getString("GrindStone.PossibleSlotsAfterGrind")
-									.replaceAll("%amount",
-											String.valueOf(amount + modManager.getFreeSlots(result))));
-					meta.setLore(lore);
-					result.setItemMeta(meta);
-				}
-			} else if (config.getInt("Grindstone.ChanceToGetSlotsBack") >= 100) {
-				modManager.setFreeSlots(gs.tool, modManager.getFreeSlots(gs.tool) + gs.slots);
-				gs.slots = 0;
+				lore.remove(0);
+				meta.setLore(lore);
+				result.setItemMeta(meta);
+				modManager.setFreeSlots(result, modManager.getFreeSlots(result) + gs.slots);
 			}
 
-			event.setResult(Event.Result.ALLOW);
+			for (final ItemStack stack : gs.itemStacks) {
+				final Item item = player.getWorld().dropItem(player.getLocation(), stack);
+				item.setOwner(player.getUniqueId()); // Only the player can pick up the modifier items
+			}
 
-			//So the wanted result item does not get overwritten by vanilla
-			//This is a workaround as you can not set the output in the event directly
-			//It has its problems and causes bugged states and result items but those states can be
-			//identified by checking the known "normal" item saved in GrindstoneSave when the item gets clicked
-			//by the player.
-			//This has mayor drawback e.g. it is highly incompatible with other grindstone plugins
-			//FIXME: Find a better workaround to set the output of the Grindstone
+			// Remove spawned exp orbs
 			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
-					() -> grindstoneInventory.setItem( /*Resultslot*/ 2, result), 1);
-			save.put(player, gs);
+					() -> player.getWorld().getEntitiesByClass(org.bukkit.entity.ExperienceOrb.class)
+							.forEach(orb -> {
+						if (orb.getLocation().distance(player.getLocation()) < 6.5) {
+							orb.setExperience(0);
+						}
+					}), 1);
 
 			return;
 		}
 
-		// Avoid handling the clicks inside the inventory.
-		if (event.getSlotType() != InventoryType.SlotType.RESULT
-				&& event.getSlotType() != InventoryType.SlotType.CRAFTING)
-			return;
+		// Avoid handling clicks outside the grindstone inventory
+		if (grindstoneInventory.equals(event.getClickedInventory()) == event.isShiftClick()) return;
 
-		// Works fine even if the getItem method returns null.
+		final ItemStack item = event.isShiftClick() ? event.getCurrentItem() : event.getCursor();
+		//check for MT item
+		if (!modManager.isToolViable(item) && !modManager.isArmorViable(item)) return;
+
+		//Both slots should be null as the one item is on Cursor
 		final ItemStack slot1 = grindstoneInventory.getItem(0);
 		final ItemStack slot2 = grindstoneInventory.getItem(1);
-
-		if (!(modManager.isToolViable(slot1) || modManager.isArmorViable(slot1)
-				|| modManager.isToolViable(slot2) || modManager.isArmorViable(slot2)))
+		if (slot1 != null || slot2 != null) {
+			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
+					() -> grindstoneInventory.setItem(2, null), 1);
 			return;
+		}
 
-		if (event.getSlotType() != InventoryType.SlotType.RESULT) return;
+		final ItemStack result = item.clone();
+		final GrindstoneSave gs = new GrindstoneSave();
+		final Random rand = ThreadLocalRandom.current();
+		int amount = 0;
+		boolean hadMods = false;
 
-		event.setResult(Event.Result.DENY);
-		event.setCancelled(true);
+		gs.tool = result;
 
-		ChatWriter.sendActionBar(player, LanguageManager.getString("Alert.OnItemGrind", player));
-		if (config.getBoolean("Sound.OnFail"))
-			player.playSound(player.getLocation(), Sound.BLOCK_CHEST_LOCKED, 1.0F, 2F);
+		for (final Modifier mod : ModManager.instance().getAllowedMods()) {
+			final int level = ModManager.instance().getModLevel(result, mod);
+			amount += level * mod.getSlotCost();
+			for (int i = 0; i < level; i++) {
+				hadMods = true;
+				//Test for getting slot back
+				if (rand.nextInt(100) < config.getInt("Grindstone.ChanceToGetSlotsBack")) {
+					gs.slots += mod.getSlotCost();
+				}
+				//Test for getting modifier item back
+				if (rand.nextInt(100) < config.getInt("Grindstone.ChanceToGetModifierItemBack")) {
+					gs.itemStacks.add(mod.getModItem().clone());
+				}
+			}
+			ModManager.instance().removeMod(result, mod);
+		}
+
+		//Remove remaining non-modifier enchants
+		final ItemMeta resultMeta = result.getItemMeta();
+		if (resultMeta != null) {
+			final Map<Enchantment, Integer> enchants = resultMeta.getEnchants();
+			hadMods |= !enchants.isEmpty();
+			for (final Enchantment enchant : enchants.keySet()) {
+				resultMeta.removeEnchant(enchant);
+			}
+			result.setItemMeta(resultMeta);
+		}
+
+		if (!hadMods) {
+			Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
+					() -> grindstoneInventory.setItem( /*Resultslot*/ 2, null), 1);
+			return;
+		}
+
+		if (config.getInt("Grindstone.ChanceToGetSlotsBack") > 0 && config.getInt("Grindstone.ChanceToGetSlotsBack") < 100) {
+			final ItemMeta meta = result.getItemMeta();
+			final List<String> lore = meta.getLore();
+			if (lore != null) {
+				lore.add(0, ChatColor.WHITE +
+						LanguageManager.getString("GrindStone.PossibleSlotsAfterGrind")
+								.replace("%amount",
+										String.valueOf(amount + modManager.getFreeSlots(result))));
+				meta.setLore(lore);
+				result.setItemMeta(meta);
+			}
+		} else if (config.getInt("Grindstone.ChanceToGetSlotsBack") >= 100) {
+			modManager.setFreeSlots(gs.tool, modManager.getFreeSlots(gs.tool) + gs.slots);
+			gs.slots = 0;
+		}
+
+		event.setResult(Event.Result.ALLOW);
+
+		//So the wanted result item does not get overwritten by vanilla
+		//This is a workaround as you can not set the output in the event directly
+		//It has its problems and causes bugged states and result items but those states can be
+		//identified by checking the known "normal" item saved in GrindstoneSave when the item gets clicked
+		//by the player.
+		//This has mayor drawback e.g. it is highly incompatible with other grindstone plugins
+		//FIXME: Find a better workaround to set the output of the Grindstone
+		Bukkit.getScheduler().runTaskLater(MineTinker.getPlugin(),
+				() -> grindstoneInventory.setItem( /*Resultslot*/ 2, result), 1);
+		save.put(player, gs);
 	}
 }

@@ -15,7 +15,11 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Mutating extends Modifier implements Listener {
 
@@ -26,7 +30,6 @@ public class Mutating extends Modifier implements Listener {
 	private boolean dropModifierAsItem;
 	private boolean allowLevelZero;
 	private boolean disableAddingNewSlots;
-	private final Random rand = new Random();
 	private boolean ignoreSlots;
 
 	private Mutating() {
@@ -118,7 +121,7 @@ public class Mutating extends Modifier implements Listener {
 
 		if (allowLevelZero) modlevel++; //if level 0 is allowed, the level is increased by 1
 
-		if (rand.nextInt(100) > chancePerLevel * modlevel) return;
+		if (ThreadLocalRandom.current().nextInt(100) > chancePerLevel * modlevel) return;
 
 		for (int i = 0; i < modifierAmount; i++) {
 			final List<Modifier> mods = modManager.getAllowedMods();
@@ -128,7 +131,7 @@ public class Mutating extends Modifier implements Listener {
 			if (!allowExtraModifier) mods.remove(ExtraModifier.instance());
 
 			while (!mods.isEmpty()) {
-				final Modifier mod = mods.get(rand.nextInt(mods.size()));
+				final Modifier mod = mods.get(ThreadLocalRandom.current().nextInt(mods.size()));
 				if (dropModifierAsItem) {
 					if (!player.getInventory().addItem(mod.getModItem()).isEmpty()) { //adds items to (full) inventory
 						player.getWorld().dropItem(player.getLocation(), mod.getModItem()); //drops item when inventory is full
