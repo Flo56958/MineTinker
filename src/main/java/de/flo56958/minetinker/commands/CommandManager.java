@@ -1,6 +1,5 @@
 package de.flo56958.minetinker.commands;
 
-import com.google.common.base.Splitter;
 import de.flo56958.minetinker.api.SubCommand;
 import de.flo56958.minetinker.commands.subs.*;
 import de.flo56958.minetinker.modifiers.ModManager;
@@ -250,8 +249,8 @@ public class CommandManager implements TabExecutor {
 					}
 					case RANDOM_NUMBER -> {
 						//like range 1-5 (inclusive), or from 1,2,3,6,7,8, or all of them combined like 1-5,7-9,11,13
-						final List<String> rules = Splitter.on(',').splitToList(args[i]);
-						final String current = rules.get(random.nextInt(rules.size()));
+						final String[] rules = args[i].split(",");
+						final String current = rules[random.nextInt(rules.length)];
 						boolean isMod = false;
 						for (Modifier mod : ModManager.instance().getAllowedMods()) {
 							if (mod.getName().replace(" ", "_").equals(current)) {

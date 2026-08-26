@@ -98,16 +98,6 @@ public enum ToolType {
 	}
 
 	/**
-	 * get the tooltype from a string
-	 *
-	 * @param name the tooltype name
-	 * @return tooltype instance, null if invalid name
-	 */
-	public static ToolType get(String name) {
-		return valueOf(name);
-	}
-
-	/**
 	 * get the tooltype for a given material
 	 *
 	 * @param material the material to check

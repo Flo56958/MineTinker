@@ -8,7 +8,6 @@ import de.flo56958.minetinker.data.Lists;
 import de.flo56958.minetinker.data.ModifierFailCause;
 import de.flo56958.minetinker.modifiers.ModManager;
 import de.flo56958.minetinker.modifiers.Modifier;
-import de.flo56958.minetinker.utils.datatypes.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -25,6 +24,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
@@ -80,10 +80,10 @@ public class AnvilListener implements Listener {
 				} else {
 					Bukkit.getPluginManager().callEvent(new ToolUpgradeEvent(player, newTool, true));
 				}
-				final Pair<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(item1.getType(), item2.getType());
-				if (materialIntegerPair != null && materialIntegerPair.x() != null) {
-					if (newTool.getType() == materialIntegerPair.x() && materialIntegerPair.y() != null) {
-						item2.setAmount(item2.getAmount() - materialIntegerPair.y());
+				final AbstractMap.SimpleImmutableEntry<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(item1.getType(), item2.getType());
+				if (materialIntegerPair != null && materialIntegerPair.getKey() != null) {
+					if (newTool.getType() == materialIntegerPair.getKey() && materialIntegerPair.getValue() != null) {
+						item2.setAmount(item2.getAmount() - materialIntegerPair.getValue());
 					}
 				}
 			} else {
@@ -228,11 +228,11 @@ public class AnvilListener implements Listener {
 					final ItemStack item = inventory.getItem(1);
 
 					if (item != null) {
-						final Pair<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(item1.getType(), item.getType());
-						if (materialIntegerPair != null && materialIntegerPair.x() != null) {
-							if (materialIntegerPair.y() != null && item.getAmount() >= materialIntegerPair.y()) {
+						final AbstractMap.SimpleImmutableEntry<Material, Integer> materialIntegerPair = ModManager.itemUpgrader(item1.getType(), item.getType());
+						if (materialIntegerPair != null && materialIntegerPair.getKey() != null) {
+							if (materialIntegerPair.getValue() != null && item.getAmount() >= materialIntegerPair.getValue()) {
 								newTool = item1.clone();
-								newTool.setType(materialIntegerPair.x());
+								newTool.setType(materialIntegerPair.getKey());
 								modManager.addArmorAttributes(newTool); //The Attributes need to be reapplied
 								final ItemMeta meta = newTool.getItemMeta();
 								if (meta instanceof Damageable damageable) {

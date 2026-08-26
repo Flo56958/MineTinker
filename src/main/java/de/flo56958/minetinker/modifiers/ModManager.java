@@ -13,7 +13,6 @@ import de.flo56958.minetinker.utils.ConfigurationManager;
 import de.flo56958.minetinker.utils.LanguageManager;
 import de.flo56958.minetinker.utils.data.DataHandler;
 import de.flo56958.minetinker.utils.data.UUIDTagType;
-import de.flo56958.minetinker.utils.datatypes.Pair;
 import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationInterface;
 import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
 import org.bukkit.*;
@@ -205,7 +204,7 @@ public class ModManager {
 		return instance;
 	}
 
-	public static @Nullable Pair<@Nullable Material, @NotNull Integer> itemUpgrader(@NotNull final Material tool, @NotNull final Material material) {
+	public static @Nullable AbstractMap.SimpleImmutableEntry<@Nullable Material, @NotNull Integer> itemUpgrader(@NotNull final Material tool, @NotNull final Material material) {
 		String name = Iterables.get(Splitter.on('_').split(tool.name()), 0).toLowerCase();
 
 		if ((name.equals("wooden") && material.name().contains("PLANKS"))
@@ -222,15 +221,15 @@ public class ModManager {
 		// upgrading from diamond to netherrite should only require one material
 		final boolean reduceToOne = name.equals("diamond") && material == Material.NETHERITE_INGOT;
 		return switch (ToolType.get(tool)) {
-			case AXE -> new Pair<>(getToolUpgrade(material, "AXE"), reduceToOne ? 1 : 3);
-			case BOOTS -> new Pair<>(getArmorUpgrade(material, "BOOTS"), reduceToOne ? 1 : 4);
-			case CHESTPLATE -> new Pair<>(getArmorUpgrade(material, "CHESTPLATE"), reduceToOne ? 1 : 8);
-			case HELMET -> new Pair<>(getArmorUpgrade(material, "HELMET"), reduceToOne ? 1 : 5);
-			case HOE -> new Pair<>(getToolUpgrade(material, "HOE"), reduceToOne ? 1 : 2);
-			case LEGGINGS -> new Pair<>(getArmorUpgrade(material, "LEGGINGS"), reduceToOne ? 1 : 7);
-			case PICKAXE -> new Pair<>(getToolUpgrade(material, "PICKAXE"), reduceToOne ? 1 : 3);
-			case SHOVEL -> new Pair<>(getToolUpgrade(material, "SHOVEL"), 1);
-			case SWORD -> new Pair<>(getToolUpgrade(material, "SWORD"), reduceToOne ? 1 : 2);
+			case AXE -> new AbstractMap.SimpleImmutableEntry<>(getToolUpgrade(material, "AXE"), reduceToOne ? 1 : 3);
+			case BOOTS -> new AbstractMap.SimpleImmutableEntry<>(getArmorUpgrade(material, "BOOTS"), reduceToOne ? 1 : 4);
+			case CHESTPLATE -> new AbstractMap.SimpleImmutableEntry<>(getArmorUpgrade(material, "CHESTPLATE"), reduceToOne ? 1 : 8);
+			case HELMET -> new AbstractMap.SimpleImmutableEntry<>(getArmorUpgrade(material, "HELMET"), reduceToOne ? 1 : 5);
+			case HOE -> new AbstractMap.SimpleImmutableEntry<>(getToolUpgrade(material, "HOE"), reduceToOne ? 1 : 2);
+			case LEGGINGS -> new AbstractMap.SimpleImmutableEntry<>(getArmorUpgrade(material, "LEGGINGS"), reduceToOne ? 1 : 7);
+			case PICKAXE -> new AbstractMap.SimpleImmutableEntry<>(getToolUpgrade(material, "PICKAXE"), reduceToOne ? 1 : 3);
+			case SHOVEL -> new AbstractMap.SimpleImmutableEntry<>(getToolUpgrade(material, "SHOVEL"), 1);
+			case SWORD -> new AbstractMap.SimpleImmutableEntry<>(getToolUpgrade(material, "SWORD"), reduceToOne ? 1 : 2);
 			default -> null;
 		};
 	}
