@@ -27,14 +27,14 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class ShadowDive extends Modifier implements Listener {
 
 	private static ShadowDive instance;
 
 	private int requiredLightLevel;
-	private final ConcurrentHashMap<Player, Integer> activePlayers = new ConcurrentHashMap<>();
+	// Bukkit event dispatch and the repeating task below are single-threaded, so this is only ever touched from the main thread
+	private final HashMap<Player, Integer> activePlayers = new HashMap<>();
 
 	private BukkitTask task;
 

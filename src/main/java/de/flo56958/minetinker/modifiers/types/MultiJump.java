@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MultiJump extends Modifier implements Listener {
@@ -33,9 +32,10 @@ public class MultiJump extends Modifier implements Listener {
 	private static MultiJump instance;
 
 	//The Integer tells the Plugin how much Level of MultiJump have been used up by the Player
-	private final ConcurrentHashMap<Player, AtomicInteger> jumpcharge = new ConcurrentHashMap<>();
+	// Bukkit event dispatch is single-threaded, so these are only ever touched from the main thread
+	private final HashMap<Player, AtomicInteger> jumpcharge = new HashMap<>();
 
-	private final ConcurrentHashMap<Player, Long> allowFlight = new ConcurrentHashMap<>();
+	private final HashMap<Player, Long> allowFlight = new HashMap<>();
 
 	private MultiJump() {
 		super(MineTinker.getPlugin());

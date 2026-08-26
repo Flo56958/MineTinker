@@ -21,12 +21,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Photosynthesis extends PlayerConfigurableModifier {
 
 	private static Photosynthesis instance;
-	private final ConcurrentHashMap<Player, Tupel> data = new ConcurrentHashMap<>();
+	// scheduleSyncRepeatingTask runs on the main thread, so this is only ever touched from there
+	private final HashMap<Player, Tupel> data = new HashMap<>();
 	private final HashSet<Material> allowedMaterials = new HashSet<>();
 	private int healthRepair;
 	private int taskID = -1;

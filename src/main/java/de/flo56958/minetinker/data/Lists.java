@@ -7,14 +7,15 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("unused")
 public class Lists {
 
-	public static final ConcurrentHashMap<Player, BlockFace> BLOCKFACE = new ConcurrentHashMap<>();
+	// Bukkit event dispatch is single-threaded, so this is only ever touched from the main thread
+	public static final HashMap<Player, BlockFace> BLOCKFACE = new HashMap<>();
 	public static List<String> DROPLOOT;
 	public static Set<String> WORLDS;
 	public static List<String> NAME_COMMAND_BLACKLIST;

@@ -13,7 +13,6 @@ import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
 import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationOption;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -29,12 +28,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Drilling extends PlayerConfigurableModifier implements Listener {
 
-	public static final ConcurrentHashMap<Location, Integer> events_break = new ConcurrentHashMap<>();
-	public static final ConcurrentHashMap<Location, Integer> events_interact = new ConcurrentHashMap<>();
+	// Bukkit event dispatch is single-threaded, so these are only ever touched from the main thread
+	public static final HashMap<Block, Integer> events_break = new HashMap<>();
+	public static final HashMap<Block, Integer> events_interact = new HashMap<>();
 
 	private static Drilling instance;
 	private HashSet<Material> blacklist = new HashSet<>();
@@ -129,7 +128,7 @@ public class Drilling extends PlayerConfigurableModifier implements Listener {
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
-	public boolean canUseDrilling(Player player, ItemStack tool, Location loc) {
+	public boolean canUseDrilling(Player player, ItemStack tool) {
 		if (!player.hasPermission(getUsePermission())) return false;
 		if (toggleable && player.isSneaking()) return false;
 
@@ -149,11 +148,11 @@ public class Drilling extends PlayerConfigurableModifier implements Listener {
 		final ItemStack tool = event.getTool();
 		final Block block = event.getEvent().getClickedBlock();
 		if (block == null) return;
-		if (events_interact.remove(block.getLocation(), 0)) return; // check first to clear map
+		if (events_interact.remove(block, 0)) return; // check first to clear map
 		if (block.getType().isAir()) return; // does not work with air
 		if (block.isLiquid()) return; // does not work with liquids
 
-		if (!canUseDrilling(player, tool, block.getLocation())) return;
+		if (!canUseDrilling(player, tool)) return;
 
 		BlockFace face = event.getEvent().getBlockFace();
 		if (event.getEvent().getAction() == Action.RIGHT_CLICK_BLOCK && modManager.hasMod(tool, Building.instance()))
@@ -167,10 +166,10 @@ public class Drilling extends PlayerConfigurableModifier implements Listener {
 			final Block b = block.getRelative(finalFace, i);
 			if (block.getType().isAir()) break;
 			if (block.isLiquid()) break;
-			if (events_interact.putIfAbsent(b.getLocation(), 0) != null) break;
+			if (events_interact.putIfAbsent(b, 0) != null) break;
 
 			if (power)
-				Power.events_interact.putIfAbsent(b.getLocation(), 0);
+				Power.events_interact.putIfAbsent(b, 0);
 
 			Bukkit.getPluginManager().callEvent(
 					new PlayerInteractEvent(player, event.getEvent().getAction(), tool, b, event.getEvent().getBlockFace()));
@@ -182,16 +181,16 @@ public class Drilling extends PlayerConfigurableModifier implements Listener {
 		final Player player = event.getPlayer();
 		final ItemStack tool = event.getTool();
 		final Block block = event.getBlock();
-		if (events_break.remove(block.getLocation(), 0)) return; // check first to clear map
+		if (events_break.remove(block, 0)) return; // check first to clear map
 		if (blacklist.contains(block.getType())) return;
 		if (block.getType().isAir()) return; // does not work with air
 		if (block.isLiquid()) return; // does not work with liquids
-		if (!canUseDrilling(player, tool, block.getLocation())) return;
+		if (!canUseDrilling(player, tool)) return;
 
 		final int level = Math.min(modManager.getModLevel(tool, this), PlayerConfigurationManager.getInstance().getInteger(player, CLAMP_LEVEL));
 
 		// Check if power save the old correct blockface
-		BlockFace face = Power.drillingCommunication.remove(block.getLocation());
+		BlockFace face = Power.drillingCommunication.remove(block);
 		boolean usedPowerCommunication = true;
 		final boolean power = modManager.hasMod(tool, Power.instance());
 		if (face == null) {
@@ -220,9 +219,9 @@ public class Drilling extends PlayerConfigurableModifier implements Listener {
 		if (player.getGameMode() != GameMode.CREATIVE && block.getType().getHardness() > centralBlockHardness + 2) return false;
 
 		try {
-			events_break.putIfAbsent(block.getLocation(), 0);
+			events_break.putIfAbsent(block, 0);
 			if (power)
-				Power.events_break.putIfAbsent(block.getLocation(), 0);
+				Power.events_break.putIfAbsent(block, 0);
 			return DataHandler.playerBreakBlock(player, block, tool);
 		} catch (IllegalArgumentException ignored) {
 			return false;

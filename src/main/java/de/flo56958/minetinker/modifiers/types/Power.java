@@ -12,7 +12,10 @@ import de.flo56958.minetinker.utils.PlayerInfo;
 import de.flo56958.minetinker.utils.data.DataHandler;
 import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationManager;
 import de.flo56958.minetinker.utils.playerconfig.PlayerConfigurationOption;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
@@ -30,15 +33,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Power extends PlayerConfigurableModifier implements Listener {
 
-	public static final ConcurrentHashMap<Location, Integer> events_break = new ConcurrentHashMap<>();
-	public static final ConcurrentHashMap<Location, Integer> events_interact = new ConcurrentHashMap<>();
+	// Bukkit event dispatch is single-threaded, so these are only ever touched from the main thread
+	public static final HashMap<Block, Integer> events_break = new HashMap<>();
+	public static final HashMap<Block, Integer> events_interact = new HashMap<>();
 
 	//Communicates the used BlockFace to the Drilling Modifier
-	public static final ConcurrentHashMap<Location, BlockFace> drillingCommunication = new ConcurrentHashMap<>();
+	public static final HashMap<Block, BlockFace> drillingCommunication = new HashMap<>();
 	private static Power instance;
 	private HashSet<Material> blacklist = new HashSet<>();
 	private boolean treatAsWhitelist;
@@ -141,30 +144,30 @@ public class Power extends PlayerConfigurableModifier implements Listener {
 			if (PlayerConfigurationManager.getInstance().getBoolean(player, LEVEL_1_VERTICAL)) {
 				if (down_up) {
 					if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
-						b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
-						b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
+						b1 = block.getRelative(0, 0, 1);
+						b2 = block.getRelative(0, 0, -1);
 					} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
-						b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
-						b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
+						b1 = block.getRelative(1, 0, 0);
+						b2 = block.getRelative(-1, 0, 0);
 					}
 				} else {
-					b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
-					b2 = block.getWorld().getBlockAt(block.getLocation().add(0, -1, 0));
+					b1 = block.getRelative(0, 1, 0);
+					b2 = block.getRelative(0, -1, 0);
 				}
 			} else if (down_up) {
 				if (direction == PlayerInfo.Direction.NORTH || direction == PlayerInfo.Direction.SOUTH) {
-					b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
-					b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
+					b1 = block.getRelative(1, 0, 0);
+					b2 = block.getRelative(-1, 0, 0);
 				} else if (direction == PlayerInfo.Direction.WEST || direction == PlayerInfo.Direction.EAST) {
-					b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
-					b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
+					b1 = block.getRelative(0, 0, 1);
+					b2 = block.getRelative(0, 0, -1);
 				}
 			} else if (north_south) {
-				b1 = block.getWorld().getBlockAt(block.getLocation().add(1, 0, 0));
-				b2 = block.getWorld().getBlockAt(block.getLocation().add(-1, 0, 0));
+				b1 = block.getRelative(1, 0, 0);
+				b2 = block.getRelative(-1, 0, 0);
 			} else if (face.equals(BlockFace.WEST) || face.equals(BlockFace.EAST)) {
-				b1 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, 1));
-				b2 = block.getWorld().getBlockAt(block.getLocation().add(0, 0, -1));
+				b1 = block.getRelative(0, 0, 1);
+				b2 = block.getRelative(0, 0, -1);
 			}
 			blocks.add(b1);
 			blocks.add(b2);
@@ -173,8 +176,7 @@ public class Power extends PlayerConfigurableModifier implements Listener {
 				for (int x = -(level - 1); x <= (level - 1); x++) {
 					for (int z = -(level - 1); z <= (level - 1); z++) {
 						if (x != 0 || z != 0) {
-							Block b = block.getWorld().getBlockAt(block.getLocation().add(x, 0, z));
-							blocks.add(b);
+							blocks.add(block.getRelative(x, 0, z));
 						}
 					}
 				}
@@ -182,8 +184,7 @@ public class Power extends PlayerConfigurableModifier implements Listener {
 				for (int x = -(level - 1); x <= (level - 1); x++) {
 					for (int y = -(level - 1); y <= (level - 1); y++) {
 						if (x != 0 || y != 0) {
-							Block b = block.getWorld().getBlockAt(block.getLocation().add(x, y, 0));
-							blocks.add(b);
+							blocks.add(block.getRelative(x, y, 0));
 						}
 					}
 				}
@@ -191,8 +192,7 @@ public class Power extends PlayerConfigurableModifier implements Listener {
 				for (int z = -(level - 1); z <= (level - 1); z++) {
 					for (int y = -(level - 1); y <= (level - 1); y++) {
 						if (y != 0 || z != 0) {
-							Block b = block.getWorld().getBlockAt(block.getLocation().add(0, y, z));
-							blocks.add(b);
+							blocks.add(block.getRelative(0, y, z));
 						}
 					}
 				}
@@ -221,7 +221,7 @@ public class Power extends PlayerConfigurableModifier implements Listener {
 		final Block block = event.getBlock();
 
 		//Was the block broken by Power or Drilling, blocks unwanted recursion
-		if (events_break.remove(block.getLocation(), 0)) return; // check first to clear map
+		if (events_break.remove(block, 0)) return; // check first to clear map
 		if (block.getType().isAir()) return; // does not work with air
 		if (block.isLiquid()) return; // does not work with liquids
 
@@ -252,7 +252,7 @@ public class Power extends PlayerConfigurableModifier implements Listener {
 
 		final Block block = event.getEvent().getClickedBlock();
 		if (block == null) return;
-		if (events_interact.remove(block.getLocation(), 0)) return; // check first to clear map
+		if (events_interact.remove(block, 0)) return; // check first to clear map
 		if (block.getType().isAir()) return; // does not work with air
 		if (block.isLiquid()) return; // does not work with liquids
 
@@ -266,7 +266,7 @@ public class Power extends PlayerConfigurableModifier implements Listener {
 		for (final Block b : blocks) {
 			if (b.getType().isAir()) continue;
 			if (b.isLiquid()) continue;
-			if (events_interact.putIfAbsent(b.getLocation(), 0) != null) continue;
+			if (events_interact.putIfAbsent(b, 0) != null) continue;
 
 			PlayerInteractEvent synthetic = new PlayerInteractEvent(player, event.getEvent().getAction(), tool, b, event.getEvent().getBlockFace());
 			// Mark as synthetic to prevent recursion
@@ -291,12 +291,12 @@ public class Power extends PlayerConfigurableModifier implements Listener {
 		if (!(block.getType() == Material.GRASS_BLOCK
 				|| block.getType() == Material.DIRT || block.getType() == Material.DIRT_PATH)) return;
 
-		final Block upperBlock = player.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
+		final Block upperBlock = block.getRelative(0, 1, 0);
 		if (!upperBlock.getType().isAir() && !Tag.MAINTAINS_FARMLAND.isTagged(upperBlock.getType()))
 			//Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
 			return;
 
-		if (!events_interact.containsKey(block.getLocation())) return;
+		if (!events_interact.containsKey(block)) return;
 		if (!canUsePower(player, tool)) return;
 
 		// central block exp does not give exp TODO: fix
@@ -323,12 +323,12 @@ public class Power extends PlayerConfigurableModifier implements Listener {
 		if (!(event.getEvent().getAction() == Action.RIGHT_CLICK_BLOCK && block != null)) return;
 		if (!(block.getType() == Material.GRASS_BLOCK || block.getType() == Material.DIRT)) return;
 
-		final Block upperBlock = player.getWorld().getBlockAt(block.getLocation().add(0, 1, 0));
+		final Block upperBlock = block.getRelative(0, 1, 0);
 		if (!upperBlock.getType().isAir())
 			//Case Block is on top of clicked Block -> No Soil Tilt -> no Exp
 			return;
 
-		if (!events_interact.containsKey(block.getLocation())) return;
+		if (!events_interact.containsKey(block)) return;
 		if (!canUsePower(player, tool)) return;
 
 		// central block exp does not give exp TODO: fix
@@ -352,7 +352,7 @@ public class Power extends PlayerConfigurableModifier implements Listener {
 				&& (Tag.LOGS.isTagged(block.getType()) && !block.getType().name().contains("STRIPPED_"))))
 			return;
 
-		if (events_interact.containsKey(block.getLocation()) && canUsePower(player, tool)) {
+		if (events_interact.containsKey(block) && canUsePower(player, tool)) {
 			ChatWriter.logModifier(player, event, this, tool);
 
 			final Material log = Material.getMaterial("STRIPPED_" + block.getType().name());
@@ -378,9 +378,9 @@ public class Power extends PlayerConfigurableModifier implements Listener {
 		if (!(block.getBlockData() instanceof Ageable) && ToolType.HOE.contains(tool.getType())) return;
 
 		// Save BlockFace so Drilling can use the 'old' information
-		if (drilling) drillingCommunication.put(block.getLocation(), face);
+		if (drilling) drillingCommunication.put(block, face);
 
-		if (events_break.putIfAbsent(block.getLocation(), 0) != null) return;
+		if (events_break.putIfAbsent(block, 0) != null) return;
 
 		try {
 			DataHandler.playerBreakBlock(player, block, tool);

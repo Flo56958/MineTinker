@@ -23,13 +23,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class DataHandler {
 
-	private static final Map<String, NamespacedKey> KEY_CACHE = new ConcurrentHashMap<>();
+	// Bukkit event dispatch is single-threaded, so this is only ever touched from the main thread
+	private static final Map<String, NamespacedKey> KEY_CACHE = new HashMap<>();
 
 	/**
 	 * @return the plugin-namespaced key for the given tag key, cached after first creation

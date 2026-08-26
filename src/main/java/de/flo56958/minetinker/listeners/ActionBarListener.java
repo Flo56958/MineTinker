@@ -13,19 +13,23 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class ActionBarListener implements Listener {
 
-	private static final HashMap<UUID, AtomicInteger> xpbuffer = new HashMap<>();
+	// Written from the main thread (onJoin/onQuit/addEXP), read from the async repeating task below
+	private static final ConcurrentHashMap<UUID, AtomicInteger> xpbuffer = new ConcurrentHashMap<>();
 
 	public ActionBarListener() {
 		Bukkit.getOnlinePlayers().forEach(p -> xpbuffer.put(p.getUniqueId(), new AtomicInteger(0)));
 		Bukkit.getScheduler().runTaskTimerAsynchronously(MineTinker.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(p -> {
-			final int xpamount = xpbuffer.get(p.getUniqueId()).getAndSet(0);
+			final AtomicInteger buffered = xpbuffer.get(p.getUniqueId());
+			if (buffered == null) return; // player may not be tracked yet (join race) or already quit
+
+			final int xpamount = buffered.getAndSet(0);
 			if (xpamount > 0 && PlayerConfigurationManager.getInstance().getBoolean(p, GeneralPCOptions.INSTANCE.ACTIONBAR_ON_EXP_GAIN))
 				ChatWriter.sendActionBar(p, LanguageManager.getString("ActionBar.ExpGain", p)
 						.replaceAll("%amount", "+" + xpamount));

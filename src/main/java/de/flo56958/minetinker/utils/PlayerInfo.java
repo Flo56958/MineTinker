@@ -18,16 +18,17 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerInfo implements Listener {
 
 	static final ModManager modManager = ModManager.instance();
 
-	private static final ConcurrentHashMap<UUID, Long> combatTagTracker = new ConcurrentHashMap<>();
-	private static final ConcurrentHashMap<UUID, Long> combatTagTimeTracker = new ConcurrentHashMap<>();
-	private static final ConcurrentHashMap<UUID, ItemStack> fishingRodTracker = new ConcurrentHashMap<>();
+	// Bukkit event dispatch is single-threaded, so these are only ever touched from the main thread
+	private static final HashMap<UUID, Long> combatTagTracker = new HashMap<>();
+	private static final HashMap<UUID, Long> combatTagTimeTracker = new HashMap<>();
+	private static final HashMap<UUID, ItemStack> fishingRodTracker = new HashMap<>();
 
 	public static boolean isCombatTagged(@NotNull final Player player) {
 		final long time = combatTagTracker.getOrDefault(player.getUniqueId(), -1L);

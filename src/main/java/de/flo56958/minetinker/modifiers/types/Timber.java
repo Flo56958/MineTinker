@@ -27,7 +27,6 @@ import org.jetbrains.annotations.Unmodifiable;
 
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class Timber extends PlayerConfigurableModifier implements Listener {
@@ -35,7 +34,8 @@ public class Timber extends PlayerConfigurableModifier implements Listener {
 	private static Timber instance;
 	private int maxBlocks;
 
-	private static final ConcurrentHashMap<Location, Integer> events = new ConcurrentHashMap<>();
+	// only ever touched from the main thread (writes are marshalled back via Bukkit.getScheduler().runTask)
+	private static final HashMap<Location, Integer> events = new HashMap<>();
 	private final HashSet<Material> grasses = new HashSet<>();
 	private final HashSet<Material> leaves = new HashSet<>();
 
