@@ -169,8 +169,8 @@ public class Power extends PlayerConfigurableModifier implements Listener {
 				b1 = block.getRelative(0, 0, 1);
 				b2 = block.getRelative(0, 0, -1);
 			}
-			blocks.add(b1);
-			blocks.add(b2);
+			if (b1 != null) blocks.add(b1);
+			if (b2 != null) blocks.add(b2);
 		} else if (level > 1) {
 			if (down_up) {
 				for (int x = -(level - 1); x <= (level - 1); x++) {
@@ -249,6 +249,7 @@ public class Power extends PlayerConfigurableModifier implements Listener {
 	public void onInteract(@NotNull final MTPlayerInteractEvent event) {
 		final Player player = event.getPlayer();
 		final ItemStack tool = event.getTool();
+		if (event.getEvent().getAction() == Action.PHYSICAL) return; // e.g. pressure plates
 
 		final Block block = event.getEvent().getClickedBlock();
 		if (block == null) return;
