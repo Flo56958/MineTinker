@@ -109,7 +109,11 @@ public class Knockback extends Modifier implements Listener {
 		if (level <= 0) return;
 
 		//calculate vector
-		final Vector vector = event.getEvent().getDamager().getLocation().subtract(event.getPlayer().getLocation()).toVector()
+		final Vector direction = event.getEvent().getDamager().getLocation().subtract(event.getPlayer().getLocation()).toVector();
+		// Damager at the player's position (e.g. lightning) has no direction; normalize() would yield NaN
+		if (direction.lengthSquared() == 0) return;
+
+		final Vector vector = direction
 				.normalize().multiply(new Vector(1, 0, 1)).add(new Vector(0, 0.2, 0))
 				.multiply(new Vector(level * 0.2, 1, level * 0.2));
 
